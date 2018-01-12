@@ -13,10 +13,12 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "normalize.css": "^7.0.0",
     "nuxt": "^1.0.0"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.10.0",
     "babel-eslint": "^7.2.3",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
