@@ -1,9 +1,13 @@
 <template>
+  <top/>
 </template>
 
 <script>
-export default {}
-</script>
+import Top from '~/components/pages/Top'
 
-<style>
-</style>
+export default {
+  components: {
+    Top
+  }
+}
+</script>
