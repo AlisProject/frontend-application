@@ -10,7 +10,7 @@ export default {
     Top
   },
   fetch({ store }) {
-    store.dispatch('getStories')
+    store.dispatch('story/getAllStories')
   }
 }
 </script>

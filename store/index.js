@@ -1,28 +1,12 @@
+import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
-import stories from '~/static/stories.js'
+import story from './modules/story'
 
-const mock = new MockAdapter(axios)
+Vue.use(Vuex)
 
-mock.onGet('/stories').reply(200, stories)
-
-const store = () =>
+export default () =>
   new Vuex.Store({
-    state: {
-      stories: []
-    },
-    mutations: {
-      setStories(state, stories) {
-        state.stories = stories
-      }
-    },
-    actions: {
-      async getStories({ commit }) {
-        const { data } = await axios.get('/stories')
-        commit('setStories', data)
-      }
+    modules: {
+      story
     }
   })
-
-export default store

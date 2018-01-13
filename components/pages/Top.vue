@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import StoryCardList from '../organisms/StoryCardList'
 import AppFooter from '../organisms/AppFooter'
@@ -18,7 +18,11 @@ export default {
     StoryCardList,
     AppFooter
   },
-  computed: mapState(['stories'])
+  computed: {
+    ...mapGetters({
+      stories: 'story/allStories'
+    })
+  }
 }
 </script>
 
