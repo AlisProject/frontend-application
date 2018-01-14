@@ -1,20 +1,31 @@
 <template>
   <div class="area-editor-container">
     <input class="area-title" type="text" @input="onInputTitle" :value="title">
-    <textarea class="area-body" @input="onInputBody" :value="body"/>
+    <div class="area-body" ref="editable" @input="onInputBody" :value="body"/>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapGetters } from 'vuex'
 import * as types from '~/store/mutation-types'
+import 'medium-editor/dist/css/medium-editor.min.css'
+import 'medium-editor/dist/css/themes/default.min.css'
+const MediumEditor = process.browser ? require('medium-editor') : null
 
 export default {
+  mounted() {
+    this.initMediumEditor()
+  },
   methods: {
+    initMediumEditor() {
+      const editorElement = this.$refs.editable
+      /* eslint no-new: 0 */
+      new MediumEditor(editorElement)
+    },
     onInputTitle({ target: { value: title } }) {
       this.updateTitle({ title })
     },
-    onInputBody({ target: { value: body } }) {
+    onInputBody({ target: { innerHTML: body } }) {
       this.updateBody({ body })
     },
     ...mapMutations('story', { updateTitle: types.UPDATE_TITLE, updateBody: types.UPDATE_BODY })
@@ -45,5 +56,6 @@ export default {
 .area-body {
   grid-area: body;
   width: 100%;
+  overflow: scroll;
 }
 </style>
