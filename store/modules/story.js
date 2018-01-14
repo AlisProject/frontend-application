@@ -4,11 +4,15 @@ import * as types from '../mutation-types'
 const namespaced = true
 
 const state = () => ({
-  stories: []
+  stories: [],
+  title: '',
+  body: ''
 })
 
 const getters = {
-  allStories: (state) => state.stories
+  allStories: (state) => state.stories,
+  title: (state) => state.title,
+  body: (state) => state.body
 }
 
 const actions = {
@@ -21,6 +25,12 @@ const actions = {
 const mutations = {
   [types.SET_STORIES](state, { stories }) {
     state.stories = stories
+  },
+  [types.UPDATE_TITLE](state, { title }) {
+    state.title = title
+  },
+  [types.UPDATE_BODY](state, { body }) {
+    state.body = body
   }
 }
 
