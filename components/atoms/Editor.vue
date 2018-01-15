@@ -6,21 +6,33 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
 import * as types from '~/store/mutation-types'
 import 'medium-editor/dist/css/medium-editor.min.css'
 import 'medium-editor/dist/css/themes/default.min.css'
 const MediumEditor = process.browser ? require('medium-editor') : null
 
 export default {
+  props: {
+    title: String,
+    body: {
+      type: String,
+      default: ''
+    }
+  },
   mounted() {
     this.initMediumEditor()
+    this.$refs.editable.innerHTML = this.body
   },
   methods: {
     initMediumEditor() {
       const editorElement = this.$refs.editable
       /* eslint no-new: 0 */
-      new MediumEditor(editorElement)
+      new MediumEditor(editorElement, {
+        placeholder: {
+          text: this.body === '' ? 'Type your text' : ''
+        }
+      })
     },
     onInputTitle({ target: { value: title } }) {
       this.updateTitle({ title })
@@ -29,9 +41,6 @@ export default {
       this.updateBody({ body })
     },
     ...mapMutations('story', { updateTitle: types.UPDATE_TITLE, updateBody: types.UPDATE_BODY })
-  },
-  computed: {
-    ...mapGetters('story', ['title', 'body'])
   }
 }
 </script>
