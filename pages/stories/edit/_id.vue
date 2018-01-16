@@ -4,6 +4,7 @@
 
 <script>
 import EditStory from '~/components/pages/EditStory'
+import head from '~/utils/editor-head'
 
 export default {
   components: {
@@ -12,6 +13,7 @@ export default {
   fetch({ store, params }) {
     const { id } = params
     store.dispatch('story/getEditStory', { id })
-  }
+  },
+  head
 }
 </script>

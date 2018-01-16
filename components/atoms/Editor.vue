@@ -7,17 +7,15 @@
       @input="onInputTitle"
       :value="title">
     <div class="area-body" ref="editable" @input="onInputBody" :value="body"/>
-    <button class="area-youtube-button" @click="onClickButton">Add YouTube iframe</button>
   </div>
 </template>
 
 <script>
+/* eslint no-undef: 0 */
 import { mapMutations } from 'vuex'
 import * as types from '~/store/mutation-types'
 import 'medium-editor/dist/css/medium-editor.min.css'
 import 'medium-editor/dist/css/themes/default.min.css'
-
-const MediumEditor = process.browser ? require('medium-editor') : null
 
 export default {
   props: {
@@ -33,29 +31,16 @@ export default {
   },
   methods: {
     initMediumEditor() {
-      const editorElement = this.$refs.editable
-      /* eslint no-new: 0 */
-      new MediumEditor(editorElement, {
+      const editorElement = new MediumEditor('.area-body', {
         placeholder: {
           text: this.body === '' ? 'あなたの物語を教えてください･･･' : ''
         }
       })
-    },
-    onClickButton() {
-      const url = window.prompt('YouTubeのURLを入力してください')
-      const id = this.getYoutubeId(url)
-      const iframe = `<iframe width=560 height=315 src='//www.youtube.com/embed/${id}' frameborder=0 allowfullscreen></iframe>`
-      this.$refs.editable.innerHTML += iframe
-    },
-    getYoutubeId(url) {
-      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/
-      const match = url.match(regExp)
-
-      if (match && match[2].length === 11) {
-        return match[2]
-      } else {
-        return 'error'
-      }
+      $(() => {
+        $('.area-body').mediumInsert({
+          editor: editorElement
+        })
+      })
     },
     onInputTitle({ target: { value: title } }) {
       this.updateTitle({ title })
@@ -76,9 +61,8 @@ export default {
   grid-template-columns: 1082px;
   /* prettier-ignore */
   grid-template-areas:
-    "title         "
-    "body          "
-    "youtube-button";
+    "title"
+    "body ";
 }
 
 .area-title {
@@ -92,7 +76,7 @@ export default {
   overflow: scroll;
 }
 
-.area-youtube-button {
-  grid-area: youtube-button;
+.medium-editor-insert-plugin .medium-insert-buttons button {
+  margin-top: -6px;
 }
 </style>
