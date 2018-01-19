@@ -5,7 +5,7 @@
     </h2>
     <div class="flag"></div>
     <p class="area-body">
-      {{ story.body }}
+      {{ plainBody }}
     </p>
     <div class="data">
       <p class="name">{{ story.username }}</p>
@@ -22,6 +22,10 @@ export default {
     formattedTokenAmount() {
       const { tokenAmount } = this.story
       return tokenAmount > 999 ? (tokenAmount / 1000).toFixed(1) + 'k' : tokenAmount
+    },
+    plainBody() {
+      const { body } = this.story
+      return body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
     }
   }
 }
