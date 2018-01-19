@@ -57,8 +57,9 @@ export default {
 .area-editor-container {
   display: grid;
   grid-area: editor;
-  grid-template-rows: 50px 500px 50px;
-  grid-template-columns: 1082px;
+  grid-template-rows: 32px 500px;
+  grid-gap: 40px;
+  grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
     "title"
@@ -66,14 +67,35 @@ export default {
 }
 
 .area-title {
+  color: #040404;
+  font-family: YuGothic;
+  font-size: 24px;
+  font-weight: bold;
   grid-area: title;
-  width: 100%;
+  height: 32px;
+  letter-spacing: 2px;
+  line-height: 32px;
+  border: 0;
+
+  &:placeholder-shown {
+    color: #898989;
+  }
+
+  &:focus {
+    outline: 0;
+  }
 }
 
 .area-body {
   grid-area: body;
   width: 100%;
   overflow: scroll;
+}
+
+.medium-editor-placeholder-relative:after,
+.medium-editor-placeholder:after {
+  color: #898989;
+  font-style: normal;
 }
 
 .medium-editor-insert-plugin .medium-insert-buttons button {
