@@ -21,7 +21,7 @@ export default {
   computed: {
     formattedTokenAmount() {
       const { tokenAmount } = this.story
-      return tokenAmount > 999 ? (tokenAmount / 1000).toFixed(1) + 'k' : tokenAmount
+      return tokenAmount > 999 ? (tokenAmount / 1000).toFixed(2) + 'k' : tokenAmount
     },
     plainBody() {
       const { body } = this.story
