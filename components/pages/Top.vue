@@ -30,7 +30,7 @@ export default {
 .top-container {
   display: grid;
   grid-template-rows: 100px 190px 1fr 75px 75px;
-  grid-template-columns: 1fr 1082px 1fr;
+  grid-template-columns: 1fr 1080px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header       app-header"
@@ -41,4 +41,3 @@ export default {
   background: linear-gradient(155deg, #99a1fb 0%, #99a1fb 32.5%, #f7f7f7 32.5%, #f7f7f7 100%);
 }
 </style>
-

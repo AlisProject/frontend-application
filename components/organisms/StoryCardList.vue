@@ -23,8 +23,8 @@ export default {
 .area-story-card-list-container {
   display: grid;
   grid-area: story-card-list;
-  grid-gap: 32px;
+  grid-gap: 30px;
   grid-template-columns: repeat(3, 340px);
-  grid-template-rows: repeat(4, 270px);
+  grid-template-rows: repeat(4, 268px);
 }
 </style>
