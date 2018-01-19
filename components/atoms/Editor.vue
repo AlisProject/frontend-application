@@ -50,7 +50,8 @@ export default {
       const editorElement = new MediumEditor('.area-body', {
         placeholder: {
           text: this.body === '' ? 'あなたの物語を教えてください･･･' : ''
-        }
+        },
+        spellcheck: false
       })
       $(() => {
         $('.area-body').mediumInsert({
@@ -171,9 +172,5 @@ export default {
   &:focus {
     outline: 0;
   }
-}
-
-.medium-editor-insert-plugin .medium-insert-buttons button {
-  margin-top: -6px;
 }
 </style>

@@ -33,5 +33,6 @@ module.exports = {
       }
     },
     vendor: ['axios']
-  }
+  },
+  css: ['~assets/stylesheets/medium-editor.scss']
 }

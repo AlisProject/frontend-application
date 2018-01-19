@@ -1,0 +1,17 @@
+.medium-editor-element p {
+  color: #040404;
+  font-family: YuGothic;
+  font-size: 15.9px;
+  font-weight: 500;
+  line-height: 30px;
+  text-align: justify;
+
+  &::selection {
+    background: #99a2ff;
+  }
+}
+
+.medium-editor-insert-plugin .medium-insert-buttons button {
+  box-shadow: 0 0 10px 0 rgba(146, 146, 146, 0.5);
+  border: none;
+}
