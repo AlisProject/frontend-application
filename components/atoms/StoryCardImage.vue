@@ -1,5 +1,5 @@
 <template>
-  <img class="area-story-card-image" src='~assets/top-story-card-image.png'>
+  <img class="area-story-card-image" src='~assets/images/top-story-card-image.png'>
   <!-- TODO: data属性からCSSに渡す -->
   <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
 </template>
