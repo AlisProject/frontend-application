@@ -14,6 +14,7 @@
       <author-info :story="story"/>
       <story-comments :comments="story.comments"/>
     </div>
+    <related-stories :stories="story.relatedStories"/>
     <app-footer/>
   </div>
 </template>
@@ -23,6 +24,7 @@ import AppHeader from '../organisms/AppHeader'
 import FooterActions from '../atoms/FooterActions'
 import AuthorInfo from '../atoms/AuthorInfo'
 import StoryComments from '../organisms/StoryComments'
+import RelatedStories from '../organisms/RelatedStories'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
@@ -31,6 +33,7 @@ export default {
     FooterActions,
     AuthorInfo,
     StoryComments,
+    RelatedStories,
     AppFooter
   },
   props: ['story']
@@ -40,15 +43,15 @@ export default {
 <style lang="scss" scoped>
 .story-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr 75px 75px;
+  grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 642px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    'app-header app-header  app-header'
-    '...        ...         ...       '
-    '...        story       ...       '
-    '...        ...         ...       '
-    '...        app-footer  ...       ';
+    'app-header      app-header      app-header     '
+    '...             ...             ...            '
+    '...             story           ...            '
+    'related-stories related-stories related-stories'
+    '...             app-footer      ...            ';
   background: white;
 }
 
