@@ -12,6 +12,7 @@
       </div>
       <footer-actions/>
       <author-info :story="story"/>
+      <story-comments :comments="story.comments"/>
     </div>
     <app-footer/>
   </div>
@@ -21,6 +22,7 @@
 import AppHeader from '../organisms/AppHeader'
 import FooterActions from '../atoms/FooterActions'
 import AuthorInfo from '../atoms/AuthorInfo'
+import StoryComments from '../organisms/StoryComments'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
@@ -28,6 +30,7 @@ export default {
     AppHeader,
     FooterActions,
     AuthorInfo,
+    StoryComments,
     AppFooter
   },
   props: ['story']
@@ -54,6 +57,7 @@ export default {
   grid-area: story;
   grid-template-rows: auto;
   grid-template-columns: auto;
+  grid-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
     'title         '
@@ -61,26 +65,24 @@ export default {
     'content       '
     'footer-actions'
     'tags          '
-    'author-info   ';
+    'author-info   '
+    'story-comments';
 }
 
 .area-title {
   grid-area: title;
   font-size: 25px;
   letter-spacing: 0.05em;
-  margin-bottom: 1.5em;
 }
 
 .area-top-image {
   grid-area: top-image;
   max-width: 100%;
   width: 100%;
-  margin-bottom: 3em;
 }
 
 .area-content {
   grid-area: content;
-  margin-bottom: 2em;
 }
 
 .area-tags {
