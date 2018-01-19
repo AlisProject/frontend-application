@@ -5,6 +5,7 @@ import stories from '~/static/stories.js'
 const mock = new MockAdapter(axios)
 
 mock.onGet('/stories').reply(200, stories)
+mock.onGet('/stories/public', { params: { userId: '1' } }).reply(200, stories)
 
 for (let i = 0; i < 10; i++) {
   const id = String(i + 1)
@@ -17,4 +18,8 @@ export function getStories() {
 
 export function getStory({ id }) {
   return axios.get('/story', { params: { id } })
+}
+
+export function getPublicStoriesByUserId({ userId }) {
+  return axios.get('/stories/public', { params: { userId } })
 }

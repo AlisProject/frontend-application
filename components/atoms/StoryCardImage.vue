@@ -10,4 +10,8 @@
   width: 100%;
   max-width: 100%;
 }
+
+.long-story-card .area-story-card-image {
+  grid-area: long-story-card-image;
+}
 </style>

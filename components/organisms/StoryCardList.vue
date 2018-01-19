@@ -1,9 +1,10 @@
 <template>
   <div class="area-story-card-list-container">
     <story-card
-      v-for="story in stories"
+      v-for="(story, i) in stories"
       :story="story"
       :key="story.id"
+      :class="i === 0 ? 'long-story-card top' : null"
     />
   </div>
 </template>
@@ -26,5 +27,9 @@ export default {
   grid-gap: 30px;
   grid-template-columns: repeat(3, 340px);
   grid-template-rows: repeat(4, 268px);
+}
+
+.long-story-card .area-story-card-list-container {
+  grid-template-columns: 1080px;
 }
 </style>

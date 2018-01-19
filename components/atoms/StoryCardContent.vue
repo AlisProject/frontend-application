@@ -111,4 +111,16 @@ export default {
   position: absolute;
   right: 28px;
 }
+
+.long-story-card .area-story-card-content {
+  grid-template-rows: 48px 5px 68px;
+  grid-template-columns: 1fr 28px;
+  /* prettier-ignore */
+  grid-template-areas:
+      "title ..."
+      "... ..."
+      "body body";
+  grid-area: long-story-card-content;
+  padding: 31px;
+}
 </style>
