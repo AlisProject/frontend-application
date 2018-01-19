@@ -1,3 +1,7 @@
+// header
+export const SET_STATUS = 'SET_STATUS'
+
+// story
 export const SET_STORIES = 'SET_STORIES'
 export const SET_STORY = 'SET_STORY'
 export const SET_PUBLIC_STORIES = 'SET_PUBLIC_STORIES'

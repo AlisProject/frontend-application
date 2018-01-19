@@ -34,5 +34,8 @@ module.exports = {
     },
     vendor: ['axios']
   },
+  router: {
+    middleware: 'header-status'
+  },
   css: ['~assets/stylesheets/medium-editor.scss']
 }
