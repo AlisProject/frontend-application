@@ -63,7 +63,23 @@ export default {
       this.updateTitle({ title })
     },
     onInputBody({ target: { innerHTML: body } }) {
+      const suggestedThumbnails = this.matchAll(body, /<img.*src\s*=\s*["|'](.*?)["|'].*>/g)
+      if (suggestedThumbnails) {
+        const thumbnails = suggestedThumbnails.map((img) => img[1])
+        this.updateSuggestedThumbnails({ thumbnails })
+      }
       this.updateBody({ body })
+    },
+    matchAll(str, regexp) {
+      const matches = []
+      str.replace(regexp, function() {
+        const arr = [].slice.call(arguments, 0)
+        const extras = arr.splice(-2)
+        arr.index = extras[0]
+        arr.input = extras[1]
+        matches.push(arr)
+      })
+      return matches.length ? matches : null
     },
     addEmptyTag() {
       if (this.tags.length < 5) {
@@ -83,7 +99,8 @@ export default {
       updateTitle: types.UPDATE_TITLE,
       updateBody: types.UPDATE_BODY,
       addTag: types.ADD_TAG,
-      updateTag: types.UPDATE_TAG
+      updateTag: types.UPDATE_TAG,
+      updateSuggestedThumbnails: types.UPDATE_SUGGESTED_THUMBNAILS
     })
   }
 }

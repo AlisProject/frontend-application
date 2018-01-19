@@ -15,14 +15,17 @@ const state = () => ({
         .slice(-9),
       name: ''
     }
-  ]
+  ],
+  suggestedThumbnails: [],
+  thumbnail: ''
 })
 
 const getters = {
   allStories: (state) => state.stories,
   publicStories: (state) => state.publicStories,
   title: (state) => state.title,
-  body: (state) => state.body
+  body: (state) => state.body,
+  suggestedThumbnails: (state) => state.suggestedThumbnails
 }
 
 const actions = {
@@ -70,6 +73,12 @@ const mutations = {
       }
     }
     state.tags = tags
+  },
+  [types.UPDATE_SUGGESTED_THUMBNAILS](state, { thumbnails }) {
+    state.suggestedThumbnails = thumbnails
+  },
+  [types.UPDATE_THUMBNAIL](state, { thumbnail }) {
+    state.thumbnail = thumbnail
   }
 }
 
