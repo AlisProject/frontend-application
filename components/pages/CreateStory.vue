@@ -1,7 +1,7 @@
 <template>
   <div class="create-story-container">
     <app-header/>
-    <editor/>
+    <editor :tags="this.$store.state.story.tags"/>
     <app-footer/>
   </div>
 </template>

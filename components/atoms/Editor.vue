@@ -7,6 +7,18 @@
       @input="onInputTitle"
       :value="title">
     <div class="area-body" ref="editable" @input="onInputBody" :value="body"/>
+    <div class="area-tags">
+      <button class="add-tag-button" @click="addEmptyTag">＋</button>
+      <input
+        type="text"
+        class="tag"
+        v-for="tag in tags"
+        :id="tag.id"
+        :key="tag.id"
+        :value="tag.name"
+        @input="onInputTag"
+        placeholder="タグを追加"/>
+    </div>
   </div>
 </template>
 
@@ -23,6 +35,10 @@ export default {
     body: {
       type: String,
       default: ''
+    },
+    tags: {
+      type: Array,
+      default: () => []
     }
   },
   mounted() {
@@ -48,7 +64,26 @@ export default {
     onInputBody({ target: { innerHTML: body } }) {
       this.updateBody({ body })
     },
-    ...mapMutations('story', { updateTitle: types.UPDATE_TITLE, updateBody: types.UPDATE_BODY })
+    addEmptyTag() {
+      if (this.tags.length < 5) {
+        this.addTag({
+          id: Math.random()
+            .toString(36)
+            .slice(-9),
+          name: ''
+        })
+      }
+    },
+    onInputTag({ target }) {
+      const { id, value: name } = target
+      this.updateTag({ id, name })
+    },
+    ...mapMutations('story', {
+      updateTitle: types.UPDATE_TITLE,
+      updateBody: types.UPDATE_BODY,
+      addTag: types.ADD_TAG,
+      updateTag: types.UPDATE_TAG
+    })
   }
 }
 </script>
@@ -57,13 +92,14 @@ export default {
 .area-editor-container {
   display: grid;
   grid-area: editor;
-  grid-template-rows: 32px 500px;
+  grid-template-rows: 32px 500px 70px;
   grid-gap: 40px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
     "title"
-    "body ";
+    "body "
+    "tags ";
 }
 
 .area-title {
@@ -96,6 +132,45 @@ export default {
 .medium-editor-placeholder:after {
   color: #898989;
   font-style: normal;
+}
+
+.area-tags {
+  grid-area: tags;
+  position: relative;
+}
+
+.add-tag-button {
+  border-radius: 50%;
+  border: none;
+  box-shadow: 0 3px 10px 0 rgba(146, 146, 146, 0.5);
+  color: #cacaca;
+  height: 32px;
+  left: -50px;
+  position: absolute;
+  width: 32px;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+.tag {
+  background: #eee;
+  border-radius: 4px;
+  border: none;
+  color: #898989;
+  font-family: YuGothic;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 12px;
+  padding: 4px;
+  text-align: center;
+  margin: 0 2px 4px;
+  display: inline-block;
+
+  &:focus {
+    outline: 0;
+  }
 }
 
 .medium-editor-insert-plugin .medium-insert-buttons button {

@@ -6,7 +6,15 @@ const namespaced = true
 const state = () => ({
   stories: [],
   title: '',
-  body: ''
+  body: '',
+  tags: [
+    {
+      id: Math.random()
+        .toString(36)
+        .slice(-9),
+      name: ''
+    }
+  ]
 })
 
 const getters = {
@@ -40,6 +48,20 @@ const mutations = {
   },
   [types.UPDATE_BODY](state, { body }) {
     state.body = body
+  },
+  [types.ADD_TAG](state, { id, name }) {
+    state.tags.unshift({ id, name })
+  },
+  [types.UPDATE_TAG](state, { id, name }) {
+    let tags = []
+    for (let i = 0; i < state.tags.length; i++) {
+      if (state.tags[i]['id'] === id) {
+        tags.push({ id, name })
+      } else {
+        tags.push(state.tags[i])
+      }
+    }
+    state.tags = tags
   }
 }
 
