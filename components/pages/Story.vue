@@ -1,22 +1,17 @@
 <template>
   <div class="story-container">
     <app-header/>
-    <div class="story">
-      <h1 class="title">{{ story.title }}</h1>
-      <img class="top-image" src="~assets/images/top-story-card-image.png">
-      <div class="content" v-html="story.body" />
-      <div class="tags">
+    <div class="area-story">
+      <h1 class="area-title">{{ story.title }}</h1>
+      <img class="area-top-image" src="~assets/images/top-story-card-image.png">
+      <div class="area-content" v-html="story.body" />
+      <div class="area-tags">
         <span class="tag" v-for="tag in story.tags" :key="tag.name">
           {{ tag.name }}
         </span>
       </div>
-      <div class="actions">
-        <div class="action comment"></div>
-        <div class="action bookmark"></div>
-        <div class="action twitter"></div>
-        <div class="action like"></div>
-      </div>
-      <author-info :story="story" />
+      <footer-actions/>
+      <author-info :story="story"/>
     </div>
     <app-footer/>
   </div>
@@ -24,12 +19,14 @@
 
 <script>
 import AppHeader from '../organisms/AppHeader'
+import FooterActions from '../atoms/FooterActions'
 import AuthorInfo from '../atoms/AuthorInfo'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
+    FooterActions,
     AuthorInfo,
     AppFooter
   },
@@ -52,41 +49,41 @@ export default {
   background: white;
 }
 
-.story {
+.area-story {
   display: grid;
   grid-area: story;
   grid-template-rows: auto;
   grid-template-columns: auto;
   /* prettier-ignore */
   grid-template-areas:
-    'title      '
-    'top-image  '
-    'content    '
-    'actions    '
-    'tags       '
-    'author-info';
+    'title         '
+    'top-image     '
+    'content       '
+    'footer-actions'
+    'tags          '
+    'author-info   ';
 }
 
-.title {
+.area-title {
   grid-area: title;
   font-size: 25px;
   letter-spacing: 0.05em;
   margin-bottom: 1.5em;
 }
 
-.top-image {
+.area-top-image {
   grid-area: top-image;
   max-width: 100%;
   width: 100%;
   margin-bottom: 3em;
 }
 
-.content {
+.area-content {
   grid-area: content;
   margin-bottom: 2em;
 }
 
-.tags {
+.area-tags {
   grid-area: tags;
 }
 
@@ -100,31 +97,5 @@ export default {
   line-height: 12px;
   margin: 0.2em;
   padding: 0.4em 1.5em;
-}
-
-.actions {
-  display: grid;
-  grid-area: actions;
-  grid-template-rows: 70px;
-  grid-template-columns: repeat(4, 60px);
-  justify-content: right;
-
-  .action {
-    background: white;
-    border: 1px solid #fefefe;
-    box-shadow: 0px 5px 15px -1px #c1c1c1;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-
-  .like {
-    background: #ff4949;
-    border: 1px solid #ff4949;
-    box-shadow: 0px 5px 15px -1px #ff8989;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
 }
 </style>
