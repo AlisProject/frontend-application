@@ -1,5 +1,5 @@
 <template>
-  <div class="top-container long-story-card">
+  <div class="public-story-container long-story-card">
     <app-header/>
     <story-card-list :stories="stories"/>
     <app-footer/>
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.top-container {
+.public-story-container {
   display: grid;
   grid-template-rows: 100px 40px 1fr 75px 75px;
   grid-template-columns: 1fr 1080px 1fr;
