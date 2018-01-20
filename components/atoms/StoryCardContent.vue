@@ -8,7 +8,7 @@
       {{ plainBody }}
     </p>
     <div class="data">
-      <p class="name">{{ story.username }}</p>
+      <p class="name">{{ story.user.username }}</p>
       <p class="date">{{ story.createdAt }}</p>
     </div>
     <p class="token-amount">{{ formattedTokenAmount }}</p>
