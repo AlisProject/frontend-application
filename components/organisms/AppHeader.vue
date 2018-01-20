@@ -1,8 +1,8 @@
 <template>
   <header class="area-app-header-container">
     <nuxt-link to="/" class="area-logo">logo here</nuxt-link>
-    <edit-header-nav v-if="this.$store.state.header.status === 'edit'"/>
-    <default-header-nav v-else/>
+    <default-header-nav v-show="showDefaultHeaderNav"/>
+    <edit-header-nav v-show="showEditHeaderNav" :showPostStoryLink="showPostStoryLink"/>
   </header>
 </template>
 
@@ -11,6 +11,20 @@ import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 
 export default {
+  props: {
+    showDefaultHeaderNav: {
+      type: Boolean,
+      default: false
+    },
+    showEditHeaderNav: {
+      type: Boolean,
+      default: false
+    },
+    showPostStoryLink: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     DefaultHeaderNav,
     EditHeaderNav

@@ -1,6 +1,6 @@
 <template>
   <div class="public-story-list-container long-story-card">
-    <app-header/>
+    <app-header showEditHeaderNav/>
     <story-card-list :stories="stories"/>
     <app-footer/>
   </div>

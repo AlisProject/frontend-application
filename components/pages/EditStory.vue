@@ -1,6 +1,6 @@
 <template>
   <div class="edit-story-container">
-    <app-header/>
+    <app-header showEditHeaderNav showPostStoryLink/>
     <editor :title="title" :body="body" :tags="this.$store.state.story.tags"/>
     <app-footer/>
   </div>

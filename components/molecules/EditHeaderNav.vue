@@ -3,7 +3,7 @@
     <nuxt-link to="/stories/public" class="nav-link area-public-stories">公開済み</nuxt-link>
     <nuxt-link to="/stories/draft" class="nav-link area-drafs">下書き</nuxt-link>
     <a href="/stories/new" class="nav-link area-new-story">新規作成</a>
-    <div class="area-post-story">
+    <div class="area-post-story" v-show="showPostStoryLink">
       <span class="nav-link post-story" @click="togglePopup">
         公開する
       </span>
@@ -36,6 +36,12 @@ export default {
     return {
       isPopupShown: false,
       beforeSelected: null
+    }
+  },
+  props: {
+    showPostStoryLink: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
