@@ -6,6 +6,7 @@ const mock = new MockAdapter(axios)
 
 mock.onGet('/stories').reply(200, stories)
 mock.onGet('/stories/public', { params: { userId: '1' } }).reply(200, stories)
+mock.onGet('/stories/draft', { params: { userId: '1' } }).reply(200, stories)
 
 for (let i = 0; i < 10; i++) {
   const id = String(i + 1)
@@ -22,4 +23,8 @@ export function getStory({ id }) {
 
 export function getPublicStoriesByUserId({ userId }) {
   return axios.get('/stories/public', { params: { userId } })
+}
+
+export function getDraftStoriesByUserId({ userId }) {
+  return axios.get('/stories/draft', { params: { userId } })
 }

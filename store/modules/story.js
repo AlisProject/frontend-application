@@ -1,4 +1,9 @@
-import { getStories, getStory, getPublicStoriesByUserId } from '~/api/story'
+import {
+  getStories,
+  getStory,
+  getPublicStoriesByUserId,
+  getDraftStoriesByUserId
+} from '~/api/story'
 import * as types from '../mutation-types'
 
 const namespaced = true
@@ -6,6 +11,7 @@ const namespaced = true
 const state = () => ({
   stories: [],
   publicStories: [],
+  draftStories: [],
   title: '',
   body: '',
   tags: [
@@ -23,6 +29,7 @@ const state = () => ({
 const getters = {
   allStories: (state) => state.stories,
   publicStories: (state) => state.publicStories,
+  draftStories: (state) => state.draftStories,
   title: (state) => state.title,
   body: (state) => state.body,
   suggestedThumbnails: (state) => state.suggestedThumbnails
@@ -40,6 +47,10 @@ const actions = {
   async getPublicStories({ commit }, { userId }) {
     const { data: stories } = await getPublicStoriesByUserId({ userId })
     commit(types.SET_PUBLIC_STORIES, { stories })
+  },
+  async getDraftStories({ commit }, { userId }) {
+    const { data: stories } = await getDraftStoriesByUserId({ userId })
+    commit(types.SET_DRAFT_STORIES, { stories })
   }
 }
 
@@ -53,6 +64,9 @@ const mutations = {
   },
   [types.SET_PUBLIC_STORIES](state, { stories }) {
     state.publicStories = stories
+  },
+  [types.SET_DRAFT_STORIES](state, { stories }) {
+    state.draftStories = stories
   },
   [types.UPDATE_TITLE](state, { title }) {
     state.title = title

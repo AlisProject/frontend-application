@@ -51,4 +51,8 @@ export default {
       "long-story-card-image long-story-card-content";
   }
 }
+
+.draft .story-card-container {
+  opacity: 0.7;
+}
 </style>

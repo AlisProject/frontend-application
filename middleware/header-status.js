@@ -6,6 +6,7 @@ export default function({ store, route }) {
     case 'stories-edit-id':
     case 'stories-new':
     case 'stories-public':
+    case 'stories-draft':
       status = 'edit'
       break
     default:
