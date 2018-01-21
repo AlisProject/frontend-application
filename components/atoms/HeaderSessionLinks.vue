@@ -1,0 +1,33 @@
+<template>
+  <div class="session" v-show="!this.$store.state.user.loggedIn">
+    <img class="search-icon" src="~assets/images/search.png" alt="search">
+    <nuxt-link to="#" class="session-link sign-up">Sign up</nuxt-link>
+    /
+    <nuxt-link to="#" class="session-link login">Login</nuxt-link>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.session {
+  border-top: 6px solid #4a4a4a;
+  padding-top: 38px;
+  position: fixed;
+  right: -49px;
+  text-align: right;
+  top: 340px;
+  transform: rotate(90deg);
+  width: 162px;
+
+  .search-icon {
+    float: left;
+    padding-right: 4px;
+    transform: rotate(-90deg);
+  }
+
+  .session-link {
+    color: #525256;
+    font-family: YuGothic;
+    text-decoration: none;
+  }
+}
+</style>
