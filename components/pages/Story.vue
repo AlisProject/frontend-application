@@ -10,7 +10,7 @@
           {{ tag.name }}
         </span>
       </div>
-      <footer-actions/>
+      <story-footer-actions/>
       <author-info :story="story"/>
       <story-comments :comments="story.comments"/>
     </div>
@@ -21,7 +21,7 @@
 
 <script>
 import AppHeader from '../organisms/AppHeader'
-import FooterActions from '../atoms/FooterActions'
+import StoryFooterActions from '../atoms/StoryFooterActions'
 import AuthorInfo from '../atoms/AuthorInfo'
 import StoryComments from '../organisms/StoryComments'
 import RelatedStories from '../organisms/RelatedStories'
@@ -30,7 +30,7 @@ import AppFooter from '../organisms/AppFooter'
 export default {
   components: {
     AppHeader,
-    FooterActions,
+    StoryFooterActions,
     AuthorInfo,
     StoryComments,
     RelatedStories,
