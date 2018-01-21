@@ -11,6 +11,7 @@
         </span>
       </div>
       <story-footer-actions/>
+      <story-side-actions/>
       <author-info :story="story"/>
       <story-comments :comments="story.comments"/>
     </div>
@@ -22,6 +23,7 @@
 <script>
 import AppHeader from '../organisms/AppHeader'
 import StoryFooterActions from '../atoms/StoryFooterActions'
+import StorySideActions from '../atoms/StorySideActions'
 import AuthorInfo from '../atoms/AuthorInfo'
 import StoryComments from '../organisms/StoryComments'
 import RelatedStories from '../organisms/RelatedStories'
@@ -31,6 +33,7 @@ export default {
   components: {
     AppHeader,
     StoryFooterActions,
+    StorySideActions,
     AuthorInfo,
     StoryComments,
     RelatedStories,
