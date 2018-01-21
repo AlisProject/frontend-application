@@ -73,8 +73,9 @@ export default {
 }
 
 .area-title {
-  grid-area: title;
+  font-family: YuGothic;
   font-size: 25px;
+  grid-area: title;
   letter-spacing: 0.05em;
 }
 
