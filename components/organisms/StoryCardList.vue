@@ -5,6 +5,7 @@
       :story="story"
       :key="story.id"
       :class="i === 0 ? 'long-story-card top' : null"
+      :linkTo="linkTo"
     />
   </div>
 </template>
@@ -16,7 +17,7 @@ export default {
   components: {
     StoryCard
   },
-  props: ['stories']
+  props: ['stories', 'linkTo']
 }
 </script>
 

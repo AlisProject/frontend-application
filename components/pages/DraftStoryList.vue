@@ -1,7 +1,7 @@
 <template>
   <div class="draft-story-list-container long-story-card">
     <app-header showEditHeaderNav/>
-    <story-card-list :stories="stories" class="draft"/>
+    <story-card-list :stories="stories" class="draft" :linkTo="'edit'"/>
     <app-footer/>
   </div>
 </template>

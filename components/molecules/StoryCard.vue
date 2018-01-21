@@ -1,11 +1,15 @@
 <template>
   <section>
-    <div class="story-card-container">
+    <a :href="`${getLink}`" class="story-card-container" v-if="linkTo === 'edit'">
+      <story-card-image/>
+      <story-card-content :story="story"/>
+    </a>
+    <nuxt-link :to="`${getLink}`" class="story-card-container" v-else>
       <story-card-image/>
       <!-- TODO: data属性からCSSに渡す -->
       <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
       <story-card-content :story="story"/>
-    </div>
+    </nuxt-link>
   </section>
 </template>
 
@@ -14,15 +18,37 @@ import StoryCardImage from '../atoms/StoryCardImage'
 import StoryCardContent from '../atoms/StoryCardContent'
 
 export default {
-  props: ['story'],
+  props: {
+    story: { type: Object },
+    linkTo: {
+      type: String
+    }
+  },
   components: {
     StoryCardImage,
     StoryCardContent
+  },
+  computed: {
+    getLink() {
+      let link = ''
+      switch (this.linkTo) {
+        case 'edit':
+          link = `/stories/edit/${this.story.id}`
+          break
+        default:
+          link = `/${this.story.user.username}/stories/${this.story.id}`
+      }
+      return link
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+a {
+  text-decoration: none;
+}
+
 .story-card-container {
   display: grid;
   grid-template-rows: 88px 180px;
