@@ -3,6 +3,12 @@
     <nuxt-link to="/" class="area-logo">logo here</nuxt-link>
     <default-header-nav v-show="showDefaultHeaderNav"/>
     <edit-header-nav v-show="showEditHeaderNav" :showPostStoryLink="showPostStoryLink"/>
+    <div class="session">
+      <img class="search-icon" src="~assets/images/search.png" alt="search">
+      <nuxt-link to="#" class="session-link sign-up">Sign up</nuxt-link>
+      /
+      <nuxt-link to="#" class="session-link login">Login</nuxt-link>
+    </div>
   </header>
 </template>
 
@@ -47,5 +53,28 @@ export default {
 
 .area-logo {
   grid-area: logo;
+}
+
+.session {
+  border-top: 6px solid #4a4a4a;
+  padding-top: 38px;
+  position: fixed;
+  right: -49px;
+  text-align: right;
+  top: 340px;
+  transform: rotate(90deg);
+  width: 162px;
+
+  .search-icon {
+    float: left;
+    padding-right: 4px;
+    transform: rotate(-90deg);
+  }
+
+  .session-link {
+    color: #525256;
+    font-family: YuGothic;
+    text-decoration: none;
+  }
 }
 </style>
