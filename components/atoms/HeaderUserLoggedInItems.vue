@@ -1,5 +1,5 @@
 <template>
-  <div class="logged-in" v-show="this.$store.state.user.loggedIn">
+  <div class="logged-in">
     <img class="profile-icon" src="~assets/images/profile-icon1.png">
     <img class="notification-icon" src="~assets/images/notification.png">
     <img class="search-icon" src="~assets/images/search.png">

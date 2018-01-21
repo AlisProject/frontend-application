@@ -3,8 +3,8 @@
     <nuxt-link to="/" class="area-logo">logo here</nuxt-link>
     <default-header-nav v-show="showDefaultHeaderNav"/>
     <edit-header-nav v-show="showEditHeaderNav" :showPostStoryLink="showPostStoryLink"/>
-    <header-session-links/>
-    <header-user-logged-in-items/>
+    <header-session-links v-show="!this.$store.state.user.loggedIn"/>
+    <header-user-logged-in-items v-show="this.$store.state.user.loggedIn"/>
   </header>
 </template>
 

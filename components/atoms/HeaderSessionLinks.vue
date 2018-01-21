@@ -1,5 +1,5 @@
 <template>
-  <div class="session" v-show="!this.$store.state.user.loggedIn">
+  <div class="session">
     <img class="search-icon" src="~assets/images/search.png" alt="search">
     <nuxt-link to="#" class="session-link sign-up">Sign up</nuxt-link>
     /
