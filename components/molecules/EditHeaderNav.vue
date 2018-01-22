@@ -1,7 +1,7 @@
 <template>
   <nav class="area-nav">
     <nuxt-link to="/stories/public" class="nav-link area-public-stories">公開済み</nuxt-link>
-    <nuxt-link to="/stories/draft" class="nav-link area-drafs">下書き</nuxt-link>
+    <nuxt-link to="/stories/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/stories/new" class="nav-link area-new-story">新規作成</a>
     <div class="area-post-story" v-show="showPostStoryLink">
       <span class="nav-link post-story" @click="togglePopup">
@@ -103,26 +103,39 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 30px 1fr;
-  grid-template-columns: 1fr 60px 60px 60px 1fr 60px 1fr;
+  grid-template-columns: 1fr 70px 70px 70px 1fr 60px 1fr;
+  grid-column-gap: 10px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...            ...   ...       ... ...        ..."
-    "... public-stories drafs new-story ... post-story ..."
-    "... ...            ...   ...       ... ...        ...";
+    "... ...            ...    ...       ... ...        ..."
+    "... public-stories drafts new-story ... post-story ..."
+    "... ...            ...    ...       ... ...        ...";
 }
 
 .nav-link {
   font-size: 14px;
   text-decoration: none;
-  color: #525256;
+  color: #929292;
 }
 
 .area-public-stories {
   grid-area: public-stories;
 }
 
-.area-drafs {
-  grid-area: drafs;
+.public-stories .area-public-stories {
+  color: #99a2ff;
+  display: block;
+  border-bottom: 2px solid #99a2ff;
+}
+
+.area-drafts {
+  grid-area: drafts;
+}
+
+.drafts .area-drafts {
+  color: #99a2ff;
+  display: block;
+  border-bottom: 2px solid #99a2ff;
 }
 
 .area-new-story {

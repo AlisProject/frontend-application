@@ -32,4 +32,10 @@
 .area-new-stories {
   grid-area: new-stories;
 }
+
+.popular-stories .area-popular-stories {
+  color: white;
+  display: block;
+  border-bottom: 2px solid white;
+}
 </style>
