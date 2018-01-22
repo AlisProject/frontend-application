@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import StoryCard from '../molecules/StoryCard'
+import StoryCard from '../organisms/StoryCard'
 
 export default {
   components: {

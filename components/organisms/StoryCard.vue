@@ -15,7 +15,7 @@
 
 <script>
 import StoryCardImage from '../atoms/StoryCardImage'
-import StoryCardContent from '../atoms/StoryCardContent'
+import StoryCardContent from '../organisms/StoryCardContent'
 
 export default {
   props: {
