@@ -7,9 +7,10 @@
     <p class="area-body">
       {{ plainBody }}
     </p>
-    <div class="data">
-      <p class="name">{{ story.user.username }}</p>
-      <p class="date">{{ story.createdAt }}</p>
+    <div class="area-data">
+      <img class="area-profile-icon" src="~assets/images/profile-icon1.png" alt="">
+      <p class="area-name">{{ story.user.username }}</p>
+      <p class="area-date">{{ story.createdAt }}</p>
     </div>
     <p class="token-amount">{{ formattedTokenAmount }}</p>
   </div>
@@ -35,15 +36,17 @@ export default {
 .area-story-card-content {
   background: white;
   display: grid;
+  font-family: YuGothic;
   grid-area: story-card-content;
+  grid-gap: 6px;
   /* prettier-ignore */
   grid-template-areas:
-    "title ..."
-    "...   ..."
-    "body  body";
-  grid-template-columns: 250px 28px;
-  grid-template-rows: 37px 16px 38px;
-  padding: 20px 25px;
+    "title ... "
+    "body  body"
+    "data  ... ";
+  grid-template-columns: 248px 44px;
+  grid-template-rows: 48px 44px 40px;
+  padding: 18px 24px;
   position: relative;
 }
 
@@ -53,8 +56,10 @@ export default {
   color: #3f3f3f;
   display: -webkit-box;
   font-size: 16px;
+  font-weight: 500;
   grid-area: title;
   letter-spacing: 0.05em;
+  line-height: 24px;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -75,52 +80,92 @@ export default {
 .area-body {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  color: #5f5f5f;
+  color: #7f7f7f;
   display: -webkit-box;
-  font-size: 11.1px;
+  font-size: 12px;
   grid-area: body;
-  margin: 7px 0;
+  line-height: 20px;
+  margin: 0;
   overflow: hidden;
+  text-align: justify;
   text-overflow: ellipsis;
 }
 
-.data {
-  /* TODO: 画像を丸くして表示する処理を加える */
-  /* background: url('~assets/profile-icon1.png'); */
-  background-repeat: no-repeat;
-  bottom: 18px;
-  left: 18px;
-  position: absolute;
-}
-
-.name,
-.date {
+.area-data {
   color: #717171;
-  display: block;
+  display: grid;
   font-size: 12px;
-  margin-left: 43px;
+  grid-area: data;
+  /* prettier-ignore */
+  grid-template-areas:
+    "profile-icon  name"
+    "profile-icon  date";
+  grid-template-columns: 40px 100px;
+  grid-template-rows: 20px 20px;
+  line-height: 18px;
+
+  > * {
+    margin: 0;
+  }
+
+  .area-profile-icon {
+    grid-area: profile-icon;
+    height: 36px;
+    width: 36px;
+  }
+
+  .area-name {
+    align-self: flex-end;
+    grid-area: name;
+  }
+
+  .area-date {
+    grid-area: date;
+  }
 }
 
 .token-amount {
-  /* background: url('~assets/alis-icon-mini.png'); */
-  background-repeat: no-repeat;
-  bottom: 18px;
+  background: url('~assets/images/alis-icon-mini.png') no-repeat;
+  bottom: 20px;
   color: #717171;
-  font-size: 13px;
-  padding-left: 25px;
+  font-size: 12px;
+  height: 22px;
+  margin: 0;
+  padding: 3px 0 0 25px;
   position: absolute;
-  right: 28px;
+  right: 24px;
 }
 
-.long-story-card .area-story-card-content {
-  grid-template-rows: 48px 5px 68px;
-  grid-template-columns: 1fr 28px;
-  /* prettier-ignore */
-  grid-template-areas:
-      "title ..."
-      "... ..."
-      "body body";
-  grid-area: long-story-card-content;
-  padding: 31px;
+.long-story-card {
+  .area-story-card-content {
+    grid-template-rows: 52px 76px;
+    grid-template-columns: 420px 60px;
+    grid-area: long-story-card-content;
+    grid-gap: 12px;
+    padding: 28px;
+  }
+
+  .area-title {
+    font-weight: bold;
+    line-height: 28px;
+    font-size: 19px;
+  }
+
+  .area-body {
+    -webkit-line-clamp: 3;
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .area-data {
+    align-self: flex-end;
+  }
+
+  .token-amount {
+    bottom: 25px;
+    font-size: 14px;
+    position: absolute;
+    right: 28px;
+  }
 }
 </style>
