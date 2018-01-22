@@ -49,6 +49,7 @@ export default {
   grid-template-areas:
     "logo nav";
   position: relative;
+  z-index: 1;
 }
 
 .area-logo {

@@ -96,7 +96,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
 .area-nav {
   grid-area: nav;
