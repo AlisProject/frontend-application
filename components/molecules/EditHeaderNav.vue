@@ -214,4 +214,24 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 550px) {
+  .area-nav {
+    grid-gap: 20px;
+    /* prettier-ignore */
+    grid-template-areas:
+      'public-stories drafts';
+    grid-template-columns: 48px 48px;
+    grid-template-rows: 32px;
+    text-align: left;
+  }
+
+  .area-new-story {
+    display: none;
+  }
+
+  .nav-link {
+    font-size: 12px;
+  }
+}
 </style>

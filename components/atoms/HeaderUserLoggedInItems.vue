@@ -219,4 +219,38 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 550px) {
+  .logged-in {
+    border: none;
+    grid-area: session;
+    padding: 0;
+    position: static;
+    right: -46px;
+    top: 340px;
+    transform: rotate(0);
+    width: 160px;
+
+    .profile-icon {
+      border-radius: 50%;
+      float: right;
+      height: 30px;
+      padding: 4px;
+      transform: rotate(0);
+      width: 30px;
+    }
+
+    .notification-icon {
+      float: right;
+      padding-right: 4px;
+      transform: rotate(0);
+    }
+
+    .search-icon {
+      float: right;
+      padding: 7px 4px;
+      transform: rotate(0);
+    }
+  }
+}
 </style>

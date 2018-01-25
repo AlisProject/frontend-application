@@ -55,4 +55,18 @@ export default {
 .area-logo {
   grid-area: logo;
 }
+
+@media screen and (max-width: 550px) {
+  .area-app-header-container {
+    background: white;
+    grid-gap: 13px;
+    /* prettier-ignore */
+    grid-template-areas:
+      '... ...  ... ...     ...'
+      '... logo ... session ...'
+      '... nav  ... ...     ...';
+    grid-template-columns: 0 min-content 1fr 160px 3px;
+    grid-template-rows: 12px 20px 18px;
+  }
+}
 </style>
