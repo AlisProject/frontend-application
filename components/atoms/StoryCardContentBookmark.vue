@@ -14,4 +14,11 @@
   top: 20px;
   width: 30px;
 }
+@media screen and (max-width: 1296px) {
+  .long-story-card {
+    .bookmark {
+      display: none;
+    }
+  }
+}
 </style>

@@ -54,4 +54,19 @@ export default {
     padding: 28px;
   }
 }
+
+@media screen and (max-width: 1296px) {
+  .long-story-card {
+    .area-story-card-content {
+      grid-template-rows: 50px 44px;
+      grid-template-columns: 1fr 1fr;
+      /* prettier-ignore */
+      grid-template-areas:
+        "title title "
+        "body  body"
+        "data  ... ";
+      padding: 12px 20px;
+    }
+  }
+}
 </style>

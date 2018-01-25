@@ -40,4 +40,10 @@ export default {
     "...         app-footer       ...       ";
   background: #f7f7f7;
 }
+
+@media screen and (max-width: 1296px) {
+  .public-story-list-container {
+    grid-template-columns: 1fr 710px 1fr;
+  }
+}
 </style>

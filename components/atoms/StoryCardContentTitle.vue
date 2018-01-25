@@ -33,4 +33,13 @@ export default {
     font-size: 19px;
   }
 }
+@media screen and (max-width: 1296px) {
+  .long-story-card {
+    .area-title {
+      font-weight: 500;
+      line-height: 28px;
+      font-size: 16px;
+    }
+  }
+}
 </style>

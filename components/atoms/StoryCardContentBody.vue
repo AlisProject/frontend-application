@@ -37,4 +37,14 @@ export default {
     line-height: 24px;
   }
 }
+
+@media screen and (max-width: 1296px) {
+  .long-story-card {
+    .area-body {
+      -webkit-line-clamp: 2;
+      font-size: 12px;
+      line-height: 24px;
+    }
+  }
+}
 </style>

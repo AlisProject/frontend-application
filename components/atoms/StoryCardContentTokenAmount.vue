@@ -34,4 +34,12 @@ export default {
     right: 28px;
   }
 }
+@media screen and (max-width: 1296px) {
+  .long-story-card {
+    .token-amount {
+      bottom: 10px;
+      right: 20px;
+    }
+  }
+}
 </style>

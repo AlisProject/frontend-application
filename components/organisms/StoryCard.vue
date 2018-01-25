@@ -81,4 +81,12 @@ a {
 .draft .story-card-container {
   opacity: 0.7;
 }
+
+@media screen and (max-width: 1296px) {
+  .long-story-card {
+    .story-card-container {
+      grid-template-rows: 178px;
+    }
+  }
+}
 </style>

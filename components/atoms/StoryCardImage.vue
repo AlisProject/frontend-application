@@ -27,4 +27,13 @@
     width: 540px;
   }
 }
+
+@media screen and (max-width: 1296px) {
+  .long-story-card .area-story-card-image {
+    .story-image {
+      height: 178px;
+      width: 355px;
+    }
+  }
+}
 </style>

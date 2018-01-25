@@ -33,4 +33,12 @@ export default {
 .long-story-card .area-story-card-list-container {
   grid-template-columns: 1080px;
 }
+
+@media screen and (max-width: 1296px) {
+  .long-story-card .area-story-card-list-container {
+    grid-template-columns: 710px;
+    grid-template-rows: repeat(10, 178px);
+    grid-gap: 40px;
+  }
+}
 </style>
