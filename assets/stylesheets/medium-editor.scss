@@ -1,5 +1,11 @@
 .area-content,
 .medium-editor-element {
+  * {
+    &::selection {
+      background: #99a2ff;
+    }
+  }
+
   p {
     color: #040404;
     font-family: YuGothic;
@@ -7,10 +13,6 @@
     font-weight: 500;
     line-height: 30px;
     text-align: justify;
-
-    &::selection {
-      background: #99a2ff;
-    }
   }
 }
 
