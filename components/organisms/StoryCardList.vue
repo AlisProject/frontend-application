@@ -49,4 +49,12 @@ export default {
     grid-gap: 30px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .long-story-card .area-story-card-list-container {
+    grid-gap: 15px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(10, 300px);
+  }
+}
 </style>

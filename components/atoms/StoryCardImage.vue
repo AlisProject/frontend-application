@@ -44,4 +44,17 @@
     }
   }
 }
+
+@media screen and (max-width: 550px) {
+  .long-story-card {
+    .area-story-card-image {
+      border-top-left-radius: 6px;
+      border-top-right-radius: 6px;
+
+      .story-image {
+        width: 100%;
+      }
+    }
+  }
+}
 </style>

@@ -45,4 +45,13 @@ export default {
     align-self: flex-end;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .long-story-card {
+    .area-data {
+      bottom: 12px;
+      left: 14px;
+    }
+  }
+}
 </style>

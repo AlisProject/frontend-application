@@ -52,4 +52,16 @@ export default {
     grid-template-columns: 1fr 340px 1fr;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .public-story-list-container {
+    grid-template-columns: 1fr 350px 1fr;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .public-story-list-container {
+    grid-template-columns: 10px 1fr 10px;
+  }
+}
 </style>

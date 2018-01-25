@@ -43,4 +43,12 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 550px) {
+  .long-story-card {
+    .area-title {
+      line-height: 26px;
+    }
+  }
+}
 </style>

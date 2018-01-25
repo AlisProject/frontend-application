@@ -22,4 +22,14 @@
     }
   }
 }
+
+@media screen and (max-width: 550px) {
+  .long-story-card {
+    .bookmark {
+      display: initial;
+      right: 15px;
+      top: -15px;
+    }
+  }
+}
 </style>
