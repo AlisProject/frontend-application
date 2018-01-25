@@ -36,4 +36,12 @@
     }
   }
 }
+
+@media screen and (max-width: 920px) {
+  .long-story-card {
+    .area-story-card-image {
+      grid-area: story-card-image;
+    }
+  }
+}
 </style>

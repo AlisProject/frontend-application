@@ -69,4 +69,20 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 920px) {
+  .long-story-card {
+    .area-story-card-content {
+      grid-area: story-card-content;
+      grid-gap: 6px;
+      /* prettier-ignore */
+      grid-template-areas:
+        "title title"
+        "body  body "
+        "data  ...  ";
+      grid-template-rows: 48px 44px 40px;
+      padding: 18px 24px;
+    }
+  }
+}
 </style>

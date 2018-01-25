@@ -89,4 +89,17 @@ a {
     }
   }
 }
+
+@media screen and (max-width: 920px) {
+  .long-story-card {
+    .story-card-container {
+      grid-template-rows: 88px 180px;
+      grid-template-columns: 340px;
+      /* prettier-ignore */
+      grid-template-areas:
+        "story-card-image"
+        "story-card-content";
+    }
+  }
+}
 </style>
