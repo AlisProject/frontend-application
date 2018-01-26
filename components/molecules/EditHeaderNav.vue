@@ -164,7 +164,6 @@ export default {
 
     .headline {
       color: #000000;
-      font-family: YuGothic;
       font-size: 16px;
       font-weight: 500;
       letter-spacing: 1px;

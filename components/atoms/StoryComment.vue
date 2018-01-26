@@ -28,7 +28,6 @@ export default {
 
   .body {
     color: #040404;
-    font-family: YuGothic;
     font-size: 14.7px;
     font-weight: 500;
     line-height: 21px;
@@ -39,7 +38,6 @@ export default {
   .commented-user {
     bottom: 20px;
     color: #5b5b5b;
-    font-family: YuGothic;
     font-size: 14px;
     position: absolute;
 

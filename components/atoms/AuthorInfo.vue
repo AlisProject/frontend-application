@@ -20,7 +20,6 @@ export default {
 <style lang="scss" scoped>
 .area-author-info-container {
   display: grid;
-  font-family: YuGothic;
   grid-area: author-info;
   grid-template-areas:
     '...    ... ...          ...           ... '

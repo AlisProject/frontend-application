@@ -76,7 +76,6 @@ export default {
 }
 
 .area-title {
-  font-family: YuGothic;
   font-size: 25px;
   grid-area: title;
   letter-spacing: 0.05em;
@@ -101,7 +100,6 @@ export default {
   border-radius: 4px;
   color: #4c4c4c;
   display: inline-block;
-  font-family: YuGothic;
   font-size: 14px;
   line-height: 12px;
   margin: 0.2em;

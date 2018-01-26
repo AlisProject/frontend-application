@@ -31,7 +31,6 @@ export default {
 .area-story-card-content {
   background: white;
   display: grid;
-  font-family: YuGothic;
   grid-area: story-card-content;
   grid-gap: 6px;
   /* prettier-ignore */

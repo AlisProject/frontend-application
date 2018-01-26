@@ -12,7 +12,6 @@
 .area-app-footer-container {
   align-items: center;
   display: flex;
-  font-family: YuGothic;
   grid-area: app-footer;
   justify-content: center;
 }

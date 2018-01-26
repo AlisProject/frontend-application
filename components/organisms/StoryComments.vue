@@ -31,7 +31,6 @@ export default {
   border: 1px solid rgba(192, 192, 192, 0.5);
   box-sizing: border-box;
   color: #5b5b5b;
-  font-family: YuGothic;
   font-size: 14px;
   font-weight: 500;
   line-height: 21px;

@@ -120,7 +120,6 @@ export default {
   box-sizing: border-box;
   color: #000000;
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-  font-family: YuGothic;
   padding: 24px 41px;
   position: absolute;
   right: 42px;

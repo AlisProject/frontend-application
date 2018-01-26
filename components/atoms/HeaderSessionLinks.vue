@@ -26,7 +26,6 @@
 
   .session-link {
     color: #525256;
-    font-family: YuGothic;
     text-decoration: none;
   }
 }
