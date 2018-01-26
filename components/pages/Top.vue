@@ -37,7 +37,7 @@ export default {
     "...         ...              ...       "
     "...         story-card-list  ...       "
     "...         ...              ...       "
-    "...         app-footer       ...       ";
+    "app-footer  app-footer       app-footer";
   background: linear-gradient(155deg, #99a1fb 0%, #99a1fb 32.5%, #f7f7f7 32.5%, #f7f7f7 100%);
 }
 

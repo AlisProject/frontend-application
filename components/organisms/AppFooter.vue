@@ -10,16 +10,38 @@
 
 <style lang="scss" scoped>
 .area-app-footer-container {
-  display: flex;
-  grid-area: app-footer;
   align-items: center;
+  display: flex;
+  font-family: YuGothic;
+  grid-area: app-footer;
   justify-content: center;
 }
 
 .link {
+  color: #6e6e6e;
   font-size: 12px;
+  line-height: 16px;
   margin: 0 1.4em;
   text-decoration: none;
-  color: #7b7b7b;
+}
+
+@media screen and (max-width: 550px) {
+  .area-app-footer-container {
+    align-items: flex-start;
+    background: white;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    padding: 1.3em 0 1em;
+  }
+
+  .link {
+    font-size: 12px;
+    margin: 0 2em 1em;
+    text-decoration: none;
+
+    &:last-child {
+      margin-bottom: 24px;
+    }
+  }
 }
 </style>

@@ -37,7 +37,7 @@ export default {
     "...         ...              ...       "
     "...         story-card-list  ...       "
     "...         ...              ...       "
-    "...         app-footer       ...       ";
+    "app-footer  app-footer       app-footer";
   background: #f7f7f7;
 }
 
