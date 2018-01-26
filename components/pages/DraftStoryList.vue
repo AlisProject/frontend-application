@@ -37,7 +37,31 @@ export default {
     "...         ...              ...       "
     "...         story-card-list  ...       "
     "...         ...              ...       "
-    "...         app-footer       ...       ";
+    "app-footer  app-footer       app-footer";
   background: #f7f7f7;
+}
+
+@media screen and (max-width: 1296px) {
+  .draft-story-list-container {
+    grid-template-columns: 1fr 710px 1fr;
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .draft-story-list-container {
+    grid-template-columns: 1fr 340px 1fr;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .draft-story-list-container {
+    grid-template-columns: 1fr 350px 1fr;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .draft-story-list-container {
+    grid-template-columns: 10px 1fr 10px;
+  }
 }
 </style>
