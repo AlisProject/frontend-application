@@ -38,4 +38,25 @@
   display: block;
   border-bottom: 2px solid white;
 }
+
+@media screen and (max-width: 550px) {
+  .area-nav {
+    grid-gap: 20px;
+    /* prettier-ignore */
+    grid-template-areas:
+      'popular-stories new-stories';
+    grid-template-columns: 48px 48px;
+    grid-template-rows: 32px;
+    text-align: left;
+  }
+
+  .nav-link {
+    font-size: 12px;
+  }
+
+  .popular-stories .area-popular-stories {
+    color: #99a2ff;
+    border-bottom: 2px solid #99a2ff;
+  }
+}
 </style>
