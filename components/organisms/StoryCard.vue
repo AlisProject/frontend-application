@@ -88,6 +88,10 @@ a {
       grid-template-rows: 178px;
     }
   }
+
+  .top {
+    grid-column: 1 / 3;
+  }
 }
 
 @media screen and (max-width: 920px) {

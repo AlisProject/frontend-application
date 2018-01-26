@@ -40,6 +40,11 @@ export default {
     grid-template-rows: repeat(10, 178px);
     grid-gap: 40px;
   }
+
+  .area-story-card-list-container {
+    grid-template-columns: repeat(2, 340px);
+    grid-template-rows: 178px repeat(5, 268px);
+  }
 }
 
 @media screen and (max-width: 920px) {

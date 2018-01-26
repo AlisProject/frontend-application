@@ -40,4 +40,10 @@ export default {
     "...         app-footer       ...       ";
   background: linear-gradient(155deg, #99a1fb 0%, #99a1fb 32.5%, #f7f7f7 32.5%, #f7f7f7 100%);
 }
+
+@media screen and (max-width: 1296px) {
+  .top-container {
+    grid-template-columns: 1fr 710px 1fr;
+  }
+}
 </style>
