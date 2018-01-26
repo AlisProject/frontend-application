@@ -46,4 +46,10 @@ export default {
     grid-template-columns: 1fr 710px 1fr;
   }
 }
+
+@media screen and (max-width: 920px) {
+  .top-container {
+    grid-template-columns: 1fr 340px 1fr;
+  }
+}
 </style>

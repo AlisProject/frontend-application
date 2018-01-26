@@ -105,6 +105,10 @@ a {
         "story-card-content";
     }
   }
+
+  .top {
+    grid-column: auto;
+  }
 }
 
 @media screen and (max-width: 550px) {
