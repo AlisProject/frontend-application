@@ -251,5 +251,31 @@ export default {
       transform: rotate(0);
     }
   }
+
+  .menu {
+    right: -16px;
+    top: -26px;
+    width: 280px;
+    transform: rotate(0);
+
+    &:before {
+      display: none;
+    }
+
+    .image-box {
+      height: 160px;
+      width: 280px;
+    }
+
+    .menu-links {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 40px;
+
+      .menu-link {
+        margin-bottom: 20px;
+      }
+    }
+  }
 }
 </style>
