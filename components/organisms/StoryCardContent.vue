@@ -96,5 +96,13 @@ export default {
       padding: 18px 12px;
     }
   }
+
+  .area-story-card-content {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    grid-template-rows: 50px 40px 40px;
+    grid-gap: 12px;
+    padding: 18px 12px;
+  }
 }
 </style>

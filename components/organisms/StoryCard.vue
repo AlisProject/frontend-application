@@ -121,5 +121,13 @@ a {
       grid-template-rows: 120px 180px;
     }
   }
+
+  .story-card-container {
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+    grid-template-columns: 1fr;
+    grid-template-rows: 120px 180px;
+  }
 }
 </style>
