@@ -5,11 +5,7 @@
       <h1 class="area-title">{{ story.title }}</h1>
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">
       <div class="area-content" v-html="story.body" />
-      <div class="area-tags">
-        <span class="tag" v-for="tag in story.tags" :key="tag.name">
-          {{ tag.name }}
-        </span>
-      </div>
+      <story-tags :tags="story.tags"/>
       <story-footer-actions/>
       <story-side-actions/>
       <author-info :story="story"/>
@@ -25,6 +21,7 @@ import AppHeader from '../organisms/AppHeader'
 import StoryFooterActions from '../atoms/StoryFooterActions'
 import StorySideActions from '../atoms/StorySideActions'
 import AuthorInfo from '../atoms/AuthorInfo'
+import StoryTags from '../atoms/StoryTags'
 import StoryComments from '../organisms/StoryComments'
 import RelatedStories from '../organisms/RelatedStories'
 import AppFooter from '../organisms/AppFooter'
@@ -35,6 +32,7 @@ export default {
     StoryFooterActions,
     StorySideActions,
     AuthorInfo,
+    StoryTags,
     StoryComments,
     RelatedStories,
     AppFooter
@@ -89,20 +87,5 @@ export default {
 
 .area-content {
   grid-area: content;
-}
-
-.area-tags {
-  grid-area: tags;
-}
-
-.tag {
-  background: #eee;
-  border-radius: 4px;
-  color: #4c4c4c;
-  display: inline-block;
-  font-size: 14px;
-  line-height: 12px;
-  margin: 0.2em;
-  padding: 0.4em 1.5em;
 }
 </style>
