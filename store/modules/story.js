@@ -78,15 +78,8 @@ const mutations = {
     state.tags.unshift({ id, name })
   },
   [types.UPDATE_TAG](state, { id, name }) {
-    let tags = []
-    for (let i = 0; i < state.tags.length; i++) {
-      if (state.tags[i]['id'] === id) {
-        tags.push({ id, name })
-      } else {
-        tags.push(state.tags[i])
-      }
-    }
-    state.tags = tags
+    const tagIndex = state.tags.findIndex((tag) => tag.id === id)
+    state.tags[tagIndex] = { id, name }
   },
   [types.UPDATE_SUGGESTED_THUMBNAILS](state, { thumbnails }) {
     state.suggestedThumbnails = thumbnails
