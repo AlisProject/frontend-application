@@ -30,6 +30,27 @@
   }
 }
 
+@media screen and (max-width: 920px) {
+  .story-container {
+    .session {
+      border: none;
+      grid-area: session;
+      padding: 0;
+      position: static;
+      right: -46px;
+      top: 340px;
+      transform: rotate(0);
+      width: 160px;
+
+      .search-icon {
+        float: left;
+        padding: 2px 4px;
+        transform: rotate(0);
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 550px) {
   .session {
     border: none;
