@@ -49,7 +49,10 @@ export default {
   }
 
   .action-like {
-    background: #ff4949;
+    background: url('~assets/images/pc/story/icon_heart.png') no-repeat;
+    background-color: #ff4949;
+    background-size: 18px;
+    background-position: 9px 11px;
     border-radius: 50%;
     border: 1px solid #ff4949;
     bottom: 20px;
@@ -76,6 +79,8 @@ export default {
     }
 
     .action-like {
+      background-size: 16px;
+      background-position: 7px 10px;
       bottom: 16px;
       height: 30px;
       right: 16px;
