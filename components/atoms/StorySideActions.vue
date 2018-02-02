@@ -58,12 +58,14 @@ export default {
 
   .twitter {
     background: url('~assets/images/pc/story/icon_twitter.png') no-repeat;
+    background-color: white;
     background-size: 26px;
     background-position: 9px 11px;
   }
 
   .bookmark {
     background: url('~assets/images/pc/story/icon_bookmark.png') no-repeat;
+    background-color: white;
     background-size: 14px;
     background-position: 13px 9px;
   }
