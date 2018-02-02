@@ -15,13 +15,13 @@ export default {
 
 <style lang="scss" scoped>
 .token-amount {
-  background: url('~assets/images/alis-icon-mini.png') no-repeat;
+  background: url('~assets/images/pc/common/logo_casset_alis.png') no-repeat;
   bottom: 20px;
   color: #717171;
   font-size: 12px;
   height: 22px;
   margin: 0;
-  padding: 3px 0 0 25px;
+  padding: 0 0 0 22px;
   position: absolute;
   right: 24px;
 }
@@ -34,6 +34,7 @@ export default {
     right: 28px;
   }
 }
+
 @media screen and (max-width: 1296px) {
   .long-story-card {
     .token-amount {

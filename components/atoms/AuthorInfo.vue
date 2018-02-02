@@ -57,13 +57,13 @@ export default {
 }
 
 .token-amount {
-  background: url('~assets/images/alis-icon-mini.png');
+  background: url('~assets/images/pc/common/logo_casset_alis.png');
   align-self: center;
   background-repeat: no-repeat;
   color: #717171;
   font-size: 14px;
   grid-area: token-amount;
-  padding: 2px 25px;
+  padding: 0 20px;
 }
 
 .follow-button {

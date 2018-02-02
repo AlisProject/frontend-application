@@ -162,9 +162,9 @@ export default {
     color: #040404;
 
     .alis-hold-amount {
-      background: url('~assets/images/alis-icon-mini.png') no-repeat;
+      background: url('~assets/images/pc/common/logo_casset_alis.png') no-repeat;
       font-size: 14px;
-      line-height: 21px;
+      line-height: 18px;
       margin: 30px 20px 0;
       padding-left: 24px;
       width: 100px;
