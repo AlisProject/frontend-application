@@ -220,6 +220,68 @@ export default {
   }
 }
 
+@media screen and (max-width: 920px) {
+  .story-container {
+    .logged-in {
+      border: none;
+      grid-area: session;
+      padding: 0;
+      position: static;
+      right: -46px;
+      top: 340px;
+      transform: rotate(0);
+      width: 160px;
+
+      .profile-icon {
+        border-radius: 50%;
+        float: right;
+        height: 50px;
+        transform: rotate(0);
+        width: 50px;
+        margin-top: -16px;
+      }
+
+      .notification-icon {
+        float: right;
+        margin: 2px 20px 0 0;
+        transform: rotate(0);
+      }
+
+      .search-icon {
+        float: right;
+        margin: 5px 22px 0 0;
+        transform: rotate(0);
+      }
+    }
+
+    .menu {
+      right: -16px;
+      top: -26px;
+      width: 280px;
+      transform: rotate(0);
+
+      &:before {
+        display: none;
+      }
+
+      .image-box {
+        height: 160px;
+        width: 280px;
+      }
+
+      .menu-links {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 40px;
+
+        .menu-link {
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 550px) {
   .logged-in {
     border: none;
