@@ -221,7 +221,7 @@ export default {
     grid-template-areas:
       'public-stories drafts';
     grid-template-columns: 48px 48px;
-    grid-template-rows: 32px;
+    grid-template-rows: 42px;
     text-align: left;
   }
 
@@ -231,6 +231,16 @@ export default {
 
   .nav-link {
     font-size: 12px;
+    line-height: 40px;
+    text-align: center;
+  }
+
+  .public-stories .area-public-stories {
+    border-bottom: 1px solid #99a2ff;
+  }
+
+  .drafts .area-drafts {
+    border-bottom: 1px solid #99a2ff;
   }
 }
 </style>
