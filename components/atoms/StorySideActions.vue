@@ -65,4 +65,10 @@ export default {
     opacity: 0;
   }
 }
+
+@media screen and (max-width: 920px) {
+  .story-side-actions {
+    display: none;
+  }
+}
 </style>

@@ -52,12 +52,7 @@
     }
 
     .nav-link {
-      font-size: 12px;
-    }
-
-    .popular-stories .area-popular-stories {
-      color: #99a2ff;
-      border-bottom: 2px solid #99a2ff;
+      display: none;
     }
   }
 }

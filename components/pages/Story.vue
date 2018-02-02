@@ -45,7 +45,7 @@ export default {
 .story-container {
   display: grid;
   grid-template-rows: 100px 50px 1fr 470px 75px;
-  grid-template-columns: 1fr 642px 1fr;
+  grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     'app-header      app-header      app-header     '
@@ -87,5 +87,45 @@ export default {
 
 .area-content {
   grid-area: content;
+}
+
+@media screen and (max-width: 1080px) {
+  .story-container {
+    grid-template-rows: 100px 50px 1fr 950px 75px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .story-container {
+    grid-template-rows: 70px 0 1fr min-content 75px;
+    grid-template-columns: 10px 1fr 10px;
+    /* prettier-ignore */
+    grid-template-areas:
+    'app-header      app-header      app-header     '
+    '...             ...             ...            '
+    'story           story           story          '
+    'related-stories related-stories related-stories'
+    '...             app-footer      ...            ';
+  }
+
+  .area-story {
+    grid-template-columns: 8px auto 8px;
+    grid-gap: 10px;
+    /* prettier-ignore */
+    grid-template-areas:
+      'top-image      top-image      top-image     '
+      '...            title          ...           '
+      '...            content        ...           '
+      '...            tags           ...           '
+      '...            author-info    ...           '
+      'footer-actions footer-actions footer-actions'
+      '...            story-comments ...           ';
+  }
+
+  .area-title {
+    font-size: 16px;
+    grid-area: title;
+    letter-spacing: 0.1em;
+  }
 }
 </style>

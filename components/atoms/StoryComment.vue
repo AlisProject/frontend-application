@@ -60,4 +60,27 @@ export default {
     width: 35px;
   }
 }
+
+@media screen and (max-width: 640px) {
+  .story-comment {
+    padding: 12px;
+
+    .body {
+      color: #030303;
+      font-size: 14px;
+      line-height: 21px;
+    }
+
+    .commented-user {
+      bottom: 10px;
+    }
+
+    .action-like {
+      bottom: 16px;
+      height: 30px;
+      right: 16px;
+      width: 30px;
+    }
+  }
+}
 </style>

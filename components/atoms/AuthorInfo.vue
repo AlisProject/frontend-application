@@ -85,4 +85,55 @@ export default {
   grid-area: menu;
   justify-self: flex-end;
 }
+
+@media screen and (max-width: 640px) {
+  .area-author-info-container {
+    grid-template-rows: 10px 40px 20px 10px;
+    grid-template-columns: 5px min-content 1fr 95px 50px;
+    grid-template-areas:
+      '... ...          ... ...           ... '
+      '... author       ... follow-button menu'
+      '... token-amount ... ...           ... '
+      '... ...          ... ...           ... ';
+    border: 1px solid #e1e1e1;
+    border-radius: 3px;
+  }
+
+  .author {
+    display: grid;
+    grid-area: author;
+    grid-template-columns: 50px 100px;
+    grid-template-areas:
+      'author-icon name      '
+      'author-icon created-at';
+  }
+
+  .author-icon {
+    align-self: center;
+    grid-area: author-icon;
+    height: 40px;
+    justify-self: center;
+    width: 40px;
+  }
+
+  .name,
+  .created-at {
+    font-size: 14px;
+  }
+
+  .token-amount {
+    margin-left: 45px;
+  }
+
+  .follow-button {
+    border-radius: 20px;
+    font-size: 14px;
+    margin: 5px 8px;
+    padding: 0;
+  }
+
+  .menu {
+    justify-self: center;
+  }
+}
 </style>

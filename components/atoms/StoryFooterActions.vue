@@ -33,4 +33,24 @@
     border-radius: 50%;
   }
 }
+
+@media screen and (max-width: 640px) {
+  .area-footer-actions {
+    position: relative;
+
+    &:after {
+      bottom: 48px;
+      box-shadow: 0 15px 10px -10px rgba(192, 192, 192, 0.5);
+      content: '';
+      height: 100px;
+      opacity: 0.5;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  .action {
+    z-index: 1;
+  }
+}
 </style>

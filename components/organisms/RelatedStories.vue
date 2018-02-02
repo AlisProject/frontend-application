@@ -33,4 +33,21 @@ export default {
 .story-card {
   align-self: center;
 }
+
+@media screen and (max-width: 1080px) {
+  .area-related-stories {
+    grid-gap: 15px;
+    grid-template-columns: 340px;
+    grid-template-rows: repeat(3, 300px);
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .area-related-stories {
+    grid-gap: 15px;
+    grid-template-rows: repeat(3, 300px);
+    padding: 40px 10px 20px;
+  }
+}
 </style>
