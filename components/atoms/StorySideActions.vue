@@ -45,12 +45,27 @@ export default {
   }
 
   .like {
-    background: #ff4949;
+    background: url('~assets/images/pc/story/icon_heart.png') no-repeat;
+    background-color: #ff4949;
+    background-size: 30px;
+    background-position: 16px 20px;
     border-radius: 50%;
     border: 1px solid #ff4949;
     box-shadow: 0px 5px 15px -1px #ff8989;
     height: 62px;
     width: 62px;
+  }
+
+  .twitter {
+    background: url('~assets/images/pc/story/icon_twitter.png') no-repeat;
+    background-size: 26px;
+    background-position: 9px 11px;
+  }
+
+  .bookmark {
+    background: url('~assets/images/pc/story/icon_bookmark.png') no-repeat;
+    background-size: 14px;
+    background-position: 13px 9px;
   }
 }
 
