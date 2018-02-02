@@ -16,7 +16,6 @@
   justify-content: right;
 
   .action {
-    background: white;
     border: 1px solid #fefefe;
     box-shadow: 0px 5px 15px -1px #c1c1c1;
     width: 40px;
@@ -24,8 +23,32 @@
     border-radius: 50%;
   }
 
+  .comment {
+    background: url('~assets/images/pc/story/icon_comment.png') no-repeat;
+    background-color: white;
+    background-size: 20px;
+    background-position: 10px 11px;
+  }
+
+  .bookmark {
+    background: url('~assets/images/pc/story/icon_bookmark.png') no-repeat;
+    background-color: white;
+    background-size: 14px;
+    background-position: 13px 9px;
+  }
+
+  .twitter {
+    background: url('~assets/images/pc/story/icon_twitter.png') no-repeat;
+    background-color: white;
+    background-size: 26px;
+    background-position: 9px 11px;
+  }
+
   .like {
-    background: #ff4949;
+    background: url('~assets/images/pc/story/icon_heart.png') no-repeat;
+    background-color: #ff4949;
+    background-size: 20px;
+    background-position: 10px 14px;
     border: 1px solid #ff4949;
     box-shadow: 0px 5px 15px -1px #ff8989;
     width: 40px;
@@ -47,10 +70,10 @@
       position: absolute;
       width: 100%;
     }
-  }
 
-  .action {
-    z-index: 1;
+    .action {
+      z-index: 1;
+    }
   }
 }
 </style>
