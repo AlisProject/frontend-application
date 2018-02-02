@@ -1,7 +1,7 @@
 <template>
   <div class="logged-in">
     <img class="profile-icon" src="~assets/images/profile-icon1.png" @click="toggleMenu">
-    <img class="notification-icon" src="~assets/images/notification.png">
+    <img class="notification-icon" src="~assets/images/pc/common/icon_bell.png">
     <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     <div class="menu" v-show="isMenuShown">
       <div class="image-box">
@@ -94,7 +94,6 @@ export default {
 
   .profile-icon {
     float: left;
-    padding: 4px;
     transform: rotate(-90deg);
     width: 30px;
     height: 30px;
@@ -103,14 +102,16 @@ export default {
 
   .notification-icon {
     float: left;
-    padding-right: 4px;
+    margin: 5px 10px 0 15px;
     transform: rotate(-90deg);
+    width: 16px;
   }
 
   .search-icon {
     float: left;
-    padding: 7px 4px;
+    margin: 5px 10px 0 5px;
     transform: rotate(-90deg);
+    width: 16px;
   }
 }
 
@@ -233,21 +234,21 @@ export default {
     .profile-icon {
       border-radius: 50%;
       float: right;
-      height: 30px;
-      padding: 4px;
+      height: 50px;
       transform: rotate(0);
-      width: 30px;
+      width: 50px;
+      margin-top: -16px;
     }
 
     .notification-icon {
       float: right;
-      padding-right: 4px;
+      margin: 2px 20px 0 0;
       transform: rotate(0);
     }
 
     .search-icon {
       float: right;
-      padding: 7px 4px;
+      margin: 5px 22px 0 0;
       transform: rotate(0);
     }
   }
