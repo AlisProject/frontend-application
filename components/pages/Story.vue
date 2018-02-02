@@ -1,6 +1,6 @@
 <template>
   <div class="story-container">
-    <app-header showDefaultHeaderNav/>
+    <app-header showDefaultHeaderNav class="logo-original"/>
     <div class="area-story">
       <h1 class="area-title">{{ story.title }}</h1>
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">

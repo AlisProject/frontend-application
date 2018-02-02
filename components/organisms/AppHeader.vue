@@ -56,6 +56,14 @@ export default {
   grid-area: logo;
 }
 
+.logo-original {
+  .area-logo {
+    background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
+    background-size: contain;
+    margin: 30px;
+  }
+}
+
 .logo-white {
   .area-logo {
     background: url('~assets/images/pc/common/header_logo_white.png') no-repeat;
@@ -77,6 +85,15 @@ export default {
       grid-template-columns: 0 min-content 1fr 160px 3px;
       grid-template-rows: 12px 20px 18px;
     }
+
+    .logo-original,
+    .logo-white {
+      .area-logo {
+        background: url('~assets/images/sp/common/header_logo.png') no-repeat;
+        background-size: contain;
+        margin: 0;
+      }
+    }
   }
 }
 
@@ -93,6 +110,7 @@ export default {
     grid-template-rows: 12px 20px 18px;
   }
 
+  .logo-original,
   .logo-white {
     .area-logo {
       background: url('~assets/images/sp/common/header_logo.png') no-repeat;

@@ -1,6 +1,6 @@
 <template>
   <div class="draft-story-list-container long-story-card">
-    <app-header showEditHeaderNav class="drafts"/>
+    <app-header showEditHeaderNav class="drafts logo-original"/>
     <story-card-list :stories="stories" class="draft" :linkTo="'edit'"/>
     <app-footer/>
   </div>

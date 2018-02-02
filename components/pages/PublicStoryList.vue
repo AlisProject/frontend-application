@@ -1,6 +1,6 @@
 <template>
   <div class="public-story-list-container long-story-card">
-    <app-header showEditHeaderNav class="public-stories"/>
+    <app-header showEditHeaderNav class="public-stories logo-original"/>
     <story-card-list :stories="stories" :linkTo="'edit'"/>
     <app-footer/>
   </div>
