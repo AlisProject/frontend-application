@@ -100,7 +100,13 @@ export default {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     grid-template-rows: 50px 40px 40px;
+    grid-template-columns: 1fr 1fr;
     grid-gap: 12px;
+    /* prettier-ignore */
+    grid-template-areas:
+        "title title"
+        "body  body "
+        "data  ...  ";
     padding: 18px 12px;
   }
 }

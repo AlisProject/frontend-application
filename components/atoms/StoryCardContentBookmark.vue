@@ -34,5 +34,11 @@
       top: -15px;
     }
   }
+
+  .bookmark {
+    display: initial;
+    right: 15px;
+    top: -15px;
+  }
 }
 </style>
