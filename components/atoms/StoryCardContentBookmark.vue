@@ -4,7 +4,10 @@
 
 <style lang="scss" scoped>
 .bookmark {
-  background: white;
+  background: url('~assets/images/pc/story/icon_bookmark.png') no-repeat;
+  background-color: white;
+  background-size: 12px;
+  background-position: 9px 6px;
   border-radius: 50%;
   border: 1px solid #fefefe;
   box-shadow: 0px 5px 15px -1px #b1b1b1;
