@@ -64,17 +64,18 @@
     grid-template-areas:
       'popular-stories new-stories';
     grid-template-columns: 48px 48px;
-    grid-template-rows: 32px;
+    grid-template-rows: 42px;
     text-align: left;
   }
 
   .nav-link {
+    line-height: 40px;
     font-size: 12px;
   }
 
   .popular-stories .area-popular-stories {
     color: #99a2ff;
-    border-bottom: 2px solid #99a2ff;
+    border-bottom: 1px solid #99a2ff;
   }
 }
 </style>

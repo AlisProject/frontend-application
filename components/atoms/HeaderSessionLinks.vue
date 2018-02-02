@@ -1,6 +1,6 @@
 <template>
   <div class="session">
-    <img class="search-icon" src="~assets/images/search.png" alt="search">
+    <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     <nuxt-link to="#" class="session-link sign-up">Sign up</nuxt-link>
     /
     <nuxt-link to="#" class="session-link login">Login</nuxt-link>
@@ -22,6 +22,7 @@
     float: left;
     padding-right: 4px;
     transform: rotate(-90deg);
+    width: 16px;
   }
 
   .session-link {

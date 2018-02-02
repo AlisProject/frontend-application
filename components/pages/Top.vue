@@ -1,6 +1,6 @@
 <template>
   <div class="top-container">
-    <app-header showDefaultHeaderNav class="popular-stories"/>
+    <app-header showDefaultHeaderNav class="popular-stories logo-white"/>
     <story-card-list :stories="stories"/>
     <app-footer/>
   </div>
@@ -28,9 +28,10 @@ export default {
 
 <style lang="scss" scoped>
 .top-container {
+  background: url('~assets/images/pc/bg/bg_top.png') no-repeat;
+  background-color: #f7f7f7;
+  background-size: contain;
   display: grid;
-  grid-template-rows: 100px 190px 1fr 75px 75px;
-  grid-template-columns: 1fr 1080px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header       app-header"
@@ -38,7 +39,8 @@ export default {
     "...         story-card-list  ...       "
     "...         ...              ...       "
     "app-footer  app-footer       app-footer";
-  background: linear-gradient(155deg, #99a1fb 0%, #99a1fb 32.5%, #f7f7f7 32.5%, #f7f7f7 100%);
+  grid-template-columns: 1fr 1080px 1fr;
+  grid-template-rows: 100px 190px 1fr 75px 75px;
 }
 
 @media screen and (max-width: 1296px) {

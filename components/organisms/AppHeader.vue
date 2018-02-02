@@ -1,10 +1,10 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/" class="area-logo">logo here</nuxt-link>
-    <default-header-nav v-show="showDefaultHeaderNav"/>
-    <edit-header-nav v-show="showEditHeaderNav" :showPostStoryLink="showPostStoryLink"/>
-    <header-session-links v-show="!this.$store.state.user.loggedIn"/>
-    <header-user-logged-in-items v-show="this.$store.state.user.loggedIn"/>
+    <nuxt-link to="/" class="area-logo"/>
+    <default-header-nav v-if="showDefaultHeaderNav"/>
+    <edit-header-nav v-if="showEditHeaderNav" :showPostStoryLink="showPostStoryLink"/>
+    <header-session-links v-if="!this.$store.state.user.loggedIn"/>
+    <header-user-logged-in-items v-if="this.$store.state.user.loggedIn"/>
   </header>
 </template>
 
@@ -56,6 +56,14 @@ export default {
   grid-area: logo;
 }
 
+.logo-white {
+  .area-logo {
+    background: url('~assets/images/pc/common/header_logo_white.png') no-repeat;
+    background-size: contain;
+    margin: 30px;
+  }
+}
+
 @media screen and (max-width: 920px) {
   .story-container {
     .area-app-header-container {
@@ -83,6 +91,14 @@ export default {
       '... nav  ... ...     ...';
     grid-template-columns: 0 min-content 1fr 160px 3px;
     grid-template-rows: 12px 20px 18px;
+  }
+
+  .logo-white {
+    .area-logo {
+      background: url('~assets/images/sp/common/header_logo.png') no-repeat;
+      background-size: contain;
+      margin: 0;
+    }
   }
 }
 </style>

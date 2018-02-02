@@ -2,7 +2,7 @@
   <div class="logged-in">
     <img class="profile-icon" src="~assets/images/profile-icon1.png" @click="toggleMenu">
     <img class="notification-icon" src="~assets/images/notification.png">
-    <img class="search-icon" src="~assets/images/search.png">
+    <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     <div class="menu" v-show="isMenuShown">
       <div class="image-box">
         <img src="~assets/images/top-story-card-image.png" class="profile-image">
