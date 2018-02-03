@@ -87,10 +87,10 @@ export default {
   border-top: 6px solid #4a4a4a;
   padding-top: 30px;
   position: fixed;
+  right: -18px;
   top: 340px;
   transform: rotate(90deg);
   width: 102px;
-  position: relative;
 
   .profile-icon {
     border-radius: 50%;
