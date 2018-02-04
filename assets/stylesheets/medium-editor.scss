@@ -20,6 +20,114 @@
   border: none;
 }
 
+.medium-toolbar-arrow-under:after {
+  border-color: #fff transparent transparent transparent;
+  border-width: 16px 8px 0 !important;
+  filter: drop-shadow(0 3px 5px rgba(192, 192, 192, 0.5));
+  top: 50px;
+  z-index: -1;
+}
+
+.medium-toolbar-arrow-over:before {
+  border-color: transparent transparent #fff transparent;
+  top: -8px;
+}
+
+.medium-editor-toolbar {
+  background-color: #242424;
+  background: linear-gradient(to bottom, #fff, rgba(36, 36, 36, 0.75));
+  border-radius: 5px;
+  filter: drop-shadow(0 3px 5px rgba(192, 192, 192, 0.5));
+}
+
+.medium-editor-toolbar li button {
+  background-color: #fff;
+  border: 0;
+  color: #000;
+  height: 50px;
+  min-width: 40px;
+  transition: background-color 0.2s ease-in;
+}
+
+.medium-editor-toolbar li button:hover {
+  color: #333;
+}
+
+.custom-class-h2 {
+  background: url('~assets/images/pc/editor/icon_index.png') no-repeat;
+  background-size: 18px;
+  background-position: 16px 14px;
+}
+
+.custom-class-h3 {
+  background: url('~assets/images/pc/editor/icon_index.png') no-repeat;
+  background-size: 14px;
+  background-position: 14px 18px;
+}
+
+.custom-class-bold {
+  background: url('~assets/images/pc/editor/icon_bold.png') no-repeat;
+  background-size: 13px;
+  background-position: 10px;
+}
+
+.custom-class-italic {
+  background: url('~assets/images/pc/editor/icon_italic.png') no-repeat;
+  background-size: 8px;
+  background-position: 10px;
+}
+
+.medium-editor-action-anchor {
+  background: url('~assets/images/pc/editor/icon_textlink.png') no-repeat;
+  background-size: 18px;
+  background-position: 6px 16px;
+
+  b {
+    display: none;
+  }
+}
+
+.medium-editor-toolbar li .medium-editor-button-first {
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.medium-editor-toolbar li .medium-editor-button-last {
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.medium-editor-toolbar li .medium-editor-button-active {
+  color: #000;
+}
+
+.medium-editor-toolbar-form {
+  background: #fff;
+  border-radius: 5px;
+  color: #000;
+}
+
+.medium-editor-toolbar-form .medium-editor-toolbar-input {
+  background: #fff;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: #000;
+  height: 50px;
+}
+.medium-editor-toolbar-form a {
+  color: #000;
+}
+
+.medium-editor-toolbar-anchor-preview {
+  background: #242424;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.medium-editor-placeholder:after {
+  color: #b3b3b1;
+}
+
 @media screen and (max-width: 640px) {
   .area-content,
   .medium-editor-element {

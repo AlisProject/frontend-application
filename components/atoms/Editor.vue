@@ -27,7 +27,6 @@
 import { mapMutations } from 'vuex'
 import * as types from '~/store/mutation-types'
 import 'medium-editor/dist/css/medium-editor.min.css'
-import 'medium-editor/dist/css/themes/default.min.css'
 
 export default {
   props: {
@@ -48,6 +47,41 @@ export default {
   methods: {
     initMediumEditor() {
       const editorElement = new MediumEditor('.area-body', {
+        toolbar: {
+          buttons: [
+            {
+              name: 'h2',
+              action: 'append-h2',
+              tagNames: ['h2'],
+              contentDefault: '',
+              classList: ['custom-class-h2']
+            },
+            {
+              name: 'h3',
+              action: 'append-h3',
+              tagNames: ['h3'],
+              contentDefault: '',
+              classList: ['custom-class-h3']
+            },
+            'quote',
+            {
+              name: 'bold',
+              action: 'bold',
+              tagNames: ['b', 'strong'],
+              contentDefault: '',
+              classList: ['custom-class-bold']
+            },
+            {
+              name: 'italic',
+              action: 'italic',
+              tagNames: ['i'],
+              contentDefault: '',
+              classList: ['custom-class-italic']
+            },
+            'anchor'
+          ],
+          diffTop: -20
+        },
         placeholder: {
           text: this.body === '' ? 'あなたの物語を教えてください･･･' : ''
         },
