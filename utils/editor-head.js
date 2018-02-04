@@ -25,6 +25,9 @@ export default {
     {
       src:
         'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/js/medium-editor-insert-plugin.js'
+    },
+    {
+      src: '/part.js'
     }
   ],
   link: [

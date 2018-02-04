@@ -89,7 +89,10 @@ export default {
       })
       $(() => {
         $('.area-body').mediumInsert({
-          editor: editorElement
+          editor: editorElement,
+          addons: {
+            Part: true
+          }
         })
       })
     },

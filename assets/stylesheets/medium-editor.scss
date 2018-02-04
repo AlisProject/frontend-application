@@ -13,6 +13,12 @@
     line-height: 30px;
     text-align: justify;
   }
+
+  hr {
+    border: none;
+    border-top: dotted 2px #e3e3e3;
+    height: 2px;
+  }
 }
 
 .medium-editor-insert-plugin .medium-insert-buttons button {
