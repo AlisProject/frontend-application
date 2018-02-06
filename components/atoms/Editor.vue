@@ -4,6 +4,7 @@
       class="area-title"
       type="text"
       placeholder="タイトル"
+      spellcheck="false"
       @input="onInputTitle"
       :value="title">
     <div class="area-body" ref="editable" @input="onInputBody" :value="body"/>
