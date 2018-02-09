@@ -38,7 +38,7 @@ export default {
     },
     {
       rel: 'stylesheet',
-      href: 'http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'
+      href: 'https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'
     }
   ]
 }

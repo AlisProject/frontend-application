@@ -34,5 +34,8 @@ module.exports = {
     },
     vendor: ['axios']
   },
-  css: ['~assets/stylesheets/medium-editor.scss']
+  css: ['~assets/stylesheets/medium-editor.scss'],
+  env: {
+    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY
+  }
 }

@@ -92,7 +92,10 @@ export default {
         $('.area-body').mediumInsert({
           editor: editorElement,
           addons: {
-            Part: true
+            Part: true,
+            embeds: {
+              oembedProxy: `//iframe.ly/api/oembed?api_key=${process.env.IFRAMELY_API_KEY}`
+            }
           }
         })
       })
