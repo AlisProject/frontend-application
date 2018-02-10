@@ -1,28 +1,23 @@
 <template>
-  <p class="area-body">
-    {{ plainBody }}
+  <p class="area-overview">
+    {{ overview }}
   </p>
 </template>
 
 <script>
 export default {
-  props: ['body'],
-  computed: {
-    plainBody() {
-      return this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-    }
-  }
+  props: ['overview']
 }
 </script>
 
 <style lang="scss" scoped>
-.area-body {
+.area-overview {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   color: #7f7f7f;
   display: -webkit-box;
   font-size: 12px;
-  grid-area: body;
+  grid-area: overview;
   line-height: 20px;
   margin: 0;
   overflow: hidden;
@@ -31,7 +26,7 @@ export default {
 }
 
 .long-story-card {
-  .area-body {
+  .area-overview {
     -webkit-line-clamp: 3;
     font-size: 14px;
     line-height: 24px;
@@ -40,7 +35,7 @@ export default {
 
 @media screen and (max-width: 1296px) {
   .long-story-card {
-    .area-body {
+    .area-overview {
       -webkit-line-clamp: 2;
       font-size: 12px;
       line-height: 24px;
@@ -50,7 +45,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .long-story-card {
-    .area-body {
+    .area-overview {
       line-height: 18px;
     }
   }

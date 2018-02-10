@@ -2,16 +2,16 @@
   <div class="area-story-card-content">
     <story-card-content-title :title="story.title" />
     <story-card-content-bookmark/>
-    <story-card-content-body :body="story.body"/>
+    <story-card-content-overview :overview="story.overview"/>
     <story-card-content-data :story="story"/>
-    <story-card-content-token-amount :tokenAmount="story.tokenAmount"/>
+    <story-card-content-token-amount :tokenAmount="story.alisToken"/>
   </div>
 </template>
 
 <script>
 import StoryCardContentTitle from '../atoms/StoryCardContentTitle'
 import StoryCardContentBookmark from '../atoms/StoryCardContentBookmark'
-import StoryCardContentBody from '../atoms/StoryCardContentBody'
+import StoryCardContentOverview from '../atoms/StoryCardContentOverview'
 import StoryCardContentData from '../molecules/StoryCardContentData'
 import StoryCardContentTokenAmount from '../atoms/StoryCardContentTokenAmount'
 
@@ -19,7 +19,7 @@ export default {
   props: ['story'],
   components: {
     StoryCardContentTitle,
-    StoryCardContentBody,
+    StoryCardContentOverview,
     StoryCardContentBookmark,
     StoryCardContentData,
     StoryCardContentTokenAmount
@@ -35,9 +35,9 @@ export default {
   grid-gap: 6px;
   /* prettier-ignore */
   grid-template-areas:
-    "title ... "
-    "body  body"
-    "data  ... ";
+    "title     ...     "
+    "overview  overview"
+    "data      ...     ";
   grid-template-columns: 248px 44px;
   grid-template-rows: 48px 44px 40px;
   padding: 18px 24px;
@@ -61,9 +61,9 @@ export default {
       grid-template-columns: 1fr 1fr;
       /* prettier-ignore */
       grid-template-areas:
-        "title title "
-        "body  body"
-        "data  ... ";
+        "title    title   "
+        "overview overview"
+        "data     ...     ";
       padding: 12px 20px;
     }
   }
@@ -76,9 +76,9 @@ export default {
       grid-gap: 6px;
       /* prettier-ignore */
       grid-template-areas:
-        "title title"
-        "body  body "
-        "data  ...  ";
+        "title    title   "
+        "overview overview"
+        "data     ...     ";
       grid-template-rows: 48px 44px 40px;
       padding: 18px 24px;
     }
@@ -104,9 +104,9 @@ export default {
     grid-gap: 12px;
     /* prettier-ignore */
     grid-template-areas:
-        "title title"
-        "body  body "
-        "data  ...  ";
+        "title    title   "
+        "overview overview"
+        "data     ...     ";
     padding: 18px 12px;
   }
 }

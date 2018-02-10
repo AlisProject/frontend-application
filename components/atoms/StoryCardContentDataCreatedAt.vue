@@ -1,10 +1,15 @@
 <template>
-  <p class="area-date">{{ createdAt }}</p>
+  <p class="area-date">{{ formettedCreatedAt }}</p>
 </template>
 
 <script>
 export default {
-  props: ['createdAt']
+  props: ['createdAt'],
+  computed: {
+    formettedCreatedAt() {
+      return new Date(this.createdAt).toLocaleDateString('ja')
+    }
+  }
 }
 </script>
 

@@ -36,6 +36,7 @@ module.exports = {
   },
   css: ['~assets/stylesheets/medium-editor.scss'],
   env: {
-    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY
+    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
   }
 }

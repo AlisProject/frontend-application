@@ -1,7 +1,8 @@
 const namespaced = true
 
 const state = () => ({
-  loggedIn: false
+  // loggedIn: false
+  loggedIn: true
 })
 
 const getters = {}

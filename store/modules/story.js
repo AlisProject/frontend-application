@@ -1,15 +1,19 @@
 import {
-  getStories,
+  getPopularStories,
   getStory,
   getPublicStoriesByUserId,
-  getDraftStoriesByUserId
+  getDraftStoriesByUserId,
+  getAlisToken
 } from '~/api/story'
+import { getUserInfo } from '~/api/user'
 import * as types from '../mutation-types'
 
 const namespaced = true
 
 const state = () => ({
   stories: [],
+  userInfos: [],
+  alisTokens: [],
   publicStories: [],
   draftStories: [],
   title: '',
@@ -37,8 +41,22 @@ const getters = {
 
 const actions = {
   async getAllStories({ commit }) {
-    const { data: stories } = await getStories()
+    const stories = await getPopularStories()
     commit(types.SET_STORIES, { stories })
+  },
+  async getUserInfos({ commit }, { stories }) {
+    const userInfos = []
+    for (let i = 0; i < stories.length; i++) {
+      userInfos.push(await getUserInfo({ userId: stories[i].user_id }))
+    }
+    commit(types.SET_USER_INFOS, { userInfos })
+  },
+  async getAlisTokens({ commit }, { stories }) {
+    const alisTokens = []
+    for (let i = 0; i < stories.length; i++) {
+      alisTokens.push(await getAlisToken({ storyId: stories[i].story_id }))
+    }
+    commit(types.SET_ALIS_TOKENS, { alisTokens })
   },
   async getEditStory({ commit }, { id }) {
     const { data: story } = await getStory({ id })
@@ -57,6 +75,24 @@ const actions = {
 const mutations = {
   [types.SET_STORIES](state, { stories }) {
     state.stories = stories
+  },
+  [types.SET_USER_INFOS](state, { userInfos }) {
+    state.userInfos = userInfos
+  },
+  [types.SET_USER_INFO_TO_STORIES](state, { stories, userInfos }) {
+    for (let i = 0; i < stories.length; i++) {
+      stories[i].user = userInfos[i]
+    }
+    this.stories = stories
+  },
+  [types.SET_ALIS_TOKENS](state, { alisTokens }) {
+    state.alisTokens = alisTokens
+  },
+  [types.SET_ALIS_TOKEN_TO_STORIES](state, { stories, alisTokens }) {
+    for (let i = 0; i < stories.length; i++) {
+      stories[i].alisToken = alisTokens[i].alistoken
+    }
+    this.stories = stories
   },
   [types.SET_STORY](state, { story }) {
     state.title = story.title

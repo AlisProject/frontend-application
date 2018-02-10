@@ -1,8 +1,8 @@
 <template>
   <div class="area-data">
-    <story-card-content-data-profile-icon/>
-    <story-card-content-data-username :username="story.user.username"/>
-    <story-card-content-data-created-at :createdAt="story.createdAt"/>
+    <story-card-content-data-profile-icon :user="story.user"/>
+    <story-card-content-data-username :username="story.user.user_display_name"/>
+    <story-card-content-data-created-at :createdAt="story.created_at"/>
   </div>
 </template>
 

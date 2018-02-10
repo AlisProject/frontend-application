@@ -1,20 +1,7 @@
-import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
-import stories from '~/static/stories.js'
+import axios from '~/plugins/axios'
 
-const mock = new MockAdapter(axios)
-
-mock.onGet('/stories').reply(200, stories)
-mock.onGet('/stories/public', { params: { userId: '1' } }).reply(200, stories)
-mock.onGet('/stories/draft', { params: { userId: '1' } }).reply(200, stories)
-
-for (let i = 0; i < 10; i++) {
-  const id = String(i + 1)
-  mock.onGet('/story', { params: { id } }).reply(200, stories[i])
-}
-
-export function getStories() {
-  return axios.get('/stories')
+export function getPopularStories() {
+  return axios.get('/stories/popular').then((response) => response.data)
 }
 
 export function getStory({ id }) {
@@ -27,4 +14,8 @@ export function getPublicStoriesByUserId({ userId }) {
 
 export function getDraftStoriesByUserId({ userId }) {
   return axios.get('/stories/draft', { params: { userId } })
+}
+
+export function getAlisToken({ storyId }) {
+  return axios.get(`/stories/${storyId}/alistoken`).then((response) => response.data)
 }
