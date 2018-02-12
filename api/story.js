@@ -12,8 +12,12 @@ export function getNewStories() {
   return sendGet('/stories/new')
 }
 
-export function getStory({ id }) {
-  return axios.get('/story', { params: { id } })
+export function getStory({ storyId }) {
+  return sendGet(`/stories/${storyId}`)
+}
+
+export function getLikesCount({ storyId }) {
+  return sendGet(`/stories/${storyId}/like`)
 }
 
 export function getPublicStoriesByUserId({ userId }) {

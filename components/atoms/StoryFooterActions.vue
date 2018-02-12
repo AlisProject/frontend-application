@@ -3,9 +3,17 @@
     <div class="action comment"></div>
     <div class="action bookmark"></div>
     <div class="action twitter"></div>
-    <div class="action like"></div>
+    <div class="action like">
+      <span class="likes-count">{{ likesCount }}</span>
+    </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: ['likesCount']
+}
+</script>
 
 <style lang="scss" scoped>
 .area-footer-actions {
@@ -54,6 +62,15 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    position: relative;
+
+    .likes-count {
+      color: #585858;
+      font-size: 14px;
+      position: absolute;
+      top: -18px;
+      left: 5px;
+    }
   }
 }
 

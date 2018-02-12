@@ -1,7 +1,9 @@
 <template>
   <transition name="fade">
     <div class="story-side-actions" v-show="scrollY > 300">
-      <div class="action like"></div>
+      <div class="action like">
+        <span class="likes-count">{{ likesCount }}</span>
+      </div>
       <div class="action twitter"></div>
       <div class="action bookmark"></div>
     </div>
@@ -10,6 +12,7 @@
 
 <script>
 export default {
+  props: ['likesCount'],
   data() {
     return {
       scrollY: 0
@@ -54,6 +57,14 @@ export default {
     box-shadow: 0px 5px 15px -1px #ff8989;
     height: 62px;
     width: 62px;
+
+    .likes-count {
+      color: #585858;
+      font-size: 14px;
+      position: absolute;
+      top: -22px;
+      left: 17px;
+    }
   }
 
   .twitter {

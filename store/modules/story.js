@@ -2,6 +2,7 @@ import {
   getPopularStories,
   getNewStories,
   getStory,
+  getLikesCount,
   getPublicStoriesByUserId,
   getDraftStoriesByUserId,
   getAlisToken
@@ -12,9 +13,13 @@ import * as types from '../mutation-types'
 const namespaced = true
 
 const state = () => ({
+  story: {},
+  likesCount: 0,
   stories: [],
   newStories: [],
+  userInfo: {},
   userInfos: [],
+  alisToken: 0,
   alisTokens: [],
   publicStories: [],
   draftStories: [],
@@ -51,12 +56,20 @@ const actions = {
     const stories = await getNewStories()
     commit(types.SET_NEW_STORIES, { stories })
   },
+  async getUserInfo({ commit }, { userId }) {
+    const userInfo = await getUserInfo({ userId })
+    commit(types.SET_USER_INFO, { userInfo })
+  },
   async getUserInfos({ commit }, { stories }) {
     const userInfos = []
     for (let i = 0; i < stories.length; i++) {
       userInfos.push(await getUserInfo({ userId: stories[i].user_id }))
     }
     commit(types.SET_USER_INFOS, { userInfos })
+  },
+  async getAlisToken({ commit }, { storyId }) {
+    const { alistoken: alisToken } = await getAlisToken({ storyId })
+    commit(types.SET_ALIS_TOKEN, { alisToken })
   },
   async getAlisTokens({ commit }, { stories }) {
     const alisTokens = []
@@ -68,6 +81,14 @@ const actions = {
   async getEditStory({ commit }, { id }) {
     const { data: story } = await getStory({ id })
     commit(types.SET_STORY, { story })
+  },
+  async getStoryDetail({ commit }, { storyId }) {
+    const story = await getStory({ storyId })
+    commit(types.SET_STORY_DETAIL, { story })
+  },
+  async getLikesCountOfStory({ commit }, { storyId }) {
+    const { likes_count: likesCount } = await getLikesCount({ storyId })
+    commit(types.SET_LIKES_COUNT, { likesCount })
   },
   async getPublicStories({ commit }, { userId }) {
     const stories = await getPublicStoriesByUserId({ userId })
@@ -86,8 +107,20 @@ const mutations = {
   [types.SET_NEW_STORIES](state, { stories }) {
     state.newStories = stories
   },
+  [types.SET_USER_INFO](state, { userInfo }) {
+    state.userInfo = userInfo
+  },
   [types.SET_USER_INFOS](state, { userInfos }) {
     state.userInfos = userInfos
+  },
+  [types.SET_USER_INFO_TO_STORY](state, { userInfo }) {
+    state.story.user = userInfo
+  },
+  [types.SET_LIKES_COUNT](state, { likesCount }) {
+    state.likesCount = likesCount
+  },
+  [types.SET_LIKES_COUNT_TO_STORY](state, { likesCount }) {
+    state.story.likesCount = likesCount
   },
   [types.SET_USER_INFO_TO_STORIES](state, { stories, userInfos, type = 'default' }) {
     for (let i = 0; i < stories.length; i++) {
@@ -107,6 +140,12 @@ const mutations = {
         this.stories = stories
         break
     }
+  },
+  [types.SET_ALIS_TOKEN](state, { alisToken }) {
+    state.alisToken = alisToken
+  },
+  [types.SET_ALIS_TOKEN_TO_STORY](state, { alisToken }) {
+    state.story.alisToken = alisToken
   },
   [types.SET_ALIS_TOKENS](state, { alisTokens }) {
     state.alisTokens = alisTokens
@@ -133,6 +172,9 @@ const mutations = {
   [types.SET_STORY](state, { story }) {
     state.title = story.title
     state.body = story.body
+  },
+  [types.SET_STORY_DETAIL](state, { story }) {
+    state.story = story
   },
   [types.SET_PUBLIC_STORIES](state, { stories }) {
     state.publicStories = stories

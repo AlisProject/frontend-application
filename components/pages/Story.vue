@@ -6,8 +6,8 @@
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">
       <div class="area-content" v-html="story.body" />
       <story-tags :tags="story.tags"/>
-      <story-footer-actions/>
-      <story-side-actions/>
+      <story-footer-actions :likesCount="story.likesCount"/>
+      <story-side-actions :likesCount="story.likesCount"/>
       <author-info :story="story"/>
       <story-comments :comments="story.comments"/>
     </div>

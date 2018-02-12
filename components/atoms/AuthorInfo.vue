@@ -1,11 +1,11 @@
 <template>
   <div class="area-author-info-container">
     <div class="author">
-      <img class="author-icon" src="~assets/images/profile-icon1.png">
-      <span class="name">{{ story.user.username }}</span>
-      <span class="created-at">{{ story.createdAt }}</span>
+      <img class="author-icon" :src="story.user.icon_image_url">
+      <span class="name">{{ story.user.user_display_name }}</span>
+      <span class="created-at">{{ formettedCreatedAt }}</span>
     </div>
-    <div class="token-amount">{{ story.tokenAmount }}</div>
+    <div class="token-amount">{{ story.alisToken }}</div>
     <button class="follow-button">Follow</button>
     <img class="menu" src="~assets/images/menu.png" alt="menu">
   </div>
@@ -13,7 +13,12 @@
 
 <script>
 export default {
-  props: ['story']
+  props: ['story'],
+  computed: {
+    formettedCreatedAt() {
+      return new Date(this.story.created_at).toLocaleDateString('ja')
+    }
+  }
 }
 </script>
 
@@ -41,6 +46,7 @@ export default {
   grid-area: author-icon;
   height: 60px;
   width: 60px;
+  border-radius: 50%;
 }
 
 .name {
