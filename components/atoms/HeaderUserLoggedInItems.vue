@@ -13,10 +13,10 @@
       </div>
       <ul class="menu-links">
         <li class="menu-link">
-          <a href="/stories/new">新規ストーリー</a>
+          <a href="/me/stories/new">新規ストーリー</a>
         </li>
         <li class="menu-link">
-          <nuxt-link to="/stories/public">マイストーリー</nuxt-link>
+          <nuxt-link to="/me/stories/public">マイストーリー</nuxt-link>
         </li>
         <li class="menu-link">
           <nuxt-link to="#">ブックマーク</nuxt-link>
