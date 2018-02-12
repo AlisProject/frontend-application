@@ -1,7 +1,7 @@
 <template>
   <nav class="area-nav">
     <nuxt-link to="/" class="nav-link area-popular-stories">人気記事</nuxt-link>
-    <nuxt-link to="#" class="nav-link area-new-stories">新着記事</nuxt-link>
+    <nuxt-link to="/stories/new" class="nav-link area-new-stories">新着記事</nuxt-link>
   </nav>
 </template>
 
@@ -34,6 +34,12 @@
 }
 
 .popular-stories .area-popular-stories {
+  color: white;
+  display: block;
+  border-bottom: 2px solid white;
+}
+
+.new-stories .area-new-stories {
   color: white;
   display: block;
   border-bottom: 2px solid white;
@@ -74,6 +80,11 @@
   }
 
   .popular-stories .area-popular-stories {
+    color: #99a2ff;
+    border-bottom: 1px solid #99a2ff;
+  }
+
+  .new-stories .area-new-stories {
     color: #99a2ff;
     border-bottom: 1px solid #99a2ff;
   }

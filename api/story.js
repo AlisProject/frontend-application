@@ -5,7 +5,11 @@ function sendGet(url) {
 }
 
 export function getPopularStories() {
-  return axios.get('/stories/popular').then((response) => response.data)
+  return sendGet('/stories/popular')
+}
+
+export function getNewStories() {
+  return sendGet('/stories/new')
 }
 
 export function getStory({ id }) {

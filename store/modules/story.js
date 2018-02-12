@@ -1,5 +1,6 @@
 import {
   getPopularStories,
+  getNewStories,
   getStory,
   getPublicStoriesByUserId,
   getDraftStoriesByUserId,
@@ -12,6 +13,7 @@ const namespaced = true
 
 const state = () => ({
   stories: [],
+  newStories: [],
   userInfos: [],
   alisTokens: [],
   publicStories: [],
@@ -32,6 +34,7 @@ const state = () => ({
 
 const getters = {
   allStories: (state) => state.stories,
+  newStories: (state) => state.newStories,
   publicStories: (state) => state.publicStories,
   draftStories: (state) => state.draftStories,
   title: (state) => state.title,
@@ -43,6 +46,10 @@ const actions = {
   async getAllStories({ commit }) {
     const stories = await getPopularStories()
     commit(types.SET_STORIES, { stories })
+  },
+  async getNewPagesStories({ commit }) {
+    const stories = await getNewStories()
+    commit(types.SET_NEW_STORIES, { stories })
   },
   async getUserInfos({ commit }, { stories }) {
     const userInfos = []
@@ -76,6 +83,9 @@ const mutations = {
   [types.SET_STORIES](state, { stories }) {
     state.stories = stories
   },
+  [types.SET_NEW_STORIES](state, { stories }) {
+    state.newStories = stories
+  },
   [types.SET_USER_INFOS](state, { userInfos }) {
     state.userInfos = userInfos
   },
@@ -89,6 +99,9 @@ const mutations = {
         break
       case 'draft':
         this.draftStories = stories
+        break
+      case 'new':
+        this.newStories = stories
         break
       default:
         this.stories = stories
@@ -108,6 +121,9 @@ const mutations = {
         break
       case 'draft':
         this.draftStories = stories
+        break
+      case 'new':
+        this.newStories = stories
         break
       default:
         this.stories = stories
