@@ -63,11 +63,11 @@ const actions = {
     commit(types.SET_STORY, { story })
   },
   async getPublicStories({ commit }, { userId }) {
-    const { data: stories } = await getPublicStoriesByUserId({ userId })
+    const stories = await getPublicStoriesByUserId({ userId })
     commit(types.SET_PUBLIC_STORIES, { stories })
   },
   async getDraftStories({ commit }, { userId }) {
-    const { data: stories } = await getDraftStoriesByUserId({ userId })
+    const stories = await getDraftStoriesByUserId({ userId })
     commit(types.SET_DRAFT_STORIES, { stories })
   }
 }
@@ -79,20 +79,40 @@ const mutations = {
   [types.SET_USER_INFOS](state, { userInfos }) {
     state.userInfos = userInfos
   },
-  [types.SET_USER_INFO_TO_STORIES](state, { stories, userInfos }) {
+  [types.SET_USER_INFO_TO_STORIES](state, { stories, userInfos, type = 'default' }) {
     for (let i = 0; i < stories.length; i++) {
       stories[i].user = userInfos[i]
     }
-    this.stories = stories
+    switch (type) {
+      case 'public':
+        this.publicStories = stories
+        break
+      case 'draft':
+        this.draftStories = stories
+        break
+      default:
+        this.stories = stories
+        break
+    }
   },
   [types.SET_ALIS_TOKENS](state, { alisTokens }) {
     state.alisTokens = alisTokens
   },
-  [types.SET_ALIS_TOKEN_TO_STORIES](state, { stories, alisTokens }) {
+  [types.SET_ALIS_TOKEN_TO_STORIES](state, { stories, alisTokens, type = 'default' }) {
     for (let i = 0; i < stories.length; i++) {
       stories[i].alisToken = alisTokens[i].alistoken
     }
-    this.stories = stories
+    switch (type) {
+      case 'public':
+        this.publicStories = stories
+        break
+      case 'draft':
+        this.draftStories = stories
+        break
+      default:
+        this.stories = stories
+        break
+    }
   },
   [types.SET_STORY](state, { story }) {
     state.title = story.title

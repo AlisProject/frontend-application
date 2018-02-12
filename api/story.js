@@ -1,5 +1,9 @@
 import axios from '~/plugins/axios'
 
+function sendGet(url) {
+  return axios.get(url).then((response) => response.data)
+}
+
 export function getPopularStories() {
   return axios.get('/stories/popular').then((response) => response.data)
 }
@@ -9,11 +13,11 @@ export function getStory({ id }) {
 }
 
 export function getPublicStoriesByUserId({ userId }) {
-  return axios.get('/stories/public', { params: { userId } })
+  return sendGet('/me/stories/public', { params: { userId } })
 }
 
 export function getDraftStoriesByUserId({ userId }) {
-  return axios.get('/stories/draft', { params: { userId } })
+  return sendGet('/me/stories/drafts', { params: { userId } })
 }
 
 export function getAlisToken({ storyId }) {
