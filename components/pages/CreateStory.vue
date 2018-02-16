@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import Editor from '../atoms/Editor'
 import AppFooter from '../organisms/AppFooter'
@@ -16,6 +17,36 @@ export default {
     AppHeader,
     Editor,
     AppFooter
+  },
+  computed: {
+    ...mapGetters({
+      storyId: 'story/storyId',
+      title: 'story/title',
+      body: 'story/body'
+    })
+  },
+  methods: {
+    ...mapActions('story', ['postNewStory']),
+    postStoryAndReplaceUrl: async function() {
+      if (location.pathname === '/me/stories/new') {
+        // const story = {
+        //   title: this.title,
+        //   body: this.body
+        // }
+        // await this.postNewStory({ story })
+        await this.postNewStory({})
+
+        history.replaceState('', '', `/me/stories/edit/${this.storyId}`)
+      }
+    }
+  },
+  watch: {
+    title(newTitle, oldTitle) {
+      this.postStoryAndReplaceUrl()
+    },
+    body(newBody, oldBody) {
+      this.postStoryAndReplaceUrl()
+    }
   }
 }
 </script>

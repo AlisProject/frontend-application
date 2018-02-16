@@ -4,6 +4,10 @@ function sendGet(url) {
   return axios.get(url).then((response) => response.data)
 }
 
+function sendPost(url, data) {
+  return axios.post(url, data).then((response) => response.data)
+}
+
 export function getPopularStories() {
   return sendGet('/stories/popular')
 }
@@ -14,6 +18,10 @@ export function getNewStories() {
 
 export function getStory({ storyId }) {
   return sendGet(`/stories/${storyId}`)
+}
+
+export function postStory({ story }) {
+  return sendPost('/me/stories/drafts', story)
 }
 
 export function getLikesCount({ storyId }) {

@@ -2,6 +2,7 @@ import {
   getPopularStories,
   getNewStories,
   getStory,
+  postStory,
   getLikesCount,
   getPublicStoriesByUserId,
   getDraftStoriesByUserId,
@@ -14,6 +15,7 @@ const namespaced = true
 
 const state = () => ({
   story: {},
+  storyId: '',
   likesCount: 0,
   stories: [],
   newStories: [],
@@ -42,6 +44,7 @@ const getters = {
   newStories: (state) => state.newStories,
   publicStories: (state) => state.publicStories,
   draftStories: (state) => state.draftStories,
+  storyId: (state) => state.storyId,
   title: (state) => state.title,
   body: (state) => state.body,
   suggestedThumbnails: (state) => state.suggestedThumbnails
@@ -78,13 +81,17 @@ const actions = {
     }
     commit(types.SET_ALIS_TOKENS, { alisTokens })
   },
-  async getEditStory({ commit }, { id }) {
-    const { data: story } = await getStory({ id })
+  async getEditStory({ commit }, { storyId }) {
+    const story = await getStory({ storyId })
     commit(types.SET_STORY, { story })
   },
   async getStoryDetail({ commit }, { storyId }) {
     const story = await getStory({ storyId })
     commit(types.SET_STORY_DETAIL, { story })
+  },
+  async postNewStory({ commit }, { story }) {
+    const { story_id: storyId } = await postStory({ story })
+    commit(types.SET_STORY_ID, { storyId })
   },
   async getLikesCountOfStory({ commit }, { storyId }) {
     const { likes_count: likesCount } = await getLikesCount({ storyId })
@@ -172,6 +179,9 @@ const mutations = {
   [types.SET_STORY](state, { story }) {
     state.title = story.title
     state.body = story.body
+  },
+  [types.SET_STORY_ID](state, { storyId }) {
+    state.storyId = storyId
   },
   [types.SET_STORY_DETAIL](state, { story }) {
     state.story = story

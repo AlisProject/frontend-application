@@ -10,9 +10,9 @@ export default {
   components: {
     EditStory
   },
-  fetch({ store, params }) {
-    const { id } = params
-    store.dispatch('story/getEditStory', { id })
+  async fetch({ store, params }) {
+    const { story_id: storyId } = params
+    await store.dispatch('story/getEditStory', { storyId })
   },
   head
 }
