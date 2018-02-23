@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="story-side-actions" v-show="scrollY > 300">
+    <div class="article-side-actions" v-show="scrollY > 300">
       <div class="action like">
         <span class="likes-count">{{ likesCount }}</span>
       </div>
@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.story-side-actions {
+.article-side-actions {
   align-items: center;
   display: flex;
   flex-flow: column nowrap;
@@ -95,7 +95,7 @@ export default {
 }
 
 @media screen and (max-width: 920px) {
-  .story-side-actions {
+  .article-side-actions {
     display: none;
   }
 }
