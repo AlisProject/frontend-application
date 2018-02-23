@@ -25,7 +25,7 @@ export default {
   text-overflow: ellipsis;
 }
 
-.long-story-card {
+.long-article-card {
   .area-overview {
     -webkit-line-clamp: 3;
     font-size: 14px;
@@ -34,7 +34,7 @@ export default {
 }
 
 @media screen and (max-width: 1296px) {
-  .long-story-card {
+  .long-article-card {
     .area-overview {
       -webkit-line-clamp: 2;
       font-size: 12px;
@@ -44,7 +44,7 @@ export default {
 }
 
 @media screen and (max-width: 550px) {
-  .long-story-card {
+  .long-article-card {
     .area-overview {
       line-height: 18px;
     }

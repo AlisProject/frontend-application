@@ -26,7 +26,7 @@ export default {
   right: 24px;
 }
 
-.long-story-card {
+.long-article-card {
   .token-amount {
     bottom: 25px;
     font-size: 14px;
@@ -36,7 +36,7 @@ export default {
 }
 
 @media screen and (max-width: 1296px) {
-  .long-story-card {
+  .long-article-card {
     .token-amount {
       bottom: 10px;
       right: 20px;

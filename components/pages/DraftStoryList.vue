@@ -1,5 +1,5 @@
 <template>
-  <div class="draft-story-list-container long-story-card">
+  <div class="draft-story-list-container long-article-card">
     <app-header showEditHeaderNav class="drafts logo-original"/>
     <story-card-list :stories="stories" class="draft" :linkTo="'edit'"/>
     <app-footer/>

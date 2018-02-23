@@ -19,7 +19,7 @@
 }
 
 @media screen and (max-width: 1296px) {
-  .long-story-card {
+  .long-article-card {
     .bookmark {
       display: none;
     }
@@ -27,7 +27,7 @@
 }
 
 @media screen and (max-width: 550px) {
-  .long-story-card {
+  .long-article-card {
     .bookmark {
       display: initial;
       right: 15px;

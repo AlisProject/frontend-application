@@ -44,18 +44,18 @@ export default {
   position: relative;
 }
 
-.long-story-card {
+.long-article-card {
   .area-story-card-content {
     grid-template-rows: 52px 76px;
     grid-template-columns: 420px 60px;
-    grid-area: long-story-card-content;
+    grid-area: long-article-card-content;
     grid-gap: 12px;
     padding: 28px;
   }
 }
 
 @media screen and (max-width: 1296px) {
-  .long-story-card {
+  .long-article-card {
     .area-story-card-content {
       grid-template-rows: 50px 44px;
       grid-template-columns: 1fr 1fr;
@@ -70,7 +70,7 @@ export default {
 }
 
 @media screen and (max-width: 920px) {
-  .long-story-card {
+  .long-article-card {
     .area-story-card-content {
       grid-area: story-card-content;
       grid-gap: 6px;
@@ -86,7 +86,7 @@ export default {
 }
 
 @media screen and (max-width: 550px) {
-  .long-story-card {
+  .long-article-card {
     .area-story-card-content {
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;

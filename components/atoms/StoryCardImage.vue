@@ -17,8 +17,8 @@
   }
 }
 
-.long-story-card .area-story-card-image {
-  grid-area: long-story-card-image;
+.long-article-card .area-story-card-image {
+  grid-area: long-article-card-image;
 
   .story-image {
     height: 270px;
@@ -29,7 +29,7 @@
 }
 
 @media screen and (max-width: 1296px) {
-  .long-story-card .area-story-card-image {
+  .long-article-card .area-story-card-image {
     .story-image {
       height: 178px;
       width: 355px;
@@ -38,7 +38,7 @@
 }
 
 @media screen and (max-width: 920px) {
-  .long-story-card {
+  .long-article-card {
     .area-story-card-image {
       grid-area: story-card-image;
     }
@@ -46,7 +46,7 @@
 }
 
 @media screen and (max-width: 550px) {
-  .long-story-card {
+  .long-article-card {
     .area-story-card-image {
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;

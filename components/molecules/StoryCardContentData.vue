@@ -40,14 +40,14 @@ export default {
   }
 }
 
-.long-story-card {
+.long-article-card {
   .area-data {
     align-self: flex-end;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .long-story-card {
+  .long-article-card {
     .area-data {
       bottom: 12px;
       left: 14px;
