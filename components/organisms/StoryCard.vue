@@ -55,7 +55,7 @@ a {
   grid-template-columns: 340px;
   /* prettier-ignore */
   grid-template-areas:
-    "story-card-image"
+    "article-card-image"
     "story-card-content";
 }
 
@@ -101,7 +101,7 @@ a {
       grid-template-columns: 340px;
       /* prettier-ignore */
       grid-template-areas:
-        "story-card-image"
+        "article-card-image"
         "story-card-content";
     }
   }
