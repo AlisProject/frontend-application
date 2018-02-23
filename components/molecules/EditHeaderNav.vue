@@ -2,7 +2,7 @@
   <nav class="area-nav">
     <nuxt-link to="/me/stories/public" class="nav-link area-public-stories">公開済み</nuxt-link>
     <nuxt-link to="/me/stories/draft" class="nav-link area-drafts">下書き</nuxt-link>
-    <a href="/me/stories/new" class="nav-link area-new-story">新規作成</a>
+    <a href="/me/stories/new" class="nav-link area-new-article">新規作成</a>
     <div class="area-post-story" v-show="showPostStoryLink">
       <span class="nav-link post-story" @click="togglePopup">
         公開する
@@ -107,7 +107,7 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "... ...            ...    ...       ... ...        ..."
-    "... public-stories drafts new-story ... post-story ..."
+    "... public-stories drafts new-article ... post-story ..."
     "... ...            ...    ...       ... ...        ...";
 }
 
@@ -137,8 +137,8 @@ export default {
   border-bottom: 2px solid #99a2ff;
 }
 
-.area-new-story {
-  grid-area: new-story;
+.area-new-article {
+  grid-area: new-article;
 }
 
 .area-post-story {
@@ -225,7 +225,7 @@ export default {
     text-align: left;
   }
 
-  .area-new-story {
+  .area-new-article {
     display: none;
   }
 

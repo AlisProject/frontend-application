@@ -1,5 +1,5 @@
 <template>
-  <div class="new-story-list-container">
+  <div class="new-article-list-container">
     <app-header showDefaultHeaderNav class="new-stories logo-white"/>
     <story-card-list :stories="stories"/>
     <app-footer/>
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.new-story-list-container {
+.new-article-list-container {
   background: url('~assets/images/pc/bg/bg_top.png') no-repeat;
   background-color: #f7f7f7;
   background-size: contain;
@@ -44,19 +44,19 @@ export default {
 }
 
 @media screen and (max-width: 1296px) {
-  .new-story-list-container {
+  .new-article-list-container {
     grid-template-columns: 1fr 710px 1fr;
   }
 }
 
 @media screen and (max-width: 920px) {
-  .new-story-list-container {
+  .new-article-list-container {
     grid-template-columns: 1fr 340px 1fr;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .new-story-list-container {
+  .new-article-list-container {
     background: #f7f7f7;
     grid-template-rows: 100px 15px 1fr 75px 75px;
     grid-template-columns: 1fr 350px 1fr;
@@ -64,7 +64,7 @@ export default {
 }
 
 @media screen and (max-width: 370px) {
-  .new-story-list-container {
+  .new-article-list-container {
     grid-template-columns: 10px 1fr 10px;
   }
 }
