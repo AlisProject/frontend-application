@@ -1,5 +1,5 @@
 <template>
-  <div class="area-story-comments">
+  <div class="area-article-comments">
     <template v-for="comment in comments">
       <story-comment :comment="comment" :key="comment.id"/>
     </template>
@@ -19,9 +19,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.area-story-comments {
+.area-article-comments {
   display: grid;
-  grid-area: story-comments;
+  grid-area: article-comments;
   grid-gap: 20px;
 }
 

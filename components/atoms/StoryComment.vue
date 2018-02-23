@@ -1,5 +1,5 @@
 <template>
-  <div class="story-comment">
+  <div class="article-comment">
     <p class="body">{{comment.body}}</p>
     <div class="commented-user">
       <img class="commented-user-icon" src="~assets/images/profile-icon1.png">
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.story-comment {
+.article-comment {
   background-color: #fff;
   border-radius: 4px;
   border: 1px solid rgba(192, 192, 192, 0.5);
@@ -65,7 +65,7 @@ export default {
 }
 
 @media screen and (max-width: 640px) {
-  .story-comment {
+  .article-comment {
     padding: 12px;
 
     .body {

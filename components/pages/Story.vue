@@ -9,7 +9,7 @@
       <story-footer-actions :likesCount="story.likesCount"/>
       <story-side-actions :likesCount="story.likesCount"/>
       <author-info :story="story"/>
-      <story-comments :comments="story.comments"/>
+      <article-comments :comments="story.comments"/>
     </div>
     <related-stories :stories="story.relatedStories"/>
     <app-footer/>
@@ -70,7 +70,7 @@ export default {
     'footer-actions'
     'tags          '
     'author-info   '
-    'story-comments';
+    'article-comments';
 }
 
 .area-title {
@@ -119,7 +119,7 @@ export default {
       '...            tags           ...           '
       '...            author-info    ...           '
       'footer-actions footer-actions footer-actions'
-      '...            story-comments ...           ';
+      '...            article-comments ...           ';
   }
 
   .area-title {
