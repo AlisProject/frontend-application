@@ -1,6 +1,6 @@
 <template>
   <div class="area-article-card-image">
-    <img class="story-image" src='~assets/images/top-story-card-image.png'>
+    <img class="article-image" src='~assets/images/top-story-card-image.png'>
     <!-- TODO: data属性からCSSに渡す -->
     <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
   </div>
@@ -11,7 +11,7 @@
   grid-area: article-card-image;
   overflow: hidden;
 
-  .story-image {
+  .article-image {
     width: 100%;
     max-width: 100%;
   }
@@ -20,7 +20,7 @@
 .long-article-card .area-article-card-image {
   grid-area: long-article-card-image;
 
-  .story-image {
+  .article-image {
     height: 270px;
     object-fit: cover;
     object-position: 0%;
@@ -30,7 +30,7 @@
 
 @media screen and (max-width: 1296px) {
   .long-article-card .area-article-card-image {
-    .story-image {
+    .article-image {
       height: 178px;
       width: 355px;
     }
@@ -51,7 +51,7 @@
       border-top-left-radius: 6px;
       border-top-right-radius: 6px;
 
-      .story-image {
+      .article-image {
         width: 100%;
       }
     }
@@ -61,7 +61,7 @@
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 
-    .story-image {
+    .article-image {
       width: 100%;
     }
   }
