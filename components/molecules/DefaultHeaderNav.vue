@@ -46,7 +46,7 @@
 }
 
 @media screen and (max-width: 920px) {
-  .story-container {
+  .article-container {
     .area-nav {
       grid-gap: 20px;
       /* prettier-ignore */

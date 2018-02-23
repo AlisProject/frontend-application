@@ -32,7 +32,7 @@
 }
 
 @media screen and (max-width: 920px) {
-  .story-container {
+  .article-container {
     .session {
       border: none;
       grid-area: session;

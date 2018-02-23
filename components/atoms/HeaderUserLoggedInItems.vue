@@ -222,7 +222,7 @@ export default {
 }
 
 @media screen and (max-width: 920px) {
-  .story-container {
+  .article-container {
     .logged-in {
       border: none;
       grid-area: session;

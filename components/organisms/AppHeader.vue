@@ -73,7 +73,7 @@ export default {
 }
 
 @media screen and (max-width: 920px) {
-  .story-container {
+  .article-container {
     .area-app-header-container {
       background: white;
       grid-gap: 13px;

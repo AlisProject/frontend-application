@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-story-container">
+  <div class="edit-article-container">
     <app-header showEditHeaderNav showPostStoryLink class="logo-original"/>
     <editor :title="title" :body="body" :tags="this.$store.state.story.tags"/>
     <app-footer/>
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.edit-story-container {
+.edit-article-container {
   display: grid;
   grid-template-rows: 100px 50px 650px 75px 75px;
   grid-template-columns: 1fr 640px 1fr;
