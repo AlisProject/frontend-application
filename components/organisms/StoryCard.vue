@@ -1,11 +1,11 @@
 <template>
   <section>
     <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'edit'">
-      <story-card-image/>
+      <article-card-image/>
       <story-card-content :story="story"/>
     </a>
     <nuxt-link :to="`${getLink}`" class="article-card-container" v-else>
-      <story-card-image/>
+      <article-card-image/>
       <!-- TODO: data属性からCSSに渡す -->
       <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
       <story-card-content :story="story"/>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import StoryCardImage from '../atoms/StoryCardImage'
+import ArticleCardImage from '../atoms/ArticleCardImage'
 import StoryCardContent from '../organisms/StoryCardContent'
 
 export default {
@@ -25,7 +25,7 @@ export default {
     }
   },
   components: {
-    StoryCardImage,
+    ArticleCardImage,
     StoryCardContent
   },
   computed: {
