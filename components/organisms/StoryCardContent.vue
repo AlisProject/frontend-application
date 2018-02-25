@@ -1,7 +1,7 @@
 <template>
   <div class="area-article-card-content">
     <story-card-content-title :title="story.title" />
-    <story-card-content-bookmark/>
+    <article-card-content-bookmark/>
     <story-card-content-overview :overview="story.overview"/>
     <story-card-content-data :story="story"/>
     <story-card-content-token-amount :tokenAmount="story.alisToken"/>
