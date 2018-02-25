@@ -1,14 +1,14 @@
 <template>
-  <draft-story-list/>
+  <draft-article-list/>
 </template>
 
 <script>
-import DraftStoryList from '~/components/pages/DraftStoryList'
+import DraftArticleList from '~/components/pages/DraftArticleList'
 import * as types from '~/store/mutation-types'
 
 export default {
   components: {
-    DraftStoryList
+    DraftArticleList
   },
   async fetch({ store }) {
     await store.dispatch('story/getDraftStories', { userId: '1' })
