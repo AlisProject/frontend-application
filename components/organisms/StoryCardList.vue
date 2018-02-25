@@ -1,6 +1,6 @@
 <template>
   <div class="area-article-card-list-container">
-    <story-card
+    <article-card
       v-for="(story, i) in stories"
       :story="story"
       :key="story.id"
@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import StoryCard from '../organisms/StoryCard'
+import ArticleCard from '../organisms/ArticleCard'
 
 export default {
   components: {
-    StoryCard
+    ArticleCard
   },
   props: ['stories', 'linkTo']
 }

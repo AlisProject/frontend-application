@@ -1,6 +1,6 @@
 <template>
   <div class="area-related-articles">
-    <story-card
+    <article-card
       v-for="story in stories"
       :story="story"
       :key="story.id"
@@ -10,11 +10,11 @@
 </template>
 
 <script>
-import StoryCard from '../organisms/StoryCard'
+import ArticleCard from '../organisms/ArticleCard'
 
 export default {
   components: {
-    StoryCard
+    ArticleCard
   },
   props: ['stories']
 }
