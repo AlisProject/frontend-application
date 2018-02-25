@@ -1,14 +1,14 @@
 <template>
-  <create-story/>
+  <article-story/>
 </template>
 
 <script>
-import CreateStory from '~/components/pages/CreateStory'
+import ArticleStory from '~/components/pages/ArticleStory'
 import head from '~/utils/editor-head'
 
 export default {
   components: {
-    CreateStory
+    ArticleStory
   },
   head
 }
