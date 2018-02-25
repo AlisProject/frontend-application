@@ -48,11 +48,11 @@ export default {
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    'app-header      app-header      app-header     '
-    '...             ...             ...            '
-    '...             article         ...            '
-    'related-stories related-stories related-stories'
-    '...             app-footer      ...            ';
+    'app-header       app-header       app-header      '
+    '...              ...              ...             '
+    '...              article          ...             '
+    'related-articles related-articles related-articles'
+    '...              app-footer       ...             ';
   background: white;
 }
 
@@ -101,11 +101,11 @@ export default {
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
     grid-template-areas:
-    'app-header      app-header      app-header     '
-    '...             ...             ...            '
-    'article         article         article        '
-    'related-stories related-stories related-stories'
-    '...             app-footer      ...            ';
+    'app-header       app-header       app-header      '
+    '...              ...              ...             '
+    'article          article          article         '
+    'related-articles related-articles related-articles'
+    '...              app-footer       ...             ';
   }
 
   .area-article {
