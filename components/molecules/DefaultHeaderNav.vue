@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <nuxt-link to="/" class="nav-link area-popular-stories">人気記事</nuxt-link>
+    <nuxt-link to="/" class="nav-link area-popular-articles">人気記事</nuxt-link>
     <nuxt-link to="/stories/new" class="nav-link area-new-stories">新着記事</nuxt-link>
   </nav>
 </template>
@@ -15,7 +15,7 @@
   /* prettier-ignore */
   grid-template-areas:
     "... ...             ... ...         ..."
-    "... popular-stories ... new-stories ..."
+    "... popular-articles ... new-stories ..."
     "... ...             ... ...         ...";
 }
 
@@ -25,15 +25,15 @@
   color: #525256;
 }
 
-.area-popular-stories {
-  grid-area: popular-stories;
+.area-popular-articles {
+  grid-area: popular-articles;
 }
 
 .area-new-stories {
   grid-area: new-stories;
 }
 
-.popular-stories .area-popular-stories {
+.popular-articles .area-popular-articles {
   color: white;
   display: block;
   border-bottom: 2px solid white;
@@ -51,7 +51,7 @@
       grid-gap: 20px;
       /* prettier-ignore */
       grid-template-areas:
-      'popular-stories new-stories';
+      'popular-articles new-stories';
       grid-template-columns: 48px 48px;
       grid-template-rows: 32px;
       text-align: left;
@@ -68,7 +68,7 @@
     grid-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:
-      'popular-stories new-stories';
+      'popular-articles new-stories';
     grid-template-columns: 48px 48px;
     grid-template-rows: 42px;
     text-align: left;
@@ -79,7 +79,7 @@
     font-size: 12px;
   }
 
-  .popular-stories .area-popular-stories {
+  .popular-articles .area-popular-articles {
     color: #99a2ff;
     border-bottom: 1px solid #99a2ff;
   }

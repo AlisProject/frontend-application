@@ -1,6 +1,6 @@
 <template>
   <div class="top-container">
-    <app-header showDefaultHeaderNav class="popular-stories logo-white"/>
+    <app-header showDefaultHeaderNav class="popular-articles logo-white"/>
     <story-card-list :stories="stories"/>
     <app-footer/>
   </div>
