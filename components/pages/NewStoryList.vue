@@ -1,7 +1,7 @@
 <template>
   <div class="new-article-list-container">
     <app-header showDefaultHeaderNav class="new-articles logo-white"/>
-    <story-card-list :stories="stories"/>
+    <article-card-list :stories="stories"/>
     <app-footer/>
   </div>
 </template>
@@ -9,13 +9,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
-import StoryCardList from '../organisms/StoryCardList'
+import ArticleCardList from '../organisms/ArticleCardList'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
-    StoryCardList,
+    ArticleCardList,
     AppFooter
   },
   computed: {
