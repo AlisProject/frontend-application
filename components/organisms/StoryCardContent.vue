@@ -10,7 +10,7 @@
 
 <script>
 import StoryCardContentTitle from '../atoms/StoryCardContentTitle'
-import StoryCardContentBookmark from '../atoms/StoryCardContentBookmark'
+import ArticleCardContentBookmark from '../atoms/ArticleCardContentBookmark'
 import StoryCardContentOverview from '../atoms/StoryCardContentOverview'
 import StoryCardContentData from '../molecules/StoryCardContentData'
 import StoryCardContentTokenAmount from '../atoms/StoryCardContentTokenAmount'
@@ -20,7 +20,7 @@ export default {
   components: {
     StoryCardContentTitle,
     StoryCardContentOverview,
-    StoryCardContentBookmark,
+    ArticleCardContentBookmark,
     StoryCardContentData,
     StoryCardContentTokenAmount
   }
