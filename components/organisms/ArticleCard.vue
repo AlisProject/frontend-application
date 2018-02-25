@@ -2,20 +2,20 @@
   <section>
     <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'edit'">
       <article-card-image/>
-      <story-card-content :story="story"/>
+      <article-card-content :story="story"/>
     </a>
     <nuxt-link :to="`${getLink}`" class="article-card-container" v-else>
       <article-card-image/>
       <!-- TODO: data属性からCSSに渡す -->
       <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
-      <story-card-content :story="story"/>
+      <article-card-content :story="story"/>
     </nuxt-link>
   </section>
 </template>
 
 <script>
 import ArticleCardImage from '../atoms/ArticleCardImage'
-import StoryCardContent from '../organisms/StoryCardContent'
+import ArticleCardContent from '../organisms/ArticleCardContent'
 
 export default {
   props: {
@@ -26,7 +26,7 @@ export default {
   },
   components: {
     ArticleCardImage,
-    StoryCardContent
+    ArticleCardContent
   },
   computed: {
     getLink() {
