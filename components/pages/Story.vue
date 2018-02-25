@@ -1,7 +1,7 @@
 <template>
   <div class="article-container">
     <app-header showDefaultHeaderNav class="logo-original"/>
-    <div class="area-story">
+    <div class="area-article">
       <h1 class="area-title">{{ story.title }}</h1>
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">
       <div class="area-content" v-html="story.body" />
@@ -50,15 +50,15 @@ export default {
   grid-template-areas:
     'app-header      app-header      app-header     '
     '...             ...             ...            '
-    '...             story           ...            '
+    '...             article         ...            '
     'related-stories related-stories related-stories'
     '...             app-footer      ...            ';
   background: white;
 }
 
-.area-story {
+.area-article {
   display: grid;
-  grid-area: story;
+  grid-area: article;
   grid-template-rows: auto;
   grid-template-columns: auto;
   grid-gap: 30px;
@@ -103,12 +103,12 @@ export default {
     grid-template-areas:
     'app-header      app-header      app-header     '
     '...             ...             ...            '
-    'story           story           story          '
+    'article         article         article        '
     'related-stories related-stories related-stories'
     '...             app-footer      ...            ';
   }
 
-  .area-story {
+  .area-article {
     grid-template-columns: 8px auto 8px;
     grid-gap: 10px;
     /* prettier-ignore */
