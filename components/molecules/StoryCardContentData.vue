@@ -1,20 +1,20 @@
 <template>
   <div class="area-data">
-    <story-card-content-data-profile-icon :user="story.user"/>
+    <article-card-content-data-profile-icon :user="story.user"/>
     <story-card-content-data-username :username="story.user.user_display_name"/>
     <article-card-content-data-created-at :createdAt="story.created_at"/>
   </div>
 </template>
 
 <script>
-import StoryCardContentDataProfileIcon from '../atoms/StoryCardContentDataProfileIcon'
+import ArticleCardContentDataProfileIcon from '../atoms/ArticleCardContentDataProfileIcon'
 import StoryCardContentDataUsername from '../atoms/StoryCardContentDataUsername'
 import ArticleCardContentDataCreatedAt from '../atoms/ArticleCardContentDataCreatedAt'
 
 export default {
   props: ['story'],
   components: {
-    StoryCardContentDataProfileIcon,
+    ArticleCardContentDataProfileIcon,
     StoryCardContentDataUsername,
     ArticleCardContentDataCreatedAt
   }
