@@ -1,5 +1,5 @@
 <template>
-  <div class="public-story-list-container long-article-card">
+  <div class="public-article-list-container long-article-card">
     <app-header showEditHeaderNav class="public-stories logo-original"/>
     <story-card-list :stories="stories" :linkTo="'edit'"/>
     <app-footer/>
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.public-story-list-container {
+.public-article-list-container {
   display: grid;
   grid-template-rows: 100px 40px 1fr 75px 75px;
   grid-template-columns: 1fr 1080px 1fr;
@@ -42,25 +42,25 @@ export default {
 }
 
 @media screen and (max-width: 1296px) {
-  .public-story-list-container {
+  .public-article-list-container {
     grid-template-columns: 1fr 710px 1fr;
   }
 }
 
 @media screen and (max-width: 920px) {
-  .public-story-list-container {
+  .public-article-list-container {
     grid-template-columns: 1fr 340px 1fr;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .public-story-list-container {
+  .public-article-list-container {
     grid-template-columns: 1fr 350px 1fr;
   }
 }
 
 @media screen and (max-width: 370px) {
-  .public-story-list-container {
+  .public-article-list-container {
     grid-template-columns: 10px 1fr 10px;
   }
 }
