@@ -9,7 +9,7 @@
       <story-footer-actions :likesCount="story.likesCount"/>
       <story-side-actions :likesCount="story.likesCount"/>
       <author-info :story="story"/>
-      <article-comments :comments="story.comments"/>
+      <story-comments :comments="story.comments"/>
     </div>
     <related-stories :stories="story.relatedStories"/>
     <app-footer/>
