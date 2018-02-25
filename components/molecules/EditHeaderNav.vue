@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <nuxt-link to="/me/stories/public" class="nav-link area-public-stories">公開済み</nuxt-link>
+    <nuxt-link to="/me/stories/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/stories/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/stories/new" class="nav-link area-new-article">新規作成</a>
     <div class="area-post-article" v-show="showPostStoryLink">
@@ -107,7 +107,7 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "... ...            ...    ...       ... ...        ..."
-    "... public-stories drafts new-article ... post-article ..."
+    "... public-articles drafts new-article ... post-article ..."
     "... ...            ...    ...       ... ...        ...";
 }
 
@@ -117,11 +117,11 @@ export default {
   color: #929292;
 }
 
-.area-public-stories {
-  grid-area: public-stories;
+.area-public-articles {
+  grid-area: public-articles;
 }
 
-.public-stories .area-public-stories {
+.public-articles .area-public-articles {
   color: #99a2ff;
   display: block;
   border-bottom: 2px solid #99a2ff;
@@ -219,7 +219,7 @@ export default {
     grid-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:
-      'public-stories drafts';
+      'public-articles drafts';
     grid-template-columns: 48px 48px;
     grid-template-rows: 42px;
     text-align: left;
@@ -235,7 +235,7 @@ export default {
     text-align: center;
   }
 
-  .public-stories .area-public-stories {
+  .public-articles .area-public-articles {
     border-bottom: 1px solid #99a2ff;
   }
 
