@@ -3,7 +3,7 @@
     <article-card-content-title :title="story.title" />
     <article-card-content-bookmark/>
     <article-card-content-overview :overview="story.overview"/>
-    <story-card-content-data :story="story"/>
+    <article-card-content-data :story="story"/>
     <article-card-content-token-amount :tokenAmount="story.alisToken"/>
   </div>
 </template>
@@ -12,7 +12,7 @@
 import ArticleCardContentTitle from '../atoms/ArticleCardContentTitle'
 import ArticleCardContentBookmark from '../atoms/ArticleCardContentBookmark'
 import ArticleCardContentOverview from '../atoms/ArticleCardContentOverview'
-import StoryCardContentData from '../molecules/StoryCardContentData'
+import ArticleCardContentData from '../molecules/ArticleCardContentData'
 import ArticleCardContentTokenAmount from '../atoms/ArticleCardContentTokenAmount'
 
 export default {
@@ -21,7 +21,7 @@ export default {
     ArticleCardContentTitle,
     ArticleCardContentOverview,
     ArticleCardContentBookmark,
-    StoryCardContentData,
+    ArticleCardContentData,
     ArticleCardContentTokenAmount
   }
 }
