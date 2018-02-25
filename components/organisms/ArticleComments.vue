@@ -1,18 +1,18 @@
 <template>
   <div class="area-article-comments">
     <template v-for="comment in comments">
-      <story-comment :comment="comment" :key="comment.id"/>
+      <article-comment :comment="comment" :key="comment.id"/>
     </template>
     <button class="read-more">もっと見る</button>
   </div>
 </template>
 
 <script>
-import StoryComment from '../atoms/StoryComment'
+import ArticleComment from '../atoms/ArticleComment'
 
 export default {
   components: {
-    StoryComment
+    ArticleComment
   },
   props: ['comments']
 }

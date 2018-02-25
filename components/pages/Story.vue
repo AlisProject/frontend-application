@@ -9,7 +9,7 @@
       <story-footer-actions :likesCount="story.likesCount"/>
       <story-side-actions :likesCount="story.likesCount"/>
       <author-info :story="story"/>
-      <story-comments :comments="story.comments"/>
+      <article-comments :comments="story.comments"/>
     </div>
     <related-stories :stories="story.relatedStories"/>
     <app-footer/>
@@ -22,7 +22,7 @@ import StoryFooterActions from '../atoms/StoryFooterActions'
 import StorySideActions from '../atoms/StorySideActions'
 import AuthorInfo from '../atoms/AuthorInfo'
 import StoryTags from '../atoms/StoryTags'
-import StoryComments from '../organisms/StoryComments'
+import ArticleComments from '../organisms/ArticleComments'
 import RelatedStories from '../organisms/RelatedStories'
 import AppFooter from '../organisms/AppFooter'
 
@@ -33,7 +33,7 @@ export default {
     StorySideActions,
     AuthorInfo,
     StoryTags,
-    StoryComments,
+    ArticleComments,
     RelatedStories,
     AppFooter
   },
