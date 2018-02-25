@@ -5,9 +5,9 @@
       <h1 class="area-title">{{ story.title }}</h1>
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">
       <div class="area-content" v-html="story.body" />
-      <story-tags :tags="story.tags"/>
-      <story-footer-actions :likesCount="story.likesCount"/>
-      <story-side-actions :likesCount="story.likesCount"/>
+      <article-tags :tags="story.tags"/>
+      <article-footer-actions :likesCount="story.likesCount"/>
+      <article-side-actions :likesCount="story.likesCount"/>
       <author-info :story="story"/>
       <article-comments :comments="story.comments"/>
     </div>
@@ -18,10 +18,10 @@
 
 <script>
 import AppHeader from '../organisms/AppHeader'
-import StoryFooterActions from '../atoms/StoryFooterActions'
-import StorySideActions from '../atoms/StorySideActions'
+import ArticleFooterActions from '../atoms/ArticleFooterActions'
+import ArticleSideActions from '../atoms/ArticleSideActions'
 import AuthorInfo from '../atoms/AuthorInfo'
-import StoryTags from '../atoms/StoryTags'
+import ArticleTags from '../atoms/ArticleTags'
 import ArticleComments from '../organisms/ArticleComments'
 import RelatedStories from '../organisms/RelatedStories'
 import AppFooter from '../organisms/AppFooter'
@@ -29,10 +29,10 @@ import AppFooter from '../organisms/AppFooter'
 export default {
   components: {
     AppHeader,
-    StoryFooterActions,
-    StorySideActions,
+    ArticleFooterActions,
+    ArticleSideActions,
     AuthorInfo,
-    StoryTags,
+    ArticleTags,
     ArticleComments,
     RelatedStories,
     AppFooter
