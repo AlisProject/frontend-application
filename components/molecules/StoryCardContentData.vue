@@ -2,21 +2,21 @@
   <div class="area-data">
     <story-card-content-data-profile-icon :user="story.user"/>
     <story-card-content-data-username :username="story.user.user_display_name"/>
-    <story-card-content-data-created-at :createdAt="story.created_at"/>
+    <article-card-content-data-created-at :createdAt="story.created_at"/>
   </div>
 </template>
 
 <script>
 import StoryCardContentDataProfileIcon from '../atoms/StoryCardContentDataProfileIcon'
 import StoryCardContentDataUsername from '../atoms/StoryCardContentDataUsername'
-import StoryCardContentDataCreatedAt from '../atoms/StoryCardContentDataCreatedAt'
+import ArticleCardContentDataCreatedAt from '../atoms/ArticleCardContentDataCreatedAt'
 
 export default {
   props: ['story'],
   components: {
     StoryCardContentDataProfileIcon,
     StoryCardContentDataUsername,
-    StoryCardContentDataCreatedAt
+    ArticleCardContentDataCreatedAt
   }
 }
 </script>
