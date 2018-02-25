@@ -4,7 +4,7 @@
       v-for="story in stories"
       :story="story"
       :key="story.id"
-      class="story-card"
+      class="article-card"
     />
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
   justify-content: center;
 }
 
-.story-card {
+.article-card {
   align-self: center;
 }
 

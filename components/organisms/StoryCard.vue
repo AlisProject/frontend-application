@@ -1,10 +1,10 @@
 <template>
   <section>
-    <a :href="`${getLink}`" class="story-card-container" v-if="linkTo === 'edit'">
+    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'edit'">
       <story-card-image/>
       <story-card-content :story="story"/>
     </a>
-    <nuxt-link :to="`${getLink}`" class="story-card-container" v-else>
+    <nuxt-link :to="`${getLink}`" class="article-card-container" v-else>
       <story-card-image/>
       <!-- TODO: data属性からCSSに渡す -->
       <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
@@ -49,14 +49,14 @@ a {
   text-decoration: none;
 }
 
-.story-card-container {
+.article-card-container {
   display: grid;
   grid-template-rows: 88px 180px;
   grid-template-columns: 340px;
   /* prettier-ignore */
   grid-template-areas:
     "article-card-image"
-    "story-card-content";
+    "article-card-content";
 }
 
 .top {
@@ -68,7 +68,7 @@ a {
     grid-column: auto;
   }
 
-  .story-card-container {
+  .article-card-container {
     grid-area: long-article-card;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 270px;
@@ -78,13 +78,13 @@ a {
   }
 }
 
-.draft .story-card-container {
+.draft .article-card-container {
   opacity: 0.7;
 }
 
 @media screen and (max-width: 1296px) {
   .long-article-card {
-    .story-card-container {
+    .article-card-container {
       grid-template-rows: 178px;
     }
   }
@@ -96,13 +96,13 @@ a {
 
 @media screen and (max-width: 920px) {
   .long-article-card {
-    .story-card-container {
+    .article-card-container {
       grid-template-rows: 88px 180px;
       grid-template-columns: 340px;
       /* prettier-ignore */
       grid-template-areas:
         "article-card-image"
-        "story-card-content";
+        "article-card-content";
     }
   }
 
@@ -113,7 +113,7 @@ a {
 
 @media screen and (max-width: 550px) {
   .long-article-card {
-    .story-card-container {
+    .article-card-container {
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
       box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
@@ -122,7 +122,7 @@ a {
     }
   }
 
-  .story-card-container {
+  .article-card-container {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);

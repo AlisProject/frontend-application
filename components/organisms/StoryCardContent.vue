@@ -1,5 +1,5 @@
 <template>
-  <div class="area-story-card-content">
+  <div class="area-article-card-content">
     <story-card-content-title :title="story.title" />
     <story-card-content-bookmark/>
     <story-card-content-overview :overview="story.overview"/>
@@ -28,10 +28,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.area-story-card-content {
+.area-article-card-content {
   background: white;
   display: grid;
-  grid-area: story-card-content;
+  grid-area: article-card-content;
   grid-gap: 6px;
   /* prettier-ignore */
   grid-template-areas:
@@ -45,7 +45,7 @@ export default {
 }
 
 .long-article-card {
-  .area-story-card-content {
+  .area-article-card-content {
     grid-template-rows: 52px 76px;
     grid-template-columns: 420px 60px;
     grid-area: long-article-card-content;
@@ -56,7 +56,7 @@ export default {
 
 @media screen and (max-width: 1296px) {
   .long-article-card {
-    .area-story-card-content {
+    .area-article-card-content {
       grid-template-rows: 50px 44px;
       grid-template-columns: 1fr 1fr;
       /* prettier-ignore */
@@ -71,8 +71,8 @@ export default {
 
 @media screen and (max-width: 920px) {
   .long-article-card {
-    .area-story-card-content {
-      grid-area: story-card-content;
+    .area-article-card-content {
+      grid-area: article-card-content;
       grid-gap: 6px;
       /* prettier-ignore */
       grid-template-areas:
@@ -87,7 +87,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .long-article-card {
-    .area-story-card-content {
+    .area-article-card-content {
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
       grid-template-rows: 50px 40px 40px;
@@ -96,7 +96,7 @@ export default {
     }
   }
 
-  .area-story-card-content {
+  .area-article-card-content {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     grid-template-rows: 50px 40px 40px;
