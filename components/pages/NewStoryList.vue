@@ -1,6 +1,6 @@
 <template>
   <div class="new-article-list-container">
-    <app-header showDefaultHeaderNav class="new-stories logo-white"/>
+    <app-header showDefaultHeaderNav class="new-articles logo-white"/>
     <story-card-list :stories="stories"/>
     <app-footer/>
   </div>
