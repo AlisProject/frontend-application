@@ -35,7 +35,7 @@ export default {
   grid-template-areas:
     "app-header  app-header       app-header"
     "...         ...              ...       "
-    "...         story-card-list  ...       "
+    "...         article-card-list  ...       "
     "...         ...              ...       "
     "app-footer  app-footer       app-footer";
   background: #f7f7f7;
