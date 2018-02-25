@@ -3,8 +3,8 @@
     <nuxt-link to="/me/stories/public" class="nav-link area-public-stories">公開済み</nuxt-link>
     <nuxt-link to="/me/stories/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/stories/new" class="nav-link area-new-article">新規作成</a>
-    <div class="area-post-story" v-show="showPostStoryLink">
-      <span class="nav-link post-story" @click="togglePopup">
+    <div class="area-post-article" v-show="showPostStoryLink">
+      <span class="nav-link post-article" @click="togglePopup">
         公開する
       </span>
       <div v-show="isPopupShown" class="popup">
@@ -107,7 +107,7 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "... ...            ...    ...       ... ...        ..."
-    "... public-stories drafts new-article ... post-story ..."
+    "... public-stories drafts new-article ... post-article ..."
     "... ...            ...    ...       ... ...        ...";
 }
 
@@ -141,11 +141,11 @@ export default {
   grid-area: new-article;
 }
 
-.area-post-story {
-  grid-area: post-story;
+.area-post-article {
+  grid-area: post-article;
   position: relative;
 
-  .post-story {
+  .post-article {
     cursor: pointer;
     user-select: none;
   }
