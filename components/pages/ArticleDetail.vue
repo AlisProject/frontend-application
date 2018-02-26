@@ -11,7 +11,7 @@
       <author-info :story="story"/>
       <article-comments :comments="story.comments"/>
     </div>
-    <related-stories :stories="story.relatedStories"/>
+    <related-articles :stories="story.relatedStories"/>
     <app-footer/>
   </div>
 </template>
@@ -23,7 +23,7 @@ import ArticleSideActions from '../atoms/ArticleSideActions'
 import AuthorInfo from '../atoms/AuthorInfo'
 import ArticleTags from '../atoms/ArticleTags'
 import ArticleComments from '../organisms/ArticleComments'
-import RelatedStories from '../organisms/RelatedStories'
+import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
@@ -34,7 +34,7 @@ export default {
     AuthorInfo,
     ArticleTags,
     ArticleComments,
-    RelatedStories,
+    RelatedArticles,
     AppFooter
   },
   props: ['story']
