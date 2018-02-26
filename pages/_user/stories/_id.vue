@@ -1,14 +1,14 @@
 <template>
-  <story :story="this.$store.state.story.story"/>
+  <article-detail :story="this.$store.state.story.story"/>
 </template>
 
 <script>
-import Story from '~/components/pages/Story'
+import ArticleDetail from '~/components/pages/ArticleDetail'
 import * as types from '~/store/mutation-types'
 
 export default {
   components: {
-    Story
+    ArticleDetail
   },
   async fetch({ store, params }) {
     const { story_id: storyId, user_id: userId } = params
