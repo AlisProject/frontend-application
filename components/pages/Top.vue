@@ -1,7 +1,7 @@
 <template>
   <div class="top-container">
     <app-header showDefaultHeaderNav class="popular-articles logo-white"/>
-    <article-card-list :stories="stories"/>
+    <article-card-list :articles="articles"/>
     <app-footer/>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      stories: 'story/allStories'
+      articles: 'article/allArticles'
     })
   }
 }

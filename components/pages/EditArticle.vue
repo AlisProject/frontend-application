@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header showEditHeaderNav showPostStoryLink class="logo-original"/>
-    <editor :title="title" :body="body" :tags="this.$store.state.story.tags"/>
+    <editor :title="title" :body="body" :tags="this.$store.state.article.tags"/>
     <app-footer/>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('story', ['title', 'body'])
+    ...mapGetters('article', ['title', 'body'])
   }
 }
 </script>

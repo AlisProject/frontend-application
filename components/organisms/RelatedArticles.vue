@@ -1,9 +1,9 @@
 <template>
   <div class="area-related-articles">
     <article-card
-      v-for="story in stories"
-      :story="story"
-      :key="story.id"
+      v-for="article in articles"
+      :article="article"
+      :key="article.id"
       class="article-card"
     />
   </div>
@@ -16,7 +16,7 @@ export default {
   components: {
     ArticleCard
   },
-  props: ['stories']
+  props: ['articles']
 }
 </script>
 

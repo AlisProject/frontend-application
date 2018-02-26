@@ -11,16 +11,16 @@ export default {
     Top
   },
   async fetch({ store }) {
-    await store.dispatch('story/getAllStories')
-    await store.dispatch('story/getUserInfos', { stories: store.state.story.stories })
-    await store.dispatch('story/getAlisTokens', { stories: store.state.story.stories })
-    store.commit('story/' + types.SET_USER_INFO_TO_STORIES, {
-      stories: store.state.story.stories,
-      userInfos: store.state.story.userInfos
+    await store.dispatch('article/getAllArticles')
+    await store.dispatch('article/getUserInfos', { articles: store.state.article.articles })
+    await store.dispatch('article/getAlisTokens', { articles: store.state.article.articles })
+    store.commit('article/' + types.SET_USER_INFO_TO_STORIES, {
+      articles: store.state.article.articles,
+      userInfos: store.state.article.userInfos
     })
-    store.commit('story/' + types.SET_ALIS_TOKEN_TO_STORIES, {
-      stories: store.state.story.stories,
-      alisTokens: store.state.story.alisTokens
+    store.commit('article/' + types.SET_ALIS_TOKEN_TO_STORIES, {
+      articles: store.state.article.articles,
+      alisTokens: store.state.article.alisTokens
     })
   }
 }

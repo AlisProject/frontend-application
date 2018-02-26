@@ -11,8 +11,8 @@ export default {
     EditArticle
   },
   async fetch({ store, params }) {
-    const { story_id: storyId } = params
-    await store.dispatch('story/getEditStory', { storyId })
+    const { article_id: articleId } = params
+    await store.dispatch('article/getEditArticle', { articleId })
   },
   head
 }

@@ -136,7 +136,7 @@ export default {
       const { id, value: name } = target
       this.updateTag({ id, name })
     },
-    ...mapMutations('story', {
+    ...mapMutations('article', {
       updateTitle: types.UPDATE_TITLE,
       updateBody: types.UPDATE_BODY,
       addTag: types.ADD_TAG,

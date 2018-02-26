@@ -1,7 +1,7 @@
 <template>
   <nav class="area-nav">
     <nuxt-link to="/" class="nav-link area-popular-articles">人気記事</nuxt-link>
-    <nuxt-link to="/stories/new" class="nav-link area-new-articles">新着記事</nuxt-link>
+    <nuxt-link to="/articles/new" class="nav-link area-new-articles">新着記事</nuxt-link>
   </nav>
 </template>
 

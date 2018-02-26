@@ -2,16 +2,16 @@
   <div class="article-container">
     <app-header showDefaultHeaderNav class="logo-original"/>
     <div class="area-article">
-      <h1 class="area-title">{{ story.title }}</h1>
+      <h1 class="area-title">{{ article.title }}</h1>
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">
-      <div class="area-content" v-html="story.body" />
-      <article-tags :tags="story.tags"/>
-      <article-footer-actions :likesCount="story.likesCount"/>
-      <article-side-actions :likesCount="story.likesCount"/>
-      <author-info :story="story"/>
-      <article-comments :comments="story.comments"/>
+      <div class="area-content" v-html="article.body" />
+      <article-tags :tags="article.tags"/>
+      <article-footer-actions :likesCount="article.likesCount"/>
+      <article-side-actions :likesCount="article.likesCount"/>
+      <author-info :article="article"/>
+      <article-comments :comments="article.comments"/>
     </div>
-    <related-articles :stories="story.relatedStories"/>
+    <related-articles :articles="article.relatedArticles"/>
     <app-footer/>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
     RelatedArticles,
     AppFooter
   },
-  props: ['story']
+  props: ['article']
 }
 </script>
 

@@ -1,10 +1,10 @@
 <template>
   <div class="area-article-card-content">
-    <article-card-content-title :title="story.title" />
+    <article-card-content-title :title="article.title" />
     <article-card-content-bookmark/>
-    <article-card-content-overview :overview="story.overview"/>
-    <article-card-content-data :story="story"/>
-    <article-card-content-token-amount :tokenAmount="story.alisToken"/>
+    <article-card-content-overview :overview="article.overview"/>
+    <article-card-content-data :article="article"/>
+    <article-card-content-token-amount :tokenAmount="article.alisToken"/>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ import ArticleCardContentData from '../molecules/ArticleCardContentData'
 import ArticleCardContentTokenAmount from '../atoms/ArticleCardContentTokenAmount'
 
 export default {
-  props: ['story'],
+  props: ['article'],
   components: {
     ArticleCardContentTitle,
     ArticleCardContentOverview,

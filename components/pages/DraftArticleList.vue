@@ -1,7 +1,7 @@
 <template>
   <div class="draft-article-list-container long-article-card">
     <app-header showEditHeaderNav class="drafts logo-original"/>
-    <article-card-list :stories="stories" class="draft" :linkTo="'edit'"/>
+    <article-card-list :articles="articles" class="draft" :linkTo="'edit'"/>
     <app-footer/>
   </div>
 </template>
@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      stories: 'story/draftStories'
+      articles: 'article/draftArticles'
     })
   }
 }

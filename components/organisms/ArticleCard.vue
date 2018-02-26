@@ -2,13 +2,13 @@
   <section>
     <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'edit'">
       <article-card-image/>
-      <article-card-content :story="story"/>
+      <article-card-content :article="article"/>
     </a>
     <nuxt-link :to="`${getLink}`" class="article-card-container" v-else>
       <article-card-image/>
       <!-- TODO: data属性からCSSに渡す -->
-      <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
-      <article-card-content :story="story"/>
+      <!-- <div class="image" :data-image-url="article.imageUrl"></div> -->
+      <article-card-content :article="article"/>
     </nuxt-link>
   </section>
 </template>
@@ -19,7 +19,7 @@ import ArticleCardContent from '../organisms/ArticleCardContent'
 
 export default {
   props: {
-    story: { type: Object },
+    article: { type: Object },
     linkTo: {
       type: String
     }
@@ -33,10 +33,10 @@ export default {
       let link = ''
       switch (this.linkTo) {
         case 'edit':
-          link = `/me/stories/edit/${this.story.story_id}`
+          link = `/me/articles/edit/${this.article.article_id}`
           break
         default:
-          link = `/${this.story.user_id}/stories/${this.story.story_id}`
+          link = `/${this.article.user_id}/articles/${this.article.article_id}`
       }
       return link
     }

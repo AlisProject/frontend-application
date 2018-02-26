@@ -1,9 +1,9 @@
 <template>
   <div class="area-article-card-list-container">
     <article-card
-      v-for="(story, i) in stories"
-      :story="story"
-      :key="story.id"
+      v-for="(article, i) in articles"
+      :article="article"
+      :key="article.id"
       :class="i === 0 ? 'long-article-card top' : null"
       :linkTo="linkTo"
     />
@@ -17,7 +17,7 @@ export default {
   components: {
     ArticleCard
   },
-  props: ['stories', 'linkTo']
+  props: ['articles', 'linkTo']
 }
 </script>
 
