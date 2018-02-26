@@ -29,12 +29,11 @@ export default {
     ...mapActions('article', ['postNewArticle']),
     postArticleAndReplaceUrl: async function() {
       if (location.pathname === '/me/articles/new') {
-        // const article = {
-        //   title: this.title,
-        //   body: this.body
-        // }
-        // await this.postNewArticle({ article })
-        await this.postNewArticle({})
+        const article = {
+          title: this.title,
+          body: this.body
+        }
+        await this.postNewArticle({ article })
 
         history.replaceState('', '', `/me/articles/edit/${this.articleId}`)
       }
