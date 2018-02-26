@@ -1,14 +1,14 @@
 <template>
-  <new-story-list/>
+  <new-article-list/>
 </template>
 
 <script>
-import NewStoryList from '~/components/pages/NewStoryList'
+import NewArticleList from '~/components/pages/NewArticleList'
 import * as types from '~/store/mutation-types'
 
 export default {
   components: {
-    NewStoryList
+    NewArticleList
   },
   async fetch({ store }) {
     await store.dispatch('story/getNewPagesStories')

@@ -1,14 +1,14 @@
 <template>
-  <public-story-list/>
+  <public-article-list/>
 </template>
 
 <script>
-import PublicStoryList from '~/components/pages/PublicStoryList'
+import PublicArticleList from '~/components/pages/PublicArticleList'
 import * as types from '~/store/mutation-types'
 
 export default {
   components: {
-    PublicStoryList
+    PublicArticleList
   },
   async fetch({ store }) {
     await store.dispatch('story/getPublicStories', { userId: '1' })
