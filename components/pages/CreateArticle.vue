@@ -27,16 +27,17 @@ export default {
   },
   methods: {
     ...mapActions('article', ['postNewArticle']),
-    postArticleAndReplaceUrl: async function() {
-      if (location.pathname === '/me/articles/new') {
-        const article = {
-          title: this.title,
-          body: this.body
-        }
-        await this.postNewArticle({ article })
-
-        history.replaceState('', '', `/me/articles/edit/${this.articleId}`)
+    async postArticleAndReplaceUrl() {
+      if (location.pathname !== '/me/articles/new') {
+        return
       }
+      const article = {
+        title: this.title,
+        body: this.body
+      }
+      await this.postNewArticle({ article })
+
+      history.replaceState('', '', `/me/articles/edit/${this.articleId}`)
     }
   },
   watch: {
