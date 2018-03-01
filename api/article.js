@@ -8,6 +8,10 @@ function sendPost(url, data) {
   return axios.post(url, data).then((response) => response.data)
 }
 
+function sendPut(url, data) {
+  return axios.put(url, data).then((response) => response.data)
+}
+
 export function getPopularArticles() {
   return sendGet('/articles/popular')
 }
@@ -38,4 +42,8 @@ export function getDraftArticlesByUserId({ userId }) {
 
 export function getAlisToken({ articleId }) {
   return axios.get(`/articles/${articleId}/alistoken`).then((response) => response.data)
+}
+
+export function putDraftArticle({ article, articleId }) {
+  return sendPut(`/me/articles/drafts/${articleId}`, article)
 }
