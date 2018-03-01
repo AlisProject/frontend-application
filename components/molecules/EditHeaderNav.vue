@@ -3,7 +3,7 @@
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/articles/new" class="nav-link area-new-article">新規作成</a>
-    <div class="area-post-article" v-show="showPostStoryLink">
+    <div class="area-post-article" v-show="showPostArticleLink">
       <span class="nav-link post-article" @click="togglePopup">
         公開する
       </span>
@@ -39,7 +39,7 @@ export default {
     }
   },
   props: {
-    showPostStoryLink: {
+    showPostArticleLink: {
       type: Boolean,
       default: false
     }

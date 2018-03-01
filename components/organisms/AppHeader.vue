@@ -2,7 +2,7 @@
   <header class="area-app-header-container">
     <nuxt-link to="/" class="area-logo"/>
     <default-header-nav v-if="showDefaultHeaderNav"/>
-    <edit-header-nav v-if="showEditHeaderNav" :showPostStoryLink="showPostStoryLink"/>
+    <edit-header-nav v-if="showEditHeaderNav" :showPostArticleLink="showPostArticleLink"/>
     <header-session-links v-if="!this.$store.state.user.loggedIn"/>
     <header-user-logged-in-items v-if="this.$store.state.user.loggedIn"/>
   </header>
@@ -24,7 +24,7 @@ export default {
       type: Boolean,
       default: false
     },
-    showPostStoryLink: {
+    showPostArticleLink: {
       type: Boolean,
       default: false
     }

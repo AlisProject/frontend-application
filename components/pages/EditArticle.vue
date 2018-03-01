@@ -1,6 +1,6 @@
 <template>
   <div class="edit-article-container">
-    <app-header showEditHeaderNav showPostStoryLink class="logo-original"/>
+    <app-header showEditHeaderNav showPostArticleLink class="logo-original"/>
     <editor :title="title" :body="body" :tags="this.$store.state.article.tags"/>
     <app-footer/>
   </div>

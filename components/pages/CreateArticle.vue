@@ -1,6 +1,6 @@
 <template>
   <div class="create-article-container">
-    <app-header showEditHeaderNav showPostStoryLink class="drafts logo-original"/>
+    <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
     <editor :tags="this.$store.state.article.tags"/>
     <app-footer/>
   </div>
