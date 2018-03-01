@@ -17,13 +17,13 @@ export default {
     await store.dispatch('article/getLikesCountOfArticle', { articleId })
     await store.dispatch('article/getAlisToken', { articleId })
     const { userInfo, likesCount, alisToken } = store.state.article
-    store.commit(`article/${types.SET_USER_INFO_TO_STORY}`, {
+    store.commit(`article/${types.SET_USER_INFO_TO_ARTICLE}`, {
       userInfo
     })
-    store.commit(`article/${types.SET_LIKES_COUNT_TO_STORY}`, {
+    store.commit(`article/${types.SET_LIKES_COUNT_TO_ARTICLE}`, {
       likesCount
     })
-    store.commit(`article/${types.SET_ALIS_TOKEN_TO_STORY}`, {
+    store.commit(`article/${types.SET_ALIS_TOKEN_TO_ARTICLE}`, {
       alisToken
     })
   }

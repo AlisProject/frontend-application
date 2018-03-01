@@ -53,11 +53,11 @@ const getters = {
 const actions = {
   async getAllArticles({ commit }) {
     const articles = await getPopularArticles()
-    commit(types.SET_STORIES, { articles })
+    commit(types.SET_ARTICLES, { articles })
   },
   async getNewPagesArticles({ commit }) {
     const articles = await getNewArticles()
-    commit(types.SET_NEW_STORIES, { articles })
+    commit(types.SET_NEW_ARTICLES, { articles })
   },
   async getUserInfo({ commit }, { userId }) {
     const userInfo = await getUserInfo({ userId })
@@ -83,15 +83,15 @@ const actions = {
   },
   async getEditArticle({ commit }, { articleId }) {
     const article = await getArticle({ articleId })
-    commit(types.SET_STORY, { article })
+    commit(types.SET_ARTICLE, { article })
   },
   async getArticleDetail({ commit }, { articleId }) {
     const article = await getArticle({ articleId })
-    commit(types.SET_STORY_DETAIL, { article })
+    commit(types.SET_ARTICLE_DETAIL, { article })
   },
   async postNewArticle({ commit }, { article }) {
     const { article_id: articleId } = await postArticle({ article })
-    commit(types.SET_STORY_ID, { articleId })
+    commit(types.SET_ARTICLE_ID, { articleId })
   },
   async getLikesCountOfArticle({ commit }, { articleId }) {
     const { likes_count: likesCount } = await getLikesCount({ articleId })
@@ -99,19 +99,19 @@ const actions = {
   },
   async getPublicArticles({ commit }, { userId }) {
     const articles = await getPublicArticlesByUserId({ userId })
-    commit(types.SET_PUBLIC_STORIES, { articles })
+    commit(types.SET_PUBLIC_ARTICLES, { articles })
   },
   async getDraftArticles({ commit }, { userId }) {
     const articles = await getDraftArticlesByUserId({ userId })
-    commit(types.SET_DRAFT_STORIES, { articles })
+    commit(types.SET_DRAFT_ARTICLES, { articles })
   }
 }
 
 const mutations = {
-  [types.SET_STORIES](state, { articles }) {
+  [types.SET_ARTICLES](state, { articles }) {
     state.articles = articles
   },
-  [types.SET_NEW_STORIES](state, { articles }) {
+  [types.SET_NEW_ARTICLES](state, { articles }) {
     state.newArticles = articles
   },
   [types.SET_USER_INFO](state, { userInfo }) {
@@ -120,16 +120,16 @@ const mutations = {
   [types.SET_USER_INFOS](state, { userInfos }) {
     state.userInfos = userInfos
   },
-  [types.SET_USER_INFO_TO_STORY](state, { userInfo }) {
+  [types.SET_USER_INFO_TO_ARTICLE](state, { userInfo }) {
     state.article.user = userInfo
   },
   [types.SET_LIKES_COUNT](state, { likesCount }) {
     state.likesCount = likesCount
   },
-  [types.SET_LIKES_COUNT_TO_STORY](state, { likesCount }) {
+  [types.SET_LIKES_COUNT_TO_ARTICLE](state, { likesCount }) {
     state.article.likesCount = likesCount
   },
-  [types.SET_USER_INFO_TO_STORIES](state, { articles, userInfos, type = 'default' }) {
+  [types.SET_USER_INFO_TO_ARTICLES](state, { articles, userInfos, type = 'default' }) {
     for (let i = 0; i < articles.length; i++) {
       articles[i].user = userInfos[i]
     }
@@ -151,13 +151,13 @@ const mutations = {
   [types.SET_ALIS_TOKEN](state, { alisToken }) {
     state.alisToken = alisToken
   },
-  [types.SET_ALIS_TOKEN_TO_STORY](state, { alisToken }) {
+  [types.SET_ALIS_TOKEN_TO_ARTICLE](state, { alisToken }) {
     state.article.alisToken = alisToken
   },
   [types.SET_ALIS_TOKENS](state, { alisTokens }) {
     state.alisTokens = alisTokens
   },
-  [types.SET_ALIS_TOKEN_TO_STORIES](state, { articles, alisTokens, type = 'default' }) {
+  [types.SET_ALIS_TOKEN_TO_ARTICLES](state, { articles, alisTokens, type = 'default' }) {
     for (let i = 0; i < articles.length; i++) {
       articles[i].alisToken = alisTokens[i].alistoken
     }
@@ -176,20 +176,20 @@ const mutations = {
         break
     }
   },
-  [types.SET_STORY](state, { article }) {
+  [types.SET_ARTICLE](state, { article }) {
     state.title = article.title
     state.body = article.body
   },
-  [types.SET_STORY_ID](state, { articleId }) {
+  [types.SET_ARTICLE_ID](state, { articleId }) {
     state.articleId = articleId
   },
-  [types.SET_STORY_DETAIL](state, { article }) {
+  [types.SET_ARTICLE_DETAIL](state, { article }) {
     state.article = article
   },
-  [types.SET_PUBLIC_STORIES](state, { articles }) {
+  [types.SET_PUBLIC_ARTICLES](state, { articles }) {
     state.publicArticles = articles
   },
-  [types.SET_DRAFT_STORIES](state, { articles }) {
+  [types.SET_DRAFT_ARTICLES](state, { articles }) {
     state.draftArticles = articles
   },
   [types.UPDATE_TITLE](state, { title }) {

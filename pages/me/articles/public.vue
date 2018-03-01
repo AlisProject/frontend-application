@@ -16,12 +16,12 @@ export default {
     await store.dispatch('article/getUserInfos', { articles: publicArticles })
     await store.dispatch('article/getAlisTokens', { articles: publicArticles })
     const { userInfos, alisTokens } = store.state.article
-    store.commit(`article/${types.SET_USER_INFO_TO_STORIES}`, {
+    store.commit(`article/${types.SET_USER_INFO_TO_ARTICLES}`, {
       articles: publicArticles,
       userInfos,
       type: 'public'
     })
-    store.commit(`article/${types.SET_ALIS_TOKEN_TO_STORIES}`, {
+    store.commit(`article/${types.SET_ALIS_TOKEN_TO_ARTICLES}`, {
       articles: publicArticles,
       alisTokens,
       type: 'public'
