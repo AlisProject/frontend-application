@@ -37,7 +37,7 @@ export default {
       }
       await this.postNewArticle({ article })
 
-      history.replaceState('', '', `/me/articles/edit/${this.articleId}`)
+      history.replaceState('', '', `/me/articles/draft/${this.articleId}/edit`)
     }
   },
   watch: {
