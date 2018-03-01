@@ -47,7 +47,8 @@ const getters = {
   articleId: (state) => state.articleId,
   title: (state) => state.title,
   body: (state) => state.body,
-  suggestedThumbnails: (state) => state.suggestedThumbnails
+  suggestedThumbnails: (state) => state.suggestedThumbnails,
+  thumbnail: (state) => state.thumbnail
 }
 
 const actions = {

@@ -47,3 +47,7 @@ export function getAlisToken({ articleId }) {
 export function putDraftArticle({ article, articleId }) {
   return sendPut(`/me/articles/drafts/${articleId}`, article)
 }
+
+export function publishDraftArticle({ article, articleId }) {
+  return sendPut(`/me/articles/drafts/${articleId}/publish`, article)
+}

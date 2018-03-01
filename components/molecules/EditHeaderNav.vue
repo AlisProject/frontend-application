@@ -21,7 +21,7 @@
             class="thumbnail"/>
         </div>
         <hr class="hr">
-        <button class="submit">公開する</button>
+        <button class="submit" @click="publish">公開する</button>
       </div>
     </div>
   </nav>
@@ -29,6 +29,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import { publishDraftArticle } from '~/api/article'
 import * as types from '~/store/mutation-types'
 
 export default {
@@ -59,6 +60,21 @@ export default {
     }
   },
   methods: {
+    async publish() {
+      const article = {
+        overview: this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, ''),
+        eye_catch_url: this.thumbnail
+      }
+      const { id: articleId } = this.$route.params
+
+      await publishDraftArticle({ article, articleId })
+        .then(() => {
+          this.$router.push(`/user_id/articles/${articleId}`)
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+    },
     togglePopup() {
       this.isPopupShown = !this.isPopupShown
     },
@@ -89,9 +105,7 @@ export default {
     })
   },
   computed: {
-    ...mapGetters({
-      suggestedThumbnails: 'article/suggestedThumbnails'
-    })
+    ...mapGetters('article', ['body', 'thumbnail', 'suggestedThumbnails'])
   }
 }
 </script>
