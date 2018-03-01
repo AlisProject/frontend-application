@@ -1,6 +1,6 @@
 <template>
   <section>
-    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'edit'">
+    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'public' || linkTo === 'draft'">
       <article-card-image/>
       <article-card-content :article="article"/>
     </a>
@@ -32,8 +32,11 @@ export default {
     getLink() {
       let link = ''
       switch (this.linkTo) {
-        case 'edit':
+        case 'public':
           link = `/me/articles/public/${this.article.article_id}`
+          break
+        case 'draft':
+          link = `/me/articles/draft/${this.article.article_id}/edit`
           break
         default:
           link = `/${this.article.user_id}/articles/${this.article.article_id}`
