@@ -11,7 +11,7 @@ export default {
     ArticleDetail
   },
   async fetch({ store, params }) {
-    const { article_id: articleId, user_id: userId } = params
+    const { id: articleId, user: userId } = params
     await store.dispatch('article/getArticleDetail', { articleId })
     await store.dispatch('article/getUserInfo', { userId })
     await store.dispatch('article/getLikesCountOfArticle', { articleId })
