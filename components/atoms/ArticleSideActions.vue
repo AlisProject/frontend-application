@@ -48,7 +48,7 @@ export default {
   }
 
   .like {
-    background: url('~assets/images/pc/story/icon_heart.png') no-repeat;
+    background: url('~assets/images/pc/article/icon_heart.png') no-repeat;
     background-color: #ff4949;
     background-size: 30px;
     background-position: 16px 20px;
@@ -68,14 +68,14 @@ export default {
   }
 
   .twitter {
-    background: url('~assets/images/pc/story/icon_twitter.png') no-repeat;
+    background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
     background-color: white;
     background-size: 26px;
     background-position: 9px 11px;
   }
 
   .bookmark {
-    background: url('~assets/images/pc/story/icon_bookmark.png') no-repeat;
+    background: url('~assets/images/pc/article/icon_bookmark.png') no-repeat;
     background-color: white;
     background-size: 14px;
     background-position: 13px 9px;
