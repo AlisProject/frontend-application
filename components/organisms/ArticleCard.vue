@@ -33,7 +33,7 @@ export default {
       let link = ''
       switch (this.linkTo) {
         case 'edit':
-          link = `/me/articles/edit/${this.article.article_id}`
+          link = `/me/articles/public/${this.article.article_id}`
           break
         default:
           link = `/${this.article.user_id}/articles/${this.article.article_id}`

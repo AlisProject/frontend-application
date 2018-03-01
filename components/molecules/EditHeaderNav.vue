@@ -3,6 +3,11 @@
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/articles/new" class="nav-link area-new-article">新規作成</a>
+    <div class="area-post-article" v-show="showEditArticleLink">
+      <a :href="`/me/articles/public/${this.$route.params.articleId}/edit`" class="nav-link post-article">
+        編集する
+      </a>
+    </div>
     <div class="area-post-article" v-show="showPostArticleLink">
       <span class="nav-link post-article" @click="togglePopup">
         公開する
@@ -41,6 +46,10 @@ export default {
   },
   props: {
     showPostArticleLink: {
+      type: Boolean,
+      default: false
+    },
+    showEditArticleLink: {
       type: Boolean,
       default: false
     }
