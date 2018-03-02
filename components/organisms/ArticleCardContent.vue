@@ -16,7 +16,12 @@ import ArticleCardContentData from '../molecules/ArticleCardContentData'
 import ArticleCardContentTokenAmount from '../atoms/ArticleCardContentTokenAmount'
 
 export default {
-  props: ['article'],
+  props: {
+    article: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     ArticleCardContentTitle,
     ArticleCardContentOverview,

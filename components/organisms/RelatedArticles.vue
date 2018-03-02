@@ -16,7 +16,11 @@ export default {
   components: {
     ArticleCard
   },
-  props: ['articles']
+  props: {
+    articles: {
+      type: Array
+    }
+  }
 }
 </script>
 

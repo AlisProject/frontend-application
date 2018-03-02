@@ -19,7 +19,9 @@ import ArticleCardContent from '../organisms/ArticleCardContent'
 
 export default {
   props: {
-    article: { type: Object },
+    article: {
+      type: Object
+    },
     linkTo: {
       type: String
     }
