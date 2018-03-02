@@ -12,7 +12,7 @@ export default {
   },
   async fetch({ store, params }) {
     const { articleId } = params
-    await store.dispatch('article/getEditArticle', { articleId })
+    await store.dispatch('article/getEditPublicArticleDetail', { articleId })
   },
   head
 }

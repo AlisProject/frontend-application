@@ -7,7 +7,9 @@ import {
   getPublicArticlesByUserId,
   getDraftArticlesByUserId,
   getAlisToken,
-  getDraftArticle
+  getDraftArticle,
+  getPublicArticle,
+  getEditPublicArticle
 } from '~/api/article'
 import { getUserInfo } from '~/api/user'
 import * as types from '../mutation-types'
@@ -94,6 +96,14 @@ const actions = {
   async getArticleDetail({ commit }, { articleId }) {
     const article = await getArticle({ articleId })
     commit(types.SET_ARTICLE_DETAIL, { article })
+  },
+  async getPublicArticleDetail({ commit }, { articleId }) {
+    const article = await getPublicArticle({ articleId })
+    commit(types.SET_ARTICLE_DETAIL, { article })
+  },
+  async getEditPublicArticleDetail({ commit }, { articleId }) {
+    const article = await getEditPublicArticle({ articleId })
+    commit(types.SET_ARTICLE, { article })
   },
   async postNewArticle({ commit }, { article }) {
     const { article_id: articleId } = await postArticle({ article })

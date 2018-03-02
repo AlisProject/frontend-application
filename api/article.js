@@ -55,3 +55,11 @@ export function putDraftArticle({ article, articleId }) {
 export function publishDraftArticle({ article, articleId }) {
   return sendPut(`/me/articles/drafts/${articleId}/publish`, article)
 }
+
+export function getPublicArticle({ articleId }) {
+  return sendGet(`/me/articles/public/${articleId}`)
+}
+
+export function getEditPublicArticle({ articleId }) {
+  return sendGet(`/me/articles/public/${articleId}/edit`)
+}
