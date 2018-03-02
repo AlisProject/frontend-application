@@ -37,7 +37,12 @@ export default {
     RelatedArticles,
     AppFooter
   },
-  props: ['article']
+  props: {
+    article: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 
