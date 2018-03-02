@@ -76,13 +76,12 @@ export default {
       }
       const { id: articleId } = this.$route.params
 
-      await publishDraftArticle({ article, articleId })
-        .then(() => {
-          this.$router.push(`/user_id/articles/${articleId}`)
-        })
-        .catch((e) => {
-          console.error(e)
-        })
+      try {
+        await publishDraftArticle({ article, articleId })
+        this.$router.push(`/user_id/articles/${articleId}`)
+      } catch (e) {
+        console.error(e)
+      }
     },
     togglePopup() {
       this.isPopupShown = !this.isPopupShown

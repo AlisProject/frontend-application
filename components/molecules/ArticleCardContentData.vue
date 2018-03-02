@@ -12,7 +12,12 @@ import ArticleCardContentDataUsername from '../atoms/ArticleCardContentDataUsern
 import ArticleCardContentDataCreatedAt from '../atoms/ArticleCardContentDataCreatedAt'
 
 export default {
-  props: ['article'],
+  props: {
+    article: {
+      type: Object,
+      required: true
+    }
+  },
   components: {
     ArticleCardContentDataProfileIcon,
     ArticleCardContentDataUsername,
