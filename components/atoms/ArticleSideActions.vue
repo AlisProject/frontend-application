@@ -17,7 +17,7 @@ export default {
       type: Number,
       required: true
     }
-  }
+  },
   data() {
     return {
       scrollY: 0

@@ -14,7 +14,7 @@ export default {
     }
   },
   computed: {
-    imageCaption () {
+    imageCaption() {
       return `${this.user.user_display_name}'s icon'`
     }
   }
