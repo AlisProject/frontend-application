@@ -13,9 +13,15 @@
 
 <script>
 export default {
-  props: ['article'],
+  props: {
+    article: {
+      type: Object,
+      required: true
+    }
+  },
   computed: {
     formettedCreatedAt() {
+      // Recommened: Migrate to moment.js
       return new Date(this.article.created_at).toLocaleDateString('ja')
     }
   }

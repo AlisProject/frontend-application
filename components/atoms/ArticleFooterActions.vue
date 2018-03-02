@@ -11,7 +11,12 @@
 
 <script>
 export default {
-  props: ['likesCount']
+  props: {
+    likesCount: {
+      type: Number,
+      required: true
+    }
+  }
 }
 </script>
 

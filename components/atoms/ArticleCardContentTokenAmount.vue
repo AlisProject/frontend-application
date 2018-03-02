@@ -4,7 +4,11 @@
 
 <script>
 export default {
-  props: ['tokenAmount'],
+  props: {
+    tokenAmount: {
+      type: Number
+    }
+  },
   computed: {
     formattedTokenAmount() {
       return this.tokenAmount > 999 ? (this.tokenAmount / 1000).toFixed(2) + 'k' : this.tokenAmount

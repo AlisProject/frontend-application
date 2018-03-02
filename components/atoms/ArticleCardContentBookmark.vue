@@ -1,5 +1,5 @@
 <template>
-  <div class="bookmark"></div>
+  <div class="bookmark" />
 </template>
 
 <style lang="scss" scoped>

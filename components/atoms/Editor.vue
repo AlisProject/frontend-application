@@ -113,7 +113,7 @@ export default {
     },
     matchAll(str, regexp) {
       const matches = []
-      str.replace(regexp, function() {
+      str.replace(regexp, () => {
         const arr = [].slice.call(arguments, 0)
         const extras = arr.splice(-2)
         arr.index = extras[0]
@@ -123,14 +123,13 @@ export default {
       return matches.length ? matches : null
     },
     addEmptyTag() {
-      if (this.tags.length < 5) {
-        this.addTag({
-          id: Math.random()
-            .toString(36)
-            .slice(-9),
-          name: ''
-        })
-      }
+      if (this.tags.length >= 5) return
+      this.addTag({
+        id: Math.random()
+          .toString(36)
+          .slice(-9),
+        name: ''
+      })
     },
     onInputTag({ target }) {
       const { id, value: name } = target

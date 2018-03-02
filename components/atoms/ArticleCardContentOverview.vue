@@ -6,7 +6,12 @@
 
 <script>
 export default {
-  props: ['overview']
+  props: {
+    overview: {
+      type: String,
+      required: false
+    }
+  }
 }
 </script>
 
