@@ -44,6 +44,10 @@ export function getAlisToken({ articleId }) {
   return axios.get(`/articles/${articleId}/alistoken`).then((response) => response.data)
 }
 
+export function getDraftArticle({ articleId }) {
+  return sendGet(`/me/articles/drafts/${articleId}`)
+}
+
 export function putDraftArticle({ article, articleId }) {
   return sendPut(`/me/articles/drafts/${articleId}`, article)
 }

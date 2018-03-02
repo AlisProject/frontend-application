@@ -6,7 +6,8 @@ import {
   getLikesCount,
   getPublicArticlesByUserId,
   getDraftArticlesByUserId,
-  getAlisToken
+  getAlisToken,
+  getDraftArticle
 } from '~/api/article'
 import { getUserInfo } from '~/api/user'
 import * as types from '../mutation-types'
@@ -84,6 +85,10 @@ const actions = {
   },
   async getEditArticle({ commit }, { articleId }) {
     const article = await getArticle({ articleId })
+    commit(types.SET_ARTICLE, { article })
+  },
+  async getEditDraftArticle({ commit }, { articleId }) {
+    const article = await getDraftArticle({ articleId })
     commit(types.SET_ARTICLE, { article })
   },
   async getArticleDetail({ commit }, { articleId }) {
