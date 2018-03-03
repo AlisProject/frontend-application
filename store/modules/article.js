@@ -1,16 +1,4 @@
-import {
-  getPopularArticles,
-  getNewArticles,
-  getArticle,
-  postArticle,
-  getLikesCount,
-  getPublicArticlesByUserId,
-  getDraftArticlesByUserId,
-  getAlisToken,
-  getDraftArticle,
-  getPublicArticle,
-  getEditPublicArticle
-} from '~/api/article'
+import * as articleApi from '~/api/article'
 import { getUserInfo } from '~/api/user'
 import * as types from '../mutation-types'
 
@@ -56,11 +44,11 @@ const getters = {
 
 const actions = {
   async getAllArticles({ commit }) {
-    const articles = await getPopularArticles()
+    const articles = await articleApi.getPopularArticles()
     commit(types.SET_ARTICLES, { articles })
   },
   async getNewPagesArticles({ commit }) {
-    const articles = await getNewArticles()
+    const articles = await articleApi.getNewArticles()
     commit(types.SET_NEW_ARTICLES, { articles })
   },
   async getUserInfo({ commit }, { userId }) {
@@ -75,50 +63,50 @@ const actions = {
     commit(types.SET_USER_INFOS, { userInfos })
   },
   async getAlisToken({ commit }, { articleId }) {
-    const { alistoken: alisToken } = await getAlisToken({ articleId })
+    const { alistoken: alisToken } = await articleApi.getAlisToken({ articleId })
     commit(types.SET_ALIS_TOKEN, { alisToken })
   },
   async getAlisTokens({ commit }, { articles }) {
     const alisTokens = []
     for (let i = 0; i < articles.length; i++) {
-      alisTokens.push(await getAlisToken({ articleId: articles[i].article_id }))
+      alisTokens.push(await articleApi.getAlisToken({ articleId: articles[i].article_id }))
     }
     commit(types.SET_ALIS_TOKENS, { alisTokens })
   },
   async getEditArticle({ commit }, { articleId }) {
-    const article = await getArticle({ articleId })
+    const article = await articleApi.getArticle({ articleId })
     commit(types.SET_ARTICLE, { article })
   },
   async getEditDraftArticle({ commit }, { articleId }) {
-    const article = await getDraftArticle({ articleId })
+    const article = await articleApi.getDraftArticle({ articleId })
     commit(types.SET_ARTICLE, { article })
   },
   async getArticleDetail({ commit }, { articleId }) {
-    const article = await getArticle({ articleId })
+    const article = await articleApi.getArticle({ articleId })
     commit(types.SET_ARTICLE_DETAIL, { article })
   },
   async getPublicArticleDetail({ commit }, { articleId }) {
-    const article = await getPublicArticle({ articleId })
+    const article = await articleApi.getPublicArticle({ articleId })
     commit(types.SET_ARTICLE_DETAIL, { article })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
-    const article = await getEditPublicArticle({ articleId })
+    const article = await articleApi.getEditPublicArticle({ articleId })
     commit(types.SET_ARTICLE, { article })
   },
   async postNewArticle({ commit }, { article }) {
-    const { article_id: articleId } = await postArticle({ article })
+    const { article_id: articleId } = await articleApi.postArticle({ article })
     commit(types.SET_ARTICLE_ID, { articleId })
   },
   async getLikesCountOfArticle({ commit }, { articleId }) {
-    const { likes_count: likesCount } = await getLikesCount({ articleId })
+    const { likes_count: likesCount } = await articleApi.getLikesCount({ articleId })
     commit(types.SET_LIKES_COUNT, { likesCount })
   },
   async getPublicArticles({ commit }, { userId }) {
-    const articles = await getPublicArticlesByUserId({ userId })
+    const articles = await articleApi.getPublicArticlesByUserId({ userId })
     commit(types.SET_PUBLIC_ARTICLES, { articles })
   },
   async getDraftArticles({ commit }, { userId }) {
-    const articles = await getDraftArticlesByUserId({ userId })
+    const articles = await articleApi.getDraftArticlesByUserId({ userId })
     commit(types.SET_DRAFT_ARTICLES, { articles })
   }
 }
