@@ -71,3 +71,7 @@ export function putPublicArticle({ article, articleId }) {
 export function publishPublicArticle({ article, articleId }) {
   return sendPut(`/me/articles/public/${articleId}/edit/publish`, article)
 }
+
+export function unpublishPublicArticle({ articleId }) {
+  return sendPut(`/me/articles/public/${articleId}/unpublish`)
+}

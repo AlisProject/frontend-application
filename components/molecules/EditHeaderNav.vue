@@ -7,6 +7,9 @@
       <a :href="`/me/articles/public/${this.$route.params.articleId}/edit`" class="nav-link post-article">
         編集する
       </a>
+      <span @click="unpublish" class="nav-link unpublish-article">
+        下書きに戻す
+      </span>
     </div>
     <div class="area-post-article" v-show="showPostArticleLink">
       <span class="nav-link post-article" @click="togglePopup">
@@ -34,7 +37,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { publishDraftArticle, publishPublicArticle } from '~/api/article'
+import { publishDraftArticle, publishPublicArticle, unpublishPublicArticle } from '~/api/article'
 import * as types from '~/store/mutation-types'
 
 export default {
@@ -69,6 +72,15 @@ export default {
     }
   },
   methods: {
+    async unpublish() {
+      const { articleId } = this.$route.params
+      try {
+        await unpublishPublicArticle({ articleId })
+        this.$router.push('/me/articles/public')
+      } catch (e) {
+        console.error(e)
+      }
+    },
     async publish() {
       const article = {
         overview: this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, ''),
@@ -128,13 +140,13 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 30px 1fr;
-  grid-template-columns: 1fr 70px 70px 70px 1fr 60px 1fr;
+  grid-template-columns: 1fr 70px 70px 70px 1fr 160px 1fr;
   grid-column-gap: 10px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...            ...    ...       ... ...        ..."
+    "... ...             ...    ...         ... ...          ..."
     "... public-articles drafts new-article ... post-article ..."
-    "... ...            ...    ...       ... ...        ...";
+    "... ...             ...    ...         ... ...          ...";
 }
 
 .nav-link {
@@ -174,6 +186,12 @@ export default {
   .post-article {
     cursor: pointer;
     user-select: none;
+    display: inline-block;
+  }
+
+  .unpublish-article {
+    cursor: pointer;
+    margin-left: 1em;
   }
 
   .popup {
