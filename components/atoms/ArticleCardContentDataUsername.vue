@@ -4,7 +4,12 @@
 
 <script>
 export default {
-  props: ['username']
+  props: {
+    username: {
+      type: String,
+      required: false
+    }
+  }
 }
 </script>
 

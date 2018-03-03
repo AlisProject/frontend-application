@@ -12,11 +12,20 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
-  props: ['article'],
+  props: {
+    article: {
+      type: Object,
+      required: true
+    }
+  },
   computed: {
     formettedCreatedAt() {
-      return new Date(this.article.created_at).toLocaleDateString('ja')
+      return moment(this.article.created_at)
+        .locale('ja')
+        .format('L')
     }
   }
 }

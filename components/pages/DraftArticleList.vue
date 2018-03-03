@@ -19,8 +19,8 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters({
-      articles: 'article/draftArticles'
+    ...mapGetters('article', {
+      articles: 'draftArticles'
     })
   }
 }

@@ -19,8 +19,8 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters({
-      articles: 'article/publicArticles'
+    ...mapGetters('article', {
+      articles: 'publicArticles'
     })
   }
 }

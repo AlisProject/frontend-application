@@ -19,7 +19,12 @@ export default {
     AppHeader,
     AppFooter
   },
-  props: ['article']
+  props: {
+    article: {
+      type: Object,
+      required: true
+    }
+  }
 }
 </script>
 

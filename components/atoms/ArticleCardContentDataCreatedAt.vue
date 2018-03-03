@@ -3,11 +3,15 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: ['createdAt'],
   computed: {
     formettedCreatedAt() {
-      return new Date(this.createdAt).toLocaleDateString('ja')
+      return moment(this.created_at)
+        .locale('ja')
+        .format('L')
     }
   }
 }

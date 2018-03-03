@@ -14,7 +14,12 @@ export default {
   components: {
     ArticleComment
   },
-  props: ['comments']
+  props: {
+    comments: {
+      type: Array,
+      required: true
+    }
+  }
 }
 </script>
 

@@ -2,12 +2,22 @@
   <img
     class="area-profile-icon"
     :src="user.icon_image_url"
-    :alt="`${user.user_display_name}'s icon'`">
+    :alt="imageCaption">
 </template>
 
 <script>
 export default {
-  props: ['user']
+  props: {
+    user: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    imageCaption() {
+      return `${this.user.user_display_name}'s icon'`
+    }
+  }
 }
 </script>
 

@@ -21,11 +21,7 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters({
-      articleId: 'article/articleId',
-      title: 'article/title',
-      body: 'article/body'
-    }),
+    ...mapGetters('article', ['articleId', 'title', 'body']),
     saveStatus() {
       if (this.isSaved) {
         return 'Saved'
