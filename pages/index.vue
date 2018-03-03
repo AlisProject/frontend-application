@@ -1,14 +1,14 @@
 <template>
-  <top/>
+  <top-page/>
 </template>
 
 <script>
-import Top from '~/components/pages/Top'
+import TopPage from '~/components/pages/TopPage'
 import * as types from '~/store/mutation-types'
 
 export default {
   components: {
-    Top
+    TopPage
   },
   async fetch({ store }) {
     await store.dispatch('article/getAllArticles')

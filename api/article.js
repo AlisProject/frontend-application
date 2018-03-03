@@ -44,10 +44,34 @@ export function getAlisToken({ articleId }) {
   return axios.get(`/articles/${articleId}/alistoken`).then((response) => response.data)
 }
 
+export function getDraftArticle({ articleId }) {
+  return sendGet(`/me/articles/drafts/${articleId}`)
+}
+
 export function putDraftArticle({ article, articleId }) {
   return sendPut(`/me/articles/drafts/${articleId}`, article)
 }
 
 export function publishDraftArticle({ article, articleId }) {
   return sendPut(`/me/articles/drafts/${articleId}/publish`, article)
+}
+
+export function getPublicArticle({ articleId }) {
+  return sendGet(`/me/articles/public/${articleId}`)
+}
+
+export function getEditPublicArticle({ articleId }) {
+  return sendGet(`/me/articles/public/${articleId}/edit`)
+}
+
+export function putPublicArticle({ article, articleId }) {
+  return sendPut(`/me/articles/public/${articleId}/edit`, article)
+}
+
+export function publishPublicArticle({ article, articleId }) {
+  return sendPut(`/me/articles/public/${articleId}/edit/publish`, article)
+}
+
+export function unpublishPublicArticle({ articleId }) {
+  return sendPut(`/me/articles/public/${articleId}/unpublish`)
 }

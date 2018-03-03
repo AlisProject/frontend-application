@@ -1,47 +1,76 @@
 <template>
   <div class="create-article-container">
+    <span>{{ this.saveStatus }}</span>
     <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
-    <editor :tags="this.$store.state.article.tags"/>
+    <article-editor :tags="this.$store.state.article.tags"/>
     <app-footer/>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash.debounce'
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
-import Editor from '../atoms/Editor'
+import ArticleEditor from '../atoms/ArticleEditor'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
-    Editor,
+    ArticleEditor,
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'title', 'body'])
+    ...mapGetters('article', ['articleId', 'title', 'body']),
+    saveStatus() {
+      if (this.isSaved) {
+        return 'Saved'
+      } else if (this.isSaving) {
+        return 'Saving...'
+      } else {
+        return ''
+      }
+    }
+  },
+  data() {
+    return {
+      isPosted: false,
+      isSaving: false,
+      isSaved: false
+    }
   },
   methods: {
-    ...mapActions('article', ['postNewArticle']),
-    async postArticleAndReplaceUrl() {
-      if (location.pathname !== '/me/articles/new') {
-        return
-      }
+    ...mapActions('article', ['postNewArticle', 'putDraftArticle']),
+    postOrPutArticle: debounce(async function() {
       const article = {
         title: this.title,
         body: this.body
       }
-      await this.postNewArticle({ article })
-
-      history.replaceState('', '', `/me/articles/draft/${this.articleId}/edit`)
-    }
+      this.isSaving = true
+      if (this.isPosted) {
+        await this.putDraftArticle({ article, articleId: this.articleId })
+        this.isSaved = true
+      } else {
+        try {
+          await this.postNewArticle({ article })
+          this.isSaved = true
+          this.isPosted = true
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    }, 500)
   },
   watch: {
     title(newTitle, oldTitle) {
-      this.postArticleAndReplaceUrl()
+      this.isSaved = false
+      this.isSaving = false
+      this.postOrPutArticle()
     },
     body(newBody, oldBody) {
-      this.postArticleAndReplaceUrl()
+      this.isSaved = false
+      this.isSaving = false
+      this.postOrPutArticle()
     }
   }
 }

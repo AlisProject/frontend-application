@@ -1,18 +1,18 @@
 <template>
-  <edit-article/>
+  <edit-public-article/>
 </template>
 
 <script>
-import EditArticle from '~/components/pages/EditArticle'
+import EditPublicArticle from '~/components/pages/EditPublicArticle'
 import head from '~/utils/editor-head'
 
 export default {
   components: {
-    EditArticle
+    EditPublicArticle
   },
   async fetch({ store, params }) {
     const { articleId } = params
-    await store.dispatch('article/getEditArticle', { articleId })
+    await store.dispatch('article/getEditPublicArticleDetail', { articleId })
   },
   head
 }
