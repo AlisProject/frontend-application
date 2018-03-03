@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="logo-original"/>
-    <editor :title="title" :body="body" :tags="this.$store.state.article.tags"/>
+    <article-editor :title="title" :body="body" :tags="this.$store.state.article.tags"/>
     <app-footer/>
   </div>
 </template>
@@ -10,13 +10,13 @@
 import { mapGetters } from 'vuex'
 import { putPublicArticle } from '~/api/article'
 import AppHeader from '../organisms/AppHeader'
-import Editor from '../atoms/Editor'
+import ArticleEditor from '../atoms/ArticleEditor'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
-    Editor,
+    ArticleEditor,
     AppFooter
   },
   computed: {

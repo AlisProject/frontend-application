@@ -2,7 +2,7 @@
   <div class="create-article-container">
     <span>{{ this.saveStatus }}</span>
     <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
-    <editor :tags="this.$store.state.article.tags"/>
+    <article-editor :tags="this.$store.state.article.tags"/>
     <app-footer/>
   </div>
 </template>
@@ -11,13 +11,13 @@
 import debounce from 'lodash.debounce'
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
-import Editor from '../atoms/Editor'
+import ArticleEditor from '../atoms/ArticleEditor'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
-    Editor,
+    ArticleEditor,
     AppFooter
   },
   computed: {
