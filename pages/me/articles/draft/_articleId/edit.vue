@@ -1,14 +1,14 @@
 <template>
-  <edit-article/>
+  <edit-draft-article/>
 </template>
 
 <script>
-import EditArticle from '~/components/pages/EditArticle'
+import EditDraftArticle from '~/components/pages/EditDraftArticle'
 import head from '~/utils/editor-head'
 
 export default {
   components: {
-    EditArticle
+    EditDraftArticle
   },
   async fetch({ store, params }) {
     const { articleId } = params

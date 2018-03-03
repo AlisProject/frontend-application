@@ -8,7 +8,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { putDraftArticle } from '~/api/article'
+import { putPublicArticle } from '~/api/article'
 import AppHeader from '../organisms/AppHeader'
 import Editor from '../atoms/Editor'
 import AppFooter from '../organisms/AppFooter'
@@ -28,8 +28,8 @@ export default {
         title: this.title,
         body: this.body
       }
-      const { id: articleId } = this.$route.params
-      await putDraftArticle({ article, articleId })
+      const { articleId } = this.$route.params
+      await putPublicArticle({ article, articleId })
     }
   },
   watch: {

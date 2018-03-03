@@ -63,3 +63,11 @@ export function getPublicArticle({ articleId }) {
 export function getEditPublicArticle({ articleId }) {
   return sendGet(`/me/articles/public/${articleId}/edit`)
 }
+
+export function putPublicArticle({ article, articleId }) {
+  return sendPut(`/me/articles/public/${articleId}/edit`, article)
+}
+
+export function publishPublicArticle({ article, articleId }) {
+  return sendPut(`/me/articles/public/${articleId}/edit/publish`, article)
+}

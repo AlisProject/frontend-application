@@ -34,7 +34,7 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
-import { publishDraftArticle } from '~/api/article'
+import { publishDraftArticle, publishPublicArticle } from '~/api/article'
 import * as types from '~/store/mutation-types'
 
 export default {
@@ -74,15 +74,18 @@ export default {
         overview: this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, ''),
         eye_catch_url: this.thumbnail
       }
-      const { id: articleId } = this.$route.params
+      const { articleId } = this.$route.params
 
-      await publishDraftArticle({ article, articleId })
-        .then(() => {
-          this.$router.push(`/user_id/articles/${articleId}`)
-        })
-        .catch((e) => {
-          console.error(e)
-        })
+      try {
+        if (location.href.includes('/me/articles/draft')) {
+          await publishDraftArticle({ article, articleId })
+        } else if (location.href.includes('/me/articles/public')) {
+          await publishPublicArticle({ article, articleId })
+        }
+        this.$router.push(`/user_id/articles/${articleId}`)
+      } catch (e) {
+        console.error(e)
+      }
     },
     togglePopup() {
       this.isPopupShown = !this.isPopupShown
