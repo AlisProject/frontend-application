@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     article: {
@@ -21,8 +23,9 @@ export default {
   },
   computed: {
     formettedCreatedAt() {
-      // Recommened: Migrate to moment.js
-      return new Date(this.article.created_at).toLocaleDateString('ja')
+      return moment(this.article.created_at)
+        .locale('ja')
+        .format('L')
     }
   }
 }
