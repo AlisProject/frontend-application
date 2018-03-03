@@ -97,6 +97,9 @@ const actions = {
     const { article_id: articleId } = await articleApi.postArticle({ article })
     commit(types.SET_ARTICLE_ID, { articleId })
   },
+  async putDraftArticle({ commit }, { article, articleId }) {
+    await articleApi.putDraftArticle({ article, articleId })
+  },
   async getLikesCountOfArticle({ commit }, { articleId }) {
     const { likes_count: likesCount } = await articleApi.getLikesCount({ articleId })
     commit(types.SET_LIKES_COUNT, { likesCount })

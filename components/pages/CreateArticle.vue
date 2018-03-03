@@ -25,27 +25,36 @@ export default {
       body: 'article/body'
     })
   },
+  data() {
+    return {
+      isPosted: false
+    }
+  },
   methods: {
-    ...mapActions('article', ['postNewArticle']),
-    async postArticleAndReplaceUrl() {
-      if (location.pathname !== '/me/articles/new') {
-        return
-      }
+    ...mapActions('article', ['postNewArticle', 'putDraftArticle']),
+    async postOrPutArticle() {
       const article = {
         title: this.title,
         body: this.body
       }
-      await this.postNewArticle({ article })
-
-      history.replaceState('', '', `/me/articles/draft/${this.articleId}/edit`)
+      if (this.isPosted) {
+        await this.putDraftArticle({ article, articleId: this.articleId })
+      } else {
+        try {
+          await this.postNewArticle({ article })
+          this.isPosted = true
+        } catch (e) {
+          console.error(e)
+        }
+      }
     }
   },
   watch: {
     title(newTitle, oldTitle) {
-      this.postArticleAndReplaceUrl()
+      this.postOrPutArticle()
     },
     body(newBody, oldBody) {
-      this.postArticleAndReplaceUrl()
+      this.postOrPutArticle()
     }
   }
 }
