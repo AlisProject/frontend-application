@@ -113,7 +113,7 @@ export default {
     },
     matchAll(str, regexp) {
       const matches = []
-      str.replace(regexp, () => {
+      str.replace(regexp, function() {
         const arr = [].slice.call(arguments, 0)
         const extras = arr.splice(-2)
         arr.index = extras[0]
