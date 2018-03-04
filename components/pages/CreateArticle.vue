@@ -36,8 +36,12 @@ export default {
       }
       this.setIsSaving({ isSaving: true })
       if (this.isPosted) {
-        await this.putDraftArticle({ article, articleId: this.articleId })
-        this.setIsSaved({ isSaved: true })
+        try {
+          await this.putDraftArticle({ article, articleId: this.articleId })
+          this.setIsSaved({ isSaved: true })
+        } catch (e) {
+          console.error(e)
+        }
       } else {
         try {
           await this.postNewArticle({ article })
