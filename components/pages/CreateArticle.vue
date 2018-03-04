@@ -1,6 +1,5 @@
 <template>
   <div class="create-article-container">
-    <span>{{ this.saveStatus }}</span>
     <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
     <article-editor :tags="this.$store.state.article.tags"/>
     <app-footer/>
@@ -21,16 +20,7 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'title', 'body', 'isSaving', 'isSaved']),
-    saveStatus() {
-      if (this.isSaved) {
-        return 'Saved'
-      } else if (this.isSaving) {
-        return 'Saving...'
-      } else {
-        return ''
-      }
-    }
+    ...mapGetters('article', ['articleId', 'title', 'body'])
   },
   data() {
     return {
