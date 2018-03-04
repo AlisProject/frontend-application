@@ -111,6 +111,39 @@ const actions = {
   async getDraftArticles({ commit }, { userId }) {
     const articles = await articleApi.getDraftArticlesByUserId({ userId })
     commit(types.SET_DRAFT_ARTICLES, { articles })
+  },
+  updateTitle({ commit }, { title }) {
+    commit(types.UPDATE_TITLE, { title })
+  },
+  updateBody({ commit }, { body }) {
+    commit(types.UPDATE_BODY, { body })
+  },
+  addTag({ commit }, { id, name }) {
+    commit(types.ADD_TAG, { id, name })
+  },
+  updateTag({ commit }, { id, name }) {
+    commit(types.UPDATE_TAG, { id, name })
+  },
+  updateSuggestedThumbnails({ commit }, { thumbnails }) {
+    commit(types.UPDATE_SUGGESTED_THUMBNAILS, { thumbnails })
+  },
+  updateThumbnail({ commit }, { thumbnail }) {
+    commit(types.UPDATE_THUMBNAIL, { thumbnail })
+  },
+  setUserInfoToArticle({ commit }, { userInfo }) {
+    commit(types.SET_USER_INFO_TO_ARTICLE, { userInfo })
+  },
+  setLikesCountToArticle({ commit }, { likesCount }) {
+    commit(types.SET_LIKES_COUNT_TO_ARTICLE, { likesCount })
+  },
+  setAlisTokenToArticle({ commit }, { alisToken }) {
+    commit(types.SET_ALIS_TOKEN_TO_ARTICLE, { alisToken })
+  },
+  setUserInfoToArticles({ commit }, { articles, userInfos, type }) {
+    commit(types.SET_USER_INFO_TO_ARTICLES, { articles, userInfos, type })
+  },
+  setAlisTokenToArticles({ commit }, { articles, alisTokens, type }) {
+    commit(types.SET_ALIS_TOKEN_TO_ARTICLES, { articles, alisTokens, type })
   }
 }
 

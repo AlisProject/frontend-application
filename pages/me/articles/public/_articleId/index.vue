@@ -4,7 +4,6 @@
 
 <script>
 import PublicArticle from '~/components/pages/PublicArticle'
-import * as types from '~/store/mutation-types'
 
 export default {
   components: {
@@ -17,15 +16,9 @@ export default {
     await store.dispatch('article/getLikesCountOfArticle', { articleId })
     await store.dispatch('article/getAlisToken', { articleId })
     const { userInfo, likesCount, alisToken } = store.state.article
-    store.commit(`article/${types.SET_USER_INFO_TO_ARTICLE}`, {
-      userInfo
-    })
-    store.commit(`article/${types.SET_LIKES_COUNT_TO_ARTICLE}`, {
-      likesCount
-    })
-    store.commit(`article/${types.SET_ALIS_TOKEN_TO_ARTICLE}`, {
-      alisToken
-    })
+    store.dispatch('article/setUserInfoToArticle', { userInfo })
+    store.dispatch('article/setLikesCountToArticle', { likesCount })
+    store.dispatch('article/setAlisTokenToArticle', { alisToken })
   }
 }
 </script>

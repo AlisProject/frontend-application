@@ -36,9 +36,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { publishDraftArticle, publishPublicArticle, unpublishPublicArticle } from '~/api/article'
-import * as types from '~/store/mutation-types'
 
 export default {
   data() {
@@ -124,9 +123,7 @@ export default {
         }
       })
     },
-    ...mapMutations('article', {
-      updateThumbnail: types.UPDATE_THUMBNAIL
-    })
+    ...mapActions('article', ['updateThumbnail'])
   },
   computed: {
     ...mapGetters('article', ['body', 'thumbnail', 'suggestedThumbnails'])

@@ -25,8 +25,7 @@
 
 <script>
 /* eslint no-undef: 0 */
-import { mapMutations } from 'vuex'
-import * as types from '~/store/mutation-types'
+import { mapActions } from 'vuex'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -135,13 +134,13 @@ export default {
       const { id, value: name } = target
       this.updateTag({ id, name })
     },
-    ...mapMutations('article', {
-      updateTitle: types.UPDATE_TITLE,
-      updateBody: types.UPDATE_BODY,
-      addTag: types.ADD_TAG,
-      updateTag: types.UPDATE_TAG,
-      updateSuggestedThumbnails: types.UPDATE_SUGGESTED_THUMBNAILS
-    })
+    ...mapActions('article', [
+      'updateTitle',
+      'updateBody',
+      'addTag',
+      'updateTag',
+      'updateSuggestedThumbnails'
+    ])
   }
 }
 </script>

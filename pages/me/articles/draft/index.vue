@@ -4,7 +4,6 @@
 
 <script>
 import DraftArticleList from '~/components/pages/DraftArticleList'
-import * as types from '~/store/mutation-types'
 
 export default {
   components: {
@@ -16,13 +15,13 @@ export default {
     await store.dispatch('article/getUserInfos', { articles })
     await store.dispatch('article/getAlisTokens', { articles })
     const { userInfos, alisTokens } = store.state.article
-    const type = 'public'
-    store.commit(`article/${types.SET_USER_INFO_TO_ARTICLES}`, {
+    const type = 'draft'
+    store.dispatch('article/setUserInfoToArticles', {
       articles,
       userInfos,
       type
     })
-    store.commit(`article/${types.SET_ALIS_TOKEN_TO_ARTICLES}`, {
+    store.dispatch('article/setAlisTokenToArticles', {
       articles,
       alisTokens,
       type

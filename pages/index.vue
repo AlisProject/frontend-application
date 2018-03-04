@@ -4,7 +4,6 @@
 
 <script>
 import TopPage from '~/components/pages/TopPage'
-import * as types from '~/store/mutation-types'
 
 export default {
   components: {
@@ -12,15 +11,17 @@ export default {
   },
   async fetch({ store }) {
     await store.dispatch('article/getAllArticles')
-    await store.dispatch('article/getUserInfos', { articles: store.state.article.articles })
-    await store.dispatch('article/getAlisTokens', { articles: store.state.article.articles })
-    store.commit('article/' + types.SET_USER_INFO_TO_ARTICLES, {
-      articles: store.state.article.articles,
-      userInfos: store.state.article.userInfos
+    const { articles } = store.state.article
+    await store.dispatch('article/getUserInfos', { articles })
+    await store.dispatch('article/getAlisTokens', { articles })
+    const { userInfos, alisTokens } = store.state.article
+    store.dispatch('article/setUserInfoToArticles', {
+      articles,
+      userInfos
     })
-    store.commit('article/' + types.SET_ALIS_TOKEN_TO_ARTICLES, {
-      articles: store.state.article.articles,
-      alisTokens: store.state.article.alisTokens
+    store.dispatch('article/setAlisTokenToArticles', {
+      articles,
+      alisTokens
     })
   }
 }
