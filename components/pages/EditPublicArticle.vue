@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { putPublicArticle } from '~/api/article'
+import debounce from 'lodash.debounce'
+import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
 import AppFooter from '../organisms/AppFooter'
@@ -23,20 +23,31 @@ export default {
     ...mapGetters('article', ['title', 'body'])
   },
   methods: {
-    async putArticle() {
+    ...mapActions('article', ['putPublicArticle', 'setIsSaving', 'setIsSaved']),
+    putArticle: debounce(async function() {
       const article = {
         title: this.title,
         body: this.body
       }
       const { articleId } = this.$route.params
-      await putPublicArticle({ article, articleId })
-    }
+      this.setIsSaving({ isSaving: true })
+      try {
+        await this.putPublicArticle({ article, articleId })
+        this.setIsSaved({ isSaved: true })
+      } catch (e) {
+        console.error(e)
+      }
+    }, 500)
   },
   watch: {
     title(newTitle, oldTitle) {
+      this.setIsSaved({ isSaved: false })
+      this.setIsSaving({ isSaving: false })
       this.putArticle()
     },
     body(newBody, oldBody) {
+      this.setIsSaved({ isSaved: false })
+      this.setIsSaving({ isSaving: false })
       this.putArticle()
     }
   }
