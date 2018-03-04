@@ -21,7 +21,7 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'title', 'body']),
+    ...mapGetters('article', ['articleId', 'title', 'body', 'isSaving', 'isSaved']),
     saveStatus() {
       if (this.isSaved) {
         return 'Saved'
@@ -34,26 +34,24 @@ export default {
   },
   data() {
     return {
-      isPosted: false,
-      isSaving: false,
-      isSaved: false
+      isPosted: false
     }
   },
   methods: {
-    ...mapActions('article', ['postNewArticle', 'putDraftArticle']),
+    ...mapActions('article', ['postNewArticle', 'putDraftArticle', 'setIsSaving', 'setIsSaved']),
     postOrPutArticle: debounce(async function() {
       const article = {
         title: this.title,
         body: this.body
       }
-      this.isSaving = true
+      this.setIsSaving({ isSaving: true })
       if (this.isPosted) {
         await this.putDraftArticle({ article, articleId: this.articleId })
-        this.isSaved = true
+        this.setIsSaved({ isSaved: true })
       } else {
         try {
           await this.postNewArticle({ article })
-          this.isSaved = true
+          this.setIsSaved({ isSaved: true })
           this.isPosted = true
         } catch (e) {
           console.error(e)
@@ -63,13 +61,13 @@ export default {
   },
   watch: {
     title(newTitle, oldTitle) {
-      this.isSaved = false
-      this.isSaving = false
+      this.setIsSaved({ isSaved: false })
+      this.setIsSaving({ isSaving: false })
       this.postOrPutArticle()
     },
     body(newBody, oldBody) {
-      this.isSaved = false
-      this.isSaving = false
+      this.setIsSaved({ isSaved: false })
+      this.setIsSaving({ isSaving: false })
       this.postOrPutArticle()
     }
   }

@@ -27,7 +27,9 @@ const state = () => ({
     }
   ],
   suggestedThumbnails: [],
-  thumbnail: ''
+  thumbnail: '',
+  isSaving: false,
+  isSaved: false
 })
 
 const getters = {
@@ -39,7 +41,9 @@ const getters = {
   title: (state) => state.title,
   body: (state) => state.body,
   suggestedThumbnails: (state) => state.suggestedThumbnails,
-  thumbnail: (state) => state.thumbnail
+  thumbnail: (state) => state.thumbnail,
+  isSaving: (state) => state.isSaving,
+  isSaved: (state) => state.isSaved
 }
 
 const actions = {
@@ -144,6 +148,12 @@ const actions = {
   },
   setAlisTokenToArticles({ commit }, { articles, alisTokens, type }) {
     commit(types.SET_ALIS_TOKEN_TO_ARTICLES, { articles, alisTokens, type })
+  },
+  setIsSaving({ commit }, { isSaving }) {
+    commit(types.SET_IS_SAVING, { isSaving })
+  },
+  setIsSaved({ commit }, { isSaved }) {
+    commit(types.SET_IS_SAVED, { isSaved })
   }
 }
 
@@ -250,6 +260,12 @@ const mutations = {
   },
   [types.UPDATE_THUMBNAIL](state, { thumbnail }) {
     state.thumbnail = thumbnail
+  },
+  [types.SET_IS_SAVING](state, { isSaving }) {
+    state.isSaving = isSaving
+  },
+  [types.SET_IS_SAVED](state, { isSaved }) {
+    state.isSaved = isSaved
   }
 }
 
