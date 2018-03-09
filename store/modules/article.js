@@ -72,7 +72,8 @@ const actions = {
   async getAlisTokens({ commit }, { articles }) {
     const alisTokens = []
     for (let i = 0; i < articles.length; i++) {
-      alisTokens.push(await this.$axios.$get(`/articles/${articles[i].article_id}/alistoken`))
+      const { article_id: articleId } = articles[i]
+      alisTokens.push(await this.$axios.$get(`/articles/${articleId}/alistoken`))
     }
     commit(types.SET_ALIS_TOKENS, { alisTokens })
   },
