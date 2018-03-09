@@ -1,5 +1,3 @@
-import * as articleApi from '~/api/article'
-import { getUserInfo } from '~/api/user'
 import * as types from '../mutation-types'
 
 const namespaced = true
@@ -48,76 +46,87 @@ const getters = {
 
 const actions = {
   async getAllArticles({ commit }) {
-    const articles = await articleApi.getPopularArticles()
+    const articles = await this.$axios.$get('/articles/popular')
     commit(types.SET_ARTICLES, { articles })
   },
   async getNewPagesArticles({ commit }) {
-    const articles = await articleApi.getNewArticles()
+    const articles = await this.$axios.$get('/articles/new')
     commit(types.SET_NEW_ARTICLES, { articles })
   },
   async getUserInfo({ commit }, { userId }) {
-    const userInfo = await getUserInfo({ userId })
+    const userInfo = await this.$axios.$get(`/users/${userId}`)
     commit(types.SET_USER_INFO, { userInfo })
   },
   async getUserInfos({ commit }, { articles }) {
     const userInfos = []
     for (let i = 0; i < articles.length; i++) {
-      userInfos.push(await getUserInfo({ userId: articles[i].user_id }))
+      const { user_id: userId } = articles[i]
+      userInfos.push(await this.$axios.$get(`/users/${userId}`))
     }
     commit(types.SET_USER_INFOS, { userInfos })
   },
   async getAlisToken({ commit }, { articleId }) {
-    const { alistoken: alisToken } = await articleApi.getAlisToken({ articleId })
+    const { alistoken: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
     commit(types.SET_ALIS_TOKEN, { alisToken })
   },
   async getAlisTokens({ commit }, { articles }) {
     const alisTokens = []
     for (let i = 0; i < articles.length; i++) {
-      alisTokens.push(await articleApi.getAlisToken({ articleId: articles[i].article_id }))
+      const { article_id: articleId } = articles[i]
+      alisTokens.push(await this.$axios.$get(`/articles/${articleId}/alistoken`))
     }
     commit(types.SET_ALIS_TOKENS, { alisTokens })
   },
   async getEditArticle({ commit }, { articleId }) {
-    const article = await articleApi.getArticle({ articleId })
+    const article = await this.$axios.$get(`/articles/${articleId}`)
     commit(types.SET_ARTICLE, { article })
   },
   async getEditDraftArticle({ commit }, { articleId }) {
-    const article = await articleApi.getDraftArticle({ articleId })
+    const article = await this.$axios.$get(`/me/articles/drafts/${articleId}`)
     commit(types.SET_ARTICLE, { article })
   },
   async getArticleDetail({ commit }, { articleId }) {
-    const article = await articleApi.getArticle({ articleId })
+    const article = await this.$axios.$get(`/articles/${articleId}`)
     commit(types.SET_ARTICLE_DETAIL, { article })
   },
   async getPublicArticleDetail({ commit }, { articleId }) {
-    const article = await articleApi.getPublicArticle({ articleId })
+    const article = await this.$axios.$get(`/me/articles/public/${articleId}`)
     commit(types.SET_ARTICLE_DETAIL, { article })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
-    const article = await articleApi.getEditPublicArticle({ articleId })
+    const article = await this.$axios.$get(`/me/articles/public/${articleId}/edit`)
     commit(types.SET_ARTICLE, { article })
   },
   async postNewArticle({ commit }, { article }) {
-    const { article_id: articleId } = await articleApi.postArticle({ article })
+    const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts', article)
     commit(types.SET_ARTICLE_ID, { articleId })
   },
   async putDraftArticle({ commit }, { article, articleId }) {
-    await articleApi.putDraftArticle({ article, articleId })
+    await this.$axios.$put(`/me/articles/public/${articleId}/edit`, article)
   },
   async putPublicArticle({ commit }, { article, articleId }) {
-    await articleApi.putPublicArticle({ article, articleId })
+    await this.$axios.$put(`/me/articles/public/${articleId}/edit`, article)
   },
   async getLikesCountOfArticle({ commit }, { articleId }) {
-    const { likes_count: likesCount } = await articleApi.getLikesCount({ articleId })
+    const { likes_count: likesCount } = await this.$axios.$get(`/articles/${articleId}/like`)
     commit(types.SET_LIKES_COUNT, { likesCount })
   },
   async getPublicArticles({ commit }, { userId }) {
-    const articles = await articleApi.getPublicArticlesByUserId({ userId })
+    const articles = await this.$axios.$get('/me/articles/public', { params: { userId } })
     commit(types.SET_PUBLIC_ARTICLES, { articles })
   },
   async getDraftArticles({ commit }, { userId }) {
-    const articles = await articleApi.getDraftArticlesByUserId({ userId })
+    const articles = await this.$axios.$get('/me/articles/drafts', { params: { userId } })
     commit(types.SET_DRAFT_ARTICLES, { articles })
+  },
+  async publishDraftArticle({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/drafts/${articleId}/publish`, article)
+  },
+  async publishPublicArticle({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/public/${articleId}/edit/publish`, article)
+  },
+  async unpublishPublicArticle({ commit }, { articleId }) {
+    await this.$axios.$put(`/me/articles/public/${articleId}/unpublish`)
   },
   updateTitle({ commit }, { title }) {
     commit(types.UPDATE_TITLE, { title })

@@ -18,6 +18,15 @@ module.exports = {
   /*
   ** Build configuration
   */
+  modules: [
+    '@nuxtjs/axios'
+  ],
+  plugins: [
+    '~/plugins/axios'
+  ],
+  axios: {
+    baseURL: process.env.BASE_URL
+  },
   build: {
     /*
     ** Run ESLint on save
@@ -36,7 +45,6 @@ module.exports = {
   },
   css: ['~assets/stylesheets/medium-editor.scss'],
   env: {
-    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
-    baseUrl: process.env.BASE_URL || 'http://localhost:3000'
+    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY
   }
 }

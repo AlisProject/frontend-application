@@ -38,7 +38,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { publishDraftArticle, publishPublicArticle, unpublishPublicArticle } from '~/api/article'
 
 export default {
   data() {
@@ -75,7 +74,7 @@ export default {
     async unpublish() {
       const { articleId } = this.$route.params
       try {
-        await unpublishPublicArticle({ articleId })
+        await this.unpublishPublicArticle({ articleId })
         this.$router.push('/me/articles/public')
       } catch (e) {
         console.error(e)
@@ -90,9 +89,9 @@ export default {
 
       try {
         if (location.href.includes('/me/articles/draft')) {
-          await publishDraftArticle({ article, articleId })
+          await this.publishDraftArticle({ article, articleId })
         } else if (location.href.includes('/me/articles/public')) {
-          await publishPublicArticle({ article, articleId })
+          await this.publishPublicArticle({ article, articleId })
         }
         this.$router.push(`/user_id/articles/${articleId}`)
       } catch (e) {
@@ -124,7 +123,7 @@ export default {
         }
       })
     },
-    ...mapActions('article', ['updateThumbnail'])
+    ...mapActions('article', ['updateThumbnail', 'publishDraftArticle', 'publishPublicArticle', 'unpublishPublicArticle'])
   },
   computed: {
     ...mapGetters('article', ['body', 'thumbnail', 'suggestedThumbnails', 'isSaving', 'isSaved']),
