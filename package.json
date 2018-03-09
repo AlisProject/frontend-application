@@ -10,6 +10,9 @@
     "start": "nuxt start",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "format": "yarn fmt:vue; yarn fmt:js",
+    "format:vue": "prettier './**/*.vue' --write",
+    "format:js": "prettier './**/*.js' --write",
     "precommit": "npm run lint"
   },
   "dependencies": {
@@ -32,6 +35,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "node-sass": "^4.7.2",
+    "prettier": "^1.11.1",
     "sass-loader": "^6.0.6"
   }
 }
