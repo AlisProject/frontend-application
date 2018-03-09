@@ -11,7 +11,6 @@ module.exports = {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
-  // mode: 'spa',
   /*
   ** Customize the progress bar color
   */
@@ -46,7 +45,6 @@ module.exports = {
   },
   css: ['~assets/stylesheets/medium-editor.scss'],
   env: {
-    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
-    BASE_URL: process.env.BASE_URL
+    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY
   }
 }
