@@ -119,6 +119,15 @@ const actions = {
     const articles = await this.$axios.$get('/me/articles/drafts', { params: { userId } })
     commit(types.SET_DRAFT_ARTICLES, { articles })
   },
+  async publishDraftArticle({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/drafts/${articleId}/publish`, article)
+  },
+  async publishPublicArticle({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/public/${articleId}/edit/publish`, article)
+  },
+  async unpublishPublicArticle({ commit }, { articleId }) {
+    await this.$axios.$put(`/me/articles/public/${articleId}/unpublish`)
+  },
   updateTitle({ commit }, { title }) {
     commit(types.UPDATE_TITLE, { title })
   },
