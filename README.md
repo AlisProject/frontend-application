@@ -1,6 +1,5 @@
-# alis-frontend-sample
-
-> Nuxt.js project
+# frontend-application
+[![CircleCI](https://circleci.com/gh/AlisProject/frontend-application.svg?style=svg)](https://circleci.com/gh/AlisProject/frontend-application)
 
 ## Build Setup
 
@@ -18,5 +17,3 @@ $ npm start
 # generate static project
 $ npm run generate
 ```
-
-For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
