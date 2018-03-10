@@ -1,7 +1,7 @@
 {
-  "name": "alis-frontend-sample",
+  "name": "frontend-application",
   "version": "1.0.0",
-  "description": "Nuxt.js project",
+  "description": "ALIS Media - Frontend Application",
   "author": "y-temp4 <y.temp4@gmail.com>",
   "private": true,
   "scripts": {
