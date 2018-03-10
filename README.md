@@ -1,4 +1,5 @@
 # frontend-application
+[![CircleCI](https://circleci.com/gh/AlisProject/frontend-application.svg?style=svg)](https://circleci.com/gh/AlisProject/frontend-application)
 
 > Nuxt.js project
 
