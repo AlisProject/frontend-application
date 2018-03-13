@@ -1,5 +1,6 @@
 // header
 export const SET_STATUS = 'SET_STATUS'
+export const SET_SIGN_UP_MODAL = 'SET_SIGN_UP_MODAL'
 
 // article
 export const SET_ARTICLES = 'SET_ARTICLES'

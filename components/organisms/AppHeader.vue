@@ -8,14 +8,17 @@
       :showEditArticleLink="showEditArticleLink"/>
     <header-session-links v-if="!this.$store.state.user.loggedIn"/>
     <header-user-logged-in-items v-if="this.$store.state.user.loggedIn"/>
+    <sign-up-modal v-show="this.showSignUpModal"/>
   </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
+import SignUpModal from '../organisms/SignUpModal'
 
 export default {
   props: {
@@ -40,7 +43,11 @@ export default {
     DefaultHeaderNav,
     EditHeaderNav,
     HeaderSessionLinks,
-    HeaderUserLoggedInItems
+    HeaderUserLoggedInItems,
+    SignUpModal
+  },
+  computed: {
+    ...mapGetters('user', ['showSignUpModal'])
   }
 }
 </script>
