@@ -1,7 +1,7 @@
 <template>
   <div class="session">
     <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
-    <span to="#" class="session-link sign-up" @click="showModal">Sign up</span>
+    <span class="session-link sign-up" @click="showModal">Sign up</span>
     /
     <nuxt-link to="#" class="session-link login">Login</nuxt-link>
   </div>
