@@ -1,7 +1,7 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask" @click="closeModalIfModalWrapperClicked">
-      <div class="modal-wrapper">
+    <div class="modal-mask">
+      <div class="modal-wrapper" @click.self="closeModal">
         <div class="modal-container">
           <div class="modal-header">
             <span class="modal-default-button" @click="closeModal">
@@ -49,11 +49,6 @@ export default {
   methods: {
     closeModal() {
       this.setSignUpModal({ showSignUpModal: false })
-    },
-    closeModalIfModalWrapperClicked() {
-      if (event.target.className === 'modal-wrapper') {
-        this.closeModal()
-      }
     },
     ...mapActions('user', ['setSignUpModal'])
   }
