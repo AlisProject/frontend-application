@@ -19,7 +19,8 @@
     "medium-editor": "^5.23.3",
     "moment": "^2.21.0",
     "normalize.css": "^7.0.0",
-    "nuxt": "^1.0.0"
+    "nuxt": "^1.0.0",
+    "vuelidate": "^0.6.2"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.10.0",

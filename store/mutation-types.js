@@ -1,6 +1,12 @@
 // header
 export const SET_STATUS = 'SET_STATUS'
 export const SET_SIGN_UP_MODAL = 'SET_SIGN_UP_MODAL'
+export const SET_SENT_MAIL = 'SET_SENT_MAIL'
+export const SET_SIGN_UP_USER_ID = 'SET_SIGN_UP_USER_ID'
+export const SET_SIGN_UP_EMAIL = 'SET_SIGN_UP_EMAIL'
+export const SET_SIGN_UP_PASSWORD = 'SET_SIGN_UP_PASSWORD'
+export const SHOW_SIGN_UP_ERROR = 'SHOW_SIGN_UP_ERROR'
+export const HIDE_SIGN_UP_ERRORS = 'HIDE_SIGN_UP_ERRORS'
 
 // article
 export const SET_ARTICLES = 'SET_ARTICLES'

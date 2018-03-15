@@ -22,7 +22,8 @@ module.exports = {
     '@nuxtjs/axios'
   ],
   plugins: [
-    '~/plugins/axios'
+    '~/plugins/axios',
+    '~/plugins/vuelidate'
   ],
   axios: {
     baseURL: process.env.BASE_URL
