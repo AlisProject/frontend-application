@@ -90,7 +90,7 @@ export default {
       return this.signUpError.email && this.$v.signUp.email.$error
     },
     showErrorPassword() {
-      return this.signUpError.password && this.$v.signUp.email.$error
+      return this.signUpError.password && this.$v.signUp.password.$error
     },
     ...mapGetters('user', ['signUp', 'signUpError'])
   },
