@@ -4,7 +4,9 @@ const state = () => ({
   loggedIn: false
 })
 
-const getters = {}
+const getters = {
+  loggedIn: (state) => state.loggedIn
+}
 
 const actions = {}
 

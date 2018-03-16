@@ -6,12 +6,13 @@
       v-if="showEditHeaderNav"
       :showPostArticleLink="showPostArticleLink"
       :showEditArticleLink="showEditArticleLink"/>
-    <header-session-links v-if="!this.$store.state.user.loggedIn"/>
-    <header-user-logged-in-items v-if="this.$store.state.user.loggedIn"/>
+    <header-session-links v-if="!loggedIn"/>
+    <header-user-logged-in-items v-else />
   </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
@@ -41,6 +42,9 @@ export default {
     EditHeaderNav,
     HeaderSessionLinks,
     HeaderUserLoggedInItems
+  },
+  computed: {
+    ...mapGetters('user', ['loggedIn'])
   }
 }
 </script>
