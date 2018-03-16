@@ -1,7 +1,7 @@
 <template>
   <transition name="modal-sent-mail">
     <div class="modal-body">
-      <p class="sned-mail">
+      <p class="send-mail">
         確認メールを送信しました
       </p>
       <p class="signup-form-description">
@@ -37,7 +37,7 @@ export default {
 .modal-body {
   margin: 0 auto;
 
-  .sned-mail {
+  .send-mail {
     height: 21px;
     width: 351px;
     color: #030303;
