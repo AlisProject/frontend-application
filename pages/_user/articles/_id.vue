@@ -1,8 +1,9 @@
 <template>
-  <article-detail :article="this.$store.state.article.article"/>
+  <article-detail :article="article"/>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ArticleDetail from '~/components/pages/ArticleDetail'
 
 export default {
@@ -19,6 +20,9 @@ export default {
     store.dispatch('article/setUserInfoToArticle', { userInfo })
     store.dispatch('article/setLikesCountToArticle', { likesCount })
     store.dispatch('article/setAlisTokenToArticle', { alisToken })
+  },
+  computed: {
+    ...mapGetters('article', ['article'])
   }
 }
 </script>
