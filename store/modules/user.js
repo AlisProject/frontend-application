@@ -44,6 +44,9 @@ const actions = {
   showSignUpError({ commit }, { type }) {
     commit(types.SHOW_SIGN_UP_ERROR, { type })
   },
+  hideSignUpError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_ERROR, { type })
+  },
   hideSignUpErrors({ commit }) {
     commit(types.HIDE_SIGN_UP_ERRORS)
   }
@@ -67,6 +70,9 @@ const mutations = {
   },
   [types.SHOW_SIGN_UP_ERROR](state, { type }) {
     state.signUpError[type] = true
+  },
+  [types.HIDE_SIGN_UP_ERROR](state, { type }) {
+    state.signUpError[type] = false
   },
   [types.HIDE_SIGN_UP_ERRORS]({ signUpError }) {
     Object.keys(signUpError).forEach(key => {

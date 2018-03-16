@@ -10,7 +10,8 @@
             placeholder="alis"
             autofocus
             @input="setUserId"
-            @blur="showError('userId')" >
+            @blur="showError('userId')"
+            @focus="resetError('userId')">
         </div>
         <div class="signup-form-group" :class="{ 'error': hasEmailError }">
           <label class="signup-form-label">メールアドレス</label>
@@ -19,7 +20,8 @@
             type="email"
             placeholder="yamada@alismedia.com"
             @input="setEmail"
-            @blur="showError('email')">
+            @blur="showError('email')"
+            @focus="resetError('email')">
         </div>
         <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
           <label class="signup-form-label">パスワード</label>
@@ -28,7 +30,8 @@
             type="password"
             placeholder="●●●●●●●●"
             @input="setPassword"
-            @blur="showError('password')">
+            @blur="showError('password')"
+            @focus="resetError('password')">
         </div>
       </form>
       <p class="signup-form-description">
@@ -124,6 +127,10 @@ export default {
       this.$v.signUp[type].$touch()
       this.showSignUpError({ type })
     },
+    resetError(type) {
+      this.$v.signUp[type].$reset()
+      this.hideSignUpError({ type })
+    },
     onSubmit() {
       if (this.invalidSubmit) return
       this.setSentMail({ sentMail: true })
@@ -133,7 +140,8 @@ export default {
       'setSignUpUserId',
       'setSignUpEmail',
       'setSignUpPassword',
-      'showSignUpError'
+      'showSignUpError',
+      'hideSignUpError'
     ])
   }
 }
