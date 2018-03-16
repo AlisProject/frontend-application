@@ -2,7 +2,7 @@
   <div>
     <div class="modal-body">
       <form class="signup-form">
-        <div class="signup-form-group" :class="{ 'error': showErrorUserId }">
+        <div class="signup-form-group" :class="{ 'error': hasUserIdError }">
           <label class="signup-form-label">ALIS ID</label>
           <input
             class="signup-form-input"
@@ -12,7 +12,7 @@
             @input="setUserId"
             @blur="showError('userId')" >
         </div>
-        <div class="signup-form-group" :class="{ 'error': showErrorEmail }">
+        <div class="signup-form-group" :class="{ 'error': hasEmailError }">
           <label class="signup-form-label">メールアドレス</label>
           <input
             class="signup-form-input"
@@ -21,7 +21,7 @@
             @input="setEmail"
             @blur="showError('email')">
         </div>
-        <div class="signup-form-group" :class="{ 'error': showErrorPassword }">
+        <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
           <label class="signup-form-label">パスワード</label>
           <input
             class="signup-form-input"
@@ -83,13 +83,13 @@ export default {
     invalidSubmit() {
       return this.$v.signUp.$invalid
     },
-    showErrorUserId() {
+    hasUserIdError() {
       return this.signUpError.userId && this.$v.signUp.userId.$error
     },
-    showErrorEmail() {
+    hasEmailError() {
       return this.signUpError.email && this.$v.signUp.email.$error
     },
-    showErrorPassword() {
+    hasPasswordError() {
       return this.signUpError.password && this.$v.signUp.password.$error
     },
     ...mapGetters('user', ['signUp', 'signUpError'])
