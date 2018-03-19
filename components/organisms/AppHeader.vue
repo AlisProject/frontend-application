@@ -6,8 +6,8 @@
       v-if="showEditHeaderNav"
       :showPostArticleLink="showPostArticleLink"
       :showEditArticleLink="showEditArticleLink"/>
-    <header-session-links v-if="!this.$store.state.user.loggedIn"/>
-    <header-user-logged-in-items v-if="this.$store.state.user.loggedIn"/>
+    <header-session-links v-if="!loggedIn"/>
+    <header-user-logged-in-items v-else />
     <sign-up-modal v-show="this.showSignUpModal"/>
   </header>
 </template>
@@ -47,7 +47,7 @@ export default {
     SignUpModal
   },
   computed: {
-    ...mapGetters('user', ['showSignUpModal'])
+    ...mapGetters('user', ['loggedIn', 'showSignUpModal'])
   }
 }
 </script>

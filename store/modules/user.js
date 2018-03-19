@@ -19,6 +19,7 @@ const state = () => ({
 })
 
 const getters = {
+  loggedIn: (state) => state.loggedIn,
   showSignUpModal: (state) => state.showSignUpModal,
   sentMail: (state) => state.sentMail,
   signUp: (state) => state.signUp,

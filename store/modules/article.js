@@ -31,6 +31,7 @@ const state = () => ({
 })
 
 const getters = {
+  article: (state) => state.article,
   allArticles: (state) => state.articles,
   newArticles: (state) => state.newArticles,
   publicArticles: (state) => state.publicArticles,
