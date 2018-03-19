@@ -4,6 +4,9 @@
       <div class="modal-wrapper" @click.self="closeModal">
         <div class="modal-container">
           <div class="modal-header">
+            <div class="modal-header-content">
+              <slot name="modal-header-content" />
+            </div>
             <span class="modal-header-default-button" @click="closeModal">
               ✕
             </span>
@@ -87,6 +90,10 @@ export default {
   }
 
   &-header {
+    &-content {
+      margin: -20px -30px 20px;
+    }
+
     &-default-button {
       color: #6e6e6e;
       cursor: pointer;

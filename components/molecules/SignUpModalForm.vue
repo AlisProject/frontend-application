@@ -34,10 +34,6 @@
             @focus="resetError('password')">
         </div>
       </form>
-      <p class="signup-form-description">
-        現在、新規の登録はβ版登録ユーザーのみに限らせていただいています。
-        登録希望の方は<a href="#">ウェイティングリスト</a>にご登録ください。
-      </p>
     </div>
     <div class="modal-footer">
       <p class="error-message" v-if="showErrorUserIdRequired">ユーザーIDは必須です</p>
@@ -202,13 +198,6 @@ export default {
           border-bottom: 1px dotted red;
         }
       }
-    }
-
-    &-description {
-      @include default-text();
-      margin: 0 auto;
-      max-width: 400px;
-      width: 80%;
     }
   }
 }
