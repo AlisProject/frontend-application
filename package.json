@@ -16,7 +16,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.1.1",
     "axios": "^0.17.1",
-    "lodash.debounce": "^4.0.8",
+    "lodash-es": "^4.17.7",
     "medium-editor": "^5.23.3",
     "moment": "^2.21.0",
     "normalize.css": "^7.0.0",
