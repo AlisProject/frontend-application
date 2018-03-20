@@ -62,50 +62,52 @@ import { required, minLength, email } from 'vuelidate/lib/validators'
 export default {
   computed: {
     showErrorUserIdRequired() {
-      return this.signUpError.userId && !this.$v.signUp.userId.required
+      return this.signUpModal.formError.userId && !this.$v.signUpModal.formData.userId.required
     },
     showErrorUserIdMinLength() {
-      return this.signUpError.userId && !this.$v.signUp.userId.minLength
+      return this.signUpModal.formError.userId && !this.$v.signUpModal.formData.userId.minLength
     },
     showErrorEmailRequired() {
-      return this.signUpError.email && !this.$v.signUp.email.required
+      return this.signUpModal.formError.email && !this.$v.signUpModal.formData.email.required
     },
     showErrorInvalidEmail() {
-      return this.signUpError.email && !this.$v.signUp.email.email
+      return this.signUpModal.formError.email && !this.$v.signUpModal.formData.email.email
     },
     showErrorInvalidPassword() {
-      return this.signUpError.password && !this.$v.signUp.password.minLength
+      return this.signUpModal.formError.password && !this.$v.signUpModal.formData.password.minLength
     },
     showErrorPasswordRequired() {
-      return this.signUpError.password && !this.$v.signUp.password.required
+      return this.signUpModal.formError.password && !this.$v.signUpModal.formData.password.required
     },
     invalidSubmit() {
-      return this.$v.signUp.$invalid
+      return this.$v.signUpModal.formData.$invalid
     },
     hasUserIdError() {
-      return this.signUpError.userId && this.$v.signUp.userId.$error
+      return this.signUpModal.formError.userId && this.$v.signUpModal.formData.userId.$error
     },
     hasEmailError() {
-      return this.signUpError.email && this.$v.signUp.email.$error
+      return this.signUpModal.formError.email && this.$v.signUpModal.formData.email.$error
     },
     hasPasswordError() {
-      return this.signUpError.password && this.$v.signUp.password.$error
+      return this.signUpModal.formError.password && this.$v.signUpModal.formData.password.$error
     },
-    ...mapGetters('user', ['signUp', 'signUpError'])
+    ...mapGetters('user', ['signUpModal'])
   },
   validations: {
-    signUp: {
-      userId: {
-        required,
-        minLength: minLength(4)
-      },
-      email: {
-        required,
-        email
-      },
-      password: {
-        required,
-        minLength: minLength(8)
+    signUpModal: {
+      formData: {
+        userId: {
+          required,
+          minLength: minLength(4)
+        },
+        email: {
+          required,
+          email
+        },
+        password: {
+          required,
+          minLength: minLength(8)
+        }
       }
     }
   },
@@ -120,11 +122,11 @@ export default {
       this.setSignUpPassword({ password: e.target.value })
     },
     showError(type) {
-      this.$v.signUp[type].$touch()
+      this.$v.signUpModal.formData[type].$touch()
       this.showSignUpError({ type })
     },
     resetError(type) {
-      this.$v.signUp[type].$reset()
+      this.$v.signUpModal.formData[type].$reset()
       this.hideSignUpError({ type })
     },
     onSubmit() {

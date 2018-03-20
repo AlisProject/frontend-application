@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     resetStates() {
-      this.$v.signUp.$reset()
+      this.$v.signUpModal.$reset()
       this.hideSignUpErrors()
       setTimeout(() => {
         this.setSentMail({ sentMail: false })
@@ -42,7 +42,7 @@ export default {
     ...mapActions('user', ['setSentMail', 'hideSignUpErrors'])
   },
   validations: {
-    signUp: {}
+    signUpModal: {}
   }
 }
 </script>
