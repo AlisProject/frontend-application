@@ -59,4 +59,11 @@ export default {
     color: #fff;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .modal-header-warning {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
 </style>
