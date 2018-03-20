@@ -221,7 +221,7 @@ export default {
     color: #fff;
     cursor: pointer;
     display: block;
-    font-size: 13px;
+    font-size: 14px;
     margin: 20px auto 0;
     outline: none;
     padding: 10px;
@@ -239,7 +239,7 @@ export default {
 
     &.disabled {
       background: white;
-      color: #cecece;
+      color: #6e6e6e;
       cursor: default;
     }
   }
