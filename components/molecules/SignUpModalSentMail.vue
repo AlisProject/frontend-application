@@ -9,6 +9,10 @@
         を行うことで登録が完了します。※メールが届かない場合はこちらから再
         送してください。
       </p>
+      <img
+        class="login-img"
+        src="~/assets/images/pc/common/image_login.png"
+        alt="login-image">
       <button class="to-top-button" @click="transitToTop">
         トップに戻る
       </button>
@@ -39,7 +43,6 @@ export default {
 
   .send-mail {
     height: 21px;
-    width: 351px;
     color: #030303;
     font-size: 14px;
     font-weight: 500;
@@ -62,6 +65,12 @@ export default {
       color: #858dda;
       text-decoration: none;
     }
+  }
+
+  .login-img {
+    width: 190px;
+    margin: 24px auto 0;
+    display: block;
   }
 
   .to-top-button {
