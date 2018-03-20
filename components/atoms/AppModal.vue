@@ -115,4 +115,19 @@ export default {
     transform: scale(1.1);
   }
 }
+
+@media screen and (max-width: 550px) {
+  .modal {
+    &-wrapper {
+      width: 100%;
+    }
+
+    &-container {
+      height: 100%;
+      margin-top: 0;
+      max-width: 550px;
+      width: calc(100% - 60px);
+    }
+  }
+}
 </style>

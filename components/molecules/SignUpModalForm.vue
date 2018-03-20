@@ -253,4 +253,16 @@ export default {
     width: 100%;
   }
 }
+
+@media screen and (max-width: 320px) {
+  .modal-body {
+    .signup-form {
+      margin-top: 30px;
+
+      &-input {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
 </style>
