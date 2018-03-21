@@ -193,11 +193,11 @@ export default {
     .error {
       .signup-form {
         &-label {
-          color: red;
+          color: #f06273;
         }
 
         &-input {
-          border-bottom: 1px dotted red;
+          border-bottom: 1px dotted #f06273;
         }
       }
     }
@@ -250,7 +250,7 @@ export default {
   }
 
   .error-message {
-    color: red;
+    color: #f06273;
     font-size: 12px;
     width: 100%;
   }
