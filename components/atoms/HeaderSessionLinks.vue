@@ -14,6 +14,8 @@ export default {
   methods: {
     showModal() {
       this.setSignUpModal({ showSignUpModal: true })
+      document.documentElement.scrollTop = 0
+      document.querySelector('html,body').style.overflow = 'hidden'
     },
     ...mapActions('user', ['setSignUpModal'])
   }

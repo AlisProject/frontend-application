@@ -27,6 +27,7 @@ export default {
   methods: {
     transitToTop() {
       this.setSignUpModal({ showSignUpModal: false })
+      document.querySelector('html,body').style.overflow = ''
       setTimeout(() => {
         this.setSentMail({ sentMail: false })
       }, 1000)

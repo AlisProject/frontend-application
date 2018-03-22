@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -37,10 +37,18 @@ export default {
       required: false
     }
   },
+  computed: {
+    ...mapGetters('user', ['showSignUpModal'])
+  },
   methods: {
     closeModal() {
+      if (!this.showSignUpModal) {
+        this.$router.push('/')
+        return
+      }
       this.$emit('close')
       this.setSignUpModal({ showSignUpModal: false })
+      document.querySelector('html,body').style.overflow = ''
     },
     ...mapActions('user', ['setSignUpModal'])
   }
@@ -51,10 +59,12 @@ export default {
 .modal {
   &-mask {
     background-color: rgba(0, 0, 0, 0.8);
+    bottom: 0;
     display: table;
-    height: 100%;
+    height: 100vh;
     left: 0;
-    position: fixed;
+    position: absolute;
+    right: 0;
     top: 0;
     transition: opacity 0.3s ease;
     width: 100%;
@@ -120,6 +130,7 @@ export default {
   .modal {
     &-wrapper {
       width: 100%;
+      padding-bottom: 4000px;
     }
 
     &-container {
