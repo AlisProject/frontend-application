@@ -8,6 +8,7 @@
       :showEditArticleLink="showEditArticleLink"/>
     <header-session-links v-if="!loggedIn"/>
     <header-user-logged-in-items v-else />
+    <sign-up-modal v-show="this.showSignUpModal"/>
   </header>
 </template>
 
@@ -17,6 +18,7 @@ import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
+import SignUpModal from '../organisms/SignUpModal'
 
 export default {
   props: {
@@ -41,10 +43,11 @@ export default {
     DefaultHeaderNav,
     EditHeaderNav,
     HeaderSessionLinks,
-    HeaderUserLoggedInItems
+    HeaderUserLoggedInItems,
+    SignUpModal
   },
   computed: {
-    ...mapGetters('user', ['loggedIn'])
+    ...mapGetters('user', ['loggedIn', 'showSignUpModal'])
   }
 }
 </script>
@@ -60,7 +63,7 @@ export default {
   grid-template-areas:
     "logo nav";
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .area-logo {

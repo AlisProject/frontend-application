@@ -1,11 +1,27 @@
 <template>
   <div class="session">
     <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
-    <nuxt-link to="#" class="session-link sign-up">Sign up</nuxt-link>
+    <span class="session-link sign-up" @click="showModal">Sign up</span>
     /
     <nuxt-link to="#" class="session-link login">Login</nuxt-link>
   </div>
 </template>
+
+<script>
+import { mapActions } from 'vuex'
+
+export default {
+  methods: {
+    showModal() {
+      this.setSignUpModal({ showSignUpModal: true })
+      document.documentElement.scrollTop = 0
+      document.querySelector('html,body').style.overflow = 'hidden'
+    },
+    ...mapActions('user', ['setSignUpModal'])
+  }
+}
+</script>
+
 
 <style lang="scss" scoped>
 .session {
@@ -28,6 +44,7 @@
   .session-link {
     color: #525256;
     text-decoration: none;
+    cursor: pointer;
   }
 }
 
