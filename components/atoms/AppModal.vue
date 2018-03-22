@@ -48,6 +48,7 @@ export default {
       }
       this.$emit('close')
       this.setSignUpModal({ showSignUpModal: false })
+      document.body.scrollTop = 0
       document.querySelector('html,body').style.overflow = ''
     },
     ...mapActions('user', ['setSignUpModal'])
