@@ -153,8 +153,14 @@ export default {
   line-height: 18px;
 
   a {
+    border-bottom: solid 1px transparent;
     color: #858dda;
     text-decoration: none;
+    transition: all 400ms ease;
+
+    &:hover {
+      border-bottom: solid 1px #858dda;
+    }
   }
 }
 
