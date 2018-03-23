@@ -9,6 +9,7 @@
     <header-session-links v-if="!loggedIn"/>
     <header-user-logged-in-items v-else />
     <sign-up-modal v-show="this.showSignUpModal"/>
+    <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>
   </header>
 </template>
 
@@ -19,6 +20,7 @@ import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
+import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 
 export default {
   props: {
@@ -44,10 +46,11 @@ export default {
     EditHeaderNav,
     HeaderSessionLinks,
     HeaderUserLoggedInItems,
-    SignUpModal
+    SignUpModal,
+    SignUpAuthFlowModal
   },
   computed: {
-    ...mapGetters('user', ['loggedIn', 'showSignUpModal'])
+    ...mapGetters('user', ['loggedIn', 'showSignUpModal', 'showSignUpAuthFlowModal'])
   }
 }
 </script>

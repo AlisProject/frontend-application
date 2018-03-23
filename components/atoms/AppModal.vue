@@ -38,20 +38,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['showSignUpModal'])
+    ...mapGetters('user', ['showSignUpModal', 'showSignUpAuthFlowModal'])
   },
   methods: {
     closeModal() {
-      if (!this.showSignUpModal) {
-        this.$router.push('/')
-        return
+      if (this.showSignUpModal) {
+        this.setSignUpModal({ showSignUpModal: false })
+      }
+      if (this.showSignUpAuthFlowModal) {
+        this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
       }
       this.$emit('close')
-      this.setSignUpModal({ showSignUpModal: false })
       document.body.scrollTop = 0
       document.querySelector('html,body').style.overflow = ''
     },
-    ...mapActions('user', ['setSignUpModal'])
+    ...mapActions('user', ['setSignUpModal', 'setSignUpAuthFlowModal'])
   }
 }
 </script>
