@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { debounce } from 'lodash-es'
+import { debounce } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
