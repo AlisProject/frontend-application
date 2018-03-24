@@ -2,6 +2,7 @@
   <app-modal title="SIGN UP">
     <div slot="modal-content">
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
+      <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
     </div>
   </app-modal>
 </template>
@@ -10,15 +11,20 @@
 import { mapGetters } from 'vuex'
 import AppModal from '../atoms/AppModal'
 import SignUpAuthFlowLoginModalForm from '../molecules/SignUpAuthFlowLoginModalForm'
+import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlowInputPhoneNumberModalForm'
 
 export default {
   components: {
     AppModal,
-    SignUpAuthFlowLoginModalForm
+    SignUpAuthFlowLoginModalForm,
+    SignUpAuthFlowInputPhoneNumberModalForm
   },
   computed: {
     isLoginModal() {
       return this.signUpAuthFlowModal.isLoginModal
+    },
+    isInputPhoneNumberModal() {
+      return this.signUpAuthFlowModal.isInputPhoneNumberModal
     },
     ...mapGetters('user', ['signUpAuthFlowModal'])
   }

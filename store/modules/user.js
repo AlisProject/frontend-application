@@ -21,6 +21,7 @@ const state = () => ({
   },
   signUpAuthFlowModal: {
     isLoginModal: false,
+    isInputPhoneNumberModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -29,6 +30,14 @@ const state = () => ({
       formError: {
         userIdOrEmail: false,
         password: false
+      }
+    },
+    inputPhoneNumber: {
+      formData: {
+        phoneNumber: ''
+      },
+      formError: {
+        phoneNumber: false
       }
     }
   }
@@ -85,6 +94,18 @@ const actions = {
   },
   hideSignUpAuthFlowLoginError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_LOGIN_ERROR, { type })
+  },
+  setSignUpAuthFlowInputPhoneNumberModal({ commit }, { isSignUpAuthFlowInputPhoneNumberModal }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_MODAL, { isSignUpAuthFlowInputPhoneNumberModal })
+  },
+  setSignUpAuthFlowInputPhoneNumberPhoneNumber({ commit }, { phoneNumber }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_PHONE_NUMBER, { phoneNumber })
+  },
+  showSignUpAuthFlowInputPhoneNumberError({ commit }, { type }) {
+    commit(types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR, { type })
+  },
+  hideSignUpAuthFlowInputPhoneNumberError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR, { type })
   }
 }
 
@@ -132,6 +153,18 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_LOGIN_ERROR](state, { type }) {
     state.signUpAuthFlowModal.login.formError[type] = false
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_MODAL](state, { isSignUpAuthFlowInputPhoneNumberModal }) {
+    state.signUpAuthFlowModal.isInputPhoneNumberModal = isSignUpAuthFlowInputPhoneNumberModal
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_PHONE_NUMBER](state, { phoneNumber }) {
+    state.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber = phoneNumber
+  },
+  [types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputPhoneNumber.formError[type] = true
+  },
+  [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputPhoneNumber.formError[type] = false
   }
 }
 
