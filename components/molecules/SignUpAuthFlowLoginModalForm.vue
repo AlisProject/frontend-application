@@ -57,6 +57,9 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
+  created() {
+    if (process.browser) document.querySelector('html,body').style.overflow = 'hidden'
+  },
   computed: {
     showErrorUserIdOrEmailRequired() {
       return (
@@ -126,13 +129,15 @@ export default {
     onSubmit() {
       if (this.invalidSubmit) return
       this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
+      this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
     },
     ...mapActions('user', [
       'setSignUpAuthFlowLoginModal',
       'setSignUpAuthFlowLoginUserIdOrEmail',
       'setSignUpAuthFlowLoginPassword',
       'showSignUpAuthFlowLoginError',
-      'hideSignUpAuthFlowLoginError'
+      'hideSignUpAuthFlowLoginError',
+      'setSignUpAuthFlowInputPhoneNumberModal'
     ])
   }
 }
