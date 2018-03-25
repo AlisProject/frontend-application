@@ -1,9 +1,22 @@
 <template>
   <nav class="area-nav">
-    <nuxt-link to="/" class="nav-link area-popular-articles">人気記事</nuxt-link>
-    <nuxt-link to="/articles/new" class="nav-link area-new-articles">新着記事</nuxt-link>
+    <template v-if="!showOnlyLogo">
+      <nuxt-link to="/" class="nav-link area-popular-articles">人気記事</nuxt-link>
+      <nuxt-link to="/articles/new" class="nav-link area-new-articles">新着記事</nuxt-link>
+    </template>
   </nav>
 </template>
+
+<script>
+export default {
+  props: {
+    showOnlyLogo: {
+      type: Boolean,
+      default: false
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .area-nav {
