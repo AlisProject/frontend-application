@@ -1,13 +1,15 @@
 <template>
   <header class="area-app-header-container">
     <nuxt-link to="/" class="area-logo"/>
-    <default-header-nav v-if="showDefaultHeaderNav"/>
+    <default-header-nav v-if="showDefaultHeaderNav" :showOnlyLogo="showOnlyLogo"/>
     <edit-header-nav
       v-if="showEditHeaderNav"
       :showPostArticleLink="showPostArticleLink"
       :showEditArticleLink="showEditArticleLink"/>
-    <header-session-links v-if="!loggedIn"/>
-    <header-user-logged-in-items v-else />
+    <template v-if="!showOnlyLogo">
+      <header-session-links v-if="!loggedIn"/>
+      <header-user-logged-in-items v-else />
+    </template>
     <sign-up-modal v-show="this.showSignUpModal"/>
     <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>
   </header>
@@ -29,6 +31,10 @@ export default {
       default: false
     },
     showEditHeaderNav: {
+      type: Boolean,
+      default: false
+    },
+    showOnlyLogo: {
       type: Boolean,
       default: false
     },
