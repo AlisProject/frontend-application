@@ -2,33 +2,35 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        電話番号を入力してください
+        認証コードを入力してください
       </p>
       <p class="description">
-        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます
+        SMSに記載の6桁の認証コードを入力してください
       </p>
       <form class="signup-form">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
-          <label class="signup-form-label">電話番号</label>
+          <label class="signup-form-label">認証コード</label>
           <input
             class="signup-form-input"
-            type="tel"
-            placeholder="08012345678"
+            type="text"
+            placeholder="123456"
             autofocus
-            @input="setPhoneNumber"
-            @blur="showError('phoneNumber')"
-            @focus="resetError('phoneNumber')">
+            @input="setAuthCode"
+            @blur="showError('authCode')"
+            @focus="resetError('authCode')">
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message" v-if="showErrorPhoneNumberRequired">電話番号は必須です</p>
-      <p class="error-message" v-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
-      <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
-      <p class="error-message" v-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
+      <p class="error-message" v-if="showErrorAuthCodeRequired">認証コードは必須です</p>
+      <p class="error-message" v-if="showErrorInvalidAuthCode">認証コードは6文字でご入力ください</p>
+      <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字でご入力ください</p>
       <button class="to-next-step-button" :class="{ disabled: invalidSubmit }" @click="onSubmit">
-        次へ
+        認証コードを送信する
       </button>
+      <p class="back-to-input-phone-number">
+        電話番号の入力に戻る場合は<span class="link" @click="backToInputPhoneNumber">こちら</span>
+      </p>
     </div>
   </div>
 </template>
@@ -37,95 +39,89 @@
 import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 
-function japanesePhoneNumber(value) {
-  return Boolean(value.match(/^0[789]0/))
-}
-
 export default {
   computed: {
-    showErrorInvalidPhoneNember() {
+    showErrorInvalidAuthCode() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        (!this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.minLength ||
-          !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.maxLength)
+        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
+        (!this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.minLength ||
+          !this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.maxLength)
       )
     },
-    showErrorPhoneNumberRequired() {
+    showErrorAuthCodeRequired() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.required
+        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
+        !this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.required
       )
     },
-    showErrorPhoneNumberNumeric() {
+    showErrorAuthCodeNumeric() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.numeric
-      )
-    },
-    showErrorPhoneNumberJapanesePhoneNumber() {
-      return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.japanesePhoneNumber
+        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
+        !this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.numeric
       )
     },
     invalidSubmit() {
-      return this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.$invalid
+      return this.$v.signUpAuthFlowModal.inputAuthCode.formData.$invalid
     },
     hasUserIdOrEmailError() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.userIdOrEmail &&
-        this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.userIdOrEmail.$error
+        this.signUpAuthFlowModal.inputAuthCode.formError.userIdOrEmail &&
+        this.$v.signUpAuthFlowModal.inputAuthCode.formData.userIdOrEmail.$error
       )
     },
     hasPhoneNumberError() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.$error
+        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
+        this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.$error
       )
     },
     ...mapGetters('user', ['signUpAuthFlowModal'])
   },
   validations: {
     signUpAuthFlowModal: {
-      inputPhoneNumber: {
+      inputAuthCode: {
         formData: {
-          phoneNumber: {
+          authCode: {
             required,
-            minLength: minLength(11),
-            maxLength: maxLength(11),
-            numeric,
-            japanesePhoneNumber
+            minLength: minLength(6),
+            maxLength: maxLength(6),
+            numeric
           }
         }
       }
     }
   },
   methods: {
-    setPhoneNumber(e) {
-      this.setSignUpAuthFlowInputPhoneNumberPhoneNumber({ phoneNumber: e.target.value })
+    setAuthCode(e) {
+      this.setSignUpAuthFlowInputAuthCodeAuthCode({ authCode: e.target.value })
     },
     showError(type) {
-      this.$v.signUpAuthFlowModal.inputPhoneNumber.formData[type].$touch()
-      this.showSignUpAuthFlowInputPhoneNumberError({ type })
+      this.$v.signUpAuthFlowModal.inputAuthCode.formData[type].$touch()
+      this.showSignUpAuthFlowInputAuthCodeError({ type })
     },
     resetError(type) {
-      this.$v.signUpAuthFlowModal.inputPhoneNumber.formData[type].$reset()
-      this.hideSignUpAuthFlowInputPhoneNumberError({ type })
+      this.$v.signUpAuthFlowModal.inputAuthCode.formData[type].$reset()
+      this.hideSignUpAuthFlowInputAuthCodeError({ type })
     },
     onSubmit() {
       if (this.invalidSubmit) return
+      this.setSignUpAuthFlowInputAuthCodeModal({
+        isSignUpAuthFlowInputAuthCodeModal: false
+      })
+    },
+    backToInputPhoneNumber() {
       this.setSignUpAuthFlowInputPhoneNumberModal({
-        isSignUpAuthFlowInputPhoneNumberModal: false
+        isSignUpAuthFlowInputPhoneNumberModal: true
       })
       this.setSignUpAuthFlowInputAuthCodeModal({
-        isSignUpAuthFlowInputAuthCodeModal: true
+        isSignUpAuthFlowInputAuthCodeModal: false
       })
     },
     ...mapActions('user', [
       'setSignUpAuthFlowInputPhoneNumberModal',
-      'setSignUpAuthFlowInputPhoneNumberPhoneNumber',
-      'showSignUpAuthFlowInputPhoneNumberError',
-      'hideSignUpAuthFlowInputPhoneNumberError',
+      'setSignUpAuthFlowInputAuthCodeAuthCode',
+      'showSignUpAuthFlowInputAuthCodeError',
+      'hideSignUpAuthFlowInputAuthCodeError',
       'setSignUpAuthFlowInputAuthCodeModal'
     ])
   }
@@ -133,6 +129,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin default-link {
+  border-bottom: solid 1px transparent;
+  color: #858dda;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 400ms ease;
+
+  &:hover {
+    border-bottom: solid 1px #858dda;
+  }
+}
+
 @mixin default-text {
   height: 14px;
   color: #6e6e6e;
@@ -140,14 +148,7 @@ export default {
   line-height: 18px;
 
   a {
-    border-bottom: solid 1px transparent;
-    color: #858dda;
-    text-decoration: none;
-    transition: all 400ms ease;
-
-    &:hover {
-      border-bottom: solid 1px #858dda;
-    }
+    @include default-link();
   }
 }
 
@@ -243,6 +244,15 @@ export default {
       background: white;
       color: #6e6e6e;
       cursor: default;
+    }
+  }
+
+  .back-to-input-phone-number {
+    @include default-text();
+    text-align: right;
+
+    .link {
+      @include default-link();
     }
   }
 
