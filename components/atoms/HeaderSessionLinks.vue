@@ -1,9 +1,9 @@
 <template>
   <div class="session">
     <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
-    <span class="session-link sign-up" @click="showModal">Sign up</span>
+    <span class="session-link sign-up" @click="showSignUpModal">Sign up</span>
     /
-    <nuxt-link to="#" class="session-link login">Login</nuxt-link>
+    <span class="session-link login" @click="showLoginModal">Login</span>
   </div>
 </template>
 
@@ -12,12 +12,17 @@ import { mapActions } from 'vuex'
 
 export default {
   methods: {
-    showModal() {
+    showSignUpModal() {
       this.setSignUpModal({ showSignUpModal: true })
       document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
     },
-    ...mapActions('user', ['setSignUpModal'])
+    showLoginModal() {
+      this.setLoginModal({ showLoginModal: true })
+      document.documentElement.scrollTop = 0
+      document.querySelector('html,body').style.overflow = 'hidden'
+    },
+    ...mapActions('user', ['setSignUpModal', 'setLoginModal'])
   }
 }
 </script>
