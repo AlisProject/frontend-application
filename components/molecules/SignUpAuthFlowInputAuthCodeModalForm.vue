@@ -108,6 +108,9 @@ export default {
       this.setSignUpAuthFlowInputAuthCodeModal({
         isSignUpAuthFlowInputAuthCodeModal: false
       })
+      this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
+        isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
+      })
     },
     backToInputPhoneNumber() {
       this.setSignUpAuthFlowInputPhoneNumberModal({
@@ -122,7 +125,8 @@ export default {
       'setSignUpAuthFlowInputAuthCodeAuthCode',
       'showSignUpAuthFlowInputAuthCodeError',
       'hideSignUpAuthFlowInputAuthCodeError',
-      'setSignUpAuthFlowInputAuthCodeModal'
+      'setSignUpAuthFlowInputAuthCodeModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
     ])
   }
 }

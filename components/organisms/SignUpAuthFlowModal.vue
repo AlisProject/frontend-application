@@ -1,9 +1,10 @@
 <template>
-  <app-modal title="SIGN UP">
+  <app-modal :title="title">
     <div slot="modal-content">
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
+      <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
     </div>
   </app-modal>
 </template>
@@ -14,15 +15,20 @@ import AppModal from '../atoms/AppModal'
 import SignUpAuthFlowLoginModalForm from '../molecules/SignUpAuthFlowLoginModalForm'
 import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlowInputPhoneNumberModalForm'
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
+import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
 
 export default {
   components: {
     AppModal,
     SignUpAuthFlowLoginModalForm,
     SignUpAuthFlowInputPhoneNumberModalForm,
-    SignUpAuthFlowInputAuthCodeModalForm
+    SignUpAuthFlowInputAuthCodeModalForm,
+    SignUpAuthFlowCompletedPhoneNumberAuthModal
   },
   computed: {
+    title() {
+      return this.isCompletedPhoneNumberAuthModal ? 'CONGRATULATIONS!!' : 'SIGN UP'
+    },
     isLoginModal() {
       return this.signUpAuthFlowModal.isLoginModal
     },
@@ -31,6 +37,9 @@ export default {
     },
     isInputAuthCodeModal() {
       return this.signUpAuthFlowModal.isInputAuthCodeModal
+    },
+    isCompletedPhoneNumberAuthModal() {
+      return this.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal
     },
     ...mapGetters('user', ['signUpAuthFlowModal'])
   }
