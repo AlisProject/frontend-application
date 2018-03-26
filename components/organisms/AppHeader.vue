@@ -12,6 +12,7 @@
     </template>
     <sign-up-modal v-show="this.showSignUpModal"/>
     <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>
+    <login-modal v-show="this.showLoginModal"/>
   </header>
 </template>
 
@@ -23,6 +24,7 @@ import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
 import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
+import LoginModal from '../organisms/LoginModal'
 
 export default {
   props: {
@@ -53,10 +55,16 @@ export default {
     HeaderSessionLinks,
     HeaderUserLoggedInItems,
     SignUpModal,
-    SignUpAuthFlowModal
+    SignUpAuthFlowModal,
+    LoginModal
   },
   computed: {
-    ...mapGetters('user', ['loggedIn', 'showSignUpModal', 'showSignUpAuthFlowModal'])
+    ...mapGetters('user', [
+      'loggedIn',
+      'showSignUpModal',
+      'showSignUpAuthFlowModal',
+      'showLoginModal'
+    ])
   }
 }
 </script>

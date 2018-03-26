@@ -6,6 +6,7 @@ const state = () => ({
   loggedIn: false,
   showSignUpModal: false,
   showSignUpAuthFlowModal: false,
+  showLoginModal: false,
   sentMail: false,
   signUpModal: {
     formData: {
@@ -50,6 +51,16 @@ const state = () => ({
         authCode: false
       }
     }
+  },
+  loginModal: {
+    formData: {
+      userIdOrEmail: '',
+      password: ''
+    },
+    formError: {
+      userIdOrEmail: false,
+      password: false
+    }
   }
 })
 
@@ -59,10 +70,15 @@ const getters = {
   sentMail: (state) => state.sentMail,
   signUpModal: (state) => state.signUpModal,
   showSignUpAuthFlowModal: (state) => state.showSignUpAuthFlowModal,
-  signUpAuthFlowModal: (state) => state.signUpAuthFlowModal
+  signUpAuthFlowModal: (state) => state.signUpAuthFlowModal,
+  showLoginModal: (state) => state.showLoginModal,
+  loginModal: (state) => state.loginModal
 }
 
 const actions = {
+  login({ commit }) {
+    commit(types.LOGIN)
+  },
   setSignUpModal({ commit }, { showSignUpModal }) {
     commit(types.SET_SIGN_UP_MODAL, { showSignUpModal })
   },
@@ -131,10 +147,31 @@ const actions = {
   },
   setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isSignUpAuthFlowCompletedPhoneNumberAuthModal }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isSignUpAuthFlowCompletedPhoneNumberAuthModal })
+  },
+  setLoginModal({ commit }, { showLoginModal }) {
+    commit(types.SET_LOGIN_MODAL, { showLoginModal })
+  },
+  setLoginUserIdOrEmail({ commit }, { userIdOrEmail }) {
+    commit(types.SET_LOGIN_USER_ID_OR_EMAIL, { userIdOrEmail })
+  },
+  setLoginPassword({ commit }, { password }) {
+    commit(types.SET_LOGIN_PASSWORD, { password })
+  },
+  showLoginError({ commit }, { type }) {
+    commit(types.SHOW_LOGIN_ERROR, { type })
+  },
+  hideLoginError({ commit }, { type }) {
+    commit(types.HIDE_LOGIN_ERROR, { type })
+  },
+  hideLoginErrors({ commit }) {
+    commit(types.HIDE_LOGIN_ERRORS)
   }
 }
 
 const mutations = {
+  [types.LOGIN](state) {
+    state.loggedIn = true
+  },
   [types.SET_SIGN_UP_MODAL](state, { showSignUpModal }) {
     state.showSignUpModal = showSignUpModal
   },
@@ -205,6 +242,26 @@ const mutations = {
   },
   [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isSignUpAuthFlowCompletedPhoneNumberAuthModal }) {
     state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isSignUpAuthFlowCompletedPhoneNumberAuthModal
+  },
+  [types.SET_LOGIN_MODAL](state, { showLoginModal }) {
+    state.showLoginModal = showLoginModal
+  },
+  [types.SET_LOGIN_USER_ID_OR_EMAIL](state, { userIdOrEmail }) {
+    state.loginModal.formData.userIdOrEmail = userIdOrEmail
+  },
+  [types.SET_LOGIN_PASSWORD](state, { password }) {
+    state.loginModal.formData.password = password
+  },
+  [types.SHOW_LOGIN_ERROR](state, { type }) {
+    state.loginModal.formError[type] = true
+  },
+  [types.HIDE_LOGIN_ERROR](state, { type }) {
+    state.loginModal.formError[type] = false
+  },
+  [types.HIDE_LOGIN_ERRORS]({ loginModal: { formError } }) {
+    Object.keys(formError).forEach(key => {
+      formError[key] = false
+    })
   }
 }
 

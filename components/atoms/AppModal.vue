@@ -38,7 +38,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['showSignUpModal', 'showSignUpAuthFlowModal'])
+    ...mapGetters('user', ['showSignUpModal', 'showSignUpAuthFlowModal', 'showLoginModal'])
   },
   methods: {
     closeModal() {
@@ -48,11 +48,14 @@ export default {
       if (this.showSignUpAuthFlowModal) {
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
       }
+      if (this.showLoginModal) {
+        this.setLoginModal({ showLoginModal: false })
+      }
       this.$emit('close')
       document.body.scrollTop = 0
       document.querySelector('html,body').style.overflow = ''
     },
-    ...mapActions('user', ['setSignUpModal', 'setSignUpAuthFlowModal'])
+    ...mapActions('user', ['setSignUpModal', 'setSignUpAuthFlowModal', 'setLoginModal'])
   }
 }
 </script>
