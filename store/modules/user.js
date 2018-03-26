@@ -23,6 +23,7 @@ const state = () => ({
     isLoginModal: false,
     isInputPhoneNumberModal: false,
     isInputAuthCodeModal: false,
+    isCompletedPhoneNumberAuthModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -127,6 +128,9 @@ const actions = {
   },
   hideSignUpAuthFlowInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR, { type })
+  },
+  setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isSignUpAuthFlowCompletedPhoneNumberAuthModal }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isSignUpAuthFlowCompletedPhoneNumberAuthModal })
   }
 }
 
@@ -198,6 +202,9 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputAuthCode.formError[type] = false
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isSignUpAuthFlowCompletedPhoneNumberAuthModal }) {
+    state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isSignUpAuthFlowCompletedPhoneNumberAuthModal
   }
 }
 
