@@ -22,6 +22,7 @@ const state = () => ({
   signUpAuthFlowModal: {
     isLoginModal: false,
     isInputPhoneNumberModal: false,
+    isInputAuthCodeModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -38,6 +39,14 @@ const state = () => ({
       },
       formError: {
         phoneNumber: false
+      }
+    },
+    inputAuthCode: {
+      formData: {
+        authCode: ''
+      },
+      formError: {
+        authCode: false
       }
     }
   }
@@ -106,6 +115,18 @@ const actions = {
   },
   hideSignUpAuthFlowInputPhoneNumberError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR, { type })
+  },
+  setSignUpAuthFlowInputAuthCodeModal({ commit }, { isSignUpAuthFlowInputAuthCodeModal }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_MODAL, { isSignUpAuthFlowInputAuthCodeModal })
+  },
+  setSignUpAuthFlowInputAuthCodeAuthCode({ commit }, { authCode }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_AUTH_CODE, { authCode })
+  },
+  showSignUpAuthFlowInputAuthCodeError({ commit }, { type }) {
+    commit(types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR, { type })
+  },
+  hideSignUpAuthFlowInputAuthCodeError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR, { type })
   }
 }
 
@@ -165,6 +186,18 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputPhoneNumber.formError[type] = false
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_MODAL](state, { isSignUpAuthFlowInputAuthCodeModal }) {
+    state.signUpAuthFlowModal.isInputAuthCodeModal = isSignUpAuthFlowInputAuthCodeModal
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_AUTH_CODE](state, { authCode }) {
+    state.signUpAuthFlowModal.inputAuthCode.formData.authCode = authCode
+  },
+  [types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputAuthCode.formError[type] = true
+  },
+  [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputAuthCode.formError[type] = false
   }
 }
 

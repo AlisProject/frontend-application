@@ -3,6 +3,7 @@
     <div slot="modal-content">
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
+      <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
     </div>
   </app-modal>
 </template>
@@ -12,12 +13,14 @@ import { mapGetters } from 'vuex'
 import AppModal from '../atoms/AppModal'
 import SignUpAuthFlowLoginModalForm from '../molecules/SignUpAuthFlowLoginModalForm'
 import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlowInputPhoneNumberModalForm'
+import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
 
 export default {
   components: {
     AppModal,
     SignUpAuthFlowLoginModalForm,
-    SignUpAuthFlowInputPhoneNumberModalForm
+    SignUpAuthFlowInputPhoneNumberModalForm,
+    SignUpAuthFlowInputAuthCodeModalForm
   },
   computed: {
     isLoginModal() {
@@ -25,6 +28,9 @@ export default {
     },
     isInputPhoneNumberModal() {
       return this.signUpAuthFlowModal.isInputPhoneNumberModal
+    },
+    isInputAuthCodeModal() {
+      return this.signUpAuthFlowModal.isInputAuthCodeModal
     },
     ...mapGetters('user', ['signUpAuthFlowModal'])
   }
