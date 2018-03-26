@@ -162,6 +162,9 @@ const actions = {
   },
   hideLoginError({ commit }, { type }) {
     commit(types.HIDE_LOGIN_ERROR, { type })
+  },
+  hideLoginErrors({ commit }) {
+    commit(types.HIDE_LOGIN_ERRORS)
   }
 }
 
@@ -254,6 +257,11 @@ const mutations = {
   },
   [types.HIDE_LOGIN_ERROR](state, { type }) {
     state.loginModal.formError[type] = false
+  },
+  [types.HIDE_LOGIN_ERRORS]({ loginModal: { formError } }) {
+    Object.keys(formError).forEach(key => {
+      formError[key] = false
+    })
   }
 }
 
