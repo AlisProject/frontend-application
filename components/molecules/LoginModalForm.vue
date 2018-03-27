@@ -54,9 +54,6 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
-  created() {
-    if (process.browser) document.querySelector('html,body').style.overflow = 'hidden'
-  },
   computed: {
     showErrorUserIdOrEmailRequired() {
       return (
