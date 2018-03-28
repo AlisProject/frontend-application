@@ -25,6 +25,7 @@ const state = () => ({
     isInputPhoneNumberModal: false,
     isInputAuthCodeModal: false,
     isCompletedPhoneNumberAuthModal: false,
+    isProfileSettingsModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -49,6 +50,16 @@ const state = () => ({
       },
       formError: {
         authCode: false
+      }
+    },
+    profileSettings: {
+      formData: {
+        userDisplayName: '',
+        selfIntroduction: ''
+      },
+      formError: {
+        userDisplayName: false,
+        selfIntroduction: false
       }
     }
   },
@@ -165,6 +176,21 @@ const actions = {
   },
   hideLoginErrors({ commit }) {
     commit(types.HIDE_LOGIN_ERRORS)
+  },
+  setSignUpAuthFlowProfileSettingsModal({ commit }, { isSignUpAuthFlowProfileSettingsModal }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL, { isSignUpAuthFlowProfileSettingsModal })
+  },
+  setSignUpAuthFlowProfileSettingsUserDisplayName({ commit }, { userDisplayName }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_USER_DISPLAY_NAME, { userDisplayName })
+  },
+  setSignUpAuthFlowProfileSettingsSelfIntroduction({ commit }, { selfIntroduction }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_SELF_INDRODUCTION, { selfIntroduction })
+  },
+  showSignUpAuthFlowProfileSettingsError({ commit }, { type }) {
+    commit(types.SHOW_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR, { type })
+  },
+  hideSignUpAuthFlowProfileSettingsError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR, { type })
   }
 }
 
@@ -262,6 +288,21 @@ const mutations = {
     Object.keys(formError).forEach(key => {
       formError[key] = false
     })
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL](state, { isSignUpAuthFlowProfileSettingsModal }) {
+    state.signUpAuthFlowModal.isProfileSettingsModal = isSignUpAuthFlowProfileSettingsModal
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_USER_DISPLAY_NAME](state, { userDisplayName }) {
+    state.signUpAuthFlowModal.profileSettings.formData.userDisplayName = userDisplayName
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_SELF_INDRODUCTION](state, { selfIntroduction }) {
+    state.signUpAuthFlowModal.profileSettings.formData.selfIntroduction = selfIntroduction
+  },
+  [types.SHOW_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.profileSettings.formError[type] = true
+  },
+  [types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.profileSettings.formError[type] = false
   }
 }
 

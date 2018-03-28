@@ -15,7 +15,7 @@
         alt="completed-auth-image">
     </div>
     <div class="modal-footer">
-      <button class="to-next-step-button">
+      <button class="to-next-step-button" @click="transitToProfileSettings">
         プロフィールを作成する
       </button>
       <button class="to-top-button" @click="transitToTop">
@@ -30,13 +30,25 @@ import { mapActions } from 'vuex'
 
 export default {
   methods: {
+    transitToProfileSettings() {
+      this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
+        isSignUpAuthFlowCompletedPhoneNumberAuthModal: false
+      })
+      this.setSignUpAuthFlowProfileSettingsModal({
+        isSignUpAuthFlowProfileSettingsModal: true
+      })
+    },
     transitToTop() {
       document.querySelector('html,body').style.overflow = ''
       this.setSignUpAuthFlowModal({
         showSignUpAuthFlowModal: false
       })
     },
-    ...mapActions('user', ['setSignUpAuthFlowModal'])
+    ...mapActions('user', [
+      'setSignUpAuthFlowModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowProfileSettingsModal'
+    ])
   }
 }
 </script>
