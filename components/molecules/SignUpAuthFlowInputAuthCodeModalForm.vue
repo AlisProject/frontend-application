@@ -22,7 +22,6 @@
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message" v-if="showErrorAuthCodeRequired">認証コードは必須です</p>
       <p class="error-message" v-if="showErrorInvalidAuthCode">認証コードは6文字でご入力ください</p>
       <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字でご入力ください</p>
       <button class="to-next-step-button" :class="{ disabled: invalidSubmit }" @click="onSubmit">
@@ -46,12 +45,6 @@ export default {
         this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
         (!this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.minLength ||
           !this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.maxLength)
-      )
-    },
-    showErrorAuthCodeRequired() {
-      return (
-        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
-        !this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.required
       )
     },
     showErrorAuthCodeNumeric() {

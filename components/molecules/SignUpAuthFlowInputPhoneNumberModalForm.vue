@@ -22,7 +22,6 @@
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message" v-if="showErrorPhoneNumberRequired">電話番号は必須です</p>
       <p class="error-message" v-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
       <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
       <p class="error-message" v-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
@@ -48,12 +47,6 @@ export default {
         this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
         (!this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.minLength ||
           !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.maxLength)
-      )
-    },
-    showErrorPhoneNumberRequired() {
-      return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.required
       )
     },
     showErrorPhoneNumberNumeric() {

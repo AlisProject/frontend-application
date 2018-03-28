@@ -30,8 +30,6 @@
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message" v-if="showErrorUserIdOrEmailRequired">ユーザーIDもしくはメールアドレスは必須です</p>
-      <p class="error-message" v-if="showErrorPasswordRequired">パスワードは必須です</p>
       <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上でご入力ください</p>
       <p class="agreement-confirmation">
         <nuxt-link to="#">利用規約</nuxt-link>、<nuxt-link to="#">プライバシーポリシー</nuxt-link>に同意して
@@ -55,17 +53,8 @@ import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
   computed: {
-    showErrorUserIdOrEmailRequired() {
-      return (
-        this.loginModal.formError.userIdOrEmail &&
-        !this.$v.loginModal.formData.userIdOrEmail.required
-      )
-    },
     showErrorInvalidPassword() {
       return this.loginModal.formError.password && !this.$v.loginModal.formData.password.minLength
-    },
-    showErrorPasswordRequired() {
-      return this.loginModal.formError.password && !this.$v.loginModal.formData.password.required
     },
     invalidSubmit() {
       return this.$v.loginModal.formData.$invalid
