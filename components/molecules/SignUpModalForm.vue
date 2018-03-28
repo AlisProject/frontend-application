@@ -12,6 +12,7 @@
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')">
+          <p class="error-message" v-if="showErrorUserIdMinLength">ユーザーIDは４文字以上の英数字で入力してください</p>
         </div>
         <div class="signup-form-group" :class="{ 'error': hasEmailError }">
           <label class="signup-form-label">メールアドレス</label>
@@ -22,6 +23,7 @@
             @input="setEmail"
             @blur="showError('email')"
             @focus="resetError('email')">
+          <p class="error-message" v-if="showErrorInvalidEmail">メールアドレスの形式が正しくありません</p>
         </div>
         <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
           <label class="signup-form-label">パスワード</label>
@@ -32,16 +34,11 @@
             @input="setPassword"
             @blur="showError('password')"
             @focus="resetError('password')">
+          <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上です</p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message" v-if="showErrorUserIdRequired">ユーザーIDは必須です</p>
-      <p class="error-message" v-if="showErrorUserIdMinLength">ユーザーIDは４文字以上の英数字で入力してください</p>
-      <p class="error-message" v-if="showErrorEmailRequired">メールアドレスは必須です</p>
-      <p class="error-message" v-if="showErrorInvalidEmail">メールアドレスの形式が正しくありません</p>
-      <p class="error-message" v-if="showErrorPasswordRequired">パスワードは必須です</p>
-      <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上です</p>
       <p class="agreement-confirmation">
         <nuxt-link to="#">利用規約</nuxt-link>、<nuxt-link to="#">プライバシーポリシー</nuxt-link>に同意して
       </p>
@@ -61,23 +58,14 @@ import { required, minLength, email } from 'vuelidate/lib/validators'
 
 export default {
   computed: {
-    showErrorUserIdRequired() {
-      return this.signUpModal.formError.userId && !this.$v.signUpModal.formData.userId.required
-    },
     showErrorUserIdMinLength() {
       return this.signUpModal.formError.userId && !this.$v.signUpModal.formData.userId.minLength
-    },
-    showErrorEmailRequired() {
-      return this.signUpModal.formError.email && !this.$v.signUpModal.formData.email.required
     },
     showErrorInvalidEmail() {
       return this.signUpModal.formError.email && !this.$v.signUpModal.formData.email.email
     },
     showErrorInvalidPassword() {
       return this.signUpModal.formError.password && !this.$v.signUpModal.formData.password.minLength
-    },
-    showErrorPasswordRequired() {
-      return this.signUpModal.formError.password && !this.$v.signUpModal.formData.password.required
     },
     invalidSubmit() {
       return this.$v.signUpModal.formData.$invalid
@@ -172,6 +160,10 @@ export default {
     max-width: 400px;
     width: 80%;
 
+    &-group {
+      position: relative;
+    }
+
     &-label {
       color: #030303;
       font-size: 14px;
@@ -181,7 +173,7 @@ export default {
     &-input {
       border: none;
       border-bottom: 1px dotted #232538;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       padding: 5px 0;
       width: 100%;
 
@@ -194,6 +186,14 @@ export default {
       &:focus {
         outline: 0;
       }
+    }
+
+    .error-message {
+      bottom: 0;
+      color: #f06273;
+      font-size: 12px;
+      position: absolute;
+      width: 100%;
     }
 
     .error {
@@ -253,12 +253,6 @@ export default {
   .for-login-user {
     @include default-text();
     text-align: right;
-  }
-
-  .error-message {
-    color: #f06273;
-    font-size: 12px;
-    width: 100%;
   }
 }
 
