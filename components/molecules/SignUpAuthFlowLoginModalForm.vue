@@ -25,6 +25,7 @@
             @input="setPassword"
             @blur="showError('password')"
             @focus="resetError('password')">
+          <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上でご入力ください</p>
         </div>
         <div class="remember-login">
           <input class="checkbox" type="checkbox">
@@ -33,7 +34,6 @@
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上でご入力ください</p>
       <p class="agreement-confirmation">
         <nuxt-link to="#">利用規約</nuxt-link>、<nuxt-link to="#">プライバシーポリシー</nuxt-link>に同意して
       </p>
@@ -163,6 +163,10 @@ export default {
     max-width: 400px;
     width: 80%;
 
+    &-group {
+      position: relative;
+    }
+
     &-label {
       color: #030303;
       font-size: 14px;
@@ -172,7 +176,7 @@ export default {
     &-input {
       border: none;
       border-bottom: 1px dotted #232538;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       padding: 5px 0;
       width: 100%;
 
@@ -185,6 +189,14 @@ export default {
       &:focus {
         outline: 0;
       }
+    }
+
+    .error-message {
+      bottom: 0;
+      color: #f06273;
+      font-size: 12px;
+      position: absolute;
+      width: 100%;
     }
 
     .error {
@@ -264,12 +276,6 @@ export default {
   .for-password-forgot-user {
     @include default-text();
     text-align: right;
-  }
-
-  .error-message {
-    color: #f06273;
-    font-size: 12px;
-    width: 100%;
   }
 }
 
