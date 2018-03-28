@@ -14,6 +14,7 @@
             class="signup-form-input"
             type="tel"
             placeholder="08012345678"
+            maxlength="11"
             autofocus
             @input="setPhoneNumber"
             @blur="showError('phoneNumber')"

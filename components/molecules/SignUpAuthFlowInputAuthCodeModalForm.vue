@@ -14,6 +14,7 @@
             class="signup-form-input"
             type="text"
             placeholder="123456"
+            maxlength="6"
             autofocus
             @input="setAuthCode"
             @blur="showError('authCode')"
