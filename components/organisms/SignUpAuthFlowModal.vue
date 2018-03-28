@@ -5,6 +5,7 @@
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
+      <profile-settings-modal-form v-if="isProfileSettingsModal" />
     </div>
   </app-modal>
 </template>
@@ -16,6 +17,7 @@ import SignUpAuthFlowLoginModalForm from '../molecules/SignUpAuthFlowLoginModalF
 import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlowInputPhoneNumberModalForm'
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
 import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
+import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
 
 export default {
   components: {
@@ -23,11 +25,18 @@ export default {
     SignUpAuthFlowLoginModalForm,
     SignUpAuthFlowInputPhoneNumberModalForm,
     SignUpAuthFlowInputAuthCodeModalForm,
-    SignUpAuthFlowCompletedPhoneNumberAuthModal
+    SignUpAuthFlowCompletedPhoneNumberAuthModal,
+    ProfileSettingsModalForm
   },
   computed: {
     title() {
-      return this.isCompletedPhoneNumberAuthModal ? 'CONGRATULATIONS!!' : 'SIGN UP'
+      if (this.isCompletedPhoneNumberAuthModal) {
+        return 'CONGRATULATIONS!!'
+      } else if (this.isProfileSettingsModal) {
+        return 'PROFILE'
+      } else {
+        return 'SIGN UP'
+      }
     },
     isLoginModal() {
       return this.signUpAuthFlowModal.isLoginModal
@@ -40,6 +49,9 @@ export default {
     },
     isCompletedPhoneNumberAuthModal() {
       return this.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal
+    },
+    isProfileSettingsModal() {
+      return this.signUpAuthFlowModal.isProfileSettingsModal
     },
     ...mapGetters('user', ['signUpAuthFlowModal'])
   }
