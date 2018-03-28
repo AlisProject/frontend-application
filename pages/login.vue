@@ -25,6 +25,9 @@ export default {
       articles,
       alisTokens
     })
+  },
+  created() {
+    if (process.browser) document.querySelector('html,body').style.overflow = 'hidden'
   }
 }
 </script>
