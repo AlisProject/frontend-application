@@ -112,6 +112,7 @@ export default {
       if (this.invalidSubmit) return
       this.login()
       this.setLoginModal({ showLoginModal: false })
+      document.querySelector('html,body').style.overflow = ''
     },
     ...mapActions('user', [
       'login',
