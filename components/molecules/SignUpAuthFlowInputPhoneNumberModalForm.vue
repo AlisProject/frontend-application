@@ -23,6 +23,7 @@
       </form>
     </div>
     <div class="modal-footer">
+      <p class="error-message">{{errorMessage}}</p>
       <p class="error-message" v-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
       <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
       <p class="error-message" v-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
@@ -42,6 +43,11 @@ function japanesePhoneNumber(value) {
 }
 
 export default {
+  data() {
+    return {
+      errorMessage: ''
+    }
+  },
   computed: {
     showErrorInvalidPhoneNember() {
       return (
@@ -110,22 +116,26 @@ export default {
       if (this.invalidSubmit) return
       const { userIdOrEmail } = this.signUpAuthFlowModal.login.formData
       const { phoneNumber } = this.signUpAuthFlowModal.inputPhoneNumber.formData
-      const updatePhoneNumberResult = await this.updatePhoneNumber({
-        userId: userIdOrEmail,
-        phoneNumber: `+81${phoneNumber.slice(1)}`
-      })
 
-      if (updatePhoneNumberResult === 'SUCCESS') {
-        const sendConfirmResult = await this.sendConfirm()
+      try {
+        const updatePhoneNumberResult = await this.updatePhoneNumber({
+          userId: userIdOrEmail,
+          phoneNumber: `+81${phoneNumber.slice(1)}`
+        })
+        if (updatePhoneNumberResult === 'SUCCESS') {
+          const sendConfirmResult = await this.sendConfirm()
 
-        if (sendConfirmResult.CodeDeliveryDetails) {
-          this.setSignUpAuthFlowInputPhoneNumberModal({
-            isSignUpAuthFlowInputPhoneNumberModal: false
-          })
-          this.setSignUpAuthFlowInputAuthCodeModal({
-            isSignUpAuthFlowInputAuthCodeModal: true
-          })
+          if (sendConfirmResult.CodeDeliveryDetails) {
+            this.setSignUpAuthFlowInputPhoneNumberModal({
+              isSignUpAuthFlowInputPhoneNumberModal: false
+            })
+            this.setSignUpAuthFlowInputAuthCodeModal({
+              isSignUpAuthFlowInputAuthCodeModal: true
+            })
+          }
         }
+      } catch (error) {
+        this.errorMessage = error.message
       }
     },
     ...mapActions('user', [

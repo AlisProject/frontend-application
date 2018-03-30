@@ -127,11 +127,13 @@ export default {
     async onSubmit() {
       if (this.invalidSubmit) return
       const { userId, email, password } = this.signUpModal.formData
-      const result = await this.register({ userId, email, password })
-      if (!result) {
-        this.setSentMail({ sentMail: true })
-      } else {
-        this.errorMessage = result.message
+      try {
+        const result = await this.register({ userId, email, password })
+        if (!result) {
+          this.setSentMail({ sentMail: true })
+        }
+      } catch (error) {
+        this.errorMessage = error.message
       }
     },
     ...mapActions('user', [

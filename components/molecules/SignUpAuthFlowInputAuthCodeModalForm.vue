@@ -23,6 +23,7 @@
       </form>
     </div>
     <div class="modal-footer">
+      <p class="error-message">{{errorMessage}}</p>
       <p class="error-message" v-if="showErrorInvalidAuthCode">認証コードは6文字でご入力ください</p>
       <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字でご入力ください</p>
       <button class="to-next-step-button" :class="{ disabled: invalidSubmit }" @click="onSubmit">
@@ -40,6 +41,11 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 
 export default {
+  data() {
+    return {
+      errorMessage: ''
+    }
+  },
   computed: {
     showErrorInvalidAuthCode() {
       return (
@@ -100,14 +106,18 @@ export default {
     async onSubmit() {
       if (this.invalidSubmit) return
       const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
-      const result = await this.verifySMSCode({ code })
-      if (result === 'SUCCESS') {
-        this.setSignUpAuthFlowInputAuthCodeModal({
-          isSignUpAuthFlowInputAuthCodeModal: false
-        })
-        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
-          isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
-        })
+      try {
+        const result = await this.verifySMSCode({ code })
+        if (result === 'SUCCESS') {
+          this.setSignUpAuthFlowInputAuthCodeModal({
+            isSignUpAuthFlowInputAuthCodeModal: false
+          })
+          this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
+            isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
+          })
+        }
+      } catch (error) {
+        this.errorMessage = error.message
       }
     },
     backToInputPhoneNumber() {

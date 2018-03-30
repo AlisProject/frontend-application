@@ -121,12 +121,16 @@ export default {
     async onSubmit() {
       if (this.invalidSubmit) return
       const { userIdOrEmail, password } = this.signUpAuthFlowModal.login.formData
-      const result = await this.signUpLogin({ userId: userIdOrEmail, password })
-      if (result.accessToken) {
-        this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
-        this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
-      } else {
-        this.errorMessage = result.message
+      try {
+        const result = await this.signUpLogin({ userId: userIdOrEmail, password })
+        if (result.accessToken) {
+          this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
+          this.setSignUpAuthFlowInputPhoneNumberModal({
+            isSignUpAuthFlowInputPhoneNumberModal: true
+          })
+        }
+      } catch (error) {
+        this.errorMessage = error.message
       }
     },
     ...mapActions('user', [

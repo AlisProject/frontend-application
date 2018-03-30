@@ -202,7 +202,7 @@ const actions = {
       const result = await this.cognito.register({ email, password, userId })
       return result.userConfirmed
     } catch (error) {
-      return error
+      return Promise.reject(error)
     }
   },
   async confirmEmail({ commit }, { user, code }) {
@@ -210,7 +210,7 @@ const actions = {
       const result = await this.cognito.confirmEmail({ user, code })
       return result
     } catch (error) {
-      return error
+      return Promise.reject(error)
     }
   },
   async signUpLogin({ commit }, { userId, password }) {
@@ -218,7 +218,7 @@ const actions = {
       const result = await this.cognito.login({ userId, password })
       return result
     } catch (error) {
-      return error
+      return Promise.reject(error)
     }
   },
   async updatePhoneNumber({ commit }, { userId, phoneNumber }) {
@@ -226,7 +226,7 @@ const actions = {
       const result = await this.cognito.updatePhoneNumber({ userId, phoneNumber })
       return result
     } catch (error) {
-      return error
+      return Promise.reject(error)
     }
   },
   async sendConfirm() {
@@ -234,7 +234,7 @@ const actions = {
       const result = await this.cognito.sendConfirm()
       return result
     } catch (error) {
-      return error
+      return Promise.reject(error)
     }
   },
   async verifySMSCode({ commit }, { code }) {
@@ -242,7 +242,7 @@ const actions = {
       const result = await this.cognito.verifySMSCode({ code })
       return result
     } catch (error) {
-      return error
+      return Promise.reject(error)
     }
   },
   async getUserSession({ commit }) {
@@ -250,7 +250,7 @@ const actions = {
       const result = await this.cognito.getUserSession()
       commit(types.SET_USER, result)
     } catch (error) {
-      throw new Error(error)
+      return Promise.reject(error)
     }
   }
 }
