@@ -34,6 +34,7 @@
       </form>
     </div>
     <div class="modal-footer">
+      <p class="error-message">{{errorMessage}}</p>
       <p class="agreement-confirmation">
         <nuxt-link to="#">利用規約</nuxt-link>、<nuxt-link to="#">プライバシーポリシー</nuxt-link>に同意して
       </p>
@@ -55,6 +56,11 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
+  data() {
+    return {
+      errorMessage: ''
+    }
+  },
   created() {
     if (process.browser) document.querySelector('html,body').style.overflow = 'hidden'
   },
@@ -112,10 +118,16 @@ export default {
       this.$v.signUpAuthFlowModal.login.formData[type].$reset()
       this.hideSignUpAuthFlowLoginError({ type })
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.invalidSubmit) return
-      this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
-      this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
+      const { userIdOrEmail, password } = this.signUpAuthFlowModal.login.formData
+      const result = await this.signUpLogin({ userId: userIdOrEmail, password })
+      if (result.accessToken) {
+        this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
+        this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
+      } else {
+        this.errorMessage = result.message
+      }
     },
     ...mapActions('user', [
       'setSignUpAuthFlowLoginModal',
@@ -123,7 +135,8 @@ export default {
       'setSignUpAuthFlowLoginPassword',
       'showSignUpAuthFlowLoginError',
       'hideSignUpAuthFlowLoginError',
-      'setSignUpAuthFlowInputPhoneNumberModal'
+      'setSignUpAuthFlowInputPhoneNumberModal',
+      'signUpLogin'
     ])
   }
 }
@@ -239,6 +252,13 @@ export default {
   .agreement-confirmation {
     @include default-text();
     text-align: center;
+  }
+
+  .error-message {
+    bottom: 0;
+    color: #f06273;
+    font-size: 12px;
+    width: 100%;
   }
 
   .login-button {

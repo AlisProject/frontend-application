@@ -106,21 +106,36 @@ export default {
       this.$v.signUpAuthFlowModal.inputPhoneNumber.formData[type].$reset()
       this.hideSignUpAuthFlowInputPhoneNumberError({ type })
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.invalidSubmit) return
-      this.setSignUpAuthFlowInputPhoneNumberModal({
-        isSignUpAuthFlowInputPhoneNumberModal: false
+      const { userIdOrEmail } = this.signUpAuthFlowModal.login.formData
+      const { phoneNumber } = this.signUpAuthFlowModal.inputPhoneNumber.formData
+      const updatePhoneNumberResult = await this.updatePhoneNumber({
+        userId: userIdOrEmail,
+        phoneNumber: `+81${phoneNumber.slice(1)}`
       })
-      this.setSignUpAuthFlowInputAuthCodeModal({
-        isSignUpAuthFlowInputAuthCodeModal: true
-      })
+
+      if (updatePhoneNumberResult === 'SUCCESS') {
+        const sendConfirmResult = await this.sendConfirm()
+
+        if (sendConfirmResult.CodeDeliveryDetails) {
+          this.setSignUpAuthFlowInputPhoneNumberModal({
+            isSignUpAuthFlowInputPhoneNumberModal: false
+          })
+          this.setSignUpAuthFlowInputAuthCodeModal({
+            isSignUpAuthFlowInputAuthCodeModal: true
+          })
+        }
+      }
     },
     ...mapActions('user', [
       'setSignUpAuthFlowInputPhoneNumberModal',
       'setSignUpAuthFlowInputPhoneNumberPhoneNumber',
       'showSignUpAuthFlowInputPhoneNumberError',
       'hideSignUpAuthFlowInputPhoneNumberError',
-      'setSignUpAuthFlowInputAuthCodeModal'
+      'setSignUpAuthFlowInputAuthCodeModal',
+      'updatePhoneNumber',
+      'sendConfirm'
     ])
   }
 }

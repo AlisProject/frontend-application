@@ -97,14 +97,18 @@ export default {
       this.$v.signUpAuthFlowModal.inputAuthCode.formData[type].$reset()
       this.hideSignUpAuthFlowInputAuthCodeError({ type })
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.invalidSubmit) return
-      this.setSignUpAuthFlowInputAuthCodeModal({
-        isSignUpAuthFlowInputAuthCodeModal: false
-      })
-      this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
-        isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
-      })
+      const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
+      const result = await this.verifySMSCode({ code })
+      if (result === 'SUCCESS') {
+        this.setSignUpAuthFlowInputAuthCodeModal({
+          isSignUpAuthFlowInputAuthCodeModal: false
+        })
+        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
+          isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
+        })
+      }
     },
     backToInputPhoneNumber() {
       this.setSignUpAuthFlowInputPhoneNumberModal({
@@ -120,7 +124,8 @@ export default {
       'showSignUpAuthFlowInputAuthCodeError',
       'hideSignUpAuthFlowInputAuthCodeError',
       'setSignUpAuthFlowInputAuthCodeModal',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'verifySMSCode'
     ])
   }
 }

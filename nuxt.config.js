@@ -23,6 +23,7 @@ module.exports = {
   ],
   plugins: [
     '~/plugins/axios',
+    '~/plugins/cognito',
     '~/plugins/vuelidate'
   ],
   axios: {
@@ -46,6 +47,9 @@ module.exports = {
   },
   css: ['~assets/stylesheets/medium-editor.scss'],
   env: {
-    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY
+    IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
+    REGION: process.env.REGION,
+    USER_POOL_ID: process.env.USER_POOL_ID,
+    CLIENT_ID: process.env.CLIENT_ID
   }
 }
