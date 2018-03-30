@@ -187,8 +187,8 @@ export default class CognitoSDK {
   }
 
   getCognitoUser(Username) {
-    var userPool = new CognitoUserPool(this.poolData)
-    var userData = {
+    const userPool = new CognitoUserPool(this.poolData)
+    const userData = {
       Username,
       Pool: userPool
     }
