@@ -97,8 +97,8 @@ export default class CognitoSDK {
 
   sendConfirm() {
     AWS.config.region = process.env.REGION
-    const currentUser = localStorage.getItem('CognitoIdentityServiceProvider.' + this.poolData.ClientId + '.LastAuthUser')
-    const token = localStorage.getItem('CognitoIdentityServiceProvider.' + this.poolData.ClientId + '.' + currentUser + '.accessToken')
+    const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
+    const token = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`)
     const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider()
     const params = {
       AccessToken: token,
