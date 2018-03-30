@@ -11,7 +11,6 @@ export default {
   },
   async fetch({ store }) {
     store.dispatch('user/setSignUpModal', { showSignUpModal: true })
-    // store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: true })
 
     await store.dispatch('article/getAllArticles')
     const { articles } = store.state.article
