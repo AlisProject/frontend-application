@@ -92,9 +92,6 @@ const actions = {
   initCognito() {
     this.cognito = new CognitoSDK()
   },
-  login({ commit }) {
-    commit(types.LOGIN)
-  },
   setSignUpModal({ commit }, { showSignUpModal }) {
     commit(types.SET_SIGN_UP_MODAL, { showSignUpModal })
   },
@@ -240,6 +237,15 @@ const actions = {
   async verifySMSCode({ commit }, { code }) {
     try {
       const result = await this.cognito.verifySMSCode({ code })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async login({ commit }, { userId, password }) {
+    try {
+      const result = await this.cognito.login({ userId, password })
+      commit(types.LOGIN)
       return result
     } catch (error) {
       return Promise.reject(error)
