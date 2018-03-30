@@ -72,7 +72,10 @@ const state = () => ({
       userIdOrEmail: false,
       password: false
     }
-  }
+  },
+  showReportModal: false,
+  alertText: '',
+  showAlert: false
 })
 
 const getters = {
@@ -83,7 +86,10 @@ const getters = {
   showSignUpAuthFlowModal: (state) => state.showSignUpAuthFlowModal,
   signUpAuthFlowModal: (state) => state.signUpAuthFlowModal,
   showLoginModal: (state) => state.showLoginModal,
-  loginModal: (state) => state.loginModal
+  loginModal: (state) => state.loginModal,
+  showReportModal: (state) => state.showReportModal,
+  alertText: (state) => state.alertText,
+  showAlert: (state) => state.showAlert
 }
 
 const actions = {
@@ -191,6 +197,15 @@ const actions = {
   },
   hideSignUpAuthFlowProfileSettingsError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR, { type })
+  },
+  setReportModal({ commit }, { showReportModal }) {
+    commit(types.SET_REPORT_MODAL, { showReportModal })
+  },
+  setAlertText({ commit }, { alertText }) {
+    commit(types.SET_ALERT_TEXT, { alertText })
+  },
+  setAlert({ commit }, { showAlert }) {
+    commit(types.SET_ALERT, { showAlert })
   }
 }
 
@@ -303,6 +318,15 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR](state, { type }) {
     state.signUpAuthFlowModal.profileSettings.formError[type] = false
+  },
+  [types.SET_REPORT_MODAL](state, { showReportModal }) {
+    state.showReportModal = showReportModal
+  },
+  [types.SET_ALERT_TEXT](state, { alertText }) {
+    state.alertText = alertText
+  },
+  [types.SET_ALERT](state, { showAlert }) {
+    state.showAlert = showAlert
   }
 }
 
