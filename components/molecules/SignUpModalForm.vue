@@ -128,10 +128,8 @@ export default {
       if (this.invalidSubmit) return
       const { userId, email, password } = this.signUpModal.formData
       try {
-        const result = await this.register({ userId, email, password })
-        if (!result) {
-          this.setSentMail({ sentMail: true })
-        }
+        await this.register({ userId, email, password })
+        this.setSentMail({ sentMail: true })
       } catch (error) {
         this.errorMessage = error.message
       }

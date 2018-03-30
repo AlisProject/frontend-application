@@ -118,22 +118,18 @@ export default {
       const { phoneNumber } = this.signUpAuthFlowModal.inputPhoneNumber.formData
 
       try {
-        const updatePhoneNumberResult = await this.updatePhoneNumber({
+        await this.updatePhoneNumber({
           userId: userIdOrEmail,
           phoneNumber: `+81${phoneNumber.slice(1)}`
         })
-        if (updatePhoneNumberResult === 'SUCCESS') {
-          const sendConfirmResult = await this.sendConfirm()
+        await this.sendConfirm()
 
-          if (sendConfirmResult.CodeDeliveryDetails) {
-            this.setSignUpAuthFlowInputPhoneNumberModal({
-              isSignUpAuthFlowInputPhoneNumberModal: false
-            })
-            this.setSignUpAuthFlowInputAuthCodeModal({
-              isSignUpAuthFlowInputAuthCodeModal: true
-            })
-          }
-        }
+        this.setSignUpAuthFlowInputPhoneNumberModal({
+          isSignUpAuthFlowInputPhoneNumberModal: false
+        })
+        this.setSignUpAuthFlowInputAuthCodeModal({
+          isSignUpAuthFlowInputAuthCodeModal: true
+        })
       } catch (error) {
         this.errorMessage = error.message
       }

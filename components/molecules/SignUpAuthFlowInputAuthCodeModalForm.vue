@@ -107,15 +107,13 @@ export default {
       if (this.invalidSubmit) return
       const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
       try {
-        const result = await this.verifySMSCode({ code })
-        if (result === 'SUCCESS') {
-          this.setSignUpAuthFlowInputAuthCodeModal({
-            isSignUpAuthFlowInputAuthCodeModal: false
-          })
-          this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
-            isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
-          })
-        }
+        await this.verifySMSCode({ code })
+        this.setSignUpAuthFlowInputAuthCodeModal({
+          isSignUpAuthFlowInputAuthCodeModal: false
+        })
+        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
+          isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
+        })
       } catch (error) {
         this.errorMessage = error.message
       }
