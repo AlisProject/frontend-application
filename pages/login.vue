@@ -26,8 +26,9 @@ export default {
       alisTokens
     })
   },
-  created() {
-    if (process.browser) document.querySelector('html,body').style.overflow = 'hidden'
+  mounted() {
+    window.scrollTo(0, 0)
+    document.querySelector('html,body').style.overflow = 'hidden'
   }
 }
 </script>
