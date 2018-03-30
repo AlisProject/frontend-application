@@ -153,19 +153,6 @@ export default class CognitoSDK {
     })
   }
 
-  verificateCode({ Username, code }) {
-    this.cognitoUser = this.getCognitoUser(Username)
-    return new Promise((resolve, reject) => {
-      this.cognitoUser.confirmRegistration(code, true, (err, result) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve(result)
-      })
-    })
-  }
-
   forgotPassword({ Username }) {
     this.cognitoUser = this.getCognitoUser(Username)
     return new Promise((resolve, reject) => {
