@@ -70,6 +70,12 @@ export default {
   display: block;
   height: 37px;
   margin: 20px auto 100px;
-  width: 256px;
+  width: 265px;
+}
+
+@media screen and (max-width: 550px) {
+  .confirm-text {
+    padding: 30vh 0 0;
+  }
 }
 </style>

@@ -158,5 +158,11 @@ export default {
       width: calc(100% - 60px);
     }
   }
+
+  .cover-screen {
+    .modal-container {
+      height: 100vh;
+    }
+  }
 }
 </style>
