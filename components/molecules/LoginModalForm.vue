@@ -97,11 +97,16 @@ export default {
       this.$v.loginModal.formData[type].$reset()
       this.hideLoginError({ type })
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.invalidSubmit) return
-      this.login()
-      this.setLoginModal({ showLoginModal: false })
-      document.querySelector('html,body').style.overflow = ''
+      const { userIdOrEmail, password } = this.loginModal.formData
+      try {
+        await this.login({ userId: userIdOrEmail, password })
+        this.setLoginModal({ showLoginModal: false })
+        document.querySelector('html,body').style.overflow = ''
+      } catch (error) {
+        this.errorMessage = error.message
+      }
     },
     ...mapActions('user', [
       'login',

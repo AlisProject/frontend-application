@@ -1,8 +1,10 @@
 import * as types from '../mutation-types'
+import CognitoSDK from '~/utils/cognito-sdk'
 
 const namespaced = true
 
 const state = () => ({
+  user: null,
   loggedIn: false,
   showSignUpModal: false,
   showSignUpAuthFlowModal: false,
@@ -87,8 +89,8 @@ const getters = {
 }
 
 const actions = {
-  login({ commit }) {
-    commit(types.LOGIN)
+  initCognito() {
+    this.cognito = new CognitoSDK()
   },
   setSignUpModal({ commit }, { showSignUpModal }) {
     commit(types.SET_SIGN_UP_MODAL, { showSignUpModal })
@@ -191,6 +193,71 @@ const actions = {
   },
   hideSignUpAuthFlowProfileSettingsError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR, { type })
+  },
+  async register({ commit }, { userId, email, password }) {
+    try {
+      const result = await this.cognito.register({ email, password, userId })
+      return result.userConfirmed
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async confirmEmail({ commit }, { user, code }) {
+    try {
+      const result = await this.cognito.confirmEmail({ user, code })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async signUpLogin({ commit }, { userId, password }) {
+    try {
+      const result = await this.cognito.login({ userId, password })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async updatePhoneNumber({ commit }, { userId, phoneNumber }) {
+    try {
+      const result = await this.cognito.updatePhoneNumber({ userId, phoneNumber })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async sendConfirm() {
+    try {
+      const result = await this.cognito.sendConfirm()
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async verifySMSCode({ commit }, { code }) {
+    try {
+      const result = await this.cognito.verifySMSCode({ code })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async login({ commit }, { userId, password }) {
+    try {
+      const result = await this.cognito.login({ userId, password })
+      commit(types.LOGIN)
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getUserSession({ commit }) {
+    try {
+      const result = await this.cognito.getUserSession()
+      commit(types.SET_USER, result)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -303,6 +370,9 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR](state, { type }) {
     state.signUpAuthFlowModal.profileSettings.formError[type] = false
+  },
+  [types.SET_USER](state, user) {
+    state.user = user
   }
 }
 
