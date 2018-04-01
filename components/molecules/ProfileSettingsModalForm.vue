@@ -113,8 +113,8 @@ export default {
       this.setSignUpAuthFlowModal({
         showSignUpAuthFlowModal: false
       })
-      this.setSignUpAuthFlowprofileSettingsModal({
-        isSignUpAuthFlowInputAuthCodeModal: false
+      this.setSignUpAuthFlowProfileSettingsModal({
+        isSignUpAuthFlowProfileSettingsModal: false
       })
     },
     ...mapActions('user', [
@@ -124,7 +124,7 @@ export default {
       'showSignUpAuthFlowProfileSettingsError',
       'hideSignUpAuthFlowProfileSettingsError',
       'setSignUpAuthFlowModal',
-      'setSignUpAuthFlowprofileSettingsModal'
+      'setSignUpAuthFlowProfileSettingsModal'
     ])
   }
 }
