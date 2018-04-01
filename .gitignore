@@ -11,3 +11,9 @@ npm-debug.log
 dist
 
 .envrc
+
+# editor
+.idea
+
+# etc
+yarn-error.log
