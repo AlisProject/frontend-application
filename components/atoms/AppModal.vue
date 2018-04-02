@@ -38,7 +38,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['showSignUpModal', 'showSignUpAuthFlowModal', 'showLoginModal'])
+    ...mapGetters('user', [
+      'showSignUpModal',
+      'showSignUpAuthFlowModal',
+      'showLoginModal',
+      'showReportModal'
+    ])
   },
   methods: {
     closeModal() {
@@ -51,11 +56,19 @@ export default {
       if (this.showLoginModal) {
         this.setLoginModal({ showLoginModal: false })
       }
+      if (this.showReportModal) {
+        this.setReportModal({ showReportModal: false })
+      }
       this.$emit('close')
       document.body.scrollTop = 0
       document.querySelector('html,body').style.overflow = ''
     },
-    ...mapActions('user', ['setSignUpModal', 'setSignUpAuthFlowModal', 'setLoginModal'])
+    ...mapActions('user', [
+      'setSignUpModal',
+      'setSignUpAuthFlowModal',
+      'setLoginModal',
+      'setReportModal'
+    ])
   }
 }
 </script>
@@ -143,6 +156,12 @@ export default {
       margin-top: 0;
       max-width: 550px;
       width: calc(100% - 60px);
+    }
+  }
+
+  .cover-screen {
+    .modal-container {
+      height: 100vh;
     }
   }
 }

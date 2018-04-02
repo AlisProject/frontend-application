@@ -13,6 +13,8 @@
     <sign-up-modal v-show="this.showSignUpModal"/>
     <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>
     <login-modal v-show="this.showLoginModal"/>
+    <report-modal v-if="showReportModal"/>
+    <the-alert />
   </header>
 </template>
 
@@ -25,6 +27,8 @@ import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
 import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
+import ReportModal from '../organisms/ReportModal'
+import TheAlert from '../atoms/TheAlert'
 
 export default {
   props: {
@@ -56,14 +60,17 @@ export default {
     HeaderUserLoggedInItems,
     SignUpModal,
     SignUpAuthFlowModal,
-    LoginModal
+    LoginModal,
+    ReportModal,
+    TheAlert
   },
   computed: {
     ...mapGetters('user', [
       'loggedIn',
       'showSignUpModal',
       'showSignUpAuthFlowModal',
-      'showLoginModal'
+      'showLoginModal',
+      'showReportModal'
     ])
   }
 }

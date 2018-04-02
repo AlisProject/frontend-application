@@ -1,21 +1,74 @@
 <template>
   <div class="area-footer-actions">
-    <div class="action comment"></div>
-    <div class="action bookmark"></div>
-    <div class="action twitter"></div>
     <div class="action like">
       <span class="likes-count">{{ likesCount }}</span>
+    </div>
+    <div class="action etc" @click="toggleEtcPopup">
+      <div class="etc-popup" v-show="isEtcPopupShown">
+        <span class="report" @click="showPopupReportModal">
+          通報する
+        </span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
+  data() {
+    return {
+      isEtcPopupShown: false
+    }
+  },
   props: {
     likesCount: {
       type: Number,
       required: true
     }
+  },
+  mounted() {
+    this.listen(window, 'click', (event) => {
+      if (!this.$el.contains(event.target)) {
+        this.closeEtcPopup()
+      }
+    })
+  },
+  destroyed() {
+    if (this._eventRemovers) {
+      this._eventRemovers.forEach((eventRemover) => {
+        eventRemover.remove()
+      })
+    }
+  },
+  computed: {
+    ...mapGetters('user', ['showReportModal'])
+  },
+  methods: {
+    toggleEtcPopup() {
+      this.isEtcPopupShown = !this.isEtcPopupShown
+    },
+    closeEtcPopup() {
+      this.isEtcPopupShown = false
+    },
+    showPopupReportModal() {
+      this.setReportModal({ showReportModal: true })
+      window.scrollTo(0, 0)
+      document.querySelector('html,body').style.overflow = 'hidden'
+    },
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove: function() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
+    },
+    ...mapActions('user', ['setReportModal'])
   }
 }
 </script>
@@ -29,32 +82,34 @@ export default {
   justify-content: right;
 
   .action {
-    border: 1px solid #fefefe;
-    box-shadow: 0px 5px 15px -1px #c1c1c1;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 60px;
+    height: 60px;
   }
 
-  .comment {
-    background: url('~assets/images/pc/article/icon_comment.png') no-repeat;
-    background-color: white;
-    background-size: 20px;
-    background-position: 10px 11px;
-  }
+  .etc {
+    background: url('~assets/images/pc/article/btn_etc.png') no-repeat;
+    background-size: 54px;
+    position: relative;
+    cursor: pointer;
 
-  .bookmark {
-    background: url('~assets/images/pc/article/icon_bookmark.png') no-repeat;
-    background-color: white;
-    background-size: 14px;
-    background-position: 13px 9px;
-  }
+    .etc-popup {
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 16px;
+      position: absolute;
+      right: 12px;
+      top: 52px;
+      width: 90px;
+      z-index: 1;
 
-  .twitter {
-    background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
-    background-color: white;
-    background-size: 26px;
-    background-position: 9px 11px;
+      .report {
+        cursor: pointer;
+      }
+    }
   }
 
   .like {
