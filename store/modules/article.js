@@ -51,7 +51,7 @@ const actions = {
     commit(types.SET_ARTICLES, { articles })
   },
   async getNewPagesArticles({ commit }) {
-    const articles = await this.$axios.$get('/articles/new')
+    const { Items: articles } = await this.$axios.$get('/articles/recent', { params: { limit: 20 } })
     commit(types.SET_NEW_ARTICLES, { articles })
   },
   async getUserInfo({ commit }, { userId }) {
@@ -87,8 +87,12 @@ const actions = {
     commit(types.SET_ARTICLE, { article })
   },
   async getArticleDetail({ commit }, { articleId }) {
-    const article = await this.$axios.$get(`/articles/${articleId}`)
-    commit(types.SET_ARTICLE_DETAIL, { article })
+    try {
+      const article = await this.$axios.$get(`/articles/${articleId}`)
+      commit(types.SET_ARTICLE_DETAIL, { article })
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
   async getPublicArticleDetail({ commit }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/public/${articleId}`)
@@ -103,7 +107,7 @@ const actions = {
     commit(types.SET_ARTICLE_ID, { articleId })
   },
   async putDraftArticle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/public/${articleId}/edit`, article)
+    await this.$axios.$put(`/me/articles/${articleId}/drafts`, article)
   },
   async putPublicArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/public/${articleId}/edit`, article)
@@ -121,7 +125,7 @@ const actions = {
     commit(types.SET_DRAFT_ARTICLES, { articles })
   },
   async publishDraftArticle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/drafts/${articleId}/publish`, article)
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, article)
   },
   async publishPublicArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/public/${articleId}/edit/publish`, article)
@@ -167,6 +171,19 @@ const actions = {
   },
   setIsSaved({ commit }, { isSaved }) {
     commit(types.SET_IS_SAVED, { isSaved })
+  },
+  async postArticleImage({ commit }, { articleId, articleImage, imageContentType }) {
+    try {
+      const config = {
+        headers: { 'content-type': imageContentType }
+      }
+      const result = await this.$axios.$post(`/me/articles/${articleId}/images`,
+        { article_image: articleImage }, config
+      )
+      return result
+    } catch (error) {
+      Promise.reject(error)
+    }
   }
 }
 

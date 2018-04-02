@@ -25,7 +25,7 @@
 
 <script>
 /* eslint no-undef: 0 */
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -39,6 +39,9 @@ export default {
       type: Array,
       default: () => []
     }
+  },
+  computed: {
+    ...mapGetters('article', ['articleId'])
   },
   mounted() {
     this.initMediumEditor()
@@ -102,13 +105,39 @@ export default {
     onInputTitle({ target: { value: title } }) {
       this.updateTitle({ title })
     },
-    onInputBody({ target: { innerHTML: body } }) {
+    async onInputBody({ target: { innerHTML: body } }) {
       const suggestedThumbnails = this.matchAll(body, /<img.*src\s*=\s*["|'](.*?)["|'].*>/g)
       if (suggestedThumbnails) {
-        const thumbnails = suggestedThumbnails.map((img) => img[1])
+        /* eslint-disable space-before-function-paren */
+        const thumbnails = await Promise.all(
+          suggestedThumbnails.map(async (img) => {
+            try {
+              const base64Image = img[1]
+              const base64hash = base64Image.substring(base64Image.match(',').index + 1)
+              const imageContentType = base64Image.substring(
+                base64Image.match(':').index + 1,
+                base64Image.match(';').index
+              )
+              console.log('content', imageContentType)
+              const { image_url: imageUrl } = await this.postArticleImage({
+                articleId: this.articleId,
+                articleImage: base64hash,
+                imageContentType
+              })
+              const replacedBody = body.replace(base64Image, imageUrl)
+              this.updateBody({ body: replacedBody })
+              console.log('imageUrl', imageUrl)
+              return imageUrl
+            } catch (error) {
+              console.log(error)
+              return error
+            }
+          })
+        )
         this.updateSuggestedThumbnails({ thumbnails })
+      } else {
+        this.updateBody({ body })
       }
-      this.updateBody({ body })
     },
     matchAll(str, regexp) {
       const matches = []
@@ -139,7 +168,8 @@ export default {
       'updateBody',
       'addTag',
       'updateTag',
-      'updateSuggestedThumbnails'
+      'updateSuggestedThumbnails',
+      'postArticleImage'
     ])
   }
 }

@@ -8,7 +8,7 @@
       <article-tags :tags="article.tags"/>
       <article-footer-actions :likesCount="article.likesCount"/>
       <article-side-actions :likesCount="article.likesCount"/>
-      <author-info :article="article"/>
+      <!-- <author-info :article="article"/> -->
       <article-comments :comments="article.comments"/>
     </div>
     <related-articles :articles="article.relatedArticles"/>

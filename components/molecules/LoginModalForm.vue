@@ -31,6 +31,8 @@
       </form>
     </div>
     <div class="modal-footer">
+      <p class="error-message">{{ errorMessage }}</p>
+
       <p class="agreement-confirmation">
         <nuxt-link to="#">利用規約</nuxt-link>、<nuxt-link to="#">プライバシーポリシー</nuxt-link>に同意して
       </p>
@@ -52,6 +54,11 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 
 export default {
+  data() {
+    return {
+      errorMessage: ''
+    }
+  },
   computed: {
     showErrorInvalidPassword() {
       return this.loginModal.formError.password && !this.$v.loginModal.formData.password.minLength
@@ -254,6 +261,12 @@ export default {
       color: #6e6e6e;
       cursor: default;
     }
+  }
+
+  .error-message {
+    color: #f06273;
+    font-size: 12px;
+    width: 100%;
   }
 
   .for-signup-user,
