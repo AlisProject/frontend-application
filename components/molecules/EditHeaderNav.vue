@@ -81,14 +81,23 @@ export default {
       }
     },
     async publish() {
+      const { articleId } = this
       const article = {
-        overview: this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, ''),
-        eye_catch_url: this.thumbnail
+        title: this.title,
+        body: this.body
+          .replace(/<p class="medium-insert-active">[\s\S]*/, '')
+          .replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
       }
-      const { articleId } = this.$route.params
+      await this.putDraftArticle({ article, articleId })
+
+      article.eye_catch_url = this.thumbnail
+      article.overview = this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '').replace('+', '')
 
       try {
-        if (location.href.includes('/me/articles/draft')) {
+        if (
+          location.href.includes('/me/articles/draft') ||
+          location.href.includes('/me/articles/new')
+        ) {
           await this.publishDraftArticle({ article, articleId })
         } else if (location.href.includes('/me/articles/public')) {
           await this.publishPublicArticle({ article, articleId })
@@ -123,10 +132,24 @@ export default {
         }
       })
     },
-    ...mapActions('article', ['updateThumbnail', 'publishDraftArticle', 'publishPublicArticle', 'unpublishPublicArticle'])
+    ...mapActions('article', [
+      'updateThumbnail',
+      'publishDraftArticle',
+      'publishPublicArticle',
+      'unpublishPublicArticle',
+      'putDraftArticle'
+    ])
   },
   computed: {
-    ...mapGetters('article', ['body', 'thumbnail', 'suggestedThumbnails', 'isSaving', 'isSaved']),
+    ...mapGetters('article', [
+      'articleId',
+      'title',
+      'body',
+      'thumbnail',
+      'suggestedThumbnails',
+      'isSaving',
+      'isSaved'
+    ]),
     saveStatus() {
       if (this.isSaved) {
         return 'Saved'

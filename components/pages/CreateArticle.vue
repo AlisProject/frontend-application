@@ -31,8 +31,8 @@ export default {
     ...mapActions('article', ['postNewArticle', 'putDraftArticle', 'setIsSaving', 'setIsSaved']),
     postOrPutArticle: debounce(async function() {
       const article = {
-        title: this.title,
-        body: this.body
+        title: this.title + ' ',
+        body: this.body + ' '
       }
       this.setIsSaving({ isSaving: true })
       if (this.isPosted) {
