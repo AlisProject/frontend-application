@@ -257,6 +257,14 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async refreshUserSession({ commit }) {
+    try {
+      const result = await this.cognito.refreshUserSession()
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 

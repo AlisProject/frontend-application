@@ -1,4 +1,4 @@
-import { CognitoUserPool, AuthenticationDetails, CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js'
+import { CognitoUserPool, AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoRefreshToken } from 'amazon-cognito-identity-js'
 import AWS from 'aws-sdk'
 
 export default class CognitoSDK {
@@ -30,6 +30,23 @@ export default class CognitoSDK {
         }
       )
     }).then((session) => (this.getUserData().then(email => ({ email, token: session.getIdToken().jwtToken }))))
+  }
+
+  refreshUserSession() {
+    AWS.config.region = process.env.REGION
+    const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
+    const refreshToken = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.refreshToken`)
+    const RefreshToken = new CognitoRefreshToken({ RefreshToken: refreshToken })
+    this.cognitoUser = this.userPool.getCurrentUser()
+    return new Promise((resolve, reject) => {
+      this.cognitoUser.refreshSession(RefreshToken, (err, session) => {
+        if (err) {
+          reject(err)
+          return
+        }
+        resolve(session)
+      })
+    })
   }
 
   register({ userId, email, password }) {
