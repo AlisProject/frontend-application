@@ -245,7 +245,6 @@ const actions = {
   async login({ commit }, { userId, password }) {
     try {
       const result = await this.cognito.login({ userId, password })
-      commit(types.LOGIN)
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -255,6 +254,14 @@ const actions = {
     try {
       const result = await this.cognito.getUserSession()
       commit(types.SET_USER, result)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async refreshUserSession({ commit }) {
+    try {
+      const result = await this.cognito.refreshUserSession()
+      return result
     } catch (error) {
       return Promise.reject(error)
     }

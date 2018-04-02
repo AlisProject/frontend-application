@@ -108,6 +108,7 @@ export default {
       const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
       try {
         await this.verifySMSCode({ code })
+        await this.refreshUserSession()
         this.setSignUpAuthFlowInputAuthCodeModal({
           isSignUpAuthFlowInputAuthCodeModal: false
         })
@@ -133,7 +134,8 @@ export default {
       'hideSignUpAuthFlowInputAuthCodeError',
       'setSignUpAuthFlowInputAuthCodeModal',
       'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
-      'verifySMSCode'
+      'verifySMSCode',
+      'refreshUserSession'
     ])
   }
 }
