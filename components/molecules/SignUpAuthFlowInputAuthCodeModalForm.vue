@@ -106,8 +106,10 @@ export default {
     async onSubmit() {
       if (this.invalidSubmit) return
       const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
+      const { userIdOrEmail: userId, password } = this.signUpAuthFlowModal.login.formData
       try {
         await this.verifySMSCode({ code })
+        await this.login({ userId, password })
         this.setSignUpAuthFlowInputAuthCodeModal({
           isSignUpAuthFlowInputAuthCodeModal: false
         })
@@ -133,7 +135,8 @@ export default {
       'hideSignUpAuthFlowInputAuthCodeError',
       'setSignUpAuthFlowInputAuthCodeModal',
       'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
-      'verifySMSCode'
+      'verifySMSCode',
+      'login'
     ])
   }
 }

@@ -245,7 +245,6 @@ const actions = {
   async login({ commit }, { userId, password }) {
     try {
       const result = await this.cognito.login({ userId, password })
-      commit(types.LOGIN)
       return result
     } catch (error) {
       return Promise.reject(error)
