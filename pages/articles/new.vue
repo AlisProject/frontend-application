@@ -11,7 +11,8 @@ export default {
   },
   async fetch({ store }) {
     await store.dispatch('article/getNewPagesArticles')
-    const { newArticles: articles } = store.state.article
+    const { articles } = store.state.article
+    // const { newArticles: articles } = store.state.article
     await store.dispatch('article/getUserInfos', { articles })
     await store.dispatch('article/getAlisTokens', { articles })
     const { userInfos, alisTokens } = store.state.article
