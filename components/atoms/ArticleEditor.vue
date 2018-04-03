@@ -105,39 +105,40 @@ export default {
     onInputTitle({ target: { value: title } }) {
       this.updateTitle({ title })
     },
-    async onInputBody({ target: { innerHTML: body } }) {
-      const suggestedThumbnails = this.matchAll(body, /<img.*src\s*=\s*["|'](.*?)["|'].*>/g)
-      if (suggestedThumbnails) {
-        /* eslint-disable space-before-function-paren */
-        const thumbnails = await Promise.all(
-          suggestedThumbnails.map(async (img) => {
+    async onInputBody() {
+      const images = Array.from(document.querySelectorAll('.area-body figure img'))
+      /* eslint-disable space-before-function-paren */
+      await Promise.all(
+        images.map(async (img) => {
+          const isBase64Image = img.src.includes('data:')
+          const isNotUploadedImage = img.dataset.uploaded !== 'true'
+          if (isBase64Image && isNotUploadedImage) {
             try {
-              const base64Image = img[1]
-              const base64hash = base64Image.substring(base64Image.match(',').index + 1)
+              const base64Image = img.src
+              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
               const imageContentType = base64Image.substring(
                 base64Image.match(':').index + 1,
                 base64Image.match(';').index
               )
-              console.log('content', imageContentType)
               const { image_url: imageUrl } = await this.postArticleImage({
                 articleId: this.articleId,
-                articleImage: base64hash,
+                articleImage: base64Hash,
                 imageContentType
               })
-              const replacedBody = body.replace(base64Image, imageUrl)
-              this.updateBody({ body: replacedBody })
-              console.log('imageUrl', imageUrl)
-              return imageUrl
+              img.src = imageUrl
+              img.dataset.uploaded = 'true'
             } catch (error) {
-              console.log(error)
-              return error
+              console.error(error)
             }
-          })
-        )
-        this.updateSuggestedThumbnails({ thumbnails })
-      } else {
-        this.updateBody({ body })
-      }
+          }
+        })
+      )
+      const thumbnails = images
+        .filter((img) => img.dataset.uploaded === 'true')
+        .map((img) => img.src)
+      this.updateSuggestedThumbnails({ thumbnails })
+      const body = document.querySelector('.area-body').innerHTML
+      this.updateBody({ body })
     },
     matchAll(str, regexp) {
       const matches = []
