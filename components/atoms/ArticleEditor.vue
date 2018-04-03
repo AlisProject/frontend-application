@@ -111,7 +111,7 @@ export default {
       await Promise.all(
         images.map(async (img) => {
           const isBase64Image = img.src.includes('data:')
-          const isNotUploadedImage = !img.src.includes('http')
+          const isNotUploadedImage = img.dataset.uploaded !== 'true'
           if (isBase64Image && isNotUploadedImage) {
             try {
               const base64Image = img.src
@@ -126,13 +126,16 @@ export default {
                 imageContentType
               })
               img.src = imageUrl
+              img.dataset.uploaded = 'true'
             } catch (error) {
               console.error(error)
             }
           }
         })
       )
-      const thumbnails = images.map((img) => img.src)
+      const thumbnails = images
+        .filter((img) => img.dataset.uploaded === 'true')
+        .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
       const body = document.querySelector('.area-body').innerHTML
       this.updateBody({ body })
