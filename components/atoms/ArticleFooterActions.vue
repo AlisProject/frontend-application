@@ -3,6 +3,13 @@
     <div class="action like">
       <span class="likes-count">{{ likesCount }}</span>
     </div>
+    <div class="action share" @click="toggleSharePopup">
+      <div class="share-popup" v-show="isSharePopupShown">
+        <a class="share-twitter" target="_blank">
+          Twitterでシェアする
+        </a>
+      </div>
+    </div>
     <div class="action etc" @click="toggleEtcPopup">
       <div class="etc-popup" v-show="isEtcPopupShown">
         <span class="report" @click="showPopupReportModal">
@@ -19,7 +26,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      isEtcPopupShown: false
+      isEtcPopupShown: false,
+      isSharePopupShown: false
     }
   },
   props: {
@@ -32,8 +40,12 @@ export default {
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeEtcPopup()
+        this.closeSharePopup()
       }
     })
+    this.$el.querySelector('.share-twitter').href = `https://twitter.com/intent/tweet?url=${
+      location.href
+    }&text=${document.title}`
   },
   destroyed() {
     if (this._eventRemovers) {
@@ -49,8 +61,14 @@ export default {
     toggleEtcPopup() {
       this.isEtcPopupShown = !this.isEtcPopupShown
     },
+    toggleSharePopup() {
+      this.isSharePopupShown = !this.isSharePopupShown
+    },
     closeEtcPopup() {
       this.isEtcPopupShown = false
+    },
+    closeSharePopup() {
+      this.isSharePopupShown = false
     },
     showPopupReportModal() {
       this.setReportModal({ showReportModal: true })
@@ -108,6 +126,38 @@ export default {
 
       .report {
         cursor: pointer;
+      }
+    }
+  }
+
+  .share {
+    background: url('~assets/images/pc/article/btn_share.png') no-repeat;
+    background-size: 54px;
+    position: relative;
+    cursor: pointer;
+
+    .share-popup {
+      background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
+      background-color: #ffffff;
+      background-size: 24px;
+      background-position-x: 16px;
+      background-position-y: 14px;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 16px 16px 16px 48px;
+      position: absolute;
+      right: 12px;
+      top: 52px;
+      width: 200px;
+      z-index: 1;
+
+      .share-twitter {
+        cursor: pointer;
+        color: #585858;
+        text-decoration: none;
       }
     }
   }
