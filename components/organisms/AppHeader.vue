@@ -1,7 +1,10 @@
 <template>
   <header class="area-app-header-container">
     <nuxt-link to="/" class="area-logo"/>
-    <default-header-nav v-if="showDefaultHeaderNav" :showOnlyLogo="showOnlyLogo"/>
+    <default-header-nav
+      v-if="showDefaultHeaderNav"
+      :showOnlyLogo="showOnlyLogo"
+      :showOnlySessionLinks="showOnlySessionLinks"/>
     <edit-header-nav
       v-if="showEditHeaderNav"
       :showPostArticleLink="showPostArticleLink"
@@ -41,6 +44,10 @@ export default {
       default: false
     },
     showOnlyLogo: {
+      type: Boolean,
+      default: false
+    },
+    showOnlySessionLinks: {
       type: Boolean,
       default: false
     },

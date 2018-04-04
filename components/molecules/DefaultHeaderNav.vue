@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <template v-if="!showOnlyLogo">
+    <template v-if="!showOnlyLogo && !showOnlySessionLinks">
       <nuxt-link to="/" class="nav-link area-popular-articles">人気記事</nuxt-link>
       <nuxt-link to="/articles/new" class="nav-link area-new-articles">新着記事</nuxt-link>
     </template>
@@ -11,6 +11,10 @@
 export default {
   props: {
     showOnlyLogo: {
+      type: Boolean,
+      default: false
+    },
+    showOnlySessionLinks: {
       type: Boolean,
       default: false
     }
