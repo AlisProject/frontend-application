@@ -5,13 +5,13 @@
       <h1 class="area-title">{{ article.title }}</h1>
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">
       <div class="area-content" v-html="article.body" />
-      <article-tags :tags="article.tags"/>
+      <!-- <article-tags :tags="article.tags"/> -->
       <article-footer-actions :likesCount="article.likesCount"/>
       <article-side-actions :likesCount="article.likesCount"/>
-      <!-- <author-info :article="article"/> -->
-      <article-comments :comments="article.comments"/>
+      <author-info :article="article"/>
+      <!-- <article-comments :comments="article.comments"/> -->
     </div>
-    <related-articles :articles="article.relatedArticles"/>
+    <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
   </div>
 </template>
@@ -21,9 +21,9 @@ import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
 import AuthorInfo from '../atoms/AuthorInfo'
-import ArticleTags from '../atoms/ArticleTags'
-import ArticleComments from '../organisms/ArticleComments'
-import RelatedArticles from '../organisms/RelatedArticles'
+// import ArticleTags from '../atoms/ArticleTags'
+// import ArticleComments from '../organisms/ArticleComments'
+// import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
@@ -32,9 +32,9 @@ export default {
     ArticleFooterActions,
     ArticleSideActions,
     AuthorInfo,
-    ArticleTags,
-    ArticleComments,
-    RelatedArticles,
+    // ArticleTags,
+    // ArticleComments,
+    // RelatedArticles,
     AppFooter
   },
   props: {
@@ -49,14 +49,15 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr 470px 75px;
+  grid-template-rows: 100px 50px 1fr 75px;
+  // grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     'app-header       app-header       app-header      '
     '...              ...              ...             '
     '...              article          ...             '
-    'related-articles related-articles related-articles'
+    // 'related-articles related-articles related-articles'
     '...              app-footer       ...             ';
   background: white;
 }
@@ -73,9 +74,9 @@ export default {
     'top-image     '
     'content       '
     'footer-actions'
-    'tags          '
-    'author-info   '
-    'article-comments';
+    // 'tags          '
+    'author-info   ';
+  // 'article-comments';
 }
 
 .area-title {
