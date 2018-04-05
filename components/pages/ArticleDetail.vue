@@ -8,7 +8,7 @@
       <!-- <article-tags :tags="article.tags"/> -->
       <article-footer-actions :likesCount="article.likesCount"/>
       <article-side-actions :likesCount="article.likesCount"/>
-      <author-info :article="article"/>
+      <author-info :user="user"/>
       <!-- <article-comments :comments="article.comments"/> -->
     </div>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
@@ -41,6 +41,16 @@ export default {
     article: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    user() {
+      return {
+        userDisplayName: '山田太郎',
+        userId: 'yamadaman',
+        selfIntroduction:
+          'ほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげ'
+      }
     }
   }
 }
@@ -97,20 +107,22 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px 50px 1fr 950px 75px;
+    grid-template-rows: 100px 50px 1fr 75px;
+    // grid-template-rows: 100px 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 70px 0 1fr min-content 75px;
+    grid-template-rows: 70px 0 1fr 75px;
+    // grid-template-rows: 70px 0 1fr min-content 75px;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
     grid-template-areas:
     'app-header       app-header       app-header      '
     '...              ...              ...             '
     'article          article          article         '
-    'related-articles related-articles related-articles'
+    // 'related-articles related-articles related-articles'
     '...              app-footer       ...             ';
   }
 
@@ -122,10 +134,10 @@ export default {
       'top-image      top-image      top-image     '
       '...            title          ...           '
       '...            content        ...           '
-      '...            tags           ...           '
-      '...            author-info    ...           '
-      'footer-actions footer-actions footer-actions'
-      '...            article-comments ...           ';
+      // '...            tags           ...           '
+    'footer-actions footer-actions footer-actions'
+      '...            author-info    ...           ';
+    // '...            article-comments ...           ';
   }
 
   .area-title {
