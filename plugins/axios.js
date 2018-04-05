@@ -1,16 +1,13 @@
 /* eslint-disable space-before-function-paren */
-import CognitoSDK from '~/utils/cognito-sdk'
+export default async ({ $axios, store }) => {
+  store.dispatch('user/initCognito')
+  try {
+    await store.dispatch('user/getUserSession')
+  } catch (e) {
+    console.error(e)
+  }
 
-export default async ({ $axios }) => {
   if (process.browser) {
-    const cognito = new CognitoSDK()
-
-    try {
-      await cognito.getUserSession()
-    } catch (e) {
-      console.error(e)
-    }
-
     const currentUser = localStorage.getItem(
       `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
     )
