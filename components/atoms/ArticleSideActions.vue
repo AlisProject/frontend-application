@@ -87,22 +87,19 @@ export default {
   }
 
   .like {
-    background: url('~assets/images/pc/article/icon_heart.png') no-repeat;
-    background-color: #ff4949;
-    background-size: 30px;
-    background-position: 16px 20px;
-    border-radius: 50%;
-    border: 1px solid #ff4949;
-    box-shadow: 0px 5px 15px -1px #ff8989;
-    height: 62px;
-    width: 62px;
+    background-position-y: -4px;
+    background: url('~assets/images/pc/article/btn_like.png') no-repeat;
+    background-size: 80px;
+    height: 80px;
+    position: relative;
+    width: 80px;
 
     .likes-count {
       color: #585858;
       font-size: 14px;
+      left: 25px;
       position: absolute;
       top: -22px;
-      left: 17px;
     }
   }
 

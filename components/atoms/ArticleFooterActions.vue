@@ -95,18 +95,19 @@ export default {
 .area-footer-actions {
   display: grid;
   grid-area: footer-actions;
-  grid-template-rows: 70px;
-  grid-template-columns: repeat(4, 60px);
+  grid-template-rows: 80px;
+  grid-template-columns: 1fr repeat(2, 60px);
   justify-content: right;
 
   .action {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
   }
 
   .etc {
     background: url('~assets/images/pc/article/btn_etc.png') no-repeat;
     background-size: 54px;
+    background-position-y: 10px;
     position: relative;
     cursor: pointer;
 
@@ -117,10 +118,10 @@ export default {
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
-      padding: 16px;
+      padding: 12px;
       position: absolute;
-      right: 12px;
-      top: 52px;
+      right: 34px;
+      top: 62px;
       width: 90px;
       z-index: 1;
 
@@ -135,22 +136,23 @@ export default {
     background-size: 54px;
     position: relative;
     cursor: pointer;
+    background-position-y: 10px;
 
     .share-popup {
       background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
       background-color: #ffffff;
-      background-size: 24px;
+      background-size: 22px;
       background-position-x: 16px;
-      background-position-y: 14px;
+      background-position-y: 12px;
       border-radius: 4px;
       box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
-      padding: 16px 16px 16px 48px;
+      padding: 12px 12px 12px 48px;
       position: absolute;
-      right: 12px;
-      top: 52px;
+      right: 34px;
+      top: 62px;
       width: 200px;
       z-index: 1;
 
@@ -163,23 +165,19 @@ export default {
   }
 
   .like {
-    background: url('~assets/images/pc/article/icon_heart.png') no-repeat;
-    background-color: #ff4949;
-    background-size: 20px;
-    background-position: 10px 14px;
-    border: 1px solid #ff4949;
-    box-shadow: 0px 5px 15px -1px #ff8989;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    background: url('~assets/images/pc/article/btn_like.png') no-repeat;
+    background-size: 80px;
+    width: 80px;
+    height: 80px;
     position: relative;
+    background-position-y: -4px;
 
     .likes-count {
       color: #585858;
       font-size: 14px;
       position: absolute;
-      top: -18px;
-      left: 5px;
+      top: 28px;
+      right: -35px;
     }
   }
 }
@@ -189,7 +187,7 @@ export default {
     position: relative;
 
     &:after {
-      bottom: 48px;
+      bottom: 46px;
       box-shadow: 0 15px 10px -10px rgba(192, 192, 192, 0.5);
       content: '';
       height: 100px;
@@ -200,6 +198,11 @@ export default {
 
     .action {
       z-index: 1;
+
+      .likes-count {
+        top: -18px;
+        right: 24px;
+      }
     }
   }
 }
