@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal-body">
-      <form class="signup-form" @keypress.enter="onSubmit">
+      <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasUserIdError }">
           <label class="signup-form-label">ALIS ID</label>
           <input

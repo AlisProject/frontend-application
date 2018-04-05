@@ -7,7 +7,7 @@
       <p class="description">
         SMSに記載の6桁の認証コードを入力してください
       </p>
-      <form class="signup-form" @keypress.enter="onSubmit">
+      <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
           <label class="signup-form-label">認証コード</label>
           <input
