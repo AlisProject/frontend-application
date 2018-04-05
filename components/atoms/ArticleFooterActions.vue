@@ -100,8 +100,8 @@ export default {
   justify-content: right;
 
   .action {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
   }
 
   .etc {
