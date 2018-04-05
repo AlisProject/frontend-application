@@ -1,31 +1,32 @@
 <template>
   <div class="area-author-info-container">
-    <div class="author">
-      <img class="author-icon" :src="article.user.icon_image_url">
-      <span class="name">{{ article.user.user_display_name }}</span>
-      <span class="created-at">{{ formettedCreatedAt }}</span>
+    <div class="area-author-icon">
+      <img class="author-icon" src="~/assets/images/profile-icon1.png" alt="profile-icon">
     </div>
-    <div class="token-amount">{{ article.alisToken }}</div>
-    <button class="follow-button">Follow</button>
-    <img class="menu" src="~assets/images/menu.png" alt="menu">
+    <div class="area-user-display-name">
+      <p class="user-display-name">
+        {{ user.userDisplayName }}
+      </p>
+    </div>
+    <div class="area-user-id">
+      <p class="user-id">
+        @{{ user.userId }}
+      </p>
+    </div>
+    <div class="area-self-introduction">
+      <p class="self-introduction">
+        {{ user.selfIntroduction }}
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment'
-
 export default {
   props: {
-    article: {
+    user: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    formettedCreatedAt() {
-      return moment(this.article.created_at)
-        .locale('ja')
-        .format('L')
     }
   }
 }
@@ -33,122 +34,62 @@ export default {
 
 <style lang="scss" scoped>
 .area-author-info-container {
+  border-radius: 6px;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15);
   display: grid;
   grid-area: author-info;
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
+  grid-template-columns: 80px 1fr;
+  grid-template-rows: 16px 12px 1fr;
+  margin-bottom: 40px;
+  padding: 10px 20px;
+  /* prettier-ignore */
   grid-template-areas:
-    '...    ... ...          ...           ... '
-    'author ... token-amount follow-button menu';
-  grid-template-columns: min-content 1fr 80px 150px 50px;
-  grid-template-rows: 50px min-content;
+    "author-icon user-display-name"
+    "author-icon user-id          "
+    "...         self-introduction";
 }
 
-.author {
-  display: grid;
-  grid-area: author;
-  grid-template-areas:
-    'author-icon name      '
-    'author-icon created-at';
-  grid-template-columns: 70px 100px;
-}
-
-.author-icon {
+.area-author-icon {
   grid-area: author-icon;
-  height: 60px;
-  width: 60px;
-  border-radius: 50%;
+
+  .author-icon {
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+  }
 }
 
-.name {
-  align-self: flex-end;
-  color: #717171;
-  font-size: 16px;
-  grid-area: name;
+.area-user-display-name {
+  grid-area: user-display-name;
 }
 
-.created-at {
-  color: #717171;
-  font-size: 16px;
-  grid-area: created-at;
+.area-user-id {
+  grid-area: user-id;
+
+  .user-id {
+    color: #6e6e6e;
+    font-size: 12px;
+    height: 12px;
+    line-height: 18px;
+  }
 }
 
-.token-amount {
-  background: url('~assets/images/pc/common/logo_casset_alis.png');
-  align-self: center;
-  background-repeat: no-repeat;
-  color: #717171;
-  font-size: 14px;
-  grid-area: token-amount;
-  padding: 0 20px;
-}
+.area-self-introduction {
+  grid-area: self-introduction;
 
-.follow-button {
-  background-color: #fff;
-  background: none;
-  border-radius: 16px;
-  border: 1px solid #cacaca;
-  color: #717171;
-  cursor: pointer;
-  font-size: 16px;
-  grid-area: follow-button;
-  margin: 14px 18px;
-  outline: 0;
-  padding: 5px;
-}
-
-.menu {
-  align-self: center;
-  grid-area: menu;
-  justify-self: flex-end;
+  .self-introduction {
+    color: #030303;
+    font-size: 14px;
+    line-height: 24px;
+  }
 }
 
 @media screen and (max-width: 640px) {
   .area-author-info-container {
-    grid-template-rows: 10px 40px 20px 10px;
-    grid-template-columns: 5px min-content 1fr 95px 50px;
-    grid-template-areas:
-      '... ...          ... ...           ... '
-      '... author       ... follow-button menu'
-      '... token-amount ... ...           ... '
-      '... ...          ... ...           ... ';
-    border: 1px solid #e1e1e1;
-    border-radius: 3px;
-  }
-
-  .author {
-    display: grid;
-    grid-area: author;
-    grid-template-columns: 50px 100px;
-    grid-template-areas:
-      'author-icon name      '
-      'author-icon created-at';
-  }
-
-  .author-icon {
-    align-self: center;
-    grid-area: author-icon;
-    height: 40px;
-    justify-self: center;
-    width: 40px;
-  }
-
-  .name,
-  .created-at {
-    font-size: 14px;
-  }
-
-  .token-amount {
-    margin-left: 45px;
-  }
-
-  .follow-button {
-    border-radius: 20px;
-    font-size: 14px;
-    margin: 5px 8px;
-    padding: 0;
-  }
-
-  .menu {
-    justify-self: center;
+    box-shadow: none;
+    padding: 10px 0;
   }
 }
 </style>

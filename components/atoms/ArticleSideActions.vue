@@ -4,8 +4,13 @@
       <div class="action like">
         <span class="likes-count">{{ likesCount }}</span>
       </div>
-      <div class="action twitter"></div>
-      <div class="action bookmark"></div>
+      <div class="action share" @click="toggleSharePopup">
+        <div class="share-popup" v-show="isSharePopupShown">
+          <a class="share-twitter" target="_blank">
+            Twitterでシェアする
+          </a>
+        </div>
+      </div>
     </div>
   </transition>
 </template>
@@ -20,18 +25,49 @@ export default {
   },
   data() {
     return {
-      scrollY: 0
+      scrollY: 0,
+      isSharePopupShown: false
     }
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
+    this.listen(window, 'click', (event) => {
+      if (!this.$el.contains(event.target)) {
+        this.closeSharePopup()
+      }
+    })
+    this.$el.querySelector('.share-twitter').href = `https://twitter.com/intent/tweet?url=${
+      location.href
+    }&text=${document.title}`
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
+    if (this._eventRemovers) {
+      this._eventRemovers.forEach((eventRemover) => {
+        eventRemover.remove()
+      })
+    }
   },
   methods: {
     handleScroll() {
       this.scrollY = window.scrollY
+    },
+    toggleSharePopup() {
+      this.isSharePopupShown = !this.isSharePopupShown
+    },
+    closeSharePopup() {
+      this.isSharePopupShown = false
+    },
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove: function() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
     }
   }
 }
@@ -46,47 +82,57 @@ export default {
   left: calc(50% - 450px);
 
   .action {
-    background: white;
-    border-radius: 50%;
-    border: 1px solid #fefefe;
-    box-shadow: 0px 5px 15px -1px #c1c1c1;
-    height: 40px;
-    margin-bottom: 20px;
-    width: 40px;
+    width: 60px;
+    height: 60px;
   }
 
   .like {
-    background: url('~assets/images/pc/article/icon_heart.png') no-repeat;
-    background-color: #ff4949;
-    background-size: 30px;
-    background-position: 16px 20px;
-    border-radius: 50%;
-    border: 1px solid #ff4949;
-    box-shadow: 0px 5px 15px -1px #ff8989;
-    height: 62px;
-    width: 62px;
+    background-position-y: -4px;
+    background: url('~assets/images/pc/article/btn_like.png') no-repeat;
+    background-size: 80px;
+    height: 80px;
+    position: relative;
+    width: 80px;
 
     .likes-count {
       color: #585858;
       font-size: 14px;
+      left: 25px;
       position: absolute;
       top: -22px;
-      left: 17px;
     }
   }
 
-  .twitter {
-    background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
-    background-color: white;
-    background-size: 26px;
-    background-position: 9px 11px;
-  }
+  .share {
+    background: url('~assets/images/pc/article/btn_share.png') no-repeat;
+    background-size: 60px;
+    position: relative;
+    cursor: pointer;
 
-  .bookmark {
-    background: url('~assets/images/pc/article/icon_bookmark.png') no-repeat;
-    background-color: white;
-    background-size: 14px;
-    background-position: 13px 9px;
+    .share-popup {
+      background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
+      background-color: #ffffff;
+      background-size: 24px;
+      background-position-x: 16px;
+      background-position-y: 14px;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 16px 16px 16px 48px;
+      position: absolute;
+      right: 12px;
+      top: 52px;
+      width: 200px;
+      z-index: 1;
+
+      .share-twitter {
+        cursor: pointer;
+        color: #585858;
+        text-decoration: none;
+      }
+    }
   }
 }
 

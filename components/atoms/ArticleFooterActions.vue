@@ -3,6 +3,13 @@
     <div class="action like">
       <span class="likes-count">{{ likesCount }}</span>
     </div>
+    <div class="action share" @click="toggleSharePopup">
+      <div class="share-popup" v-show="isSharePopupShown">
+        <a class="share-twitter" target="_blank">
+          Twitterでシェアする
+        </a>
+      </div>
+    </div>
     <div class="action etc" @click="toggleEtcPopup">
       <div class="etc-popup" v-show="isEtcPopupShown">
         <span class="report" @click="showPopupReportModal">
@@ -19,7 +26,8 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      isEtcPopupShown: false
+      isEtcPopupShown: false,
+      isSharePopupShown: false
     }
   },
   props: {
@@ -32,8 +40,12 @@ export default {
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeEtcPopup()
+        this.closeSharePopup()
       }
     })
+    this.$el.querySelector('.share-twitter').href = `https://twitter.com/intent/tweet?url=${
+      location.href
+    }&text=${document.title}`
   },
   destroyed() {
     if (this._eventRemovers) {
@@ -49,8 +61,14 @@ export default {
     toggleEtcPopup() {
       this.isEtcPopupShown = !this.isEtcPopupShown
     },
+    toggleSharePopup() {
+      this.isSharePopupShown = !this.isSharePopupShown
+    },
     closeEtcPopup() {
       this.isEtcPopupShown = false
+    },
+    closeSharePopup() {
+      this.isSharePopupShown = false
     },
     showPopupReportModal() {
       this.setReportModal({ showReportModal: true })
@@ -77,8 +95,8 @@ export default {
 .area-footer-actions {
   display: grid;
   grid-area: footer-actions;
-  grid-template-rows: 70px;
-  grid-template-columns: repeat(4, 60px);
+  grid-template-rows: 80px;
+  grid-template-columns: 1fr repeat(2, 60px);
   justify-content: right;
 
   .action {
@@ -89,6 +107,7 @@ export default {
   .etc {
     background: url('~assets/images/pc/article/btn_etc.png') no-repeat;
     background-size: 54px;
+    background-position-y: 10px;
     position: relative;
     cursor: pointer;
 
@@ -99,10 +118,10 @@ export default {
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
-      padding: 16px;
+      padding: 12px;
       position: absolute;
-      right: 12px;
-      top: 52px;
+      right: 34px;
+      top: 62px;
       width: 90px;
       z-index: 1;
 
@@ -112,24 +131,53 @@ export default {
     }
   }
 
-  .like {
-    background: url('~assets/images/pc/article/icon_heart.png') no-repeat;
-    background-color: #ff4949;
-    background-size: 20px;
-    background-position: 10px 14px;
-    border: 1px solid #ff4949;
-    box-shadow: 0px 5px 15px -1px #ff8989;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+  .share {
+    background: url('~assets/images/pc/article/btn_share.png') no-repeat;
+    background-size: 54px;
     position: relative;
+    cursor: pointer;
+    background-position-y: 10px;
+
+    .share-popup {
+      background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
+      background-color: #ffffff;
+      background-size: 22px;
+      background-position-x: 16px;
+      background-position-y: 12px;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 12px 12px 12px 48px;
+      position: absolute;
+      right: 34px;
+      top: 62px;
+      width: 200px;
+      z-index: 1;
+
+      .share-twitter {
+        cursor: pointer;
+        color: #585858;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .like {
+    background: url('~assets/images/pc/article/btn_like.png') no-repeat;
+    background-size: 80px;
+    width: 80px;
+    height: 80px;
+    position: relative;
+    background-position-y: -4px;
 
     .likes-count {
       color: #585858;
       font-size: 14px;
       position: absolute;
-      top: -18px;
-      left: 5px;
+      top: 28px;
+      right: -35px;
     }
   }
 }
@@ -139,7 +187,7 @@ export default {
     position: relative;
 
     &:after {
-      bottom: 48px;
+      bottom: 46px;
       box-shadow: 0 15px 10px -10px rgba(192, 192, 192, 0.5);
       content: '';
       height: 100px;
@@ -150,6 +198,11 @@ export default {
 
     .action {
       z-index: 1;
+
+      .likes-count {
+        top: -18px;
+        right: 24px;
+      }
     }
   }
 }
