@@ -23,7 +23,6 @@ module.exports = {
   ],
   plugins: [
     '~/plugins/axios',
-    '~/plugins/cognito',
     '~/plugins/vuelidate'
   ],
   axios: {
