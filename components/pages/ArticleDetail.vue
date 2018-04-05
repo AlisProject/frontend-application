@@ -8,6 +8,7 @@
       <!-- <article-tags :tags="article.tags"/> -->
       <article-footer-actions :likesCount="article.likesCount"/>
       <article-side-actions :likesCount="article.likesCount"/>
+      <article-sub-infos :createdAt="createdAt" :tokenAmount="tokenAmount"/>
       <author-info :user="user"/>
       <!-- <article-comments :comments="article.comments"/> -->
     </div>
@@ -20,6 +21,7 @@
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
+import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleTags from '../atoms/ArticleTags'
 // import ArticleComments from '../organisms/ArticleComments'
@@ -31,6 +33,7 @@ export default {
     AppHeader,
     ArticleFooterActions,
     ArticleSideActions,
+    ArticleSubInfos,
     AuthorInfo,
     // ArticleTags,
     // ArticleComments,
@@ -51,6 +54,12 @@ export default {
         selfIntroduction:
           'ほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげ'
       }
+    },
+    createdAt() {
+      return '2018/03/14'
+    },
+    tokenAmount() {
+      return '1222k'
     }
   }
 }
@@ -84,6 +93,7 @@ export default {
     'top-image     '
     'content       '
     'footer-actions'
+    'article-sub-infos'
     // 'tags          '
     'author-info   ';
   // 'article-comments';
@@ -131,12 +141,13 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      'top-image      top-image      top-image     '
-      '...            title          ...           '
-      '...            content        ...           '
+      'top-image      top-image         top-image     '
+      '...            title             ...           '
+      '...            content           ...           '
       // '...            tags           ...           '
-    'footer-actions footer-actions footer-actions'
-      '...            author-info    ...           ';
+      '...            article-sub-infos ...'
+      'footer-actions footer-actions    footer-actions'
+      '...            author-info       ...           ';
     // '...            article-comments ...           ';
   }
 
