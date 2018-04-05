@@ -7,7 +7,7 @@
       <p class="description">
         ご入力いただいた電話番号にSMSで認証コードを送らせていただきます
       </p>
-      <form class="signup-form">
+      <form class="signup-form" @keypress.enter="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
           <label class="signup-form-label">電話番号</label>
           <input

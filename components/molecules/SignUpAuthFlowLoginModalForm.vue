@@ -4,7 +4,7 @@
       <p class="announce">
         メール認証が完了しました。以下からログインしてください
       </p>
-      <form class="signup-form">
+      <form class="signup-form" @keypress.enter="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
           <label class="signup-form-label">ユーザーID または メールアドレス</label>
           <input
