@@ -1,5 +1,5 @@
 /* eslint-disable space-before-function-paren */
-export default async ({ $axios, store }) => {
+export default async ({ $axios, store, env }) => {
   store.dispatch('user/initCognito')
   try {
     await store.dispatch('user/getUserSession')
@@ -7,12 +7,12 @@ export default async ({ $axios, store }) => {
     console.error(e)
   }
 
-  if (process.browser) {
+  if (process.client) {
     const currentUser = localStorage.getItem(
-      `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+      `CognitoIdentityServiceProvider.${env.CLIENT_ID}.LastAuthUser`
     )
     const token = localStorage.getItem(
-      `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.${currentUser}.idToken`
+      `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
     )
     $axios.setToken(token)
   }
