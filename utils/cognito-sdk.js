@@ -26,10 +26,14 @@ export default class CognitoSDK {
             reject(err)
             return
           }
-          resolve(session)
+          const { username: userId } = session.accessToken.payload
+          const {
+            email_verified: emailVerified, phone_number_verified: phoneNumberVerified
+          } = session.idToken.payload
+          resolve({ userId, emailVerified, phoneNumberVerified })
         }
       )
-    }).then((session) => (this.getUserData().then(email => ({ email, token: session.getIdToken().jwtToken }))))
+    })
   }
 
   refreshUserSession() {
@@ -88,7 +92,12 @@ export default class CognitoSDK {
     return new Promise((resolve, reject) => {
       this.cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: (result) => {
-          resolve(result)
+          const { username: userId } = result.accessToken.payload
+          const {
+            email_verified: emailVerified,
+            phone_number_verified: phoneNumberVerified
+          } = result.idToken.payload
+          resolve({ userId, emailVerified, phoneNumberVerified })
         },
         onFailure: (err) => {
           reject(err)
@@ -153,8 +162,8 @@ export default class CognitoSDK {
     })
   }
 
-  logoutUser(Email) {
-    this.cognitoUser = this.getCognitoUser(Email)
+  logoutUser({ userId }) {
+    this.cognitoUser = this.getCognitoUser(userId)
     return this.cognitoUser.signOut()
   }
 

@@ -10,8 +10,10 @@
       :showPostArticleLink="showPostArticleLink"
       :showEditArticleLink="showEditArticleLink"/>
     <template v-if="!showOnlyLogo">
-      <header-session-links v-if="!loggedIn"/>
-      <header-user-logged-in-items v-else />
+      <no-ssr>
+        <header-session-links v-if="!loggedIn"/>
+        <header-user-logged-in-items v-else />
+      </no-ssr>
     </template>
     <sign-up-modal v-show="this.showSignUpModal"/>
     <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>

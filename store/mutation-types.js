@@ -1,5 +1,5 @@
 // header
-export const LOGIN = 'LOGIN'
+export const SET_LOGGED_IN = 'SET_LOGGED_IN'
 export const SET_STATUS = 'SET_STATUS'
 export const SET_SIGN_UP_MODAL = 'SET_SIGN_UP_MODAL'
 export const SET_SENT_MAIL = 'SET_SENT_MAIL'
@@ -38,7 +38,7 @@ export const HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR = 'HIDE_SIGN_UP_AUTH_
 export const SET_REPORT_MODAL = 'SET_REPORT_MODAL'
 export const SET_ALERT_TEXT = 'SET_ALERT_TEXT'
 export const SET_ALERT = 'SET_ALERT'
-export const SET_USER = 'SET_USER'
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 
 // article
 export const SET_ARTICLES = 'SET_ARTICLES'
