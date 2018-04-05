@@ -34,12 +34,14 @@
           <nuxt-link to="#">設定</nuxt-link>
         </li>
       </ul>
-      <nuxt-link to="#" class="logout">アカウント切り替え</nuxt-link>
+      <span class="logout" @click="logoutUser">アカウント切り替え</span>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -77,7 +79,16 @@ export default {
           target.removeEventListener(eventType, callback)
         }
       })
-    }
+    },
+    logoutUser() {
+      try {
+        this.logout()
+        this.$router.push('/')
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    ...mapActions('user', ['logout'])
   }
 }
 </script>
@@ -210,6 +221,7 @@ export default {
 
   .logout {
     color: #000;
+    cursor: pointer;
     font-size: 14px;
     line-height: 21px;
     margin-left: 6px;

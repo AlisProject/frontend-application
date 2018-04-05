@@ -4,7 +4,7 @@ import CognitoSDK from '~/utils/cognito-sdk'
 const namespaced = true
 
 const state = () => ({
-  user: null,
+  currentUser: null,
   loggedIn: false,
   showSignUpModal: false,
   showSignUpAuthFlowModal: false,
@@ -260,15 +260,19 @@ const actions = {
   async login({ commit }, { userId, password }) {
     try {
       const result = await this.cognito.login({ userId, password })
+      commit(types.SET_LOGGED_IN, { loggedIn: true })
+      commit(types.SET_CURRENT_USER, { user: result })
       return result
     } catch (error) {
       return Promise.reject(error)
     }
   },
-  async getUserSession({ commit }) {
+  async getUserSession({ commit, dispatch }) {
     try {
       const result = await this.cognito.getUserSession()
-      commit(types.SET_USER, result)
+      commit(types.SET_LOGGED_IN, { loggedIn: true })
+      commit(types.SET_CURRENT_USER, { user: result })
+      return result
     } catch (error) {
       return Promise.reject(error)
     }
@@ -280,12 +284,25 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async logout({ commit, state }) {
+    try {
+      const result = await this.cognito.logoutUser({ userId: state.currentUser.userId })
+      commit(types.SET_LOGGED_IN, { loggedIn: false })
+      commit(types.SET_CURRENT_USER, { user: null })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setLoggedIn({ commit }, { loggedIn }) {
+    commit(types.SET_LOGGED_IN, { loggedIn })
   }
 }
 
 const mutations = {
-  [types.LOGIN](state) {
-    state.loggedIn = true
+  [types.SET_LOGGED_IN](state, { loggedIn }) {
+    state.loggedIn = loggedIn
   },
   [types.SET_SIGN_UP_MODAL](state, { showSignUpModal }) {
     state.showSignUpModal = showSignUpModal
@@ -402,8 +419,8 @@ const mutations = {
   [types.SET_ALERT](state, { showAlert }) {
     state.showAlert = showAlert
   },
-  [types.SET_USER](state, user) {
-    state.user = user
+  [types.SET_CURRENT_USER](state, { user }) {
+    state.currentUser = user
   }
 }
 
