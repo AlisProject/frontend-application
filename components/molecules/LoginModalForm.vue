@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal-body">
-      <form class="signup-form">
+      <form class="signup-form" @keypress.enter="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
           <label class="signup-form-label">ユーザーID または メールアドレス</label>
           <input
