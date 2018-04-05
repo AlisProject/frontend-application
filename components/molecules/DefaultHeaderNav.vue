@@ -2,7 +2,7 @@
   <nav class="area-nav">
     <template v-if="!showOnlyLogo && !showOnlySessionLinks">
       <nuxt-link to="/" class="nav-link area-popular-articles">人気記事</nuxt-link>
-      <nuxt-link to="/articles/new" class="nav-link area-new-articles">新着記事</nuxt-link>
+      <nuxt-link to="/articles/recent" class="nav-link area-new-articles">新着記事</nuxt-link>
     </template>
   </nav>
 </template>
