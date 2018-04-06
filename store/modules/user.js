@@ -81,6 +81,7 @@ const state = () => ({
 })
 
 const getters = {
+  currentUser: (state) => state.currentUser,
   loggedIn: (state) => state.loggedIn,
   showSignUpModal: (state) => state.showSignUpModal,
   sentMail: (state) => state.sentMail,
@@ -297,6 +298,9 @@ const actions = {
   },
   setLoggedIn({ commit }, { loggedIn }) {
     commit(types.SET_LOGGED_IN, { loggedIn })
+  },
+  async putUserInfo({ commit }, { userDisplayName, selfIntroduction }) {
+    await this.$axios.$put('/me/info', { user_display_name: userDisplayName, self_introduction: selfIntroduction })
   }
 }
 
