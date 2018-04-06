@@ -4,6 +4,16 @@
   </div>
 </template>
 
+<script>
+export default {
+  head() {
+    return {
+      titleTemplate: '%s | ALISMedia'
+    }
+  }
+}
+</script>
+
 <style>
 @import 'normalize.css';
 
