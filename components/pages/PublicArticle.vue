@@ -6,18 +6,15 @@
       <img class="area-top-image" src="~assets/images/top-story-card-image.png">
       <div class="area-content" v-html="article.body" />
     </div>
-    <app-footer/>
   </div>
 </template>
 
 <script>
 import AppHeader from '../organisms/AppHeader'
-import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
-    AppHeader,
-    AppFooter
+    AppHeader
   },
   props: {
     article: {
@@ -31,14 +28,13 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr75px;
+  grid-template-rows: 100px 50px 1fr;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     'app-header       app-header       app-header      '
     '...              ...              ...             '
-    '...              article          ...             '
-    '...              app-footer       ...             ';
+    '...              article          ...             ';
   background: white;
 }
 
@@ -79,14 +75,13 @@ export default {
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 70px 0 1fr 75px;
+    grid-template-rows: 70px 0 1fr;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
     grid-template-areas:
     'app-header       app-header       app-header      '
     '...              ...              ...             '
-    'article          article          article         '
-    '...              app-footer       ...             ';
+    'article          article          article         ';
   }
 
   .area-article {

@@ -11,13 +11,14 @@
 <style lang="scss" scoped>
 .area-app-footer-container {
   align-items: center;
+  background: #05051e;
   display: flex;
   grid-area: app-footer;
   justify-content: center;
 }
 
 .link {
-  color: #6e6e6e;
+  color: #fff;
   font-size: 12px;
   line-height: 16px;
   margin: 0 1.4em;
@@ -27,7 +28,6 @@
 @media screen and (max-width: 550px) {
   .area-app-footer-container {
     align-items: flex-start;
-    background: white;
     flex-flow: column nowrap;
     justify-content: flex-start;
     padding: 1.3em 0 1em;

@@ -58,7 +58,7 @@ export default {
 @media screen and (max-width: 550px) {
   .top-container {
     background: #f7f7f7;
-    grid-template-rows: 100px 15px 1fr 75px 75px;
+    grid-template-rows: 100px 15px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }
