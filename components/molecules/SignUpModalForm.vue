@@ -3,11 +3,11 @@
     <div class="modal-body">
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasUserIdError }">
-          <label class="signup-form-label">ALIS ID</label>
+          <label class="signup-form-label">ユーザーID</label>
           <input
             class="signup-form-input"
             type="text"
-            placeholder="alis"
+            placeholder="半角英数字3文字以上"
             autofocus
             @input="setUserId"
             @blur="showError('userId')"
@@ -19,7 +19,7 @@
           <input
             class="signup-form-input"
             type="email"
-            placeholder="yamada@alismedia.com"
+            placeholder="alis@example.com"
             @input="setEmail"
             @blur="showError('email')"
             @focus="resetError('email')">
@@ -30,7 +30,7 @@
           <input
             class="signup-form-input"
             type="password"
-            placeholder="●●●●●●●●"
+            placeholder="半角英数字8文字以上"
             @input="setPassword"
             @blur="showError('password')"
             @focus="resetError('password')">
