@@ -2,7 +2,6 @@
   <div class="create-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
     <article-editor :tags="this.$store.state.article.tags"/>
-    <app-footer/>
   </div>
 </template>
 
@@ -11,13 +10,11 @@ import { debounce } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
-import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
-    ArticleEditor,
-    AppFooter
+    ArticleEditor
   },
   computed: {
     ...mapGetters('article', ['articleId', 'title', 'body'])
@@ -71,14 +68,13 @@ export default {
 <style lang="scss" scoped>
 .create-article-container {
   display: grid;
-  grid-template-rows: 100px 50px 650px 75px 75px;
+  grid-template-rows: 100px 50px 650px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header app-header"
     "...         ...        ...       "
     "...         editor     ...       "
-    "...         ...        ...       "
-    "...         app-footer ...       ";
+    "...         ...        ...       ";
 }
 </style>

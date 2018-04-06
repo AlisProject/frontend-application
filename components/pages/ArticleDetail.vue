@@ -77,7 +77,7 @@ export default {
     '...              ...              ...             '
     '...              article          ...             '
     // 'related-articles related-articles related-articles'
-    '...              app-footer       ...             ';
+    'app-footer       app-footer       app-footer      ';
   background: white;
 }
 
@@ -124,7 +124,7 @@ export default {
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 70px 0 1fr 75px;
+    grid-template-rows: 70px 0 1fr min-content;
     // grid-template-rows: 70px 0 1fr min-content 75px;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
@@ -133,7 +133,7 @@ export default {
     '...              ...              ...             '
     'article          article          article         '
     // 'related-articles related-articles related-articles'
-    '...              app-footer       ...             ';
+    'app-footer       app-footer       app-footer      ';
   }
 
   .area-article {

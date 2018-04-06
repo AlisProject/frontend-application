@@ -80,7 +80,7 @@ export default {
   .user-article-list-container {
     background: #fff;
     grid-template-columns: 1fr 350px 1fr;
-    grid-template-rows: 100px 150px 50px 1fr 75px 75px;
+    grid-template-rows: 100px 150px 50px 1fr 75px min-content;
     grid-row-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:
