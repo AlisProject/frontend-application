@@ -22,3 +22,12 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn lint
+
+      - run:
+          name: deploy
+          command: |
+            yarn build
+            sudo apt-get -y -qq install awscli
+            aws s3 cp .nuxt/dist/ s3://$DIST_S3_BUCKET_NAME --recursive --acl public-read
+            sudo npm install -g serverless
+            yarn sls:deploy

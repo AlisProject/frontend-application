@@ -1,0 +1,53 @@
+service:
+  name: ${env:NUXT_API_GATEWAY_NAME}
+
+frameworkVersion: ">=1.26.1"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ${env:REGION}
+  stage: prod
+
+package:
+  excludeDevDependencies: true
+  exclude:
+    - .**
+    - .**/*
+    - app/**
+    - LICENSE
+    - README.md
+    - package.json
+    - yarn.lock
+    - node_modules/babel**/**
+    - node_modules/caniuse-db/**
+    - node_modules/caniuse-lite/**
+    - node_modules/prettier/**
+    - node_modules/yargs/**
+    - node_modules/postcss**/**
+    - node_modules/cssnano/**
+    - node_modules/xxhashjs/**
+    - node_modules/jschardet/**
+    - node_modules/**/*.md
+    - node_modules/**/bin/**
+  include:
+    - app/static/**
+    - server/**
+    - configs/**
+    - nuxt.config.js
+
+functions:
+  handler:
+    handler: server/handler.handler
+    timeout: 30
+    memorySize: 2048
+    environment:
+      BASE_URL: /
+      REGION: ${env:REGION}
+    events:
+      - http:
+          path: '/'
+          method: get
+      - http:
+          path: '{proxy+}'
+          method: get
