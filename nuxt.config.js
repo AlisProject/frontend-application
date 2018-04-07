@@ -36,7 +36,7 @@ module.exports = {
     gzip: false
   },
   build: {
-    publicPath: 'https://s3-' + process.env.REGION + '.amazonaws.com/' + process.env.DIST_S3_BUCKET_NAME + '/',
+    publicPath: `https://s3-${process.env.REGION}.amazonaws.com/${process.env.DIST_S3_BUCKET_NAME}/`,
     /*
     ** Run ESLint on save
     */
