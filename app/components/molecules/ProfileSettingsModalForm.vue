@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal-body">
-      <form class="signup-form">
+      <form class="signup-form" @submit.prevent>
         <div class="upload-img-section">
           <img class="upload-img" v-if="uploadedImage" :src="uploadedImage" />
           <div class="upload-img-dammy" v-else />
@@ -15,6 +15,9 @@
           <input
             class="signup-form-input"
             type="text"
+            minlength="1"
+            maxlength="30"
+            v-model="userDisplayName"
             @input="setUserDisplayName"
             @blur="showError('userDisplayName')"
             @focus="resetError('userDisplayName')">
@@ -25,6 +28,7 @@
             class="signup-form-textarea"
             type="text"
             placeholder="自己紹介を入力してください"
+            maxlength="100"
             @input="setSelfIntroduction"
             @blur="showError('selfIntroduction')"
             @focus="resetError('selfIntroduction')"/>
@@ -46,8 +50,15 @@ import { required } from 'vuelidate/lib/validators'
 export default {
   data() {
     return {
+      userDisplayName: '',
       uploadedImage: ''
     }
+  },
+  created() {
+    this.userDisplayName = this.currentUser.userId
+    this.setSignUpAuthFlowProfileSettingsUserDisplayName({
+      userDisplayName: this.currentUser.userId
+    })
   },
   computed: {
     invalidSubmit() {
@@ -65,7 +76,7 @@ export default {
         this.$v.signUpAuthFlowModal.profileSettings.formData.selfIntroduction.$error
       )
     },
-    ...mapGetters('user', ['signUpAuthFlowModal'])
+    ...mapGetters('user', ['currentUser', 'signUpAuthFlowModal'])
   },
   validations: {
     signUpAuthFlowModal: {
@@ -88,8 +99,20 @@ export default {
     },
     createImage(file) {
       const reader = new FileReader()
-      reader.onload = (e) => {
-        this.uploadedImage = e.target.result
+      /* eslint-disable space-before-function-paren */
+      reader.onload = async (e) => {
+        try {
+          const base64Image = e.target.result
+          const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+          const imageContentType = base64Image.substring(
+            base64Image.match(':').index + 1,
+            base64Image.match(';').index
+          )
+          await this.postUserIcon({ iconImage: base64Hash, imageContentType })
+          this.uploadedImage = base64Image
+        } catch (error) {
+          console.error(error)
+        }
       }
       reader.readAsDataURL(file)
     },
@@ -107,15 +130,26 @@ export default {
       this.$v.signUpAuthFlowModal.profileSettings.formData[type].$reset()
       this.hideSignUpAuthFlowProfileSettingsError({ type })
     },
-    onSubmit() {
+    async onSubmit() {
       if (this.invalidSubmit) return
-      document.querySelector('html,body').style.overflow = ''
-      this.setSignUpAuthFlowModal({
-        showSignUpAuthFlowModal: false
-      })
-      this.setSignUpAuthFlowProfileSettingsModal({
-        isSignUpAuthFlowProfileSettingsModal: false
-      })
+      const {
+        userDisplayName,
+        selfIntroduction
+      } = this.signUpAuthFlowModal.profileSettings.formData
+      const formattedSelfIntroduction = selfIntroduction.replace(/\r?\n/g, '')
+      try {
+        await this.putUserInfo({ userDisplayName, selfIntroduction: formattedSelfIntroduction })
+
+        document.querySelector('html,body').style.overflow = ''
+        this.setSignUpAuthFlowModal({
+          showSignUpAuthFlowModal: false
+        })
+        this.setSignUpAuthFlowProfileSettingsModal({
+          isSignUpAuthFlowProfileSettingsModal: false
+        })
+      } catch (error) {
+        console.error(error)
+      }
     },
     ...mapActions('user', [
       'setSignUpAuthFlowProfileSettingsModal',
@@ -124,7 +158,9 @@ export default {
       'showSignUpAuthFlowProfileSettingsError',
       'hideSignUpAuthFlowProfileSettingsError',
       'setSignUpAuthFlowModal',
-      'setSignUpAuthFlowProfileSettingsModal'
+      'setSignUpAuthFlowProfileSettingsModal',
+      'putUserInfo',
+      'postUserIcon'
     ])
   }
 }
@@ -166,6 +202,7 @@ export default {
         width: 120px;
         height: 120px;
         border-radius: 50%;
+        object-fit: cover;
       }
 
       .upload-img-dammy {
@@ -205,6 +242,8 @@ export default {
       margin-bottom: 30px;
       padding: 5px 0;
       width: 100%;
+      resize: none;
+      overflow: hidden;
 
       &::-webkit-input-placeholder {
         color: #cecece;
