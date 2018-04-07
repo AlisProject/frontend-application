@@ -99,8 +99,20 @@ export default {
     },
     createImage(file) {
       const reader = new FileReader()
-      reader.onload = (e) => {
-        this.uploadedImage = e.target.result
+      /* eslint-disable space-before-function-paren */
+      reader.onload = async (e) => {
+        try {
+          const base64Image = e.target.result
+          const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+          const imageContentType = base64Image.substring(
+            base64Image.match(':').index + 1,
+            base64Image.match(';').index
+          )
+          await this.postUserIcon({ iconImage: base64Hash, imageContentType })
+          this.uploadedImage = base64Image
+        } catch (error) {
+          console.error(error)
+        }
       }
       reader.readAsDataURL(file)
     },
@@ -147,7 +159,8 @@ export default {
       'hideSignUpAuthFlowProfileSettingsError',
       'setSignUpAuthFlowModal',
       'setSignUpAuthFlowProfileSettingsModal',
-      'putUserInfo'
+      'putUserInfo',
+      'postUserIcon'
     ])
   }
 }
@@ -189,6 +202,7 @@ export default {
         width: 120px;
         height: 120px;
         border-radius: 50%;
+        object-fit: cover;
       }
 
       .upload-img-dammy {

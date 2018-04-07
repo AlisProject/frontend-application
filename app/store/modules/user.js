@@ -303,6 +303,12 @@ const actions = {
   },
   async putUserInfo({ commit }, { userDisplayName, selfIntroduction }) {
     await this.$axios.$put('/me/info', { user_display_name: userDisplayName, self_introduction: selfIntroduction })
+  },
+  async postUserIcon({ commit }, { iconImage, imageContentType }) {
+    const config = {
+      headers: { 'content-type': imageContentType }
+    }
+    await this.$axios.$post('/me/info/icon', { icon_image: iconImage }, config)
   }
 }
 
