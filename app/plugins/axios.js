@@ -8,7 +8,6 @@ export default async ({ $axios, store, env }) => {
   }
 
   $axios.onRequest(req => {
-    console.log('req', req)
     try {
       store.dispatch('user/getUserSession')
       const currentUser = localStorage.getItem(
