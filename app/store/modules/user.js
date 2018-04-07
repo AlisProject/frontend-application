@@ -81,6 +81,7 @@ const state = () => ({
 })
 
 const getters = {
+  currentUser: (state) => state.currentUser,
   loggedIn: (state) => state.loggedIn,
   showSignUpModal: (state) => state.showSignUpModal,
   sentMail: (state) => state.sentMail,
@@ -228,6 +229,8 @@ const actions = {
   async signUpLogin({ commit }, { userId, password }) {
     try {
       const result = await this.cognito.login({ userId, password })
+      commit(types.SET_LOGGED_IN, { loggedIn: true })
+      commit(types.SET_CURRENT_USER, { user: result })
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -297,6 +300,9 @@ const actions = {
   },
   setLoggedIn({ commit }, { loggedIn }) {
     commit(types.SET_LOGGED_IN, { loggedIn })
+  },
+  async putUserInfo({ commit }, { userDisplayName, selfIntroduction }) {
+    await this.$axios.$put('/me/info', { user_display_name: userDisplayName, self_introduction: selfIntroduction })
   }
 }
 
