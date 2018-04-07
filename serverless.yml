@@ -44,7 +44,7 @@ functions:
     timeout: 30
     memorySize: 2048
     environment:
-      BASE_URL: /
+      BASE_URL: ${env:BASE_URL}
       REGION: ${env:REGION}
     events:
       - http:
