@@ -8,8 +8,16 @@ export default async ({ $axios, store, env }) => {
   }
 
   $axios.onRequest(req => {
+    console.log('req', req)
     try {
       store.dispatch('user/getUserSession')
+      const currentUser = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${env.CLIENT_ID}.LastAuthUser`
+      )
+      const token = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
+      )
+      $axios.setToken(token)
     } catch (e) {
       console.error(e)
     }
