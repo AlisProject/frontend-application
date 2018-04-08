@@ -11,7 +11,7 @@ const setHeaders = (req, res, next) => {
   res.header('x-xss-protection', '1; mode=block')
   res.header('x-frame-options', 'DENY')
   res.header('x-content-type-options', 'nosniff')
-  res.header('Cache-Control', 'max-age=3600')
+  res.header('Cache-Control', 'max-age=120')
   next()
 }
 
