@@ -21,6 +21,9 @@ export CLIENT_ID=3blv8falksulbexxxxxxxxxxxx
 # S3 bucket name for dist
 export DIST_S3_BUCKET_NAME=alis-bucket-xxxx
 
+# Domain for ALIS
+export DOMAIN=example.com
+
 # AWS API Gateway dev stage URL that made by the ALIS serverless application.
 # see: https://github.com/AlisProject/serverless-application
 export BASE_URL=https://mnz6xxxxxx.execute-api.ap-northeast-1.amazonaws.com/dev

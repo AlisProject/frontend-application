@@ -46,6 +46,7 @@ functions:
     environment:
       BASE_URL: ${env:BASE_URL}
       REGION: ${env:REGION}
+      DOMAIN: ${env:DOMAIN}
     events:
       - http:
           path: '/'
