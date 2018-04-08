@@ -28,6 +28,6 @@ jobs:
           command: |
             yarn build
             sudo apt-get -y -qq install awscli
-            aws s3 cp .nuxt/dist/ s3://$DIST_S3_BUCKET_NAME --recursive --acl public-read
+            aws s3 cp .nuxt/dist/ s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist --recursive
             sudo npm install -g serverless
             yarn sls:deploy
