@@ -20,6 +20,7 @@
     <login-modal v-show="this.showLoginModal"/>
     <report-modal v-if="showReportModal"/>
     <the-alert />
+    <profile-settings-modal v-if="showProfileSettingsModal"/>
   </header>
 </template>
 
@@ -34,6 +35,7 @@ import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
 import ReportModal from '../organisms/ReportModal'
 import TheAlert from '../atoms/TheAlert'
+import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
 
 export default {
   props: {
@@ -71,7 +73,8 @@ export default {
     SignUpAuthFlowModal,
     LoginModal,
     ReportModal,
-    TheAlert
+    TheAlert,
+    ProfileSettingsModal
   },
   computed: {
     ...mapGetters('user', [
@@ -79,7 +82,8 @@ export default {
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
-      'showReportModal'
+      'showReportModal',
+      'showProfileSettingsModal'
     ])
   }
 }

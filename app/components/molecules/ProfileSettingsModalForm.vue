@@ -56,38 +56,41 @@ export default {
   },
   created() {
     this.userDisplayName = this.currentUser.userId
-    this.setSignUpAuthFlowProfileSettingsUserDisplayName({
+    this.setProfileSettingsUserDisplayName({
       userDisplayName: this.currentUser.userId
     })
   },
   computed: {
     invalidSubmit() {
-      return this.$v.signUpAuthFlowModal.profileSettings.formData.$invalid
+      return this.$v.profileSettingsModal.formData.$invalid
     },
     hasUserDisplayNameError() {
       return (
-        this.signUpAuthFlowModal.profileSettings.formError.userDisplayName &&
-        this.$v.signUpAuthFlowModal.profileSettings.formData.userDisplayName.$error
+        this.profileSettingsModal.formError.userDisplayName &&
+        this.$v.profileSettingsModal.formData.userDisplayName.$error
       )
     },
     hasSelfIntroductionError() {
       return (
-        this.signUpAuthFlowModal.profileSettings.formError.selfIntroduction &&
-        this.$v.signUpAuthFlowModal.profileSettings.formData.selfIntroduction.$error
+        this.profileSettingsModal.formError.selfIntroduction &&
+        this.$v.profileSettingsModal.formData.selfIntroduction.$error
       )
     },
-    ...mapGetters('user', ['currentUser', 'signUpAuthFlowModal'])
+    ...mapGetters('user', [
+      'currentUser',
+      'signUpAuthFlowModal',
+      'showSignUpAuthFlowModal',
+      'profileSettingsModal'
+    ])
   },
   validations: {
-    signUpAuthFlowModal: {
-      profileSettings: {
-        formData: {
-          userDisplayName: {
-            required
-          },
-          selfIntroduction: {
-            required
-          }
+    profileSettingsModal: {
+      formData: {
+        userDisplayName: {
+          required
+        },
+        selfIntroduction: {
+          required
         }
       }
     }
@@ -117,48 +120,51 @@ export default {
       reader.readAsDataURL(file)
     },
     setUserDisplayName(e) {
-      this.setSignUpAuthFlowProfileSettingsUserDisplayName({ userDisplayName: e.target.value })
+      this.setProfileSettingsUserDisplayName({ userDisplayName: e.target.value })
     },
     setSelfIntroduction(e) {
-      this.setSignUpAuthFlowProfileSettingsSelfIntroduction({ selfIntroduction: e.target.value })
+      this.setProfileSettingsSelfIntroduction({ selfIntroduction: e.target.value })
     },
     showError(type) {
-      this.$v.signUpAuthFlowModal.profileSettings.formData[type].$touch()
-      this.showSignUpAuthFlowProfileSettingsError({ type })
+      this.$v.profileSettingsModal.formData[type].$touch()
+      this.showProfileSettingsError({ type })
     },
     resetError(type) {
-      this.$v.signUpAuthFlowModal.profileSettings.formData[type].$reset()
-      this.hideSignUpAuthFlowProfileSettingsError({ type })
+      this.$v.profileSettingsModal.formData[type].$reset()
+      this.hideProfileSettingsError({ type })
     },
     async onSubmit() {
       if (this.invalidSubmit) return
-      const {
-        userDisplayName,
-        selfIntroduction
-      } = this.signUpAuthFlowModal.profileSettings.formData
+      const { userDisplayName, selfIntroduction } = this.profileSettingsModal.formData
       const formattedSelfIntroduction = selfIntroduction.replace(/\r?\n/g, '')
       try {
         await this.putUserInfo({ userDisplayName, selfIntroduction: formattedSelfIntroduction })
 
         document.querySelector('html,body').style.overflow = ''
-        this.setSignUpAuthFlowModal({
-          showSignUpAuthFlowModal: false
-        })
-        this.setSignUpAuthFlowProfileSettingsModal({
-          isSignUpAuthFlowProfileSettingsModal: false
-        })
+        if (this.showSignUpAuthFlowModal) {
+          this.setSignUpAuthFlowModal({
+            showSignUpAuthFlowModal: false
+          })
+          this.setSignUpAuthFlowProfileSettingsModal({
+            isSignUpAuthFlowProfileSettingsModal: false
+          })
+        } else {
+          this.setProfileSettingsModal({
+            showProfileSettingsModal: false
+          })
+        }
       } catch (error) {
         console.error(error)
       }
     },
     ...mapActions('user', [
       'setSignUpAuthFlowProfileSettingsModal',
-      'setSignUpAuthFlowProfileSettingsUserDisplayName',
-      'setSignUpAuthFlowProfileSettingsSelfIntroduction',
-      'showSignUpAuthFlowProfileSettingsError',
-      'hideSignUpAuthFlowProfileSettingsError',
+      'setProfileSettingsUserDisplayName',
+      'setProfileSettingsSelfIntroduction',
+      'showProfileSettingsError',
+      'hideProfileSettingsError',
       'setSignUpAuthFlowModal',
-      'setSignUpAuthFlowProfileSettingsModal',
+      'setProfileSettingsModal',
       'putUserInfo',
       'postUserIcon'
     ])

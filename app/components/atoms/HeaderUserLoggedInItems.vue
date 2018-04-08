@@ -30,8 +30,8 @@
         <li class="menu-link">
           <nuxt-link to="#">ALISの使い方</nuxt-link>
         </li>
-        <li class="menu-link">
-          <nuxt-link to="#">設定</nuxt-link>
+        <li class="menu-link" @click="showProfileSettingsModal">
+          設定
         </li>
       </ul>
       <span class="logout" @click="logoutUser">アカウント切り替え</span>
@@ -88,7 +88,12 @@ export default {
         console.error(error)
       }
     },
-    ...mapActions('user', ['logout'])
+    showProfileSettingsModal() {
+      this.setProfileSettingsModal({ showProfileSettingsModal: true })
+      document.documentElement.scrollTop = 0
+      document.querySelector('html,body').style.overflow = 'hidden'
+    },
+    ...mapActions('user', ['logout', 'setProfileSettingsModal'])
   }
 }
 </script>
@@ -198,6 +203,7 @@ export default {
     padding: 0;
 
     .menu-link {
+      cursor: pointer;
       font-size: 16px;
       font-weight: 500;
       height: 24px;
