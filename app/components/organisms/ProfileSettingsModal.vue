@@ -19,9 +19,9 @@ export default {
   methods: {
     resetStates() {
       this.$v.profileSettingsModal.$reset()
-      this.hideLoginErrors()
+      this.hideProfileSettingsErrors()
     },
-    ...mapActions('user', ['hideLoginErrors'])
+    ...mapActions('user', ['hideProfileSettingsErrors'])
   },
   validations: {
     profileSettingsModal: {}

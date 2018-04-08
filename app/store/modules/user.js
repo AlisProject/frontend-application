@@ -325,6 +325,9 @@ const actions = {
   },
   setProfileSettingsModal({ commit }, { showProfileSettingsModal }) {
     commit(types.SET_PROFILE_SETTINGS_MODAL, { showProfileSettingsModal })
+  },
+  hideProfileSettingsErrors({ commit }) {
+    commit(types.HIDE_PROFILE_SETTINGS_ERRORS)
   }
 }
 
@@ -452,6 +455,11 @@ const mutations = {
   },
   [types.SET_PROFILE_SETTINGS_MODAL](state, { showProfileSettingsModal }) {
     state.showProfileSettingsModal = showProfileSettingsModal
+  },
+  [types.HIDE_PROFILE_SETTINGS_ERRORS]({ profileSettingsModal: { formError } }) {
+    Object.keys(formError).forEach(key => {
+      formError[key] = false
+    })
   }
 }
 
