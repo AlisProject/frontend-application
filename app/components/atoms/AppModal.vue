@@ -42,7 +42,8 @@ export default {
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
-      'showReportModal'
+      'showReportModal',
+      'showProfileSettingsModal'
     ])
   },
   methods: {
@@ -59,6 +60,9 @@ export default {
       if (this.showReportModal) {
         this.setReportModal({ showReportModal: false })
       }
+      if (this.showProfileSettingsModal) {
+        this.setProfileSettingsModal({ showProfileSettingsModal: false })
+      }
       this.$emit('close')
       document.body.scrollTop = 0
       document.querySelector('html,body').style.overflow = ''
@@ -67,7 +71,8 @@ export default {
       'setSignUpModal',
       'setSignUpAuthFlowModal',
       'setLoginModal',
-      'setReportModal'
+      'setReportModal',
+      'setProfileSettingsModal'
     ])
   }
 }
