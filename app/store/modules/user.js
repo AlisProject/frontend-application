@@ -9,6 +9,7 @@ const state = () => ({
   showSignUpModal: false,
   showSignUpAuthFlowModal: false,
   showLoginModal: false,
+  showProfileSettingsModal: false,
   sentMail: false,
   signUpModal: {
     formData: {
@@ -75,6 +76,16 @@ const state = () => ({
       password: false
     }
   },
+  profileSettingsModal: {
+    formData: {
+      userDisplayName: '',
+      selfIntroduction: ''
+    },
+    formError: {
+      userDisplayName: false,
+      selfIntroduction: false
+    }
+  },
   showReportModal: false,
   alertText: '',
   showAlert: false
@@ -92,7 +103,9 @@ const getters = {
   loginModal: (state) => state.loginModal,
   showReportModal: (state) => state.showReportModal,
   alertText: (state) => state.alertText,
-  showAlert: (state) => state.showAlert
+  showAlert: (state) => state.showAlert,
+  showProfileSettingsModal: (state) => state.showProfileSettingsModal,
+  profileSettingsModal: (state) => state.profileSettingsModal
 }
 
 const actions = {
@@ -189,17 +202,17 @@ const actions = {
   setSignUpAuthFlowProfileSettingsModal({ commit }, { isSignUpAuthFlowProfileSettingsModal }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL, { isSignUpAuthFlowProfileSettingsModal })
   },
-  setSignUpAuthFlowProfileSettingsUserDisplayName({ commit }, { userDisplayName }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_USER_DISPLAY_NAME, { userDisplayName })
+  setProfileSettingsUserDisplayName({ commit }, { userDisplayName }) {
+    commit(types.SET_PROFILE_SETTINGS_USER_DISPLAY_NAME, { userDisplayName })
   },
-  setSignUpAuthFlowProfileSettingsSelfIntroduction({ commit }, { selfIntroduction }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_SELF_INDRODUCTION, { selfIntroduction })
+  setProfileSettingsSelfIntroduction({ commit }, { selfIntroduction }) {
+    commit(types.SET_PROFILE_SETTINGS_SELF_INDRODUCTION, { selfIntroduction })
   },
-  showSignUpAuthFlowProfileSettingsError({ commit }, { type }) {
-    commit(types.SHOW_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR, { type })
+  showProfileSettingsError({ commit }, { type }) {
+    commit(types.SHOW_PROFILE_SETTINGS_ERROR, { type })
   },
-  hideSignUpAuthFlowProfileSettingsError({ commit }, { type }) {
-    commit(types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR, { type })
+  hideProfileSettingsError({ commit }, { type }) {
+    commit(types.HIDE_PROFILE_SETTINGS_ERROR, { type })
   },
   setReportModal({ commit }, { showReportModal }) {
     commit(types.SET_REPORT_MODAL, { showReportModal })
@@ -309,6 +322,12 @@ const actions = {
       headers: { 'content-type': imageContentType }
     }
     await this.$axios.$post('/me/info/icon', { icon_image: iconImage }, config)
+  },
+  setProfileSettingsModal({ commit }, { showProfileSettingsModal }) {
+    commit(types.SET_PROFILE_SETTINGS_MODAL, { showProfileSettingsModal })
+  },
+  hideProfileSettingsErrors({ commit }) {
+    commit(types.HIDE_PROFILE_SETTINGS_ERRORS)
   }
 }
 
@@ -410,17 +429,17 @@ const mutations = {
   [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL](state, { isSignUpAuthFlowProfileSettingsModal }) {
     state.signUpAuthFlowModal.isProfileSettingsModal = isSignUpAuthFlowProfileSettingsModal
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_USER_DISPLAY_NAME](state, { userDisplayName }) {
-    state.signUpAuthFlowModal.profileSettings.formData.userDisplayName = userDisplayName
+  [types.SET_PROFILE_SETTINGS_USER_DISPLAY_NAME](state, { userDisplayName }) {
+    state.profileSettingsModal.formData.userDisplayName = userDisplayName
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_SELF_INDRODUCTION](state, { selfIntroduction }) {
-    state.signUpAuthFlowModal.profileSettings.formData.selfIntroduction = selfIntroduction
+  [types.SET_PROFILE_SETTINGS_SELF_INDRODUCTION](state, { selfIntroduction }) {
+    state.profileSettingsModal.formData.selfIntroduction = selfIntroduction
   },
-  [types.SHOW_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR](state, { type }) {
-    state.signUpAuthFlowModal.profileSettings.formError[type] = true
+  [types.SHOW_PROFILE_SETTINGS_ERROR](state, { type }) {
+    state.profileSettingsModal.formError[type] = true
   },
-  [types.HIDE_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_ERROR](state, { type }) {
-    state.signUpAuthFlowModal.profileSettings.formError[type] = false
+  [types.HIDE_PROFILE_SETTINGS_ERROR](state, { type }) {
+    state.profileSettingsModal.formError[type] = false
   },
   [types.SET_REPORT_MODAL](state, { showReportModal }) {
     state.showReportModal = showReportModal
@@ -433,6 +452,14 @@ const mutations = {
   },
   [types.SET_CURRENT_USER](state, { user }) {
     state.currentUser = user
+  },
+  [types.SET_PROFILE_SETTINGS_MODAL](state, { showProfileSettingsModal }) {
+    state.showProfileSettingsModal = showProfileSettingsModal
+  },
+  [types.HIDE_PROFILE_SETTINGS_ERRORS]({ profileSettingsModal: { formError } }) {
+    Object.keys(formError).forEach(key => {
+      formError[key] = false
+    })
   }
 }
 
