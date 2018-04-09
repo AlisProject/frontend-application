@@ -7,7 +7,7 @@
       spellcheck="false"
       @input="onInputTitle"
       :value="title">
-    <div class="area-body" ref="editable" @input="onInputBody" :value="body"/>
+    <div class="area-body" ref="editable" @input="onInputBody"/>
     <div class="area-tags">
       <button class="add-tag-button" @click="addEmptyTag">＋</button>
       <input
@@ -31,10 +31,6 @@ import 'medium-editor/dist/css/medium-editor.min.css'
 export default {
   props: {
     title: String,
-    body: {
-      type: String,
-      default: ''
-    },
     tags: {
       type: Array,
       default: () => []
@@ -45,7 +41,6 @@ export default {
   },
   mounted() {
     this.initMediumEditor()
-    this.$refs.editable.innerHTML = this.body
   },
   methods: {
     initMediumEditor() {
@@ -86,7 +81,7 @@ export default {
           diffTop: -20
         },
         placeholder: {
-          text: this.body === '' ? 'あなたの物語を教えてください･･･' : ''
+          text: ''
         },
         spellcheck: false
       })
