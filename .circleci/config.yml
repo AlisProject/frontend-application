@@ -29,5 +29,6 @@ jobs:
             yarn build
             sudo apt-get -y -qq install awscli
             aws s3 cp .nuxt/dist/ s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist --recursive
+            aws s3 cp app/static/favicon.ico s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist
             sudo npm install -g serverless
             yarn sls:deploy
