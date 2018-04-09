@@ -82,13 +82,14 @@ export default {
     },
     async publish() {
       const { articleId } = this.articleId === '' ? this.$route.params : this
-      const article = {
-        title: this.title,
-        body: this.body
-          .replace(/<p class="medium-insert-active">[\s\S]*/, '')
-          .replace(/<div class="medium-insert-buttons"[\s\S]*/, ''),
-        overview: this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '').replace(/\r?\n/g, '')
-      }
+      const body = this.body
+        .replace(/<p class="medium-insert-active">[\s\S]*/, '')
+        .replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
+      const overview = body
+        .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
+        .replace(/\r?\n?\s/g, '')
+        .slice(0, 100)
+      const article = { title: this.title, body, overview }
 
       try {
         if (
