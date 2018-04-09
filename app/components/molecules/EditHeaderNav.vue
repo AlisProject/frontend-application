@@ -87,10 +87,7 @@ export default {
         body: this.body
           .replace(/<p class="medium-insert-active">[\s\S]*/, '')
           .replace(/<div class="medium-insert-buttons"[\s\S]*/, ''),
-        overview: this.body
-          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-          .replace('+', '')
-          .replace(/\r?\n/g, '')
+        overview: this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '').replace(/\r?\n/g, '')
       }
 
       try {
