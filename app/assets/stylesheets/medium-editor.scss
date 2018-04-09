@@ -19,6 +19,16 @@
     border-top: dotted 2px #e3e3e3;
     height: 2px;
   }
+
+  img {
+    max-width: 100%;
+  }
+
+  blockquote {
+    background: #f6f6f6;
+    margin: 1em 0;
+    padding: 20px;
+  }
 }
 
 .medium-editor-insert-plugin .medium-insert-buttons button {
