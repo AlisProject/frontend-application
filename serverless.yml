@@ -33,7 +33,7 @@ package:
     - node_modules/**/*.md
     - node_modules/**/bin/**
   include:
-    - app/static/**
+    - app/static/part.js
     - server/**
     - configs/**
     - nuxt.config.js
