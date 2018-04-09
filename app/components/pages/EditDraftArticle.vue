@@ -20,7 +20,7 @@ export default {
     ...mapGetters('article', ['title', 'body'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticle', 'setIsSaving', 'setIsSaved']),
+    ...mapActions('article', ['putDraftArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
     putArticle: debounce(async function() {
       const article = {
         title: this.title,
@@ -41,14 +41,18 @@ export default {
   },
   watch: {
     title(newTitle, oldTitle) {
-      this.setIsSaved({ isSaved: false })
-      this.setIsSaving({ isSaving: false })
-      this.putArticle()
+      if (this.gotArticleData) {
+        this.setIsSaved({ isSaved: false })
+        this.setIsSaving({ isSaving: false })
+        this.putArticle()
+      }
     },
     body(newBody, oldBody) {
-      this.setIsSaved({ isSaved: false })
-      this.setIsSaving({ isSaving: false })
-      this.putArticle()
+      if (this.gotArticleData) {
+        this.setIsSaved({ isSaved: false })
+        this.setIsSaving({ isSaving: false })
+        this.putArticle()
+      }
     }
   }
 }

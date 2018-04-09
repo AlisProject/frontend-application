@@ -27,7 +27,8 @@ const state = () => ({
   suggestedThumbnails: [],
   thumbnail: '',
   isSaving: false,
-  isSaved: false
+  isSaved: false,
+  gotArticleData: false
 })
 
 const getters = {
@@ -42,7 +43,8 @@ const getters = {
   suggestedThumbnails: (state) => state.suggestedThumbnails,
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
-  isSaved: (state) => state.isSaved
+  isSaved: (state) => state.isSaved,
+  gotArticleData: (state) => state.gotArticleData
 }
 
 const actions = {
@@ -192,6 +194,9 @@ const actions = {
     } catch (error) {
       Promise.reject(error)
     }
+  },
+  setGotArticleData({ commit }, { gotArticleData }) {
+    commit(types.SET_GOT_ARTICLE_DATA, { gotArticleData })
   }
 }
 
@@ -304,6 +309,9 @@ const mutations = {
   },
   [types.SET_IS_SAVED](state, { isSaved }) {
     state.isSaved = isSaved
+  },
+  [types.SET_GOT_ARTICLE_DATA](state, { gotArticleData }) {
+    state.gotArticleData = gotArticleData
   }
 }
 

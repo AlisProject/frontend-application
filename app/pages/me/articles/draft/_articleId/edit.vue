@@ -15,6 +15,7 @@ export default {
     try {
       await this.$store.dispatch('article/getEditDraftArticle', { articleId })
       const { body } = this.$store.state.article
+      this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
       editorBody.dataset.placeholder = body === '' ? 'あなたの物語を教えてください･･･' : ''
