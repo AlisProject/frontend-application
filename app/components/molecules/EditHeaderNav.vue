@@ -81,26 +81,30 @@ export default {
       }
     },
     async publish() {
-      const { articleId } = this
+      const { articleId } = this.articleId === '' ? this.$route.params : this
       const article = {
         title: this.title,
         body: this.body
           .replace(/<p class="medium-insert-active">[\s\S]*/, '')
-          .replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
+          .replace(/<div class="medium-insert-buttons"[\s\S]*/, ''),
+        overview: this.body
+          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
+          .replace('+', '')
+          .replace(/\r?\n/g, '')
       }
-      await this.putDraftArticle({ article, articleId })
-
-      article.eye_catch_url = this.thumbnail
-      article.overview = this.body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '').replace('+', '')
 
       try {
         if (
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
         ) {
+          await this.putDraftArticle({ article, articleId })
+          article.eye_catch_url = this.thumbnail
           await this.publishDraftArticle({ article, articleId })
         } else if (location.href.includes('/me/articles/public')) {
-          await this.publishPublicArticle({ article, articleId })
+          await this.putPublicArticle({ article, articleId })
+          article.eye_catch_url = this.thumbnail
+          await this.republishPublicArticle({ article, articleId })
         }
         this.$router.push(`/user_id/articles/${articleId}`)
       } catch (e) {
@@ -135,9 +139,10 @@ export default {
     ...mapActions('article', [
       'updateThumbnail',
       'publishDraftArticle',
-      'publishPublicArticle',
+      'republishPublicArticle',
       'unpublishPublicArticle',
-      'putDraftArticle'
+      'putDraftArticle',
+      'putPublicArticle'
     ])
   },
   computed: {

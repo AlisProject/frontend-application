@@ -137,8 +137,8 @@ const actions = {
   async publishDraftArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, article)
   },
-  async publishPublicArticle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/public/${articleId}/edit/publish`, article)
+  async republishPublicArticle({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/republish`, article)
   },
   async unpublishPublicArticle({ commit }, { articleId }) {
     await this.$axios.$put(`/me/articles/public/${articleId}/unpublish`)

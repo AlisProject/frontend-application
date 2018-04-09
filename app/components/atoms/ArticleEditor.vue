@@ -115,8 +115,9 @@ export default {
                 base64Image.match(':').index + 1,
                 base64Image.match(';').index
               )
+              const { articleId } = this.articleId === '' ? this.$route.params : this
               const { image_url: imageUrl } = await this.postArticleImage({
-                articleId: this.articleId,
+                articleId,
                 articleImage: base64Hash,
                 imageContentType
               })
