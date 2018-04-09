@@ -31,7 +31,7 @@ export BASE_URL=https://mnz6xxxxxx.execute-api.ap-northeast-1.amazonaws.com/dev
 # Iframely API KEY
 export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
 
-＃ API Gateway name for Nuxt
+# API Gateway name for Nuxt
 export NUXT_API_GATEWAY_NAME=alis-gw-xxxx
 ```
 
