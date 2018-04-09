@@ -10,6 +10,9 @@ export default {
   components: {
     CreateArticle
   },
+  mounted() {
+    this.$el.querySelector('.area-body').dataset.placeholder = 'あなたの物語を教えてください･･･'
+  },
   head
 }
 </script>

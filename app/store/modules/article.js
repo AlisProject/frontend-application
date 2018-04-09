@@ -83,8 +83,12 @@ const actions = {
     commit(types.SET_ARTICLE, { article })
   },
   async getEditDraftArticle({ commit }, { articleId }) {
-    const article = await this.$axios.$get(`/me/articles/drafts/${articleId}`)
-    commit(types.SET_ARTICLE, { article })
+    try {
+      const article = await this.$axios.$get(`/me/articles/${articleId}/drafts`)
+      commit(types.SET_ARTICLE, { article })
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
   async getArticleDetail({ commit }, { articleId }) {
     try {
@@ -99,8 +103,12 @@ const actions = {
     commit(types.SET_ARTICLE_DETAIL, { article })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
-    const article = await this.$axios.$get(`/me/articles/public/${articleId}/edit`)
-    commit(types.SET_ARTICLE, { article })
+    try {
+      const article = await this.$axios.$get(`/me/articles/${articleId}/public/edit`)
+      commit(types.SET_ARTICLE, { article })
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
   async postNewArticle({ commit }, { article }) {
     const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts', article)
@@ -110,7 +118,7 @@ const actions = {
     await this.$axios.$put(`/me/articles/${articleId}/drafts`, article)
   },
   async putPublicArticle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/public/${articleId}/edit`, article)
+    await this.$axios.$put(`/me/articles/${articleId}/public`, article)
   },
   async getLikesCountOfArticle({ commit }, { articleId }) {
     const { likes_count: likesCount } = await this.$axios.$get(`/articles/${articleId}/like`)
@@ -120,8 +128,8 @@ const actions = {
     const articles = await this.$axios.$get('/me/articles/public', { params: { userId } })
     commit(types.SET_PUBLIC_ARTICLES, { articles })
   },
-  async getDraftArticles({ commit }, { userId }) {
-    const articles = await this.$axios.$get('/me/articles/drafts', { params: { userId } })
+  async getDraftArticles({ commit }) {
+    const { Items: articles } = await this.$axios.$get('/me/articles/drafts')
     commit(types.SET_DRAFT_ARTICLES, { articles })
   },
   async publishDraftArticle({ commit }, { article, articleId }) {

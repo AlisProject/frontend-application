@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="logo-original"/>
-    <article-editor :title="title" :body="body" :tags="this.$store.state.article.tags"/>
+    <article-editor :title="title" :tags="this.$store.state.article.tags"/>
   </div>
 </template>
 
@@ -24,7 +24,10 @@ export default {
     putArticle: debounce(async function() {
       const article = {
         title: this.title,
-        body: this.body
+        body:
+          this.body
+            .replace(/<p class="medium-insert-active">[\s\S]*/, '')
+            .replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
       }
       const { articleId } = this.$route.params
       this.setIsSaving({ isSaving: true })

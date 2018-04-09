@@ -10,9 +10,17 @@ export default {
   components: {
     EditPublicArticle
   },
-  async fetch({ store, params }) {
-    const { articleId } = params
-    await store.dispatch('article/getEditPublicArticleDetail', { articleId })
+  async beforeCreate() {
+    const { articleId } = this.$route.params
+    try {
+      await this.$store.dispatch('article/getEditPublicArticleDetail', { articleId })
+      const { body } = this.$store.state.article
+      const editorBody = this.$el.querySelector('.area-body')
+      editorBody.innerHTML = body
+      editorBody.dataset.placeholder = body === '' ? 'あなたの物語を教えてください･･･' : ''
+    } catch (error) {
+      console.error(error)
+    }
   },
   head
 }
