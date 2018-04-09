@@ -1,7 +1,7 @@
 <template>
   <div class="create-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
-    <article-editor :tags="this.$store.state.article.tags"/>
+    <article-editor/>
   </div>
 </template>
 

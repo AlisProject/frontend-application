@@ -8,18 +8,6 @@
       @input="onInputTitle"
       :value="title">
     <div class="area-body" ref="editable" @input="onInputBody"/>
-    <div class="area-tags">
-      <button class="add-tag-button" @click="addEmptyTag">＋</button>
-      <input
-        type="text"
-        class="tag"
-        v-for="tag in tags"
-        :id="tag.id"
-        :key="tag.id"
-        :value="tag.name"
-        @input="onInputTag"
-        placeholder="タグを追加"/>
-    </div>
   </div>
 </template>
 
@@ -30,11 +18,7 @@ import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
   props: {
-    title: String,
-    tags: {
-      type: Array,
-      default: () => []
-    }
+    title: String
   },
   computed: {
     ...mapGetters('article', ['articleId'])
@@ -209,7 +193,6 @@ export default {
 .area-body {
   grid-area: body;
   width: 100%;
-  overflow: scroll;
 }
 
 .medium-editor-placeholder-relative:after,
