@@ -1,27 +1,36 @@
 <template>
-  <div class="new-article-list-container">
+  <div class="new-article-list-container" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav class="new-articles logo-white"/>
-    <article-card-list :articles="articles"/>
+    <article-card-list :articles="newArticles"/>
+    <the-loader :lastEvaluatedKey="newArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleCardList from '../organisms/ArticleCardList'
+import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
     ArticleCardList,
+    TheLoader,
     AppFooter
   },
   computed: {
-    ...mapGetters('article', {
-      articles: 'newArticles'
-    })
+    ...mapGetters('article', ['newArticles', 'newArticlesLastEvaluatedKey'])
+  },
+  methods: {
+    infiniteScroll(event) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+        this.getNewPagesArticles()
+      }
+    },
+    ...mapActions('article', ['getNewPagesArticles'])
   }
 }
 </script>
@@ -34,13 +43,15 @@ export default {
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header       app-header"
-    "...         ...              ...       "
-    "...         article-card-list  ...       "
-    "...         ...              ...       "
-    "app-footer  app-footer       app-footer";
+    "app-header  app-header        app-header"
+    "...         ...               ...       "
+    "...         article-card-list ...       "
+    "...         loader            ...       "
+    "app-footer  app-footer        app-footer";
   grid-template-columns: 1fr 1080px 1fr;
   grid-template-rows: 100px 190px 1fr 75px 75px;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 @media screen and (max-width: 1296px) {

@@ -1,25 +1,36 @@
 <template>
-  <div class="top-container">
+  <div class="top-container" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav class="popular-articles logo-white"/>
     <article-card-list :articles="popularArticles"/>
+    <the-loader :lastEvaluatedKey="popularArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleCardList from '../organisms/ArticleCardList'
+import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
     ArticleCardList,
+    TheLoader,
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['popularArticles'])
+    ...mapGetters('article', ['popularArticles', 'popularArticlesLastEvaluatedKey'])
+  },
+  methods: {
+    infiniteScroll(event) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+        this.getPopularArticles()
+      }
+    },
+    ...mapActions('article', ['getPopularArticles'])
   }
 }
 </script>
