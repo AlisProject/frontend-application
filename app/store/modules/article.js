@@ -136,7 +136,7 @@ const actions = {
     }
   },
   async getPublicArticleDetail({ commit }, { articleId }) {
-    const article = await this.$axios.$get(`/me/articles/public/${articleId}`)
+    const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
     commit(types.SET_ARTICLE_DETAIL, { article })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
@@ -198,7 +198,7 @@ const actions = {
     await this.$axios.$put(`/me/articles/${articleId}/public/republish`, article)
   },
   async unpublishPublicArticle({ commit }, { articleId }) {
-    await this.$axios.$put(`/me/articles/public/${articleId}/unpublish`)
+    await this.$axios.$put(`/me/articles/${articleId}/public/unpublish`)
   },
   updateTitle({ commit }, { title }) {
     commit(types.UPDATE_TITLE, { title })
