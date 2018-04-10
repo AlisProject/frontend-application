@@ -104,7 +104,7 @@ export default {
           article.eye_catch_url = this.thumbnail
           await this.republishPublicArticle({ article, articleId })
         }
-        this.$router.push(`/user_id/articles/${articleId}`)
+        this.$router.push('/me/articles/public')
       } catch (e) {
         console.error(e)
       }
