@@ -91,17 +91,19 @@ export default {
         .slice(0, 100)
       const article = { title: this.title, body, overview }
 
+      if (this.thumbnail !== '') {
+        article.eye_catch_url = this.thumbnail
+      }
+
       try {
         if (
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
         ) {
           await this.putDraftArticle({ article, articleId })
-          article.eye_catch_url = this.thumbnail
           await this.publishDraftArticle({ article, articleId })
         } else if (location.href.includes('/me/articles/public')) {
           await this.putPublicArticle({ article, articleId })
-          article.eye_catch_url = this.thumbnail
           await this.republishPublicArticle({ article, articleId })
         }
         this.$router.push(`/user_id/articles/${articleId}`)
