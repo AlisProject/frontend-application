@@ -13,19 +13,7 @@ export default {
     store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
     store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: true })
 
-    await store.dispatch('article/getAllArticles')
-    const { articles } = store.state.article
-    await store.dispatch('article/getUserInfos', { articles })
-    await store.dispatch('article/getAlisTokens', { articles })
-    const { userInfos, alisTokens } = store.state.article
-    store.dispatch('article/setUserInfoToArticles', {
-      articles,
-      userInfos
-    })
-    store.dispatch('article/setAlisTokenToArticles', {
-      articles,
-      alisTokens
-    })
+    await store.dispatch('article/getPopularArticles')
   }
 }
 </script>

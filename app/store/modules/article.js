@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 import * as types from '../mutation-types'
 
 const namespaced = true
@@ -6,7 +7,7 @@ const state = () => ({
   article: {},
   articleId: '',
   likesCount: 0,
-  articles: [],
+  popularArticles: [],
   newArticles: [],
   userInfo: {},
   userInfos: [],
@@ -33,7 +34,7 @@ const state = () => ({
 
 const getters = {
   article: (state) => state.article,
-  allArticles: (state) => state.articles,
+  popularArticles: (state) => state.popularArticles,
   newArticles: (state) => state.newArticles,
   publicArticles: (state) => state.publicArticles,
   draftArticles: (state) => state.draftArticles,
@@ -48,17 +49,39 @@ const getters = {
 }
 
 const actions = {
-  async getAllArticles({ commit }) {
-    const articles = await this.$axios.$get('/articles/popular')
-    commit(types.SET_ARTICLES, { articles })
+  async getPopularArticles({ commit, dispatch }) {
+    try {
+      const { Items: articles } = await this.$axios.$get('/articles/popular', { params: { limit: 20 } })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
+          article.userInfo = userInfo
+          return article
+        })
+      )
+      commit(types.SET_POPULAR_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
-  async getNewPagesArticles({ commit }) {
-    const { Items: articles } = await this.$axios.$get('/articles/recent', { params: { limit: 20 } })
-    commit(types.SET_NEW_ARTICLES, { articles })
+  async getNewPagesArticles({ commit, dispatch }) {
+    try {
+      const { Items: articles } = await this.$axios.$get('/articles/recent', { params: { limit: 20 } })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
+          article.userInfo = userInfo
+          return article
+        })
+      )
+      commit(types.SET_NEW_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
   async getUserInfo({ commit }, { userId }) {
-    const userInfo = await this.$axios.$get(`/users/${userId}`)
-    commit(types.SET_USER_INFO, { userInfo })
+    const userInfo = await this.$axios.$get(`/users/${userId}/info`)
+    return userInfo
   },
   async getUserInfos({ commit }, { articles }) {
     const userInfos = []
@@ -201,8 +224,8 @@ const actions = {
 }
 
 const mutations = {
-  [types.SET_ARTICLES](state, { articles }) {
-    state.articles = articles
+  [types.SET_POPULAR_ARTICLES](state, { articles }) {
+    state.popularArticles = articles
   },
   [types.SET_NEW_ARTICLES](state, { articles }) {
     state.newArticles = articles
@@ -237,7 +260,7 @@ const mutations = {
         this.newArticles = articles
         break
       default:
-        this.articles = articles
+        this.popularArticles = articles
         break
     }
   },
@@ -265,7 +288,7 @@ const mutations = {
         this.newArticles = articles
         break
       default:
-        this.articles = articles
+        this.popularArticles = articles
         break
     }
   },

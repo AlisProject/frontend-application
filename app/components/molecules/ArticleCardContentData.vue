@@ -1,8 +1,8 @@
 <template>
   <div class="area-data">
-    <!-- <article-card-content-data-profile-icon :user="article.user"/>
-    <article-card-content-data-username :username="article.user.user_display_name"/>
-    <article-card-content-data-created-at :createdAt="article.created_at"/> -->
+    <article-card-content-data-profile-icon :user="article.userInfo"/>
+    <article-card-content-data-username :username="article.userInfo.user_display_name"/>
+    <article-card-content-data-created-at :createdAt="article.created_at"/>
   </div>
 </template>
 
