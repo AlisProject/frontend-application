@@ -1,10 +1,26 @@
 <template>
   <div class="area-article-card-image">
-    <img class="article-image" src='~assets/images/top-story-card-image.png'>
-    <!-- TODO: data属性からCSSに渡す -->
-    <!-- <div class="image" :data-image-url="story.imageUrl"></div> -->
+    <img
+      class="article-image"
+      src="~assets/images/pc/common/thumbnail_noimg.png"
+      v-if="this.eyeCatchUrl === null">
+    <img
+      class="article-image"
+      :src="eyeCatchUrl"
+      v-else>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    eyeCatchUrl: {
+      type: String,
+      required: false
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .area-article-card-image {
