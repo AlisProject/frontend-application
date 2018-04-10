@@ -3,7 +3,10 @@
     <app-header showEditHeaderNav showEditArticleLink class="logo-original"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
-      <img class="area-top-image" src="~assets/images/top-story-card-image.png">
+      <img
+        class="area-top-image"
+        :src="article.eye_catch_url"
+        v-if="article.eye_catch_url !== null">
       <div class="area-content" v-html="article.body" />
     </div>
   </div>
