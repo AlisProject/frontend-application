@@ -106,7 +106,7 @@ export default {
           await this.putPublicArticle({ article, articleId })
           await this.republishPublicArticle({ article, articleId })
         }
-        this.$router.push(`/user_id/articles/${articleId}`)
+        this.$router.push('/me/articles/public')
       } catch (e) {
         console.error(e)
       }
