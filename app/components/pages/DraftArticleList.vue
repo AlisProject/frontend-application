@@ -1,27 +1,36 @@
 <template>
-  <div class="draft-article-list-container long-article-card">
+  <div class="draft-article-list-container long-article-card" @scroll="infiniteScroll">
     <app-header showEditHeaderNav class="drafts logo-original"/>
-    <article-card-list :articles="articles" class="draft" :linkTo="'draft'"/>
+    <article-card-list :articles="draftArticles" class="draft" :linkTo="'draft'"/>
+    <the-loader :lastEvaluatedKey="draftArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleCardList from '../organisms/ArticleCardList'
+import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
     ArticleCardList,
+    TheLoader,
     AppFooter
   },
   computed: {
-    ...mapGetters('article', {
-      articles: 'draftArticles'
-    })
+    ...mapGetters('article', ['draftArticles', 'draftArticlesLastEvaluatedKey'])
+  },
+  methods: {
+    infiniteScroll(event) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+        this.getDraftArticles()
+      }
+    },
+    ...mapActions('article', ['getDraftArticles'])
   }
 }
 </script>
@@ -33,12 +42,14 @@ export default {
   grid-template-columns: 1fr 1080px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header       app-header"
-    "...         ...              ...       "
-    "...         article-card-list  ...       "
-    "...         ...              ...       "
-    "app-footer  app-footer       app-footer";
+    "app-header  app-header        app-header"
+    "...         ...               ...       "
+    "...         article-card-list ...       "
+    "...         loader            ...       "
+    "app-footer  app-footer        app-footer";
   background: #f7f7f7;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 @media screen and (max-width: 1296px) {

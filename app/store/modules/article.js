@@ -29,7 +29,11 @@ const state = () => ({
   thumbnail: '',
   isSaving: false,
   isSaved: false,
-  gotArticleData: false
+  gotArticleData: false,
+  popularArticlesLastEvaluatedKey: {},
+  newArticlesLastEvaluatedKey: {},
+  publicArticlesLastEvaluatedKey: {},
+  draftArticlesLastEvaluatedKey: {}
 })
 
 const getters = {
@@ -45,13 +49,19 @@ const getters = {
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
   isSaved: (state) => state.isSaved,
-  gotArticleData: (state) => state.gotArticleData
+  gotArticleData: (state) => state.gotArticleData,
+  popularArticlesLastEvaluatedKey: (state) => state.popularArticlesLastEvaluatedKey,
+  newArticlesLastEvaluatedKey: (state) => state.newArticlesLastEvaluatedKey,
+  publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
+  draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey
 }
 
 const actions = {
-  async getPopularArticles({ commit, dispatch }) {
+  async getPopularArticles({ commit, dispatch, state }) {
     try {
-      const { Items: articles } = await this.$axios.$get('/articles/popular', { params: { limit: 20 } })
+      const { article_id: articleId, score, evaluated_at: evaluatedAt } = state.popularArticlesLastEvaluatedKey
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/articles/popular', { params: { limit: 10, article_id: articleId, score, evaluated_at: evaluatedAt } })
+      commit(types.SET_POPULAR_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
@@ -64,9 +74,11 @@ const actions = {
       Promise.reject(error)
     }
   },
-  async getNewPagesArticles({ commit, dispatch }) {
+  async getNewPagesArticles({ commit, dispatch, state }) {
     try {
-      const { Items: articles } = await this.$axios.$get('/articles/recent', { params: { limit: 20 } })
+      const { article_id: articleId, sort_key: sortKey } = state.newArticlesLastEvaluatedKey
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/articles/recent', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
+      commit(types.SET_NEW_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
@@ -149,13 +161,35 @@ const actions = {
     const { likes_count: likesCount } = await this.$axios.$get(`/articles/${articleId}/like`)
     commit(types.SET_LIKES_COUNT, { likesCount })
   },
-  async getPublicArticles({ commit }, { userId }) {
-    const articles = await this.$axios.$get('/me/articles/public', { params: { userId } })
-    commit(types.SET_PUBLIC_ARTICLES, { articles })
+  async getPublicArticles({ commit, dispatch, state }) {
+    try {
+      const { article_id: articleId, sort_key: sortKey } = state.publicArticlesLastEvaluatedKey
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/public', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
+      commit(types.SET_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+      const userInfo = await this.$axios.$get('/me/info')
+      const articlesWithData = articles.map((article) => {
+        article.userInfo = userInfo
+        return article
+      })
+      commit(types.SET_PUBLIC_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
-  async getDraftArticles({ commit }) {
-    const { Items: articles } = await this.$axios.$get('/me/articles/drafts')
-    commit(types.SET_DRAFT_ARTICLES, { articles })
+  async getDraftArticles({ commit, dispatch, state }) {
+    try {
+      const { article_id: articleId, sort_key: sortKey } = state.draftArticlesLastEvaluatedKey
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/drafts', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
+      commit(types.SET_DRAFT_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+      const userInfo = await this.$axios.$get('/me/info')
+      const articlesWithData = articles.map((article) => {
+        article.userInfo = userInfo
+        return article
+      })
+      commit(types.SET_DRAFT_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
+    }
   },
   async publishDraftArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, article)
@@ -225,10 +259,10 @@ const actions = {
 
 const mutations = {
   [types.SET_POPULAR_ARTICLES](state, { articles }) {
-    state.popularArticles = articles
+    state.popularArticles.push(...articles)
   },
   [types.SET_NEW_ARTICLES](state, { articles }) {
-    state.newArticles = articles
+    state.newArticles.push(...articles)
   },
   [types.SET_USER_INFO](state, { userInfo }) {
     state.userInfo = userInfo
@@ -303,10 +337,10 @@ const mutations = {
     state.article = article
   },
   [types.SET_PUBLIC_ARTICLES](state, { articles }) {
-    state.publicArticles = articles
+    state.publicArticles.push(...articles)
   },
   [types.SET_DRAFT_ARTICLES](state, { articles }) {
-    state.draftArticles = articles
+    state.draftArticles.push(...articles)
   },
   [types.UPDATE_TITLE](state, { title }) {
     state.title = title
@@ -335,6 +369,18 @@ const mutations = {
   },
   [types.SET_GOT_ARTICLE_DATA](state, { gotArticleData }) {
     state.gotArticleData = gotArticleData
+  },
+  [types.SET_POPULAR_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.popularArticlesLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_NEW_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.newArticlesLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_PUBLIC_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.publicArticlesLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_DRAFT_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.draftArticlesLastEvaluatedKey = lastEvaluatedKey
   }
 }
 

@@ -1,27 +1,36 @@
 <template>
   <div class="public-article-list-container long-article-card">
     <app-header showEditHeaderNav class="public-articles logo-original"/>
-    <article-card-list :articles="articles" :linkTo="'public'"/>
+    <article-card-list :articles="publicArticles" :linkTo="'public'"/>
+    <the-loader :lastEvaluatedKey="publicArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleCardList from '../organisms/ArticleCardList'
+import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
     ArticleCardList,
+    TheLoader,
     AppFooter
   },
   computed: {
-    ...mapGetters('article', {
-      articles: 'publicArticles'
-    })
+    ...mapGetters('article', ['publicArticles', 'publicArticlesLastEvaluatedKey'])
+  },
+  methods: {
+    infiniteScroll(event) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+        this.getPublicArticles()
+      }
+    },
+    ...mapActions('article', ['getPublicArticles'])
   }
 }
 </script>
