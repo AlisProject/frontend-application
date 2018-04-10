@@ -1,7 +1,7 @@
 <template>
   <div class="top-container">
     <app-header showDefaultHeaderNav class="popular-articles logo-white"/>
-    <article-card-list :articles="articles"/>
+    <article-card-list :articles="popularArticles"/>
     <app-footer/>
   </div>
 </template>
@@ -19,9 +19,7 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', {
-      articles: 'allArticles'
-    })
+    ...mapGetters('article', ['popularArticles'])
   }
 }
 </script>
