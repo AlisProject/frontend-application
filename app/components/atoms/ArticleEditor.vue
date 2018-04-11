@@ -32,6 +32,9 @@ export default {
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
   },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+  },
   methods: {
     initMediumEditor() {
       const editorElement = new MediumEditor('.area-body', {
