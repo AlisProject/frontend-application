@@ -1,6 +1,6 @@
 <template>
   <div class="session">
-    <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
+    <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png" alt="search">
     <span class="session-link sign-up" @click="showSignUpModal">Sign up</span>
     /
     <span class="session-link login" @click="showLoginModal">Login</span>
@@ -30,20 +30,21 @@ export default {
 
 <style lang="scss" scoped>
 .session {
-  border-top: 6px solid #4a4a4a;
+  border-top: 6px solid #858dda;
   padding-top: 38px;
   position: fixed;
   right: -49px;
   text-align: right;
   top: 340px;
   transform: rotate(90deg);
-  width: 162px;
+  width: 160px;
 
   .search-icon {
     float: left;
     padding-right: 4px;
     transform: rotate(-90deg);
     width: 16px;
+    cursor: not-allowed;
   }
 
   .session-link {
