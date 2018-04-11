@@ -193,9 +193,9 @@ export default {
     }
 
     &-input {
+      border: none;
       border-bottom: 1px dotted #232538;
       border-radius: 0;
-      border: none;
       font-family: YuGothic;
       margin-bottom: 30px;
       padding: 5px 0;
