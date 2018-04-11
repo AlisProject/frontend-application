@@ -43,11 +43,11 @@ export default {
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header       app-header"
-    "...         ...              ...       "
-    "...         article-card-list  ...       "
-    "...         ...              ...       "
-    "app-footer  app-footer       app-footer";
+    "app-header  app-header        app-header"
+    "...         ...               ...       "
+    "...         article-card-list ...       "
+    "...         loader            ...       "
+    "app-footer  app-footer        app-footer";
   grid-template-columns: 1fr 1080px 1fr;
   grid-template-rows: 100px 190px 1fr 75px 75px;
 }
