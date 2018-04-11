@@ -57,6 +57,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -104,6 +105,7 @@ export default {
       try {
         this.logout()
         this.$router.push('/')
+        this.sendNotification({ text: 'ログアウトしました' })
       } catch (error) {
         console.error(error)
       }
@@ -113,6 +115,9 @@ export default {
       document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', ['logout', 'setProfileSettingsModal', 'setCurrentUserInfo'])
   }
 }

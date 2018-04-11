@@ -22,14 +22,14 @@ import { mapActions } from 'vuex'
 export default {
   methods: {
     closeModal() {
-      this.setReportModal({ showReportModal: false })
+      this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
       document.querySelector('html,body').style.overflow = ''
+      this.$router.push('/me/articles/public')
     },
-    ...mapActions('user', ['setReportModal'])
+    ...mapActions('user', ['setRestrictEditArticleModal'])
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .confirm-text {

@@ -54,6 +54,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -168,10 +169,14 @@ export default {
             showProfileSettingsModal: false
           })
         }
+        this.sendNotification({ text: 'プロフィールを変更しました' })
       } catch (error) {
         console.error(error)
       }
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', [
       'setSignUpAuthFlowProfileSettingsModal',
       'setProfileSettingsUserDisplayName',
