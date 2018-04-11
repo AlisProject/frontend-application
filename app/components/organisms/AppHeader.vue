@@ -21,14 +21,15 @@
     <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>
     <login-modal v-show="this.showLoginModal"/>
     <report-modal v-if="showReportModal"/>
-    <the-alert />
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
+    <toast position="n"/>
   </header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { Toast } from 'vuex-toast'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
@@ -38,7 +39,6 @@ import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
 import ReportModal from '../organisms/ReportModal'
 import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
-import TheAlert from '../atoms/TheAlert'
 import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
 
 export default {
@@ -78,8 +78,8 @@ export default {
     LoginModal,
     ReportModal,
     RestrictEditArticleModal,
-    TheAlert,
-    ProfileSettingsModal
+    ProfileSettingsModal,
+    Toast
   },
   computed: {
     ...mapGetters('user', [
