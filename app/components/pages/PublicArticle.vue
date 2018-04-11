@@ -1,6 +1,6 @@
 <template>
   <div class="article-container">
-    <app-header showEditHeaderNav showEditArticleLink class="logo-original"/>
+    <app-header showEditHeaderNav showEditArticleLink class="public-article logo-original"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
       <img

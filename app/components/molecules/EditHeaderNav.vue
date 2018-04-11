@@ -198,6 +198,7 @@ export default {
   grid-area: public-articles;
 }
 
+.public-article .area-public-articles,
 .public-articles .area-public-articles {
   color: #99a2ff;
   display: block;
@@ -297,6 +298,14 @@ export default {
   }
 }
 
+@media screen and (max-width: 640px) {
+  .area-save-status,
+  .area-new-article,
+  .area-post-article {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 550px) {
   .area-nav {
     grid-gap: 20px;
@@ -308,7 +317,7 @@ export default {
     text-align: left;
   }
 
-  .area-new-article {
+  .public-article .nav-link {
     display: none;
   }
 
