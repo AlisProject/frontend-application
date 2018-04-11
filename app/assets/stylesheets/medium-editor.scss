@@ -71,32 +71,74 @@
 
 .custom-class-h2 {
   background: url('~assets/images/pc/editor/icon_index.png') no-repeat;
-  background-size: 18px;
-  background-position: 16px 14px;
+  background-size: 32px;
+  background-position: 6px 10px;
+
+  &.medium-editor-button-active {
+    background: url('~assets/images/pc/editor/icon_index_selected.png') no-repeat;
+    background-size: 32px;
+    background-position: 6px 10px;
+  }
 }
 
 .custom-class-h3 {
-  background: url('~assets/images/pc/editor/icon_index.png') no-repeat;
-  background-size: 14px;
-  background-position: 14px 18px;
+  background: url('~assets/images/pc/editor/icon_text.png') no-repeat;
+  background-size: 32px;
+  background-position: 3px 10px;
+
+  &.medium-editor-button-active {
+    background: url('~assets/images/pc/editor/icon_text_selected.png') no-repeat;
+    background-size: 32px;
+    background-position: 3px 10px;
+  }
+}
+
+.custom-class-quote {
+  background: url('~assets/images/pc/editor/icon_quote.png') no-repeat;
+  background-size: 32px;
+  background-position: 2px 10px;
+
+  &.medium-editor-button-active {
+    background: url('~assets/images/pc/editor/icon_quote_selected.png') no-repeat;
+    background-size: 32px;
+    background-position: 2px 10px;
+  }
 }
 
 .custom-class-bold {
   background: url('~assets/images/pc/editor/icon_bold.png') no-repeat;
-  background-size: 13px;
-  background-position: 10px;
+  background-size: 32px;
+  background-position: 4px 10px;
+
+  &.medium-editor-button-active {
+    background: url('~assets/images/pc/editor/icon_bold_selected.png') no-repeat;
+    background-size: 32px;
+    background-position: 4px 10px;
+  }
 }
 
 .custom-class-italic {
   background: url('~assets/images/pc/editor/icon_italic.png') no-repeat;
-  background-size: 8px;
-  background-position: 10px;
+  background-size: 32px;
+  background-position: 4px 10px;
+
+  &.medium-editor-button-active {
+    background: url('~assets/images/pc/editor/icon_italic_selected.png') no-repeat;
+    background-size: 32px;
+    background-position: 4px 10px;
+  }
 }
 
 .medium-editor-action-anchor {
   background: url('~assets/images/pc/editor/icon_textlink.png') no-repeat;
-  background-size: 18px;
-  background-position: 6px 16px;
+  background-size: 32px;
+  background-position: 2px 10px;
+
+  &.medium-editor-button-active {
+    background: url('~assets/images/pc/editor/icon_textlink_selected.png') no-repeat;
+    background-size: 32px;
+    background-position: 2px 10px;
+  }
 
   b {
     display: none;
@@ -114,7 +156,7 @@
 }
 
 .medium-editor-toolbar li .medium-editor-button-active {
-  color: #000;
+  background-color: #858DDA;
 }
 
 .medium-editor-toolbar-form {
