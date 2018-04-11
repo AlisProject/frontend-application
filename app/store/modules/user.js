@@ -87,8 +87,6 @@ const state = () => ({
     }
   },
   showReportModal: false,
-  alertText: '',
-  showAlert: false,
   currentUserInfo: {},
   showRestrictEditArticleModal: false
 })
@@ -104,8 +102,6 @@ const getters = {
   showLoginModal: (state) => state.showLoginModal,
   loginModal: (state) => state.loginModal,
   showReportModal: (state) => state.showReportModal,
-  alertText: (state) => state.alertText,
-  showAlert: (state) => state.showAlert,
   showProfileSettingsModal: (state) => state.showProfileSettingsModal,
   profileSettingsModal: (state) => state.profileSettingsModal,
   currentUserInfo: (state) => state.currentUserInfo,
@@ -220,12 +216,6 @@ const actions = {
   },
   setReportModal({ commit }, { showReportModal }) {
     commit(types.SET_REPORT_MODAL, { showReportModal })
-  },
-  setAlertText({ commit }, { alertText }) {
-    commit(types.SET_ALERT_TEXT, { alertText })
-  },
-  setAlert({ commit }, { showAlert }) {
-    commit(types.SET_ALERT, { showAlert })
   },
   async register({ commit }, { userId, email, password }) {
     try {
@@ -463,12 +453,6 @@ const mutations = {
   },
   [types.SET_REPORT_MODAL](state, { showReportModal }) {
     state.showReportModal = showReportModal
-  },
-  [types.SET_ALERT_TEXT](state, { alertText }) {
-    state.alertText = alertText
-  },
-  [types.SET_ALERT](state, { showAlert }) {
-    state.showAlert = showAlert
   },
   [types.SET_CURRENT_USER](state, { user }) {
     state.currentUser = user

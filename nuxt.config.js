@@ -52,7 +52,7 @@ module.exports = {
     },
     vendor: ['axios']
   },
-  css: ['~assets/stylesheets/medium-editor.scss'],
+  css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
     REGION: process.env.REGION,

@@ -7074,6 +7074,10 @@ vuelidate@^0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/vuelidate/-/vuelidate-0.6.2.tgz#b417f5367407b047a2548119b25db56fe2bd5753"
 
+vuex-toast@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/vuex-toast/-/vuex-toast-0.1.3.tgz#b3d4c9b9a88f5f8fef960c0aef8dddc0aa031cde"
+
 vuex@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
