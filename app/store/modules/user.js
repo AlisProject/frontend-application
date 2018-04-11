@@ -89,7 +89,8 @@ const state = () => ({
   showReportModal: false,
   alertText: '',
   showAlert: false,
-  currentUserInfo: {}
+  currentUserInfo: {},
+  showRestrictEditArticleModal: false
 })
 
 const getters = {
@@ -107,7 +108,8 @@ const getters = {
   showAlert: (state) => state.showAlert,
   showProfileSettingsModal: (state) => state.showProfileSettingsModal,
   profileSettingsModal: (state) => state.profileSettingsModal,
-  currentUserInfo: (state) => state.currentUserInfo
+  currentUserInfo: (state) => state.currentUserInfo,
+  showRestrictEditArticleModal: (state) => state.showRestrictEditArticleModal
 }
 
 const actions = {
@@ -343,6 +345,9 @@ const actions = {
     } catch (error) {
       Promise.rejecet(error)
     }
+  },
+  setRestrictEditArticleModal({ commit }, { showRestrictEditArticleModal }) {
+    commit(types.SET_RESTRICT_EDIT_ARTICLE_MODAL, { showRestrictEditArticleModal })
   }
 }
 
@@ -478,6 +483,9 @@ const mutations = {
   },
   [types.SET_CURRENT_USER_INFO](state, { currentUserInfo }) {
     state.currentUserInfo = currentUserInfo
+  },
+  [types.SET_RESTRICT_EDIT_ARTICLE_MODAL](state, { showRestrictEditArticleModal }) {
+    state.showRestrictEditArticleModal = showRestrictEditArticleModal
   }
 }
 

@@ -80,4 +80,10 @@ export default {
     "...         editor     ...       "
     "...         ...        ...       ";
 }
+
+@media screen and (max-width: 640px) {
+  .create-article-container {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
 </style>
