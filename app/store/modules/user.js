@@ -333,7 +333,7 @@ const actions = {
       const result = await this.$axios.$get('/me/info')
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo: result })
     } catch (error) {
-      Promise.rejecet(error)
+      Promise.reject(error)
     }
   },
   setRestrictEditArticleModal({ commit }, { showRestrictEditArticleModal }) {
