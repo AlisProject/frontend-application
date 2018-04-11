@@ -23,7 +23,7 @@
     <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
-    <toast position="n"></toast>
+    <toast position="n"/>
   </header>
 </template>
 

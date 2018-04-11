@@ -5,8 +5,8 @@
 }
 
 .toast-position-n {
-  top: 100px;
   left: 10vw;
+  top: 100px;
 }
 
 .toast-type-info{
@@ -14,36 +14,36 @@
 }
 
 .toast-message {
-  position: relative;
   box-sizing: border-box;
+  color: #fff;
   margin-bottom: 10px;
   padding: 10px 15px;
-  width: 100%;
-  color: #fff;
-  transition: 400ms cubic-bezier(0.17, 0.67, 0.17, 0.98);
+  position: relative;
   transition-property: opacity, transform;
+  transition: 400ms cubic-bezier(0.17, 0.67, 0.17, 0.98);
+  width: 100%;
 }
 
 .toast-button {
-  position: absolute;
-  top: 0;
-  right: 5px;
   background-color: white;
+  border-radius: 50%;
   border-width: 0;
-  font-size: 1.5em;
   color: #858DDA;
   cursor: pointer;
-  width: 20px;
+  font-size: 1.5em;
   height: 20px;
   margin: 10px;
-  border-radius: 50%;
+  position: absolute;
+  right: 5px;
+  top: 0;
+  width: 20px;
 
   &:before {
     content: '✕';
-    position: absolute;
     font-size: 16px;
-    top: 1px;
+    position: absolute;
     right: 3.5px;
+    top: 1px;
   }
 }
 
@@ -65,7 +65,7 @@
   }
 
   .toast-position-n {
-    top: 100px;
     left: 0;
+    top: 100px;
   }
 }
