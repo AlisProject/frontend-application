@@ -27,7 +27,7 @@ export default {
   mounted() {
     this.initMediumEditor()
     window.addEventListener('resize', this.handleResize)
-    if (window.innerWidth < 640) {
+    if (window.innerWidth <= 640) {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
@@ -154,7 +154,7 @@ export default {
       this.updateTag({ id, name })
     },
     handleResize() {
-      if (window.innerWidth < 640) {
+      if (window.innerWidth <= 640) {
         if (!this.showRestrictEditArticleModal) {
           document.querySelector('html,body').style.overflow = 'hidden'
           this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
