@@ -52,6 +52,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -112,10 +113,14 @@ export default {
         await this.setCurrentUserInfo()
         this.setLoginModal({ showLoginModal: false })
         document.querySelector('html,body').style.overflow = ''
+        this.sendNotification({ text: 'ログインしました' })
       } catch (error) {
         this.errorMessage = error.message
       }
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', [
       'login',
       'setLoginModal',

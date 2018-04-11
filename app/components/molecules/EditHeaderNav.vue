@@ -38,6 +38,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -107,6 +108,7 @@ export default {
           await this.republishPublicArticle({ article, articleId })
         }
         this.$router.push('/me/articles/public')
+        this.sendNotification({ text: '記事を公開しました' })
       } catch (e) {
         console.error(e)
       }
@@ -136,6 +138,9 @@ export default {
         }
       })
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', [
       'updateThumbnail',
       'publishDraftArticle',
