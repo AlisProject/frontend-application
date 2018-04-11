@@ -1,9 +1,9 @@
 <template>
-  <div class="area-data">
+  <nuxt-link :to="`/users/${article.userInfo.user_id}`" class="area-data">
     <article-card-content-data-profile-icon :user="article.userInfo"/>
     <article-card-content-data-username :username="article.userInfo.user_display_name"/>
     <article-card-content-data-created-at :createdAt="article.created_at"/>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -39,6 +39,7 @@ export default {
   grid-template-columns: 40px 100px;
   grid-template-rows: 20px 20px;
   line-height: 18px;
+  text-decoration: none;
 
   > * {
     margin: 0;

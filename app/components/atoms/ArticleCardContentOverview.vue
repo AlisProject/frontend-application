@@ -1,12 +1,25 @@
 <template>
   <p class="area-overview">
-    {{ overview }}
+    <a :href="link" v-if="linkTo === 'public' || linkTo === 'draft'">
+      {{ overview }}
+    </a>
+    <nuxt-link :to="link" v-else>
+      {{ overview }}
+    </nuxt-link>
   </p>
 </template>
 
 <script>
 export default {
   props: {
+    link: {
+      type: String,
+      required: true
+    },
+    linkTo: {
+      type: String,
+      required: false
+    },
     overview: {
       type: String,
       required: false
@@ -28,6 +41,12 @@ export default {
   overflow: hidden;
   text-align: justify;
   text-overflow: ellipsis;
+
+  a {
+    color: #7f7f7f;
+    display: block;
+    text-decoration: none;
+  }
 }
 
 .long-article-card {

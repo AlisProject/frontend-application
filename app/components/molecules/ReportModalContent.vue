@@ -14,12 +14,12 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   methods: {
     report() {
-      this.setAlertText({ alertText: '通報しました' })
-      this.setAlert({ showAlert: true })
+      this.sendNotification({ text: '通報しました' })
       this.setReportModal({ showReportModal: false })
       document.querySelector('html,body').style.overflow = ''
     },
@@ -27,6 +27,9 @@ export default {
       this.setReportModal({ showReportModal: false })
       document.querySelector('html,body').style.overflow = ''
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', ['setReportModal', 'setAlert', 'setAlertText'])
   }
 }
