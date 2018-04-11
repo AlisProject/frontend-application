@@ -109,6 +109,7 @@ export default {
       const { userIdOrEmail, password } = this.loginModal.formData
       try {
         await this.login({ userId: userIdOrEmail, password })
+        await this.setCurrentUserInfo()
         this.setLoginModal({ showLoginModal: false })
         document.querySelector('html,body').style.overflow = ''
       } catch (error) {
@@ -121,7 +122,8 @@ export default {
       'setLoginUserIdOrEmail',
       'setLoginPassword',
       'showLoginError',
-      'hideLoginError'
+      'hideLoginError',
+      'setCurrentUserInfo'
     ])
   }
 }

@@ -88,7 +88,8 @@ const state = () => ({
   },
   showReportModal: false,
   alertText: '',
-  showAlert: false
+  showAlert: false,
+  currentUserInfo: {}
 })
 
 const getters = {
@@ -105,7 +106,8 @@ const getters = {
   alertText: (state) => state.alertText,
   showAlert: (state) => state.showAlert,
   showProfileSettingsModal: (state) => state.showProfileSettingsModal,
-  profileSettingsModal: (state) => state.profileSettingsModal
+  profileSettingsModal: (state) => state.profileSettingsModal,
+  currentUserInfo: (state) => state.currentUserInfo
 }
 
 const actions = {
@@ -318,16 +320,29 @@ const actions = {
     await this.$axios.$put('/me/info', { user_display_name: userDisplayName, self_introduction: selfIntroduction })
   },
   async postUserIcon({ commit }, { iconImage, imageContentType }) {
-    const config = {
-      headers: { 'content-type': imageContentType }
+    try {
+      const config = {
+        headers: { 'content-type': imageContentType }
+      }
+      const result = await this.$axios.$post('/me/info/icon', { icon_image: iconImage }, config)
+      return result
+    } catch (error) {
+      Promise.reject(error)
     }
-    await this.$axios.$post('/me/info/icon', { icon_image: iconImage }, config)
   },
   setProfileSettingsModal({ commit }, { showProfileSettingsModal }) {
     commit(types.SET_PROFILE_SETTINGS_MODAL, { showProfileSettingsModal })
   },
   hideProfileSettingsErrors({ commit }) {
     commit(types.HIDE_PROFILE_SETTINGS_ERRORS)
+  },
+  async setCurrentUserInfo({ commit }) {
+    try {
+      const result = await this.$axios.$get('/me/info')
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo: result })
+    } catch (error) {
+      Promise.rejecet(error)
+    }
   }
 }
 
@@ -460,6 +475,9 @@ const mutations = {
     Object.keys(formError).forEach(key => {
       formError[key] = false
     })
+  },
+  [types.SET_CURRENT_USER_INFO](state, { currentUserInfo }) {
+    state.currentUserInfo = currentUserInfo
   }
 }
 
