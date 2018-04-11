@@ -190,6 +190,7 @@ export default {
 
     &-input {
       border: none;
+      border-radius: 0;
       border-bottom: 1px dotted #232538;
       margin-bottom: 40px;
       padding: 5px 0;
