@@ -43,7 +43,8 @@ export default {
       'showSignUpAuthFlowModal',
       'showLoginModal',
       'showReportModal',
-      'showProfileSettingsModal'
+      'showProfileSettingsModal',
+      'showRestrictEditArticleModal'
     ])
   },
   methods: {
@@ -63,6 +64,10 @@ export default {
       if (this.showProfileSettingsModal) {
         this.setProfileSettingsModal({ showProfileSettingsModal: false })
       }
+      if (this.showRestrictEditArticleModal) {
+        this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
+        this.$router.push('/me/articles/public')
+      }
       this.$emit('close')
       document.body.scrollTop = 0
       document.querySelector('html,body').style.overflow = ''
@@ -72,7 +77,8 @@ export default {
       'setSignUpAuthFlowModal',
       'setLoginModal',
       'setReportModal',
-      'setProfileSettingsModal'
+      'setProfileSettingsModal',
+      'setRestrictEditArticleModal'
     ])
   }
 }

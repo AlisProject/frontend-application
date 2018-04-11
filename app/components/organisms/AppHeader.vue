@@ -5,10 +5,12 @@
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
       :showOnlySessionLinks="showOnlySessionLinks"/>
-    <edit-header-nav
-      v-if="showEditHeaderNav"
-      :showPostArticleLink="showPostArticleLink"
-      :showEditArticleLink="showEditArticleLink"/>
+    <no-ssr>
+      <edit-header-nav
+        v-if="showEditHeaderNav"
+        :showPostArticleLink="showPostArticleLink"
+        :showEditArticleLink="showEditArticleLink"/>
+    </no-ssr>
     <template v-if="!showOnlyLogo">
       <no-ssr>
         <header-session-links v-if="!loggedIn"/>
@@ -21,6 +23,7 @@
     <report-modal v-if="showReportModal"/>
     <the-alert />
     <profile-settings-modal v-if="showProfileSettingsModal"/>
+    <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
   </header>
 </template>
 
@@ -34,6 +37,7 @@ import SignUpModal from '../organisms/SignUpModal'
 import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
 import ReportModal from '../organisms/ReportModal'
+import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
 import TheAlert from '../atoms/TheAlert'
 import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
 
@@ -73,6 +77,7 @@ export default {
     SignUpAuthFlowModal,
     LoginModal,
     ReportModal,
+    RestrictEditArticleModal,
     TheAlert,
     ProfileSettingsModal
   },
@@ -83,7 +88,8 @@ export default {
       'showSignUpAuthFlowModal',
       'showLoginModal',
       'showReportModal',
-      'showProfileSettingsModal'
+      'showProfileSettingsModal',
+      'showRestrictEditArticleModal'
     ])
   }
 }

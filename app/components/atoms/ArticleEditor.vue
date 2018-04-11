@@ -21,10 +21,16 @@ export default {
     title: String
   },
   computed: {
-    ...mapGetters('article', ['articleId'])
+    ...mapGetters('article', ['articleId']),
+    ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
     this.initMediumEditor()
+    window.addEventListener('resize', this.handleResize)
+    if (window.innerWidth < 640) {
+      document.querySelector('html,body').style.overflow = 'hidden'
+      this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
+    }
   },
   methods: {
     initMediumEditor() {
@@ -144,14 +150,28 @@ export default {
       const { id, value: name } = target
       this.updateTag({ id, name })
     },
+    handleResize() {
+      if (window.innerWidth < 640) {
+        if (!this.showRestrictEditArticleModal) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+          this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
+        }
+      } else {
+        if (this.showRestrictEditArticleModal) {
+          this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
+        }
+      }
+    },
     ...mapActions('article', [
       'updateTitle',
       'updateBody',
       'addTag',
       'updateTag',
       'updateSuggestedThumbnails',
-      'postArticleImage'
-    ])
+      'postArticleImage',
+      'setRestrictEditArticleModal'
+    ]),
+    ...mapActions('user', ['setRestrictEditArticleModal'])
   }
 }
 </script>
@@ -237,6 +257,13 @@ export default {
 
   &:focus {
     outline: 0;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .area-editor-container {
+    grid-template-columns: 1fr;
+    display: none;
   }
 }
 </style>
