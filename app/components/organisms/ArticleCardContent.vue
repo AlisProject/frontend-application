@@ -1,8 +1,8 @@
 <template>
   <div class="area-article-card-content">
-    <article-card-content-title :title="article.title" />
+    <article-card-content-title :link="link" :linkTo="linkTo" :title="article.title" />
+    <article-card-content-overview :link="link" :linkTo="linkTo" :overview="article.overview"/>
     <!-- <article-card-content-bookmark/> -->
-    <article-card-content-overview :overview="article.overview"/>
     <article-card-content-data :article="article"/>
     <article-card-content-token-amount :tokenAmount="article.alisToken"/>
   </div>
@@ -17,6 +17,14 @@ import ArticleCardContentTokenAmount from '../atoms/ArticleCardContentTokenAmoun
 
 export default {
   props: {
+    link: {
+      type: String,
+      required: true
+    },
+    linkTo: {
+      type: String,
+      required: false
+    },
     article: {
       type: Object,
       required: true
