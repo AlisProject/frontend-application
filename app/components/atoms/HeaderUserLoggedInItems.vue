@@ -1,11 +1,27 @@
 <template>
   <div class="logged-in">
-    <img class="profile-icon" src="~assets/images/profile-icon1.png" @click="toggleMenu">
+    <img
+      class="profile-icon"
+      :src="currentUserInfo.icon_image_url"
+      @click="toggleMenu"
+      v-if="currentUserInfo.icon_image_url !== undefined">
+    <img
+      class="profile-icon"
+      src="~assets/images/pc/common/icon_user_noimg.png"
+      @click="toggleMenu"
+      v-else>
     <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
     <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
     <div class="menu" v-show="isMenuShown">
       <div class="image-box">
-        <img src="~assets/images/top-story-card-image.png" class="profile-image">
+        <img
+          :src="currentUserInfo.icon_image_url"
+          class="profile-image"
+          v-if="currentUserInfo.icon_image_url !== undefined">
+        <img
+          src="~assets/images/pc/common/icon_user_noimg.png"
+          class="profile-image"
+          v-else>
       </div>
       <div class="token-amount">
         <p class="alis-hold-amount">ALIS保有数</p>
@@ -40,7 +56,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -49,6 +65,7 @@ export default {
     }
   },
   mounted() {
+    this.setCurrentUserInfo()
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeMenu()
@@ -61,6 +78,9 @@ export default {
         eventRemover.remove()
       })
     }
+  },
+  computed: {
+    ...mapGetters('user', ['currentUserInfo'])
   },
   methods: {
     toggleMenu() {
@@ -93,7 +113,7 @@ export default {
       document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
     },
-    ...mapActions('user', ['logout', 'setProfileSettingsModal'])
+    ...mapActions('user', ['logout', 'setProfileSettingsModal', 'setCurrentUserInfo'])
   }
 }
 </script>

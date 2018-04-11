@@ -3,7 +3,14 @@
     <div class="modal-body">
       <form class="signup-form" @submit.prevent>
         <div class="upload-img-section">
-          <img class="upload-img" v-if="uploadedImage" :src="uploadedImage" />
+          <img
+            class="upload-img"
+            v-if="currentUserInfo.icon_image_url !== undefined"
+            :src="currentUserInfo.icon_image_url" />
+          <img
+            class="upload-img"
+            v-else-if="uploadedImage"
+            :src="uploadedImage" />
           <div class="upload-img-dammy" v-else />
           <label class="upload-btn">
             <img class="btn-pic" src="~/assets/images/pc/common/btn_pic.png" alt="upload">
@@ -29,6 +36,7 @@
             type="text"
             placeholder="自己紹介を入力してください"
             maxlength="100"
+            v-model="selfIntroduction"
             @input="setSelfIntroduction"
             @blur="showError('selfIntroduction')"
             @focus="resetError('selfIntroduction')"/>
@@ -51,14 +59,18 @@ export default {
   data() {
     return {
       userDisplayName: '',
+      selfIntroduction: '',
       uploadedImage: ''
     }
   },
   created() {
-    this.userDisplayName = this.currentUser.userId
+    this.userDisplayName = this.currentUserInfo.user_display_name || this.currentUser.userId
+    this.selfIntroduction = this.currentUserInfo.self_introduction
     this.setProfileSettingsUserDisplayName({
       userDisplayName: this.currentUser.userId
     })
+    const selfIntroduction = this.currentUserInfo.self_introduction || ''
+    this.setProfileSettingsSelfIntroduction({ selfIntroduction })
   },
   computed: {
     invalidSubmit() {
@@ -80,7 +92,8 @@ export default {
       'currentUser',
       'signUpAuthFlowModal',
       'showSignUpAuthFlowModal',
-      'profileSettingsModal'
+      'profileSettingsModal',
+      'currentUserInfo'
     ])
   },
   validations: {
@@ -112,6 +125,7 @@ export default {
             base64Image.match(';').index
           )
           await this.postUserIcon({ iconImage: base64Hash, imageContentType })
+          await this.setCurrentUserInfo()
           this.uploadedImage = base64Image
         } catch (error) {
           console.error(error)
@@ -139,6 +153,7 @@ export default {
       const formattedSelfIntroduction = selfIntroduction.replace(/\r?\n/g, '')
       try {
         await this.putUserInfo({ userDisplayName, selfIntroduction: formattedSelfIntroduction })
+        await this.setCurrentUserInfo()
 
         document.querySelector('html,body').style.overflow = ''
         if (this.showSignUpAuthFlowModal) {
@@ -166,7 +181,8 @@ export default {
       'setSignUpAuthFlowModal',
       'setProfileSettingsModal',
       'putUserInfo',
-      'postUserIcon'
+      'postUserIcon',
+      'setCurrentUserInfo'
     ])
   }
 }
