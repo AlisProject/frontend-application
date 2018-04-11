@@ -1,16 +1,10 @@
 <template>
-  <section>
-    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'public' || linkTo === 'draft'">
-      <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
-      <article-card-content :article="article"/>
-    </a>
-    <nuxt-link :to="`${getLink}`" class="article-card-container" v-else>
-      <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
-      <!-- TODO: data属性からCSSに渡す -->
-      <!-- <div class="image" :data-image-url="article.imageUrl"></div> -->
-      <article-card-content :article="article"/>
-    </nuxt-link>
-  </section>
+  <div>
+    <section class="article-card-container">
+      <article-card-image :link="getLink" :linkTo="linkTo" :eyeCatchUrl="article.eye_catch_url"/>
+      <article-card-content :link="getLink" :linkTo="linkTo" :article="article"/>
+    </section>
+  </div>
 </template>
 
 <script>

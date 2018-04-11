@@ -1,12 +1,25 @@
 <template>
   <h2 class="area-title">
-    {{ title }}
+    <a :href="link" v-if="linkTo === 'public' || linkTo === 'draft'">
+      {{ title }}
+    </a>
+    <nuxt-link :to="link" v-else>
+      {{ title }}
+    </nuxt-link>
   </h2>
 </template>
 
 <script>
 export default {
   props: {
+    link: {
+      type: String,
+      required: true
+    },
+    linkTo: {
+      type: String,
+      required: false
+    },
     title: {
       type: String,
       required: false
@@ -29,6 +42,12 @@ export default {
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  a {
+    color: #3f3f3f;
+    display: block;
+    text-decoration: none;
+  }
 }
 
 .long-article-card {
