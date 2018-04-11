@@ -16,6 +16,7 @@ export default class CognitoSDK {
 
     return new Promise((resolve, reject) => {
       if (!this.cognitoUser) {
+        reject(new Error('There is not cognito User'))
         return
       }
 
