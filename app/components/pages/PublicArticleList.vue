@@ -42,11 +42,11 @@ export default {
   grid-template-columns: 1fr 1080px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header       app-header"
-    "...         ...              ...       "
-    "...         article-card-list  ...       "
-    "...         ...              ...       "
-    "app-footer  app-footer       app-footer";
+    "app-header  app-header        app-header"
+    "...         ...               ...       "
+    "...         article-card-list ...       "
+    "...         loader            ...       "
+    "app-footer  app-footer        app-footer";
   background: #f7f7f7;
 }
 

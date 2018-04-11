@@ -45,6 +45,13 @@ export default {
               contentDefault: '',
               classList: ['custom-class-h3']
             },
+            {
+              name: 'quote',
+              action: 'append-blockquote',
+              tagNames: ['quote'],
+              contentDefault: '',
+              classList: ['custom-class-quote']
+            },
             'quote',
             {
               name: 'bold',

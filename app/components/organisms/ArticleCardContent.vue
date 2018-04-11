@@ -1,7 +1,7 @@
 <template>
   <div class="area-article-card-content">
     <article-card-content-title :title="article.title" />
-    <article-card-content-bookmark/>
+    <!-- <article-card-content-bookmark/> -->
     <article-card-content-overview :overview="article.overview"/>
     <article-card-content-data :article="article"/>
     <article-card-content-token-amount :tokenAmount="article.alisToken"/>
@@ -10,7 +10,7 @@
 
 <script>
 import ArticleCardContentTitle from '../atoms/ArticleCardContentTitle'
-import ArticleCardContentBookmark from '../atoms/ArticleCardContentBookmark'
+// import ArticleCardContentBookmark from '../atoms/ArticleCardContentBookmark'
 import ArticleCardContentOverview from '../atoms/ArticleCardContentOverview'
 import ArticleCardContentData from '../molecules/ArticleCardContentData'
 import ArticleCardContentTokenAmount from '../atoms/ArticleCardContentTokenAmount'
@@ -25,7 +25,7 @@ export default {
   components: {
     ArticleCardContentTitle,
     ArticleCardContentOverview,
-    ArticleCardContentBookmark,
+    // ArticleCardContentBookmark,
     ArticleCardContentData,
     ArticleCardContentTokenAmount
   }

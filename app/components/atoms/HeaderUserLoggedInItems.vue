@@ -10,8 +10,8 @@
       src="~assets/images/pc/common/icon_user_noimg.png"
       @click="toggleMenu"
       v-else>
-    <img class="notification-icon" src="~assets/images/pc/common/icon_bell.png">
-    <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
+    <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
+    <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
     <div class="menu" v-show="isMenuShown">
       <div class="image-box">
         <img
@@ -120,35 +120,37 @@ export default {
 
 <style lang="scss" scoped>
 .logged-in {
-  border-top: 6px solid #4a4a4a;
-  padding-top: 30px;
+  border-top: 6px solid #858dda;
+  padding-top: 10px;
   position: fixed;
-  right: -18px;
+  right: -28.5px;
   top: 340px;
   transform: rotate(90deg);
-  width: 102px;
+  width: 134px;
 
   .profile-icon {
     border-radius: 50%;
     cursor: pointer;
     float: left;
-    height: 30px;
+    height: 60px;
     transform: rotate(-90deg);
-    width: 30px;
+    width: 60px;
   }
 
   .notification-icon {
     float: left;
-    margin: 5px 10px 0 15px;
+    margin: 20px 10px 0 16px;
     transform: rotate(-90deg);
     width: 16px;
+    cursor: not-allowed;
   }
 
   .search-icon {
     float: left;
-    margin: 5px 10px 0 5px;
+    margin: 20px 10px 0 5px;
     transform: rotate(-90deg);
     width: 16px;
+    cursor: not-allowed;
   }
 }
 
@@ -161,7 +163,7 @@ export default {
   padding: 24px 41px;
   position: absolute;
   right: 42px;
-  top: -80px;
+  top: -66px;
   transform: rotate(-90deg);
   width: 240px;
 
@@ -179,7 +181,7 @@ export default {
     border-right: 0px solid transparent;
     border-top: 20px solid transparent;
     margin: -20px -20px 0 0;
-    top: 368px;
+    top: 348px;
   }
 
   .image-box {
@@ -288,7 +290,7 @@ export default {
 
       .search-icon {
         float: right;
-        margin: 5px 22px 0 0;
+        margin: 4px 22px 0 0;
         transform: rotate(0);
       }
     }

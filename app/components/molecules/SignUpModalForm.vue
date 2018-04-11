@@ -185,8 +185,9 @@ export default {
     }
 
     &-input {
-      border: none;
       border-bottom: 1px dotted #232538;
+      border-radius: 0;
+      border: none;
       margin-bottom: 40px;
       padding: 5px 0;
       width: 100%;
