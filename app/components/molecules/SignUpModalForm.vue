@@ -62,12 +62,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, email } from 'vuelidate/lib/validators'
 
 function userId(value) {
-  return Boolean(
-    value.match(/^[a-z\d\\-]{3,30}$/i) &&
-      !value.match(/^-/) &&
-      !value.match(/-$/) &&
-      !value.match(/--/)
-  )
+  return Boolean(value.match(/^(?!.*--)[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]$/))
 }
 
 export default {
