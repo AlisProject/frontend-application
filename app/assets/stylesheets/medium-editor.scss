@@ -28,6 +28,21 @@
     background: #f6f6f6;
     margin: 1em 0;
     padding: 20px;
+    word-break: break-all;
+  }
+
+  figure {
+
+    figcaption {
+      color: #ccc;
+      display: block;
+      font-size: .8em;
+      font-style: italic;
+      margin: 10px 0;
+      outline: 0 solid transparent;
+      text-align: center;
+      word-break: break-all;
+    }
   }
 }
 
