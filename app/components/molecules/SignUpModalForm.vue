@@ -12,7 +12,7 @@
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')">
-          <p class="error-message" v-if="showErrorUserIdMinLength">ユーザーIDは４文字以上の英数字で入力してください</p>
+          <p class="error-message" v-if="showErrorUserIdMinLength">ユーザーIDは3文字以上の英数字で入力してください</p>
         </div>
         <div class="signup-form-group" :class="{ 'error': hasEmailError }">
           <label class="signup-form-label">メールアドレス</label>
@@ -93,7 +93,7 @@ export default {
       formData: {
         userId: {
           required,
-          minLength: minLength(4)
+          minLength: minLength(3)
         },
         email: {
           required,
