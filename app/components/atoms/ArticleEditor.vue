@@ -130,7 +130,7 @@ export default {
         })
       )
       const thumbnails = images
-        .filter((img) => img.dataset.uploaded === 'true')
+        .filter((img) => img.dataset.uploaded === 'true' || img.src.includes(process.env.DOMAIN))
         .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
       const body = document.querySelector('.area-body').innerHTML
