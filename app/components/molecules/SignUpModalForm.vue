@@ -12,7 +12,8 @@
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')">
-          <p class="error-message" v-if="showErrorUserIdMinLength">ユーザーIDは3文字以上の英数字で入力してください</p>
+          <p class="error-message" v-if="showErrorUserId">ユーザーIDは半角英数字と-（ハイフン）のみご利用下さい</p>
+          <p class="error-message" v-if="showErrorUserIdMinLength && !showErrorUserId">ユーザーIDは3文字以上の英数字で入力してください</p>
         </div>
         <div class="signup-form-group" :class="{ 'error': hasEmailError }">
           <label class="signup-form-label">メールアドレス</label>
@@ -58,6 +59,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, email } from 'vuelidate/lib/validators'
 
+function userId(value) {
+  return Boolean(
+    value.match(/[0-9a-zA-Z\\-]+/) && !value.match(/^-/) && !value.match(/-$/) && !value.match(/--/)
+  )
+}
+
 export default {
   data() {
     return {
@@ -67,6 +74,9 @@ export default {
   computed: {
     showErrorUserIdMinLength() {
       return this.signUpModal.formError.userId && !this.$v.signUpModal.formData.userId.minLength
+    },
+    showErrorUserId() {
+      return this.signUpModal.formError.userId && !this.$v.signUpModal.formData.userId.userId
     },
     showErrorInvalidEmail() {
       return this.signUpModal.formError.email && !this.$v.signUpModal.formData.email.email
@@ -93,7 +103,8 @@ export default {
       formData: {
         userId: {
           required,
-          minLength: minLength(3)
+          minLength: minLength(3),
+          userId
         },
         email: {
           required,
