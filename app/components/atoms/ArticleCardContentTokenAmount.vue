@@ -1,5 +1,5 @@
 <template>
-  <p class="token-amount">{{ formattedTokenAmount }}</p>
+  <p class="token-amount" :class="{ nonDisplay: tokenAmount === undefined }">{{ formattedTokenAmount }}</p>
 </template>
 
 <script>
@@ -28,6 +28,10 @@ export default {
   padding: 0 0 0 22px;
   position: absolute;
   right: 24px;
+
+  &.nonDisplay {
+    background: none;
+  }
 }
 
 .long-article-card {
