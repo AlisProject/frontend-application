@@ -61,7 +61,7 @@ import { required, minLength, email } from 'vuelidate/lib/validators'
 
 function userId(value) {
   return Boolean(
-    value.match(/[0-9a-zA-Z\\-]+/) && !value.match(/^-/) && !value.match(/-$/) && !value.match(/--/)
+    value.match(/^[a-z\d]$/i) && !value.match(/^-/) && !value.match(/-$/) && !value.match(/--/)
   )
 }
 
