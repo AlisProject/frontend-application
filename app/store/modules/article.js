@@ -65,8 +65,8 @@ const actions = {
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-          article.userInfo = userInfo
-          return article
+          const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+          return { ...article, userInfo, alisToken }
         })
       )
       commit(types.SET_POPULAR_ARTICLES, { articles: articlesWithData })
@@ -82,8 +82,8 @@ const actions = {
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-          article.userInfo = userInfo
-          return article
+          const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+          return { ...article, userInfo, alisToken }
         })
       )
       commit(types.SET_NEW_ARTICLES, { articles: articlesWithData })
@@ -95,6 +95,10 @@ const actions = {
     const userInfo = await this.$axios.$get(`/users/${userId}/info`)
     return userInfo
   },
+  async getAlisToken({ commit }, { articleId }) {
+    const { alis_token: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
+    return alisToken
+  },
   async getUserInfos({ commit }, { articles }) {
     const userInfos = []
     for (let i = 0; i < articles.length; i++) {
@@ -102,10 +106,6 @@ const actions = {
       userInfos.push(await this.$axios.$get(`/users/${userId}`))
     }
     commit(types.SET_USER_INFOS, { userInfos })
-  },
-  async getAlisToken({ commit }, { articleId }) {
-    const { alistoken: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
-    commit(types.SET_ALIS_TOKEN, { alisToken })
   },
   async getAlisTokens({ commit }, { articles }) {
     const alisTokens = []
@@ -167,10 +167,12 @@ const actions = {
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/public', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
       commit(types.SET_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
       const userInfo = await this.$axios.$get('/me/info')
-      const articlesWithData = articles.map((article) => {
-        article.userInfo = userInfo
-        return article
-      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+          return { ...article, userInfo, alisToken }
+        })
+      )
       commit(types.SET_PUBLIC_ARTICLES, { articles: articlesWithData })
     } catch (error) {
       Promise.reject(error)
@@ -183,8 +185,7 @@ const actions = {
       commit(types.SET_DRAFT_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
       const userInfo = await this.$axios.$get('/me/info')
       const articlesWithData = articles.map((article) => {
-        article.userInfo = userInfo
-        return article
+        return { ...article, userInfo }
       })
       commit(types.SET_DRAFT_ARTICLES, { articles: articlesWithData })
     } catch (error) {
