@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
 
@@ -88,7 +89,10 @@ const state = () => ({
   },
   showReportModal: false,
   currentUserInfo: {},
-  showRestrictEditArticleModal: false
+  showRestrictEditArticleModal: false,
+  userInfo: {},
+  userArticles: [],
+  userArticlesLastEvaluatedKey: {}
 })
 
 const getters = {
@@ -105,7 +109,10 @@ const getters = {
   showProfileSettingsModal: (state) => state.showProfileSettingsModal,
   profileSettingsModal: (state) => state.profileSettingsModal,
   currentUserInfo: (state) => state.currentUserInfo,
-  showRestrictEditArticleModal: (state) => state.showRestrictEditArticleModal
+  showRestrictEditArticleModal: (state) => state.showRestrictEditArticleModal,
+  userInfo: (state) => state.userInfo,
+  userArticles: (state) => state.userArticles,
+  userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey
 }
 
 const actions = {
@@ -338,6 +345,36 @@ const actions = {
   },
   setRestrictEditArticleModal({ commit }, { showRestrictEditArticleModal }) {
     commit(types.SET_RESTRICT_EDIT_ARTICLE_MODAL, { showRestrictEditArticleModal })
+  },
+  async setUserInfo({ commit }, { userId }) {
+    try {
+      const result = await this.$axios.$get(`/users/${userId}/info`)
+      commit(types.SET_USER_INFO, { userInfo: result })
+    } catch (error) {
+      Promise.reject(error)
+    }
+  },
+  async getUserArticles({ commit, dispatch, state }) {
+    try {
+      const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
+      const { userInfo } = state
+      const {
+        Items: articles, LastEvaluatedKey
+      } = await this.$axios.$get(
+        `/users/${userInfo.user_id}/articles/public`,
+        { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+      )
+      commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const { alis_token: alisToken } = await this.$axios.$get(`/articles/${article.article_id}/alistoken`)
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_USER_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
+    }
   }
 }
 
@@ -470,6 +507,15 @@ const mutations = {
   },
   [types.SET_RESTRICT_EDIT_ARTICLE_MODAL](state, { showRestrictEditArticleModal }) {
     state.showRestrictEditArticleModal = showRestrictEditArticleModal
+  },
+  [types.SET_USER_INFO](state, { userInfo }) {
+    state.userInfo = userInfo
+  },
+  [types.SET_USER_ARTICLES](state, { articles }) {
+    state.userArticles.push(...articles)
+  },
+  [types.SET_USER_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.userArticlesLastEvaluatedKey = lastEvaluatedKey
   }
 }
 

@@ -15,7 +15,7 @@ import moment from 'moment'
 export default {
   props: {
     createdAt: {
-      type: String,
+      type: Number,
       required: true
     },
     tokenAmount: {
