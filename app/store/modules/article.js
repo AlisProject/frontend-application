@@ -9,10 +9,6 @@ const state = () => ({
   likesCount: 0,
   popularArticles: [],
   newArticles: [],
-  userInfo: {},
-  userInfos: [],
-  alisToken: 0,
-  alisTokens: [],
   publicArticles: [],
   draftArticles: [],
   title: '',
@@ -98,22 +94,6 @@ const actions = {
   async getAlisToken({ commit }, { articleId }) {
     const { alis_token: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
     return alisToken
-  },
-  async getUserInfos({ commit }, { articles }) {
-    const userInfos = []
-    for (let i = 0; i < articles.length; i++) {
-      const { user_id: userId } = articles[i]
-      userInfos.push(await this.$axios.$get(`/users/${userId}`))
-    }
-    commit(types.SET_USER_INFOS, { userInfos })
-  },
-  async getAlisTokens({ commit }, { articles }) {
-    const alisTokens = []
-    for (let i = 0; i < articles.length; i++) {
-      const { article_id: articleId } = articles[i]
-      alisTokens.push(await this.$axios.$get(`/articles/${articleId}/alistoken`))
-    }
-    commit(types.SET_ALIS_TOKENS, { alisTokens })
   },
   async getEditArticle({ commit }, { articleId }) {
     const article = await this.$axios.$get(`/articles/${articleId}`)
@@ -219,20 +199,8 @@ const actions = {
   updateThumbnail({ commit }, { thumbnail }) {
     commit(types.UPDATE_THUMBNAIL, { thumbnail })
   },
-  setUserInfoToArticle({ commit }, { userInfo }) {
-    commit(types.SET_USER_INFO_TO_ARTICLE, { userInfo })
-  },
   setLikesCountToArticle({ commit }, { likesCount }) {
     commit(types.SET_LIKES_COUNT_TO_ARTICLE, { likesCount })
-  },
-  setAlisTokenToArticle({ commit }, { alisToken }) {
-    commit(types.SET_ALIS_TOKEN_TO_ARTICLE, { alisToken })
-  },
-  setUserInfoToArticles({ commit }, { articles, userInfos, type }) {
-    commit(types.SET_USER_INFO_TO_ARTICLES, { articles, userInfos, type })
-  },
-  setAlisTokenToArticles({ commit }, { articles, alisTokens, type }) {
-    commit(types.SET_ALIS_TOKEN_TO_ARTICLES, { articles, alisTokens, type })
   },
   setIsSaving({ commit }, { isSaving }) {
     commit(types.SET_IS_SAVING, { isSaving })
@@ -265,67 +233,11 @@ const mutations = {
   [types.SET_NEW_ARTICLES](state, { articles }) {
     state.newArticles.push(...articles)
   },
-  [types.SET_USER_INFO](state, { userInfo }) {
-    state.userInfo = userInfo
-  },
-  [types.SET_USER_INFOS](state, { userInfos }) {
-    state.userInfos = userInfos
-  },
-  [types.SET_USER_INFO_TO_ARTICLE](state, { userInfo }) {
-    state.article.user = userInfo
-  },
   [types.SET_LIKES_COUNT](state, { likesCount }) {
     state.likesCount = likesCount
   },
   [types.SET_LIKES_COUNT_TO_ARTICLE](state, { likesCount }) {
     state.article.likesCount = likesCount
-  },
-  [types.SET_USER_INFO_TO_ARTICLES](state, { articles, userInfos, type = 'default' }) {
-    for (let i = 0; i < articles.length; i++) {
-      articles[i].user = userInfos[i]
-    }
-    switch (type) {
-      case 'public':
-        this.publicArticles = articles
-        break
-      case 'draft':
-        this.draftArticles = articles
-        break
-      case 'new':
-        this.newArticles = articles
-        break
-      default:
-        this.popularArticles = articles
-        break
-    }
-  },
-  [types.SET_ALIS_TOKEN](state, { alisToken }) {
-    state.alisToken = alisToken
-  },
-  [types.SET_ALIS_TOKEN_TO_ARTICLE](state, { alisToken }) {
-    state.article.alisToken = alisToken
-  },
-  [types.SET_ALIS_TOKENS](state, { alisTokens }) {
-    state.alisTokens = alisTokens
-  },
-  [types.SET_ALIS_TOKEN_TO_ARTICLES](state, { articles, alisTokens, type = 'default' }) {
-    for (let i = 0; i < articles.length; i++) {
-      articles[i].alisToken = alisTokens[i].alistoken
-    }
-    switch (type) {
-      case 'public':
-        this.publicArticles = articles
-        break
-      case 'draft':
-        this.draftArticles = articles
-        break
-      case 'new':
-        this.newArticles = articles
-        break
-      default:
-        this.popularArticles = articles
-        break
-    }
   },
   [types.SET_ARTICLE](state, { article }) {
     state.title = article.title
