@@ -13,8 +13,8 @@
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')">
-          <p class="error-message" v-if="showErrorUserId">ユーザーIDは半角英数字と-（ハイフン）のみご利用下さい</p>
-          <p class="error-message" v-if="showErrorUserIdMinLength && !showErrorUserId">ユーザーIDは3文字以上の英数字で入力してください</p>
+          <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">ユーザーIDは半角英数字と-（ハイフン）のみご利用下さい</p>
+          <p class="error-message" v-if="showErrorUserIdMinLength && showErrorUserId">ユーザーIDは3文字以上の英数字で入力してください</p>
         </div>
         <div class="signup-form-group" :class="{ 'error': hasEmailError }">
           <label class="signup-form-label">メールアドレス</label>
@@ -63,7 +63,7 @@ import { required, minLength, email } from 'vuelidate/lib/validators'
 
 function userId(value) {
   return Boolean(
-    value.match(/^[a-z\d]{3,30}$/i) &&
+    value.match(/^[a-z\d\\-]{3,30}$/i) &&
       !value.match(/^-/) &&
       !value.match(/-$/) &&
       !value.match(/--/)
