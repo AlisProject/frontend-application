@@ -8,6 +8,7 @@
             class="signup-form-input"
             type="text"
             placeholder="半角英数字3文字以上"
+            maxlength="30"
             autofocus
             @input="setUserId"
             @blur="showError('userId')"
@@ -21,6 +22,7 @@
             class="signup-form-input"
             type="email"
             placeholder="alis@example.com"
+            maxlength="256"
             @input="setEmail"
             @blur="showError('email')"
             @focus="resetError('email')">
@@ -61,7 +63,10 @@ import { required, minLength, email } from 'vuelidate/lib/validators'
 
 function userId(value) {
   return Boolean(
-    value.match(/^[a-z\d]$/i) && !value.match(/^-/) && !value.match(/-$/) && !value.match(/--/)
+    value.match(/^[a-z\d]{3,30}$/i) &&
+      !value.match(/^-/) &&
+      !value.match(/-$/) &&
+      !value.match(/--/)
   )
 }
 
