@@ -6,10 +6,15 @@
 import moment from 'moment'
 
 export default {
-  props: ['createdAt'],
+  props: {
+    createdAt: {
+      type: String,
+      required: true
+    }
+  },
   computed: {
     formettedCreatedAt() {
-      return moment(this.created_at)
+      return moment(this.createdAt, 'X')
         .locale('ja')
         .format('L')
     }

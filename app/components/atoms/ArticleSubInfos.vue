@@ -4,12 +4,14 @@
       公開日：<span class="created-at">{{ createdAt }}</span>
     </div>
     <div class="article-sub-info">
-      獲得トークン：<span class="token-amount">{{ tokenAmount }}</span>
+      獲得トークン：<span class="token-amount">{{ formettedCreatedAt }}</span>
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   props: {
     createdAt: {
@@ -19,6 +21,13 @@ export default {
     tokenAmount: {
       type: String,
       required: true
+    }
+  },
+  computed: {
+    formettedCreatedAt() {
+      return moment(this.createdAt, 'X')
+        .locale('ja')
+        .format('L')
     }
   }
 }
