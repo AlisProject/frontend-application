@@ -1,22 +1,26 @@
 <template>
   <div class="area-user-info-container">
     <div class="area-profile-icon">
-      <img class="profile-icon" src="~/assets/images/profile-icon1.png" alt="profile-icon">
+      <img
+        class="profile-icon"
+        alt="profile-icon"
+        :src="user.icon_image_url"
+        v-if="user.icon_image_url">
       <div class="profile-edit" />
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
-        {{ user.userDisplayName }}
+        {{ user.user_display_name }}
       </p>
     </div>
     <div class="area-user-id">
       <p class="user-id">
-        @{{ user.userId }}
+        @{{ user.user_id }}
       </p>
     </div>
     <div class="area-self-introduction">
       <p class="self-introduction">
-        {{ user.selfIntroduction }}
+        {{ user.self_introduction }}
       </p>
     </div>
   </div>
@@ -95,6 +99,7 @@ export default {
     font-size: 14px;
     line-height: 22px;
     text-align: left;
+    word-wrap: break-word;
   }
 }
 

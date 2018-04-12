@@ -1,22 +1,25 @@
 <template>
-  <div class="user-article-list-container long-article-card">
+  <div class="user-article-list-container long-article-card" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles logo-white"/>
-    <user-article-list-user-info :user="user" />
+    <no-ssr>
+      <user-article-list-user-info :user="userInfo" />
+    </no-ssr>
     <nav class="area-user-profile-nav">
       <ul class="user-profile-nav-ul">
         <li class="user-profile-nav-item">記事一覧</li>
       </ul>
     </nav>
-    <article-card-list :articles="articles"/>
+    <article-card-list :articles="userArticles"/>
     <app-footer/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import UserArticleListUserInfo from '../atoms/UserArticleListUserInfo'
 import ArticleCardList from '../organisms/ArticleCardList'
+import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
@@ -24,20 +27,19 @@ export default {
     AppHeader,
     UserArticleListUserInfo,
     ArticleCardList,
+    TheLoader,
     AppFooter
   },
   computed: {
-    user() {
-      return {
-        userDisplayName: '山田太郎',
-        userId: 'yamadaman',
-        selfIntroduction:
-          'ほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげ'
+    ...mapGetters('user', ['userInfo', 'userArticles', 'userArticlesLastEvaluatedKey'])
+  },
+  methods: {
+    infiniteScroll(event) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+        this.getUserArticles()
       }
     },
-    ...mapGetters('article', {
-      articles: 'newArticles'
-    })
+    ...mapActions('user', ['getUserArticles'])
   }
 }
 </script>
@@ -55,8 +57,10 @@ export default {
     "app-header  app-header        app-header"
     "...         user-info         ...       "
     "...         article-card-list ...       "
-    "...         ...               ...       "
+    "...         loader            ...       "
     "app-footer  app-footer        app-footer";
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .area-user-profile-nav {
@@ -84,12 +88,12 @@ export default {
     grid-row-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:
-    "app-header  app-header        app-header"
-    "user-info   user-info         user-info "
-    "user-profile-nav user-profile-nav user-profile-nav"
-    "...         article-card-list ...       "
-    "...         ...               ...       "
-    "app-footer  app-footer        app-footer";
+    "app-header       app-header        app-header"
+    "user-info        user-info         user-info "
+    "user-profile-nav user-profile-nav  user-profile-nav"
+    "...              article-card-list ...       "
+    "...              ...               ...       "
+    "app-footer       app-footer        app-footer";
   }
 
   .area-user-profile-nav {
