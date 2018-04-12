@@ -34,23 +34,11 @@
         <li class="menu-link">
           <nuxt-link to="/me/articles/public">マイストーリー</nuxt-link>
         </li>
-        <li class="menu-link">
-          <nuxt-link to="#">ブックマーク</nuxt-link>
-        </li>
-        <li class="menu-link">
-          <nuxt-link to="#">ウォレット</nuxt-link>
-        </li>
-        <li class="menu-link">
-          <nuxt-link to="#">友達を招待</nuxt-link>
-        </li>
-        <li class="menu-link">
-          <nuxt-link to="#">ALISの使い方</nuxt-link>
-        </li>
         <li class="menu-link" @click="showProfileSettingsModal">
-          設定
+          ユーザー設定
         </li>
       </ul>
-      <span class="logout" @click="logoutUser">アカウント切り替え</span>
+      <span class="logout" @click="logoutUser">ログアウト</span>
     </div>
   </div>
 </template>
@@ -167,8 +155,7 @@ export default {
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
   padding: 24px 41px;
   position: absolute;
-  right: 42px;
-  top: -66px;
+  right: 108px;
   transform: rotate(-90deg);
   width: 240px;
 
@@ -186,7 +173,7 @@ export default {
     border-right: 0px solid transparent;
     border-top: 20px solid transparent;
     margin: -20px -20px 0 0;
-    top: 348px;
+    top: 340px;
   }
 
   .image-box {
