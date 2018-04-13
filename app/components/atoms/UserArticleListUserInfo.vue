@@ -5,7 +5,12 @@
         class="profile-icon"
         alt="profile-icon"
         :src="user.icon_image_url"
-        v-if="user.icon_image_url">
+        v-if="user.icon_image_url !== undefined">
+      <img
+        class="profile-icon"
+        alt="profile-icon"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        v-else>
       <no-ssr>
         <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
       </no-ssr>
