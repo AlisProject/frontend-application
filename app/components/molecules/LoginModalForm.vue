@@ -114,6 +114,7 @@ export default {
         this.setLoginModal({ showLoginModal: false })
         document.querySelector('html,body').style.overflow = ''
         this.sendNotification({ text: 'ログインしました' })
+        this.resetPassword()
       } catch (error) {
         this.errorMessage = error.message
       }
@@ -128,7 +129,8 @@ export default {
       'setLoginPassword',
       'showLoginError',
       'hideLoginError',
-      'setCurrentUserInfo'
+      'setCurrentUserInfo',
+      'resetPassword'
     ])
   }
 }
