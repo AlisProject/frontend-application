@@ -350,8 +350,9 @@ const actions = {
     try {
       const result = await this.$axios.$get(`/users/${userId}/info`)
       commit(types.SET_USER_INFO, { userInfo: result })
+      return result
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   },
   async getUserArticles({ commit, dispatch, state }, { userId }) {
