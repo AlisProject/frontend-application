@@ -14,6 +14,11 @@ export default {
     store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: true })
 
     await store.dispatch('article/getPopularArticles')
+  },
+  mounted() {
+    if (window.innerWidth <= 550) {
+      document.querySelector('html,body').style.overflow = ''
+    }
   }
 }
 </script>
