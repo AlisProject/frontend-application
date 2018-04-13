@@ -48,6 +48,7 @@ export default {
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
   background: #f7f7f7;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media screen and (max-width: 1296px) {
