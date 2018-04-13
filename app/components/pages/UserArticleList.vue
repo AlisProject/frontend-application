@@ -1,9 +1,7 @@
 <template>
   <div class="user-article-list-container long-article-card" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles logo-white"/>
-    <no-ssr>
-      <user-article-list-user-info :user="userInfo" />
-    </no-ssr>
+    <user-article-list-user-info :user="userInfo" />
     <nav class="area-user-profile-nav">
       <ul class="user-profile-nav-ul">
         <li class="user-profile-nav-item">記事一覧</li>
@@ -36,7 +34,7 @@ export default {
   methods: {
     infiniteScroll(event) {
       if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
-        this.getUserArticles()
+        this.getUserArticles({ userId: this.$route.params.userId })
       }
     },
     ...mapActions('user', ['getUserArticles'])

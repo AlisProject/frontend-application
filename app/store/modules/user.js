@@ -354,9 +354,10 @@ const actions = {
       Promise.reject(error)
     }
   },
-  async getUserArticles({ commit, dispatch, state }) {
+  async getUserArticles({ commit, dispatch, state }, { userId }) {
     try {
       const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
+      await dispatch('setUserInfo', { userId })
       const { userInfo } = state
       const {
         Items: articles, LastEvaluatedKey
@@ -375,6 +376,12 @@ const actions = {
     } catch (error) {
       Promise.reject(error)
     }
+  },
+  resetUserArticles({ commit }) {
+    commit(types.RESET_USER_ARTICLES)
+  },
+  resetUserArticlesLastEvaluatedKey({ commit }) {
+    commit(types.RESET_USER_ARTICLES_LAST_EVALUATED_KEY)
   }
 }
 
@@ -516,6 +523,12 @@ const mutations = {
   },
   [types.SET_USER_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
     state.userArticlesLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.RESET_USER_ARTICLES](state) {
+    state.userArticles = []
+  },
+  [types.RESET_USER_ARTICLES_LAST_EVALUATED_KEY](state) {
+    state.userArticlesLastEvaluatedKey = {}
   }
 }
 
