@@ -383,6 +383,9 @@ const actions = {
   },
   resetUserArticlesLastEvaluatedKey({ commit }) {
     commit(types.RESET_USER_ARTICLES_LAST_EVALUATED_KEY)
+  },
+  resetPassword({ commit }) {
+    commit(types.RESET_PASSWORD)
   }
 }
 
@@ -530,6 +533,11 @@ const mutations = {
   },
   [types.RESET_USER_ARTICLES_LAST_EVALUATED_KEY](state) {
     state.userArticlesLastEvaluatedKey = {}
+  },
+  [types.RESET_PASSWORD](state) {
+    state.signUpModal.formData.password = ''
+    state.signUpAuthFlowModal.login.formData.password = ''
+    state.loginModal.formData.password = ''
   }
 }
 

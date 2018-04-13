@@ -52,6 +52,7 @@ export default {
   grid-template-rows: 100px 190px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media screen and (max-width: 1296px) {

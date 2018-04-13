@@ -145,6 +145,7 @@ export default {
       try {
         await this.register({ userId, email, password })
         this.setSentMail({ sentMail: true })
+        this.resetPassword()
       } catch (error) {
         this.errorMessage = error.message
       }
@@ -158,7 +159,8 @@ export default {
       'hideSignUpError',
       'register',
       'setSignUpModal',
-      'setLoginModal'
+      'setLoginModal',
+      'resetPassword'
     ])
   }
 }

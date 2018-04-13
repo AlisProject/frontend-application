@@ -127,6 +127,7 @@ export default {
         this.setSignUpAuthFlowInputPhoneNumberModal({
           isSignUpAuthFlowInputPhoneNumberModal: true
         })
+        this.resetPassword()
       } catch (error) {
         this.errorMessage = error.message
       }
@@ -138,7 +139,8 @@ export default {
       'showSignUpAuthFlowLoginError',
       'hideSignUpAuthFlowLoginError',
       'setSignUpAuthFlowInputPhoneNumberModal',
-      'signUpLogin'
+      'signUpLogin',
+      'resetPassword'
     ])
   }
 }

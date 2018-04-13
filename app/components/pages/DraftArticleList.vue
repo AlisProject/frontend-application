@@ -50,6 +50,7 @@ export default {
   background: #f7f7f7;
   height: 100vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 @media screen and (max-width: 1296px) {
