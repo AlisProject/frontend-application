@@ -4,7 +4,7 @@
     <nuxt-link to="#" class="link">利用規約</nuxt-link>
     <nuxt-link to="#" class="link">プライバシーポリシー</nuxt-link>
     <nuxt-link to="#" class="link">ヘルプ</nuxt-link>
-    <nuxt-link to="#" class="link">運営会社</nuxt-link>
+    <a href="https://alismedia.jp/ja/" class="link" target="_blank">運営会社</a>
   </footer>
 </template>
 

@@ -51,7 +51,7 @@
         登録する
       </button>
       <p class="for-login-user">
-        ログインされる方は<nuxt-link to="#">こちら</nuxt-link>
+        ログインされる方は<span class="link" @click="transitToLogin">こちら</span>
       </p>
     </div>
   </div>
@@ -135,6 +135,10 @@ export default {
       this.$v.signUpModal.formData[type].$reset()
       this.hideSignUpError({ type })
     },
+    transitToLogin() {
+      this.setSignUpModal({ showSignUpModal: false })
+      this.setLoginModal({ showLoginModal: true })
+    },
     async onSubmit() {
       if (this.invalidSubmit) return
       const { userId, email, password } = this.signUpModal.formData
@@ -154,6 +158,8 @@ export default {
       'showSignUpError',
       'hideSignUpError',
       'register',
+      'setSignUpModal',
+      'setLoginModal',
       'resetPassword'
     ])
   }
@@ -161,6 +167,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin default-link {
+  border-bottom: solid 1px transparent;
+  color: #858dda;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 400ms ease;
+
+  &:hover {
+    border-bottom: solid 1px #858dda;
+  }
+}
+
 @mixin default-text {
   height: 14px;
   color: #6e6e6e;
@@ -288,6 +306,10 @@ export default {
   .for-login-user {
     @include default-text();
     text-align: right;
+  }
+
+  .link {
+    @include default-link();
   }
 }
 
