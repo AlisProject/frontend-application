@@ -66,7 +66,7 @@ export default {
   },
   created() {
     this.userDisplayName = this.currentUserInfo.user_display_name || this.currentUser.userId
-    this.selfIntroduction = this.currentUserInfo.self_introduction
+    this.selfIntroduction = this.currentUserInfo.self_introduction || ''
     this.setProfileSettingsUserDisplayName({
       userDisplayName: this.currentUser.userId
     })
@@ -170,6 +170,7 @@ export default {
           })
         }
         this.sendNotification({ text: 'プロフィールを変更しました' })
+        document.querySelector('.area-user-info-container').style.zIndex = 2
       } catch (error) {
         console.error(error)
       }

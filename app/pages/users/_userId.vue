@@ -9,10 +9,13 @@ export default {
   components: {
     UserArticleList
   },
-  async beforeCreate() {
-    const { userId } = this.$route.params
-    await this.$store.dispatch('user/setUserInfo', { userId })
-    await this.$store.dispatch('user/getUserArticles')
+  async fetch({ store, params }) {
+    await store.dispatch('user/setUserInfo', { userId: params.userId })
+    await store.dispatch('user/getUserArticles', { userId: params.userId })
+  },
+  beforeDestroy() {
+    this.$store.dispatch('user/resetUserArticles')
+    this.$store.dispatch('user/resetUserArticlesLastEvaluatedKey')
   }
 }
 </script>

@@ -6,7 +6,9 @@
         alt="profile-icon"
         :src="user.icon_image_url"
         v-if="user.icon_image_url">
-      <div class="profile-edit" />
+      <no-ssr>
+        <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
+      </no-ssr>
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
@@ -27,12 +29,29 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   props: {
     user: {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    isCurrentUser() {
+      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
+    },
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
+  },
+  methods: {
+    showProfileSettingsModal() {
+      this.setProfileSettingsModal({ showProfileSettingsModal: true })
+      document.documentElement.scrollTop = 0
+      document.querySelector('html,body').style.overflow = 'hidden'
+      document.querySelector('.area-user-info-container').style.zIndex = 1
+    },
+    ...mapActions('user', ['setProfileSettingsModal'])
   }
 }
 </script>
