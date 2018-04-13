@@ -11,6 +11,7 @@ export default {
       if (result === 'SUCCESS') location.href = '/signup-login'
     } catch (error) {
       console.error(error)
+      location.href = '/signup-login'
       if (error.code === 'NotAuthorizedException') {
         location.href = '/login'
       }
