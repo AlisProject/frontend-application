@@ -70,6 +70,7 @@ export default {
         this.$router.push('/me/articles/public')
       }
       this.$emit('close')
+      this.resetPassword()
       document.body.scrollTop = 0
       document.querySelector('html,body').style.overflow = ''
     },
@@ -79,7 +80,8 @@ export default {
       'setLoginModal',
       'setReportModal',
       'setProfileSettingsModal',
-      'setRestrictEditArticleModal'
+      'setRestrictEditArticleModal',
+      'resetPassword'
     ])
   }
 }
