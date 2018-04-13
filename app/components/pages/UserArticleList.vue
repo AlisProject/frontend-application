@@ -59,6 +59,7 @@ export default {
     "app-footer  app-footer        app-footer";
   height: 100vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .area-user-profile-nav {
