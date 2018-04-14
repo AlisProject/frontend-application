@@ -26,7 +26,8 @@ module.exports = {
     '~/plugins/vuelidate'
   ],
   axios: {
-    baseURL: process.env.BASE_URL
+    baseURL: process.env.BASE_URL,
+    proxyHeaders: false
   },
   srcDir: 'app',
   router: {
