@@ -130,7 +130,19 @@ export default {
         })
         this.resetPassword()
       } catch (error) {
-        this.errorMessage = error.message
+        let errorMessage = ''
+        switch (error.code) {
+          case 'NotAuthorizedException':
+            errorMessage = 'ユーザーIDまたはメールアドレスかパスワードが間違えています'
+            break
+          case 'UserNotFoundException':
+            errorMessage = 'ユーザーが存在しません'
+            break
+          default:
+            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            break
+        }
+        this.errorMessage = errorMessage
       }
     },
     ...mapActions('user', [

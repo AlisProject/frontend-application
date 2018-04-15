@@ -148,7 +148,16 @@ export default {
         this.setSentMail({ sentMail: true })
         this.resetPassword()
       } catch (error) {
-        this.errorMessage = error.message
+        let errorMessage = ''
+        switch (error.code) {
+          case 'UsernameExistsException':
+            errorMessage = 'ユーザーIDはすでに存在します'
+            break
+          default:
+            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            break
+        }
+        this.errorMessage = errorMessage
       }
     },
     ...mapActions('user', [
