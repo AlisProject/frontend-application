@@ -25,7 +25,7 @@
   text-decoration: none;
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 640px) {
   .area-app-footer-container {
     align-items: flex-start;
     flex-flow: column nowrap;
