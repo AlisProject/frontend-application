@@ -36,9 +36,11 @@ export default {
         this.closeSharePopup()
       }
     })
-    this.$el.querySelector('.share-twitter').href = `https://twitter.com/intent/tweet?url=${
+    this.$el.querySelector(
+      '.share-twitter'
+    ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       location.href
-    }&text=${document.title}`
+    )}&text=${encodeURIComponent(document.title)}`
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -99,7 +101,9 @@ export default {
       font-size: 14px;
       left: 25px;
       position: absolute;
+      text-align: center;
       top: -22px;
+      width: 30px;
     }
   }
 
@@ -131,6 +135,7 @@ export default {
         cursor: pointer;
         color: #585858;
         text-decoration: none;
+        user-select: none;
       }
     }
   }
