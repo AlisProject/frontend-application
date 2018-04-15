@@ -121,7 +121,16 @@ export default {
         this.sendNotification({ text: 'ログインしました' })
         this.resetPassword()
       } catch (error) {
-        this.errorMessage = error.message
+        let errorMessage = ''
+        switch (error.code) {
+          case 'NotAuthorizedException':
+            errorMessage = 'ユーザーIDまたはメールアドレス、パスワードを間違えています'
+            break
+          default:
+            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            break
+        }
+        this.errorMessage = errorMessage
       }
     },
     ...mapActions({

@@ -116,7 +116,13 @@ export default {
           isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
         })
       } catch (error) {
-        this.errorMessage = error.message
+        let errorMessage = ''
+        switch (error.code) {
+          default:
+            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            break
+        }
+        this.errorMessage = errorMessage
       }
     },
     backToInputPhoneNumber() {
