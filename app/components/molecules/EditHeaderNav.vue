@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="area-post-article" v-show="showPostArticleLink">
-      <span class="nav-link post-article" @click="togglePopup">
+      <span class="nav-link post-article" :class="{ disable: !isSaving }" @click="togglePopup">
         公開する
       </span>
       <div v-show="isPopupShown" class="popup">
@@ -114,6 +114,7 @@ export default {
       }
     },
     togglePopup() {
+      if (!this.isSaving) return
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -232,6 +233,10 @@ export default {
     cursor: pointer;
     user-select: none;
     display: inline-block;
+
+    &.disable {
+      cursor: not-allowed;
+    }
   }
 
   .unpublish-article {
