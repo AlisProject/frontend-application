@@ -43,7 +43,7 @@
         ログインする
       </button>
       <p class="for-signup-user">
-        新規登録される方は<nuxt-link to="#">こちら</nuxt-link>
+        新規登録をされる方は<span class="link" @click="transitToSignup">こちら</span>
       </p>
       <p class="for-password-forgot-user">
         パスワードを忘れた方は<span class="link" @click="forgotPassword">こちら</span>
@@ -119,6 +119,10 @@ export default {
       this.$v.signUpAuthFlowModal.login.formData[type].$reset()
       this.hideSignUpAuthFlowLoginError({ type })
     },
+    transitToSignup() {
+      this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
+      this.setSignUpModal({ showSignUpModal: true })
+    },
     async onSubmit() {
       if (this.invalidSubmit) return
       const { userIdOrEmail, password } = this.signUpAuthFlowModal.login.formData
@@ -142,7 +146,9 @@ export default {
       'setSignUpAuthFlowInputPhoneNumberModal',
       'signUpLogin',
       'resetPassword',
-      'forgotPassword'
+      'forgotPassword',
+      'setSignUpAuthFlowModal',
+      'setSignUpModal'
     ])
   }
 }
