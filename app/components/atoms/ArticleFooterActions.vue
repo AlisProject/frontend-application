@@ -43,9 +43,11 @@ export default {
         this.closeSharePopup()
       }
     })
-    this.$el.querySelector('.share-twitter').href = `https://twitter.com/intent/tweet?url=${
+    this.$el.querySelector(
+      '.share-twitter'
+    ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       location.href
-    }&text=${document.title}`
+    )}&text=${encodeURIComponent(document.title)}`
   },
   destroyed() {
     if (this._eventRemovers) {
@@ -127,6 +129,7 @@ export default {
 
       .report {
         cursor: pointer;
+        user-select: none;
       }
     }
   }
@@ -160,6 +163,7 @@ export default {
         cursor: pointer;
         color: #585858;
         text-decoration: none;
+        user-select: none;
       }
     }
   }
