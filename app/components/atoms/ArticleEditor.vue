@@ -101,9 +101,6 @@ export default {
       this.updateTitle({ title })
     },
     async onInputBody() {
-      this.setIsSaved({ isSaved: false })
-      this.setIsSaving({ isSaving: false })
-
       const images = Array.from(document.querySelectorAll('.area-body figure img'))
       /* eslint-disable space-before-function-paren */
       await Promise.all(
@@ -133,8 +130,7 @@ export default {
               this.setIsSaved({ isSaved: true })
             } catch (error) {
               console.error(error)
-            } finally {
-              img.dataset.status = 'uploaded'
+              img.dataset.status = ''
             }
           }
         })
