@@ -62,7 +62,9 @@ export default {
         this.setReportModal({ showReportModal: false })
       }
       if (this.showProfileSettingsModal) {
-        document.querySelector('.area-user-info-container').style.zIndex = 2
+        if (document.querySelector('.area-user-info-container')) {
+          document.querySelector('.area-user-info-container').style.zIndex = 2
+        }
         this.setProfileSettingsModal({ showProfileSettingsModal: false })
       }
       if (this.showRestrictEditArticleModal) {
