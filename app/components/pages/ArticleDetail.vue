@@ -12,7 +12,7 @@
       <article-footer-actions :likesCount="article.likesCount"/>
       <article-side-actions :likesCount="article.likesCount"/>
       <article-sub-infos :createdAt="createdAt" :tokenAmount="tokenAmount"/>
-      <author-info :user="user"/>
+      <author-info :user="article.userInfo"/>
       <!-- <article-comments :comments="article.comments"/> -->
     </div>
     <!-- <related-articles :articles="article.relatedArticles"/> -->

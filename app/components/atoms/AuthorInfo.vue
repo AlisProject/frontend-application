@@ -1,21 +1,30 @@
 <template>
   <div class="area-author-info-container">
     <div class="area-author-icon">
-      <img class="author-icon" src="~/assets/images/profile-icon1.png" alt="profile-icon">
+      <img
+        class="author-icon"
+        :src="user.icon_image_url"
+        :alt="imageCaption"
+        v-if="user.icon_image_url !== undefined">
+      <img
+        class="author-icon"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        :alt="imageCaption"
+        v-else>
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
-        {{ user.userDisplayName }}
+        {{ user.user_display_name }}
       </p>
     </div>
     <div class="area-user-id">
       <p class="user-id">
-        @{{ user.userId }}
+        @{{ user.user_id }}
       </p>
     </div>
     <div class="area-self-introduction">
       <p class="self-introduction">
-        {{ user.selfIntroduction }}
+        {{ user.self_introduction }}
       </p>
     </div>
   </div>
