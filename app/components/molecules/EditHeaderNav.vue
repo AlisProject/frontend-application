@@ -90,6 +90,10 @@ export default {
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')
         .slice(0, 100)
+      if (this.title === '') this.sendNotification({ text: 'タイトルを入力してください' })
+      if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
+      if (this.title === '' || overview === '') return
+
       const article = { title: this.title, body, overview }
 
       if (this.thumbnail !== '') {
