@@ -46,7 +46,7 @@
         新規登録される方は<nuxt-link to="#">こちら</nuxt-link>
       </p>
       <p class="for-password-forgot-user">
-        パスワードを忘れた方は<nuxt-link to="#">こちら</nuxt-link>
+        パスワードを忘れた方は<span class="link" @click="forgotPassword">こちら</span>
       </p>
     </div>
   </div>
@@ -141,13 +141,26 @@ export default {
       'hideSignUpAuthFlowLoginError',
       'setSignUpAuthFlowInputPhoneNumberModal',
       'signUpLogin',
-      'resetPassword'
+      'resetPassword',
+      'forgotPassword'
     ])
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@mixin default-link {
+  border-bottom: solid 1px transparent;
+  color: #858dda;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 400ms ease;
+
+  &:hover {
+    border-bottom: solid 1px #858dda;
+  }
+}
+
 @mixin default-text {
   height: 14px;
   color: #6e6e6e;
@@ -302,6 +315,10 @@ export default {
   .for-password-forgot-user {
     @include default-text();
     text-align: right;
+  }
+
+  .link {
+    @include default-link();
   }
 }
 

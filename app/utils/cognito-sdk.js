@@ -179,12 +179,28 @@ export default class CognitoSDK {
     })
   }
 
-  forgotPassword({ Username }) {
-    this.cognitoUser = this.getCognitoUser(Username)
+  forgotPassword({ userId }) {
+    const cognitoUser = this.getCognitoUser(userId)
     return new Promise((resolve, reject) => {
-      this.cognitoUser.forgotPassword({
-        onSuccess: (result) => resolve(result),
-        onFailure: (err) => reject(err)
+      cognitoUser.forgotPassword({
+        onSuccess: (result) => {
+          resolve(result)
+        },
+        onFailure: (err) => {
+          reject(err)
+        },
+        inputVerificationCode: () => {
+          const verificationCode = prompt('メールもしくはSMSに届いた認証コードを入力してください（数字6文字）', '')
+          const newPassword = prompt('パスワードを入力してください（半角英数字8文字以上）', '')
+          cognitoUser.confirmPassword(verificationCode, newPassword, {
+            onSuccess: (result) => {
+              resolve(result)
+            },
+            onFailure: (err) => {
+              reject(err)
+            }
+          })
+        }
       })
     })
   }

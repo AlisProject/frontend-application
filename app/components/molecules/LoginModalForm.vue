@@ -44,7 +44,7 @@
         新規登録をされる方は<span class="link" @click="transitToSignup">こちら</span>
       </p>
       <p class="for-password-forgot-user">
-        パスワードを忘れた方は<nuxt-link to="#">こちら</nuxt-link>
+        パスワードを忘れた方は<span class="link" @click="forgotPassword">こちら</span>
       </p>
     </div>
   </div>
@@ -136,7 +136,8 @@ export default {
       'showLoginError',
       'hideLoginError',
       'setCurrentUserInfo',
-      'resetPassword'
+      'resetPassword',
+      'forgotPassword'
     ])
   }
 }
