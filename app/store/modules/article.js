@@ -95,6 +95,10 @@ const actions = {
     const { alis_token: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
     return alisToken
   },
+  async getLikesCount({ commit }, { articleId }) {
+    const { count: likesCount } = await this.$axios.$get(`/articles/${articleId}/likes`)
+    return likesCount
+  },
   async getEditArticle({ commit }, { articleId }) {
     const article = await this.$axios.$get(`/articles/${articleId}`)
     commit(types.SET_ARTICLE, { article })
@@ -112,7 +116,8 @@ const actions = {
       const article = await this.$axios.$get(`/articles/${articleId}`)
       const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
       const alisToken = await dispatch('getAlisToken', { articleId })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken } })
+      const likesCount = await dispatch('getLikesCount', { articleId })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, likesCount } })
     } catch (error) {
       Promise.reject(error)
     }

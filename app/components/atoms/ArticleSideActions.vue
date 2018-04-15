@@ -99,7 +99,9 @@ export default {
       font-size: 14px;
       left: 25px;
       position: absolute;
+      text-align: center;
       top: -22px;
+      width: 30px;
     }
   }
 

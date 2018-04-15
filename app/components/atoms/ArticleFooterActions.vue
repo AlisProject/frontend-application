@@ -176,8 +176,10 @@ export default {
       color: #585858;
       font-size: 14px;
       position: absolute;
-      top: 28px;
       right: -35px;
+      text-align: left;
+      top: 28px;
+      width: 30px;
     }
   }
 }
