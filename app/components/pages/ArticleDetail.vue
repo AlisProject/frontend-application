@@ -11,7 +11,7 @@
       <!-- <article-tags :tags="article.tags"/> -->
       <article-footer-actions :likesCount="article.likesCount"/>
       <article-side-actions :likesCount="article.likesCount"/>
-      <article-sub-infos :createdAt="createdAt" :tokenAmount="tokenAmount"/>
+      <article-sub-infos :createdAt="article.created_at" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
       <!-- <article-comments :comments="article.comments"/> -->
     </div>
@@ -47,22 +47,6 @@ export default {
     article: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    user() {
-      return {
-        userDisplayName: '山田太郎',
-        userId: 'yamadaman',
-        selfIntroduction:
-          'ほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげほげ'
-      }
-    },
-    createdAt() {
-      return '2018/03/14'
-    },
-    tokenAmount() {
-      return '1222k'
     }
   }
 }

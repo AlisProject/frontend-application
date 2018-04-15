@@ -111,7 +111,8 @@ const actions = {
     try {
       const article = await this.$axios.$get(`/articles/${articleId}`)
       const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo } })
+      const alisToken = await dispatch('getAlisToken', { articleId })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken } })
     } catch (error) {
       Promise.reject(error)
     }

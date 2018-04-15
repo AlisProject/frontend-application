@@ -1,10 +1,10 @@
 <template>
   <div class="area-article-sub-infos-container">
     <div class="article-sub-info">
-      公開日：<span class="created-at">{{ createdAt }}</span>
+      公開日：<span class="created-at">{{ formettedCreatedAt }}</span>
     </div>
     <div class="article-sub-info">
-      獲得トークン：<span class="token-amount">{{ formettedCreatedAt }}</span>
+      獲得トークン：<span class="token-amount">{{ tokenAmount }}</span>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
       required: true
     },
     tokenAmount: {
-      type: String,
+      type: Number,
       required: true
     }
   },

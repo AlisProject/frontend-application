@@ -37,6 +37,11 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    imageCaption() {
+      return `${this.user.user_display_name}'s icon'`
+    }
   }
 }
 </script>
