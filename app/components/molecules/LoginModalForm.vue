@@ -24,10 +24,6 @@
             @focus="resetError('password')">
           <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上でご入力ください</p>
         </div>
-        <div class="remember-login">
-          <input class="checkbox" type="checkbox">
-          <span class="text">ログイン情報を記憶する</span>
-        </div>
       </form>
     </div>
     <div class="modal-footer">
@@ -229,25 +225,6 @@ export default {
           border-bottom: 1px dotted #f06273;
         }
       }
-    }
-  }
-
-  .remember-login {
-    text-align: right;
-
-    .checkbox {
-      background-color: #fff;
-      border-radius: 4px;
-      border: 1px solid #858dda;
-      height: 15.5px;
-      width: 20px;
-    }
-
-    .text {
-      color: #6e6e6e;
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 21px;
     }
   }
 }
