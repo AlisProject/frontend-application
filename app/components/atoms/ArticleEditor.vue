@@ -103,9 +103,13 @@ export default {
       /* eslint-disable space-before-function-paren */
       await Promise.all(
         images.map(async (img) => {
+          this.setIsSaving({ isSaving: true })
+
           const isBase64Image = img.src.includes('data:')
-          const isNotUploadedImage = img.dataset.uploaded !== 'true'
-          if (isBase64Image && isNotUploadedImage) {
+          const isNotUploadedImage = img.dataset.status !== 'uploaded'
+          const isNotUploadingImage = img.dataset.status !== 'uploading'
+          if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
+            img.dataset.status = 'uploading'
             try {
               const base64Image = img.src
               const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
@@ -120,19 +124,26 @@ export default {
                 imageContentType
               })
               img.src = imageUrl
-              img.dataset.uploaded = 'true'
+              img.dataset.status = 'uploaded'
+              this.setIsSaved({ isSaved: true })
             } catch (error) {
               console.error(error)
+              img.dataset.status = ''
             }
           }
         })
       )
       const thumbnails = images
-        .filter((img) => img.dataset.uploaded === 'true' || img.src.includes(process.env.DOMAIN))
+        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
         .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
-      const body = document.querySelector('.area-body').innerHTML
-      this.updateBody({ body })
+      const hasNotImage = images.length === 0 && thumbnails.length === 0
+      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
+      if (hasNotImage || hasNotUploadingImage) {
+        const body = document.querySelector('.area-body').innerHTML
+        this.updateBody({ body })
+        this.setIsSaved({ isSaved: true })
+      }
     },
     matchAll(str, regexp) {
       const matches = []
@@ -177,7 +188,9 @@ export default {
       'updateTag',
       'updateSuggestedThumbnails',
       'postArticleImage',
-      'setRestrictEditArticleModal'
+      'setRestrictEditArticleModal',
+      'setIsSaving',
+      'setIsSaved'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }
