@@ -17,7 +17,7 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['title', 'body'])
+    ...mapGetters('article', ['title', 'body', 'thumbnail'])
   },
   methods: {
     ...mapActions('article', ['putPublicArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
@@ -28,6 +28,9 @@ export default {
           this.body
             .replace(/<p class="medium-insert-active">[\s\S]*/, '')
             .replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+      }
+      if (this.thumbnail !== '') {
+        article.eye_catch_url = this.thumbnail
       }
       const { articleId } = this.$route.params
       this.setIsSaving({ isSaving: true })

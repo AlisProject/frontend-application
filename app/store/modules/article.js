@@ -122,6 +122,9 @@ const actions = {
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/public/edit`)
+      if (article.eye_catch_url) {
+        commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
+      }
       commit(types.SET_ARTICLE, { article })
     } catch (error) {
       Promise.reject(error)
