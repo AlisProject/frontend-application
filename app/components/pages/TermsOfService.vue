@@ -224,7 +224,7 @@ export default {
 第18条（準拠法）
 本規約は、日本法に準拠し、日本法に従って解釈されるものとします。
 
-　2018年 4月 17日　   制定
+　2018年 4月 17日 制定
 `
     }
   }
@@ -235,7 +235,6 @@ export default {
 .article-container {
   display: grid;
   grid-template-rows: 100px 50px 1fr 75px;
-  // grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
@@ -276,21 +275,18 @@ export default {
 @media screen and (max-width: 1080px) {
   .article-container {
     grid-template-rows: 100px 50px 1fr 75px;
-    // grid-template-rows: 100px 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
     grid-template-rows: 70px 0 1fr min-content;
-    // grid-template-rows: 70px 0 1fr min-content 75px;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
     grid-template-areas:
     'app-header       app-header       app-header      '
     '...              ...              ...             '
     'article          article          article         '
-    // 'related-articles related-articles related-articles'
     'app-footer       app-footer       app-footer      ';
   }
 
@@ -299,14 +295,8 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      'top-image      top-image         top-image     '
       '...            title             ...           '
-      '...            content           ...           '
-      // '...            tags           ...           '
-      '...            article-sub-infos ...'
-      'footer-actions footer-actions    footer-actions'
-      '...            author-info       ...           ';
-    // '...            article-comments ...           ';
+      '...            content           ...           ';
   }
 
   .area-content {
