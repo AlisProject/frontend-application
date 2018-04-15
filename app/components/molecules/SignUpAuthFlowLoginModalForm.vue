@@ -133,10 +133,7 @@ export default {
         let errorMessage = ''
         switch (error.code) {
           case 'NotAuthorizedException':
-            errorMessage = 'ユーザーIDまたはメールアドレスかパスワードが間違えています'
-            break
-          case 'UserNotFoundException':
-            errorMessage = 'ユーザーが存在しません'
+            errorMessage = 'ユーザーIDまたはメールアドレス、パスワードを間違えています'
             break
           default:
             errorMessage = 'エラーが発生しました。入力内容をご確認ください'
