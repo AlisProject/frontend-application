@@ -46,7 +46,7 @@
         新規登録される方は<nuxt-link to="#">こちら</nuxt-link>
       </p>
       <p class="for-password-forgot-user">
-        パスワードを忘れた方は<nuxt-link to="#">こちら</nuxt-link>
+        パスワードを忘れた方は<span class="link" @click="forgotPassword">こちら</span>
       </p>
     </div>
   </div>

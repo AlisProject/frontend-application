@@ -313,6 +313,16 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async forgotPassword({ commit }) {
+    try {
+      const userId = prompt('登録したユーザーIDを入力してください', '')
+      await this.cognito.forgotPassword({ userId })
+      alert('パスワードをリセットしました。')
+    } catch (error) {
+      alert(error.message)
+      Promise.reject(error)
+    }
+  },
   setLoggedIn({ commit }, { loggedIn }) {
     commit(types.SET_LOGGED_IN, { loggedIn })
   },
