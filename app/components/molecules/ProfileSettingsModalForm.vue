@@ -170,7 +170,9 @@ export default {
           })
         }
         this.sendNotification({ text: 'プロフィールを変更しました' })
-        document.querySelector('.area-user-info-container').style.zIndex = 2
+        if (document.querySelector('.area-user-info-container')) {
+          document.querySelector('.area-user-info-container').style.zIndex = 2
+        }
       } catch (error) {
         console.error(error)
       }

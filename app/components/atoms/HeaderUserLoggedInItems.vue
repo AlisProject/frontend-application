@@ -99,8 +99,11 @@ export default {
       }
     },
     showProfileSettingsModal() {
+      if (document.querySelector('[class$=-article-list-container]')) {
+        document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
+      }
+      window.scrollTo(0, 0)
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
-      document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
     },
     ...mapActions({
