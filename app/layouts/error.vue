@@ -1,16 +1,34 @@
 <template>
-  <div v-if="error.statusCode === 404">
+  <div>
     <app-header class="logo-original" showDefaultHeaderNav showOnlyLogo/>
     <div class="logo-mobile"></div>
-    <div class="page-404-container">
-      <h1 class="title">お探しのページは見つかりませんでした</h1>
-      <p class="description">
-        アクセスしようとしたページは削除、変更されたか、<br>
-        現在利用できない可能性があります。
-      </p>
-      <nuxt-link to="/" class="to-top-button">
-        トップに戻る
-      </nuxt-link>
+    <div v-if="error.statusCode === 404">
+      <div class="page-404-container">
+        <h1 class="title">お探しのページは見つかりませんでした</h1>
+        <p class="description">
+          アクセスしようとしたページは削除、変更されたか、<br>
+          現在利用できない可能性があります。
+        </p>
+        <nuxt-link to="/" class="to-top-button">
+          トップに戻る
+        </nuxt-link>
+      </div>
+    </div>
+    <div v-else-if="error.statusCode === 500">
+      <div class="page-500-container">
+        <h1 class="title">現在サービスがご利用いただけません</h1>
+        <p class="description">
+          ツイッターにて状況を適時配信させていただきます
+        </p>
+        <a
+          class="twitter-timeline"
+          data-width="380"
+          data-height="500"
+          href="https://twitter.com/ALIS_media?ref_src=twsrc%5Etfw">
+          Tweets by ALIS_media
+        </a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.page-500-container,
 .page-404-container {
   background: url('~/assets/images/pc/common/image_bg404.jpg') no-repeat;
   background-position: center bottom;
@@ -68,6 +87,14 @@ export default {
     &:focus {
       opacity: 0.8;
     }
+  }
+}
+
+.page-500-container {
+  background: none;
+
+  .description {
+    margin: 38px 0 50px;
   }
 }
 
