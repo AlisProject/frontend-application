@@ -90,9 +90,7 @@ export default {
           editor: editorElement,
           addons: {
             Part: true,
-            embeds: {
-              oembedProxy: `//iframe.ly/api/oembed?api_key=${process.env.IFRAMELY_API_KEY}`
-            }
+            embeds: false
           }
         })
       })
