@@ -1,8 +1,8 @@
 <template>
   <footer class="area-app-footer-container">
-    <nuxt-link to="#" class="link">ALISについて</nuxt-link>
-    <nuxt-link to="#" class="link">利用規約</nuxt-link>
-    <nuxt-link to="#" class="link">プライバシーポリシー</nuxt-link>
+    <nuxt-link to="/terms" class="link">利用規約</nuxt-link>
+    <nuxt-link to="/privacy" class="link">プライバシーポリシー</nuxt-link>
+    <nuxt-link to="/token-use-guidline" class="link">ALISトークン利用ガイドライン</nuxt-link>
     <nuxt-link to="#" class="link">ヘルプ</nuxt-link>
     <a href="https://alismedia.jp/ja/" class="link" target="_blank">運営会社</a>
   </footer>

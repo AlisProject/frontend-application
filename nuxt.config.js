@@ -19,8 +19,14 @@ module.exports = {
   ** Build configuration
   */
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/markdownit'
   ],
+  markdownit: {
+    injected: true,
+    preset: 'default',
+    breaks: true
+  },
   plugins: [
     '~/plugins/axios',
     '~/plugins/vuelidate'

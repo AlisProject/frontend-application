@@ -12,6 +12,7 @@
     font-weight: 500;
     line-height: 30px;
     text-align: justify;
+    word-break: break-all;
   }
 
   hr {
@@ -42,6 +43,13 @@
       outline: 0 solid transparent;
       text-align: center;
       word-break: break-all;
+    }
+  }
+
+  ol, ul {
+    li {
+      line-height: 1.4;
+      margin-bottom: 0.5em;
     }
   }
 }

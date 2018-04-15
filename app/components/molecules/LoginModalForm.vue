@@ -34,7 +34,8 @@
       <p class="error-message">{{ errorMessage }}</p>
 
       <p class="agreement-confirmation">
-        <nuxt-link to="#">利用規約</nuxt-link>、<nuxt-link to="#">プライバシーポリシー</nuxt-link>に同意して
+        <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>、
+        <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意して
       </p>
       <button class="login-button" :class="{ disabled: invalidSubmit }" @click="onSubmit">
         ログインする
