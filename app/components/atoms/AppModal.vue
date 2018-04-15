@@ -65,6 +65,9 @@ export default {
         if (document.querySelector('.area-user-info-container')) {
           document.querySelector('.area-user-info-container').style.zIndex = 2
         }
+        if (document.querySelector('[class$=-article-list-container]')) {
+          document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
+        }
         this.setProfileSettingsModal({ showProfileSettingsModal: false })
       }
       if (this.showRestrictEditArticleModal) {

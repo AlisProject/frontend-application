@@ -1,5 +1,5 @@
 <template>
-  <div class="top-container" @scroll="infiniteScroll">
+  <div class="top-container popular-article-list-container" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav class="popular-articles logo-white"/>
     <article-card-list :articles="popularArticles"/>
     <the-loader :lastEvaluatedKey="popularArticlesLastEvaluatedKey"/>
@@ -36,7 +36,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.top-container {
+.top-container,
+.popular-article-list-container {
   background: url('~assets/images/pc/bg/bg_top.png') no-repeat;
   background-color: #f7f7f7;
   background-size: contain;
