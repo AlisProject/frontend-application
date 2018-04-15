@@ -1,5 +1,5 @@
 <template>
-  <div class="area-author-info-container">
+  <nuxt-link :to="`/users/${user.user_id}`" tag="div" class="area-author-info-container">
     <div class="area-author-icon">
       <img
         class="author-icon"
@@ -27,7 +27,7 @@
         {{ user.self_introduction }}
       </p>
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
@@ -50,6 +50,7 @@ export default {
 .area-author-info-container {
   border-radius: 6px;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
   display: grid;
   grid-area: author-info;
   grid-column-gap: 20px;
