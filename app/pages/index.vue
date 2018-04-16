@@ -13,7 +13,8 @@ export default {
     await store.dispatch('article/getPopularArticles')
   },
   head: {
-    title: 'TOP'
+    title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
+    titleTemplate: ''
   }
 }
 </script>
