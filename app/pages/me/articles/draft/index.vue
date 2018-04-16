@@ -11,6 +11,9 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch('article/getDraftArticles')
+  },
+  head: {
+    title: '下書き記事一覧'
   }
 }
 </script>

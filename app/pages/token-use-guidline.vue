@@ -8,6 +8,9 @@ import TokenUseGuidline from '~/components/pages/TokenUseGuidline'
 export default {
   components: {
     TokenUseGuidline
+  },
+  head: {
+    title: 'ALISトークン利用ガイドライン'
   }
 }
 </script>

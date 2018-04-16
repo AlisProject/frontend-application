@@ -11,6 +11,9 @@ export default {
   },
   beforeCreate() {
     this.$store.dispatch('article/getPublicArticles')
+  },
+  head: {
+    title: '公開済み記事一覧'
   }
 }
 </script>

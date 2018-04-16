@@ -17,6 +17,9 @@ export default {
   mounted() {
     window.scrollTo(0, 0)
     document.querySelector('html,body').style.overflow = 'hidden'
+  },
+  head: {
+    title: 'サインアップ'
   }
 }
 </script>
