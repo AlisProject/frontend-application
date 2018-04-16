@@ -49,7 +49,7 @@ export default {
     ])
   },
   methods: {
-    closeModal() {
+    async closeModal() {
       if (this.showSignUpModal) {
         this.setSignUpModal({ showSignUpModal: false })
       }
@@ -60,7 +60,7 @@ export default {
           this.signUpAuthFlowModal.isInputPhoneNumberModal ||
           this.signUpAuthFlowModal.isInputAuthCodeModal
         ) {
-          this.setLoggedIn({ loggedIn: false })
+          await this.logout()
         }
       }
       if (this.showLoginModal) {
@@ -95,7 +95,7 @@ export default {
       'setProfileSettingsModal',
       'setRestrictEditArticleModal',
       'resetPassword',
-      'setLoggedIn'
+      'logout'
     ])
   }
 }

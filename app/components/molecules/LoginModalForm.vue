@@ -114,7 +114,7 @@ export default {
         await this.setCurrentUserInfo()
         this.setLoginModal({ showLoginModal: false })
 
-        if (!result.emailVerified) {
+        if (!result.phoneNumberVerified) {
           this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: true })
           this.setSignUpAuthFlowInputPhoneNumberModal({
             isSignUpAuthFlowInputPhoneNumberModal: true
