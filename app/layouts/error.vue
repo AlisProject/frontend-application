@@ -14,11 +14,14 @@
         </nuxt-link>
       </div>
     </div>
-    <div v-else-if="error.statusCode === 500">
+    <div v-else-if="error.statusCode === 500 || error.statusCode === 503">
       <div class="page-500-container">
-        <h1 class="title">現在サービスがご利用いただけません</h1>
+        <h1 class="title">
+          システムエラーが発生しました。<br>
+          お手数ですが、時間をおいて再度お試しください。
+        </h1>
         <p class="description">
-          ツイッターにて状況を適時配信させていただきます
+          障害が発生している場合はツイッターにて状況を配信させていただきます。
         </p>
         <a
           class="twitter-timeline"
@@ -59,7 +62,7 @@ export default {
     font-size: 16px;
     font-weight: 500;
     line-height: 24px;
-    margin: 0;
+    margin: 0 30px;
   }
 
   .description {
@@ -94,7 +97,7 @@ export default {
   background: none;
 
   .description {
-    margin: 38px 0 50px;
+    margin: 38px 30px 50px;
   }
 }
 
