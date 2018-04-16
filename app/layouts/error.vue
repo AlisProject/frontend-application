@@ -14,7 +14,7 @@
         </nuxt-link>
       </div>
     </div>
-    <div v-else-if="error.statusCode === 500 || error.statusCode === 503">
+    <div v-else-if="error.statusCode >= 500">
       <div class="page-500-container">
         <h1 class="title">
           システムエラーが発生しました。<br>
