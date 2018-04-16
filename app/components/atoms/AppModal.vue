@@ -39,6 +39,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', [
+      'signUpAuthFlowModal',
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
@@ -54,6 +55,13 @@ export default {
       }
       if (this.showSignUpAuthFlowModal) {
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
+        if (
+          this.signUpAuthFlowModal.isLoginModal ||
+          this.signUpAuthFlowModal.isInputPhoneNumberModal ||
+          this.signUpAuthFlowModal.isInputAuthCodeModal
+        ) {
+          this.setLoggedIn({ loggedIn: false })
+        }
       }
       if (this.showLoginModal) {
         this.setLoginModal({ showLoginModal: false })
@@ -86,7 +94,8 @@ export default {
       'setReportModal',
       'setProfileSettingsModal',
       'setRestrictEditArticleModal',
-      'resetPassword'
+      'resetPassword',
+      'setLoggedIn'
     ])
   }
 }

@@ -110,11 +110,20 @@ export default {
       if (this.invalidSubmit) return
       const { userIdOrEmail, password } = this.loginModal.formData
       try {
-        await this.login({ userId: userIdOrEmail, password })
+        const result = await this.login({ userId: userIdOrEmail, password })
         await this.setCurrentUserInfo()
         this.setLoginModal({ showLoginModal: false })
+
+        if (!result.emailVerified) {
+          this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: true })
+          this.setSignUpAuthFlowInputPhoneNumberModal({
+            isSignUpAuthFlowInputPhoneNumberModal: true
+          })
+        } else {
+          this.sendNotification({ text: 'ログインしました' })
+        }
+
         document.querySelector('html,body').style.overflow = ''
-        this.sendNotification({ text: 'ログインしました' })
         this.resetPassword()
       } catch (error) {
         let errorMessage = ''
@@ -142,7 +151,9 @@ export default {
       'hideLoginError',
       'setCurrentUserInfo',
       'resetPassword',
-      'forgotPassword'
+      'forgotPassword',
+      'setSignUpAuthFlowModal',
+      'setSignUpAuthFlowInputPhoneNumberModal'
     ])
   }
 }
