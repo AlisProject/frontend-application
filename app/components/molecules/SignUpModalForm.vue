@@ -154,7 +154,8 @@ export default {
             errorMessage = 'ユーザーIDはすでに存在します'
             break
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage =
+              'エラーが発生しました。入力内容をご確認ください。※ 現在、事前登録が完了していないユーザは登録できません。'
             break
         }
         this.errorMessage = errorMessage
