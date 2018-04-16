@@ -25,14 +25,14 @@
       </div>
       <div class="token-amount">
         <p class="alis-hold-amount">ALIS保有数</p>
-        <p class="alis-token-amount">2500 <span class="token-unit">ALIS</span></p>
+        <p class="alis-token-amount">0 <span class="token-unit">ALIS</span></p>
       </div>
       <ul class="menu-links">
         <li class="menu-link">
-          <a href="/me/articles/new">新規ストーリー</a>
+          <a href="/me/articles/new">新規記事作成</a>
         </li>
         <li class="menu-link">
-          <nuxt-link to="/me/articles/public">マイストーリー</nuxt-link>
+          <nuxt-link to="/me/articles/public">記事一覧</nuxt-link>
         </li>
         <li class="menu-link" @click="showProfileSettingsModal">
           ユーザー設定
