@@ -45,6 +45,7 @@ export default {
 <style lang="scss" scoped>
 .area-article-card-image {
   grid-area: article-card-image;
+  background: #fff;
   overflow: hidden;
 
   .article-image {
