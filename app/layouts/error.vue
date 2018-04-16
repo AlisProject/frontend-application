@@ -40,7 +40,12 @@ export default {
   components: {
     AppHeader
   },
-  props: ['error']
+  props: ['error'],
+  head() {
+    return {
+      title: this.error.statusCode
+    }
+  }
 }
 </script>
 

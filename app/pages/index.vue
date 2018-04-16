@@ -11,6 +11,9 @@ export default {
   },
   async fetch({ store }) {
     await store.dispatch('article/getPopularArticles')
+  },
+  head: {
+    title: 'TOP'
   }
 }
 </script>

@@ -23,6 +23,6 @@ export default {
       console.error(error)
     }
   },
-  head
+  head: { ...head, title: '記事編集' }
 }
 </script>

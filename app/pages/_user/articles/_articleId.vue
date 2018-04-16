@@ -17,14 +17,17 @@ export default {
   computed: {
     ...mapGetters('article', ['article'])
   },
-  head: {
-    link: [
-      {
-        rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/css/medium-editor-insert-plugin.min.css'
-      }
-    ]
+  head() {
+    return {
+      title: this.$store.state.article.article.title,
+      link: [
+        {
+          rel: 'stylesheet',
+          href:
+            'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/css/medium-editor-insert-plugin.min.css'
+        }
+      ]
+    }
   }
 }
 </script>

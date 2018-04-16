@@ -11,6 +11,9 @@ export default {
   },
   async fetch({ store }) {
     await store.dispatch('article/getNewPagesArticles')
+  },
+  head: {
+    title: '新着記事'
   }
 }
 </script>

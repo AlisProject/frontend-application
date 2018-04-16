@@ -13,6 +13,6 @@ export default {
   mounted() {
     this.$el.querySelector('.area-body').dataset.placeholder = 'あなたの物語を教えてください･･･'
   },
-  head
+  head: { ...head, title: '新規記事' }
 }
 </script>

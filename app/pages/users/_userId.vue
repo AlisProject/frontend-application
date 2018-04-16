@@ -20,6 +20,9 @@ export default {
   beforeDestroy() {
     this.$store.dispatch('user/resetUserArticles')
     this.$store.dispatch('user/resetUserArticlesLastEvaluatedKey')
+  },
+  head() {
+    return { title: this.$store.state.user.userInfo.user_id }
   }
 }
 </script>
