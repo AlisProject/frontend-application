@@ -327,7 +327,7 @@ export default {
     grid-template-areas:
       'public-articles drafts';
     grid-template-columns: 48px 48px;
-    grid-template-rows: 42px;
+    grid-template-rows: 36px;
     text-align: left;
   }
 
@@ -337,7 +337,7 @@ export default {
 
   .nav-link {
     font-size: 12px;
-    line-height: 40px;
+    line-height: 30px;
     text-align: center;
   }
 

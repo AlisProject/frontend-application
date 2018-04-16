@@ -87,12 +87,12 @@ export default {
     grid-template-areas:
       'popular-articles new-articles';
     grid-template-columns: 48px 48px;
-    grid-template-rows: 42px;
+    grid-template-rows: 36px;
     text-align: left;
   }
 
   .nav-link {
-    line-height: 40px;
+    line-height: 30px;
     font-size: 12px;
   }
 

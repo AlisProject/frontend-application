@@ -164,7 +164,7 @@ export default {
       '... logo ... session ...'
       '... nav  ... ...     ...';
     grid-template-columns: 0 min-content 1fr 160px 3px;
-    grid-template-rows: 12px 20px 18px;
+    grid-template-rows: 9px 29px 15px;
   }
 
   .logo-original,
