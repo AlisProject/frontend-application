@@ -19,6 +19,7 @@ export default {
     if (window.innerWidth <= 550) {
       document.querySelector('html,body').style.overflow = ''
     }
+    history.replaceState(null, null, '/')
   },
   head: {
     title: 'サインアップ'
