@@ -1,6 +1,6 @@
 <template>
   <div class="create-article-container">
-    <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
+    <app-header showEditHeaderNav showPostArticleLink class="new-article logo-original"/>
     <article-editor/>
   </div>
 </template>

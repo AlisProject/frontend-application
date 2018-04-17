@@ -229,6 +229,12 @@ export default {
   grid-area: new-article;
 }
 
+.new-article .area-new-article {
+  color: #99a2ff;
+  display: block;
+  border-bottom: 2px solid #99a2ff;
+}
+
 .area-post-article {
   grid-area: post-article;
   position: relative;
