@@ -140,6 +140,10 @@ export default {
       const hasNotImage = images.length === 0 && thumbnails.length === 0
       const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
       if (hasNotImage || hasNotUploadingImage) {
+        $('.area-body')
+          .find('span[style]')
+          .contents()
+          .unwrap()
         const body = document.querySelector('.area-body').innerHTML
         this.updateBody({ body })
         this.setIsSaved({ isSaved: true })
