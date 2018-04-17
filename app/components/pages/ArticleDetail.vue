@@ -87,12 +87,6 @@ export default {
   letter-spacing: 0.05em;
 }
 
-.area-top-image {
-  grid-area: top-image;
-  max-width: 100%;
-  width: 100%;
-}
-
 .area-content {
   grid-area: content;
 }
