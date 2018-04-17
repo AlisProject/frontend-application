@@ -3,10 +3,6 @@
     <app-header showDefaultHeaderNav class="logo-original"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
-      <img
-        class="area-top-image"
-        :src="article.eye_catch_url"
-        v-if="article.eye_catch_url !== null">
       <div class="area-content" v-html="article.body" />
       <!-- <article-tags :tags="article.tags"/> -->
       <article-footer-actions :likesCount="article.likesCount"/>
@@ -77,7 +73,6 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     'title         '
-    'top-image     '
     'content       '
     'footer-actions'
     'article-sub-infos'
@@ -128,7 +123,6 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      'top-image      top-image         top-image     '
       '...            title             ...           '
       '...            content           ...           '
       // '...            tags           ...           '
