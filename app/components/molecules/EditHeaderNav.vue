@@ -81,6 +81,53 @@ export default {
         console.error(e)
       }
     },
+    async updateArticleData() {
+      const images = Array.from(document.querySelectorAll('.area-body figure img'))
+      /* eslint-disable space-before-function-paren */
+      await Promise.all(
+        images.map(async (img) => {
+          this.setIsSaving({ isSaving: true })
+
+          const isBase64Image = img.src.includes('data:')
+          const isNotUploadedImage = img.dataset.status !== 'uploaded'
+          const isNotUploadingImage = img.dataset.status !== 'uploading'
+          if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
+            img.dataset.status = 'uploading'
+            try {
+              const base64Image = img.src
+              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+              const imageContentType = base64Image.substring(
+                base64Image.match(':').index + 1,
+                base64Image.match(';').index
+              )
+              const { articleId } = this.articleId === '' ? this.$route.params : this
+              const { image_url: imageUrl } = await this.postArticleImage({
+                articleId,
+                articleImage: base64Hash,
+                imageContentType
+              })
+              img.src = imageUrl
+              img.dataset.status = 'uploaded'
+              this.setIsSaved({ isSaved: true })
+            } catch (error) {
+              console.error(error)
+              img.dataset.status = ''
+            }
+          }
+        })
+      )
+      const thumbnails = images
+        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
+        .map((img) => img.src)
+      this.updateSuggestedThumbnails({ thumbnails })
+      const hasNotImage = images.length === 0 && thumbnails.length === 0
+      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
+      if (hasNotImage || hasNotUploadingImage) {
+        const body = document.querySelector('.area-body').innerHTML
+        this.updateBody({ body })
+        this.setIsSaved({ isSaved: true })
+      }
+    },
     async publish() {
       const { articleId } = this.articleId === '' ? this.$route.params : this
       const body = this.body
@@ -117,8 +164,9 @@ export default {
         console.error(e)
       }
     },
-    togglePopup() {
+    async togglePopup() {
       if (!this.isSaving) return
+      await this.updateArticleData()
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -152,7 +200,12 @@ export default {
       'republishPublicArticle',
       'unpublishPublicArticle',
       'putDraftArticle',
-      'putPublicArticle'
+      'putPublicArticle',
+      'updateSuggestedThumbnails',
+      'postArticleImage',
+      'updateBody',
+      'setIsSaving',
+      'setIsSaved'
     ])
   },
   computed: {
