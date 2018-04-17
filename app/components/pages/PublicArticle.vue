@@ -3,10 +3,6 @@
     <app-header showEditHeaderNav showEditArticleLink class="public-article logo-original"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
-      <img
-        class="area-top-image"
-        :src="article.eye_catch_url"
-        v-if="article.eye_catch_url !== null">
       <div class="area-content" v-html="article.body" />
     </div>
   </div>
@@ -50,7 +46,6 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     'title         '
-    'top-image     '
     'content       ';
 }
 
@@ -58,12 +53,6 @@ export default {
   font-size: 25px;
   grid-area: title;
   letter-spacing: 0.05em;
-}
-
-.area-top-image {
-  grid-area: top-image;
-  max-width: 100%;
-  width: 100%;
 }
 
 .area-content {
@@ -92,7 +81,6 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      'top-image      top-image      top-image     '
       '...            title          ...           '
       '...            content        ...           ';
   }
