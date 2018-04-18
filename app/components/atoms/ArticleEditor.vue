@@ -92,9 +92,9 @@ export default {
             Part: true,
             embeds: false,
             images: {
-              fileUploadOptions: { maxFileSize: 6 * 1024 * 1024 },
+              fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
               messages: {
-                maxFileSizeError: '画像は6MBまでアップロード可能です：'
+                maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
               }
             }
           }
