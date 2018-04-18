@@ -51,7 +51,7 @@ export default {
           console.error(e)
         }
       }
-    }, 500)
+    }, 2500)
   },
   watch: {
     title(newTitle, oldTitle) {

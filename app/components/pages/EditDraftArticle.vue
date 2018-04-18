@@ -37,7 +37,7 @@ export default {
       } catch (e) {
         console.error(e)
       }
-    }, 500)
+    }, 2500)
   },
   watch: {
     title(newTitle, oldTitle) {
