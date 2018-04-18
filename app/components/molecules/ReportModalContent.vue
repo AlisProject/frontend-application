@@ -13,12 +13,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
+  computed: {
+    ...mapGetters('article', ['article'])
+  },
   methods: {
-    report() {
+    async report() {
+      await this.postFraud({ articleId: this.article.article_id })
       this.sendNotification({ text: '通報しました' })
       this.setReportModal({ showReportModal: false })
       document.querySelector('html,body').style.overflow = ''
@@ -30,7 +34,8 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['setReportModal', 'setAlert', 'setAlertText'])
+    ...mapActions('user', ['setReportModal']),
+    ...mapActions('article', ['postFraud'])
   }
 }
 </script>

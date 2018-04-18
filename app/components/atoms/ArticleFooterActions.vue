@@ -57,7 +57,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['showReportModal'])
+    ...mapGetters('user', ['loggedIn', 'showReportModal'])
   },
   methods: {
     toggleEtcPopup() {
@@ -73,9 +73,13 @@ export default {
       this.isSharePopupShown = false
     },
     showPopupReportModal() {
-      this.setReportModal({ showReportModal: true })
-      window.scrollTo(0, 0)
-      document.querySelector('html,body').style.overflow = 'hidden'
+      if (this.loggedIn) {
+        this.setReportModal({ showReportModal: true })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
+      } else {
+        alert('通報をするためにはログインが必要です')
+      }
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
