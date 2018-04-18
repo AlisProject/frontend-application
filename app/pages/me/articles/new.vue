@@ -11,7 +11,7 @@ export default {
     CreateArticle
   },
   mounted() {
-    this.$el.querySelector('.area-body').dataset.placeholder = 'あなたの物語を教えてください･･･'
+    this.$el.querySelector('.area-body').dataset.placeholder = '本文を入力してください'
   },
   head: { ...head, title: '新規記事' }
 }
