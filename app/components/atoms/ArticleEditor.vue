@@ -90,7 +90,13 @@ export default {
           editor: editorElement,
           addons: {
             Part: true,
-            embeds: false
+            embeds: false,
+            images: {
+              fileUploadOptions: { maxFileSize: 3 * 1024 * 1024 },
+              messages: {
+                maxFileSizeError: '画像は3MBまでアップロード可能です：'
+              }
+            }
           }
         })
       })
