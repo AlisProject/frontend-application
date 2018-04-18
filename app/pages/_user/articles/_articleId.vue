@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ArticleDetail from '~/components/pages/ArticleDetail'
 
 export default {
@@ -14,8 +14,15 @@ export default {
     const { articleId } = params
     await store.dispatch('article/getArticleDetail', { articleId })
   },
+  mounted() {
+    if (this.loggedIn) this.postPv({ articleId: this.$route.params.articleId })
+  },
   computed: {
+    ...mapGetters('user', ['loggedIn']),
     ...mapGetters('article', ['article'])
+  },
+  methods: {
+    ...mapActions('article', ['postPv'])
   },
   head() {
     return {

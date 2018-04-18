@@ -257,6 +257,9 @@ const actions = {
   },
   setGotArticleData({ commit }, { gotArticleData }) {
     commit(types.SET_GOT_ARTICLE_DATA, { gotArticleData })
+  },
+  postPv({ commit }, { articleId }) {
+    this.$axios.$post(`/me/articles/${articleId}/pv`)
   }
 }
 
