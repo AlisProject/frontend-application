@@ -9,8 +9,14 @@
         v-if="article.eye_catch_url !== null">
       <div class="area-content" v-html="article.body" />
       <!-- <article-tags :tags="article.tags"/> -->
-      <article-footer-actions :likesCount="article.likesCount"/>
-      <article-side-actions :likesCount="article.likesCount"/>
+      <article-footer-actions
+        :articleId="article.article_id"
+        :likesCount="likesCount"
+        :isLikedArticle="isLikedArticle"/>
+      <article-side-actions
+        :articleId="article.article_id"
+        :likesCount="likesCount"
+        :isLikedArticle="isLikedArticle"/>
       <article-sub-infos :createdAt="article.created_at" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
       <!-- <article-comments :comments="article.comments"/> -->
@@ -21,6 +27,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
@@ -48,6 +56,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    ...mapGetters('article', ['likesCount', 'isLikedArticle'])
   }
 }
 </script>
