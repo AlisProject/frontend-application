@@ -115,6 +115,10 @@ export default {
       this.createImage(files[0])
     },
     createImage(file) {
+      if (file.size > 4.5 * 1024 * 1024) {
+        alert('アイコン画像は4.5MBまでアップロード可能です')
+        return
+      }
       const reader = new FileReader()
       /* eslint-disable space-before-function-paren */
       reader.onload = async (e) => {
