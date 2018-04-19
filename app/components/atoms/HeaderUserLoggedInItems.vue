@@ -12,7 +12,7 @@
       v-else>
     <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
     <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
-    <div class="menu" v-show="isMenuShown">
+    <div class="menu" v-if="isMenuShown">
       <div class="image-box">
         <img
           :src="currentUserInfo.icon_image_url"
@@ -40,6 +40,7 @@
       </ul>
       <span class="logout" @click="logoutUser">ログアウト</span>
     </div>
+    <div class="cover" v-show="isMenuShown" @click="closeMenu"></div>
   </div>
 </template>
 
@@ -73,10 +74,16 @@ export default {
   },
   methods: {
     toggleMenu() {
+      if (!this.isMenuShown) {
+        this.forbidScroll()
+      } else {
+        this.resetScroll()
+      }
       this.isMenuShown = !this.isMenuShown
     },
     closeMenu() {
       this.isMenuShown = false
+      this.resetScroll()
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -99,12 +106,26 @@ export default {
       }
     },
     showProfileSettingsModal() {
+      window.scrollTo(0, 0)
+      this.setProfileSettingsModal({ showProfileSettingsModal: true })
+      this.forbidScroll()
+    },
+    forbidScroll() {
       if (document.querySelector('[class$=-article-list-container]')) {
         document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
       }
-      window.scrollTo(0, 0)
-      this.setProfileSettingsModal({ showProfileSettingsModal: true })
       document.querySelector('html,body').style.overflow = 'hidden'
+      document.addEventListener('touchmove', this.scrollOff, false)
+    },
+    resetScroll() {
+      if (document.querySelector('[class$=-article-list-container]')) {
+        document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
+      }
+      document.querySelector('html,body').style.overflow = ''
+      document.removeEventListener('touchmove', this.scrollOff, false)
+    },
+    scrollOf(e) {
+      e.preventDefault()
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -356,6 +377,8 @@ export default {
     top: -26px;
     width: 280px;
     transform: rotate(0);
+    z-index: 1;
+    height: 101vh;
 
     &:before {
       display: none;
@@ -375,6 +398,24 @@ export default {
         margin-bottom: 20px;
       }
     }
+  }
+
+  .cover {
+    height: 101vh;
+    background: black;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #000000;
+    filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
+    left: calc(280px - 120vw);
+    position: absolute;
+    // right: 108px;
+    top: -26px;
+    transform: rotate(-90deg);
+    transform: rotate(0);
+    width: calc(100vw - 270px);
+    z-index: -1;
+    opacity: 0.5;
   }
 }
 </style>
