@@ -27,7 +27,6 @@ export default {
   methods: {
     ...mapActions('article', ['postNewArticle', 'putDraftArticle', 'setIsSaving', 'setIsSaved']),
     postOrPutArticle: debounce(async function() {
-      console.log(this.title === '')
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body:
