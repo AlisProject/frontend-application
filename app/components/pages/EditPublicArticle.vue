@@ -23,7 +23,7 @@ export default {
     ...mapActions('article', ['putPublicArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
     putArticle: debounce(async function() {
       const article = {
-        title: this.title,
+        title: this.title === '' ? ' ' : this.title,
         body:
           this.body
             .replace(/<p class="medium-insert-active">[\s\S]*/, '')
