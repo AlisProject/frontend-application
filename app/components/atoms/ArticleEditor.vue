@@ -7,7 +7,12 @@
       spellcheck="false"
       @input="onInputTitle"
       :value="title">
-    <div class="area-body" ref="editable" @input="onInputBody"/>
+    <div
+      class="area-body"
+      ref="editable"
+      @input="onInputBody"
+      @drop="preventDropImage"
+      @dragover="preventDragoverImage"/>
   </div>
 </template>
 
@@ -31,6 +36,22 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
+    document.body.addEventListener(
+      'drop',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
+    document.body.addEventListener(
+      'dragover',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
@@ -38,9 +59,7 @@ export default {
   methods: {
     initMediumEditor() {
       const editorElement = new MediumEditor('.area-body', {
-        paste: {
-          forcePlainText: true
-        },
+        imageDragging: false,
         toolbar: {
           buttons: [
             {
@@ -193,6 +212,20 @@ export default {
           this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
         }
       }
+    },
+    preventDragoverImage(e) {
+      e.target.style.background = 'white'
+      e.preventDefault()
+      e.stopPropagation()
+      return false
+    },
+    preventDropImage(e) {
+      e.target.style.background = ''
+      e.preventDefault()
+      e.stopPropagation()
+      global.el = e.target
+      console.log(e.target)
+      return false
     },
     ...mapActions('article', [
       'updateTitle',
