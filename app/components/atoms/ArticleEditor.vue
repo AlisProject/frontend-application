@@ -38,6 +38,9 @@ export default {
   methods: {
     initMediumEditor() {
       const editorElement = new MediumEditor('.area-body', {
+        paste: {
+          forcePlainText: true
+        },
         toolbar: {
           buttons: [
             {
