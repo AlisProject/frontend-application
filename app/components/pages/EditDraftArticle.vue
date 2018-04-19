@@ -8,6 +8,7 @@
 <script>
 import { debounce } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
 
@@ -20,6 +21,9 @@ export default {
     ...mapGetters('article', ['title', 'body', 'isSaving'])
   },
   methods: {
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', ['putDraftArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
     putArticle: debounce(async function() {
       const article = {
@@ -28,6 +32,10 @@ export default {
           this.body
             .replace(/<p class="medium-insert-active">[\s\S]*/, '')
             .replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+      }
+      if (article.title === '') {
+        this.sendNotification({ text: 'タイトルを入力してください', type: 'warning' })
+        return
       }
       const { articleId } = this.$route.params
       this.setIsSaving({ isSaving: true })

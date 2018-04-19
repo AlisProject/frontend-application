@@ -13,6 +13,15 @@
   background-color: #858DDA;
 }
 
+.toast-type-warning{
+  background-color: #F06273;
+
+
+  .toast-button {
+    color: #F06273;
+  }
+}
+
 .toast-message {
   box-sizing: border-box;
   color: #fff;
