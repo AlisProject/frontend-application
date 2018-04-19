@@ -30,10 +30,7 @@ export default {
       console.log(this.title === '')
       const article = {
         title: this.title === '' ? ' ' : this.title,
-        body:
-          this.body
-            .replace(/<p class="medium-insert-active">[\s\S]*/, '')
-            .replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+        body: this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
       }
       this.setIsSaving({ isSaving: true })
       if (this.isPosted) {
