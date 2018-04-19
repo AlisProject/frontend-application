@@ -27,8 +27,9 @@ export default {
   methods: {
     ...mapActions('article', ['postNewArticle', 'putDraftArticle', 'setIsSaving', 'setIsSaved']),
     postOrPutArticle: debounce(async function() {
+      console.log(this.title === '')
       const article = {
-        title: this.title + ' ',
+        title: this.title === '' ? ' ' : this.title,
         body:
           this.body
             .replace(/<p class="medium-insert-active">[\s\S]*/, '')
