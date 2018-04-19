@@ -19,6 +19,7 @@
 <script>
 /* eslint no-undef: 0 */
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -223,10 +224,15 @@ export default {
       e.target.style.background = ''
       e.preventDefault()
       e.stopPropagation()
-      global.el = e.target
-      console.log(e.target)
+      this.sendNotification({
+        text: 'ドラッグ&ドロップでは画像をアップロードできません。',
+        type: 'warning'
+      })
       return false
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', [
       'updateTitle',
       'updateBody',
