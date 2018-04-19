@@ -130,9 +130,7 @@ export default {
     },
     async publish() {
       const { articleId } = this.articleId === '' ? this.$route.params : this
-      const body = this.body
-        .replace(/<p class="medium-insert-active">[\s\S]*/, '')
-        .replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
+      const body = this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')
