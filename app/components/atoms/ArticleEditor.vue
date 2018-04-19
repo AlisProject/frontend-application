@@ -7,13 +7,19 @@
       spellcheck="false"
       @input="onInputTitle"
       :value="title">
-    <div class="area-body" ref="editable" @input="onInputBody"/>
+    <div
+      class="area-body"
+      ref="editable"
+      @input="onInputBody"
+      @drop="preventDropImage"
+      @dragover="preventDragoverImage"/>
   </div>
 </template>
 
 <script>
 /* eslint no-undef: 0 */
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -31,6 +37,22 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
+    document.body.addEventListener(
+      'drop',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
+    document.body.addEventListener(
+      'dragover',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
@@ -38,6 +60,7 @@ export default {
   methods: {
     initMediumEditor() {
       const editorElement = new MediumEditor('.area-body', {
+        imageDragging: false,
         toolbar: {
           buttons: [
             {
@@ -191,6 +214,23 @@ export default {
         }
       }
     },
+    preventDragoverImage(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      return false
+    },
+    preventDropImage(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      this.sendNotification({
+        text: 'ドラッグ&ドロップでは画像をアップロードできません。',
+        type: 'warning'
+      })
+      return false
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', [
       'updateTitle',
       'updateBody',
