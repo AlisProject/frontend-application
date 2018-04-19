@@ -215,13 +215,11 @@ export default {
       }
     },
     preventDragoverImage(e) {
-      e.target.style.background = 'white'
       e.preventDefault()
       e.stopPropagation()
       return false
     },
     preventDropImage(e) {
-      e.target.style.background = ''
       e.preventDefault()
       e.stopPropagation()
       this.sendNotification({
