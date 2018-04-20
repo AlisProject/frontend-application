@@ -22,8 +22,16 @@ export default {
   },
   methods: {
     async report() {
-      await this.postFraud({ articleId: this.article.article_id })
-      this.sendNotification({ text: '通報しました' })
+      try {
+        await this.postFraud({ articleId: this.article.article_id })
+        this.sendNotification({ text: '通報しました' })
+      } catch (error) {
+        let text = 'エラーが発生しました'
+        if (error.response.data.message === 'Already exists') {
+          text = 'すでに通報済みです'
+        }
+        this.sendNotification({ text, type: 'warning' })
+      }
       this.setReportModal({ showReportModal: false })
       document.querySelector('html,body').style.overflow = ''
     },
