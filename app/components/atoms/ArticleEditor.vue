@@ -53,6 +53,12 @@ export default {
       },
       false
     )
+    $('.area-body').keydown((e) => {
+      const enterKeyCode = 13
+      if (e.keyCode === enterKeyCode && e.shiftKey) {
+        e.preventDefault()
+      }
+    })
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
