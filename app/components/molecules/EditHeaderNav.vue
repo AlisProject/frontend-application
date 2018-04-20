@@ -44,8 +44,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 export default {
   data() {
     return {
-      isPopupShown: false,
-      beforeSelected: null
+      isPopupShown: false
     }
   },
   props: {
@@ -173,7 +172,6 @@ export default {
     },
     selectThumbnail({ target }) {
       this.updateThumbnail({ thumbnail: target.src })
-      this.beforeSelected = target
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
