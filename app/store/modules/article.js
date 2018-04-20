@@ -7,6 +7,7 @@ const state = () => ({
   article: {},
   articleId: '',
   likesCount: 0,
+  isLikedArticle: false,
   popularArticles: [],
   newArticles: [],
   publicArticles: [],
@@ -53,7 +54,9 @@ const getters = {
   popularArticlesLastEvaluatedKey: (state) => state.popularArticlesLastEvaluatedKey,
   newArticlesLastEvaluatedKey: (state) => state.newArticlesLastEvaluatedKey,
   publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
-  draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey
+  draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
+  likesCount: (state) => state.likesCount,
+  isLikedArticle: (state) => state.isLikedArticle
 }
 
 const actions = {
@@ -131,7 +134,8 @@ const actions = {
       const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
       const alisToken = await dispatch('getAlisToken', { articleId })
       const likesCount = await dispatch('getLikesCount', { articleId })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, likesCount } })
+      commit(types.SET_LIKES_COUNT, { likesCount })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken } })
     } catch (error) {
       Promise.reject(error)
     }
@@ -257,6 +261,23 @@ const actions = {
   },
   setGotArticleData({ commit }, { gotArticleData }) {
     commit(types.SET_GOT_ARTICLE_DATA, { gotArticleData })
+  },
+  async postLike({ commit, state }, { articleId }) {
+    try {
+      await this.$axios.$post(`/me/articles/${articleId}/like`)
+      commit(types.SET_LIKES_COUNT, { likesCount: state.likesCount + 1 })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getIsLikedArticle({ commit }, { articleId }) {
+    try {
+      const { liked } = await this.$axios.$get(`/me/articles/${articleId}/like`)
+      commit(types.SET_IS_LIKED_ARTICLE, { liked })
+      return liked
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -340,6 +361,9 @@ const mutations = {
   },
   [types.SET_DRAFT_PUBLIC_ARTICLES_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
     state.hasDraftArticlesLastEvaluatedKey = hasLastEvaluatedKey
+  },
+  [types.SET_IS_LIKED_ARTICLE](state, { liked }) {
+    state.isLikedArticle = liked
   }
 }
 
