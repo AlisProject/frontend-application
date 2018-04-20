@@ -26,7 +26,8 @@
             v-for="img in suggestedThumbnails"
             :src="img"
             :key="img"
-            @click.stop="selectThumbnail"
+            :class="{ 'selected': img === thumbnail }"
+            @click.prevent="selectThumbnail"
             class="thumbnail"/>
         </div>
         <hr class="hr">
@@ -171,10 +172,7 @@ export default {
       this.isPopupShown = false
     },
     selectThumbnail({ target }) {
-      if (this.beforeSelected) {
-        this.beforeSelected.classList.remove('selected')
-      }
-      target.classList.add('selected')
+      console.log(target.src)
       this.updateThumbnail({ thumbnail: target.src })
       this.beforeSelected = target
     },
