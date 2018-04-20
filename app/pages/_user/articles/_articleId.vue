@@ -16,7 +16,9 @@ export default {
   },
   async mounted() {
     if (this.loggedIn) {
-      await this.getIsLikedArticle({ articleId: this.$route.params.articleId })
+      const { articleId } = this.$route.params
+      await this.getIsLikedArticle({ articleId })
+      await this.postPv({ articleId })
     }
   },
   computed: {
@@ -24,7 +26,7 @@ export default {
     ...mapGetters('article', ['article'])
   },
   methods: {
-    ...mapActions('article', ['getIsLikedArticle'])
+    ...mapActions('article', ['postPv', 'getIsLikedArticle'])
   },
   head() {
     return {
