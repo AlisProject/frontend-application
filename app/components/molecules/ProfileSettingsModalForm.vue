@@ -67,11 +67,6 @@ export default {
   created() {
     this.userDisplayName = this.currentUserInfo.user_display_name || this.currentUser.userId
     this.selfIntroduction = this.currentUserInfo.self_introduction || ''
-    this.setProfileSettingsUserDisplayName({
-      userDisplayName: this.currentUser.userId
-    })
-    const selfIntroduction = this.currentUserInfo.self_introduction || ''
-    this.setProfileSettingsSelfIntroduction({ selfIntroduction })
     this.setUserDisplayName(this.userDisplayName)
     this.setSelfIntroduction(this.selfIntroduction)
   },
