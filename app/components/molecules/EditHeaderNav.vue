@@ -172,7 +172,6 @@ export default {
       this.isPopupShown = false
     },
     selectThumbnail({ target }) {
-      console.log(target.src)
       this.updateThumbnail({ thumbnail: target.src })
       this.beforeSelected = target
     },
