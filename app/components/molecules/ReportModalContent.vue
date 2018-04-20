@@ -13,13 +13,25 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
+  computed: {
+    ...mapGetters('article', ['article'])
+  },
   methods: {
-    report() {
-      this.sendNotification({ text: '通報しました' })
+    async report() {
+      try {
+        await this.postFraud({ articleId: this.article.article_id })
+        this.sendNotification({ text: '通報しました' })
+      } catch (error) {
+        let text = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
+        if (error.response.data.message === 'Already exists') {
+          text = 'すでに通報済みです'
+        }
+        this.sendNotification({ text, type: 'warning' })
+      }
       this.setReportModal({ showReportModal: false })
       document.querySelector('html,body').style.overflow = ''
     },
@@ -30,7 +42,8 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['setReportModal', 'setAlert', 'setAlertText'])
+    ...mapActions('user', ['setReportModal']),
+    ...mapActions('article', ['postFraud'])
   }
 }
 </script>

@@ -262,6 +262,13 @@ const actions = {
   setGotArticleData({ commit }, { gotArticleData }) {
     commit(types.SET_GOT_ARTICLE_DATA, { gotArticleData })
   },
+  async postFraud({ commit }, { articleId }) {
+    try {
+      await this.$axios.$post(`/me/articles/${articleId}/fraud`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async postLike({ commit, state }, { articleId }) {
     try {
       await this.$axios.$post(`/me/articles/${articleId}/like`)
