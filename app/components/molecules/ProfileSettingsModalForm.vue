@@ -25,7 +25,7 @@
             minlength="1"
             maxlength="30"
             v-model="userDisplayName"
-            @input="setUserDisplayName"
+            @input="setUserDisplayName($event.target.value)"
             @blur="showError('userDisplayName')"
             @focus="resetError('userDisplayName')">
           <label class="signup-form-label">自己紹介</label>
@@ -37,7 +37,7 @@
             placeholder="自己紹介を入力してください"
             maxlength="100"
             v-model="selfIntroduction"
-            @input="setSelfIntroduction"
+            @input="setSelfIntroduction($event.target.value)"
             @blur="showError('selfIntroduction')"
             @focus="resetError('selfIntroduction')"/>
         </div>
@@ -67,11 +67,8 @@ export default {
   created() {
     this.userDisplayName = this.currentUserInfo.user_display_name || this.currentUser.userId
     this.selfIntroduction = this.currentUserInfo.self_introduction || ''
-    this.setProfileSettingsUserDisplayName({
-      userDisplayName: this.currentUser.userId
-    })
-    const selfIntroduction = this.currentUserInfo.self_introduction || ''
-    this.setProfileSettingsSelfIntroduction({ selfIntroduction })
+    this.setUserDisplayName(this.userDisplayName)
+    this.setSelfIntroduction(this.selfIntroduction)
   },
   computed: {
     invalidSubmit() {
@@ -138,11 +135,11 @@ export default {
       }
       reader.readAsDataURL(file)
     },
-    setUserDisplayName(e) {
-      this.setProfileSettingsUserDisplayName({ userDisplayName: e.target.value })
+    setUserDisplayName(userDisplayName) {
+      this.setProfileSettingsUserDisplayName({ userDisplayName })
     },
-    setSelfIntroduction(e) {
-      this.setProfileSettingsSelfIntroduction({ selfIntroduction: e.target.value })
+    setSelfIntroduction(selfIntroduction) {
+      this.setProfileSettingsSelfIntroduction({ selfIntroduction })
     },
     showError(type) {
       this.$v.profileSettingsModal.formData[type].$touch()
