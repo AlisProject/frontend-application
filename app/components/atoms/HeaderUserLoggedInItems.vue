@@ -111,18 +111,25 @@ export default {
       this.forbidScroll()
     },
     forbidScroll() {
-      if (document.querySelector('[class$=-article-list-container]')) {
-        document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
+      if (window.innerWidth <= 550) {
+        window.scrollTo(0, 0)
       }
-      document.querySelector('html,body').style.overflow = 'hidden'
-      document.addEventListener('touchmove', this.scrollOff, false)
+      if (window.innerWidth <= 920) {
+        if (document.querySelector('[class$=-article-list-container]')) {
+          document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
+        }
+        document.querySelector('html,body').style.overflow = 'hidden'
+        window.addEventListener('touchmove', this.scrollOff, false)
+      }
     },
     resetScroll() {
-      if (document.querySelector('[class$=-article-list-container]')) {
-        document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
+      if (window.innerWidth <= 920) {
+        if (document.querySelector('[class$=-article-list-container]')) {
+          document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
+        }
+        document.querySelector('html,body').style.overflow = ''
+        window.removeEventListener('touchmove', this.scrollOff, false)
       }
-      document.querySelector('html,body').style.overflow = ''
-      document.removeEventListener('touchmove', this.scrollOff, false)
     },
     scrollOf(e) {
       e.preventDefault()
@@ -401,21 +408,20 @@ export default {
   }
 
   .cover {
-    height: 101vh;
     background: black;
     border-radius: 4px;
     box-sizing: border-box;
     color: #000000;
     filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-    left: calc(280px - 120vw);
+    height: 4000px;
+    opacity: 0.5;
     position: absolute;
-    // right: 108px;
+    right: -16px;
     top: -26px;
     transform: rotate(-90deg);
     transform: rotate(0);
-    width: calc(100vw - 270px);
+    width: 100vw;
     z-index: -1;
-    opacity: 0.5;
   }
 }
 </style>
