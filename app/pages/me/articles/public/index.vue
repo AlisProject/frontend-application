@@ -9,8 +9,9 @@ export default {
   components: {
     PublicArticleList
   },
-  beforeCreate() {
-    this.$store.dispatch('article/getPublicArticles')
+  async mounted() {
+    await this.$store.dispatch('article/getPublicArticles')
+    await this.$store.dispatch('article/getPublicArticles')
   },
   head: {
     title: '公開済み記事一覧'

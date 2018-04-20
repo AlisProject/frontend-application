@@ -26,7 +26,8 @@
             v-for="img in suggestedThumbnails"
             :src="img"
             :key="img"
-            @click.stop="selectThumbnail"
+            :class="{ 'selected': img === thumbnail }"
+            @click.prevent="selectThumbnail"
             class="thumbnail"/>
         </div>
         <hr class="hr">
@@ -43,8 +44,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 export default {
   data() {
     return {
-      isPopupShown: false,
-      beforeSelected: null
+      isPopupShown: false
     }
   },
   props: {
@@ -81,11 +81,56 @@ export default {
         console.error(e)
       }
     },
+    async updateArticleData() {
+      const images = Array.from(document.querySelectorAll('.area-body figure img'))
+      /* eslint-disable space-before-function-paren */
+      await Promise.all(
+        images.map(async (img) => {
+          this.setIsSaving({ isSaving: true })
+
+          const isBase64Image = img.src.includes('data:')
+          const isNotUploadedImage = img.dataset.status !== 'uploaded'
+          const isNotUploadingImage = img.dataset.status !== 'uploading'
+          if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
+            img.dataset.status = 'uploading'
+            try {
+              const base64Image = img.src
+              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+              const imageContentType = base64Image.substring(
+                base64Image.match(':').index + 1,
+                base64Image.match(';').index
+              )
+              const { articleId } = this.articleId === '' ? this.$route.params : this
+              const { image_url: imageUrl } = await this.postArticleImage({
+                articleId,
+                articleImage: base64Hash,
+                imageContentType
+              })
+              img.src = imageUrl
+              img.dataset.status = 'uploaded'
+              this.setIsSaved({ isSaved: true })
+            } catch (error) {
+              console.error(error)
+              img.dataset.status = ''
+            }
+          }
+        })
+      )
+      const thumbnails = images
+        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
+        .map((img) => img.src)
+      this.updateSuggestedThumbnails({ thumbnails })
+      const hasNotImage = images.length === 0 && thumbnails.length === 0
+      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
+      if (hasNotImage || hasNotUploadingImage) {
+        const body = document.querySelector('.area-body').innerHTML
+        this.updateBody({ body })
+        this.setIsSaved({ isSaved: true })
+      }
+    },
     async publish() {
       const { articleId } = this.articleId === '' ? this.$route.params : this
-      const body = this.body
-        .replace(/<p class="medium-insert-active">[\s\S]*/, '')
-        .replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
+      const body = this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')
@@ -117,20 +162,16 @@ export default {
         console.error(e)
       }
     },
-    togglePopup() {
+    async togglePopup() {
       if (!this.isSaving) return
+      await this.updateArticleData()
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
       this.isPopupShown = false
     },
     selectThumbnail({ target }) {
-      if (this.beforeSelected) {
-        this.beforeSelected.classList.remove('selected')
-      }
-      target.classList.add('selected')
       this.updateThumbnail({ thumbnail: target.src })
-      this.beforeSelected = target
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -152,7 +193,12 @@ export default {
       'republishPublicArticle',
       'unpublishPublicArticle',
       'putDraftArticle',
-      'putPublicArticle'
+      'putPublicArticle',
+      'updateSuggestedThumbnails',
+      'postArticleImage',
+      'updateBody',
+      'setIsSaving',
+      'setIsSaved'
     ])
   },
   computed: {
@@ -227,6 +273,12 @@ export default {
 
 .area-new-article {
   grid-area: new-article;
+}
+
+.new-article .area-new-article {
+  color: #99a2ff;
+  display: block;
+  border-bottom: 2px solid #99a2ff;
 }
 
 .area-post-article {

@@ -18,7 +18,7 @@ export default {
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
-      editorBody.dataset.placeholder = body === '' ? 'あなたの物語を教えてください･･･' : ''
+      editorBody.dataset.placeholder = body === '' ? '本文を入力してください' : ''
     } catch (error) {
       console.error(error)
     }

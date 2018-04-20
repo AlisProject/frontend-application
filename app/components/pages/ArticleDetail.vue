@@ -3,14 +3,16 @@
     <app-header showDefaultHeaderNav class="logo-original"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
-      <img
-        class="area-top-image"
-        :src="article.eye_catch_url"
-        v-if="article.eye_catch_url !== null">
       <div class="area-content" v-html="article.body" />
       <!-- <article-tags :tags="article.tags"/> -->
-      <article-footer-actions :likesCount="article.likesCount"/>
-      <article-side-actions :likesCount="article.likesCount"/>
+      <article-footer-actions
+        :articleId="article.article_id"
+        :likesCount="likesCount"
+        :isLikedArticle="isLikedArticle"/>
+      <article-side-actions
+        :articleId="article.article_id"
+        :likesCount="likesCount"
+        :isLikedArticle="isLikedArticle"/>
       <article-sub-infos :createdAt="article.created_at" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
       <!-- <article-comments :comments="article.comments"/> -->
@@ -21,6 +23,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
@@ -48,6 +52,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    ...mapGetters('article', ['likesCount', 'isLikedArticle'])
   }
 }
 </script>
@@ -77,7 +84,6 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     'title         '
-    'top-image     '
     'content       '
     'footer-actions'
     'article-sub-infos'
@@ -90,12 +96,6 @@ export default {
   font-size: 25px;
   grid-area: title;
   letter-spacing: 0.05em;
-}
-
-.area-top-image {
-  grid-area: top-image;
-  max-width: 100%;
-  width: 100%;
 }
 
 .area-content {
@@ -128,7 +128,6 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      'top-image      top-image         top-image     '
       '...            title             ...           '
       '...            content           ...           '
       // '...            tags           ...           '

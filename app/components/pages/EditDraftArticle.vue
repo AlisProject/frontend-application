@@ -17,27 +17,24 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['title', 'body'])
+    ...mapGetters('article', ['title', 'body', 'isSaving'])
   },
   methods: {
     ...mapActions('article', ['putDraftArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
     putArticle: debounce(async function() {
       const article = {
-        title: this.title,
-        body:
-          this.body
-            .replace(/<p class="medium-insert-active">[\s\S]*/, '')
-            .replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+        title: this.title === '' ? ' ' : this.title,
+        body: this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
       }
       const { articleId } = this.$route.params
       this.setIsSaving({ isSaving: true })
       try {
-        await this.putDraftArticle({ article, articleId })
+        if (this.isSaving) await this.putDraftArticle({ article, articleId })
         this.setIsSaved({ isSaved: true })
       } catch (e) {
         console.error(e)
       }
-    }, 500)
+    }, 2500)
   },
   watch: {
     title(newTitle, oldTitle) {

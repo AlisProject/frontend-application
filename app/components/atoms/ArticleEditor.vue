@@ -7,13 +7,19 @@
       spellcheck="false"
       @input="onInputTitle"
       :value="title">
-    <div class="area-body" ref="editable" @input="onInputBody"/>
+    <div
+      class="area-body"
+      ref="editable"
+      @input="onInputBody"
+      @drop="preventDropImage"
+      @dragover="preventDragoverImage"/>
   </div>
 </template>
 
 <script>
 /* eslint no-undef: 0 */
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -31,6 +37,28 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
+    document.body.addEventListener(
+      'drop',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
+    document.body.addEventListener(
+      'dragover',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
+    $('.area-body').keydown((e) => {
+      const enterKeyCode = 13
+      if (e.keyCode === enterKeyCode && e.shiftKey) {
+        e.preventDefault()
+      }
+    })
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
@@ -38,6 +66,7 @@ export default {
   methods: {
     initMediumEditor() {
       const editorElement = new MediumEditor('.area-body', {
+        imageDragging: false,
         toolbar: {
           buttons: [
             {
@@ -90,7 +119,13 @@ export default {
           editor: editorElement,
           addons: {
             Part: true,
-            embeds: false
+            embeds: false,
+            images: {
+              fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
+              messages: {
+                maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
+              }
+            }
           }
         })
       })
@@ -140,6 +175,10 @@ export default {
       const hasNotImage = images.length === 0 && thumbnails.length === 0
       const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
       if (hasNotImage || hasNotUploadingImage) {
+        $('.area-body')
+          .find('span[style]')
+          .contents()
+          .unwrap()
         const body = document.querySelector('.area-body').innerHTML
         this.updateBody({ body })
         this.setIsSaved({ isSaved: true })
@@ -181,6 +220,23 @@ export default {
         }
       }
     },
+    preventDragoverImage(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      return false
+    },
+    preventDropImage(e) {
+      e.preventDefault()
+      e.stopPropagation()
+      this.sendNotification({
+        text: 'ドラッグ&ドロップでは画像をアップロードできません。',
+        type: 'warning'
+      })
+      return false
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', [
       'updateTitle',
       'updateBody',

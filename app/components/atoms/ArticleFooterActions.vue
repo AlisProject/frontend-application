@@ -1,7 +1,7 @@
 <template>
   <div class="area-footer-actions">
-    <div class="action like">
-      <span class="likes-count">{{ likesCount }}</span>
+    <div class="action like" :class="{ liked: this.isLikedArticle }" @click="like">
+      <span class="likes-count">{{ formattedLikesCount }}</span>
     </div>
     <div class="action share" @click="toggleSharePopup">
       <div class="share-popup" v-show="isSharePopupShown">
@@ -31,8 +31,16 @@ export default {
     }
   },
   props: {
+    articleId: {
+      type: String,
+      required: true
+    },
     likesCount: {
       type: Number,
+      required: true
+    },
+    isLikedArticle: {
+      type: Boolean,
       required: true
     }
   },
@@ -57,7 +65,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['showReportModal'])
+    formattedLikesCount() {
+      return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
+    },
+    ...mapGetters('user', ['loggedIn', 'showReportModal'])
   },
   methods: {
     toggleEtcPopup() {
@@ -77,6 +88,16 @@ export default {
       window.scrollTo(0, 0)
       document.querySelector('html,body').style.overflow = 'hidden'
     },
+    async like() {
+      if (this.loggedIn) {
+        if (!this.isLikedArticle) {
+          await this.postLike({ articleId: this.articleId })
+          await this.getIsLikedArticle({ articleId: this.articleId })
+        }
+      } else {
+        alert('記事のいいねにはログインが必要です')
+      }
+    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
@@ -88,7 +109,8 @@ export default {
         }
       })
     },
-    ...mapActions('user', ['setReportModal'])
+    ...mapActions('user', ['setReportModal']),
+    ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
 }
 </script>
@@ -171,10 +193,21 @@ export default {
   .like {
     background: url('~assets/images/pc/article/btn_like.png') no-repeat;
     background-size: 80px;
+    cursor: pointer;
     width: 80px;
     height: 80px;
     position: relative;
     background-position-y: -4px;
+
+    &.liked {
+      background-position-y: -4px;
+      background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
+      background-size: 80px;
+      cursor: not-allowed;
+      height: 80px;
+      position: relative;
+      width: 80px;
+    }
 
     .likes-count {
       color: #585858;

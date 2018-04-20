@@ -14,15 +14,19 @@ export default {
     const { articleId } = params
     await store.dispatch('article/getArticleDetail', { articleId })
   },
-  mounted() {
-    if (this.loggedIn) this.postPv({ articleId: this.$route.params.articleId })
+  async mounted() {
+    if (this.loggedIn) {
+      const { articleId } = this.$route.params
+      await this.getIsLikedArticle({ articleId })
+      await this.postPv({ articleId })
+    }
   },
   computed: {
     ...mapGetters('user', ['loggedIn']),
     ...mapGetters('article', ['article'])
   },
   methods: {
-    ...mapActions('article', ['postPv'])
+    ...mapActions('article', ['postPv', 'getIsLikedArticle'])
   },
   head() {
     return {

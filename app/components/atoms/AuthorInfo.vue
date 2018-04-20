@@ -23,7 +23,7 @@
       </p>
     </div>
     <div class="area-self-introduction">
-      <p class="self-introduction">
+      <p class="self-introduction" :class="{ 'add-bottom-space': user.self_introduction.trim() === '' }">
         {{ user.self_introduction }}
       </p>
     </div>
@@ -98,6 +98,10 @@ export default {
     color: #030303;
     font-size: 14px;
     line-height: 24px;
+
+    &.add-bottom-space {
+      padding-bottom: 4px;
+    }
   }
 }
 

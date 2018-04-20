@@ -15,9 +15,9 @@
         alt="completed-auth-image">
     </div>
     <div class="modal-footer">
-      <button class="to-next-step-button" @click="transitToProfileSettings">
+      <!-- <button class="to-next-step-button" @click="transitToProfileSettings">
         プロフィールを作成する
-      </button>
+      </button> -->
       <button class="to-top-button" @click="transitToTop">
         TOPに戻る
       </button>
