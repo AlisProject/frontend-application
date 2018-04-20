@@ -23,7 +23,7 @@
       </p>
     </div>
     <div class="area-self-introduction">
-      <p class="self-introduction" :class="{ 'add-bottom-space': user.self_introduction.trim() === '' }">
+      <p class="self-introduction" :class="{ 'add-bottom-space': !hasSelfIntroduction }">
         {{ user.self_introduction }}
       </p>
     </div>
@@ -39,6 +39,11 @@ export default {
     }
   },
   computed: {
+    hasSelfIntroduction() {
+      if (this.user.self_introduction === undefined) return false
+      if (this.user.self_introduction.trim() === '') return false
+      return true
+    },
     imageCaption() {
       return `${this.user.user_display_name}'s icon'`
     }
