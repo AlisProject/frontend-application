@@ -1,8 +1,8 @@
 <template>
   <transition name="fade">
     <div class="article-side-actions" v-show="scrollY > 300">
-      <div class="action like">
-        <span class="likes-count">{{ likesCount }}</span>
+      <div class="action like" :class="{ liked: this.isLikedArticle }" @click="like">
+        <span class="likes-count">{{ formattedLikesCount }}</span>
       </div>
       <div class="action share" @click="toggleSharePopup">
         <div class="share-popup" v-show="isSharePopupShown">
@@ -16,10 +16,20 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   props: {
+    articleId: {
+      type: String,
+      required: true
+    },
     likesCount: {
       type: Number,
+      required: true
+    },
+    isLikedArticle: {
+      type: Boolean,
       required: true
     }
   },
@@ -50,6 +60,12 @@ export default {
       })
     }
   },
+  computed: {
+    formattedLikesCount() {
+      return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
+    },
+    ...mapGetters('user', ['loggedIn'])
+  },
   methods: {
     handleScroll() {
       this.scrollY = window.scrollY
@@ -59,6 +75,16 @@ export default {
     },
     closeSharePopup() {
       this.isSharePopupShown = false
+    },
+    async like() {
+      if (this.loggedIn) {
+        if (!this.isLikedArticle) {
+          await this.postLike({ articleId: this.articleId })
+          await this.getIsLikedArticle({ articleId: this.articleId })
+        }
+      } else {
+        alert('記事のいいねにはログインが必要です')
+      }
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -70,7 +96,8 @@ export default {
           target.removeEventListener(eventType, callback)
         }
       })
-    }
+    },
+    ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
 }
 </script>
@@ -92,9 +119,20 @@ export default {
     background-position-y: -4px;
     background: url('~assets/images/pc/article/btn_like.png') no-repeat;
     background-size: 80px;
+    cursor: pointer;
     height: 80px;
     position: relative;
     width: 80px;
+
+    &.liked {
+      background-position-y: -4px;
+      background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
+      background-size: 80px;
+      cursor: pointer;
+      height: 80px;
+      position: relative;
+      width: 80px;
+    }
 
     .likes-count {
       color: #585858;

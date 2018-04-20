@@ -9,7 +9,7 @@ export default {
   components: {
     DraftArticleList
   },
-  beforeCreate() {
+  mounted() {
     this.$store.dispatch('article/getDraftArticles')
   },
   head: {

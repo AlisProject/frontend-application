@@ -1,6 +1,6 @@
 <template>
   <div class="create-article-container">
-    <app-header showEditHeaderNav showPostArticleLink class="drafts logo-original"/>
+    <app-header showEditHeaderNav showPostArticleLink class="new-article logo-original"/>
     <article-editor/>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'title', 'body'])
+    ...mapGetters('article', ['articleId', 'title', 'body', 'isSaving'])
   },
   data() {
     return {
@@ -28,30 +28,27 @@ export default {
     ...mapActions('article', ['postNewArticle', 'putDraftArticle', 'setIsSaving', 'setIsSaved']),
     postOrPutArticle: debounce(async function() {
       const article = {
-        title: this.title + ' ',
-        body:
-          this.body
-            .replace(/<p class="medium-insert-active">[\s\S]*/, '')
-            .replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+        title: this.title === '' ? ' ' : this.title,
+        body: this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
       }
       this.setIsSaving({ isSaving: true })
       if (this.isPosted) {
         try {
-          await this.putDraftArticle({ article, articleId: this.articleId })
+          if (this.isSaving) await this.putDraftArticle({ article, articleId: this.articleId })
           this.setIsSaved({ isSaved: true })
         } catch (e) {
           console.error(e)
         }
       } else {
         try {
-          await this.postNewArticle({ article })
+          if (this.isSaving) await this.postNewArticle({ article })
           this.setIsSaved({ isSaved: true })
           this.isPosted = true
         } catch (e) {
           console.error(e)
         }
       }
-    }, 500)
+    }, 2500)
   },
   watch: {
     title(newTitle, oldTitle) {
