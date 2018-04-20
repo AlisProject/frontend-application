@@ -84,9 +84,13 @@ export default {
       this.isSharePopupShown = false
     },
     showPopupReportModal() {
-      this.setReportModal({ showReportModal: true })
-      window.scrollTo(0, 0)
-      document.querySelector('html,body').style.overflow = 'hidden'
+      if (this.loggedIn) {
+        this.setReportModal({ showReportModal: true })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
+      } else {
+        alert('通報をするためにはログインが必要です')
+      }
     },
     async like() {
       if (this.loggedIn) {

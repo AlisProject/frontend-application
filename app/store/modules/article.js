@@ -265,6 +265,13 @@ const actions = {
   postPv({ commit }, { articleId }) {
     this.$axios.$post(`/me/articles/${articleId}/pv`)
   },
+  async postFraud({ commit }, { articleId }) {
+    try {
+      await this.$axios.$post(`/me/articles/${articleId}/fraud`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async postLike({ commit, state }, { articleId }) {
     try {
       await this.$axios.$post(`/me/articles/${articleId}/like`)
