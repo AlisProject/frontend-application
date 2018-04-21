@@ -162,7 +162,7 @@ export default {
 
     .profile-edit {
       bottom: 10px;
-      right: -300px;
+      right: -260px;
       cursor: pointer;
     }
   }
@@ -194,6 +194,12 @@ export default {
 @media screen and (max-width: 320px) {
   .area-user-info-container {
     grid-template-columns: 1fr 60px 200px 1fr;
+  }
+
+  .area-profile-icon {
+    .profile-edit {
+      right: -220px;
+    }
   }
 }
 </style>
