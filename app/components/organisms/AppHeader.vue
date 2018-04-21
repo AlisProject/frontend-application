@@ -23,6 +23,7 @@
     <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
+    <request-login-modal v-if="showRequestLoginModal"/>
     <toast position="n"/>
   </header>
 </template>
@@ -40,6 +41,7 @@ import LoginModal from '../organisms/LoginModal'
 import ReportModal from '../organisms/ReportModal'
 import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
 import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
+import RequestLoginModal from '../organisms/RequestLoginModal'
 
 export default {
   props: {
@@ -79,6 +81,7 @@ export default {
     ReportModal,
     RestrictEditArticleModal,
     ProfileSettingsModal,
+    RequestLoginModal,
     Toast
   },
   computed: {
@@ -89,7 +92,8 @@ export default {
       'showLoginModal',
       'showReportModal',
       'showProfileSettingsModal',
-      'showRestrictEditArticleModal'
+      'showRestrictEditArticleModal',
+      'showRequestLoginModal'
     ])
   }
 }

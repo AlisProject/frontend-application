@@ -89,7 +89,9 @@ export default {
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
       } else {
-        alert('通報をするためにはログインが必要です')
+        this.setRequestLoginModal({ showRequestLoginModal: true })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
       }
     },
     async like() {
@@ -99,7 +101,9 @@ export default {
           await this.getIsLikedArticle({ articleId: this.articleId })
         }
       } else {
-        alert('記事のいいねにはログインが必要です')
+        this.setRequestLoginModal({ showRequestLoginModal: true })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
       }
     },
     listen(target, eventType, callback) {
@@ -113,7 +117,7 @@ export default {
         }
       })
     },
-    ...mapActions('user', ['setReportModal']),
+    ...mapActions('user', ['setReportModal', 'setRequestLoginModal']),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
 }

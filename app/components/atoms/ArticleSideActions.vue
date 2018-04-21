@@ -83,7 +83,9 @@ export default {
           await this.getIsLikedArticle({ articleId: this.articleId })
         }
       } else {
-        alert('記事のいいねにはログインが必要です')
+        this.setRequestLoginModal({ showRequestLoginModal: true })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
       }
     },
     listen(target, eventType, callback) {
@@ -97,7 +99,8 @@ export default {
         }
       })
     },
-    ...mapActions('article', ['postLike', 'getIsLikedArticle'])
+    ...mapActions('article', ['postLike', 'getIsLikedArticle']),
+    ...mapActions('user', ['setRequestLoginModal'])
   }
 }
 </script>

@@ -45,7 +45,8 @@ export default {
       'showLoginModal',
       'showReportModal',
       'showProfileSettingsModal',
-      'showRestrictEditArticleModal'
+      'showRestrictEditArticleModal',
+      'showRequestLoginModal'
     ])
   },
   methods: {
@@ -82,6 +83,9 @@ export default {
         this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
         this.$router.push('/me/articles/public')
       }
+      if (this.showRequestLoginModal) {
+        this.setRequestLoginModal({ showRequestLoginModal: false })
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -95,7 +99,8 @@ export default {
       'setProfileSettingsModal',
       'setRestrictEditArticleModal',
       'resetPassword',
-      'logout'
+      'logout',
+      'setRequestLoginModal'
     ])
   }
 }

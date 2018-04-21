@@ -93,7 +93,8 @@ const state = () => ({
   userInfo: {},
   userArticles: [],
   userArticlesLastEvaluatedKey: {},
-  hasUserArticlesLastEvaluatedKey: false
+  hasUserArticlesLastEvaluatedKey: false,
+  showRequestLoginModal: false
 })
 
 const getters = {
@@ -113,7 +114,8 @@ const getters = {
   showRestrictEditArticleModal: (state) => state.showRestrictEditArticleModal,
   userInfo: (state) => state.userInfo,
   userArticles: (state) => state.userArticles,
-  userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey
+  userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
+  showRequestLoginModal: (state) => state.showRequestLoginModal
 }
 
 const actions = {
@@ -404,6 +406,9 @@ const actions = {
   },
   resetPassword({ commit }) {
     commit(types.RESET_PASSWORD)
+  },
+  setRequestLoginModal({ commit }, { showRequestLoginModal }) {
+    commit(types.SET_REQUEST_LOGIN_MODAL, { showRequestLoginModal })
   }
 }
 
@@ -559,6 +564,9 @@ const mutations = {
   },
   [types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
     state.hasUserArticlesLastEvaluatedKey = hasLastEvaluatedKey
+  },
+  [types.SET_REQUEST_LOGIN_MODAL](state, { showRequestLoginModal }) {
+    state.showRequestLoginModal = showRequestLoginModal
   }
 }
 
