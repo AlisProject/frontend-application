@@ -53,6 +53,7 @@ export default {
   font-size: 25px;
   grid-area: title;
   letter-spacing: 0.05em;
+  word-break: break-all;
 }
 
 .area-content {
