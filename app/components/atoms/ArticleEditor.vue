@@ -257,14 +257,15 @@ export default {
 .area-editor-container {
   display: grid;
   grid-area: editor;
-  grid-template-rows: 32px 500px 70px;
+  grid-template-rows: 32px min-content;
+  // grid-template-rows: 32px 500px 70px;
   grid-gap: 40px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
     "title"
-    "body "
-    "tags ";
+    "body ";
+  // "tags ";
 }
 
 .area-title {
@@ -290,6 +291,7 @@ export default {
 .area-body {
   grid-area: body;
   width: 100%;
+  padding-bottom: 120px;
 }
 
 .medium-editor-placeholder-relative:after,
