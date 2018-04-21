@@ -83,12 +83,15 @@ const actions = {
     }
   },
   async getNewPagesArticles({ commit, dispatch, state }) {
-    if (!state.hasNewArticlesLastEvaluatedKey) {
+    if (!state.hasNewArticlesLastEvaluatedKey && state.newArticlesLastEvaluatedKey !== undefined) {
       try {
         commit(types.SET_HAS_NEW_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
         const { article_id: articleId, sort_key: sortKey } = state.newArticlesLastEvaluatedKey
         const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/articles/recent', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
         commit(types.SET_NEW_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+        if (LastEvaluatedKey === undefined) {
+          return
+        }
         const articlesWithData = await Promise.all(
           articles.map(async (article) => {
             const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
