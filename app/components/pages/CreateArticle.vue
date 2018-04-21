@@ -68,14 +68,13 @@ export default {
 <style lang="scss" scoped>
 .create-article-container {
   display: grid;
-  grid-template-rows: 100px 50px 650px 75px;
+  grid-template-rows: 100px 50px min-content;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header app-header"
     "...         ...        ...       "
-    "...         editor     ...       "
-    "...         ...        ...       ";
+    "...         editor     ...       ";
 }
 
 @media screen and (max-width: 640px) {
