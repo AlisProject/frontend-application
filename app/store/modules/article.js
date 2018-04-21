@@ -87,7 +87,17 @@ const actions = {
       try {
         commit(types.SET_HAS_NEW_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
         const { article_id: articleId, sort_key: sortKey } = state.newArticlesLastEvaluatedKey
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/articles/recent', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
+        let articles = []
+        let LastEvaluatedKey = {}
+        if (articleId && sortKey) {
+          const data = await this.$axios.$get(`/articles/recent?limit=10&article_id=${articleId}&sort_key=${sortKey}`)
+          articles = data.Items
+          LastEvaluatedKey = data.LastEvaluatedKey
+        } else {
+          const data = await this.$axios.$get('/articles/recent?limit=10')
+          articles = data.Items
+          LastEvaluatedKey = data.LastEvaluatedKey
+        }
         commit(types.SET_NEW_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
         if (LastEvaluatedKey === undefined) {
           return
