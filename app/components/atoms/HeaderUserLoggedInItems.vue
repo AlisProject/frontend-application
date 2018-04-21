@@ -12,7 +12,7 @@
       v-else>
     <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
     <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
-    <div class="menu" v-show="isMenuShown">
+    <div class="menu" v-if="isMenuShown">
       <div class="image-box">
         <img
           :src="currentUserInfo.icon_image_url"
@@ -40,6 +40,7 @@
       </ul>
       <span class="logout" @click="logoutUser">ログアウト</span>
     </div>
+    <div class="cover" v-show="isMenuShown" @click="closeMenu"></div>
   </div>
 </template>
 
@@ -73,10 +74,16 @@ export default {
   },
   methods: {
     toggleMenu() {
+      if (!this.isMenuShown) {
+        this.forbidScroll()
+      } else {
+        this.resetScroll()
+      }
       this.isMenuShown = !this.isMenuShown
     },
     closeMenu() {
       this.isMenuShown = false
+      this.resetScroll()
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -99,12 +106,33 @@ export default {
       }
     },
     showProfileSettingsModal() {
-      if (document.querySelector('[class$=-article-list-container]')) {
-        document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
-      }
       window.scrollTo(0, 0)
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
-      document.querySelector('html,body').style.overflow = 'hidden'
+      this.forbidScroll()
+    },
+    forbidScroll() {
+      if (window.innerWidth <= 550) {
+        window.scrollTo(0, 0)
+      }
+      if (window.innerWidth <= 920) {
+        if (document.querySelector('[class$=-article-list-container]')) {
+          document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
+        }
+        document.querySelector('html,body').style.overflow = 'hidden'
+        window.addEventListener('touchmove', this.scrollOff, false)
+      }
+    },
+    resetScroll() {
+      if (window.innerWidth <= 920) {
+        if (document.querySelector('[class$=-article-list-container]')) {
+          document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
+        }
+        document.querySelector('html,body').style.overflow = ''
+        window.removeEventListener('touchmove', this.scrollOff, false)
+      }
+    },
+    scrollOf(e) {
+      e.preventDefault()
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -357,6 +385,8 @@ export default {
     top: -26px;
     width: 280px;
     transform: rotate(0);
+    z-index: 1;
+    height: 101vh;
 
     &:before {
       display: none;
@@ -376,6 +406,23 @@ export default {
         margin-bottom: 20px;
       }
     }
+  }
+
+  .cover {
+    background: black;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #000000;
+    filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
+    height: 4000px;
+    opacity: 0.5;
+    position: absolute;
+    right: -16px;
+    top: -26px;
+    transform: rotate(-90deg);
+    transform: rotate(0);
+    width: 100vw;
+    z-index: -1;
   }
 }
 </style>
