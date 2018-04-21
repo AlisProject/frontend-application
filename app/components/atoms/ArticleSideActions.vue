@@ -128,7 +128,7 @@ export default {
       background-position-y: -4px;
       background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
       background-size: 80px;
-      cursor: pointer;
+      cursor: not-allowed;
       height: 80px;
       position: relative;
       width: 80px;

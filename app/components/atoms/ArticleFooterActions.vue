@@ -245,6 +245,7 @@ export default {
       .likes-count {
         top: -18px;
         right: 24px;
+        text-align: center;
       }
     }
   }
