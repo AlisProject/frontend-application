@@ -4,6 +4,23 @@
   </div>
 </template>
 
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  mounted() {
+    if (location.pathname.startsWith('/me')) {
+      if (!this.loggedIn) {
+        this.$router.push('/login')
+      }
+    }
+  },
+  computed: {
+    ...mapGetters('user', ['loggedIn'])
+  }
+}
+</script>
+
 <style>
 @import 'normalize.css';
 
