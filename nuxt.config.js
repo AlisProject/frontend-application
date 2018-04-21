@@ -30,7 +30,8 @@ module.exports = {
   },
   plugins: [
     '~/plugins/axios',
-    '~/plugins/vuelidate'
+    '~/plugins/vuelidate',
+    { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
     baseURL: process.env.BASE_URL,
