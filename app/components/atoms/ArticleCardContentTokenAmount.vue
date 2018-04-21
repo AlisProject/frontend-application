@@ -19,7 +19,8 @@ export default {
 
 <style lang="scss" scoped>
 .token-amount {
-  background: url('~assets/images/pc/common/logo_casset_alis.png') no-repeat;
+  background: url('~assets/images/pc/common/icon_alistoken.png') no-repeat;
+  background-size: 15px;
   bottom: 20px;
   color: #717171;
   font-size: 12px;
