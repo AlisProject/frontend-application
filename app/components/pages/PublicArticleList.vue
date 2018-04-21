@@ -2,7 +2,7 @@
   <div class="public-article-list-container long-article-card">
     <app-header showEditHeaderNav class="public-articles logo-original"/>
     <article-card-list :articles="publicArticles" :linkTo="'public'"/>
-    <the-loader :lastEvaluatedKey="publicArticlesLastEvaluatedKey"/>
+    <!-- <the-loader :lastEvaluatedKey="publicArticlesLastEvaluatedKey"/> -->
     <app-footer/>
   </div>
 </template>
@@ -11,14 +11,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleCardList from '../organisms/ArticleCardList'
-import TheLoader from '../atoms/TheLoader'
+// import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
     ArticleCardList,
-    TheLoader,
+    // TheLoader,
     AppFooter
   },
   computed: {
