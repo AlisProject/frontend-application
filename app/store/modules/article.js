@@ -301,6 +301,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setIsLikedArticle({ commit }, { liked }) {
+    commit(types.SET_IS_LIKED_ARTICLE, { liked })
   }
 }
 
