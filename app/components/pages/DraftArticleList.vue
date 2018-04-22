@@ -21,6 +21,10 @@ export default {
     TheLoader,
     AppFooter
   },
+  mounted() {
+    this.setIsSaving({ isSaving: false })
+    this.setIsSaved({ isSaved: false })
+  },
   computed: {
     ...mapGetters('article', ['draftArticles', 'draftArticlesLastEvaluatedKey'])
   },
@@ -30,7 +34,7 @@ export default {
         this.getDraftArticles()
       }
     },
-    ...mapActions('article', ['getDraftArticles'])
+    ...mapActions('article', ['getDraftArticles', 'setIsSaving', 'setIsSaved'])
   }
 }
 </script>
