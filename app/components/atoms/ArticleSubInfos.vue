@@ -4,12 +4,13 @@
       公開日：<span class="created-at">{{ formettedCreatedAt }}</span>
     </div>
     <div class="article-sub-info">
-      獲得トークン：<span class="token-amount">{{ tokenAmount }}</span>
+      獲得トークン：<span class="token-amount">{{ formattedTokenAmount }}</span>
     </div>
   </div>
 </template>
 
 <script>
+import { BigNumber } from 'bignumber.js'
 import moment from 'moment'
 
 export default {
@@ -28,6 +29,12 @@ export default {
       return moment(this.createdAt, 'X')
         .locale('ja')
         .format('L')
+    },
+    formattedTokenAmount() {
+      const stringTokenAmount = this.tokenAmount.toString()
+      const formatNumber = 10 ** 18
+      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber).toNumber()
+      return alisToken > 999 ? (alisToken / 1000).toFixed(2) + 'k' : alisToken.toFixed(2)
     }
   }
 }
