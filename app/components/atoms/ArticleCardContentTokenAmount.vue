@@ -15,8 +15,8 @@ export default {
     formattedTokenAmount() {
       const stringTokenAmount = this.tokenAmount.toString()
       const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber).toNumber()
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2) + 'k' : alisToken.toFixed(2)
+      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
+      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
     }
   }
 }
