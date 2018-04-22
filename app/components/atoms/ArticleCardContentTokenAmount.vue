@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { BigNumber } from 'bignumber.js'
+
 export default {
   props: {
     tokenAmount: {
@@ -11,7 +13,10 @@ export default {
   },
   computed: {
     formattedTokenAmount() {
-      return this.tokenAmount > 999 ? (this.tokenAmount / 1000).toFixed(2) + 'k' : this.tokenAmount
+      const stringTokenAmount = this.tokenAmount.toString()
+      const formatNumber = 10 ** 18
+      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber).toNumber()
+      return alisToken > 999 ? (alisToken / 1000).toFixed(2) + 'k' : alisToken.toFixed(2)
     }
   }
 }
