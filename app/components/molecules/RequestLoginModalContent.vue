@@ -159,7 +159,32 @@ export default {
 
 @media screen and (max-width: 550px) {
   .confirm-text {
-    padding: 20vh 0 0;
+    padding: 4vh 0 0;
+  }
+
+  .login-button {
+    margin: 40px auto 0;
+  }
+
+  .signup-button {
+    margin: 20px auto 40px;
+  }
+
+  .submit-button {
+    margin: 40px auto 0;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .for-submitted-user {
+    margin: 40px 0 0;
+  }
+
+  .login-button,
+  .signup-button,
+  .submit-button {
+    width: 220px;
+    margin: 12px auto;
   }
 }
 </style>
