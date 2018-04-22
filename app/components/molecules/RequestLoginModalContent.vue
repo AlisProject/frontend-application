@@ -7,7 +7,7 @@
       <p class="for-submitted-user">
         β版登録済みの方
       </p>
-      <p class="description">
+      <p class="login description">
         既に登録済みの方は以下のボタンよりログイン
         画面へお進みください。また新規登録がお進み
         でない方は新規登録画面へお進みください。
@@ -160,6 +160,10 @@ export default {
 @media screen and (max-width: 550px) {
   .confirm-text {
     padding: 4vh 0 0;
+  }
+
+  .login.description {
+    display: none;
   }
 
   .login-button {
