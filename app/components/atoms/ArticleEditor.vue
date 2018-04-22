@@ -55,7 +55,11 @@ export default {
     )
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
-      if (e.keyCode === enterKeyCode && e.shiftKey) {
+      const pressedEnterkey = e.keyCode === enterKeyCode
+      if (pressedEnterkey && e.shiftKey) {
+        e.preventDefault()
+      }
+      if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
         e.preventDefault()
       }
     })
