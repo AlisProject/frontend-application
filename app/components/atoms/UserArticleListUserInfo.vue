@@ -151,7 +151,6 @@ export default {
       "... profile-icon user-id           ..."
       "... ...          self-introduction ...";
     text-align: left;
-    z-index: 2;
   }
 
   .area-profile-icon {
