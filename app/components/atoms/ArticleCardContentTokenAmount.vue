@@ -13,6 +13,7 @@ export default {
   },
   computed: {
     formattedTokenAmount() {
+      if (this.tokenAmount === undefined) return
       const stringTokenAmount = this.tokenAmount.toString()
       const formatNumber = 10 ** 18
       const alisToken = new BigNumber(stringTokenAmount).div(formatNumber).toNumber()
