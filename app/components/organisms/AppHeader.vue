@@ -171,6 +171,10 @@ export default {
     grid-template-rows: 9px 29px 15px;
   }
 
+  .background-none.area-app-header-container {
+    background: none;
+  }
+
   .logo-original,
   .logo-white {
     .area-logo {
