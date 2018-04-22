@@ -103,7 +103,9 @@ export default {
       } else {
         this.setRequestLoginModal({ showRequestLoginModal: true })
         window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
       }
     },
     listen(target, eventType, callback) {
