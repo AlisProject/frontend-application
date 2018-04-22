@@ -19,6 +19,8 @@ export default {
       const { articleId } = this.$route.params
       await this.getIsLikedArticle({ articleId })
       await this.postPv({ articleId })
+    } else {
+      this.setIsLikedArticle({ liked: false })
     }
   },
   computed: {
@@ -26,7 +28,7 @@ export default {
     ...mapGetters('article', ['article'])
   },
   methods: {
-    ...mapActions('article', ['postPv', 'getIsLikedArticle'])
+    ...mapActions('article', ['postPv', 'getIsLikedArticle', 'setIsLikedArticle'])
   },
   head() {
     return {
