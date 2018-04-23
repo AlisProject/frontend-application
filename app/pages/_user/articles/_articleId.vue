@@ -14,7 +14,7 @@ export default {
     try {
       const { articleId } = params
       await store.dispatch('article/getArticleDetail', { articleId })
-    } catch (error) {
+    } catch (e) {
       error({ statusCode: 404 })
     }
   },
