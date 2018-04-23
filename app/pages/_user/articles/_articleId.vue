@@ -10,9 +10,13 @@ export default {
   components: {
     ArticleDetail
   },
-  async fetch({ store, params }) {
-    const { articleId } = params
-    await store.dispatch('article/getArticleDetail', { articleId })
+  async fetch({ store, params, error }) {
+    try {
+      const { articleId } = params
+      await store.dispatch('article/getArticleDetail', { articleId })
+    } catch (error) {
+      error({ statusCode: 404 })
+    }
   },
   async mounted() {
     if (this.loggedIn) {
