@@ -22,7 +22,40 @@ export default {
     this.$store.dispatch('user/resetUserArticlesLastEvaluatedKey')
   },
   head() {
-    return { title: this.$store.state.user.userInfo.user_id }
+    return {
+      title: this.$store.state.user.userInfo.user_id,
+      meta: [
+        {
+          hid: `og:title`,
+          name: 'og:title',
+          content: `${this.$store.state.user.userInfo.user_id} | ALIS`
+        },
+        {
+          hid: `og:description`,
+          name: 'og:description',
+          content: `${this.$store.state.user.userInfo.user_id}'s page.`
+        },
+        {
+          hid: `og:type`,
+          name: 'og:type',
+          content: 'author'
+        },
+        {
+          hid: `og:image`,
+          name: 'og:image',
+          content:
+            this.$store.state.user.userInfo.icon_image_url ||
+            `https://${process.env.DOMAIN}/d/nuxt/dist/icon_user_noimg.png`
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content:
+            this.$store.state.user.userInfo.icon_image_url ||
+            `https://${process.env.DOMAIN}/d/nuxt/dist/icon_user_noimg.png`
+        }
+      ]
+    }
   }
 }
 </script>
