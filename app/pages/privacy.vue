@@ -10,7 +10,19 @@ export default {
     PrivacyPolicy
   },
   head: {
-    title: 'プライバシーポリシー'
+    title: 'プライバシーポリシー',
+    meta: [
+      {
+        hid: 'og:title',
+        name: 'og:title',
+        content: 'プライバシーポリシー | ALIS'
+      },
+      {
+        hid: 'og:description',
+        name: 'og:description',
+        content: 'プライバシーポリシー'
+      }
+    ]
   }
 }
 </script>

@@ -22,7 +22,19 @@ export default {
     history.replaceState(null, null, '/')
   },
   head: {
-    title: 'サインアップ'
+    title: 'サインアップ',
+    meta: [
+      {
+        hid: 'og:title',
+        name: 'og:title',
+        content: 'サインアップ | ALIS'
+      },
+      {
+        hid: 'og:description',
+        name: 'og:description',
+        content: 'サインアップ'
+      }
+    ]
   }
 }
 </script>

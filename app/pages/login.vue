@@ -19,7 +19,19 @@ export default {
     document.querySelector('html,body').style.overflow = 'hidden'
   },
   head: {
-    title: 'ログイン'
+    title: 'ログイン',
+    meta: [
+      {
+        hid: 'og:title',
+        name: 'og:title',
+        content: 'ログイン | ALIS'
+      },
+      {
+        hid: 'og:description',
+        name: 'og:description',
+        content: 'ログイン'
+      }
+    ]
   }
 }
 </script>
