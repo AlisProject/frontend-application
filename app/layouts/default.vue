@@ -17,6 +17,17 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['loggedIn'])
+  },
+  head() {
+    return {
+      meta: [
+        {
+          hid: 'og:url',
+          name: 'og:url',
+          content: `https://${process.env.DOMAIN}${this.$route.fullPath}`
+        }
+      ]
+    }
   }
 }
 </script>
