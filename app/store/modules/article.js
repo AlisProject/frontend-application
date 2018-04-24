@@ -150,7 +150,7 @@ const actions = {
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken } })
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   },
   async getPublicArticleDetail({ commit }, { articleId }) {
