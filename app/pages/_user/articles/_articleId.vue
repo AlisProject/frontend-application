@@ -43,6 +43,37 @@ export default {
           href:
             'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/css/medium-editor-insert-plugin.min.css'
         }
+      ],
+      meta: [
+        {
+          hid: `og:title`,
+          name: 'og:title',
+          content: `${this.$store.state.article.article.title} | ALIS`
+        },
+        {
+          hid: `og:description`,
+          name: 'og:description',
+          content: this.$store.state.article.article.overview
+        },
+        {
+          hid: `og:type`,
+          name: 'og:type',
+          content: 'article'
+        },
+        {
+          hid: `og:image`,
+          name: 'og:image',
+          content:
+            this.$store.state.article.article.eye_catch_url ||
+            `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+        },
+        {
+          hid: 'twitter:image',
+          name: 'twitter:image',
+          content:
+            this.$store.state.article.article.eye_catch_url ||
+            `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+        }
       ]
     }
   }

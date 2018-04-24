@@ -5,10 +5,18 @@ module.exports = {
   head: {
     title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
     titleTemplate: '%s | ALIS',
+    prefix: 'og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` }
+      { hid: 'description', name: 'description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
+      { hid: 'og:title', name: 'og:title', content: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.' },
+      { hid: 'og:description', name: 'og:description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
+      { hid: 'og:type', name: 'og:type', content: 'website' },
+      { hid: 'og:image', name: 'og:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+      { hid: 'twitter:site', name: 'twitter:site', content: '@ALIS_media' },
+      { hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico` }]
   },

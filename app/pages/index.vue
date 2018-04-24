@@ -12,9 +12,10 @@ export default {
   async fetch({ store }) {
     await store.dispatch('article/getPopularArticles')
   },
-  head: {
-    title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
-    titleTemplate: ''
+  head() {
+    return {
+      titleTemplate: ''
+    }
   }
 }
 </script>

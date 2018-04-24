@@ -12,8 +12,22 @@ export default {
   async fetch({ store }) {
     await store.dispatch('article/getNewPagesArticles')
   },
-  head: {
-    title: '新着記事'
+  head() {
+    return {
+      title: '新着記事',
+      meta: [
+        {
+          hid: `og:title`,
+          name: 'og:title',
+          content: `新着記事 | ALIS`
+        },
+        {
+          hid: `og:description`,
+          name: 'og:description',
+          content: '新着記事一覧'
+        }
+      ]
+    }
   }
 }
 </script>
