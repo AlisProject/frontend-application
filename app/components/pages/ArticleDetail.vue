@@ -53,6 +53,12 @@ export default {
       required: true
     }
   },
+  mounted() {
+    const figcaptions = document.querySelectorAll('figcaption')
+    figcaptions.forEach((figcaption) => {
+      figcaption.removeAttribute('contenteditable')
+    })
+  },
   computed: {
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
   }
