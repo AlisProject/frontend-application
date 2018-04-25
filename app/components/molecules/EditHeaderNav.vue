@@ -156,7 +156,7 @@ export default {
           await this.putPublicArticle({ article, articleId })
           await this.republishPublicArticle({ article, articleId })
         }
-        this.$router.push('/me/articles/public')
+        this.$router.push(`/${this.currentUser.userId}/articles/${articleId}`)
         this.sendNotification({ text: '記事を公開しました' })
       } catch (e) {
         console.error(e)
@@ -211,6 +211,7 @@ export default {
       'isSaving',
       'isSaved'
     ]),
+    ...mapGetters('user', ['currentUser']),
     saveStatus() {
       if (this.isSaved) {
         return 'Saved'
