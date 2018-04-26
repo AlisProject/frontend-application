@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/users/${article.userInfo.user_id}`" class="area-data">
+  <nuxt-link :to="`/users/${article.userInfo.user_id}`" tag="div" class="area-data">
     <article-card-content-data-profile-icon :user="article.userInfo"/>
     <article-card-content-data-username :username="article.userInfo.user_display_name"/>
     <article-card-content-data-created-at :createdAt="article.created_at"/>

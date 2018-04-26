@@ -1,10 +1,14 @@
 <template>
-  <div>
-    <section class="article-card-container">
-      <article-card-image :link="getLink" :linkTo="linkTo" :eyeCatchUrl="article.eye_catch_url"/>
-      <article-card-content :link="getLink" :linkTo="linkTo" :article="article"/>
-    </section>
-  </div>
+  <section>
+    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'public' || linkTo === 'draft'">
+      <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
+      <article-card-content :article="article"/>
+    </a>
+    <nuxt-link :to="`${getLink}`" class="article-card-container" v-else>
+      <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
+      <article-card-content :article="article"/>
+    </nuxt-link>
+  </section>
 </template>
 
 <script>

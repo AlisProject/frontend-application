@@ -1,39 +1,19 @@
 <template>
   <div class="area-article-card-image">
-    <a :href="link" v-if="linkTo === 'public' || linkTo === 'draft'">
-      <img
-        class="article-image"
-        src="~assets/images/pc/common/thumbnail_noimg.png"
-        v-if="this.eyeCatchUrl === null">
-      <img
-        class="article-image"
-        :src="eyeCatchUrl"
-        v-else>
-    </a>
-    <nuxt-link :to="link" v-else>
-      <img
-        class="article-image"
-        src="~assets/images/pc/common/thumbnail_noimg.png"
-        v-if="this.eyeCatchUrl === null">
-      <img
-        class="article-image"
-        :src="eyeCatchUrl"
-        v-else>
-    </nuxt-link>
+    <img
+      class="article-image"
+      src="~assets/images/pc/common/thumbnail_noimg.png"
+      v-if="this.eyeCatchUrl === null">
+    <img
+      class="article-image"
+      :src="eyeCatchUrl"
+      v-else>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    link: {
-      type: String,
-      required: true
-    },
-    linkTo: {
-      type: String,
-      required: false
-    },
     eyeCatchUrl: {
       type: String,
       required: false

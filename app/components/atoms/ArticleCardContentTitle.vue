@@ -1,25 +1,12 @@
 <template>
   <h2 class="area-title">
-    <a :href="link" v-if="linkTo === 'public' || linkTo === 'draft'">
-      {{ title }}
-    </a>
-    <nuxt-link :to="link" v-else>
-      {{ title }}
-    </nuxt-link>
+    {{ title }}
   </h2>
 </template>
 
 <script>
 export default {
   props: {
-    link: {
-      type: String,
-      required: true
-    },
-    linkTo: {
-      type: String,
-      required: false
-    },
     title: {
       type: String,
       required: false
