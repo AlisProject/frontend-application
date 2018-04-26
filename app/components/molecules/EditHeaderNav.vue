@@ -31,7 +31,7 @@
             class="thumbnail"/>
         </div>
         <hr class="hr">
-        <button class="submit" @click="publish">公開する</button>
+        <button class="submit" @click="publish" :class="{ disable: !isSaving }">公開する</button>
       </div>
     </div>
   </nav>
@@ -129,6 +129,7 @@ export default {
       }
     },
     async publish() {
+      if (!this.isSaving) return
       const { articleId } = this.articleId === '' ? this.$route.params : this
       const body = this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
       const overview = body
@@ -359,6 +360,12 @@ export default {
       &:hover {
         background: #99a2ff;
         color: #fff;
+
+        &.disable {
+          background: #fff;
+          color: #99a2ff;
+          cursor: not-allowed;
+        }
       }
     }
   }
