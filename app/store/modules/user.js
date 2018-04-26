@@ -416,9 +416,8 @@ const actions = {
   async getUsersAlisToken({ commit }) {
     try {
       const { result } = await this.$axios.$get('/me/wallet/balance')
-      console.log('result type:', typeof result)
       const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(result).div(formatNumber).toNumber()
+      const alisToken = new BigNumber(result, 16).div(formatNumber).toNumber()
       commit(types.SET_USERS_ALIS_TOKEN, { alisToken })
     } catch (error) {
       return Promise.reject(error)
