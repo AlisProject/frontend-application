@@ -13,7 +13,6 @@ const getters = {
 
 const actions = {
   setTopPageScroll({ commit }, { scroll }) {
-    console.log(1)
     commit(types.SET_TOP_PAGE_SCROLL, { scroll })
   }
 }
