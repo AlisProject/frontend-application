@@ -1,13 +1,21 @@
 <template>
   <nav class="area-nav">
     <template v-if="!showOnlyLogo && !showOnlySessionLinks">
-      <nuxt-link to="/" class="nav-link area-popular-articles">人気記事</nuxt-link>
-      <nuxt-link to="/articles/recent" class="nav-link area-new-articles">新着記事</nuxt-link>
+      <nuxt-link
+        to="/"
+        class="nav-link area-popular-articles"
+        @click.native="resetScrollPosition">人気記事</nuxt-link>
+      <nuxt-link
+        to="/articles/recent"
+        class="nav-link area-new-articles"
+        @click.native="resetScrollPosition">新着記事</nuxt-link>
     </template>
   </nav>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     showOnlyLogo: {
@@ -18,6 +26,12 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  methods: {
+    resetScrollPosition() {
+      this.setTopPageScroll({ scroll: 0 })
+    },
+    ...mapActions('presentation', ['setTopPageScroll'])
   }
 }
 </script>
