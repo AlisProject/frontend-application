@@ -17,5 +17,8 @@ export default {
 .area-name {
   align-self: flex-end;
   grid-area: name;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
