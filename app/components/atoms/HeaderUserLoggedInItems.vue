@@ -25,7 +25,7 @@
       </div>
       <div class="token-amount">
         <p class="alis-hold-amount">ALIS保有数</p>
-        <p class="alis-token-amount">0 <span class="token-unit">ALIS</span></p>
+        <p class="alis-token-amount">{{ alisToken }} <span class="token-unit">ALIS</span></p>
       </div>
       <ul class="menu-links">
         <li class="menu-link">
@@ -54,8 +54,9 @@ export default {
       isMenuShown: false
     }
   },
-  mounted() {
-    this.setCurrentUserInfo()
+  async mounted() {
+    await this.setCurrentUserInfo()
+    await this.getUsersAlisToken()
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeMenu()
@@ -70,7 +71,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUserInfo'])
+    ...mapGetters('user', ['currentUserInfo', 'alisToken'])
   },
   methods: {
     toggleMenu() {
@@ -137,7 +138,12 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['logout', 'setProfileSettingsModal', 'setCurrentUserInfo'])
+    ...mapActions('user', [
+      'logout',
+      'setProfileSettingsModal',
+      'setCurrentUserInfo',
+      'getUsersAlisToken'
+    ])
   }
 }
 </script>
