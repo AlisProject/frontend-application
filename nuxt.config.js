@@ -5,7 +5,6 @@ module.exports = {
   head: {
     title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
     titleTemplate: '%s | ALIS',
-    prefix: 'og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
