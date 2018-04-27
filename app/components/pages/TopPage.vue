@@ -22,7 +22,16 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['popularArticles', 'popularArticlesLastEvaluatedKey'])
+    ...mapGetters('article', ['popularArticles', 'popularArticlesLastEvaluatedKey']),
+    ...mapGetters('presentation', ['topPageScroll'])
+  },
+  mounted() {
+    if (this.topPageScroll) {
+      this.$el.scrollTop = this.topPageScroll
+    }
+  },
+  beforeDestroy() {
+    this.setTopPageScroll({ scroll: this.$el.scrollTop })
   },
   methods: {
     infiniteScroll(event) {
@@ -30,7 +39,8 @@ export default {
         this.getPopularArticles()
       }
     },
-    ...mapActions('article', ['getPopularArticles'])
+    ...mapActions('article', ['getPopularArticles']),
+    ...mapActions('presentation', ['setTopPageScroll'])
   }
 }
 </script>
