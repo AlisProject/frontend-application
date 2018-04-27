@@ -5,9 +5,9 @@ export default async ({ $axios, store, env }) => {
     await store.dispatch('user/getUserSession')
   } catch (e) { }
 
-  $axios.onRequest(req => {
+  $axios.onRequest(async (req) => {
     try {
-      store.dispatch('user/getUserSession')
+      await store.dispatch('user/getUserSession')
       const currentUser = localStorage.getItem(
         `CognitoIdentityServiceProvider.${env.CLIENT_ID}.LastAuthUser`
       )
