@@ -14,12 +14,12 @@ export default {
     meta: [
       {
         hid: 'og:title',
-        name: 'og:title',
+        property: 'og:title',
         content: '利用規約 | ALIS'
       },
       {
         hid: 'og:description',
-        name: 'og:description',
+        property: 'og:description',
         content: '利用規約'
       }
     ]
