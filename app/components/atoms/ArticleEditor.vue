@@ -279,8 +279,8 @@ export default {
   font-weight: bold;
   grid-area: title;
   height: 32px;
-  letter-spacing: 2px;
-  line-height: 32px;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
   border: 0;
 
   &:placeholder-shown {

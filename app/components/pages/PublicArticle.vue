@@ -50,9 +50,10 @@ export default {
 }
 
 .area-title {
-  font-size: 25px;
+  font-size: 24px;
   grid-area: title;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
   word-break: break-all;
 }
 
@@ -87,9 +88,7 @@ export default {
   }
 
   .area-title {
-    font-size: 16px;
-    grid-area: title;
-    letter-spacing: 0.1em;
+    font-size: 20px;
   }
 }
 </style>
