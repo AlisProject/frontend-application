@@ -50,7 +50,7 @@ export default {
       '.share-twitter'
     ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       location.href
-    )}&text=${encodeURIComponent(document.title)}`
+    )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -64,7 +64,8 @@ export default {
     formattedLikesCount() {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
     },
-    ...mapGetters('user', ['loggedIn'])
+    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('article', ['article'])
   },
   methods: {
     handleScroll() {
@@ -168,7 +169,7 @@ export default {
       padding: 16px 16px 16px 48px;
       position: absolute;
       right: 12px;
-      top: 52px;
+      top: 56px;
       width: 200px;
       z-index: 1;
 
