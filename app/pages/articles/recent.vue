@@ -18,12 +18,12 @@ export default {
       meta: [
         {
           hid: `og:title`,
-          name: 'og:title',
+          property: 'og:title',
           content: `新着記事 | ALIS`
         },
         {
           hid: `og:description`,
-          name: 'og:description',
+          property: 'og:description',
           content: '新着記事一覧'
         }
       ]

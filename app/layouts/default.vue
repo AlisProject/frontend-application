@@ -23,7 +23,7 @@ export default {
       meta: [
         {
           hid: 'og:url',
-          name: 'og:url',
+          property: 'og:url',
           content: `https://${process.env.DOMAIN}${this.$route.fullPath}`
         }
       ]

@@ -27,22 +27,22 @@ export default {
       meta: [
         {
           hid: `og:title`,
-          name: 'og:title',
+          property: 'og:title',
           content: `${this.$store.state.user.userInfo.user_id} | ALIS`
         },
         {
           hid: `og:description`,
-          name: 'og:description',
+          property: 'og:description',
           content: `${this.$store.state.user.userInfo.user_id}'s page.`
         },
         {
           hid: `og:type`,
-          name: 'og:type',
+          property: 'og:type',
           content: 'author'
         },
         {
           hid: `og:image`,
-          name: 'og:image',
+          property: 'og:image',
           content:
             this.$store.state.user.userInfo.icon_image_url ||
             `https://${process.env.DOMAIN}/d/nuxt/dist/icon_user_noimg.png`
