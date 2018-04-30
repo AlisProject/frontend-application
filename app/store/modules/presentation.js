@@ -4,22 +4,22 @@ import * as types from '../mutation-types'
 const namespaced = true
 
 const state = () => ({
-  topPageScroll: 0
+  articleListScrollHeight: 0
 })
 
 const getters = {
-  topPageScroll: (state) => state.topPageScroll
+  articleListScrollHeight: (state) => state.articleListScrollHeight
 }
 
 const actions = {
-  setTopPageScroll({ commit }, { scroll }) {
-    commit(types.SET_TOP_PAGE_SCROLL, { scroll })
+  setArticleListScrollHeight({ commit }, { scrollHeight }) {
+    commit(types.SET_ARTICLE_LIST_SCROLL_HEIGHT, { scrollHeight })
   }
 }
 
 const mutations = {
-  [types.SET_TOP_PAGE_SCROLL](state, { scroll }) {
-    state.topPageScroll = scroll
+  [types.SET_ARTICLE_LIST_SCROLL_HEIGHT](state, { scrollHeight }) {
+    state.articleListScrollHeight = scrollHeight
   }
 }
 

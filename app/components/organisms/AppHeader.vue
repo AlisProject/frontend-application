@@ -98,9 +98,9 @@ export default {
   },
   methods: {
     resetScrollPosition() {
-      this.setTopPageScroll({ scroll: 0 })
+      this.setArticleListScrollHeight({ scroll: 0 })
     },
-    ...mapActions('presentation', ['setTopPageScroll'])
+    ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }
 </script>

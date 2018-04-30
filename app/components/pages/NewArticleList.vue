@@ -23,15 +23,15 @@ export default {
   },
   computed: {
     ...mapGetters('article', ['newArticles', 'newArticlesLastEvaluatedKey']),
-    ...mapGetters('presentation', ['topPageScroll'])
+    ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
-    if (this.topPageScroll) {
-      this.$el.scrollTop = this.topPageScroll
+    if (this.articleListScrollHeight) {
+      this.$el.scrollTop = this.articleListScrollHeight
     }
   },
   beforeDestroy() {
-    this.setTopPageScroll({ scroll: this.$el.scrollTop })
+    this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
     infiniteScroll(event) {
@@ -40,7 +40,7 @@ export default {
       }
     },
     ...mapActions('article', ['getNewPagesArticles']),
-    ...mapActions('presentation', ['setTopPageScroll'])
+    ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }
 </script>
