@@ -5,15 +5,18 @@
       <h1 class="area-title">{{ article.title }}</h1>
       <div class="area-content" v-html="article.body" />
     </div>
+    <public-article-share-buttons/>
   </div>
 </template>
 
 <script>
 import AppHeader from '../organisms/AppHeader'
+import PublicArticleShareButtons from '../atoms/PublicArticleShareButtons'
 
 export default {
   components: {
-    AppHeader
+    AppHeader,
+    PublicArticleShareButtons
   },
   props: {
     article: {
@@ -35,6 +38,7 @@ export default {
     '...              ...              ...             '
     '...              article          ...             ';
   background: white;
+  position: relative;
 }
 
 .area-article {
