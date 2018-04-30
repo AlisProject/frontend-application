@@ -1,6 +1,6 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/" class="area-logo"/>
+    <nuxt-link to="/" class="area-logo" @click.native="resetScrollPosition"/>
     <default-header-nav
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import EditHeaderNav from '../molecules/EditHeaderNav'
@@ -95,6 +95,12 @@ export default {
       'showRestrictEditArticleModal',
       'showRequestLoginModal'
     ])
+  },
+  methods: {
+    resetScrollPosition() {
+      this.setTopPageScroll({ scroll: 0 })
+    },
+    ...mapActions('presentation', ['setTopPageScroll'])
   }
 }
 </script>
