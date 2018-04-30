@@ -8,6 +8,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'apple-mobile-web-app-title', content: 'ALIS' },
       { hid: 'description', name: 'description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
       { hid: 'og:title', name: 'og:title', content: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.' },
       { hid: 'og:description', name: 'og:description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
@@ -17,7 +18,11 @@ module.exports = {
       { hid: 'twitter:site', name: 'twitter:site', content: '@ALIS_media' },
       { hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico` }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico` },
+      { rel: 'apple-touch-icon', sizes: '192x192', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` },
+      { rel: 'shortcut icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` }
+    ]
   },
   /*
   ** Customize the progress bar color
