@@ -8,16 +8,29 @@
 
   p {
     color: #040404;
-    font-size: 15.9px;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 30px;
+    letter-spacing: 0.1em;
+    line-height: 1.8;
     text-align: justify;
-    word-break: break-all;
+    word-break: break-word;
+  }
+
+  h2 {
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
   }
 
   hr {
     border: none;
-    border-top: dotted 2px #e3e3e3;
+    border-top: dotted 3px #e3e3e3;
     height: 2px;
   }
 
@@ -27,9 +40,12 @@
 
   blockquote {
     background: #f6f6f6;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
     margin: 1em 0;
     padding: 20px;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   figure {
@@ -215,8 +231,19 @@
     p {
       color: #030303;
       font-size: 14px;
-      line-height: 24px;
       text-align: justify;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+
+    h3 {
+      font-size: 16px;
+    }
+
+    blockquote {
+      font-size: 14px;
     }
   }
 }
