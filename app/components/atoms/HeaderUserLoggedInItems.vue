@@ -34,6 +34,9 @@
         <li class="menu-link">
           <nuxt-link to="/me/articles/public">記事一覧</nuxt-link>
         </li>
+        <li class="menu-link">
+          <nuxt-link :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
+        </li>
         <li class="menu-link" @click="showProfileSettingsModal">
           ユーザー設定
         </li>
