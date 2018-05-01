@@ -138,13 +138,13 @@ export default {
 
 @media screen and (max-width: 920px) {
   .public-article-pc-share-buttons {
-    align-items: center;
+    align-items: flex-end;
     bottom: 30px;
     display: flex;
     flex-flow: row nowrap;
     left: calc(50% - 60px);
     position: fixed;
-    top: 90vh;
+    bottom: 20px;
 
     .copy {
       .share-popup {
