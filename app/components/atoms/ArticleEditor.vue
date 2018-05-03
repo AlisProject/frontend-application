@@ -156,7 +156,12 @@ export default {
                 base64Image.match(':').index + 1,
                 base64Image.match(';').index
               )
-              const { articleId } = this.articleId === '' ? this.$route.params : this
+              let { articleId } = this.articleId === '' ? this.$route.params : this
+              if (articleId === undefined) {
+                const article = { title: ' ', body: ' ' }
+                await this.postNewArticle({ article })
+                articleId = this.articleId
+              }
               const { image_url: imageUrl } = await this.postArticleImage({
                 articleId,
                 articleImage: base64Hash,
@@ -250,7 +255,8 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'setIsSaved'
+      'setIsSaved',
+      'postNewArticle'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }
