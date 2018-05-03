@@ -5,17 +5,19 @@ export default async ({ $axios, store, env }) => {
     await store.dispatch('user/getUserSession')
   } catch (e) { }
 
-  $axios.onRequest(req => {
-    try {
-      store.dispatch('user/getUserSession')
-      const currentUser = localStorage.getItem(
-        `CognitoIdentityServiceProvider.${env.CLIENT_ID}.LastAuthUser`
-      )
-      const token = localStorage.getItem(
-        `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
-      )
-      $axios.setToken(token)
-    } catch (e) { }
+  $axios.onRequest(async (req) => {
+    if (req.url.startsWith('/me')) {
+      try {
+        await store.dispatch('user/getUserSession')
+        const currentUser = localStorage.getItem(
+          `CognitoIdentityServiceProvider.${env.CLIENT_ID}.LastAuthUser`
+        )
+        const token = localStorage.getItem(
+          `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
+        )
+        $axios.setToken(token)
+      } catch (e) { }
+    }
     return req
   })
 
