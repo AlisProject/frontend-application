@@ -124,11 +124,16 @@ export default {
         window.document.onkeydown = (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
-            if (urlRegex({ exact: true }).test(line) && line.startsWith('https://twitter.com')) {
+            const trimmedLine = line.trim()
+            if (
+              urlRegex({ exact: true }).test(trimmedLine) &&
+              trimmedLine.startsWith('https://twitter.com')
+            ) {
               editorElement.getSelectedParentElement().innerHTML = ''
               editorElement.pasteHTML(
-                `<div data-alis-iframely-url="${line}" contenteditable="false">
-                  <a href="${line}" data-iframely-url></a>
+                `<br>
+                <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                  <a href="${trimmedLine}" data-iframely-url></a>
                 </div>
                 <br>`
               )
