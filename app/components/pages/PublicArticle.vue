@@ -10,6 +10,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import AppHeader from '../organisms/AppHeader'
 import PublicArticleShareButtons from '../atoms/PublicArticleShareButtons'
 

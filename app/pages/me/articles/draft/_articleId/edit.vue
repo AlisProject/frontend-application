@@ -3,6 +3,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import EditDraftArticle from '~/components/pages/EditDraftArticle'
 import head from '~/utils/editor-head'
 
@@ -19,6 +20,10 @@ export default {
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
       editorBody.dataset.placeholder = body === '' ? '本文を入力してください' : ''
+      document.querySelectorAll('[data-alis-iframely-url]').forEach((element) => {
+        element.innerHTML = `<a href="${element.dataset.alisIframelyUrl}" data-iframely-url></a>`
+      })
+      iframely.load()
     } catch (error) {
       console.error(error)
     }

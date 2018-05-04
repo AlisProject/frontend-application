@@ -3,6 +3,7 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { mapGetters } from 'vuex'
 import PublicArticle from '~/components/pages/PublicArticle'
 
@@ -10,9 +11,13 @@ export default {
   components: {
     PublicArticle
   },
-  beforeCreate() {
+  async beforeCreate() {
     const { articleId } = this.$route.params
-    this.$store.dispatch('article/getPublicArticleDetail', { articleId })
+    await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
+    document.querySelectorAll('[data-alis-iframely-url]').forEach((element) => {
+      element.innerHTML = `<a href="${element.dataset.alisIframelyUrl}" data-iframely-url></a>`
+    })
+    iframely.load()
   },
   computed: {
     ...mapGetters('article', ['article'])

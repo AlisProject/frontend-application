@@ -20,6 +20,7 @@
 /* eslint no-undef: 0 */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import urlRegex from 'url-regex'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -118,6 +119,24 @@ export default {
         },
         spellcheck: false
       })
+      /* eslint-disable space-before-function-paren */
+      editorElement.subscribe('editableInput', (event, editable) => {
+        window.document.onkeydown = (event) => {
+          if (event.key === 'Enter') {
+            const line = editorElement.getSelectedParentElement().textContent
+            if (urlRegex({ exact: true }).test(line) && line.startsWith('https://twitter.com')) {
+              editorElement.getSelectedParentElement().innerHTML = ''
+              editorElement.pasteHTML(
+                `<div data-alis-iframely-url="${line}" contenteditable="false">
+                  <a href="${line}" data-iframely-url></a>
+                </div>
+                <br>`
+              )
+              iframely.load()
+            }
+          }
+        }
+      })
       $(() => {
         $('.area-body').mediumInsert({
           editor: editorElement,
@@ -183,7 +202,12 @@ export default {
           .find('span[style]')
           .contents()
           .unwrap()
-        const body = document.querySelector('.area-body').innerHTML
+        const $bodyTmp = $('.area-body').clone()
+        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
+          element.innerHTML = ''
+        })
+        $bodyTmp.find('.medium-insert-buttons').remove()
+        const body = $bodyTmp.html()
         this.updateBody({ body })
         this.setIsSaved({ isSaved: true })
       }

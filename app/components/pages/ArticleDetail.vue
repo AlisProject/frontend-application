@@ -23,8 +23,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { mapGetters } from 'vuex'
-
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
@@ -58,6 +58,11 @@ export default {
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
     })
+    document.querySelectorAll('[data-alis-iframely-url]').forEach((element) => {
+      console.log(element)
+      element.innerHTML = `<a href="${element.dataset.alisIframelyUrl}" data-iframely-url></a>`
+    })
+    iframely.load()
   },
   computed: {
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
