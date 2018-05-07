@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
         this.getNewPagesArticles()
       }
     },
