@@ -1,5 +1,5 @@
 <template>
-  <div class="public-article-list-container long-article-card">
+  <div class="public-article-list-container long-article-card" @scroll="infiniteScroll">
     <app-header showEditHeaderNav class="public-articles logo-original"/>
     <article-card-list :articles="publicArticles" :linkTo="'public'"/>
     <!-- <the-loader :lastEvaluatedKey="publicArticlesLastEvaluatedKey"/> -->
