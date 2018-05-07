@@ -12,7 +12,5 @@ module.exports = {
   rules: {
     'space-before-function-paren': ['error', 'never']
   },
-  globals: {
-    alis: true
-  }
+  globals: {}
 }

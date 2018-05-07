@@ -24,9 +24,6 @@
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
     <request-login-modal v-if="showRequestLoginModal"/>
-    <script>
-      alis = {joinTheWonderland: function() { window.location.href = 'https://goo.gl/forms/VQyEueSGE8MhmbjO2' }}
-    </script>
     <toast position="n"/>
   </header>
 </template>
