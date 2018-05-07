@@ -6,7 +6,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import '~/utils/alis-console'
 
 export default {
   mounted() {
