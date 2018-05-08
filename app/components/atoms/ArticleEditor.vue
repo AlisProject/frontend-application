@@ -132,7 +132,7 @@ export default {
               editorElement.getSelectedParentElement().innerHTML = editorElement
                 .getSelectedParentElement()
                 .innerHTML.toString()
-                .replace(trimmedLine, '')
+                .replace(trimmedLine.replace(/&/g, '&amp;'), '')
               editorElement.pasteHTML(
                 `<br>
                 <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
