@@ -39,7 +39,6 @@ export default {
     '...              ...              ...             '
     '...              article          ...             ';
   background: white;
-  position: relative;
 }
 
 .area-article {
