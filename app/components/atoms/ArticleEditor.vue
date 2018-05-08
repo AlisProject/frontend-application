@@ -129,7 +129,10 @@ export default {
               urlRegex({ exact: true }).test(trimmedLine) &&
               trimmedLine.startsWith('https://twitter.com')
             ) {
-              editorElement.getSelectedParentElement().innerHTML = ''
+              editorElement.getSelectedParentElement().innerHTML = editorElement
+                .getSelectedParentElement()
+                .innerHTML.toString()
+                .replace(trimmedLine, '')
               editorElement.pasteHTML(
                 `<br>
                 <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
