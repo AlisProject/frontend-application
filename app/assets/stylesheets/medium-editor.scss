@@ -70,21 +70,37 @@
   }
 
   .twitter-profile-card {
-    width: 100%;
-    border: 1px solid gray;
-    padding: 20px;
-    border-radius: 3px;
-    display: block;
-    cursor: pointer;
-    text-decoration: none;
+    border-radius: 4px;
+    border: 1px solid #E2E8ED;
     box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    padding: 20px;
+    text-decoration: none;
+    width: 100%;
 
     .title {
-      color: #333;
+      color: #030303;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
     }
 
     .description {
-      color: #333;
+      color: #6E6E6E;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.7px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .site {
+      color: #6E6E6E;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.6px;
     }
   }
 }
@@ -267,6 +283,16 @@
 
     .twitter-tweet {
       width: 90vw !important;
+    }
+
+    .twitter-profile-card {
+      .title {
+        font-size: 14px;
+      }
+
+      .description {
+        font-size: 12px;
+      }
     }
   }
 }
