@@ -144,7 +144,8 @@ export default {
 
               selectedParentElement.innerHTML = ''
 
-              if (trimmedLine.includes('/status/')) {
+              const isTweet = trimmedLine.split('/')[4] === 'status'
+              if (isTweet) {
                 editorElement.pasteHTML(
                   `<br>
                   <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">

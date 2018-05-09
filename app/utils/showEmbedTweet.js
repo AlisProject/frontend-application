@@ -3,7 +3,8 @@
 export default ({ $axios }) => {
   document.querySelectorAll('[data-alis-iframely-url]').forEach(async (element) => {
     const { alisIframelyUrl } = element.dataset
-    if (alisIframelyUrl.includes('/status/')) {
+    const isTweet = alisIframelyUrl.split('/')[4] === 'status'
+    if (isTweet) {
       element.innerHTML = `<a href="${alisIframelyUrl}" data-iframely-url></a>`
     } else {
       const result = await $axios.$get(
