@@ -129,35 +129,41 @@ export default {
               urlRegex({ exact: true }).test(trimmedLine) &&
               trimmedLine.startsWith('https://twitter.com')
             ) {
-              editorElement.getSelectedParentElement().innerHTML = editorElement
-                .getSelectedParentElement()
-                .innerHTML.toString()
-                .replace(trimmedLine.replace(/&/g, '&amp;'), '')
+              const selectedParentElement = editorElement.getSelectedParentElement()
+              let result
+              try {
+                result = await this.$axios.$get(
+                  `https://iframe.ly/api/oembed?api_key=${
+                    process.env.IFRAMELY_API_KEY
+                  }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                )
+              } catch (error) {
+                console.error(error)
+                return
+              }
+
+              selectedParentElement.innerHTML = ''
 
               if (trimmedLine.includes('/status/')) {
                 editorElement.pasteHTML(
                   `<br>
-                <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                  <a href="${trimmedLine}" data-iframely-url></a>
-                </div>
-                <br>`
+                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                    <a href="${trimmedLine}" data-iframely-url></a>
+                  </div>
+                  <br>`
                 )
                 iframely.load()
               } else {
-                const result = await this.$axios.$get(
-                  `https://iframe.ly/api/oembed?api_key=${
-                    process.env.IFRAMELY_API_KEY
-                  }&url=${trimmedLine}`
-                )
                 editorElement.pasteHTML(
-                  `<div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                  <a href="${result.url}" target="_blank" class="twitter-profile-card">
-                    <div class="title">${result.title}</div>
-                    <div class="description">${result.description}</div>
-                    <div class="site">twitter.com</div>
-                  </a>
-                </div>
-                <br>`,
+                  `<br>
+                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                    <a href="${result.url}" target="_blank" class="twitter-profile-card">
+                      <div class="title">${result.title}</div>
+                      <div class="description">${result.description}</div>
+                      <div class="site">twitter.com</div>
+                    </a>
+                  </div>
+                  <br>`,
                   { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
                 )
               }
