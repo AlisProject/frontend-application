@@ -68,6 +68,25 @@
       margin-bottom: 0.5em;
     }
   }
+
+  .twitter-profile-card {
+    width: 100%;
+    border: 1px solid gray;
+    padding: 20px;
+    border-radius: 3px;
+    display: block;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+
+    .title {
+      color: #333;
+    }
+
+    .description {
+      color: #333;
+    }
+  }
 }
 
 .medium-editor-insert-plugin .medium-insert-buttons button {

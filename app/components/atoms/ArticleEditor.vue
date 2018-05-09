@@ -121,7 +121,7 @@ export default {
       })
       /* eslint-disable space-before-function-paren */
       editorElement.subscribe('editableInput', (event, editable) => {
-        window.document.onkeydown = (event) => {
+        window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
@@ -133,14 +133,34 @@ export default {
                 .getSelectedParentElement()
                 .innerHTML.toString()
                 .replace(trimmedLine.replace(/&/g, '&amp;'), '')
-              editorElement.pasteHTML(
-                `<br>
+
+              if (trimmedLine.includes('/status/')) {
+                editorElement.pasteHTML(
+                  `<br>
                 <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
                   <a href="${trimmedLine}" data-iframely-url></a>
                 </div>
                 <br>`
-              )
-              iframely.load()
+                )
+                iframely.load()
+              } else {
+                const result = await this.$axios.$get(
+                  `https://iframe.ly/api/oembed?api_key=${
+                    process.env.IFRAMELY_API_KEY
+                  }&url=${trimmedLine}`
+                )
+                editorElement.pasteHTML(
+                  `<div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                  <a href="${result.url}" target="_blank" class="twitter-profile-card">
+                    <div class="title">${result.title}</div>
+                    <div class="description">${result.description}</div>
+                    <div class="site">twitter.com</div>
+                  </a>
+                </div>
+                <br>`,
+                  { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                )
+              }
             }
           }
         }
