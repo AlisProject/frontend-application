@@ -3,9 +3,9 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
 import EditPublicArticle from '~/components/pages/EditPublicArticle'
 import head from '~/utils/editor-head'
+import showEmbedTweet from '~/utils/showEmbedTweet'
 
 export default {
   components: {
@@ -20,10 +20,7 @@ export default {
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
       editorBody.dataset.placeholder = body === '' ? '本文を入力してください' : ''
-      document.querySelectorAll('[data-alis-iframely-url]').forEach((element) => {
-        element.innerHTML = `<a href="${element.dataset.alisIframelyUrl}" data-iframely-url></a>`
-      })
-      iframely.load()
+      showEmbedTweet({ $axios: this.$axios })
     } catch (error) {
       console.error(error)
     }

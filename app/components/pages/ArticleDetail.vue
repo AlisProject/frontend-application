@@ -34,6 +34,7 @@ import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
+import showEmbedTweet from '~/utils/showEmbedTweet'
 
 export default {
   components: {
@@ -58,11 +59,7 @@ export default {
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
     })
-    document.querySelectorAll('[data-alis-iframely-url]').forEach((element) => {
-      console.log(element)
-      element.innerHTML = `<a href="${element.dataset.alisIframelyUrl}" data-iframely-url></a>`
-    })
-    iframely.load()
+    showEmbedTweet({ $axios: this.$axios })
   },
   computed: {
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])

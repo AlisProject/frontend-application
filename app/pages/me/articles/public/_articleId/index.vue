@@ -3,9 +3,9 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
 import { mapGetters } from 'vuex'
 import PublicArticle from '~/components/pages/PublicArticle'
+import showEmbedTweet from '~/utils/showEmbedTweet'
 
 export default {
   components: {
@@ -14,10 +14,7 @@ export default {
   async beforeCreate() {
     const { articleId } = this.$route.params
     await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
-    document.querySelectorAll('[data-alis-iframely-url]').forEach((element) => {
-      element.innerHTML = `<a href="${element.dataset.alisIframelyUrl}" data-iframely-url></a>`
-    })
-    iframely.load()
+    showEmbedTweet({ $axios: this.$axios })
   },
   computed: {
     ...mapGetters('article', ['article'])
