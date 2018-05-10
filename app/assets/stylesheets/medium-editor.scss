@@ -69,6 +69,10 @@
     }
   }
 
+  [data-alis-iframely-url] {
+    user-select: none;
+  }
+
   .twitter-profile-card {
     border-radius: 4px;
     border: 1px solid #E2E8ED;
