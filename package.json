@@ -28,6 +28,7 @@
     "moment": "^2.21.0",
     "normalize.css": "^7.0.0",
     "nuxt": "1.0.0",
+    "url-regex": "^4.1.1",
     "vuelidate": "^0.6.2",
     "vuex-toast": "^0.1.3"
   },

@@ -3,6 +3,9 @@ module.exports = {
   ** Headers of the page
   */
   head: {
+    script: [
+      { src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`, async: true }
+    ],
     title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
     titleTemplate: '%s | ALIS',
     meta: [

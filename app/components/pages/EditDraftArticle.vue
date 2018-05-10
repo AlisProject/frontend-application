@@ -24,7 +24,7 @@ export default {
     putArticle: debounce(async function() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
-        body: this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+        body: this.body === '' ? ' ' : this.body
       }
       const { articleId } = this.$route.params
       this.setIsSaving({ isSaving: true })

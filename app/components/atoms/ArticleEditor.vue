@@ -20,6 +20,7 @@
 /* eslint no-undef: 0 */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import urlRegex from 'url-regex'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -118,6 +119,59 @@ export default {
         },
         spellcheck: false
       })
+      /* eslint-disable space-before-function-paren */
+      editorElement.subscribe('editableInput', (event, editable) => {
+        window.document.onkeydown = async (event) => {
+          if (event.key === 'Enter') {
+            const line = editorElement.getSelectedParentElement().textContent
+            const trimmedLine = line.trim()
+            if (
+              urlRegex({ exact: true }).test(trimmedLine) &&
+              trimmedLine.startsWith('https://twitter.com')
+            ) {
+              const selectedParentElement = editorElement.getSelectedParentElement()
+              let result
+              try {
+                result = await this.$axios.$get(
+                  `https://iframe.ly/api/oembed?api_key=${
+                    process.env.IFRAMELY_API_KEY
+                  }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                )
+              } catch (error) {
+                console.error(error)
+                return
+              }
+
+              selectedParentElement.innerHTML = ''
+
+              const isTweet = trimmedLine.split('/')[4] === 'status'
+              if (isTweet) {
+                editorElement.pasteHTML(
+                  `<br>
+                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                    <a href="${trimmedLine}" data-iframely-url></a>
+                  </div>
+                  <br>`
+                )
+                iframely.load()
+              } else {
+                editorElement.pasteHTML(
+                  `<br>
+                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                    <a href="${result.url}" target="_blank" class="twitter-profile-card">
+                      <div class="title">${result.title}</div>
+                      <div class="description">${result.description}</div>
+                      <div class="site">twitter.com</div>
+                    </a>
+                  </div>
+                  <br>`,
+                  { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                )
+              }
+            }
+          }
+        }
+      })
       $(() => {
         $('.area-body').mediumInsert({
           editor: editorElement,
@@ -183,7 +237,12 @@ export default {
           .find('span[style]')
           .contents()
           .unwrap()
-        const body = document.querySelector('.area-body').innerHTML
+        const $bodyTmp = $('.area-body').clone()
+        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
+          element.innerHTML = ''
+        })
+        $bodyTmp.find('.medium-insert-buttons').remove()
+        const body = $bodyTmp.html()
         this.updateBody({ body })
         this.setIsSaved({ isSaved: true })
       }

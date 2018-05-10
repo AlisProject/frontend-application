@@ -38,6 +38,7 @@
 </template>
 
 <script>
+/* eslint no-undef: 0 */
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
@@ -123,7 +124,16 @@ export default {
       const hasNotImage = images.length === 0 && thumbnails.length === 0
       const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
       if (hasNotImage || hasNotUploadingImage) {
-        const body = document.querySelector('.area-body').innerHTML
+        $('.area-body')
+          .find('span[style]')
+          .contents()
+          .unwrap()
+        const $bodyTmp = $('.area-body').clone()
+        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
+          element.innerHTML = ''
+        })
+        $bodyTmp.find('.medium-insert-buttons').remove()
+        const body = $bodyTmp.html()
         this.updateBody({ body })
         this.setIsSaved({ isSaved: true })
       }
@@ -131,16 +141,16 @@ export default {
     async publish() {
       if (!this.isSaving) return
       const { articleId } = this.articleId === '' ? this.$route.params : this
-      const body = this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
+      const { title, body } = this
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')
         .slice(0, 100)
-      if (this.title === '') this.sendNotification({ text: 'タイトルを入力してください' })
+      if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
       if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
-      if (this.title === '' || overview === '') return
+      if (title === '' || overview === '') return
 
-      const article = { title: this.title, body, overview }
+      const article = { title: title, body, overview }
 
       if (this.thumbnail !== '') {
         article.eye_catch_url = this.thumbnail

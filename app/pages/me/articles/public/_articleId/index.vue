@@ -5,14 +5,16 @@
 <script>
 import { mapGetters } from 'vuex'
 import PublicArticle from '~/components/pages/PublicArticle'
+import showEmbedTweet from '~/utils/showEmbedTweet'
 
 export default {
   components: {
     PublicArticle
   },
-  beforeCreate() {
+  async beforeCreate() {
     const { articleId } = this.$route.params
-    this.$store.dispatch('article/getPublicArticleDetail', { articleId })
+    await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
+    showEmbedTweet({ $axios: this.$axios })
   },
   computed: {
     ...mapGetters('article', ['article'])

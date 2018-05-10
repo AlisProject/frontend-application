@@ -24,7 +24,7 @@ export default {
     putArticle: debounce(async function() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
-        body: this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+        body: this.body === '' ? ' ' : this.body
       }
       if (this.thumbnail !== '') {
         article.eye_catch_url = this.thumbnail

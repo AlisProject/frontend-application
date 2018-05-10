@@ -23,8 +23,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { mapGetters } from 'vuex'
-
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
@@ -34,6 +34,7 @@ import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
+import showEmbedTweet from '~/utils/showEmbedTweet'
 
 export default {
   components: {
@@ -58,6 +59,7 @@ export default {
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
     })
+    showEmbedTweet({ $axios: this.$axios })
   },
   computed: {
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
