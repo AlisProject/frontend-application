@@ -17,7 +17,7 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'title', 'body', 'isSaving'])
+    ...mapGetters('article', ['articleId', 'title', 'body', 'isSaving', 'isSavingImage'])
   },
   data() {
     return {
@@ -50,7 +50,9 @@ export default {
       }
     }, 2500),
     postOrPutArticleAndSetSavingStatus() {
-      this.postOrPutArticle()
+      if (!this.isSavingImage) {
+        this.postOrPutArticle()
+      }
     }
   },
   watch: {
