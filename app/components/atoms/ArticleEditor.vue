@@ -21,6 +21,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
+import getTwitterProfileTemplate from '~/utils/getTwitterProfileTemplate'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -166,13 +167,7 @@ export default {
               } else {
                 editorElement.pasteHTML(
                   `<br>
-                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                    <a href="${result.url}" target="_blank" class="twitter-profile-card">
-                      <div class="title">${result.title}</div>
-                      <div class="description">${result.description}</div>
-                      <div class="site">twitter.com</div>
-                    </a>
-                  </div>
+                  ${getTwitterProfileTemplate({ ...result })}
                   <br>`,
                   { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
                 )
