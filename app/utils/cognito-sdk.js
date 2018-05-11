@@ -8,7 +8,7 @@ export default class CognitoSDK {
       ClientId: process.env.CLIENT_ID
     }
     this.userPool = new CognitoUserPool(this.poolData)
-    AWS.Config.region = process.env.REGION
+    AWS.Config.region = process.env.AWS_DEFAULT_REGION
   }
 
   getUserSession() {
@@ -37,7 +37,7 @@ export default class CognitoSDK {
   }
 
   refreshUserSession() {
-    AWS.config.region = process.env.REGION
+    AWS.config.region = process.env.AWS_DEFAULT_REGION
     const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
     const refreshToken = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.refreshToken`)
     const RefreshToken = new CognitoRefreshToken({ RefreshToken: refreshToken })
@@ -122,7 +122,7 @@ export default class CognitoSDK {
   }
 
   sendConfirm() {
-    AWS.config.region = process.env.REGION
+    AWS.config.region = process.env.AWS_DEFAULT_REGION
     const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
     const token = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`)
     const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider()
@@ -142,7 +142,7 @@ export default class CognitoSDK {
   }
 
   verifySMSCode({ code }) {
-    AWS.config.region = process.env.REGION
+    AWS.config.region = process.env.AWS_DEFAULT_REGION
     const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
     const token = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`)
     const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider()

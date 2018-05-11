@@ -18,3 +18,4 @@ dist
 # etc
 yarn-error.log
 .serverless
+.envrc.swp

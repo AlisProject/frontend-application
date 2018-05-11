@@ -6,7 +6,7 @@ frameworkVersion: ">=1.26.1"
 provider:
   name: aws
   runtime: nodejs8.10
-  region: ${env:REGION}
+  region: ${env:AWS_DEFAULT_REGION}
   stage: prod
 
 package:
@@ -45,7 +45,7 @@ functions:
     memorySize: 2048
     environment:
       BASE_URL: ${env:BASE_URL}
-      REGION: ${env:REGION}
+      REGION: ${env:AWS_DEFAULT_REGION}
       DOMAIN: ${env:DOMAIN}
     events:
       - http:

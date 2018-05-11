@@ -1,0 +1,37 @@
+# --- ALIS ---
+
+## サービスのドメイン
+export DOMAIN=alis.to
+export BASE_URL=https://${DOMAIN}/api
+
+
+# --- AWS ---
+
+## aws-cli
+## aws-cliが依存する環境変数。
+##   - see: https://qiita.com/n-oshiro/items/4a7774ee6e1d11bb55d2
+## .credentialsファイルよりもこちらの環境変数が優先される
+## Cloud formationのデプロイやS3作成など重要な操作を行うため、管理者レベルの権限を持つ必要がある。
+export AWS_DEFAULT_REGION=ap-northeast-1
+export AWS_ACCESS_KEY_ID=AKIAJZCGSXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=iU6/q6ls5i5pDBPxxxxxxxxxxxxxxxxxxxx
+
+## S3
+## デプロイに使用するS3のバケット名
+export DIST_S3_BUCKET_NAME=alis-deploy-bucket
+
+## Cognito
+## アプリケーションで使用するCognitoの接続情報
+export USER_POOL_ID=ap-northeast-1_OuhCXXXXX
+export CLIENT_ID=2j7ro71usetrsjusxxxxxxxxxx
+
+## Cloud Formation
+## Serverless Frameworkが生成するリソースのCloudFormationスタック名
+## ⚠ ハイフンを含めるとエラーとなる
+export NUXT_API_GATEWAY_NAME=yourstacknamehere
+
+
+# --- Iframely ---
+
+## IframelyのAPIキー
+export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
