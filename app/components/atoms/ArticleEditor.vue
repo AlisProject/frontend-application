@@ -214,12 +214,7 @@ export default {
           .find('span[style]')
           .contents()
           .unwrap()
-        const $bodyTmp = $('.area-body').clone()
-        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
-          element.innerHTML = ''
-        })
-        $bodyTmp.find('.medium-insert-buttons').remove()
-        const body = $bodyTmp.html()
+        const body = this.removeUselessDOMFromArticleBody($('.area-body'))
         this.updateBody({ body })
       }
     },
@@ -260,6 +255,14 @@ export default {
           }
         })
       )
+    },
+    removeUselessDOMFromArticleBody($element) {
+      const $bodyTmp = $element.clone()
+      $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
+        element.innerHTML = ''
+      })
+      $bodyTmp.find('.medium-insert-buttons').remove()
+      return $bodyTmp.html()
     },
     matchAll(str, regexp) {
       const matches = []
