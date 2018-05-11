@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="area-post-article" v-show="showPostArticleLink">
-      <span class="nav-link post-article" :class="{ disable: !isSaving }" @click="togglePopup">
+      <span class="nav-link post-article" :class="{ disable: !isSaving && !isSaved }" @click="togglePopup">
         公開する
       </span>
       <div v-show="isPopupShown" class="popup">
@@ -82,62 +82,6 @@ export default {
         console.error(e)
       }
     },
-    async updateArticleData() {
-      const images = Array.from(document.querySelectorAll('.area-body figure img'))
-      /* eslint-disable space-before-function-paren */
-      await Promise.all(
-        images.map(async (img) => {
-          this.setIsSaving({ isSaving: true })
-
-          const isBase64Image = img.src.includes('data:')
-          const isNotUploadedImage = img.dataset.status !== 'uploaded'
-          const isNotUploadingImage = img.dataset.status !== 'uploading'
-          if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
-            img.dataset.status = 'uploading'
-            try {
-              const base64Image = img.src
-              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-              const imageContentType = base64Image.substring(
-                base64Image.match(':').index + 1,
-                base64Image.match(';').index
-              )
-              const { articleId } = this.articleId === '' ? this.$route.params : this
-              const { image_url: imageUrl } = await this.postArticleImage({
-                articleId,
-                articleImage: base64Hash,
-                imageContentType
-              })
-              img.src = imageUrl
-              img.dataset.status = 'uploaded'
-              this.setIsSaved({ isSaved: true })
-            } catch (error) {
-              console.error(error)
-              img.dataset.status = ''
-            }
-          }
-        })
-      )
-      const thumbnails = images
-        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
-        .map((img) => img.src)
-      this.updateSuggestedThumbnails({ thumbnails })
-      const hasNotImage = images.length === 0 && thumbnails.length === 0
-      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
-      if (hasNotImage || hasNotUploadingImage) {
-        $('.area-body')
-          .find('span[style]')
-          .contents()
-          .unwrap()
-        const $bodyTmp = $('.area-body').clone()
-        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
-          element.innerHTML = ''
-        })
-        $bodyTmp.find('.medium-insert-buttons').remove()
-        const body = $bodyTmp.html()
-        this.updateBody({ body })
-        this.setIsSaved({ isSaved: true })
-      }
-    },
     async publish() {
       if (!this.isSaving) return
       const { articleId } = this.articleId === '' ? this.$route.params : this
@@ -173,9 +117,8 @@ export default {
         console.error(e)
       }
     },
-    async togglePopup() {
-      if (!this.isSaving) return
-      await this.updateArticleData()
+    togglePopup() {
+      if (!this.isSaving && !this.isSaved) return
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
