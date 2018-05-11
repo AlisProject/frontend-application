@@ -34,7 +34,8 @@ const state = () => ({
   hasPopularArticlesLastEvaluatedKey: false,
   hasNewArticlesLastEvaluatedKey: false,
   hasPublicArticlesLastEvaluatedKey: false,
-  hasDraftArticlesLastEvaluatedKey: false
+  hasDraftArticlesLastEvaluatedKey: false,
+  isSavingImage: false
 })
 
 const getters = {
@@ -56,7 +57,8 @@ const getters = {
   publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
   draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
   likesCount: (state) => state.likesCount,
-  isLikedArticle: (state) => state.isLikedArticle
+  isLikedArticle: (state) => state.isLikedArticle,
+  isSavingImage: (state) => state.isSavingImage
 }
 
 const actions = {
@@ -304,6 +306,9 @@ const actions = {
   },
   setIsLikedArticle({ commit }, { liked }) {
     commit(types.SET_IS_LIKED_ARTICLE, { liked })
+  },
+  setIsSavingImage({ commit }, { isSavingImage }) {
+    commit(types.SET_IS_SAVING_IMAGE, { isSavingImage })
   }
 }
 
@@ -390,6 +395,9 @@ const mutations = {
   },
   [types.SET_IS_LIKED_ARTICLE](state, { liked }) {
     state.isLikedArticle = liked
+  },
+  [types.SET_IS_SAVING_IMAGE](state, { isSavingImage }) {
+    state.isSavingImage = isSavingImage
   }
 }
 

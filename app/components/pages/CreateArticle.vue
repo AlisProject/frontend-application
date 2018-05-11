@@ -1,7 +1,7 @@
 <template>
   <div class="create-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="new-article logo-original"/>
-    <article-editor/>
+    <article-editor :postOrPutArticleFunction="this.postOrPutArticleAndSetSavingStatus"/>
   </div>
 </template>
 
@@ -48,18 +48,14 @@ export default {
           console.error(e)
         }
       }
-    }, 2500)
+    }, 2500),
+    postOrPutArticleAndSetSavingStatus() {
+      this.postOrPutArticle()
+    }
   },
   watch: {
     title(newTitle, oldTitle) {
-      this.setIsSaved({ isSaved: false })
-      this.setIsSaving({ isSaving: false })
-      this.postOrPutArticle()
-    },
-    body(newBody, oldBody) {
-      this.setIsSaved({ isSaved: false })
-      this.setIsSaving({ isSaving: false })
-      this.postOrPutArticle()
+      this.postOrPutArticleAndSetSavingStatus()
     }
   }
 }

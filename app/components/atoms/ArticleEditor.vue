@@ -10,7 +10,6 @@
     <div
       class="area-body"
       ref="editable"
-      @input="onInputBody"
       @drop="preventDropImage"
       @dragover="preventDragoverImage"/>
   </div>
@@ -25,10 +24,14 @@ import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
   props: {
-    title: String
+    title: String,
+    postOrPutArticleFunction: {
+      type: Function,
+      required: true
+    }
   },
   computed: {
-    ...mapGetters('article', ['articleId']),
+    ...mapGetters('article', ['articleId', 'isSavingImage']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -120,7 +123,13 @@ export default {
         spellcheck: false
       })
       /* eslint-disable space-before-function-paren */
-      editorElement.subscribe('editableInput', (event, editable) => {
+      editorElement.subscribe('editableInput', async (event, editable) => {
+        if (!this.isSavingImage) {
+          this.setIsSaved({ isSaved: false })
+          this.setIsSaving({ isSaving: false })
+        }
+        await this.onInputBody()
+        this.postOrPutArticleFunction()
         window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
@@ -196,12 +205,16 @@ export default {
       /* eslint-disable space-before-function-paren */
       await Promise.all(
         images.map(async (img) => {
-          this.setIsSaving({ isSaving: true })
-
+          if (!this.isSavingImage) {
+            this.setIsSaved({ isSaved: false })
+            this.setIsSaving({ isSaving: false })
+          }
           const isBase64Image = img.src.includes('data:')
           const isNotUploadedImage = img.dataset.status !== 'uploaded'
           const isNotUploadingImage = img.dataset.status !== 'uploading'
           if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
+            this.setIsSaving({ isSaving: true })
+            this.setIsSavingImage({ isSavingImage: true })
             img.dataset.status = 'uploading'
             try {
               const base64Image = img.src
@@ -218,7 +231,7 @@ export default {
               })
               img.src = imageUrl
               img.dataset.status = 'uploaded'
-              this.setIsSaved({ isSaved: true })
+              this.setIsSavingImage({ isSavingImage: false })
             } catch (error) {
               console.error(error)
               img.dataset.status = ''
@@ -244,7 +257,6 @@ export default {
         $bodyTmp.find('.medium-insert-buttons').remove()
         const body = $bodyTmp.html()
         this.updateBody({ body })
-        this.setIsSaved({ isSaved: true })
       }
     },
     matchAll(str, regexp) {
@@ -309,7 +321,8 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'setIsSaved'
+      'setIsSaved',
+      'setIsSavingImage'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }
