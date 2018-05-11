@@ -8,7 +8,7 @@
 - aws cli
 - direnv
 
-## Environment valuables
+# Environment valuables
 
 ```bash
 # Create .envrc to suit your environment.
@@ -19,20 +19,22 @@ vi .envrc # edit
 direnv allow
 ```
 
-# Build Setup
+# Install dependencies
 
-## command
-``` bash
-# install dependencies
+```bash
 ndenv install
 yarn
+```
 
-# serve with lambda
-yarn build
-aws s3 cp .nuxt/dist/ s3://$DIST_S3_BUCKET_NAME --recursive --acl public-read
-sudo npm install -g serverless
-yarn sls:deploy
+# Deployment
 
+```bash
+./deploy.sh
+```
+
+# Local commands 
+
+``` bash
 # serve with hot reload at localhost:3000
 yarn dev
 
