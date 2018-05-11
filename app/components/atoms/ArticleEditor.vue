@@ -193,6 +193,10 @@ export default {
       })
     },
     onInputTitle({ target: { value: title } }) {
+      if (!this.isSavingImage) {
+        this.setIsSaved({ isSaved: false })
+        this.setIsSaving({ isSaving: false })
+      }
       this.updateTitle({ title })
     },
     async onInputBody() {
