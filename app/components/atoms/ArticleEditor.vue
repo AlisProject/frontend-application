@@ -17,6 +17,7 @@
 
 <script>
 /* eslint no-undef: 0 */
+/* eslint-disable space-before-function-paren */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
@@ -122,7 +123,6 @@ export default {
         },
         spellcheck: false
       })
-      /* eslint-disable space-before-function-paren */
       editorElement.subscribe('editableInput', async (event, editable) => {
         if (!this.isSavingImage) {
           this.setIsSaved({ isSaved: false })
@@ -201,8 +201,29 @@ export default {
       this.updateTitle({ title })
     },
     async onInputBody() {
-      const images = Array.from(document.querySelectorAll('.area-body figure img'))
-      /* eslint-disable space-before-function-paren */
+      const images = Array.from(this.$el.querySelectorAll('figure img'))
+      await this.uploadImages(images)
+      const thumbnails = images
+        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
+        .map((img) => img.src)
+      this.updateSuggestedThumbnails({ thumbnails })
+      const hasNotImage = images.length === 0 && thumbnails.length === 0
+      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
+      if (hasNotImage || hasNotUploadingImage) {
+        $('.area-body')
+          .find('span[style]')
+          .contents()
+          .unwrap()
+        const $bodyTmp = $('.area-body').clone()
+        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
+          element.innerHTML = ''
+        })
+        $bodyTmp.find('.medium-insert-buttons').remove()
+        const body = $bodyTmp.html()
+        this.updateBody({ body })
+      }
+    },
+    async uploadImages(images) {
       await Promise.all(
         images.map(async (img) => {
           if (!this.isSavingImage) {
@@ -239,25 +260,6 @@ export default {
           }
         })
       )
-      const thumbnails = images
-        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
-        .map((img) => img.src)
-      this.updateSuggestedThumbnails({ thumbnails })
-      const hasNotImage = images.length === 0 && thumbnails.length === 0
-      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
-      if (hasNotImage || hasNotUploadingImage) {
-        $('.area-body')
-          .find('span[style]')
-          .contents()
-          .unwrap()
-        const $bodyTmp = $('.area-body').clone()
-        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
-          element.innerHTML = ''
-        })
-        $bodyTmp.find('.medium-insert-buttons').remove()
-        const body = $bodyTmp.html()
-        this.updateBody({ body })
-      }
     },
     matchAll(str, regexp) {
       const matches = []
