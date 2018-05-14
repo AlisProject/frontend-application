@@ -119,7 +119,6 @@ export default {
         },
         spellcheck: false
       })
-      /* eslint-disable space-before-function-paren */
       editorElement.subscribe('editableInput', (event, editable) => {
         window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
@@ -193,7 +192,6 @@ export default {
     },
     async onInputBody() {
       const images = Array.from(document.querySelectorAll('.area-body figure img'))
-      /* eslint-disable space-before-function-paren */
       await Promise.all(
         images.map(async (img) => {
           this.setIsSaving({ isSaving: true })
