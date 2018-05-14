@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 import { BigNumber } from 'bignumber.js'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'

@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 import * as types from '../mutation-types'
 
 const namespaced = true

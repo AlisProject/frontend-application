@@ -84,7 +84,6 @@ export default {
     },
     async updateArticleData() {
       const images = Array.from(document.querySelectorAll('.area-body figure img'))
-      /* eslint-disable space-before-function-paren */
       await Promise.all(
         images.map(async (img) => {
           this.setIsSaving({ isSaving: true })

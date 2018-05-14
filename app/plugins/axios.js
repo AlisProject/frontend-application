@@ -1,4 +1,3 @@
-/* eslint-disable space-before-function-paren */
 export default async ({ $axios, store, env }) => {
   store.dispatch('user/initCognito')
   try {

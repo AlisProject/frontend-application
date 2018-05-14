@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-/* eslint-disable space-before-function-paren */
 export default ({ $axios }) => {
   document.querySelectorAll('[data-alis-iframely-url]').forEach(async (element) => {
     const { alisIframelyUrl } = element.dataset

@@ -117,7 +117,6 @@ export default {
         return
       }
       const reader = new FileReader()
-      /* eslint-disable space-before-function-paren */
       reader.onload = async (e) => {
         try {
           const base64Image = e.target.result
