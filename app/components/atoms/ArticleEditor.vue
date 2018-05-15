@@ -121,7 +121,7 @@ export default {
       })
       /* eslint-disable space-before-function-paren */
       editorElement.subscribe('editableInput', (event, editable) => {
-        window.document.onkeydown = async (event) => {
+        this.$el.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
