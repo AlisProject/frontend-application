@@ -1,5 +1,5 @@
 <template>
-  <p class="area-date">{{ formettedCreatedAt }}</p>
+  <p class="area-date">{{ formettedPublishedAt }}</p>
 </template>
 
 <script>
@@ -7,14 +7,14 @@ import moment from 'moment'
 
 export default {
   props: {
-    createdAt: {
+    publishedAt: {
       type: Number,
       required: true
     }
   },
   computed: {
-    formettedCreatedAt() {
-      return moment(this.createdAt, 'X')
+    formettedPublishedAt() {
+      return moment(this.publishedAt, 'X')
         .locale('ja')
         .format('L')
     }
