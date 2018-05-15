@@ -257,6 +257,9 @@ export default {
     },
     removeUselessDOMFromArticleBody($element) {
       const $bodyTmp = $element.clone()
+      $bodyTmp.find('[data-status="uploading"]').each((_i, element) => {
+        element.src = ''
+      })
       $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
         element.innerHTML = ''
       })
