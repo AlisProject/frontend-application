@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import ArticleCardContentDataCreatedAt from './ArticleCardContentDataCreatedAt'
 
 describe('ArticleCardContentDataCreatedAt', () => {
-  test('is a Vue instance', () => {
+  test('is render "2018/05/21" when createdAt = 1526858710 ', () => {
     const createdAt = 1526858710 // 2018/05/21
     const wrapper = mount(ArticleCardContentDataCreatedAt, {
       propsData: {
