@@ -15,6 +15,8 @@ module.exports = {
   globals: {
     describe: true,
     test: true,
-    expect: true
+    expect: true,
+    beforeEach: true,
+    afterEach: true
   }
 }
