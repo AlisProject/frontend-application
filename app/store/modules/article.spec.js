@@ -4,7 +4,6 @@ import article from './article'
 import APIMock from '~/../test/mock/api'
 
 describe('store/modules/article.js', () => {
-
   let store
 
   beforeEach(() => {
