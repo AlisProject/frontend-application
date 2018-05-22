@@ -33,7 +33,8 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/markdownit'
+    '@nuxtjs/markdownit',
+    '@nuxtjs/proxy'
   ],
   markdownit: {
     injected: true,
@@ -56,6 +57,9 @@ module.exports = {
   render: {
     gzip: false
   },
+  proxy: process.env.NODE_ENV !== 'localhost' ? [] : [
+    `https://${process.env.DOMAIN}/api/`
+  ],
   build: {
     publicPath: `https://${process.env.DOMAIN}/d/nuxt/dist/`,
     /*
