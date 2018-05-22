@@ -212,12 +212,17 @@ export default {
       this.isEdited = true
     },
     async onInputBody() {
+      // Upload images in article body
       const images = Array.from(this.$el.querySelectorAll('figure img'))
       await this.uploadImages(images)
+
+      // Update thumbnails
       const thumbnails = images
         .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
         .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
+
+      // Update body
       const hasNotImage = images.length === 0 && thumbnails.length === 0
       const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
       if (hasNotImage || hasNotUploadingImage) {
