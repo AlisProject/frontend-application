@@ -5,6 +5,7 @@
       type="text"
       placeholder="タイトル"
       spellcheck="false"
+      maxlength="255"
       @input="onInputTitle"
       :value="title">
     <div
