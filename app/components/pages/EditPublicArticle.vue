@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { debounce } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
@@ -21,7 +20,7 @@ export default {
   },
   methods: {
     ...mapActions('article', ['putPublicArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
-    putArticle: debounce(async function() {
+    async putArticle() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body: this.body === '' ? ' ' : this.body
@@ -37,16 +36,11 @@ export default {
       } catch (e) {
         console.error(e)
       }
-    }, 2500),
+    },
     putArticleAndSetSavingStatus() {
       if (this.gotArticleData && !this.isSavingImage) {
         this.putArticle()
       }
-    }
-  },
-  watch: {
-    title(newTitle, oldTitle) {
-      this.putArticleAndSetSavingStatus()
     }
   }
 }

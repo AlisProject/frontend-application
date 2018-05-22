@@ -32,6 +32,12 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      updateArticleInterval: null,
+      isEdited: false
+    }
+  },
   computed: {
     ...mapGetters('article', ['articleId', 'isSavingImage']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
@@ -69,8 +75,17 @@ export default {
         e.preventDefault()
       }
     })
+    this.updateArticleInterval = setInterval(async () => {
+      if (!this.isEdited) return
+      this.updateTitle({ title: $('.area-title').val() })
+      await this.onInputBody()
+      this.postOrPutArticleFunction()
+      console.log('post or put article')
+      this.isEdited = false
+    }, 2000)
   },
   beforeDestroy() {
+    clearInterval(this.updateArticleInterval)
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
@@ -129,8 +144,7 @@ export default {
           this.setIsSaved({ isSaved: false })
           this.setIsSaving({ isSaving: false })
         }
-        await this.onInputBody()
-        this.postOrPutArticleFunction()
+        this.isEdited = true
         window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
@@ -197,7 +211,7 @@ export default {
         this.setIsSaved({ isSaved: false })
         this.setIsSaving({ isSaving: false })
       }
-      this.updateTitle({ title })
+      this.isEdited = true
     },
     async onInputBody() {
       const images = Array.from(this.$el.querySelectorAll('figure img'))
