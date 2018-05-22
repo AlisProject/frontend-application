@@ -24,33 +24,30 @@ export default {
     }
   },
   methods: {
-    ...mapActions('article', ['postNewArticle', 'putDraftArticle', 'setIsSaving', 'setIsSaved']),
+    ...mapActions('article', ['postNewArticle', 'putDraftArticle']),
     async postOrPutArticle() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body: this.body === '' ? ' ' : this.body
       }
-      this.setIsSaving({ isSaving: true })
       if (this.isPosted) {
         try {
           if (this.isSaving) await this.putDraftArticle({ article, articleId: this.articleId })
-          this.setIsSaved({ isSaved: true })
         } catch (e) {
           console.error(e)
         }
       } else {
         try {
           if (this.isSaving) await this.postNewArticle({ article })
-          this.setIsSaved({ isSaved: true })
           this.isPosted = true
         } catch (e) {
           console.error(e)
         }
       }
     },
-    postOrPutArticleAndSetSavingStatus() {
+    async postOrPutArticleAndSetSavingStatus() {
       if (!this.isSavingImage) {
-        this.postOrPutArticle()
+        await this.postOrPutArticle()
       }
     }
   }

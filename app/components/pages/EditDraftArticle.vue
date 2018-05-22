@@ -19,24 +19,22 @@ export default {
     ...mapGetters('article', ['title', 'body', 'isSaving', 'isSavingImage'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
+    ...mapActions('article', ['putDraftArticle', 'gotArticleData']),
     async putArticle() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body: this.body === '' ? ' ' : this.body
       }
       const { articleId } = this.$route.params
-      this.setIsSaving({ isSaving: true })
       try {
         if (this.isSaving) await this.putDraftArticle({ article, articleId })
-        this.setIsSaved({ isSaved: true })
       } catch (e) {
         console.error(e)
       }
     },
-    putArticleAndSetSavingStatus() {
+    async putArticleAndSetSavingStatus() {
       if (this.gotArticleData && !this.isSavingImage) {
-        this.putArticle()
+        await this.putArticle()
       }
     }
   }

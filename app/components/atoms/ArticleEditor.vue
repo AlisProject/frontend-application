@@ -80,8 +80,9 @@ export default {
       if (!this.isEdited) return
       this.updateTitle({ title: $('.area-title').val() })
       await this.onInputBody()
-      this.postOrPutArticleFunction()
-      console.log('post or put article')
+      this.setIsSaving({ isSaving: true })
+      await this.postOrPutArticleFunction()
+      this.setIsSaved({ isSaved: true })
       this.isEdited = false
     }, 2000)
   },
@@ -207,7 +208,7 @@ export default {
         })
       })
     },
-    onInputTitle({ target: { value: title } }) {
+    onInputTitle() {
       if (!this.isSavingImage) {
         this.setIsSaved({ isSaved: false })
         this.setIsSaving({ isSaving: false })

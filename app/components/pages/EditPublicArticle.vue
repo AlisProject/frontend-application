@@ -19,7 +19,7 @@ export default {
     ...mapGetters('article', ['title', 'body', 'thumbnail', 'isSaving', 'isSavingImage'])
   },
   methods: {
-    ...mapActions('article', ['putPublicArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
+    ...mapActions('article', ['putPublicArticle', 'gotArticleData']),
     async putArticle() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
@@ -29,17 +29,15 @@ export default {
         article.eye_catch_url = this.thumbnail
       }
       const { articleId } = this.$route.params
-      this.setIsSaving({ isSaving: true })
       try {
         if (this.isSaving) await this.putPublicArticle({ article, articleId })
-        this.setIsSaved({ isSaved: true })
       } catch (e) {
         console.error(e)
       }
     },
-    putArticleAndSetSavingStatus() {
+    async putArticleAndSetSavingStatus() {
       if (this.gotArticleData && !this.isSavingImage) {
-        this.putArticle()
+        await this.putArticle()
       }
     }
   }
