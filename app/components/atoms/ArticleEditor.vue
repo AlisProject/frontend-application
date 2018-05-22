@@ -144,10 +144,7 @@ export default {
         spellcheck: false
       })
       editorElement.subscribe('editableInput', async (event, editable) => {
-        if (!this.isSavingImage) {
-          this.setIsSaved({ isSaved: false })
-          this.setIsSaving({ isSaving: false })
-        }
+        this.resetSavingStatus()
         this.isEdited = true
         window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
@@ -211,10 +208,7 @@ export default {
       })
     },
     onInputTitle() {
-      if (!this.isSavingImage) {
-        this.setIsSaved({ isSaved: false })
-        this.setIsSaving({ isSaving: false })
-      }
+      this.resetSavingStatus()
       this.isEdited = true
     },
     async onInputBody() {
@@ -238,10 +232,7 @@ export default {
     async uploadImages(images) {
       await Promise.all(
         images.map(async (img) => {
-          if (!this.isSavingImage) {
-            this.setIsSaved({ isSaved: false })
-            this.setIsSaving({ isSaving: false })
-          }
+          this.resetSavingStatus()
           const isBase64Image = img.src.includes('data:')
           const isNotUploadedImage = img.dataset.status !== 'uploaded'
           const isNotUploadingImage = img.dataset.status !== 'uploading'
@@ -283,6 +274,12 @@ export default {
       })
       $bodyTmp.find('.medium-insert-buttons').remove()
       return $bodyTmp.html()
+    },
+    resetSavingStatus() {
+      if (!this.isSavingImage) {
+        this.setIsSaved({ isSaved: false })
+        this.setIsSaving({ isSaving: false })
+      }
     },
     matchAll(str, regexp) {
       const matches = []
