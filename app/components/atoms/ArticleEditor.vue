@@ -28,7 +28,7 @@ import 'medium-editor/dist/css/medium-editor.min.css'
 export default {
   props: {
     title: String,
-    postOrPutArticleFunction: {
+    postOrPutArticle: {
       type: Function,
       required: true
     }
@@ -81,7 +81,9 @@ export default {
       this.updateTitle({ title: $('.area-title').val() })
       await this.onInputBody()
       this.setIsSaving({ isSaving: true })
-      await this.postOrPutArticleFunction()
+      if (!this.isSavingImage) {
+        await this.postOrPutArticle()
+      }
       this.setIsSaved({ isSaved: true })
       this.isEdited = false
     }, 2000)

@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="logo-original"/>
-    <article-editor :title="title" :postOrPutArticleFunction="this.putArticleAndSetSavingStatus"/>
+    <article-editor :title="title" :postOrPutArticle="this.putArticle"/>
   </div>
 </template>
 
@@ -16,11 +16,12 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['title', 'body', 'thumbnail', 'isSaving', 'isSavingImage'])
+    ...mapGetters('article', ['title', 'body', 'thumbnail', 'isSaving'])
   },
   methods: {
     ...mapActions('article', ['putPublicArticle', 'gotArticleData']),
     async putArticle() {
+      if (!this.gotArticleData) return
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body: this.body === '' ? ' ' : this.body
@@ -33,11 +34,6 @@ export default {
         if (this.isSaving) await this.putPublicArticle({ article, articleId })
       } catch (e) {
         console.error(e)
-      }
-    },
-    async putArticleAndSetSavingStatus() {
-      if (this.gotArticleData && !this.isSavingImage) {
-        await this.putArticle()
       }
     }
   }
