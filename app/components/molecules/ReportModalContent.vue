@@ -61,32 +61,13 @@ export default {
 }
 
 .report-button {
-  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 0 10px gray;
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  font-size: 14px;
+  @include default-button();
   margin: 60px auto 0;
-  outline: none;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  width: 265px;
 }
 
 .close-button {
-  background-color: #fff;
-  border-radius: 30px;
-  border: 1px solid #858dda;
-  color: #858dda;
-  cursor: pointer;
-  display: block;
-  height: 37px;
+  @include sub-button();
   margin: 20px auto 100px;
-  width: 265px;
 }
 
 @media screen and (max-width: 550px) {

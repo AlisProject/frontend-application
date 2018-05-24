@@ -111,30 +111,15 @@ export default {
 }
 
 .description {
+  @include default-text();
   width: 255px;
-  color: #6e6e6e;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
   margin: 20px auto 0;
 }
 
 .login-button,
 .signup-button,
 .submit-button {
-  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 0 10px gray;
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  font-size: 14px;
-  outline: none;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  width: 265px;
+  @include default-button();
 }
 
 .login-button {

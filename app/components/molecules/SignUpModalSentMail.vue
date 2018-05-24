@@ -75,24 +75,8 @@ export default {
   }
 
   .to-top-button {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 0 10px gray;
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-size: 13px;
+    @include default-button();
     margin: 20px auto 60px;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
-
-    &:focus {
-      opacity: 0.8;
-    }
   }
 }
 </style>

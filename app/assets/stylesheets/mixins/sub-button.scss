@@ -1,0 +1,11 @@
+@mixin sub-button {
+  background-color: #fff;
+  border-radius: 30px;
+  border: 1px solid #858dda;
+  color: #858dda;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
+  padding: 10px;
+  width: 265px;
+}
