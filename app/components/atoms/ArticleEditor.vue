@@ -76,17 +76,8 @@ export default {
         e.preventDefault()
       }
     })
-    this.updateArticleInterval = setInterval(async () => {
-      if (!this.isEdited) return
-      this.updateTitle({ title: $('.area-title').val() })
-      await this.onInputBody()
-      this.setIsSaving({ isSaving: true })
-      if (!this.isSavingImage) {
-        await this.postOrPutArticle()
-      }
-      this.setIsSaved({ isSaved: true })
-      this.isEdited = false
-    }, 2000)
+    // Start update article interval
+    this.updateArticle()
   },
   beforeDestroy() {
     clearInterval(this.updateArticleInterval)
@@ -144,7 +135,6 @@ export default {
         spellcheck: false
       })
       editorElement.subscribe('editableInput', async (event, editable) => {
-        this.resetSavingStatus()
         this.isEdited = true
         window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
@@ -207,8 +197,31 @@ export default {
         })
       })
     },
+    async updateArticle() {
+      try {
+        await (async () => {
+          // Reset saving status
+          this.setIsSaved({ isSaved: false })
+          this.setIsSaving({ isSaving: false })
+
+          if (!this.isEdited) return // Do nothing if user don't edit article
+          this.isEdited = false
+          this.setIsSaving({ isSaving: true })
+
+          // Update title and body content
+          this.updateTitle({ title: $('.area-title').val() })
+          await this.onInputBody()
+
+          await this.postOrPutArticle()
+          this.setIsSaved({ isSaved: true })
+        })()
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
+      }
+    },
     onInputTitle() {
-      this.resetSavingStatus()
       this.isEdited = true
     },
     async onInputBody() {
@@ -237,7 +250,6 @@ export default {
     async uploadImages(images) {
       await Promise.all(
         images.map(async (img) => {
-          this.resetSavingStatus()
           const isBase64Image = img.src.includes('data:')
           const isNotUploadedImage = img.dataset.status !== 'uploaded'
           const isNotUploadingImage = img.dataset.status !== 'uploading'
@@ -279,12 +291,6 @@ export default {
       })
       $bodyTmp.find('.medium-insert-buttons').remove()
       return $bodyTmp.html()
-    },
-    resetSavingStatus() {
-      if (!this.isSavingImage) {
-        this.setIsSaved({ isSaved: false })
-        this.setIsSaving({ isSaving: false })
-      }
     },
     matchAll(str, regexp) {
       const matches = []
