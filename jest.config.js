@@ -9,7 +9,7 @@ module.exports = {
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
   },
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1',
-    '^~/(.*)$': '<rootDir>/src/$1'
+    '^@/(.*)$': '<rootDir>/app/$1',
+    '^~/(.*)$': '<rootDir>/app/$1'
   }
 }
