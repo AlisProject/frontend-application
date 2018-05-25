@@ -16,7 +16,7 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['title', 'body', 'isSaving'])
+    ...mapGetters('article', ['title', 'body'])
   },
   methods: {
     ...mapActions('article', ['putDraftArticle', 'gotArticleData']),
@@ -28,7 +28,7 @@ export default {
       }
       const { articleId } = this.$route.params
       try {
-        if (this.isSaving) await this.putDraftArticle({ article, articleId })
+        await this.putDraftArticle({ article, articleId })
       } catch (e) {
         console.error(e)
       }

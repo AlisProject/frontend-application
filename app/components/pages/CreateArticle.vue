@@ -16,7 +16,7 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'title', 'body', 'isSaving'])
+    ...mapGetters('article', ['articleId', 'title', 'body'])
   },
   data() {
     return {
@@ -32,13 +32,13 @@ export default {
       }
       if (this.isPosted) {
         try {
-          if (this.isSaving) await this.putDraftArticle({ article, articleId: this.articleId })
+          await this.putDraftArticle({ article, articleId: this.articleId })
         } catch (e) {
           console.error(e)
         }
       } else {
         try {
-          if (this.isSaving) await this.postNewArticle({ article })
+          await this.postNewArticle({ article })
           this.isPosted = true
         } catch (e) {
           console.error(e)
