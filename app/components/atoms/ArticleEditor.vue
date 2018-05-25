@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isSavingImage']),
+    ...mapGetters('article', ['articleId']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -250,8 +250,6 @@ export default {
           const isNotUploadedImage = img.dataset.status !== 'uploaded'
           const isNotUploadingImage = img.dataset.status !== 'uploading'
           if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
-            this.setIsSaving({ isSaving: true })
-            this.setIsSavingImage({ isSavingImage: true })
             img.dataset.status = 'uploading'
             try {
               const base64Image = img.src
@@ -268,7 +266,6 @@ export default {
               })
               img.src = imageUrl
               img.dataset.status = 'uploaded'
-              this.setIsSavingImage({ isSavingImage: false })
             } catch (error) {
               console.error(error)
               img.dataset.status = ''
@@ -353,8 +350,7 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'setIsSaved',
-      'setIsSavingImage'
+      'setIsSaved'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }
