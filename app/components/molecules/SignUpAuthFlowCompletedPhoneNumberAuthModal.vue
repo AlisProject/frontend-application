@@ -15,9 +15,9 @@
         alt="completed-auth-image">
     </div>
     <div class="modal-footer">
-      <!-- <button class="to-next-step-button" @click="transitToProfileSettings">
+      <!-- <app-button class="to-next-step-button" @click="transitToProfileSettings">
         プロフィールを作成する
-      </button> -->
+      </app-button> -->
       <button class="to-top-button" @click="transitToTop">
         TOPに戻る
       </button>
@@ -27,8 +27,12 @@
 
 <script>
 import { mapActions } from 'vuex'
+// import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    // AppButton
+  },
   methods: {
     transitToProfileSettings() {
       this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
@@ -104,28 +108,7 @@ export default {
   margin: 40px auto 40px;
 
   .to-next-step-button {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 0 10px gray;
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
     margin: 20px auto 0;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
-
-    &:focus {
-      opacity: 0.8;
-    }
-
-    &:target {
-      display: block;
-    }
   }
 
   .to-top-button {

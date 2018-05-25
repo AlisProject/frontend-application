@@ -13,17 +13,21 @@
         class="login-img"
         src="~/assets/images/pc/common/image_login.png"
         alt="login-image">
-      <button class="to-top-button" @click="transitToTop">
+      <app-button class="to-top-button" @click="transitToTop">
         トップに戻る
-      </button>
+      </app-button>
     </div>
   </transition>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   methods: {
     transitToTop() {
       this.setSignUpModal({ showSignUpModal: false })
@@ -75,24 +79,7 @@ export default {
   }
 
   .to-top-button {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 0 10px gray;
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-size: 13px;
     margin: 20px auto 60px;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
-
-    &:focus {
-      opacity: 0.8;
-    }
   }
 }
 </style>

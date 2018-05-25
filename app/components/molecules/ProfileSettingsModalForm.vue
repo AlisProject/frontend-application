@@ -44,9 +44,9 @@
       </form>
     </div>
     <div class="modal-footer">
-      <button class="to-next-step-button" :class="{ disabled: invalidSubmit }" @click="onSubmit">
+      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         完了する
-      </button>
+      </app-button>
     </div>
   </div>
 </template>
@@ -55,6 +55,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import AppButton from '../atoms/AppButton'
 
 export default {
   data() {
@@ -63,6 +64,9 @@ export default {
       selfIntroduction: '',
       uploadedImage: ''
     }
+  },
+  components: {
+    AppButton
   },
   created() {
     this.userDisplayName = this.currentUserInfo.user_display_name || this.currentUser.userId
@@ -311,34 +315,7 @@ export default {
   margin: 90px auto 40px;
 
   .to-next-step-button {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 0 10px gray;
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
     margin: 20px auto 0;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
-
-    &:focus {
-      opacity: 0.8;
-    }
-
-    &:target {
-      display: block;
-    }
-
-    &.disabled {
-      background: white;
-      color: #6e6e6e;
-      cursor: default;
-    }
   }
 
   .error-message {

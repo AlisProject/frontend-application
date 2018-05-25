@@ -10,16 +10,20 @@
       ですが、PCをご利用ください。また、アプリの
       開発をお待ち頂けると幸いです。
     </p>
-    <button class="back-button" @click="closeModal">
+    <app-button class="back-button" @click="closeModal">
       公開済み記事一覧に戻る
-    </button>
+    </app-button>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   methods: {
     closeModal() {
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
@@ -53,20 +57,7 @@ export default {
 }
 
 .back-button {
-  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 0 10px gray;
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  font-size: 14px;
   margin: 60px auto;
-  outline: none;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  width: 265px;
 }
 
 @media screen and (max-width: 550px) {

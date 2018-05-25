@@ -12,16 +12,16 @@
         画面へお進みください。また新規登録がお進み
         でない方は新規登録画面へお進みください。
       </p>
-      <span
+      <app-button
         @click="showLoginModal"
         class="login-button">
         ログインする
-      </span>
-      <span
+      </app-button>
+      <app-button
         @click="showSignUpModal"
         class="signup-button">
         新規登録する
-      </span>
+      </app-button>
     </div>
     <div class="right">
       <p class="for-not-submitted-user">
@@ -33,21 +33,26 @@
         致しております。ご登録の上、利用開始メール
         送付までお待ち下さい。
       </p>
-      <a
-        href="http://eepurl.com/drM0Jr"
-        target="_blank"
-        rel="noopener noreferrer nofollow"
-        class="submit-button">
-        ウェイティングリストに登録する
-      </a>
+      <app-button class="submit-button">
+        <a
+          href="http://eepurl.com/drM0Jr"
+          target="_blank"
+          rel="noopener noreferrer nofollow">
+          ウェイティングリストに登録する
+        </a>
+      </app-button>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   methods: {
     showSignUpModal() {
       this.setRequestLoginModal({ showRequestLoginModal: false })
@@ -117,24 +122,6 @@ export default {
   font-weight: 500;
   line-height: 18px;
   margin: 20px auto 0;
-}
-
-.login-button,
-.signup-button,
-.submit-button {
-  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 0 10px gray;
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  font-size: 14px;
-  outline: none;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  width: 265px;
 }
 
 .login-button {
