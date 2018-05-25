@@ -43,15 +43,30 @@ export default {
 }
 
 .confirm-description {
-  @include default-text();
+  color: #6e6e6e;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
   text-align: center;
   padding: 1em 30px;
   display: block;
 }
 
 .back-button {
-  @include default-button();
+  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+  border-radius: 18px;
+  border: none;
+  box-shadow: 0 0 10px gray;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
   margin: 60px auto;
+  outline: none;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  width: 265px;
 }
 
 @media screen and (max-width: 550px) {

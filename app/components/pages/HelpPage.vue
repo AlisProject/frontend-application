@@ -58,8 +58,20 @@ export default {
 }
 
 .sendmail-button {
-  @include default-button();
+  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+  border-radius: 18px;
+  border: none;
+  box-shadow: 0 0 10px gray;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 14px;
   margin: 60px auto 0;
+  outline: none;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  width: 265px;
 }
 
 @media screen and (max-width: 640px) {
