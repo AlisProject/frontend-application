@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { mount } from '@vue/test-utils'
-import ArticleCardContentDataCreatedAt from './ArticleCardContentDataCreatedAt'
+import ArticleCardContentDataCreatedAt from '@/components/atoms/ArticleCardContentDataCreatedAt.vue'
 
 describe('ArticleCardContentDataCreatedAt', () => {
   test('is render "2018/05/21" when createdAt = 1526858710 ', () => {

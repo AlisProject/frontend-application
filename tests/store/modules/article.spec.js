@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import { createLocalVue } from '@vue/test-utils'
-import article from './article'
-import APIMock from '~/../test/mock/api'
+import article from '@/store/modules/article'
+import APIMock from '../../mock/api'
 
 describe('store/modules/article.js', () => {
   let store
