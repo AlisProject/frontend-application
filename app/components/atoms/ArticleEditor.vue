@@ -236,16 +236,12 @@ export default {
       this.updateSuggestedThumbnails({ thumbnails })
 
       // Update body
-      const hasNotImage = images.length === 0 && thumbnails.length === 0
-      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
-      if (hasNotImage || hasNotUploadingImage) {
-        $('.area-body')
-          .find('span[style]')
-          .contents()
-          .unwrap()
-        const body = this.removeUselessDOMFromArticleBody($('.area-body'))
-        this.updateBody({ body })
-      }
+      $('.area-body')
+        .find('span[style]')
+        .contents()
+        .unwrap()
+      const body = this.removeUselessDOMFromArticleBody($('.area-body'))
+      this.updateBody({ body })
     },
     async uploadImages(images) {
       await Promise.all(
@@ -283,6 +279,9 @@ export default {
     },
     removeUselessDOMFromArticleBody($element) {
       const $bodyTmp = $element.clone()
+      $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
+        element.src = ''
+      })
       $bodyTmp.find('[data-status="uploading"]').each((_i, element) => {
         element.src = ''
       })
