@@ -1,3 +1,5 @@
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 module.exports = {
   /*
   ** Headers of the page
@@ -47,8 +49,15 @@ module.exports = {
     { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
-    baseURL: process.env.BASE_URL,
-    proxyHeaders: false
+    prefix: '/api',
+    proxyHeaders: false,
+    proxy: isDevelopment
+  },
+  proxy: !isDevelopment ? {} : {
+    '/api': {
+      target: process.env.BASE_URL,
+      pathRewrite: { '^/api': '/' }
+    }
   },
   srcDir: 'app',
   router: {
@@ -57,9 +66,6 @@ module.exports = {
   render: {
     gzip: false
   },
-  proxy: process.env.NODE_ENV !== 'localhost' ? [] : [
-    `https://${process.env.DOMAIN}/api/`
-  ],
   build: {
     publicPath: `https://${process.env.DOMAIN}/d/nuxt/dist/`,
     /*
