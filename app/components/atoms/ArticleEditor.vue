@@ -200,19 +200,24 @@ export default {
     async updateArticle() {
       try {
         await (async () => {
-          // Reset saving status
-          this.setIsSaved({ isSaved: false })
-          this.setIsSaving({ isSaving: false })
+          // Do nothing if user don't edit article
+          if (!this.isEdited) {
+            this.setIsSaved({ isSaved: false })
+            this.setIsSaving({ isSaving: false })
+            return
+          }
 
-          if (!this.isEdited) return // Do nothing if user don't edit article
+          // Init
           this.isEdited = false
           this.setIsSaving({ isSaving: true })
 
-          // Update title and body content
-          this.updateTitle({ title: $('.area-title').val() })
-          await this.onInputBody()
+          // Upload images
+          const images = Array.from(this.$el.querySelectorAll('figure img'))
+          await this.uploadImages(images)
 
-          await this.postOrPutArticle()
+          // Upload article
+          await this.uploadArticle(images)
+
           this.setIsSaved({ isSaved: true })
         })()
       } catch (error) {
@@ -224,16 +229,15 @@ export default {
     onInputTitle() {
       this.isEdited = true
     },
-    async onInputBody() {
-      // Upload images in article body
-      const images = Array.from(this.$el.querySelectorAll('figure img'))
-      await this.uploadImages(images)
-
+    async uploadArticle(images) {
       // Update thumbnails
       const thumbnails = images
         .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
         .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
+
+      // Update title
+      this.updateTitle({ title: $('.area-title').val() })
 
       // Update body
       $('.area-body')
@@ -242,6 +246,8 @@ export default {
         .unwrap()
       const body = this.removeUselessDOMFromArticleBody($('.area-body'))
       this.updateBody({ body })
+
+      await this.postOrPutArticle()
     },
     async uploadImages(images) {
       await Promise.all(
