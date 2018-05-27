@@ -1,7 +1,7 @@
 <template>
   <div class="area-article-sub-infos-container">
     <div class="article-sub-info">
-      公開日：<span class="created-at">{{ formettedCreatedAt }}</span>
+      公開日：<span class="published-at">{{ formettedPublishedAt }}</span>
     </div>
     <div class="article-sub-info">
       獲得トークン：<span class="token-amount">{{ formattedTokenAmount }}</span>
@@ -15,7 +15,7 @@ import moment from 'moment'
 
 export default {
   props: {
-    createdAt: {
+    publishedAt: {
       type: Number,
       required: true
     },
@@ -25,7 +25,7 @@ export default {
     }
   },
   computed: {
-    formettedCreatedAt() {
+    formettedPublishedAt() {
       return moment(this.createdAt, 'X')
         .locale('ja')
         .format('L')
@@ -52,7 +52,7 @@ export default {
     display: inline;
     margin-right: 40px;
 
-    .created-at,
+    .published-at,
     .token-amount {
       letter-spacing: 0.05em;
       color: #030303;
