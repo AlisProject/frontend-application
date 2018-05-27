@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="logo-original"/>
-    <article-editor :title="title" :postOrPutArticle="this.putArticle"/>
+    <article-editor :title="title" :putArticle="this.putArticle"/>
   </div>
 </template>
 

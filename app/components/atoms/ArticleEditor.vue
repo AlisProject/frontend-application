@@ -28,7 +28,7 @@ import 'medium-editor/dist/css/medium-editor.min.css'
 export default {
   props: {
     title: String,
-    postOrPutArticle: {
+    putArticle: {
       type: Function,
       required: true
     }
@@ -257,7 +257,7 @@ export default {
       const body = this.removeUselessDOMFromArticleBody($('.area-body'))
       this.updateBody({ body })
 
-      await this.postOrPutArticle()
+      await this.putArticle()
     },
     async uploadImages(images) {
       await Promise.all(

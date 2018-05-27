@@ -1,7 +1,7 @@
 <template>
   <div class="create-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="new-article logo-original"/>
-    <article-editor :postOrPutArticle="this.postOrPutArticle"/>
+    <article-editor :putArticle="this.putArticle"/>
   </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
   },
   methods: {
     ...mapActions('article', ['putDraftArticle']),
-    async postOrPutArticle() {
+    async putArticle() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body: this.body === '' ? ' ' : this.body
