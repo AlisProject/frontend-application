@@ -213,11 +213,10 @@ export default {
           if (!this.isPosted) await this.setArticleId()
 
           // Upload images
-          const images = Array.from(this.$el.querySelectorAll('figure img'))
-          await this.uploadImages(images)
+          await this.uploadImages()
 
           // Upload article
-          await this.uploadArticle(images)
+          await this.uploadArticle()
 
           this.setIsSaved({ isSaved: true })
         })()
@@ -238,13 +237,7 @@ export default {
     onInputTitle() {
       this.isEdited = true
     },
-    async uploadArticle(images) {
-      // Update thumbnails
-      const thumbnails = images
-        .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
-        .map((img) => img.src)
-      this.updateSuggestedThumbnails({ thumbnails })
-
+    async uploadArticle() {
       // Update title
       this.updateTitle({ title: $('.area-title').val() })
 
@@ -258,7 +251,8 @@ export default {
 
       await this.putArticle()
     },
-    async uploadImages(images) {
+    async uploadImages() {
+      const images = Array.from(this.$el.querySelectorAll('figure img'))
       await Promise.all(
         images.map(async (img) => {
           const isBase64Image = img.src.includes('data:')
@@ -282,6 +276,11 @@ export default {
           }
         })
       )
+      // Update thumbnails
+      const thumbnails = images
+        .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
+        .map((img) => img.src)
+      this.updateSuggestedThumbnails({ thumbnails })
     },
     removeUselessDOMFromArticleBody($element) {
       const $bodyTmp = $element.clone()
