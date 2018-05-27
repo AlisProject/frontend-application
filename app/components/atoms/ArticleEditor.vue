@@ -240,8 +240,9 @@ export default {
     },
     async uploadArticle(images) {
       // Update thumbnails
+      const isBase64Image = img.src.includes('data:')
       const thumbnails = images
-        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
+        .filter((img) => !isBase64Image || img.src.includes(process.env.DOMAIN))
         .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
 
@@ -262,10 +263,7 @@ export default {
       await Promise.all(
         images.map(async (img) => {
           const isBase64Image = img.src.includes('data:')
-          const isNotUploadedImage = img.dataset.status !== 'uploaded'
-          const isNotUploadingImage = img.dataset.status !== 'uploading'
-          if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
-            img.dataset.status = 'uploading'
+          if (isBase64Image) {
             try {
               const base64Image = img.src
               const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
@@ -279,10 +277,8 @@ export default {
                 imageContentType
               })
               img.src = imageUrl
-              img.dataset.status = 'uploaded'
             } catch (error) {
               console.error(error)
-              img.dataset.status = ''
             }
           }
         })
@@ -291,9 +287,6 @@ export default {
     removeUselessDOMFromArticleBody($element) {
       const $bodyTmp = $element.clone()
       $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
-        element.src = ''
-      })
-      $bodyTmp.find('[data-status="uploading"]').each((_i, element) => {
         element.src = ''
       })
       $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
