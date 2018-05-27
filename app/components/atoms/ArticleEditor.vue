@@ -35,12 +35,11 @@ export default {
   },
   data() {
     return {
-      updateArticleInterval: null,
-      isEdited: false
+      updateArticleInterval: null
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId']),
+    ...mapGetters('article', ['articleId', 'isEdited']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -135,7 +134,7 @@ export default {
         spellcheck: false
       })
       editorElement.subscribe('editableInput', async (event, editable) => {
-        this.isEdited = true
+        this.setIsEdited({ isEdited: true })
         window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
@@ -208,7 +207,7 @@ export default {
           }
 
           // Init
-          this.isEdited = false
+          this.setIsEdited({ isEdited: false })
           this.setIsSaving({ isSaving: true })
           if (this.articleId === '') await this.setArticleId()
 
@@ -235,7 +234,7 @@ export default {
       }
     },
     onInputTitle() {
-      this.isEdited = true
+      this.setIsEdited({ isEdited: true })
     },
     async uploadArticle() {
       // Update title
@@ -356,7 +355,8 @@ export default {
       'setRestrictEditArticleModal',
       'setIsSaving',
       'setIsSaved',
-      'postNewArticle'
+      'postNewArticle',
+      'setIsEdited'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }

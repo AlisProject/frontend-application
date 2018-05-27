@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="area-post-article" v-show="showPostArticleLink">
-      <span class="nav-link post-article" @click="togglePopup">
+      <span class="nav-link post-article" :class="{ disable: isEdited }" @click="togglePopup">
         公開する
       </span>
       <div v-show="isPopupShown" class="popup">
@@ -31,7 +31,7 @@
             class="thumbnail"/>
         </div>
         <hr class="hr">
-        <button class="submit" @click="publish">公開する</button>
+        <button class="submit" :class="{ disable: isEdited }" @click="publish">公開する</button>
       </div>
     </div>
   </nav>
@@ -83,6 +83,7 @@ export default {
       }
     },
     async publish() {
+      if (this.isEdited) return
       const { articleId, title, body } = this
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
@@ -116,6 +117,7 @@ export default {
       }
     },
     togglePopup() {
+      if (this.isEdited) return
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -160,7 +162,8 @@ export default {
       'thumbnail',
       'suggestedThumbnails',
       'isSaving',
-      'isSaved'
+      'isSaved',
+      'isEdited'
     ]),
     saveStatus() {
       if (this.isSaved) {
