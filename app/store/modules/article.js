@@ -24,7 +24,7 @@ const state = () => ({
   ],
   suggestedThumbnails: [],
   thumbnail: '',
-  isSaved: false,
+  isSaving: false,
   gotArticleData: false,
   popularArticlesLastEvaluatedKey: {},
   newArticlesLastEvaluatedKey: {},
@@ -49,7 +49,7 @@ const getters = {
   body: (state) => state.body,
   suggestedThumbnails: (state) => state.suggestedThumbnails,
   thumbnail: (state) => state.thumbnail,
-  isSaved: (state) => state.isSaved,
+  isSaving: (state) => state.isSaving,
   gotArticleData: (state) => state.gotArticleData,
   popularArticlesLastEvaluatedKey: (state) => state.popularArticlesLastEvaluatedKey,
   newArticlesLastEvaluatedKey: (state) => state.newArticlesLastEvaluatedKey,
@@ -258,8 +258,8 @@ const actions = {
   setLikesCountToArticle({ commit }, { likesCount }) {
     commit(types.SET_LIKES_COUNT_TO_ARTICLE, { likesCount })
   },
-  setIsSaved({ commit }, { isSaved }) {
-    commit(types.SET_IS_SAVED, { isSaved })
+  setIsSaving({ commit }, { isSaving }) {
+    commit(types.SET_IS_SAVING, { isSaving })
   },
   async postArticleImage({ commit }, { articleId, articleImage, imageContentType }) {
     try {
@@ -363,8 +363,8 @@ const mutations = {
   [types.UPDATE_THUMBNAIL](state, { thumbnail }) {
     state.thumbnail = thumbnail
   },
-  [types.SET_IS_SAVED](state, { isSaved }) {
-    state.isSaved = isSaved
+  [types.SET_IS_SAVING](state, { isSaving }) {
+    state.isSaving = isSaving
   },
   [types.SET_GOT_ARTICLE_DATA](state, { gotArticleData }) {
     state.gotArticleData = gotArticleData

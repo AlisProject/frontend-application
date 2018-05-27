@@ -155,7 +155,7 @@ export default {
   },
   computed: {
     publishable() {
-      return !this.isEdited && this.isSaved
+      return !this.isEdited && !this.isSaving
     },
     ...mapGetters('article', [
       'articleId',
@@ -163,7 +163,7 @@ export default {
       'body',
       'thumbnail',
       'suggestedThumbnails',
-      'isSaved',
+      'isSaving',
       'isEdited',
       'saveStatus'
     ])

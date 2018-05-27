@@ -206,8 +206,8 @@ export default {
           }
 
           // Init
+          this.setIsSaving({ isSaving: true })
           this.setIsEdited({ isEdited: false })
-          this.setIsSaved({ isSaved: false })
           this.setSaveStatus({ saveStatus: 'Saving...' })
           if (this.articleId === '') await this.setArticleId()
 
@@ -218,7 +218,7 @@ export default {
           await this.uploadArticle()
 
           this.setSaveStatus({ saveStatus: 'Saved' })
-          this.setIsSaved({ isSaved: true })
+          this.setIsSaving({ isSaving: false })
         })()
       } catch (error) {
         console.error(error)
@@ -354,7 +354,7 @@ export default {
       'updateSuggestedThumbnails',
       'postArticleImage',
       'setRestrictEditArticleModal',
-      'setIsSaved',
+      'setIsSaving',
       'postNewArticle',
       'setIsEdited',
       'setSaveStatus'
