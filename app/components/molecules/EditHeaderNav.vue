@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="area-post-article" v-show="showPostArticleLink">
-      <span class="nav-link post-article" :class="{ disable: isEdited }" @click="togglePopup">
+      <span class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
         公開する
       </span>
       <div v-show="isPopupShown" class="popup">
@@ -31,7 +31,7 @@
             class="thumbnail"/>
         </div>
         <hr class="hr">
-        <button class="submit" :class="{ disable: isEdited }" @click="publish">公開する</button>
+        <button class="submit" :class="{ disable: !publishable }" @click="publish">公開する</button>
       </div>
     </div>
   </nav>
@@ -83,7 +83,7 @@ export default {
       }
     },
     async publish() {
-      if (this.isEdited) return
+      if (!this.publishable) return
       const { articleId, title, body } = this
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
@@ -117,7 +117,7 @@ export default {
       }
     },
     togglePopup() {
-      if (this.isEdited) return
+      if (!this.publishable) return
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -150,18 +150,19 @@ export default {
       'updateSuggestedThumbnails',
       'postArticleImage',
       'updateBody',
-      'setIsSaving',
       'setIsSaved'
     ])
   },
   computed: {
+    publishable() {
+      return !this.isEdited && this.isSaved
+    },
     ...mapGetters('article', [
       'articleId',
       'title',
       'body',
       'thumbnail',
       'suggestedThumbnails',
-      'isSaving',
       'isSaved',
       'isEdited',
       'saveStatus'

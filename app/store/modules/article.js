@@ -24,7 +24,6 @@ const state = () => ({
   ],
   suggestedThumbnails: [],
   thumbnail: '',
-  isSaving: false,
   isSaved: false,
   gotArticleData: false,
   popularArticlesLastEvaluatedKey: {},
@@ -50,7 +49,6 @@ const getters = {
   body: (state) => state.body,
   suggestedThumbnails: (state) => state.suggestedThumbnails,
   thumbnail: (state) => state.thumbnail,
-  isSaving: (state) => state.isSaving,
   isSaved: (state) => state.isSaved,
   gotArticleData: (state) => state.gotArticleData,
   popularArticlesLastEvaluatedKey: (state) => state.popularArticlesLastEvaluatedKey,
@@ -260,9 +258,6 @@ const actions = {
   setLikesCountToArticle({ commit }, { likesCount }) {
     commit(types.SET_LIKES_COUNT_TO_ARTICLE, { likesCount })
   },
-  setIsSaving({ commit }, { isSaving }) {
-    commit(types.SET_IS_SAVING, { isSaving })
-  },
   setIsSaved({ commit }, { isSaved }) {
     commit(types.SET_IS_SAVED, { isSaved })
   },
@@ -367,9 +362,6 @@ const mutations = {
   },
   [types.UPDATE_THUMBNAIL](state, { thumbnail }) {
     state.thumbnail = thumbnail
-  },
-  [types.SET_IS_SAVING](state, { isSaving }) {
-    state.isSaving = isSaving
   },
   [types.SET_IS_SAVED](state, { isSaved }) {
     state.isSaved = isSaved

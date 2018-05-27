@@ -22,7 +22,6 @@ export default {
     AppFooter
   },
   mounted() {
-    this.setIsSaving({ isSaving: false })
     this.setIsSaved({ isSaved: false })
   },
   computed: {
@@ -34,7 +33,7 @@ export default {
         this.getDraftArticles()
       }
     },
-    ...mapActions('article', ['getDraftArticles', 'setIsSaving', 'setIsSaved'])
+    ...mapActions('article', ['getDraftArticles', 'setIsSaved'])
   }
 }
 </script>
