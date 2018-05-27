@@ -240,9 +240,8 @@ export default {
     },
     async uploadArticle(images) {
       // Update thumbnails
-      const isBase64Image = img.src.includes('data:')
       const thumbnails = images
-        .filter((img) => !isBase64Image || img.src.includes(process.env.DOMAIN))
+        .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
         .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
 
