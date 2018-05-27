@@ -56,8 +56,7 @@ const getters = {
   publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
   draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
   likesCount: (state) => state.likesCount,
-  isLikedArticle: (state) => state.isLikedArticle,
-  isPosted: (state) => state.articleId !== ''
+  isLikedArticle: (state) => state.isLikedArticle
 }
 
 const actions = {

@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isPosted']),
+    ...mapGetters('article', ['articleId']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -210,7 +210,7 @@ export default {
           // Init
           this.isEdited = false
           this.setIsSaving({ isSaving: true })
-          if (!this.isPosted) await this.setArticleId()
+          if (this.articleId === '') await this.setArticleId()
 
           // Upload images
           await this.uploadImages()
