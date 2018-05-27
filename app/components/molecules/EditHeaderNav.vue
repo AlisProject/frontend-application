@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     async unpublish() {
-      const { articleId } = this.$route.params
+      const { articleId } = this
       try {
         await this.unpublishPublicArticle({ articleId })
         this.$router.push('/me/articles/public')
@@ -84,8 +84,7 @@ export default {
     },
     async publish() {
       if (!this.isSaving) return
-      const { articleId } = this.articleId === '' ? this.$route.params : this
-      const { title, body } = this
+      const { articleId, title, body } = this
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')

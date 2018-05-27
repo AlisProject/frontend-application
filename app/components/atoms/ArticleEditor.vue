@@ -40,7 +40,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId']),
+    ...mapGetters('article', ['articleId', 'isPosted']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -210,6 +210,7 @@ export default {
           // Init
           this.isEdited = false
           this.setIsSaving({ isSaving: true })
+          if (!this.isPosted) await this.setArticleId()
 
           // Upload images
           const images = Array.from(this.$el.querySelectorAll('figure img'))
@@ -224,6 +225,14 @@ export default {
         console.error(error)
       } finally {
         this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
+      }
+    },
+    async setArticleId() {
+      try {
+        const article = { title: '', body: '' }
+        await this.postNewArticle({ article })
+      } catch (error) {
+        console.error(error)
       }
     },
     onInputTitle() {
@@ -264,9 +273,8 @@ export default {
                 base64Image.match(':').index + 1,
                 base64Image.match(';').index
               )
-              const { articleId } = this.articleId === '' ? this.$route.params : this
               const { image_url: imageUrl } = await this.postArticleImage({
-                articleId,
+                articleId: this.articleId,
                 articleImage: base64Hash,
                 imageContentType
               })
@@ -356,7 +364,8 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'setIsSaved'
+      'setIsSaved',
+      'postNewArticle'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }

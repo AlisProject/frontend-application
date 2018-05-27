@@ -56,7 +56,8 @@ const getters = {
   publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
   draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
   likesCount: (state) => state.likesCount,
-  isLikedArticle: (state) => state.isLikedArticle
+  isLikedArticle: (state) => state.isLikedArticle,
+  isPosted: (state) => state.articleId !== ''
 }
 
 const actions = {
@@ -137,6 +138,7 @@ const actions = {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/drafts`)
       commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE_ID, { articleId })
     } catch (error) {
       Promise.reject(error)
     }
@@ -156,6 +158,7 @@ const actions = {
   async getPublicArticleDetail({ commit }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
     commit(types.SET_ARTICLE_DETAIL, { article })
+    commit(types.SET_ARTICLE_ID, { articleId })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
@@ -164,6 +167,7 @@ const actions = {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
       commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE_ID, { articleId })
     } catch (error) {
       Promise.reject(error)
     }

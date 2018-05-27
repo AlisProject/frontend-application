@@ -18,31 +18,17 @@ export default {
   computed: {
     ...mapGetters('article', ['articleId', 'title', 'body'])
   },
-  data() {
-    return {
-      isPosted: false
-    }
-  },
   methods: {
-    ...mapActions('article', ['postNewArticle', 'putDraftArticle']),
+    ...mapActions('article', ['putDraftArticle']),
     async postOrPutArticle() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body: this.body === '' ? ' ' : this.body
       }
-      if (this.isPosted) {
-        try {
-          await this.putDraftArticle({ article, articleId: this.articleId })
-        } catch (e) {
-          console.error(e)
-        }
-      } else {
-        try {
-          await this.postNewArticle({ article })
-          this.isPosted = true
-        } catch (e) {
-          console.error(e)
-        }
+      try {
+        await this.putDraftArticle({ article, articleId: this.articleId })
+      } catch (e) {
+        console.error(e)
       }
     }
   }
