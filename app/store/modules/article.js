@@ -35,7 +35,8 @@ const state = () => ({
   hasNewArticlesLastEvaluatedKey: false,
   hasPublicArticlesLastEvaluatedKey: false,
   hasDraftArticlesLastEvaluatedKey: false,
-  isEdited: false
+  isEdited: false,
+  saveStatus: ''
 })
 
 const getters = {
@@ -58,7 +59,8 @@ const getters = {
   draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
-  isEdited: (state) => state.isEdited
+  isEdited: (state) => state.isEdited,
+  saveStatus: (state) => state.saveStatus
 }
 
 const actions = {
@@ -312,6 +314,9 @@ const actions = {
   },
   setIsEdited({ commit }, { isEdited }) {
     commit(types.SET_IS_EDITED, { isEdited })
+  },
+  setSaveStatus({ commit }, { saveStatus }) {
+    commit(types.SET_SAVE_STATUS, { saveStatus })
   }
 }
 
@@ -401,6 +406,9 @@ const mutations = {
   },
   [types.SET_IS_EDITED](state, { isEdited }) {
     state.isEdited = isEdited
+  },
+  [types.SET_SAVE_STATUS](state, { saveStatus }) {
+    state.saveStatus = saveStatus
   }
 }
 

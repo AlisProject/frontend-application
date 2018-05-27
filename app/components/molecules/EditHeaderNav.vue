@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <span class="area-save-status">{{ this.saveStatus }}</span>
+    <span class="area-save-status">{{ saveStatus }}</span>
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/articles/new" class="nav-link area-new-article">新規作成</a>
@@ -163,17 +163,9 @@ export default {
       'suggestedThumbnails',
       'isSaving',
       'isSaved',
-      'isEdited'
-    ]),
-    saveStatus() {
-      if (this.isSaved) {
-        return 'Saved'
-      } else if (this.isSaving) {
-        return 'Saving...'
-      } else {
-        return ''
-      }
-    }
+      'isEdited',
+      'saveStatus'
+    ])
   }
 }
 </script>

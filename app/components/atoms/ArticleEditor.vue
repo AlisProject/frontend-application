@@ -201,14 +201,13 @@ export default {
         await (async () => {
           // Do nothing if user don't edit article
           if (!this.isEdited) {
-            this.setIsSaved({ isSaved: false })
-            this.setIsSaving({ isSaving: false })
+            this.setSaveStatus({ saveStatus: '' })
             return
           }
 
           // Init
           this.setIsEdited({ isEdited: false })
-          this.setIsSaving({ isSaving: true })
+          this.setSaveStatus({ saveStatus: 'Saving...' })
           if (this.articleId === '') await this.setArticleId()
 
           // Upload images
@@ -217,7 +216,7 @@ export default {
           // Upload article
           await this.uploadArticle()
 
-          this.setIsSaved({ isSaved: true })
+          this.setSaveStatus({ saveStatus: 'Saved' })
         })()
       } catch (error) {
         console.error(error)
@@ -356,7 +355,8 @@ export default {
       'setIsSaving',
       'setIsSaved',
       'postNewArticle',
-      'setIsEdited'
+      'setIsEdited',
+      'setSaveStatus'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }
