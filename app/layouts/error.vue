@@ -9,9 +9,11 @@
           アクセスしようとしたページは削除、変更されたか、<br>
           現在利用できない可能性があります。
         </p>
-        <nuxt-link to="/" class="to-top-button">
-          トップに戻る
-        </nuxt-link>
+        <app-button class="to-top-button">
+          <nuxt-link to="/">
+            トップに戻る
+          </nuxt-link>
+        </app-button>
       </div>
     </div>
     <div v-else-if="error.statusCode >= 500">
@@ -38,10 +40,12 @@
 
 <script>
 import AppHeader from '~/components/organisms/AppHeader'
+import AppButton from '~/components/atoms/AppButton'
 
 export default {
   components: {
-    AppHeader
+    AppHeader,
+    AppButton
   },
   props: ['error'],
   head() {
@@ -78,23 +82,7 @@ export default {
   }
 
   .to-top-button {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 0 10px gray;
-    color: #fff;
-    display: block;
-    font-size: 13px;
     margin: 50vh auto 60px;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
-
-    &:focus {
-      opacity: 0.8;
-    }
   }
 }
 

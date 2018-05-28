@@ -3,9 +3,9 @@
     <p class="confirm-text">
       本当に通報しますか？
     </p>
-    <button class="report-button" @click="report">
+    <app-button class="report-button" @click="report">
       通報する
-    </button>
+    </app-button>
     <button class="close-button" @click="closeModal">
       閉じる
     </button>
@@ -15,8 +15,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   computed: {
     ...mapGetters('article', ['article'])
   },
@@ -61,20 +65,7 @@ export default {
 }
 
 .report-button {
-  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 0 10px gray;
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  font-size: 14px;
   margin: 60px auto 0;
-  outline: none;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  width: 265px;
 }
 
 .close-button {

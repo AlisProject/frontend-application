@@ -27,9 +27,9 @@
       <p class="error-message" v-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
       <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
       <p class="error-message" v-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
-      <button class="to-next-step-button" :class="{ disabled: invalidSubmit }" @click="onSubmit">
+      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         次へ
-      </button>
+      </app-button>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
+import AppButton from '../atoms/AppButton'
 
 function japanesePhoneNumber(value) {
   return Boolean(value.match(/^0[789]0/))
@@ -47,6 +48,9 @@ export default {
     return {
       errorMessage: ''
     }
+  },
+  components: {
+    AppButton
   },
   computed: {
     showErrorInvalidPhoneNember() {
@@ -154,24 +158,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin default-text {
-  height: 14px;
-  color: #6e6e6e;
-  font-size: 12px;
-  line-height: 18px;
-
-  a {
-    border-bottom: solid 1px transparent;
-    color: #858dda;
-    text-decoration: none;
-    transition: all 400ms ease;
-
-    &:hover {
-      border-bottom: solid 1px #858dda;
-    }
-  }
-}
-
 .modal-body {
   margin: 0 auto;
 
@@ -238,34 +224,7 @@ export default {
   margin: 90px auto 40px;
 
   .to-next-step-button {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 0 10px gray;
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
     margin: 20px auto 0;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
-
-    &:focus {
-      opacity: 0.8;
-    }
-
-    &:target {
-      display: block;
-    }
-
-    &.disabled {
-      background: white;
-      color: #6e6e6e;
-      cursor: default;
-    }
   }
 
   .error-message {

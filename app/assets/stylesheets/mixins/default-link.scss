@@ -1,0 +1,12 @@
+@mixin default-link {
+  border-bottom: solid 1px transparent;
+  color: #858dda;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 400ms ease;
+
+  &:hover {
+    border-bottom: solid 1px #858dda;
+  }
+}

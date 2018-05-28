@@ -1,0 +1,13 @@
+@import "default-link";
+
+@mixin default-text {
+  color: #6e6e6e;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+
+  a {
+    @include default-link();
+  }
+}
+
