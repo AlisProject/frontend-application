@@ -5,12 +5,12 @@
       type="text"
       placeholder="タイトル"
       spellcheck="false"
+      maxlength="255"
       @input="onInputTitle"
       :value="title">
     <div
       class="area-body"
       ref="editable"
-      @input="onInputBody"
       @drop="preventDropImage"
       @dragover="preventDragoverImage"/>
   </div>
@@ -18,17 +18,28 @@
 
 <script>
 /* eslint no-undef: 0 */
+/* eslint-disable space-before-function-paren */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
+import getTwitterProfileTemplate from '~/utils/getTwitterProfileTemplate'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
   props: {
-    title: String
+    title: String,
+    putArticle: {
+      type: Function,
+      required: true
+    }
+  },
+  data() {
+    return {
+      updateArticleInterval: null
+    }
   },
   computed: {
-    ...mapGetters('article', ['articleId']),
+    ...mapGetters('article', ['articleId', 'isEdited']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -64,8 +75,11 @@ export default {
         e.preventDefault()
       }
     })
+    // Start update article interval
+    this.updateArticle()
   },
   beforeDestroy() {
+    clearInterval(this.updateArticleInterval)
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
@@ -120,6 +134,7 @@ export default {
         spellcheck: false
       })
       editorElement.subscribe('editableInput', (event, editable) => {
+        this.setIsEdited({ isEdited: true })
         window.document.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
@@ -156,13 +171,7 @@ export default {
               } else {
                 editorElement.pasteHTML(
                   `<br>
-                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                    <a href="${result.url}" target="_blank" class="twitter-profile-card">
-                      <div class="title">${result.title}</div>
-                      <div class="description">${result.description}</div>
-                      <div class="site">twitter.com</div>
-                    </a>
-                  </div>
+                  ${getTwitterProfileTemplate({ ...result })}
                   <br>`,
                   { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
                 )
@@ -187,20 +196,67 @@ export default {
         })
       })
     },
-    onInputTitle({ target: { value: title } }) {
-      this.updateTitle({ title })
+    async updateArticle() {
+      try {
+        await (async () => {
+          // Do nothing if user don't edit article
+          if (!this.isEdited) {
+            this.setSaveStatus({ saveStatus: '' })
+            return
+          }
+
+          // Init
+          this.setIsSaving({ isSaving: true })
+          this.setIsEdited({ isEdited: false })
+          this.setSaveStatus({ saveStatus: 'Saving...' })
+          if (this.articleId === '') await this.setArticleId()
+
+          // Upload images
+          await this.uploadImages()
+
+          // Upload article
+          await this.uploadArticle()
+
+          this.setSaveStatus({ saveStatus: 'Saved' })
+          this.setIsSaving({ isSaving: false })
+        })()
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
+      }
     },
-    async onInputBody() {
-      const images = Array.from(document.querySelectorAll('.area-body figure img'))
+    async setArticleId() {
+      try {
+        const article = { title: '', body: '' }
+        await this.postNewArticle({ article })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    onInputTitle() {
+      this.setIsEdited({ isEdited: true })
+    },
+    async uploadArticle() {
+      // Update title
+      this.updateTitle({ title: $('.area-title').val() })
+
+      // Update body
+      $('.area-body')
+        .find('span[style]')
+        .contents()
+        .unwrap()
+      const body = this.removeUselessDOMFromArticleBody($('.area-body'))
+      this.updateBody({ body })
+
+      await this.putArticle()
+    },
+    async uploadImages() {
+      const images = Array.from(this.$el.querySelectorAll('figure img'))
       await Promise.all(
         images.map(async (img) => {
-          this.setIsSaving({ isSaving: true })
-
           const isBase64Image = img.src.includes('data:')
-          const isNotUploadedImage = img.dataset.status !== 'uploaded'
-          const isNotUploadingImage = img.dataset.status !== 'uploading'
-          if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
-            img.dataset.status = 'uploading'
+          if (isBase64Image) {
             try {
               const base64Image = img.src
               const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
@@ -208,42 +264,34 @@ export default {
                 base64Image.match(':').index + 1,
                 base64Image.match(';').index
               )
-              const { articleId } = this.articleId === '' ? this.$route.params : this
               const { image_url: imageUrl } = await this.postArticleImage({
-                articleId,
+                articleId: this.articleId,
                 articleImage: base64Hash,
                 imageContentType
               })
               img.src = imageUrl
-              img.dataset.status = 'uploaded'
-              this.setIsSaved({ isSaved: true })
             } catch (error) {
               console.error(error)
-              img.dataset.status = ''
             }
           }
         })
       )
+      // Update thumbnails
       const thumbnails = images
-        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
+        .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
         .map((img) => img.src)
       this.updateSuggestedThumbnails({ thumbnails })
-      const hasNotImage = images.length === 0 && thumbnails.length === 0
-      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
-      if (hasNotImage || hasNotUploadingImage) {
-        $('.area-body')
-          .find('span[style]')
-          .contents()
-          .unwrap()
-        const $bodyTmp = $('.area-body').clone()
-        $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
-          element.innerHTML = ''
-        })
-        $bodyTmp.find('.medium-insert-buttons').remove()
-        const body = $bodyTmp.html()
-        this.updateBody({ body })
-        this.setIsSaved({ isSaved: true })
-      }
+    },
+    removeUselessDOMFromArticleBody($element) {
+      const $bodyTmp = $element.clone()
+      $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
+        element.src = ''
+      })
+      $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
+        element.innerHTML = ''
+      })
+      $bodyTmp.find('.medium-insert-buttons').remove()
+      return $bodyTmp.html()
     },
     matchAll(str, regexp) {
       const matches = []
@@ -307,7 +355,9 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'setIsSaved'
+      'postNewArticle',
+      'setIsEdited',
+      'setSaveStatus'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }

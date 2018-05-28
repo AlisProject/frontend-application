@@ -24,7 +24,6 @@ const state = () => ({
   suggestedThumbnails: [],
   thumbnail: '',
   isSaving: false,
-  isSaved: false,
   gotArticleData: false,
   popularArticlesLastEvaluatedKey: {},
   newArticlesLastEvaluatedKey: {},
@@ -33,7 +32,9 @@ const state = () => ({
   hasPopularArticlesLastEvaluatedKey: false,
   hasNewArticlesLastEvaluatedKey: false,
   hasPublicArticlesLastEvaluatedKey: false,
-  hasDraftArticlesLastEvaluatedKey: false
+  hasDraftArticlesLastEvaluatedKey: false,
+  isEdited: false,
+  saveStatus: ''
 })
 
 const getters = {
@@ -48,14 +49,15 @@ const getters = {
   suggestedThumbnails: (state) => state.suggestedThumbnails,
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
-  isSaved: (state) => state.isSaved,
   gotArticleData: (state) => state.gotArticleData,
   popularArticlesLastEvaluatedKey: (state) => state.popularArticlesLastEvaluatedKey,
   newArticlesLastEvaluatedKey: (state) => state.newArticlesLastEvaluatedKey,
   publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
   draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
   likesCount: (state) => state.likesCount,
-  isLikedArticle: (state) => state.isLikedArticle
+  isLikedArticle: (state) => state.isLikedArticle,
+  isEdited: (state) => state.isEdited,
+  saveStatus: (state) => state.saveStatus
 }
 
 const actions = {
@@ -136,6 +138,7 @@ const actions = {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/drafts`)
       commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE_ID, { articleId })
     } catch (error) {
       Promise.reject(error)
     }
@@ -155,6 +158,7 @@ const actions = {
   async getPublicArticleDetail({ commit }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
     commit(types.SET_ARTICLE_DETAIL, { article })
+    commit(types.SET_ARTICLE_ID, { articleId })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
@@ -163,6 +167,7 @@ const actions = {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
       commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE_ID, { articleId })
     } catch (error) {
       Promise.reject(error)
     }
@@ -255,9 +260,6 @@ const actions = {
   setIsSaving({ commit }, { isSaving }) {
     commit(types.SET_IS_SAVING, { isSaving })
   },
-  setIsSaved({ commit }, { isSaved }) {
-    commit(types.SET_IS_SAVED, { isSaved })
-  },
   async postArticleImage({ commit }, { articleId, articleImage, imageContentType }) {
     try {
       const config = {
@@ -303,6 +305,12 @@ const actions = {
   },
   setIsLikedArticle({ commit }, { liked }) {
     commit(types.SET_IS_LIKED_ARTICLE, { liked })
+  },
+  setIsEdited({ commit }, { isEdited }) {
+    commit(types.SET_IS_EDITED, { isEdited })
+  },
+  setSaveStatus({ commit }, { saveStatus }) {
+    commit(types.SET_SAVE_STATUS, { saveStatus })
   }
 }
 
@@ -357,9 +365,6 @@ const mutations = {
   [types.SET_IS_SAVING](state, { isSaving }) {
     state.isSaving = isSaving
   },
-  [types.SET_IS_SAVED](state, { isSaved }) {
-    state.isSaved = isSaved
-  },
   [types.SET_GOT_ARTICLE_DATA](state, { gotArticleData }) {
     state.gotArticleData = gotArticleData
   },
@@ -389,6 +394,12 @@ const mutations = {
   },
   [types.SET_IS_LIKED_ARTICLE](state, { liked }) {
     state.isLikedArticle = liked
+  },
+  [types.SET_IS_EDITED](state, { isEdited }) {
+    state.isEdited = isEdited
+  },
+  [types.SET_SAVE_STATUS](state, { saveStatus }) {
+    state.saveStatus = saveStatus
   }
 }
 
