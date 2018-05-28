@@ -5,6 +5,7 @@
 <script>
 import EditDraftArticle from '~/components/pages/EditDraftArticle'
 import head from '~/utils/editor-head'
+import showEmbedTweet from '~/utils/showEmbedTweet'
 
 export default {
   components: {
@@ -19,6 +20,7 @@ export default {
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
       editorBody.dataset.placeholder = body === '' ? '本文を入力してください' : ''
+      showEmbedTweet({ $axios: this.$axios })
     } catch (error) {
       console.error(error)
     }

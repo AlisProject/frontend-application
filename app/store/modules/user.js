@@ -1,4 +1,5 @@
 /* eslint-disable space-before-function-paren */
+import { BigNumber } from 'bignumber.js'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
 
@@ -94,7 +95,8 @@ const state = () => ({
   userArticles: [],
   userArticlesLastEvaluatedKey: {},
   hasUserArticlesLastEvaluatedKey: false,
-  showRequestLoginModal: false
+  showRequestLoginModal: false,
+  alisToken: 0
 })
 
 const getters = {
@@ -115,7 +117,8 @@ const getters = {
   userInfo: (state) => state.userInfo,
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
-  showRequestLoginModal: (state) => state.showRequestLoginModal
+  showRequestLoginModal: (state) => state.showRequestLoginModal,
+  alisToken: (state) => state.alisToken
 }
 
 const actions = {
@@ -409,6 +412,16 @@ const actions = {
   },
   setRequestLoginModal({ commit }, { showRequestLoginModal }) {
     commit(types.SET_REQUEST_LOGIN_MODAL, { showRequestLoginModal })
+  },
+  async getUsersAlisToken({ commit }) {
+    try {
+      const { result } = await this.$axios.$get('/me/wallet/balance')
+      const formatNumber = 10 ** 18
+      const alisToken = new BigNumber(result, 16).div(formatNumber).toFixed(3, 1)
+      commit(types.SET_USERS_ALIS_TOKEN, { alisToken })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -567,6 +580,9 @@ const mutations = {
   },
   [types.SET_REQUEST_LOGIN_MODAL](state, { showRequestLoginModal }) {
     state.showRequestLoginModal = showRequestLoginModal
+  },
+  [types.SET_USERS_ALIS_TOKEN](state, { alisToken }) {
+    state.alisToken = alisToken
   }
 }
 

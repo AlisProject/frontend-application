@@ -1,24 +1,33 @@
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 module.exports = {
   /*
   ** Headers of the page
   */
   head: {
+    script: [
+      { src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`, async: true }
+    ],
     title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
     titleTemplate: '%s | ALIS',
-    prefix: 'og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'apple-mobile-web-app-title', content: 'ALIS' },
       { hid: 'description', name: 'description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
-      { hid: 'og:title', name: 'og:title', content: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.' },
-      { hid: 'og:description', name: 'og:description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
-      { hid: 'og:type', name: 'og:type', content: 'website' },
-      { hid: 'og:image', name: 'og:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` },
+      { hid: 'og:title', property: 'og:title', content: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.' },
+      { hid: 'og:description', property: 'og:description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      { hid: 'og:image', property: 'og:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` },
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
       { hid: 'twitter:site', name: 'twitter:site', content: '@ALIS_media' },
       { hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico` }]
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico` },
+      { rel: 'apple-touch-icon', sizes: '192x192', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` },
+      { rel: 'shortcut icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` }
+    ]
   },
   /*
   ** Customize the progress bar color
@@ -29,7 +38,8 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/markdownit'
+    '@nuxtjs/markdownit',
+    '@nuxtjs/proxy'
   ],
   markdownit: {
     injected: true,
@@ -42,8 +52,15 @@ module.exports = {
     { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
-    baseURL: process.env.BASE_URL,
-    proxyHeaders: false
+    prefix: '/api',
+    proxyHeaders: false,
+    proxy: isDevelopment
+  },
+  proxy: !isDevelopment ? {} : {
+    '/api': {
+      target: process.env.BASE_URL,
+      pathRewrite: { '^/api': '/' }
+    }
   },
   srcDir: 'app',
   router: {

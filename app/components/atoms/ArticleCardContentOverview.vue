@@ -1,25 +1,12 @@
 <template>
   <p class="area-overview">
-    <a :href="link" v-if="linkTo === 'public' || linkTo === 'draft'">
-      {{ overview }}
-    </a>
-    <nuxt-link :to="link" v-else>
-      {{ overview }}
-    </nuxt-link>
+    {{ overview }}
   </p>
 </template>
 
 <script>
 export default {
   props: {
-    link: {
-      type: String,
-      required: true
-    },
-    linkTo: {
-      type: String,
-      required: false
-    },
     overview: {
       type: String,
       required: false

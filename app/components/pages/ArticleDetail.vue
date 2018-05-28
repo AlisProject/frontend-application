@@ -13,7 +13,7 @@
         :articleId="article.article_id"
         :likesCount="likesCount"
         :isLikedArticle="isLikedArticle"/>
-      <article-sub-infos :createdAt="article.created_at" :tokenAmount="article.alisToken"/>
+      <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
       <!-- <article-comments :comments="article.comments"/> -->
     </div>
@@ -23,8 +23,8 @@
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import { mapGetters } from 'vuex'
-
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
@@ -34,6 +34,7 @@ import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
+import showEmbedTweet from '~/utils/showEmbedTweet'
 
 export default {
   components: {
@@ -58,8 +59,12 @@ export default {
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
     })
+    showEmbedTweet({ $axios: this.$axios })
   },
   computed: {
+    publishedAt() {
+      return this.article.published_at || this.article.created_at
+    },
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
   }
 }
@@ -99,9 +104,10 @@ export default {
 }
 
 .area-title {
-  font-size: 25px;
+  font-size: 24px;
   grid-area: title;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
   word-break: break-all;
 }
 
@@ -145,9 +151,7 @@ export default {
   }
 
   .area-title {
-    font-size: 16px;
-    grid-area: title;
-    letter-spacing: 0.1em;
+    font-size: 20px;
   }
 }
 </style>

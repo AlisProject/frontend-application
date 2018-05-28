@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <span class="area-save-status">{{ this.saveStatus }}</span>
+    <span class="area-save-status">{{ saveStatus }}</span>
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/articles/new" class="nav-link area-new-article">新規作成</a>
@@ -13,7 +13,7 @@
       </span>
     </div>
     <div class="area-post-article" v-show="showPostArticleLink">
-      <span class="nav-link post-article" :class="{ disable: !isSaving }" @click="togglePopup">
+      <span class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
         公開する
       </span>
       <div v-show="isPopupShown" class="popup">
@@ -31,13 +31,14 @@
             class="thumbnail"/>
         </div>
         <hr class="hr">
-        <button class="submit" @click="publish">公開する</button>
+        <button class="submit" :class="{ disable: !publishable }" @click="publish">公開する</button>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+/* eslint no-undef: 0 */
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
@@ -73,7 +74,7 @@ export default {
   },
   methods: {
     async unpublish() {
-      const { articleId } = this.$route.params
+      const { articleId } = this
       try {
         await this.unpublishPublicArticle({ articleId })
         this.$router.push('/me/articles/public')
@@ -81,65 +82,18 @@ export default {
         console.error(e)
       }
     },
-    async updateArticleData() {
-      const images = Array.from(document.querySelectorAll('.area-body figure img'))
-      /* eslint-disable space-before-function-paren */
-      await Promise.all(
-        images.map(async (img) => {
-          this.setIsSaving({ isSaving: true })
-
-          const isBase64Image = img.src.includes('data:')
-          const isNotUploadedImage = img.dataset.status !== 'uploaded'
-          const isNotUploadingImage = img.dataset.status !== 'uploading'
-          if (isBase64Image && isNotUploadedImage && isNotUploadingImage) {
-            img.dataset.status = 'uploading'
-            try {
-              const base64Image = img.src
-              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-              const imageContentType = base64Image.substring(
-                base64Image.match(':').index + 1,
-                base64Image.match(';').index
-              )
-              const { articleId } = this.articleId === '' ? this.$route.params : this
-              const { image_url: imageUrl } = await this.postArticleImage({
-                articleId,
-                articleImage: base64Hash,
-                imageContentType
-              })
-              img.src = imageUrl
-              img.dataset.status = 'uploaded'
-              this.setIsSaved({ isSaved: true })
-            } catch (error) {
-              console.error(error)
-              img.dataset.status = ''
-            }
-          }
-        })
-      )
-      const thumbnails = images
-        .filter((img) => img.dataset.status === 'uploaded' || img.src.includes(process.env.DOMAIN))
-        .map((img) => img.src)
-      this.updateSuggestedThumbnails({ thumbnails })
-      const hasNotImage = images.length === 0 && thumbnails.length === 0
-      const hasNotUploadingImage = images.length !== 0 && thumbnails.length !== 0
-      if (hasNotImage || hasNotUploadingImage) {
-        const body = document.querySelector('.area-body').innerHTML
-        this.updateBody({ body })
-        this.setIsSaved({ isSaved: true })
-      }
-    },
     async publish() {
-      const { articleId } = this.articleId === '' ? this.$route.params : this
-      const body = this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '')
+      if (!this.publishable) return
+      const { articleId, title, body } = this
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')
         .slice(0, 100)
-      if (this.title === '') this.sendNotification({ text: 'タイトルを入力してください' })
+      if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
       if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
-      if (this.title === '' || overview === '') return
+      if (title === '' || overview === '') return
 
-      const article = { title: this.title, body, overview }
+      const article = { title: title, body, overview }
 
       if (this.thumbnail !== '') {
         article.eye_catch_url = this.thumbnail
@@ -162,9 +116,8 @@ export default {
         console.error(e)
       }
     },
-    async togglePopup() {
-      if (!this.isSaving) return
-      await this.updateArticleData()
+    togglePopup() {
+      if (!this.publishable) return
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -197,11 +150,13 @@ export default {
       'updateSuggestedThumbnails',
       'postArticleImage',
       'updateBody',
-      'setIsSaving',
       'setIsSaved'
     ])
   },
   computed: {
+    publishable() {
+      return !this.isEdited && !this.isSaving
+    },
     ...mapGetters('article', [
       'articleId',
       'title',
@@ -209,17 +164,9 @@ export default {
       'thumbnail',
       'suggestedThumbnails',
       'isSaving',
-      'isSaved'
-    ]),
-    saveStatus() {
-      if (this.isSaved) {
-        return 'Saved'
-      } else if (this.isSaving) {
-        return 'Saving...'
-      } else {
-        return ''
-      }
-    }
+      'isEdited',
+      'saveStatus'
+    ])
   }
 }
 </script>
@@ -359,6 +306,12 @@ export default {
       &:hover {
         background: #99a2ff;
         color: #fff;
+
+        &.disable {
+          background: #fff;
+          color: #99a2ff;
+          cursor: not-allowed;
+        }
       }
     }
   }

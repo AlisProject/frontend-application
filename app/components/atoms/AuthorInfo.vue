@@ -61,7 +61,7 @@ export default {
   grid-column-gap: 20px;
   grid-row-gap: 10px;
   grid-template-columns: 80px 1fr;
-  grid-template-rows: 16px 12px 1fr;
+  grid-template-rows: 32px 12px 1fr;
   margin-bottom: 40px;
   padding: 10px 20px;
   /* prettier-ignore */
@@ -83,6 +83,15 @@ export default {
 
 .area-user-display-name {
   grid-area: user-display-name;
+  align-self: flex-end;
+
+  .user-display-name {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 500px;
+  }
 }
 
 .area-user-id {
@@ -91,8 +100,7 @@ export default {
   .user-id {
     color: #6e6e6e;
     font-size: 12px;
-    height: 12px;
-    line-height: 18px;
+    margin: 0;
   }
 }
 
@@ -103,6 +111,8 @@ export default {
     color: #030303;
     font-size: 14px;
     line-height: 24px;
+    margin: 0;
+    word-break: break-word;
 
     &.add-bottom-space {
       padding-bottom: 4px;
@@ -114,6 +124,12 @@ export default {
   .area-author-info-container {
     box-shadow: none;
     padding: 10px 0;
+  }
+
+  .area-user-display-name {
+    .user-display-name {
+      width: calc(100vw - 150px);
+    }
   }
 }
 </style>

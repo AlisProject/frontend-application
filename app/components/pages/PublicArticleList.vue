@@ -1,5 +1,5 @@
 <template>
-  <div class="public-article-list-container long-article-card">
+  <div class="public-article-list-container long-article-card" @scroll="infiniteScroll">
     <app-header showEditHeaderNav class="public-articles logo-original"/>
     <article-card-list :articles="publicArticles" :linkTo="'public'"/>
     <!-- <the-loader :lastEvaluatedKey="publicArticlesLastEvaluatedKey"/> -->
@@ -21,20 +21,16 @@ export default {
     // TheLoader,
     AppFooter
   },
-  mounted() {
-    this.setIsSaving({ isSaving: false })
-    this.setIsSaved({ isSaved: false })
-  },
   computed: {
     ...mapGetters('article', ['publicArticles', 'publicArticlesLastEvaluatedKey'])
   },
   methods: {
     infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
         this.getPublicArticles()
       }
     },
-    ...mapActions('article', ['getPublicArticles', 'setIsSaving', 'setIsSaved'])
+    ...mapActions('article', ['getPublicArticles'])
   }
 }
 </script>

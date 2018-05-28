@@ -47,22 +47,22 @@ export default {
       meta: [
         {
           hid: `og:title`,
-          name: 'og:title',
+          property: 'og:title',
           content: `${this.$store.state.article.article.title} | ALIS`
         },
         {
           hid: `og:description`,
-          name: 'og:description',
+          property: 'og:description',
           content: this.$store.state.article.article.overview
         },
         {
           hid: `og:type`,
-          name: 'og:type',
+          property: 'og:type',
           content: 'article'
         },
         {
           hid: `og:image`,
-          name: 'og:image',
+          property: 'og:image',
           content:
             this.$store.state.article.article.eye_catch_url ||
             `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`

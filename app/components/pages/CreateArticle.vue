@@ -1,12 +1,11 @@
 <template>
   <div class="create-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="new-article logo-original"/>
-    <article-editor/>
+    <article-editor :putArticle="this.putArticle"/>
   </div>
 </template>
 
 <script>
-import { debounce } from 'lodash'
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
@@ -17,49 +16,20 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'title', 'body', 'isSaving'])
-  },
-  data() {
-    return {
-      isPosted: false
-    }
+    ...mapGetters('article', ['articleId', 'title', 'body'])
   },
   methods: {
-    ...mapActions('article', ['postNewArticle', 'putDraftArticle', 'setIsSaving', 'setIsSaved']),
-    postOrPutArticle: debounce(async function() {
+    ...mapActions('article', ['putDraftArticle']),
+    async putArticle() {
       const article = {
         title: this.title === '' ? ' ' : this.title,
-        body: this.body.replace(/<div class="medium-insert-buttons"[\s\S]*/, '') + ' '
+        body: this.body === '' ? ' ' : this.body
       }
-      this.setIsSaving({ isSaving: true })
-      if (this.isPosted) {
-        try {
-          if (this.isSaving) await this.putDraftArticle({ article, articleId: this.articleId })
-          this.setIsSaved({ isSaved: true })
-        } catch (e) {
-          console.error(e)
-        }
-      } else {
-        try {
-          if (this.isSaving) await this.postNewArticle({ article })
-          this.setIsSaved({ isSaved: true })
-          this.isPosted = true
-        } catch (e) {
-          console.error(e)
-        }
+      try {
+        await this.putDraftArticle({ article, articleId: this.articleId })
+      } catch (e) {
+        console.error(e)
       }
-    }, 2500)
-  },
-  watch: {
-    title(newTitle, oldTitle) {
-      this.setIsSaved({ isSaved: false })
-      this.setIsSaving({ isSaving: false })
-      this.postOrPutArticle()
-    },
-    body(newBody, oldBody) {
-      this.setIsSaved({ isSaved: false })
-      this.setIsSaving({ isSaving: false })
-      this.postOrPutArticle()
     }
   }
 }

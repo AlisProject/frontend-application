@@ -1,5 +1,5 @@
 import { CognitoUserPool, AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoRefreshToken } from 'amazon-cognito-identity-js'
-import AWS from 'aws-sdk'
+import { config, CognitoIdentityServiceProvider } from 'aws-sdk'
 
 export default class CognitoSDK {
   constructor() {
@@ -8,7 +8,7 @@ export default class CognitoSDK {
       ClientId: process.env.CLIENT_ID
     }
     this.userPool = new CognitoUserPool(this.poolData)
-    AWS.Config.region = process.env.REGION
+    config.region = process.env.REGION
   }
 
   getUserSession() {
@@ -37,7 +37,6 @@ export default class CognitoSDK {
   }
 
   refreshUserSession() {
-    AWS.config.region = process.env.REGION
     const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
     const refreshToken = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.refreshToken`)
     const RefreshToken = new CognitoRefreshToken({ RefreshToken: refreshToken })
@@ -122,10 +121,9 @@ export default class CognitoSDK {
   }
 
   sendConfirm() {
-    AWS.config.region = process.env.REGION
     const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
     const token = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`)
-    const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider()
+    const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider()
     const params = {
       AccessToken: token,
       AttributeName: 'phone_number'
@@ -142,10 +140,9 @@ export default class CognitoSDK {
   }
 
   verifySMSCode({ code }) {
-    AWS.config.region = process.env.REGION
     const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
     const token = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`)
-    const cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider()
+    const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider()
     const params = {
       AccessToken: token,
       AttributeName: 'phone_number',

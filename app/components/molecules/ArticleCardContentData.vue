@@ -1,15 +1,15 @@
 <template>
-  <nuxt-link :to="`/users/${article.userInfo.user_id}`" class="area-data">
+  <nuxt-link :to="`/users/${article.userInfo.user_id}`" tag="div" class="area-data">
     <article-card-content-data-profile-icon :user="article.userInfo"/>
     <article-card-content-data-username :username="article.userInfo.user_display_name"/>
-    <article-card-content-data-created-at :createdAt="article.created_at"/>
+    <article-card-content-data-published-at :publishedAt="publishedAt"/>
   </nuxt-link>
 </template>
 
 <script>
 import ArticleCardContentDataProfileIcon from '../atoms/ArticleCardContentDataProfileIcon'
 import ArticleCardContentDataUsername from '../atoms/ArticleCardContentDataUsername'
-import ArticleCardContentDataCreatedAt from '../atoms/ArticleCardContentDataCreatedAt'
+import ArticleCardContentDataPublishedAt from '../atoms/ArticleCardContentDataPublishedAt'
 
 export default {
   props: {
@@ -21,7 +21,12 @@ export default {
   components: {
     ArticleCardContentDataProfileIcon,
     ArticleCardContentDataUsername,
-    ArticleCardContentDataCreatedAt
+    ArticleCardContentDataPublishedAt
+  },
+  computed: {
+    publishedAt() {
+      return this.article.published_at || this.article.created_at
+    }
   }
 }
 </script>
@@ -36,7 +41,7 @@ export default {
   grid-template-areas:
     "profile-icon  name"
     "profile-icon  date";
-  grid-template-columns: 40px 100px;
+  grid-template-columns: 40px 190px;
   grid-template-rows: 20px 20px;
   line-height: 18px;
   text-decoration: none;

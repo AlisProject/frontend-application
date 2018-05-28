@@ -22,15 +22,25 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['newArticles', 'newArticlesLastEvaluatedKey'])
+    ...mapGetters('article', ['newArticles', 'newArticlesLastEvaluatedKey']),
+    ...mapGetters('presentation', ['articleListScrollHeight'])
+  },
+  mounted() {
+    if (this.articleListScrollHeight) {
+      this.$el.scrollTop = this.articleListScrollHeight
+    }
+  },
+  beforeDestroy() {
+    this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
     infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
         this.getNewPagesArticles()
       }
     },
-    ...mapActions('article', ['getNewPagesArticles'])
+    ...mapActions('article', ['getNewPagesArticles']),
+    ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }
 </script>

@@ -8,16 +8,31 @@
 
   p {
     color: #040404;
-    font-size: 15.9px;
+    font-size: 16px;
     font-weight: 500;
-    line-height: 30px;
+    letter-spacing: 0.1em;
+    line-height: 1.8;
     text-align: justify;
-    word-break: break-all;
+    word-break: break-word;
+  }
+
+  h2 {
+    font-size: 20px;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  h3 {
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+    word-break: break-word;
   }
 
   hr {
     border: none;
-    border-top: dotted 2px #e3e3e3;
+    border-top: dotted 3px #e3e3e3;
     height: 2px;
   }
 
@@ -27,9 +42,12 @@
 
   blockquote {
     background: #f6f6f6;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
     margin: 1em 0;
     padding: 20px;
-    word-break: break-all;
+    word-break: break-word;
   }
 
   figure {
@@ -50,6 +68,45 @@
     li {
       line-height: 1.4;
       margin-bottom: 0.5em;
+    }
+  }
+
+  [data-alis-iframely-url] {
+    user-select: none;
+  }
+
+  .twitter-profile-card {
+    border-radius: 4px;
+    border: 1px solid #E2E8ED;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    padding: 20px;
+    text-decoration: none;
+    width: 100%;
+
+    .title {
+      color: #030303;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: #6E6E6E;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.7px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .site {
+      color: #6E6E6E;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.6px;
     }
   }
 }
@@ -215,8 +272,33 @@
     p {
       color: #030303;
       font-size: 14px;
-      line-height: 24px;
       text-align: justify;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+
+    h3 {
+      font-size: 16px;
+    }
+
+    blockquote {
+      font-size: 14px;
+    }
+
+    .twitter-tweet {
+      width: 90vw !important;
+    }
+
+    .twitter-profile-card {
+      .title {
+        font-size: 14px;
+      }
+
+      .description {
+        font-size: 12px;
+      }
     }
   }
 }

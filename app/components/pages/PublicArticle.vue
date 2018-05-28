@@ -5,15 +5,19 @@
       <h1 class="area-title">{{ article.title }}</h1>
       <div class="area-content" v-html="article.body" />
     </div>
+    <public-article-share-buttons/>
   </div>
 </template>
 
 <script>
+/* eslint-disable no-undef */
 import AppHeader from '../organisms/AppHeader'
+import PublicArticleShareButtons from '../atoms/PublicArticleShareButtons'
 
 export default {
   components: {
-    AppHeader
+    AppHeader,
+    PublicArticleShareButtons
   },
   props: {
     article: {
@@ -50,9 +54,10 @@ export default {
 }
 
 .area-title {
-  font-size: 25px;
+  font-size: 24px;
   grid-area: title;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
   word-break: break-all;
 }
 
@@ -87,9 +92,7 @@ export default {
   }
 
   .area-title {
-    font-size: 16px;
-    grid-area: title;
-    letter-spacing: 0.1em;
+    font-size: 20px;
   }
 }
 </style>

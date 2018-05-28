@@ -21,20 +21,16 @@ export default {
     TheLoader,
     AppFooter
   },
-  mounted() {
-    this.setIsSaving({ isSaving: false })
-    this.setIsSaved({ isSaved: false })
-  },
   computed: {
     ...mapGetters('article', ['draftArticles', 'draftArticlesLastEvaluatedKey'])
   },
   methods: {
     infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight) {
+      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
         this.getDraftArticles()
       }
     },
-    ...mapActions('article', ['getDraftArticles', 'setIsSaving', 'setIsSaved'])
+    ...mapActions('article', ['getDraftArticles'])
   }
 }
 </script>

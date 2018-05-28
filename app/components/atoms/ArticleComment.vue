@@ -5,7 +5,7 @@
       <img class="commented-user-icon" src="~assets/images/profile-icon1.png">
       <ul class="info">
         <li>{{ comment.user.username }}</li>
-        <li>{{ comment.createdAt }}</li>
+        <li>{{ comment.publishedAt }}</li>
       </ul>
     </div>
     <div class="action-like"></div>
