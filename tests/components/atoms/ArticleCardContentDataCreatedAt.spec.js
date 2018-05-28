@@ -1,17 +1,17 @@
 import moment from 'moment'
 import { mount } from '@vue/test-utils'
-import ArticleCardContentDataCreatedAt from '@/components/atoms/ArticleCardContentDataCreatedAt.vue'
+import ArticleCardContentDataPublishedAt from '@/components/atoms/ArticleCardContentDataPublishedAt.vue'
 
-describe('ArticleCardContentDataCreatedAt', () => {
+describe('ArticleCardContentDataPublishedAt', () => {
   test('is render "2018/05/21" when createdAt = 1526858710 ', () => {
-    const createdAt = 1526858710 // 2018/05/21
-    const wrapper = mount(ArticleCardContentDataCreatedAt, {
+    const publishedAt = 1526858710 // 2018/05/21
+    const wrapper = mount(ArticleCardContentDataPublishedAt, {
       propsData: {
-        createdAt
+        publishedAt
       }
     })
     expect(wrapper.element.innerHTML).toMatch(
-      moment(createdAt, 'X').locale('ja').format('L')
+      moment(publishedAt, 'X').locale('ja').format('L')
     )
   })
 })
