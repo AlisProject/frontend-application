@@ -5,7 +5,7 @@
   "author": "y-temp4 <y.temp4@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "cross-env NODE_ENV=development nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -38,6 +38,7 @@
     "axios-mock-adapter": "^1.10.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^22.4.4",
+    "cross-env": "^5.1.6",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-loader": "^1.9.0",
