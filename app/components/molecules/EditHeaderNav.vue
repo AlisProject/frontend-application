@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <span class="area-save-status">{{ this.saveStatus }}</span>
+    <span class="area-save-status">{{ saveStatus }}</span>
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/articles/new" class="nav-link area-new-article">新規作成</a>
@@ -21,11 +21,6 @@ import { mapGetters, mapActions } from 'vuex'
 import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
 
 export default {
-  data() {
-    return {
-      isPopupShown: false
-    }
-  },
   components: {
     EditHeaderNavPostArticle
   },
@@ -41,7 +36,7 @@ export default {
   },
   methods: {
     async unpublish() {
-      const { articleId } = this.$route.params
+      const { articleId } = this
       try {
         await this.unpublishPublicArticle({ articleId })
         this.$router.push('/me/articles/public')
@@ -52,16 +47,7 @@ export default {
     ...mapActions('article', ['unpublishPublicArticle'])
   },
   computed: {
-    ...mapGetters('article', ['isSaving', 'isSaved']),
-    saveStatus() {
-      if (this.isSaved) {
-        return 'Saved'
-      } else if (this.isSaving) {
-        return 'Saving...'
-      } else {
-        return ''
-      }
-    }
+    ...mapGetters('article', ['articleId', 'saveStatus'])
   }
 }
 </script>
@@ -90,6 +76,26 @@ export default {
   font-size: 14px;
   text-decoration: none;
   color: #929292;
+}
+
+.area-post-article {
+  grid-area: post-article;
+  position: relative;
+
+  .post-article {
+    cursor: pointer;
+    user-select: none;
+    display: inline-block;
+
+    &.disable {
+      cursor: not-allowed;
+    }
+  }
+
+  .unpublish-article {
+    cursor: pointer;
+    margin-left: 1em;
+  }
 }
 
 .area-public-articles {

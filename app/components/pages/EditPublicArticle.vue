@@ -1,12 +1,11 @@
 <template>
   <div class="edit-article-container">
     <app-header showEditHeaderNav showPostArticleLink class="logo-original"/>
-    <article-editor :title="title"/>
+    <article-editor :title="title" :putArticle="this.putArticle"/>
   </div>
 </template>
 
 <script>
-import { debounce } from 'lodash'
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
@@ -17,11 +16,12 @@ export default {
     ArticleEditor
   },
   computed: {
-    ...mapGetters('article', ['title', 'body', 'thumbnail', 'isSaving'])
+    ...mapGetters('article', ['title', 'body', 'thumbnail'])
   },
   methods: {
-    ...mapActions('article', ['putPublicArticle', 'setIsSaving', 'setIsSaved', 'gotArticleData']),
-    putArticle: debounce(async function() {
+    ...mapActions('article', ['putPublicArticle', 'gotArticleData']),
+    async putArticle() {
+      if (!this.gotArticleData) return
       const article = {
         title: this.title === '' ? ' ' : this.title,
         body: this.body === '' ? ' ' : this.body
@@ -30,28 +30,10 @@ export default {
         article.eye_catch_url = this.thumbnail
       }
       const { articleId } = this.$route.params
-      this.setIsSaving({ isSaving: true })
       try {
-        if (this.isSaving) await this.putPublicArticle({ article, articleId })
-        this.setIsSaved({ isSaved: true })
+        await this.putPublicArticle({ article, articleId })
       } catch (e) {
         console.error(e)
-      }
-    }, 2500)
-  },
-  watch: {
-    title(newTitle, oldTitle) {
-      if (this.gotArticleData) {
-        this.setIsSaved({ isSaved: false })
-        this.setIsSaving({ isSaving: false })
-        this.putArticle()
-      }
-    },
-    body(newBody, oldBody) {
-      if (this.gotArticleData) {
-        this.setIsSaved({ isSaved: false })
-        this.setIsSaving({ isSaving: false })
-        this.putArticle()
       }
     }
   }
