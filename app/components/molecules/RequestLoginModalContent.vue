@@ -111,11 +111,8 @@ export default {
 }
 
 .description {
+  @include default-text();
   width: 255px;
-  color: #6e6e6e;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
   margin: 20px auto 0;
 }
 

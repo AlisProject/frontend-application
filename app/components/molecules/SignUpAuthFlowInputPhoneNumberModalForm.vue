@@ -154,24 +154,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin default-text {
-  height: 14px;
-  color: #6e6e6e;
-  font-size: 12px;
-  line-height: 18px;
-
-  a {
-    border-bottom: solid 1px transparent;
-    color: #858dda;
-    text-decoration: none;
-    transition: all 400ms ease;
-
-    &:hover {
-      border-bottom: solid 1px #858dda;
-    }
-  }
-}
-
 .modal-body {
   margin: 0 auto;
 
