@@ -135,7 +135,7 @@ export default {
       })
       editorElement.subscribe('editableInput', (event, editable) => {
         this.setIsEdited({ isEdited: true })
-        window.document.onkeydown = async (event) => {
+        this.$el.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
