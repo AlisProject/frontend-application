@@ -13,7 +13,7 @@
         :articleId="article.article_id"
         :likesCount="likesCount"
         :isLikedArticle="isLikedArticle"/>
-      <article-sub-infos :createdAt="article.created_at" :tokenAmount="article.alisToken"/>
+      <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
       <!-- <article-comments :comments="article.comments"/> -->
     </div>
@@ -62,6 +62,9 @@ export default {
     showEmbedTweet({ $axios: this.$axios })
   },
   computed: {
+    publishedAt() {
+      return this.article.published_at || this.article.created_at
+    },
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
   }
 }
