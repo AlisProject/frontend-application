@@ -58,7 +58,10 @@ export default {
 }
 
 .description {
-  @include default-text();
+  color: #6e6e6e;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
 }
 
 .sendmail-button {

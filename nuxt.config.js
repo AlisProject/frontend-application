@@ -38,11 +38,7 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/markdownit',
-    'nuxt-sass-resources-loader'
-  ],
-  sassResources: [
-    '~/assets/stylesheets/mixins/**.scss'
+    '@nuxtjs/markdownit'
   ],
   markdownit: {
     injected: true,
