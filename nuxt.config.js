@@ -55,11 +55,12 @@ module.exports = {
     { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
+    baseURL: process.env.BASE_URL,
     prefix: '/api',
     proxyHeaders: false,
     proxy: isDevelopment
   },
-  proxy: !isDevelopment ? {} : {
+  proxy: {
     '/api': {
       target: process.env.BASE_URL,
       pathRewrite: { '^/api': '/' }
