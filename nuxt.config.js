@@ -38,11 +38,7 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/markdownit',
-    'nuxt-sass-resources-loader'
-  ],
-  sassResources: [
-    '~/assets/stylesheets/mixins/**.scss'
+    '@nuxtjs/markdownit'
   ],
   markdownit: {
     injected: true,
@@ -55,6 +51,7 @@ module.exports = {
     { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
+    baseURL: process.env.BASE_URL,
     prefix: '/api',
     proxyHeaders: false,
     proxy: isDevelopment

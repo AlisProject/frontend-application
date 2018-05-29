@@ -47,7 +47,10 @@ export default {
 }
 
 .confirm-description {
-  @include default-text();
+  color: #6e6e6e;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
   text-align: center;
   padding: 1em 30px;
   display: block;
