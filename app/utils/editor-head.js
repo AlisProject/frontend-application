@@ -2,7 +2,7 @@ export default {
   script: [
     { src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js' },
     {
-      src: 'https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.23.3/js/medium-editor.min.js'
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/medium-editor/5.21.1/js/medium-editor.min.js'
     },
     {
       src: 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.runtime.min.js'
