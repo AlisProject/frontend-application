@@ -51,6 +51,7 @@ module.exports = {
     { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
+    baseURL: process.env.BASE_URL,
     prefix: '/api',
     proxyHeaders: false,
     proxy: isDevelopment
