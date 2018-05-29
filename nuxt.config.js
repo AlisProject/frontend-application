@@ -1,5 +1,3 @@
-const isDevelopment = process.env.NODE_ENV === 'development'
-
 module.exports = {
   /*
   ** Headers of the page
@@ -55,15 +53,8 @@ module.exports = {
     { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
-    prefix: '/api',
-    proxyHeaders: false,
-    proxy: isDevelopment
-  },
-  proxy: !isDevelopment ? {} : {
-    '/api': {
-      target: process.env.BASE_URL,
-      pathRewrite: { '^/api': '/' }
-    }
+    baseURL: process.env.BASE_URL,
+    proxyHeaders: false
   },
   srcDir: 'app',
   router: {
