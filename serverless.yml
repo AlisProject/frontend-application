@@ -26,7 +26,6 @@ package:
     - node_modules/prettier/**
     - node_modules/yargs/**
     - node_modules/typescript/**
-    - node_modules/postcss**/**
     - node_modules/cssnano/**
     - node_modules/xxhashjs/**
     - node_modules/jschardet/**
