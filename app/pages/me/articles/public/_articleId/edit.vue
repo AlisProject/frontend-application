@@ -23,7 +23,8 @@ export default {
       const images = Array.from(this.$el.querySelectorAll('figure img'))
       const thumbnails = getThumbnails(images)
       this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
-      editorBody.dataset.placeholder = body === '' ? '本文を入力してください' : ''
+      editorBody.dataset.placeholder =
+        body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet({ $axios: this.$axios })
     } catch (error) {
       console.error(error)
