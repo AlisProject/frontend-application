@@ -22,7 +22,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
-import getTwitterProfileTemplate from '~/utils/getTwitterProfileTemplate'
+import { getTwitterProfileTemplate, getThumbnails } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -277,9 +277,7 @@ export default {
         })
       )
       // Update thumbnails
-      const thumbnails = images
-        .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
-        .map((img) => img.src)
+      const thumbnails = getThumbnails(images)
       this.updateSuggestedThumbnails({ thumbnails })
     },
     removeUselessDOMFromArticleBody($element) {
