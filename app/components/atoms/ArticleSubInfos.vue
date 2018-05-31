@@ -11,7 +11,7 @@
 
 <script>
 import { BigNumber } from 'bignumber.js'
-import moment from 'moment'
+import { formatDate } from '~/utils/article'
 
 export default {
   props: {
@@ -26,9 +26,7 @@ export default {
   },
   computed: {
     formettedPublishedAt() {
-      return moment(this.publishedAt, 'X')
-        .locale('ja')
-        .format('L')
+      return formatDate(this.publishedAt)
     },
     formattedTokenAmount() {
       if (this.tokenAmount === undefined) return
