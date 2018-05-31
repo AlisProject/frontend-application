@@ -5,7 +5,7 @@
 <script>
 import EditPublicArticle from '~/components/pages/EditPublicArticle'
 import head from '~/utils/editor-head'
-import showEmbedTweet from '~/utils/showEmbedTweet'
+import { showEmbedTweet, getThumbnails } from '~/utils/article'
 
 export default {
   components: {
@@ -19,7 +19,12 @@ export default {
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
-      editorBody.dataset.placeholder = body === '' ? '本文を入力してください' : ''
+      // Update thumbnails
+      const images = Array.from(this.$el.querySelectorAll('figure img'))
+      const thumbnails = getThumbnails(images)
+      this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
+      editorBody.dataset.placeholder =
+        body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet({ $axios: this.$axios })
     } catch (error) {
       console.error(error)

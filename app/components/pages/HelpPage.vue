@@ -7,20 +7,24 @@
         クローズドβ版のため、ご不便をおかけいたしております。
         問い合わせでいただいた内容は確認次第ご返信させていただきます。
       </p>
-      <a class="sendmail-button" href="mailto:info@alismedia.jp?subject=お問い合わせ">
-        問い合わせメールを送る
-      </a>
+      <app-button class="sendmail-button">
+        <a href="mailto:info@alismedia.jp?subject=お問い合わせ">
+          問い合わせメールを送る
+        </a>
+      </app-button>
     </div>
     <app-footer/>
   </div>
 </template>
 
 <script>
+import AppButton from '../atoms/AppButton'
 import AppHeader from '../organisms/AppHeader'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
+    AppButton,
     AppHeader,
     AppFooter
   }
@@ -54,27 +58,11 @@ export default {
 }
 
 .description {
-  color: #6e6e6e;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
+  @include default-text();
 }
 
 .sendmail-button {
-  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-  border-radius: 18px;
-  border: none;
-  box-shadow: 0 0 10px gray;
-  color: #fff;
-  cursor: pointer;
-  display: block;
-  font-size: 14px;
   margin: 60px auto 0;
-  outline: none;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  width: 265px;
 }
 
 @media screen and (max-width: 640px) {

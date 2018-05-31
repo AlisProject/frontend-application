@@ -37,6 +37,12 @@ package:
     - server/**
     - configs/**
     - nuxt.config.js
+    - node_modules/postcss/**
+    - node_modules/postcss-cssnext/**
+    - node_modules/postcss-import/**
+    - node_modules/postcss-import-resolver/**
+    - node_modules/postcss-loader/**
+    - node_modules/postcss-url/**
 
 functions:
   handler:

@@ -22,7 +22,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
-import getTwitterProfileTemplate from '~/utils/getTwitterProfileTemplate'
+import { getTwitterProfileTemplate, getThumbnails } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -133,9 +133,9 @@ export default {
         },
         spellcheck: false
       })
-      editorElement.subscribe('editableInput', async (event, editable) => {
+      editorElement.subscribe('editableInput', (event, editable) => {
         this.setIsEdited({ isEdited: true })
-        window.document.onkeydown = async (event) => {
+        this.$el.onkeydown = async (event) => {
           if (event.key === 'Enter') {
             const line = editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
@@ -277,9 +277,7 @@ export default {
         })
       )
       // Update thumbnails
-      const thumbnails = images
-        .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
-        .map((img) => img.src)
+      const thumbnails = getThumbnails(images)
       this.updateSuggestedThumbnails({ thumbnails })
     },
     removeUselessDOMFromArticleBody($element) {

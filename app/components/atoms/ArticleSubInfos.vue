@@ -1,7 +1,7 @@
 <template>
   <div class="area-article-sub-infos-container">
     <div class="article-sub-info">
-      公開日：<span class="published-at">{{ formettedPublishedAt }}</span>
+      公開日：<span class="published-at">{{ formattedPublishedAt }}</span>
     </div>
     <div class="article-sub-info">
       獲得トークン：<span class="token-amount">{{ formattedTokenAmount }}</span>
@@ -11,7 +11,7 @@
 
 <script>
 import { BigNumber } from 'bignumber.js'
-import moment from 'moment'
+import { formatDate } from '~/utils/article'
 
 export default {
   props: {
@@ -25,10 +25,8 @@ export default {
     }
   },
   computed: {
-    formettedPublishedAt() {
-      return moment(this.createdAt, 'X')
-        .locale('ja')
-        .format('L')
+    formattedPublishedAt() {
+      return formatDate(this.publishedAt)
     },
     formattedTokenAmount() {
       if (this.tokenAmount === undefined) return

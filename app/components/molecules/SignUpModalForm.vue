@@ -48,9 +48,9 @@
         <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>、
         <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意して
       </p>
-      <button class="registration-button" :class="{ disabled: invalidSubmit }" @click="onSubmit">
+      <app-button class="registration-button" :disabled="invalidSubmit" @click="onSubmit">
         登録する
-      </button>
+      </app-button>
       <p class="for-login-user">
         ログインされる方は<span class="link" @click="transitToLogin">こちら</span>
       </p>
@@ -61,6 +61,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, email } from 'vuelidate/lib/validators'
+import AppButton from '../atoms/AppButton'
 
 function userId(value) {
   return Boolean(value.match(/^(?!.*--)[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]$/))
@@ -71,6 +72,9 @@ export default {
     return {
       errorMessage: ''
     }
+  },
+  components: {
+    AppButton
   },
   computed: {
     showErrorUserIdMinLength() {
@@ -178,36 +182,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin default-link {
-  border-bottom: solid 1px transparent;
-  color: #858dda;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 400ms ease;
-
-  &:hover {
-    border-bottom: solid 1px #858dda;
-  }
-}
-
-@mixin default-text {
-  height: 14px;
-  color: #6e6e6e;
-  font-size: 12px;
-  line-height: 18px;
-
-  a {
-    border-bottom: solid 1px transparent;
-    color: #858dda;
-    text-decoration: none;
-    transition: all 400ms ease;
-
-    &:hover {
-      border-bottom: solid 1px #858dda;
-    }
-  }
-}
-
 .modal-body {
   margin: 0 auto;
 
@@ -277,34 +251,7 @@ export default {
   }
 
   .registration-button {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    border: none;
-    box-shadow: 0 0 10px gray;
-    color: #fff;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
     margin: 20px auto 0;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
-
-    &:focus {
-      opacity: 0.8;
-    }
-
-    &:target {
-      display: block;
-    }
-
-    &.disabled {
-      background: white;
-      color: #6e6e6e;
-      cursor: default;
-    }
   }
 
   .error-message {
