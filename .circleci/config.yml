@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/node:8.9.4-browsers
 
@@ -21,7 +21,30 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - run: yarn test
       - run: yarn lint
+      - run: yarn build
+
+  deploy:
+    docker:
+      - image: circleci/node:8.9.4-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
           name: deploy
@@ -35,3 +58,15 @@ jobs:
             aws s3 cp app/static/touch-icon.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
             sudo npm install -g serverless
             yarn sls:deploy
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - test
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
