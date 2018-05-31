@@ -21,14 +21,10 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - run: yarn test
       - run: yarn lint
+      - run: yarn build
 
-      - run:
-          name: deploy
-          command: |
-            yarn lint
-            yarn test
-            yarn build
   deploy:
     docker:
       - image: circleci/node:8.9.4-browsers
@@ -49,9 +45,6 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
-      - run: yarn lint
-      - run: yarn test
 
       - run:
           name: deploy
