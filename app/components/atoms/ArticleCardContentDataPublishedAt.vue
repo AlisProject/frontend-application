@@ -1,5 +1,5 @@
 <template>
-  <p class="area-date">{{ formettedPublishedAt }}</p>
+  <p class="area-date">{{ formattedPublishedAt }}</p>
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
     }
   },
   computed: {
-    formettedPublishedAt() {
+    formattedPublishedAt() {
       return formatDate(this.publishedAt)
     }
   }

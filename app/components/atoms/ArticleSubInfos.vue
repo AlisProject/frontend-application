@@ -1,7 +1,7 @@
 <template>
   <div class="area-article-sub-infos-container">
     <div class="article-sub-info">
-      公開日：<span class="published-at">{{ formettedPublishedAt }}</span>
+      公開日：<span class="published-at">{{ formattedPublishedAt }}</span>
     </div>
     <div class="article-sub-info">
       獲得トークン：<span class="token-amount">{{ formattedTokenAmount }}</span>
@@ -25,7 +25,7 @@ export default {
     }
   },
   computed: {
-    formettedPublishedAt() {
+    formattedPublishedAt() {
       return formatDate(this.publishedAt)
     },
     formattedTokenAmount() {
