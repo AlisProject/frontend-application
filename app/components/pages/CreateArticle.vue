@@ -21,12 +21,10 @@ export default {
   methods: {
     ...mapActions('article', ['putDraftArticle']),
     async putArticle() {
-      const article = {
-        title: this.title === '' ? ' ' : this.title,
-        body: this.body === '' ? ' ' : this.body
-      }
+      const { title, body, articleId } = this
+      const article = { title, body }
       try {
-        await this.putDraftArticle({ article, articleId: this.articleId })
+        await this.putDraftArticle({ article, articleId })
       } catch (e) {
         console.error(e)
       }
