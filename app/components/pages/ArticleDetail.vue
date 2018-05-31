@@ -34,7 +34,7 @@ import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
-import showEmbedTweet from '~/utils/showEmbedTweet'
+import { showEmbedTweet } from '~/utils/article'
 
 export default {
   components: {

@@ -5,7 +5,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import PublicArticle from '~/components/pages/PublicArticle'
-import showEmbedTweet from '~/utils/showEmbedTweet'
+import { showEmbedTweet } from '~/utils/article'
 
 export default {
   components: {

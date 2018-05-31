@@ -5,8 +5,7 @@
 <script>
 import EditPublicArticle from '~/components/pages/EditPublicArticle'
 import head from '~/utils/editor-head'
-import showEmbedTweet from '~/utils/showEmbedTweet'
-import getThumbnails from '~/utils/getThumbnails'
+import { showEmbedTweet, getThumbnails } from '~/utils/article'
 
 export default {
   components: {
