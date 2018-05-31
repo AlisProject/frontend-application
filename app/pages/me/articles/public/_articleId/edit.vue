@@ -19,7 +19,8 @@ export default {
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
-      editorBody.dataset.placeholder = body === '' ? '本文を入力してください' : ''
+      editorBody.dataset.placeholder =
+        body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet({ $axios: this.$axios })
     } catch (error) {
       console.error(error)

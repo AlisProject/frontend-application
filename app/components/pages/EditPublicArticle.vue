@@ -22,14 +22,10 @@ export default {
     ...mapActions('article', ['putPublicArticle', 'gotArticleData']),
     async putArticle() {
       if (!this.gotArticleData) return
-      const article = {
-        title: this.title === '' ? ' ' : this.title,
-        body: this.body === '' ? ' ' : this.body
-      }
-      if (this.thumbnail !== '') {
-        article.eye_catch_url = this.thumbnail
-      }
+      const { title, body, thumbnail } = this
       const { articleId } = this.$route.params
+      const article = { title, body }
+      if (thumbnail !== '') article.eye_catch_url = thumbnail
       try {
         await this.putPublicArticle({ article, articleId })
       } catch (e) {
