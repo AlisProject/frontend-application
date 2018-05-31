@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     formettedPublishedAt() {
-      return moment(this.createdAt, 'X')
+      return moment(this.publishedAt, 'X')
         .locale('ja')
         .format('L')
     },
