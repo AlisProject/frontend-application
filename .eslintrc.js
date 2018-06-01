@@ -12,5 +12,11 @@ module.exports = {
   rules: {
     'space-before-function-paren': ['off']
   },
-  globals: {}
+  globals: {
+    describe: true,
+    test: true,
+    expect: true,
+    beforeEach: true,
+    afterEach: true
+  }
 }
