@@ -79,6 +79,7 @@ export default {
     this.updateArticle()
   },
   beforeDestroy() {
+    this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
     window.removeEventListener('resize', this.handleResize)
   },
