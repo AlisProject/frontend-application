@@ -14,7 +14,7 @@
     "precommit": "npm run lint",
     "sls:deploy": "sls deploy",
     "test": "jest --config jest.config.js --verbose --no-cache",
-    "test:coverage": "jest --config jest.config.js --verbose --no-cache --coverage"
+    "test:coverage": "jest --config jest.config.js --no-cache --coverage"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.1",
