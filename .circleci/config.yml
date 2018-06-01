@@ -23,6 +23,8 @@ jobs:
 
       - run: yarn lint
       - run: yarn test:coverage
+      - store_artifacts:
+          path: ~/project/coverage/lcov-report/
 
       - run:
           name: deploy
