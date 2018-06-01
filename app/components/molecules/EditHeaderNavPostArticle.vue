@@ -66,7 +66,7 @@ export default {
       if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
       if (title === '' || overview === '') return
 
-      const article = { title: title, body, overview }
+      const article = { title, body, overview }
 
       if (this.thumbnail !== '') {
         article.eye_catch_url = this.thumbnail
