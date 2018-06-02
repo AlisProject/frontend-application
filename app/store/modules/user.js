@@ -96,7 +96,10 @@ const state = () => ({
   userArticlesLastEvaluatedKey: {},
   hasUserArticlesLastEvaluatedKey: false,
   showRequestLoginModal: false,
-  alisToken: 0
+  alisToken: 0,
+  notifications: [],
+  notificationsLastEvaluatedKey: {},
+  hasNotificationsLastEvaluatedKey: false
 })
 
 const getters = {
@@ -118,7 +121,9 @@ const getters = {
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
   showRequestLoginModal: (state) => state.showRequestLoginModal,
-  alisToken: (state) => state.alisToken
+  alisToken: (state) => state.alisToken,
+  notifications: (state) => state.notifications,
+  notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey
 }
 
 const actions = {
@@ -401,6 +406,34 @@ const actions = {
       }
     }
   },
+  async getNotifications({ commit, dispatch, state }) {
+    if (!state.hasNotificationsLastEvaluatedKey && state.notificationsLastEvaluatedKey !== undefined) {
+      try {
+        commit(types.SET_HAS_NOTIFICATIONS_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
+        const { user_id: userId, sort_key: sortKey } = state.notificationsLastEvaluatedKey
+
+        const {
+          Items: notifications, LastEvaluatedKey
+        } = await this.$axios.$get(
+          '/me/notifications',
+          { params: { limit: 10, user_id: userId, sort_key: sortKey } }
+        )
+
+        commit(types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+        const notificationsWithData = await Promise.all(
+          notifications.map(async (notification) => {
+            const actedUserInfo = await dispatch('getUserInfo', { userId: notification.acted_user_id })
+            return { ...notification, actedUserInfo }
+          })
+        )
+        commit(types.SET_NOTIFICATIONS, { notifications: notificationsWithData })
+      } catch (error) {
+        return Promise.reject(error)
+      } finally {
+        commit(types.SET_HAS_NOTIFICATIONS_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: false })
+      }
+    }
+  },
   resetUserArticles({ commit }) {
     commit(types.RESET_USER_ARTICLES)
   },
@@ -422,6 +455,10 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getUserInfo({ commit }, { userId }) {
+    const userInfo = await this.$axios.$get(`/users/${userId}/info`)
+    return userInfo
   }
 }
 
@@ -583,6 +620,15 @@ const mutations = {
   },
   [types.SET_USERS_ALIS_TOKEN](state, { alisToken }) {
     state.alisToken = alisToken
+  },
+  [types.SET_NOTIFICATIONS](state, { notifications }) {
+    state.notifications.push(...notifications)
+  },
+  [types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.notificationsLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_HAS_NOTIFICATIONS_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
+    state.hasNotificationsLastEvaluatedKey = hasLastEvaluatedKey
   }
 }
 
