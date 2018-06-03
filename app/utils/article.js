@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import moment from 'moment'
-import axios from 'axios'
+import axios from './axios'
 
 export function getThumbnails(images) {
   return images
