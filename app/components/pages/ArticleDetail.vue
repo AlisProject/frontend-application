@@ -59,7 +59,7 @@ export default {
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
     })
-    showEmbedTweet({ $axios: this.$axios })
+    showEmbedTweet()
   },
   computed: {
     publishedAt() {
