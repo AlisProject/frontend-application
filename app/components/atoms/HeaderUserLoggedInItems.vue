@@ -10,7 +10,9 @@
       src="~assets/images/pc/common/icon_user_noimg.png"
       @click="toggleMenu"
       v-else>
-    <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
+    <nuxt-link to="/me/notifications">
+      <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
+    </nuxt-link>
     <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
     <div class="menu" v-if="isMenuShown">
       <div class="image-box">
@@ -175,7 +177,7 @@ export default {
     margin: 20px 10px 0 16px;
     transform: rotate(-90deg);
     width: 16px;
-    cursor: not-allowed;
+    cursor: pointer;
   }
 
   .search-icon {
