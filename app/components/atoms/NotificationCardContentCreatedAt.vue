@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import moment from 'moment'
+import { formatDate } from '~/utils/article'
 
 export default {
   props: {
@@ -14,9 +14,7 @@ export default {
   },
   computed: {
     formattedCreatedAt() {
-      return moment(this.createdAt, 'X')
-        .locale('ja')
-        .format('L')
+      return formatDate(this.createdAt)
     }
   }
 }
