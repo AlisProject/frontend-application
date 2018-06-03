@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .area-notification-list-container {
   display: grid;
   grid-area: notification-card-list;
