@@ -29,8 +29,8 @@ export default {
     ...mapGetters('user', ['notifications', 'notificationsLastEvaluatedKey'])
   },
   mounted() {
-    if (this.articleListScrollHeight) {
-      this.$el.scrollTop = this.articleListScrollHeight
+    if (this.notificationListScrollHeight) {
+      this.$el.scrollTop = this.notificationListScrollHeight
     }
   },
   beforeDestroy() {
