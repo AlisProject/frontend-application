@@ -1,6 +1,6 @@
 <template>
   <p class="area-description">
-    {{notification.actedUserInfo.user_display_name}}さんが"{{ notification.article_title }}"にいいねしました。
+    {{ notification.actedUserInfo.user_display_name }}さんが"{{ notification.article_title }}"にいいねしました。
   </p>
 </template>
 
