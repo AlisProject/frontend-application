@@ -1,5 +1,3 @@
-const isDevelopment = process.env.NODE_ENV === 'development'
-
 module.exports = {
   /*
   ** Headers of the page
@@ -39,7 +37,10 @@ module.exports = {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/markdownit',
-    '@nuxtjs/proxy'
+    'nuxt-sass-resources-loader'
+  ],
+  sassResources: [
+    '~/assets/stylesheets/mixins/**.scss'
   ],
   markdownit: {
     injected: true,
@@ -52,15 +53,8 @@ module.exports = {
     { src: '~plugins/gtm.js', ssr: false }
   ],
   axios: {
-    prefix: '/api',
-    proxyHeaders: false,
-    proxy: isDevelopment
-  },
-  proxy: !isDevelopment ? {} : {
-    '/api': {
-      target: process.env.BASE_URL,
-      pathRewrite: { '^/api': '/' }
-    }
+    baseURL: process.env.BASE_URL,
+    proxyHeaders: false
   },
   srcDir: 'app',
   router: {

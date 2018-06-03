@@ -10,7 +10,13 @@ module.exports = {
   plugins: ['html'],
   // add your custom rules here
   rules: {
-    'space-before-function-paren': ['error', 'never']
+    'space-before-function-paren': ['off']
   },
-  globals: {}
+  globals: {
+    describe: true,
+    test: true,
+    expect: true,
+    beforeEach: true,
+    afterEach: true
+  }
 }
