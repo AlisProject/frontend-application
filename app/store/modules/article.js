@@ -65,9 +65,17 @@ const actions = {
     if (!state.hasPopularArticlesLastEvaluatedKey) {
       try {
         commit(types.SET_HAS_POPULAR_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
-        const { article_id: articleId, score, evaluated_at: evaluatedAt } = state.popularArticlesLastEvaluatedKey
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/articles/popular', { params: { limit: 10, article_id: articleId, score, evaluated_at: evaluatedAt } })
-        commit(types.SET_POPULAR_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+        const {
+          article_id: articleId,
+          score,
+          evaluated_at: evaluatedAt
+        } = state.popularArticlesLastEvaluatedKey
+        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/articles/popular', {
+          params: { limit: 10, article_id: articleId, score, evaluated_at: evaluatedAt }
+        })
+        commit(types.SET_POPULAR_ARTICLES_LAST_EVALUATED_KEY, {
+          lastEvaluatedKey: LastEvaluatedKey
+        })
         const articlesWithData = await Promise.all(
           articles.map(async (article) => {
             const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
@@ -91,7 +99,9 @@ const actions = {
         let articles = []
         let LastEvaluatedKey = {}
         if (articleId && sortKey) {
-          const data = await this.$axios.$get(`/articles/recent?limit=10&article_id=${articleId}&sort_key=${sortKey}`)
+          const data = await this.$axios.$get(
+            `/articles/recent?limit=10&article_id=${articleId}&sort_key=${sortKey}`
+          )
           articles = data.Items
           LastEvaluatedKey = data.LastEvaluatedKey
         } else {
@@ -191,7 +201,10 @@ const actions = {
       try {
         commit(types.SET_HAS_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
         const { article_id: articleId, sort_key: sortKey } = state.publicArticlesLastEvaluatedKey
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/public', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
+        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+          '/me/articles/public',
+          { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+        )
         commit(types.SET_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
         const userInfo = await this.$axios.$get('/me/info')
         const articlesWithData = await Promise.all(
@@ -213,7 +226,10 @@ const actions = {
       try {
         commit(types.SET_DRAFT_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
         const { article_id: articleId, sort_key: sortKey } = state.draftArticlesLastEvaluatedKey
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/drafts', { params: { limit: 10, article_id: articleId, sort_key: sortKey } })
+        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+          '/me/articles/drafts',
+          { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+        )
         commit(types.SET_DRAFT_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
         const userInfo = await this.$axios.$get('/me/info')
         const articlesWithData = articles.map((article) => {
@@ -265,8 +281,10 @@ const actions = {
       const config = {
         headers: { 'content-type': imageContentType }
       }
-      const result = await this.$axios.$post(`/me/articles/${articleId}/images`,
-        { article_image: articleImage }, config
+      const result = await this.$axios.$post(
+        `/me/articles/${articleId}/images`,
+        { article_image: articleImage },
+        config
       )
       return result
     } catch (error) {
