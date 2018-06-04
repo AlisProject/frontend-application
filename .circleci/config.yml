@@ -22,8 +22,12 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn lint
+      - run:
+          name: Format
+          command: |
+            yarn format
+            [ -n $(git status -s | wc -l) ] exit 1
       - run: yarn test
-
       - run:
           name: deploy
           command: |
