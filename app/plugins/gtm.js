@@ -2,7 +2,6 @@
 
 export default ({ app }) => {
   if (process.env.NODE_ENV !== 'production') return
-
   ;(function(w, d, s, l, i) {
     w[l] = w[l] || []
     w[l].push({

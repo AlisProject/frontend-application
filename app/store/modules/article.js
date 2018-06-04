@@ -51,7 +51,8 @@ const getters = {
   gotArticleData: (state) => state.gotArticleData,
   popularArticlesLastEvaluatedKey: (state) => state.popularArticlesLastEvaluatedKey,
   newArticlesLastEvaluatedKey: (state) => state.newArticlesLastEvaluatedKey,
-  hasNewArticlesLastEvaluatedKey: (state) => !!Object.keys(state.newArticlesLastEvaluatedKey || {}).length,
+  hasNewArticlesLastEvaluatedKey: (state) =>
+    !!Object.keys(state.newArticlesLastEvaluatedKey || {}).length,
   publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
   draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
   likesCount: (state) => state.likesCount,
@@ -97,7 +98,9 @@ const actions = {
       let articles = []
       let LastEvaluatedKey = {}
       if (articleId && sortKey) {
-        const data = await this.$axios.$get(`/articles/recent?limit=10&article_id=${articleId}&sort_key=${sortKey}`)
+        const data = await this.$axios.$get(
+          `/articles/recent?limit=10&article_id=${articleId}&sort_key=${sortKey}`
+        )
         articles = data.Items
         LastEvaluatedKey = data.LastEvaluatedKey
       } else {
