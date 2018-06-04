@@ -16,6 +16,7 @@ module.exports = {
     'app/**/*.{js,vue}',
     '!./tests/**',
     '!app/layouts/error.vue',
-    '!**/node_modules/**'
+    '!**/node_modules/**',
+    '!**/.nuxt/**',
   ]
 }
