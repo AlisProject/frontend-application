@@ -26,8 +26,8 @@ jobs:
           name: Format
           command: |
             yarn format;
-            if [ -n $(git status -s | head -n1) ]; then
-              echo 'Unformat file(s) found.'
+            if [ $(git status -s | wc -l | sed -e 's/0//') ]; then
+              echo 'Unformat file(s) found.';
               exit 1
             fi
       - run: yarn test
