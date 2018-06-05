@@ -1,9 +1,9 @@
 <template>
   <section>
-    <a :href="`/me/articles/public/${this.notification.article_id}`" class="notification-card-container">
+    <nuxt-link :to="`/${notification.user_id}/articles/${notification.article_id}`" class="notification-card-container">
       <notification-card-image :iconUrl="notification.actedUserInfo.icon_image_url"/>
       <notification-card-content :notification="notification"/>
-    </a>
+    </nuxt-link>
   </section>
 </template>
 
