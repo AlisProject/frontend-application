@@ -26,7 +26,8 @@ jobs:
           name: Format
           command: |
             yarn format;
-            if [ $(git status -s | wc -l | sed -e 's/0//') ]; then
+            git diff --exit-code --quiet;
+            if [ $? = 1 ]; then
               echo 'Unformat file(s) found.';
               exit 1
             fi
