@@ -26,21 +26,29 @@ export default {
     title() {
       return 'お知らせ'
     },
-    ...mapGetters('user', ['notifications', 'notificationsLastEvaluatedKey'])
+    ...mapGetters('user', ['notifications', 'notificationsLastEvaluatedKey', 'hasNotificationsLastEvaluatedKey'])
   },
   mounted() {
     if (this.notificationListScrollHeight) {
       this.$el.scrollTop = this.notificationListScrollHeight
     }
   },
+  data() {
+    return {
+      canLoadNextNotifications: true
+    }
+  },
   beforeDestroy() {
     this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
-    infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
-        this.getNotifications()
+    async infiniteScroll(event) {
+      if (!this.canLoadNextNotifications || !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)) {
+        return
       }
+
+      await this.getNotifications()
+      this.canLoadNextNotifications = this.hasNotificationsLastEvaluatedKey
     },
     ...mapActions('user', ['getNotifications']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
