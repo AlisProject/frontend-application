@@ -132,6 +132,9 @@ export default {
         placeholder: {
           text: ''
         },
+        paste: {
+          forcePlainText: false
+        },
         spellcheck: false
       })
       editorElement.subscribe('editableInput', (event, editable) => {
