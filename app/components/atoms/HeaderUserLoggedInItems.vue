@@ -11,7 +11,14 @@
       @click="toggleMenu"
       v-else>
     <nuxt-link to="/me/notifications">
-      <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
+      <img
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_bell_mark.png"
+        v-if="unreadNotification">
+      <img
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_bell.png"
+        v-else>
     </nuxt-link>
     <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
     <div class="menu" v-if="isMenuShown">
@@ -61,6 +68,7 @@ export default {
   },
   async mounted() {
     await this.setCurrentUserInfo()
+    await this.getUnreadNotification()
     await this.getUsersAlisToken()
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
@@ -76,7 +84,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUserInfo', 'alisToken'])
+    ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification'])
   },
   methods: {
     toggleMenu() {
@@ -147,7 +155,8 @@ export default {
       'logout',
       'setProfileSettingsModal',
       'setCurrentUserInfo',
-      'getUsersAlisToken'
+      'getUsersAlisToken',
+      'getUnreadNotification'
     ])
   }
 }
@@ -380,7 +389,7 @@ export default {
 
     .notification-icon {
       float: right;
-      margin: 2px 20px 0 0;
+      margin: 5px 20px 0 0;
       transform: rotate(0);
     }
 

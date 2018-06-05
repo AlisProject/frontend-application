@@ -98,7 +98,8 @@ const state = () => ({
   alisToken: 0,
   notifications: [],
   notificationsLastEvaluatedKey: {},
-  hasNotificationsLastEvaluatedKey: false
+  hasNotificationsLastEvaluatedKey: false,
+  unreadNotification: false
 })
 
 const getters = {
@@ -122,7 +123,8 @@ const getters = {
   showRequestLoginModal: (state) => state.showRequestLoginModal,
   alisToken: (state) => state.alisToken,
   notifications: (state) => state.notifications,
-  notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey
+  notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
+  unreadNotification: (state) => state.unreadNotification
 }
 
 const actions = {
@@ -458,6 +460,24 @@ const actions = {
   async getUserInfo({ commit }, { userId }) {
     const userInfo = await this.$axios.$get(`/users/${userId}/info`)
     return userInfo
+  },
+  async getUnreadNotification({ commit }) {
+    try {
+      const { unread } = await this.$axios.$get('/me/unread_notification_managers')
+      commit(types.SET_UNREAD_NOTIFICATION, { unread })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async putUnreadNotification({ commit }) {
+    try {
+      const result = await this.$axios.$put('/me/unread_notification_managers')
+      const unread = false
+      commit(types.SET_UNREAD_NOTIFICATION, { unread })
+      return result
+    } catch (error) {
+      Promise.reject(error)
+    }
   }
 }
 
@@ -628,6 +648,9 @@ const mutations = {
   },
   [types.SET_HAS_NOTIFICATIONS_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
     state.hasNotificationsLastEvaluatedKey = hasLastEvaluatedKey
+  },
+  [types.SET_UNREAD_NOTIFICATION](state, { unread }) {
+    state.unreadNotification = unread
   }
 }
 

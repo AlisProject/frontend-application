@@ -11,6 +11,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('user/getNotifications')
+    this.$store.dispatch('user/putUnreadNotification')
   },
   head: {
     title: 'お知らせ一覧'
