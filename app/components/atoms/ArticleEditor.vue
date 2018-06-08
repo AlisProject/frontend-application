@@ -23,16 +23,8 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
-import { getTwitterProfileTemplate, getThumbnails } from '~/utils/article'
+import { getTwitterProfileTemplate, getThumbnails, createInsertPluginTemplateFromUrl } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
-
-const createInsertImage = (url) => `
-  <div class="medium-insert-images">
-    <figure contenteditable="false">
-      <img src="${url}" alt="">
-    </figure>
-  </div>
-`
 
 export default {
   props: {
@@ -340,7 +332,7 @@ export default {
       const [ target ] = files
       const reader = new FileReader()
       reader.onload = ({ currentTarget: { result } }) => {
-        this.targetDOM.after($(createInsertImage(result)))
+        this.targetDOM.after($(createInsertPluginTemplateFromUrl(result)))
         this.targetDOM = null
         this.setIsEdited({ isEdited: true })
       }

@@ -1,6 +1,16 @@
 /* eslint-disable no-undef */
 import moment from 'moment'
 
+export function createInsertPluginTemplateFromUrl(url) {
+  return `
+    <div class="medium-insert-images">
+      <figure contenteditable="false">
+        <img src="${url}" alt="">
+      </figure>
+    </div>
+  `
+}
+
 export function getThumbnails(images) {
   return images
     .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
