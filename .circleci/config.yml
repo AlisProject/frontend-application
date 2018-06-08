@@ -22,7 +22,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn lint
-      - run: yarn test
+      - run: yarn test:coverage
+      - store_artifacts:
+          path: ~/repo/coverage/lcov-report/
 
       - run:
           name: deploy
