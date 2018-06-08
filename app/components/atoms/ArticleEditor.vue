@@ -329,6 +329,7 @@ export default {
       return false
     },
     insertDragImage(files) {
+      if (this.targetDOM[0].classList.value.includes('area-body')) return
       const [ target ] = files
       const reader = new FileReader()
       reader.onload = ({ currentTarget: { result } }) => {
@@ -398,6 +399,9 @@ export default {
   grid-area: body;
   width: 100%;
   padding-bottom: 120px;
+  &.medium-editor-dragover {
+    background: #fff;
+  }
 }
 
 .medium-editor-placeholder-relative:after,
