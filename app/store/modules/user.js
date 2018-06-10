@@ -419,13 +419,7 @@ const actions = {
       )
 
       commit(types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
-      const notificationsWithData = await Promise.all(
-        notifications.map(async (notification) => {
-          const actedUserInfo = await dispatch('getUserInfo', { userId: notification.acted_user_id })
-          return { ...notification, actedUserInfo }
-        })
-      )
-      commit(types.SET_NOTIFICATIONS, { notifications: notificationsWithData })
+      commit(types.SET_NOTIFICATIONS, { notifications: notifications })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -451,10 +445,6 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
-  },
-  async getUserInfo({ commit }, { userId }) {
-    const userInfo = await this.$axios.$get(`/users/${userId}/info`)
-    return userInfo
   },
   async getUnreadNotification({ commit }) {
     try {
