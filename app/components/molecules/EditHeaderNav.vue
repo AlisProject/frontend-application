@@ -12,7 +12,7 @@
         下書きに戻す
       </span>
     </div>
-    <edit-header-nav-post-article :showPostArticleLink="showPostArticleLink"/>
+    <edit-header-nav-post-article v-show="showPostArticleLink"/>
   </nav>
 </template>
 

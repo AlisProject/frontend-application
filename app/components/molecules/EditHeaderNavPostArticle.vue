@@ -1,5 +1,5 @@
 <template>
-  <div class="area-post-article" v-show="showPostArticleLink">
+  <div class="area-post-article">
     <span class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
       公開する
     </span>
@@ -32,12 +32,6 @@ export default {
   data() {
     return {
       isPopupShown: false
-    }
-  },
-  props: {
-    showPostArticleLink: {
-      type: Boolean,
-      default: false
     }
   },
   mounted() {
