@@ -1,13 +1,6 @@
 <template>
   <div class="area-notification-card-image">
-    <img
-      class="profile-icon"
-      :src="iconUrl"
-      v-if="iconUrl !== undefined">
-    <img
-      class="area-profile-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
-      v-else>
+    <img class="profile-icon" src="~assets/images/pc/article/btn_like_selected.png">
   </div>
 </template>
 
@@ -35,8 +28,15 @@ export default {
   .profile-icon {
     border-radius: 50%;
     cursor: pointer;
-    height: 60px;
-    width: 60px;
+    height: 80px;
+    width: 80px;
+  }
+
+  @media screen and (max-width: 920px) {
+    .profile-icon {
+      height: 60px;
+      width: 60px;
+    }
   }
 }
 </style>
