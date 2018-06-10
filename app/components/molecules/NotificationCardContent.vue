@@ -1,7 +1,7 @@
 <template>
   <div class="area-notification-card-content">
     <notification-card-content-description :notification="notification"/>
-    <notification-card-content-created-at :createdAt="notification.created_at"/>
+    <notification-card-content-created-at :createdAt="convertSortKeyToUnixTime"/>
   </div>
 </template>
 
@@ -19,6 +19,11 @@ export default {
   components: {
     NotificationCardContentDescription,
     NotificationCardContentCreatedAt
+  },
+  computed: {
+    convertSortKeyToUnixTime() {
+      return Math.floor(this.notification.sort_key / 1000000)
+    }
   }
 }
 </script>
