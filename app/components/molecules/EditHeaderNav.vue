@@ -4,24 +4,19 @@
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <a href="/me/articles/new" class="nav-link area-new-article">新規作成</a>
-    <div class="area-post-article" v-show="showEditArticleLink">
-      <a :href="`/me/articles/public/${this.$route.params.articleId}/edit`" class="nav-link post-article">
-        編集する
-      </a>
-      <span @click="unpublish" class="nav-link unpublish-article">
-        下書きに戻す
-      </span>
-    </div>
+    <edit-header-nav-edit-article v-show="showEditArticleLink"/>
     <edit-header-nav-post-article v-show="showPostArticleLink"/>
   </nav>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
+import EditHeaderNavEditArticle from '../molecules/EditHeaderNavEditArticle'
 import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
 
 export default {
   components: {
+    EditHeaderNavEditArticle,
     EditHeaderNavPostArticle
   },
   props: {
@@ -34,20 +29,8 @@ export default {
       default: false
     }
   },
-  methods: {
-    async unpublish() {
-      const { articleId } = this
-      try {
-        await this.unpublishPublicArticle({ articleId })
-        this.$router.push('/me/articles/public')
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    ...mapActions('article', ['unpublishPublicArticle'])
-  },
   computed: {
-    ...mapGetters('article', ['articleId', 'saveStatus'])
+    ...mapGetters('article', ['saveStatus'])
   }
 }
 </script>
@@ -76,26 +59,6 @@ export default {
   font-size: 14px;
   text-decoration: none;
   color: #929292;
-}
-
-.area-post-article {
-  grid-area: post-article;
-  position: relative;
-
-  .post-article {
-    cursor: pointer;
-    user-select: none;
-    display: inline-block;
-
-    &.disable {
-      cursor: not-allowed;
-    }
-  }
-
-  .unpublish-article {
-    cursor: pointer;
-    margin-left: 1em;
-  }
 }
 
 .area-public-articles {

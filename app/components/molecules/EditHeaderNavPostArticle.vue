@@ -24,7 +24,6 @@
 </template>
 
 <script>
-/* eslint no-undef: 0 */
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
