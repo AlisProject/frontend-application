@@ -283,6 +283,7 @@ export default {
               })
               img.src = imageUrl
             } catch (error) {
+              this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
               console.error(error)
             }
           }
