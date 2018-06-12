@@ -232,6 +232,10 @@ export default {
         const article = { title: '', body: '' }
         await this.postNewArticle({ article })
       } catch (error) {
+        this.sendNotification({
+          text: '記事の作成に失敗しました。',
+          type: 'warning'
+        })
         console.error(error)
       }
     },
