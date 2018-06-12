@@ -92,6 +92,12 @@ export default {
   }
 }
 
+@media screen and (max-width: 640px) {
+  .notification-list-container {
+    grid-template-rows: 100px 80px 1fr 75px min-content;
+  }
+}
+
 @media screen and (max-width: 550px) {
   .notification-list-container {
     grid-template-columns: 1fr 350px 1fr;
