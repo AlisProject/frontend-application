@@ -145,6 +145,7 @@ export default {
               trimmedLine.startsWith('https://twitter.com')
             ) {
               const selectedParentElement = editorElement.getSelectedParentElement()
+              const isTweet = trimmedLine.split('/')[4] === 'status'
               let result
               try {
                 result = await this.$axios.$get(
@@ -153,13 +154,19 @@ export default {
                   }&url=${trimmedLine}&omit_script=1&omit_css=1`
                 )
               } catch (error) {
+                const message = isTweet
+                  ? 'ツイートが取得できませんでした。'
+                  : 'Twitterのユーザー情報が取得できませんでした。'
+                this.sendNotification({
+                  text: message,
+                  type: 'warning'
+                })
                 console.error(error)
                 return
               }
 
               selectedParentElement.innerHTML = ''
 
-              const isTweet = trimmedLine.split('/')[4] === 'status'
               if (isTweet) {
                 editorElement.pasteHTML(
                   `<br>
