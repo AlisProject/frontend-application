@@ -409,13 +409,13 @@ const actions = {
   },
   async getNotifications({ commit, dispatch, state }) {
     try {
-      const { user_id: userId, sort_key: sortKey } = state.notificationsLastEvaluatedKey
+      const { notification_id: notificationId, sort_key: sortKey } = state.notificationsLastEvaluatedKey
 
       const {
         Items: notifications, LastEvaluatedKey
       } = await this.$axios.$get(
         '/me/notifications',
-        { params: { limit: 10, user_id: userId, sort_key: sortKey } }
+        { params: { limit: 10, notification_id: notificationId, sort_key: sortKey } }
       )
 
       commit(types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
