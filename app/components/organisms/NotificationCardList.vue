@@ -23,7 +23,13 @@ export default {
 .area-notification-list-container {
   display: grid;
   grid-area: notification-card-list;
-  grid-gap: 16px;
+  grid-gap: 14px;
+}
+
+@media screen and (max-width: 640px) {
+  .area-notification-list-container {
+    grid-gap: 10px;
+  }
 }
 
 </style>

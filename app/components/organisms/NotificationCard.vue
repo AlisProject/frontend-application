@@ -32,22 +32,16 @@ a {
 .notification-card-container {
   display: grid;
   grid-template-rows: 140px;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 1fr 5fr;
   box-shadow: 0 0 10px #DDDDDD;
   /* prettier-ignore */
   grid-template-areas:
     "notification-card-image notification-card-content";
 }
 
-@media screen and (max-width: 1296px) {
-}
-
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 640px) {
   .notification-card-container {
-    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 90px;
   }
-}
-
-@media screen and (max-width: 550px) {
 }
 </style>

@@ -67,7 +67,7 @@ export default {
     "...         notification-card-list ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
-  grid-template-columns: 1fr 710px 1fr;
+  grid-template-columns: 1fr 680px 1fr;
   grid-template-rows: 100px 80px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
@@ -80,31 +80,21 @@ export default {
   letter-spacing: 0.05em;
 }
 
-@media screen and (max-width: 1296px) {
-  .notification-list-container {
-    grid-template-columns: 1fr 710px 1fr;
-  }
-}
 
 @media screen and (max-width: 920px) {
   .notification-list-container {
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-columns: 1fr 70% 1fr;
   }
 }
 
 @media screen and (max-width: 640px) {
   .notification-list-container {
+    grid-template-columns: 1fr 340px 1fr;
     grid-template-rows: 100px 40px 1fr 75px min-content;
   }
 
   .area-title {
-    font-size: 15px;
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .notification-list-container {
-    grid-template-columns: 1fr 350px 1fr;
+    font-size: 16px;
   }
 }
 

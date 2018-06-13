@@ -26,4 +26,10 @@ export default {
   font-size: 14px;
   margin: 0;
 }
+
+@media screen and (max-width: 640px) {
+  .area-date {
+    font-size: 12px;
+  }
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <p class="area-description">
-    {{ notification.liked_count }}人があなたの記事にいいねしました。"{{ notification.article_title }}"
+    <span class="liked_count">{{ notification.liked_count }}人</span>があなたの記事にいいねしました。"{{ notification.article_title }}"
   </p>
 </template>
 
@@ -27,10 +27,7 @@ export default {
   overflow: hidden;
 }
 
-@media screen and (max-width: 1296px) {
-  .area-description {
-    -webkit-line-clamp: 2;
-    font-size: 12px;
-  }
+.liked_count {
+  color: #040404;
 }
 </style>

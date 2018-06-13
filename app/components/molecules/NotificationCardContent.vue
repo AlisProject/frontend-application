@@ -35,7 +35,14 @@ export default {
   grid-area: notification-card-content;
   grid-template-rows: 2fr 1fr;
   grid-gap: 6px;
-  padding: 30px 18px;
+  padding: 36px 12px;
   position: relative;
+}
+
+@media screen and (max-width: 640px) {
+  .area-notification-card-content {
+    grid-template-rows: 3fr 1fr;
+    padding: 16px 12px;
+  }
 }
 </style>
