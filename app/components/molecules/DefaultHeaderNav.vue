@@ -4,10 +4,12 @@
       <nuxt-link
         to="/"
         class="nav-link area-popular-articles"
+        :class="{ hidden: showOnlySessionLinksOnPc }"
         @click.native="resetScrollPosition">人気記事</nuxt-link>
       <nuxt-link
         to="/articles/recent"
         class="nav-link area-new-articles"
+        :class="{ hidden: showOnlySessionLinksOnPc }"
         @click.native="resetScrollPosition">新着記事</nuxt-link>
     </template>
   </nav>
@@ -23,6 +25,10 @@ export default {
       default: false
     },
     showOnlySessionLinks: {
+      type: Boolean,
+      default: false
+    },
+    showOnlySessionLinksOnPc: {
       type: Boolean,
       default: false
     }
@@ -108,6 +114,10 @@ export default {
   .nav-link {
     line-height: 30px;
     font-size: 12px;
+
+    &.hidden {
+      display: none;
+    }
   }
 
   .popular-articles .area-popular-articles {
