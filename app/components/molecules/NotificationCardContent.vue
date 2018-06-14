@@ -1,13 +1,13 @@
 <template>
   <div class="area-notification-card-content">
     <notification-card-content-description :notification="notification"/>
-    <notification-card-content-created-at :createdAt="convertSortKeyToUnixTime"/>
+    <notification-card-content-updated-at :updatedAt="convertSortKeyToUnixTime"/>
   </div>
 </template>
 
 <script>
 import NotificationCardContentDescription from '../atoms/NotificationCardContentDescription'
-import NotificationCardContentCreatedAt from '../atoms/NotificationCardContentCreatedAt'
+import NotificationCardContentUpdatedAt from '../atoms/NotificationCardContentUpdatedAt'
 
 export default {
   props: {
@@ -18,7 +18,7 @@ export default {
   },
   components: {
     NotificationCardContentDescription,
-    NotificationCardContentCreatedAt
+    NotificationCardContentUpdatedAt
   },
   computed: {
     convertSortKeyToUnixTime() {

@@ -1,20 +1,20 @@
 <template>
-  <p class="area-date">{{ formattedCreatedAt }}</p>
+  <p class="area-date">{{ formattedUpdatedAt }}</p>
 </template>
 
 <script>
-import { formatDate } from '~/utils/article'
+import { formatDateWithTime } from '~/utils/article'
 
 export default {
   props: {
-    createdAt: {
+    updatedAt: {
       type: Number,
       required: true
     }
   },
   computed: {
-    formattedCreatedAt() {
-      return formatDate(this.createdAt)
+    formattedUpdatedAt() {
+      return formatDateWithTime(this.updatedAt)
     }
   }
 }
