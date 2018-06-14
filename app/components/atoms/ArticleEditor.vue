@@ -220,7 +220,11 @@ export default {
           if (this.articleId === '') await this.setArticleId()
 
           // Upload images
-          await this.uploadImages()
+          try {
+            await this.uploadImages()
+          } catch (error) {
+            console.error(error)
+          }
 
           // Upload article
           await this.uploadArticle()
@@ -243,7 +247,7 @@ export default {
           text: '記事の作成に失敗しました。',
           type: 'warning'
         })
-        console.error(error)
+        throw new Error('Post article failed.')
       }
     },
     onInputTitle() {
@@ -284,7 +288,7 @@ export default {
               img.src = imageUrl
             } catch (error) {
               this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
-              console.error(error)
+              throw new Error('Image upload failed.')
             }
           }
         })
