@@ -134,13 +134,17 @@ export default {
           this.uploadedImage = base64Image
         } catch (error) {
           const toastMessage = document.querySelector('.toast')
-          toastMessage.style.zIndex = 9998
+          const modalMask = document.querySelector('.modal-mask')
+          const modalMaskZIndex = Number(
+            window.getComputedStyle(modalMask).getPropertyValue('z-index')
+          )
+          toastMessage.style.zIndex = modalMaskZIndex + 1
           this.sendNotification({
             text: 'アイコン画像をアップロードできませんでした。',
             type: 'warning'
           })
           setTimeout(() => {
-            toastMessage.style.zIndex = 9997
+            toastMessage.style.zIndex = modalMaskZIndex - 1
           }, 2500)
           console.error(error)
         }
