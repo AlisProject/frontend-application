@@ -11,7 +11,7 @@
 
 <script>
 import { BigNumber } from 'bignumber.js'
-import { formatDate } from '~/utils/article'
+import { formatDate } from '~/utils/format'
 
 export default {
   props: {
