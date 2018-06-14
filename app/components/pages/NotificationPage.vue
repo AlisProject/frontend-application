@@ -26,7 +26,8 @@ export default {
     title() {
       return 'お知らせ'
     },
-    ...mapGetters('user', ['notifications', 'notificationsLastEvaluatedKey', 'hasNotificationsLastEvaluatedKey'])
+    ...mapGetters('user', ['notifications', 'notificationsLastEvaluatedKey', 'hasNotificationsLastEvaluatedKey']),
+    ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
     if (this.notificationListScrollHeight) {
@@ -39,7 +40,7 @@ export default {
     }
   },
   beforeDestroy() {
-    this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
+    this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
     async infiniteScroll(event) {
@@ -51,7 +52,7 @@ export default {
       this.canLoadNextNotifications = this.hasNotificationsLastEvaluatedKey
     },
     ...mapActions('user', ['getNotifications']),
-    ...mapActions('presentation', ['setArticleListScrollHeight'])
+    ...mapActions('presentation', ['setNotificationListScrollHeight'])
   }
 }
 </script>
