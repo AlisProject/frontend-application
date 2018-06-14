@@ -30,13 +30,22 @@ a {
 }
 
 .notification-card-container {
+  box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
   display: grid;
-  grid-template-rows: 140px;
-  grid-template-columns: 1fr 5fr;
-  box-shadow: 0 0 10px #DDDDDD;
   /* prettier-ignore */
   grid-template-areas:
     "notification-card-image notification-card-content";
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 140px;
+  transition: all 400ms ease;
+
+  &:hover {
+    box-shadow: 0 0 8px 0 rgba(133, 141, 218, 0.5);
+
+    &:active {
+      box-shadow: 0 0 4px 0 rgba(133, 141, 218, 0.5);
+    }
+  }
 }
 
 @media screen and (max-width: 640px) {
