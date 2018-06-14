@@ -343,7 +343,7 @@ const actions = {
       const result = await this.$axios.$post('/me/info/icon', { icon_image: iconImage }, config)
       return result
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   },
   setProfileSettingsModal({ commit }, { showProfileSettingsModal }) {
