@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { formatDateWithTime } from '~/utils/article'
+import { formatDateWithTime } from '~/utils/format'
 
 export default {
   props: {

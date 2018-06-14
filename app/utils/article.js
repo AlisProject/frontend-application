@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-import moment from 'moment'
 
 export function getThumbnails(images) {
   return images
@@ -33,16 +32,4 @@ export function showEmbedTweet({ $axios }) {
     }
     iframely.load()
   })
-}
-
-export function formatDate(date) {
-  return moment(date, 'X')
-    .locale('ja')
-    .format('L')
-}
-
-export function formatDateWithTime(date) {
-  return moment(date, 'X')
-    .locale('ja')
-    .format('YYYY/MM/DD HH:MM')
 }
