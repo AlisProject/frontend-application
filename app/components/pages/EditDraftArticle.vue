@@ -7,7 +7,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
 
@@ -20,9 +19,6 @@ export default {
     ...mapGetters('article', ['title', 'body'])
   },
   methods: {
-    ...mapActions({
-      sendNotification: ADD_TOAST_MESSAGE
-    }),
     ...mapActions('article', ['putDraftArticle', 'gotArticleData']),
     async putArticle() {
       if (!this.gotArticleData) return
@@ -30,12 +26,7 @@ export default {
       const { articleId } = this.$route.params
       const article = { title, body }
       if (thumbnail !== '') article.eye_catch_url = thumbnail
-      try {
-        await this.putDraftArticle({ article, articleId })
-      } catch (e) {
-        this.sendNotification({ text: '記事の更新に失敗しました。', type: 'warning' })
-        console.error(e)
-      }
+      await this.putDraftArticle({ article, articleId })
     }
   }
 }

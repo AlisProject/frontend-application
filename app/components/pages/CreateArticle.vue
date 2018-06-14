@@ -7,7 +7,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
 
@@ -20,19 +19,11 @@ export default {
     ...mapGetters('article', ['articleId', 'title', 'body'])
   },
   methods: {
-    ...mapActions({
-      sendNotification: ADD_TOAST_MESSAGE
-    }),
     ...mapActions('article', ['putDraftArticle']),
     async putArticle() {
       const { title, body, articleId } = this
       const article = { title, body }
-      try {
-        await this.putDraftArticle({ article, articleId })
-      } catch (e) {
-        this.sendNotification({ text: '記事の更新に失敗しました。', type: 'warning' })
-        console.error(e)
-      }
+      await this.putDraftArticle({ article, articleId })
     }
   }
 }

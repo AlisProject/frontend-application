@@ -265,7 +265,12 @@ export default {
       const body = this.removeUselessDOMFromArticleBody($('.area-body'))
       this.updateBody({ body })
 
-      await this.putArticle()
+      try {
+        await this.putArticle()
+      } catch (error) {
+        this.sendNotification({ text: '記事の更新に失敗しました。', type: 'warning' })
+        throw new Error('Update article failed.')
+      }
     },
     async uploadImages() {
       const images = Array.from(this.$el.querySelectorAll('figure img'))
