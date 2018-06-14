@@ -186,7 +186,6 @@ export default {
     margin: 20px 10px 0 16px;
     transform: rotate(-90deg);
     width: 16px;
-    cursor: pointer;
   }
 
   .search-icon {
