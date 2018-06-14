@@ -132,7 +132,7 @@ const actions = {
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   },
   async getArticleDetail({ commit, dispatch }, { articleId }) {
@@ -161,7 +161,7 @@ const actions = {
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   },
   async postNewArticle({ commit }, { article }) {
