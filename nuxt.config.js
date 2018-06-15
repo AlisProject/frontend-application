@@ -4,7 +4,10 @@ module.exports = {
   */
   head: {
     script: [
-      { src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`, async: true }
+      {
+        src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`,
+        async: true
+      }
     ],
     title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
     titleTemplate: '%s | ALIS',
@@ -12,18 +15,46 @@ module.exports = {
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'apple-mobile-web-app-title', content: 'ALIS' },
-      { hid: 'description', name: 'description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
-      { hid: 'og:title', property: 'og:title', content: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.' },
-      { hid: 'og:description', property: 'og:description', content: `ALIS is Japan's First Social Media Using Blockchain Technology` },
+      {
+        hid: 'description',
+        name: 'description',
+        content: `ALIS is Japan's First Social Media Using Blockchain Technology`
+      },
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.'
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: `ALIS is Japan's First Social Media Using Blockchain Technology`
+      },
       { hid: 'og:type', property: 'og:type', content: 'website' },
-      { hid: 'og:image', property: 'og:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+      },
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
       { hid: 'twitter:site', name: 'twitter:site', content: '@ALIS_media' },
-      { hid: 'twitter:image', name: 'twitter:image', content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png` }
+      {
+        hid: 'twitter:image',
+        name: 'twitter:image',
+        content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+      }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico` },
-      { rel: 'apple-touch-icon', sizes: '192x192', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` },
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico`
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '192x192',
+        href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png`
+      },
       { rel: 'shortcut icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` }
     ]
   },
@@ -34,24 +65,14 @@ module.exports = {
   /*
   ** Build configuration
   */
-  modules: [
-    '@nuxtjs/axios',
-    '@nuxtjs/markdownit',
-    'nuxt-sass-resources-loader'
-  ],
-  sassResources: [
-    '~/assets/stylesheets/mixins/**.scss'
-  ],
+  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', 'nuxt-sass-resources-loader'],
+  sassResources: ['~/assets/stylesheets/mixins/**.scss'],
   markdownit: {
     injected: true,
     preset: 'default',
     breaks: true
   },
-  plugins: [
-    '~/plugins/axios',
-    '~/plugins/vuelidate',
-    { src: '~plugins/gtm.js', ssr: false }
-  ],
+  plugins: ['~/plugins/axios', '~/plugins/vuelidate', { src: '~plugins/gtm.js', ssr: false }],
   axios: {
     baseURL: process.env.BASE_URL,
     proxyHeaders: false

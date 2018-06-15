@@ -22,6 +22,15 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn lint
+      - run:
+          name: Format
+          command: |
+            yarn format;
+            git diff --exit-code --quiet;
+            if [ $? = 1 ]; then
+              echo 'Unformat file(s) found.';
+              exit 1
+            fi
       - run: yarn test:coverage
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
