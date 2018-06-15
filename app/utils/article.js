@@ -25,7 +25,9 @@ export function showEmbedTweet() {
       element.innerHTML = `<a href="${alisIframelyUrl}" data-iframely-url></a>`
     } else {
       const { data: profileInfo } = await axios.get(
-        `https://iframe.ly/api/oembed?api_key=${process.env.IFRAMELY_API_KEY}&url=${alisIframelyUrl}`
+        `https://iframe.ly/api/oembed?api_key=${
+          process.env.IFRAMELY_API_KEY
+        }&url=${alisIframelyUrl}`
       )
       element.innerHTML = `
       ${getTwitterProfileTemplate({ ...profileInfo })}

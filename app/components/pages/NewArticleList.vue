@@ -22,10 +22,14 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['newArticles', 'newArticlesLastEvaluatedKey', 'hasNewArticlesLastEvaluatedKey']),
+    ...mapGetters('article', [
+      'newArticles',
+      'newArticlesLastEvaluatedKey',
+      'hasNewArticlesLastEvaluatedKey'
+    ]),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
-  data () {
+  data() {
     return {
       canLoadNextArticles: true
     }
@@ -40,7 +44,10 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      if (!this.canLoadNextArticles || !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)) {
+      if (
+        !this.canLoadNextArticles ||
+        !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+      ) {
         return
       }
       await this.getNewPagesArticles()

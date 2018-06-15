@@ -1,4 +1,10 @@
-import { CognitoUserPool, AuthenticationDetails, CognitoUser, CognitoUserAttribute, CognitoRefreshToken } from 'amazon-cognito-identity-js'
+import {
+  CognitoUserPool,
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserAttribute,
+  CognitoRefreshToken
+} from 'amazon-cognito-identity-js'
 import { config, CognitoIdentityServiceProvider } from 'aws-sdk'
 
 export default class CognitoSDK {
@@ -20,25 +26,28 @@ export default class CognitoSDK {
         return
       }
 
-      this.cognitoUser.getSession(
-        (err, session) => {
-          if (err) {
-            reject(err)
-            return
-          }
-          const { username: userId } = session.accessToken.payload
-          const {
-            email_verified: emailVerified, phone_number_verified: phoneNumberVerified
-          } = session.idToken.payload
-          resolve({ userId, emailVerified, phoneNumberVerified })
+      this.cognitoUser.getSession((err, session) => {
+        if (err) {
+          reject(err)
+          return
         }
-      )
+        const { username: userId } = session.accessToken.payload
+        const {
+          email_verified: emailVerified,
+          phone_number_verified: phoneNumberVerified
+        } = session.idToken.payload
+        resolve({ userId, emailVerified, phoneNumberVerified })
+      })
     })
   }
 
   refreshUserSession() {
-    const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
-    const refreshToken = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.refreshToken`)
+    const currentUser = localStorage.getItem(
+      `CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`
+    )
+    const refreshToken = localStorage.getItem(
+      `CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.refreshToken`
+    )
     const RefreshToken = new CognitoRefreshToken({ RefreshToken: refreshToken })
     this.cognitoUser = this.userPool.getCurrentUser()
     return new Promise((resolve, reject) => {
@@ -107,7 +116,10 @@ export default class CognitoSDK {
 
   updatePhoneNumber({ userId, phoneNumber }) {
     const attributeList = []
-    const attributePhoneNumber = new CognitoUserAttribute({ Name: 'phone_number', Value: phoneNumber })
+    const attributePhoneNumber = new CognitoUserAttribute({
+      Name: 'phone_number',
+      Value: phoneNumber
+    })
     attributeList.push(attributePhoneNumber)
     return new Promise((resolve, reject) => {
       this.cognitoUser.updateAttributes(attributeList, (err, result) => {
@@ -121,8 +133,12 @@ export default class CognitoSDK {
   }
 
   sendConfirm() {
-    const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
-    const token = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`)
+    const currentUser = localStorage.getItem(
+      `CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`
+    )
+    const token = localStorage.getItem(
+      `CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`
+    )
     const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider()
     const params = {
       AccessToken: token,
@@ -140,8 +156,12 @@ export default class CognitoSDK {
   }
 
   verifySMSCode({ code }) {
-    const currentUser = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`)
-    const token = localStorage.getItem(`CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`)
+    const currentUser = localStorage.getItem(
+      `CognitoIdentityServiceProvider.${this.poolData.ClientId}.LastAuthUser`
+    )
+    const token = localStorage.getItem(
+      `CognitoIdentityServiceProvider.${this.poolData.ClientId}.${currentUser}.accessToken`
+    )
     const cognitoidentityserviceprovider = new CognitoIdentityServiceProvider()
     const params = {
       AccessToken: token,
@@ -171,7 +191,7 @@ export default class CognitoSDK {
           reject(err)
           return
         }
-        resolve(result.find(item => item.Name === 'email').Value)
+        resolve(result.find((item) => item.Name === 'email').Value)
       })
     })
   }
@@ -187,7 +207,10 @@ export default class CognitoSDK {
           reject(err)
         },
         inputVerificationCode: () => {
-          const verificationCode = prompt('メールもしくはSMSに届いた認証コードを入力してください（数字6文字）', '')
+          const verificationCode = prompt(
+            'メールもしくはSMSに届いた認証コードを入力してください（数字6文字）',
+            ''
+          )
           const newPassword = prompt('パスワードを入力してください（半角英数字8文字以上）', '')
           cognitoUser.confirmPassword(verificationCode, newPassword, {
             onSuccess: (result) => {
