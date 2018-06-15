@@ -138,13 +138,14 @@ export default {
           const modalMaskZIndex = Number(
             window.getComputedStyle(modalMask).getPropertyValue('z-index')
           )
+          const originalToastZIndex = toastMessage.style.zIndex
           toastMessage.style.zIndex = modalMaskZIndex + 1
           this.sendNotification({
             text: 'アイコン画像をアップロードできませんでした。',
             type: 'warning'
           })
           setTimeout(() => {
-            toastMessage.style.zIndex = modalMaskZIndex - 1
+            toastMessage.style.zIndex = originalToastZIndex
           }, 2500)
           console.error(error)
         }
