@@ -95,7 +95,10 @@ const state = () => ({
   userArticlesLastEvaluatedKey: {},
   hasUserArticlesLastEvaluatedKey: false,
   showRequestLoginModal: false,
-  alisToken: 0
+  alisToken: 0,
+  notifications: [],
+  notificationsLastEvaluatedKey: {},
+  unreadNotification: false
 })
 
 const getters = {
@@ -117,7 +120,11 @@ const getters = {
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
   showRequestLoginModal: (state) => state.showRequestLoginModal,
-  alisToken: (state) => state.alisToken
+  alisToken: (state) => state.alisToken,
+  notifications: (state) => state.notifications,
+  notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
+  unreadNotification: (state) => state.unreadNotification,
+  hasNotificationsLastEvaluatedKey: (state) => !!Object.keys(state.notificationsLastEvaluatedKey || {}).length
 }
 
 const actions = {
@@ -414,6 +421,23 @@ const actions = {
       }
     }
   },
+  async getNotifications({ commit, dispatch, state }) {
+    try {
+      const { notification_id: notificationId, sort_key: sortKey } = state.notificationsLastEvaluatedKey
+
+      const {
+        Items: notifications, LastEvaluatedKey
+      } = await this.$axios.$get(
+        '/me/notifications',
+        { params: { limit: 10, notification_id: notificationId, sort_key: sortKey } }
+      )
+
+      commit(types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+      commit(types.SET_NOTIFICATIONS, { notifications: notifications })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   resetUserArticles({ commit }) {
     commit(types.RESET_USER_ARTICLES)
   },
@@ -434,6 +458,24 @@ const actions = {
       commit(types.SET_USERS_ALIS_TOKEN, { alisToken })
     } catch (error) {
       return Promise.reject(error)
+    }
+  },
+  async getUnreadNotification({ commit }) {
+    try {
+      const { unread } = await this.$axios.$get('/me/unread_notification_managers')
+      commit(types.SET_UNREAD_NOTIFICATION, { unread })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async putUnreadNotification({ commit }) {
+    try {
+      const result = await this.$axios.$put('/me/unread_notification_managers')
+      const unread = false
+      commit(types.SET_UNREAD_NOTIFICATION, { unread })
+      return result
+    } catch (error) {
+      Promise.reject(error)
     }
   }
 }
@@ -608,6 +650,15 @@ const mutations = {
   },
   [types.SET_USERS_ALIS_TOKEN](state, { alisToken }) {
     state.alisToken = alisToken
+  },
+  [types.SET_NOTIFICATIONS](state, { notifications }) {
+    state.notifications.push(...notifications)
+  },
+  [types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.notificationsLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_UNREAD_NOTIFICATION](state, { unread }) {
+    state.unreadNotification = unread
   }
 }
 
