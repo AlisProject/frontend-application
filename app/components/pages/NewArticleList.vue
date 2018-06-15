@@ -22,8 +22,13 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['newArticles', 'newArticlesLastEvaluatedKey']),
+    ...mapGetters('article', ['newArticles', 'newArticlesLastEvaluatedKey', 'hasNewArticlesLastEvaluatedKey']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
+  },
+  data () {
+    return {
+      canLoadNextArticles: true
+    }
   },
   mounted() {
     if (this.articleListScrollHeight) {
@@ -34,10 +39,12 @@ export default {
     this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
-    infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
-        this.getNewPagesArticles()
+    async infiniteScroll(event) {
+      if (!this.canLoadNextArticles || !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)) {
+        return
       }
+      await this.getNewPagesArticles()
+      this.canLoadNextArticles = this.hasNewArticlesLastEvaluatedKey
     },
     ...mapActions('article', ['getNewPagesArticles']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
