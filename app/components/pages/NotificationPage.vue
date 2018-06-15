@@ -26,7 +26,11 @@ export default {
     title() {
       return 'お知らせ'
     },
-    ...mapGetters('user', ['notifications', 'notificationsLastEvaluatedKey', 'hasNotificationsLastEvaluatedKey']),
+    ...mapGetters('user', [
+      'notifications',
+      'notificationsLastEvaluatedKey',
+      'hasNotificationsLastEvaluatedKey'
+    ]),
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
@@ -44,7 +48,10 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      if (!this.canLoadNextNotifications || !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)) {
+      if (
+        !this.canLoadNextNotifications ||
+        !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+      ) {
         return
       }
 
@@ -80,7 +87,6 @@ export default {
   grid-area: title;
   letter-spacing: 0.05em;
 }
-
 
 @media screen and (max-width: 920px) {
   .notification-list-container {

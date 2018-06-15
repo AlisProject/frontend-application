@@ -31,5 +31,4 @@ export default {
     grid-gap: 10px;
   }
 }
-
 </style>
