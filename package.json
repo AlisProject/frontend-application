@@ -13,7 +13,8 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
     "sls:deploy": "sls deploy",
-    "test": "jest --config jest.config.js --verbose --no-cache"
+    "test": "jest --config jest.config.js --verbose --no-cache",
+    "test:coverage": "jest --config jest.config.js --no-cache --coverage"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.1",
@@ -39,6 +40,7 @@
     "axios-mock-adapter": "^1.10.0",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^22.4.4",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "cross-env": "^5.1.6",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",

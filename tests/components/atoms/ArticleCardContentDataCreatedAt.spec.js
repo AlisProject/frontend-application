@@ -11,7 +11,9 @@ describe('ArticleCardContentDataPublishedAt', () => {
       }
     })
     expect(wrapper.element.innerHTML).toMatch(
-      moment(publishedAt, 'X').locale('ja').format('L')
+      moment(publishedAt, 'X')
+        .locale('ja')
+        .format('L')
     )
   })
 })

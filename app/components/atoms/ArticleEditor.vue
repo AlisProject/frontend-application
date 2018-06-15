@@ -37,6 +37,7 @@ export default {
   data() {
     return {
       targetDOM: null,
+      editorElement: null,
       updateArticleInterval: null
     }
   },
@@ -71,7 +72,7 @@ export default {
   },
   methods: {
     initMediumEditor() {
-      const editorElement = new MediumEditor('.area-body', {
+      this.editorElement = new MediumEditor('.area-body', {
         imageDragging: false,
         toolbar: {
           buttons: [
@@ -120,17 +121,17 @@ export default {
         },
         spellcheck: false
       })
-      editorElement.subscribe('editableInput', (event, editable) => {
+      this.editorElement.subscribe('editableInput', (event, editable) => {
         this.setIsEdited({ isEdited: true })
         this.$el.onkeydown = async (event) => {
           if (event.key === 'Enter') {
-            const line = editorElement.getSelectedParentElement().textContent
+            const line = this.editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
             if (
               urlRegex({ exact: true }).test(trimmedLine) &&
               trimmedLine.startsWith('https://twitter.com')
             ) {
-              const selectedParentElement = editorElement.getSelectedParentElement()
+              const selectedParentElement = this.editorElement.getSelectedParentElement()
               let result
               try {
                 result = await this.$axios.$get(
@@ -147,7 +148,7 @@ export default {
 
               const isTweet = trimmedLine.split('/')[4] === 'status'
               if (isTweet) {
-                editorElement.pasteHTML(
+                this.editorElement.pasteHTML(
                   `<br>
                   <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
                     <a href="${trimmedLine}" data-iframely-url></a>
@@ -156,7 +157,7 @@ export default {
                 )
                 iframely.load()
               } else {
-                editorElement.pasteHTML(
+                this.editorElement.pasteHTML(
                   `<br>
                   ${getTwitterProfileTemplate({ ...result })}
                   <br>`,
@@ -169,7 +170,7 @@ export default {
       })
       $(() => {
         $('.area-body').mediumInsert({
-          editor: editorElement,
+          editor: this.editorElement,
           addons: {
             Part: true,
             embeds: false,
@@ -233,7 +234,7 @@ export default {
         .find('span[style]')
         .contents()
         .unwrap()
-      const body = this.removeUselessDOMFromArticleBody($('.area-body'))
+      const body = this.removeUselessDOMFromArticleBody()
       this.updateBody({ body })
 
       await this.putArticle()
@@ -267,15 +268,16 @@ export default {
       const thumbnails = getThumbnails(images)
       this.updateSuggestedThumbnails({ thumbnails })
     },
-    removeUselessDOMFromArticleBody($element) {
-      const $bodyTmp = $element.clone()
+    removeUselessDOMFromArticleBody() {
+      const serializedContents = this.editorElement.serialize()
+      const serializedBody = serializedContents['element-0'].value
+      const $bodyTmp = $(`<div>${serializedBody}</div>`)
       $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
         element.src = ''
       })
       $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
         element.innerHTML = ''
       })
-      $bodyTmp.find('.medium-insert-buttons').remove()
       return $bodyTmp.html()
     },
     matchAll(str, regexp) {
