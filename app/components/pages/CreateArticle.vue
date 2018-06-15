@@ -23,11 +23,7 @@ export default {
     async putArticle() {
       const { title, body, articleId } = this
       const article = { title, body }
-      try {
-        await this.putDraftArticle({ article, articleId })
-      } catch (e) {
-        console.error(e)
-      }
+      await this.putDraftArticle({ article, articleId })
     }
   }
 }

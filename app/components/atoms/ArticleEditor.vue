@@ -146,6 +146,7 @@ export default {
               trimmedLine.startsWith('https://twitter.com')
             ) {
               const selectedParentElement = this.editorElement.getSelectedParentElement()
+              const isTweet = trimmedLine.split('/')[4] === 'status'
               let result
               try {
                 result = await this.$axios.$get(
@@ -154,13 +155,19 @@ export default {
                   }&url=${trimmedLine}&omit_script=1&omit_css=1`
                 )
               } catch (error) {
+                const message = isTweet
+                  ? 'ツイートが取得できませんでした。'
+                  : 'Twitterのユーザー情報が取得できませんでした。'
+                this.sendNotification({
+                  text: message,
+                  type: 'warning'
+                })
                 console.error(error)
                 return
               }
 
               selectedParentElement.innerHTML = ''
 
-              const isTweet = trimmedLine.split('/')[4] === 'status'
               if (isTweet) {
                 this.editorElement.pasteHTML(
                   `<br>
@@ -214,7 +221,11 @@ export default {
           if (this.articleId === '') await this.setArticleId()
 
           // Upload images
-          await this.uploadImages()
+          try {
+            await this.uploadImages()
+          } catch (error) {
+            console.error(error)
+          }
 
           // Upload article
           await this.uploadArticle()
@@ -233,7 +244,11 @@ export default {
         const article = { title: '', body: '' }
         await this.postNewArticle({ article })
       } catch (error) {
-        console.error(error)
+        this.sendNotification({
+          text: '記事の作成に失敗しました。',
+          type: 'warning'
+        })
+        throw new Error('Post article failed.')
       }
     },
     onInputTitle() {
@@ -251,7 +266,12 @@ export default {
       const body = this.removeUselessDOMFromArticleBody()
       this.updateBody({ body })
 
-      await this.putArticle()
+      try {
+        await this.putArticle()
+      } catch (error) {
+        this.sendNotification({ text: '記事の更新に失敗しました。', type: 'warning' })
+        throw new Error('Update article failed.')
+      }
     },
     async uploadImages() {
       const images = Array.from(this.$el.querySelectorAll('figure img'))
@@ -273,7 +293,8 @@ export default {
               })
               img.src = imageUrl
             } catch (error) {
-              console.error(error)
+              this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+              throw new Error('Image upload failed.')
             }
           }
         })

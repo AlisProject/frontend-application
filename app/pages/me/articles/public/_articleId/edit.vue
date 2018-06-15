@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import EditPublicArticle from '~/components/pages/EditPublicArticle'
 import head from '~/utils/editor-head'
 import { showEmbedTweet, getThumbnails } from '~/utils/article'
@@ -27,8 +29,14 @@ export default {
         body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet()
     } catch (error) {
+      this.sendNotification({ text: '記事データの取得に失敗しました。', type: 'warning' })
       console.error(error)
     }
+  },
+  methods: {
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    })
   },
   head: { ...head, title: '記事編集' }
 }

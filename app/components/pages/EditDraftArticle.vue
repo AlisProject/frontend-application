@@ -26,11 +26,7 @@ export default {
       const { articleId } = this.$route.params
       const article = { title, body }
       if (thumbnail !== '') article.eye_catch_url = thumbnail
-      try {
-        await this.putDraftArticle({ article, articleId })
-      } catch (e) {
-        console.error(e)
-      }
+      await this.putDraftArticle({ article, articleId })
     }
   }
 }

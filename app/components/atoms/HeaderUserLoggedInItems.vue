@@ -104,8 +104,9 @@ export default {
       try {
         this.logout()
         this.$router.push('/')
-        this.sendNotification({ text: 'ログアウトしました' })
+        this.sendNotification({ text: 'ログアウトしました。' })
       } catch (error) {
+        this.sendNotification({ text: 'ログアウトに失敗しました。', type: 'warning' })
         console.error(error)
       }
     },

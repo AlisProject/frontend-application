@@ -11,6 +11,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   methods: {
@@ -19,10 +20,15 @@ export default {
       try {
         await this.unpublishPublicArticle({ articleId })
         this.$router.push('/me/articles/public')
+        this.sendNotification({ text: '記事を下書きに戻しました。' })
       } catch (e) {
+        this.sendNotification({ text: '記事を下書きに戻せませんでした。', type: 'warning' })
         console.error(e)
       }
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', ['unpublishPublicArticle'])
   }
 }
