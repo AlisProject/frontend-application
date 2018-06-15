@@ -124,7 +124,8 @@ const getters = {
   notifications: (state) => state.notifications,
   notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
   unreadNotification: (state) => state.unreadNotification,
-  hasNotificationsLastEvaluatedKey: (state) => !!Object.keys(state.notificationsLastEvaluatedKey || {}).length
+  hasNotificationsLastEvaluatedKey: (state) =>
+    !!Object.keys(state.notificationsLastEvaluatedKey || {}).length
 }
 
 const actions = {
@@ -423,11 +424,12 @@ const actions = {
   },
   async getNotifications({ commit, dispatch, state }) {
     try {
-      const { notification_id: notificationId, sort_key: sortKey } = state.notificationsLastEvaluatedKey
-
       const {
-        Items: notifications, LastEvaluatedKey
-      } = await this.$axios.$get(
+        notification_id: notificationId,
+        sort_key: sortKey
+      } = state.notificationsLastEvaluatedKey
+
+      const { Items: notifications, LastEvaluatedKey } = await this.$axios.$get(
         '/me/notifications',
         { params: { limit: 10, notification_id: notificationId, sort_key: sortKey } }
       )
