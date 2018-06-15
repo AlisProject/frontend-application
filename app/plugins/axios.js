@@ -2,7 +2,7 @@ export default async ({ $axios, store, env }) => {
   store.dispatch('user/initCognito')
   try {
     await store.dispatch('user/getUserSession')
-  } catch (e) { }
+  } catch (e) {}
 
   $axios.onRequest(async (req) => {
     if (req.url.startsWith('/me')) {
@@ -15,7 +15,7 @@ export default async ({ $axios, store, env }) => {
           `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
         )
         $axios.setToken(token)
-      } catch (e) { }
+      } catch (e) {}
     }
     return req
   })

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import moment from 'moment'
+import axios from './axios'
 
 export function getThumbnails(images) {
   return images
@@ -17,15 +17,17 @@ export function getTwitterProfileTemplate({ url, title, description }) {
   </div>`
 }
 
-export function showEmbedTweet({ $axios }) {
+export function showEmbedTweet() {
   document.querySelectorAll('[data-alis-iframely-url]').forEach(async (element) => {
     const { alisIframelyUrl } = element.dataset
     const isTweet = alisIframelyUrl.split('/')[4] === 'status'
     if (isTweet) {
       element.innerHTML = `<a href="${alisIframelyUrl}" data-iframely-url></a>`
     } else {
-      const profileInfo = await $axios.$get(
-        `https://iframe.ly/api/oembed?api_key=${process.env.IFRAMELY_API_KEY}&url=${alisIframelyUrl}`
+      const { data: profileInfo } = await axios.get(
+        `https://iframe.ly/api/oembed?api_key=${
+          process.env.IFRAMELY_API_KEY
+        }&url=${alisIframelyUrl}`
       )
       element.innerHTML = `
       ${getTwitterProfileTemplate({ ...profileInfo })}
@@ -33,10 +35,4 @@ export function showEmbedTweet({ $axios }) {
     }
     iframely.load()
   })
-}
-
-export function formatDate(date) {
-  return moment(date, 'X')
-    .locale('ja')
-    .format('L')
 }

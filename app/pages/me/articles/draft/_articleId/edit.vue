@@ -27,7 +27,7 @@ export default {
       this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
       editorBody.dataset.placeholder =
         body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
-      showEmbedTweet({ $axios: this.$axios })
+      showEmbedTweet()
     } catch (error) {
       this.sendNotification({ text: '記事データの取得に失敗しました。', type: 'warning' })
       console.error(error)
