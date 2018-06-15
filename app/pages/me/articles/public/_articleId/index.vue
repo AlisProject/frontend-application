@@ -14,7 +14,7 @@ export default {
   async beforeCreate() {
     const { articleId } = this.$route.params
     await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
-    showEmbedTweet({ $axios: this.$axios })
+    showEmbedTweet()
   },
   computed: {
     ...mapGetters('article', ['article'])
