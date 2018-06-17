@@ -28,13 +28,29 @@ export default {
     TheLoader,
     AppFooter
   },
+  data() {
+    return {
+      isFetchingArticles: false
+    }
+  },
   computed: {
     ...mapGetters('user', ['userInfo', 'userArticles', 'userArticlesLastEvaluatedKey'])
   },
   methods: {
-    infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
-        this.getUserArticles({ userId: this.$route.params.userId })
+    async infiniteScroll(event) {
+      if (this.isFetchingArticles) return
+      try {
+        this.isFetchingArticles = true
+        if (
+          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+        ) {
+          return
+        }
+
+        console.log(1)
+        await this.getUserArticles({ userId: this.$route.params.userId })
+      } finally {
+        this.isFetchingArticles = false
       }
     },
     ...mapActions('user', ['getUserArticles'])
