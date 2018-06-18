@@ -8,6 +8,7 @@
       </ul>
     </nav>
     <article-card-list :articles="userArticles"/>
+    <the-loader :lastEvaluatedKey="userArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
