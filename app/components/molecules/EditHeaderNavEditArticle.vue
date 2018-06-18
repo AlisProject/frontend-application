@@ -61,4 +61,10 @@ export default {
     margin-left: 1em;
   }
 }
+
+@media screen and (max-width: 640px) {
+  .area-post-article {
+    display: none;
+  }
+}
 </style>
