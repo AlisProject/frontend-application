@@ -54,8 +54,7 @@ export default {
         ) {
           return
         }
-        console.log(1)
-        // await this.getNewPagesArticles()
+        await this.getNewPagesArticles()
         this.canLoadNextArticles = this.hasNewArticlesLastEvaluatedKey
       } finally {
         this.isFetchingArticles = false

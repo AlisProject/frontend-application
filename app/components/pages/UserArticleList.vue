@@ -47,7 +47,6 @@ export default {
           return
         }
 
-        console.log(1)
         await this.getUserArticles({ userId: this.$route.params.userId })
       } finally {
         this.isFetchingArticles = false
