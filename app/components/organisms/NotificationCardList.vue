@@ -24,11 +24,13 @@ export default {
   display: grid;
   grid-area: notification-card-list;
   grid-gap: 14px;
+  grid-template-rows: repeat(auto-fill, 140px);
 }
 
 @media screen and (max-width: 640px) {
   .area-notification-list-container {
     grid-gap: 10px;
+    grid-template-rows: repeat(auto-fill, 90px);
   }
 }
 </style>
