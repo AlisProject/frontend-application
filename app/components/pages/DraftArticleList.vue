@@ -21,13 +21,28 @@ export default {
     TheLoader,
     AppFooter
   },
+  data() {
+    return {
+      isFetchingArticles: false
+    }
+  },
   computed: {
     ...mapGetters('article', ['draftArticles', 'draftArticlesLastEvaluatedKey'])
   },
   methods: {
-    infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
-        this.getDraftArticles()
+    async infiniteScroll(event) {
+      if (this.isFetchingArticles) return
+      try {
+        this.isFetchingArticles = true
+        if (
+          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+        ) {
+          return
+        }
+
+        await this.getDraftArticles()
+      } finally {
+        this.isFetchingArticles = false
       }
     },
     ...mapActions('article', ['getDraftArticles'])

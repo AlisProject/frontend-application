@@ -40,7 +40,8 @@ export default {
   },
   data() {
     return {
-      canLoadNextNotifications: true
+      canLoadNextNotifications: true,
+      isFetchingNotifications: false
     }
   },
   beforeDestroy() {
@@ -48,15 +49,21 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      if (
-        !this.canLoadNextNotifications ||
-        !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
-      ) {
-        return
-      }
+      if (this.isFetchingNotifications) return
+      try {
+        this.isFetchingNotifications = true
+        if (
+          !this.canLoadNextNotifications ||
+          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+        ) {
+          return
+        }
 
-      await this.getNotifications()
-      this.canLoadNextNotifications = this.hasNotificationsLastEvaluatedKey
+        await this.getNotifications()
+        this.canLoadNextNotifications = this.hasNotificationsLastEvaluatedKey
+      } finally {
+        this.isFetchingNotifications = false
+      }
     },
     ...mapActions('user', ['getNotifications']),
     ...mapActions('presentation', ['setNotificationListScrollHeight'])

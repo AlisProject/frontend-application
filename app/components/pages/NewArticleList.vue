@@ -31,7 +31,8 @@ export default {
   },
   data() {
     return {
-      canLoadNextArticles: true
+      canLoadNextArticles: true,
+      isFetchingArticles: false
     }
   },
   mounted() {
@@ -44,14 +45,21 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      if (
-        !this.canLoadNextArticles ||
-        !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
-      ) {
-        return
+      if (this.isFetchingArticles) return
+      try {
+        this.isFetchingArticles = true
+        if (
+          !this.canLoadNextArticles ||
+          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+        ) {
+          return
+        }
+        console.log(1)
+        // await this.getNewPagesArticles()
+        this.canLoadNextArticles = this.hasNewArticlesLastEvaluatedKey
+      } finally {
+        this.isFetchingArticles = false
       }
-      await this.getNewPagesArticles()
-      this.canLoadNextArticles = this.hasNewArticlesLastEvaluatedKey
     },
     ...mapActions('article', ['getNewPagesArticles']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
