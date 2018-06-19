@@ -142,8 +142,9 @@ export default {
             const line = this.editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
             if (
-              urlRegex({ exact: true }).test(trimmedLine) &&
-              trimmedLine.startsWith('https://twitter.com/')
+              trimmedLine === 'https://twitter.com' ||
+              (urlRegex({ exact: true }).test(trimmedLine) &&
+                trimmedLine.startsWith('https://twitter.com/'))
             ) {
               const selectedParentElement = this.editorElement.getSelectedParentElement()
               const isTweet = trimmedLine.split('/')[4] === 'status'
