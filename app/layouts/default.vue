@@ -9,7 +9,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   mounted() {
-    if (location.pathname.startsWith('/me')) {
+    if (location.pathname.startsWith('/me/')) {
       if (!this.loggedIn) {
         this.$router.push('/login')
       }
