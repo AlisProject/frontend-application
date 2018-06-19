@@ -67,9 +67,15 @@ export default {
     }
   },
   async mounted() {
-    await this.setCurrentUserInfo()
-    await this.getUnreadNotification()
-    await this.getUsersAlisToken()
+    try {
+      await Promise.all([
+        this.setCurrentUserInfo(),
+        this.getUnreadNotification(),
+        this.getUsersAlisToken()
+      ])
+    } catch (error) {
+      console.error(error)
+    }
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeMenu()
