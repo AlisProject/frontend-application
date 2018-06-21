@@ -18,7 +18,13 @@
           class="thumbnail"/>
       </div>
       <hr class="hr">
-      <button class="submit" @click="publish" :class="{ disable: !publishable }">公開する</button>
+      <button
+        class="submit"
+        @click="publish"
+        :class="{ disable: !publishable }"
+        :disabled="publishingArticle">
+        公開する
+      </button>
     </div>
   </div>
 </template>
@@ -30,6 +36,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 export default {
   data() {
     return {
+      publishingArticle: false,
       isPopupShown: false
     }
   },
@@ -50,6 +57,8 @@ export default {
   methods: {
     async publish() {
       if (!this.publishable) return
+      if (this.publishingArticle) return
+      this.publishingArticle = true
       const { articleId, title, body } = this
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
@@ -57,7 +66,10 @@ export default {
         .slice(0, 100)
       if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
       if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-      if (title === '' || overview === '') return
+      if (title === '' || overview === '') {
+        this.publishingArticle = false
+        return
+      }
 
       const article = { title, body, overview }
 
@@ -76,6 +88,7 @@ export default {
           await this.putPublicArticle({ article, articleId })
           await this.republishPublicArticle({ article, articleId })
         }
+        this.publishingArticle = false
         this.$router.push('/me/articles/public')
         this.sendNotification({ text: '記事を公開しました。' })
       } catch (e) {
