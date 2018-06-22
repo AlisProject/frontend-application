@@ -8,13 +8,47 @@ export function getThumbnails(images) {
 }
 
 export function getTwitterProfileTemplate({ url, title, description }) {
-  return `<div data-alis-iframely-url="${url}" contenteditable="false">
-    <a href="${url}" target="_blank" class="twitter-profile-card">
-      <div class="title">${title}</div>
-      <div class="description">${description}</div>
-      <div class="site">twitter.com</div>
-    </a>
-  </div>`
+  // This method returns DOM string like this.
+  //
+  // `<div data-alis-iframely-url="${url}" contenteditable="false">
+  //   <a href="${url}" target="_blank" class="twitter-profile-card">
+  //     <div class="title">${title}</div>
+  //     <div class="description">${description}</div>
+  //     <div class="site">twitter.com</div>
+  //   </a>
+  // </div>`
+
+  const wrapperElement = document.createElement('div')
+  wrapperElement.setAttribute('data-alis-iframely-url', url)
+  wrapperElement.setAttribute('contenteditable', 'false')
+
+  const anchorElement = document.createElement('a')
+  anchorElement.setAttribute('href', url)
+  anchorElement.setAttribute('target', '_blank')
+  anchorElement.classList.add('twitter-profile-card')
+
+  const titleElement = document.createElement('div')
+  titleElement.classList.add('title')
+  titleElement.appendChild(document.createTextNode(title))
+
+  const descriptionElement = document.createElement('div')
+  descriptionElement.classList.add('description')
+  descriptionElement.appendChild(document.createTextNode(description))
+
+  const siteElement = document.createElement('div')
+  siteElement.classList.add('site')
+  siteElement.appendChild(document.createTextNode('twitter.com'))
+
+  anchorElement.appendChild(titleElement)
+  anchorElement.appendChild(descriptionElement)
+  anchorElement.appendChild(siteElement)
+
+  wrapperElement.appendChild(anchorElement)
+
+  const div = document.createElement('div')
+  div.appendChild(wrapperElement)
+
+  return div.innerHTML
 }
 
 export function showEmbedTweet() {
