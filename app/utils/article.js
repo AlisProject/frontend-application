@@ -23,6 +23,7 @@ export function getTwitterProfileTemplate({ url, title, description }) {
   wrapperElement.setAttribute('contenteditable', 'false')
 
   const anchorElement = document.createElement('a')
+  anchorElement.setAttribute('href', url)
   anchorElement.setAttribute('target', '_blank')
   anchorElement.classList.add('twitter-profile-card')
 
