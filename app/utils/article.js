@@ -56,7 +56,14 @@ export function showEmbedTweet() {
     const { alisIframelyUrl } = element.dataset
     const isTweet = alisIframelyUrl.split('/')[4] === 'status'
     if (isTweet) {
-      element.innerHTML = `<a href="${alisIframelyUrl}" data-iframely-url></a>`
+      const anchorElement = document.createElement('a')
+      anchorElement.setAttribute('href', alisIframelyUrl)
+      anchorElement.setAttribute('data-iframely-url', '')
+
+      const div = document.createElement('div')
+      div.appendChild(anchorElement)
+
+      element.innerHTML = div.innerHTML
     } else {
       const { data: profileInfo } = await axios.get(
         `https://iframe.ly/api/oembed?api_key=${

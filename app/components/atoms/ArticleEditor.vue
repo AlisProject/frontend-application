@@ -170,13 +170,31 @@ export default {
               selectedParentElement.innerHTML = ''
 
               if (isTweet) {
-                this.editorElement.pasteHTML(
-                  `<br>
-                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                    <a href="${trimmedLine}" data-iframely-url></a>
-                  </div>
-                  <br>`
-                )
+                // Make DOM like this.
+                //
+                // `<br>
+                // <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                //   <a href="${trimmedLine}" data-iframely-url></a>
+                // </div>
+                // <br>`
+
+                const wrapperElement = document.createElement('div')
+                wrapperElement.setAttribute('data-alis-iframely-url', trimmedLine)
+                wrapperElement.setAttribute('contenteditable', 'false')
+
+                const anchorElement = document.createElement('a')
+                anchorElement.setAttribute('href', trimmedLine)
+                anchorElement.setAttribute('data-iframely-url', '')
+
+                wrapperElement.appendChild(anchorElement)
+
+                const div = document.createElement('div')
+
+                div.appendChild(document.createElement('br'))
+                div.appendChild(wrapperElement)
+                div.appendChild(document.createElement('br'))
+
+                this.editorElement.pasteHTML(div.innerHTML)
                 iframely.load()
               } else {
                 this.editorElement.pasteHTML(
@@ -276,27 +294,25 @@ export default {
     },
     async uploadImages() {
       const images = Array.from(this.$el.querySelectorAll('figure img'))
+      const isBase64Image = (img) => img.src.includes('data:')
       await Promise.all(
-        images.map(async (img) => {
-          const isBase64Image = img.src.includes('data:')
-          if (isBase64Image) {
-            try {
-              const base64Image = img.src
-              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-              const imageContentType = base64Image.substring(
-                base64Image.match(':').index + 1,
-                base64Image.match(';').index
-              )
-              const { image_url: imageUrl } = await this.postArticleImage({
-                articleId: this.articleId,
-                articleImage: base64Hash,
-                imageContentType
-              })
-              img.src = imageUrl
-            } catch (error) {
-              this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
-              throw new Error('Image upload failed.')
-            }
+        images.filter(isBase64Image).map(async (img) => {
+          try {
+            const base64Image = img.src
+            const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+            const imageContentType = base64Image.substring(
+              base64Image.match(':').index + 1,
+              base64Image.match(';').index
+            )
+            const { image_url: imageUrl } = await this.postArticleImage({
+              articleId: this.articleId,
+              articleImage: base64Hash,
+              imageContentType
+            })
+            img.src = imageUrl
+          } catch (error) {
+            this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+            throw new Error('Image upload failed.')
           }
         })
       )
