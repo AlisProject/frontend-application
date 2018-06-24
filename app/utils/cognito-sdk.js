@@ -204,6 +204,20 @@ export default class CognitoSDK {
           resolve(result)
         },
         onFailure: (err) => {
+          let errorMessage = ''
+          switch (err.code) {
+            case 'UserNotFoundException':
+              errorMessage = 'ユーザーが存在しません'
+              break
+            case 'LimitExceededException':
+              errorMessage =
+                'パスワード再設定の試行回数が上限に達しました。時間を置いて再度お試しください'
+              break
+            default:
+              errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+              break
+          }
+          alert(errorMessage)
           reject(err)
         },
         inputVerificationCode: () => {
@@ -211,12 +225,31 @@ export default class CognitoSDK {
             'メールもしくはSMSに届いた認証コードを入力してください（数字6文字）',
             ''
           )
+          if (isNaN(verificationCode) && verificationCode.length !== 6) {
+            const errorMessage = '認証コードは数字6文字で入力してください'
+            alert(errorMessage)
+            reject(new Error(errorMessage))
+            return
+          }
           const newPassword = prompt('パスワードを入力してください（半角英数字8文字以上）', '')
           cognitoUser.confirmPassword(verificationCode, newPassword, {
             onSuccess: (result) => {
               resolve(result)
             },
             onFailure: (err) => {
+              let errorMessage = ''
+              switch (err.code) {
+                case 'InvalidParameterException':
+                  errorMessage = 'パスワードの形式が正しくありません'
+                  break
+                case 'CodeMismatchException':
+                  errorMessage = '認証コードが正しくありません'
+                  break
+                default:
+                  errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+                  break
+              }
+              alert(errorMessage)
               reject(err)
             }
           })
