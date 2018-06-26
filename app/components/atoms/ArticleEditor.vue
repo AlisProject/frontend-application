@@ -22,7 +22,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
-import { getTwitterProfileTemplate, getThumbnails } from '~/utils/article'
+import { getTwitterProfileTemplate, getIframelyEmbedTemplate, getThumbnails } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -141,67 +141,101 @@ export default {
           if (event.key === 'Enter') {
             const line = this.editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
-            if (
-              trimmedLine === 'https://twitter.com' ||
-              (urlRegex({ exact: true }).test(trimmedLine) &&
-                trimmedLine.startsWith('https://twitter.com/'))
-            ) {
+            if (urlRegex({ exact: true }).test(trimmedLine)) {
               const selectedParentElement = this.editorElement.getSelectedParentElement()
               const isTweet = trimmedLine.split('/')[4] === 'status'
               let result
-              try {
-                result = await this.$axios.$get(
-                  `https://iframe.ly/api/oembed?api_key=${
-                    process.env.IFRAMELY_API_KEY
-                  }&url=${trimmedLine}&omit_script=1&omit_css=1`
-                )
-              } catch (error) {
-                const message = isTweet
-                  ? 'ツイートが取得できませんでした。'
-                  : 'Twitterのユーザー情報が取得できませんでした。'
-                this.sendNotification({
-                  text: message,
-                  type: 'warning'
-                })
-                console.error(error)
-                return
-              }
+              if (
+                trimmedLine === 'https://twitter.com' ||
+                trimmedLine.startsWith('https://twitter.com/')
+              ) {
+                try {
+                  result = await this.$axios.$get(
+                    `https://iframe.ly/api/oembed?api_key=${
+                      process.env.IFRAMELY_API_KEY
+                    }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                  )
+                } catch (error) {
+                  const message = isTweet
+                    ? 'ツイートが取得できませんでした。'
+                    : 'Twitterのユーザー情報が取得できませんでした。'
+                  this.sendNotification({
+                    text: message,
+                    type: 'warning'
+                  })
+                  console.error(error)
+                  return
+                }
 
-              selectedParentElement.innerHTML = ''
+                selectedParentElement.innerHTML = ''
 
-              if (isTweet) {
-                // Make DOM like this.
-                //
-                // `<br>
-                // <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                //   <a href="${trimmedLine}" data-iframely-url></a>
-                // </div>
-                // <br>`
+                if (isTweet) {
+                  // Make DOM like this.
+                  //
+                  // `<br>
+                  // <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
+                  //   <a href="${trimmedLine}" data-iframely-url></a>
+                  // </div>
+                  // <br>`
 
-                const wrapperElement = document.createElement('div')
-                wrapperElement.setAttribute('data-alis-iframely-url', trimmedLine)
-                wrapperElement.setAttribute('contenteditable', 'false')
+                  const wrapperElement = document.createElement('div')
+                  wrapperElement.setAttribute('data-alis-iframely-url', trimmedLine)
+                  wrapperElement.setAttribute('contenteditable', 'false')
 
-                const anchorElement = document.createElement('a')
-                anchorElement.setAttribute('href', trimmedLine)
-                anchorElement.setAttribute('data-iframely-url', '')
+                  const anchorElement = document.createElement('a')
+                  anchorElement.setAttribute('href', trimmedLine)
+                  anchorElement.setAttribute('data-iframely-url', '')
 
-                wrapperElement.appendChild(anchorElement)
+                  wrapperElement.appendChild(anchorElement)
 
-                const div = document.createElement('div')
+                  const div = document.createElement('div')
 
-                div.appendChild(document.createElement('br'))
-                div.appendChild(wrapperElement)
-                div.appendChild(document.createElement('br'))
+                  div.appendChild(document.createElement('br'))
+                  div.appendChild(wrapperElement)
+                  div.appendChild(document.createElement('br'))
 
-                this.editorElement.pasteHTML(div.innerHTML)
-                iframely.load()
-              } else {
-                this.editorElement.pasteHTML(
-                  `<br>
+                  this.editorElement.pasteHTML(div.innerHTML)
+                  iframely.load()
+                } else {
+                  this.editorElement.pasteHTML(
+                    `<br>
                   ${getTwitterProfileTemplate({ ...result })}
                   <br>`,
-                  { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                    { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                  )
+                }
+              } else {
+                try {
+                  result = await this.$axios.$get(
+                    `https://iframe.ly/api/iframely?api_key=${
+                      process.env.IFRAMELY_API_KEY
+                    }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                  )
+                } catch (error) {
+                  this.sendNotification({
+                    text: 'データの取得ができませんでした',
+                    type: 'warning'
+                  })
+                  console.error(error)
+                  return
+                }
+
+                selectedParentElement.innerHTML = ''
+
+                this.editorElement.pasteHTML(
+                  `<br>
+                    ${getIframelyEmbedTemplate({ ...result })}
+                    <br>`,
+                  {
+                    cleanAttrs: [
+                      'iframely-embed-card',
+                      'title',
+                      'description',
+                      'site',
+                      'thumbnail',
+                      'without-space'
+                    ]
+                  }
                 )
               }
             }
