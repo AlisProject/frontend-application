@@ -200,6 +200,9 @@ export default {
                   console.error(error)
                   return
                 }
+                const { title, description } = result.meta
+                const hasTitleAndDescription = title === undefined && description === undefined
+                if (!hasTitleAndDescription) return
 
                 selectedParentElement.innerHTML = ''
 
