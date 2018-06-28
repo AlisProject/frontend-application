@@ -7,6 +7,34 @@ export function getThumbnails(images) {
     .map((img) => img.src)
 }
 
+export function getIframelyUrlTemplate(url) {
+  // This method returns DOM string like this.
+  //
+  // `<br>
+  // <div data-alis-iframely-url="${url}" contenteditable="false">
+  //   <a href="${url}" data-iframely-url></a>
+  // </div>
+  // <br>`
+
+  const wrapperElement = document.createElement('div')
+  wrapperElement.setAttribute('data-alis-iframely-url', url)
+  wrapperElement.setAttribute('contenteditable', 'false')
+
+  const anchorElement = document.createElement('a')
+  anchorElement.setAttribute('href', url)
+  anchorElement.setAttribute('data-iframely-url', '')
+
+  wrapperElement.appendChild(anchorElement)
+
+  const div = document.createElement('div')
+
+  div.appendChild(document.createElement('br'))
+  div.appendChild(wrapperElement)
+  div.appendChild(document.createElement('br'))
+
+  return div.innerHTML
+}
+
 export function getTwitterProfileTemplate({ url, title, description }) {
   // This method returns DOM string like this.
   //

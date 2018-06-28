@@ -22,7 +22,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
-import { getTwitterProfileTemplate, getIframelyEmbedTemplate, getThumbnails } from '~/utils/article'
+import {
+  getIframelyUrlTemplate,
+  getTwitterProfileTemplate,
+  getIframelyEmbedTemplate,
+  getThumbnails
+} from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -170,31 +175,7 @@ export default {
                 selectedParentElement.innerHTML = ''
 
                 if (isTweet) {
-                  // Make DOM like this.
-                  //
-                  // `<br>
-                  // <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                  //   <a href="${trimmedLine}" data-iframely-url></a>
-                  // </div>
-                  // <br>`
-
-                  const wrapperElement = document.createElement('div')
-                  wrapperElement.setAttribute('data-alis-iframely-url', trimmedLine)
-                  wrapperElement.setAttribute('contenteditable', 'false')
-
-                  const anchorElement = document.createElement('a')
-                  anchorElement.setAttribute('href', trimmedLine)
-                  anchorElement.setAttribute('data-iframely-url', '')
-
-                  wrapperElement.appendChild(anchorElement)
-
-                  const div = document.createElement('div')
-
-                  div.appendChild(document.createElement('br'))
-                  div.appendChild(wrapperElement)
-                  div.appendChild(document.createElement('br'))
-
-                  this.editorElement.pasteHTML(div.innerHTML)
+                  this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
                   iframely.load()
                 } else {
                   this.editorElement.pasteHTML(
