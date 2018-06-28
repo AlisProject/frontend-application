@@ -193,10 +193,6 @@ export default {
                     }&url=${trimmedLine}&omit_script=1&omit_css=1`
                   )
                 } catch (error) {
-                  this.sendNotification({
-                    text: 'データの取得ができませんでした',
-                    type: 'warning'
-                  })
                   console.error(error)
                   return
                 }
