@@ -116,9 +116,12 @@ export function getIframelyEmbedTemplate({ url, meta, links }) {
   if (!hasThumbnail) descriptionElement.classList.add('without-space')
   descriptionElement.appendChild(document.createTextNode(meta.description || ''))
 
-  const thumbnailElement = document.createElement('img')
-  thumbnailElement.setAttribute('src', thumbnail)
-  thumbnailElement.classList.add('thumbnail')
+  let thumbnailElement
+  if (hasThumbnail) {
+    thumbnailElement = document.createElement('img')
+    thumbnailElement.setAttribute('src', thumbnail)
+    thumbnailElement.classList.add('thumbnail')
+  }
 
   const siteElement = document.createElement('div')
   siteElement.classList.add('site')
@@ -126,7 +129,7 @@ export function getIframelyEmbedTemplate({ url, meta, links }) {
 
   anchorElement.appendChild(titleElement)
   anchorElement.appendChild(descriptionElement)
-  anchorElement.appendChild(thumbnailElement)
+  if (hasThumbnail) anchorElement.appendChild(thumbnailElement)
   anchorElement.appendChild(siteElement)
 
   wrapperElement.appendChild(anchorElement)
@@ -170,6 +173,10 @@ export function showEmbedTweet() {
           process.env.IFRAMELY_API_KEY
         }&url=${alisIframelyUrl}`
       )
+      const { title, description } = result.meta
+      const hasTitleAndDescription = title === undefined && description === undefined
+      if (!hasTitleAndDescription) return
+
       element.innerHTML = `
       ${getIframelyEmbedTemplate({ ...result })}
       <br>`
