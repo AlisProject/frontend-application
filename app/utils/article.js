@@ -173,6 +173,10 @@ export function showEmbedTweet() {
           process.env.IFRAMELY_API_KEY
         }&url=${alisIframelyUrl}`
       )
+      const { title, description } = result.meta
+      const hasTitleAndDescription = title === undefined && description === undefined
+      if (!hasTitleAndDescription) return
+
       element.innerHTML = `
       ${getIframelyEmbedTemplate({ ...result })}
       <br>`
