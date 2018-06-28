@@ -197,8 +197,8 @@ export default {
                   return
                 }
                 const { title, description } = result.meta
-                const hasTitleAndDescription = title === undefined && description === undefined
-                if (!hasTitleAndDescription) return
+                const hasTitleOrDescription = title !== undefined || description !== undefined
+                if (!hasTitleOrDescription) return
 
                 selectedParentElement.innerHTML = ''
 
