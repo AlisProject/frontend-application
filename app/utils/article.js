@@ -112,11 +112,11 @@ export function getIframelyEmbedTemplate({ url, meta, links }) {
 export function showEmbedTweet() {
   document.querySelectorAll('[data-alis-iframely-url]').forEach(async (element) => {
     const { alisIframelyUrl } = element.dataset
-    const isTweet = alisIframelyUrl.split('/')[4] === 'status'
     if (
       alisIframelyUrl === 'https://twitter.com' ||
       alisIframelyUrl.startsWith('https://twitter.com/')
     ) {
+      const isTweet = alisIframelyUrl.split('/')[4] === 'status'
       if (isTweet) {
         const anchorElement = document.createElement('a')
         anchorElement.setAttribute('href', alisIframelyUrl)

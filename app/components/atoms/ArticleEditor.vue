@@ -143,12 +143,12 @@ export default {
             const trimmedLine = line.trim()
             if (urlRegex({ exact: true }).test(trimmedLine)) {
               const selectedParentElement = this.editorElement.getSelectedParentElement()
-              const isTweet = trimmedLine.split('/')[4] === 'status'
               let result
               if (
                 trimmedLine === 'https://twitter.com' ||
                 trimmedLine.startsWith('https://twitter.com/')
               ) {
+                const isTweet = trimmedLine.split('/')[4] === 'status'
                 try {
                   result = await this.$axios.$get(
                     `https://iframe.ly/api/oembed?api_key=${
