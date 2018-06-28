@@ -88,12 +88,13 @@ export default {
           await this.putPublicArticle({ article, articleId })
           await this.republishPublicArticle({ article, articleId })
         }
-        this.publishingArticle = false
         this.$router.push('/me/articles/public')
         this.sendNotification({ text: '記事を公開しました。' })
       } catch (e) {
         this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         console.error(e)
+      } finally {
+        this.publishingArticle = false
       }
     },
     togglePopup() {
