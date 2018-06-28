@@ -59,25 +59,25 @@ export default {
       if (!this.publishable) return
       if (this.publishingArticle) return
       this.publishingArticle = true
-      const { articleId, title, body } = this
-      const overview = body
-        .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-        .replace(/\r?\n?\s/g, '')
-        .slice(0, 100)
-      if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
-      if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-      if (title === '' || overview === '') {
-        this.publishingArticle = false
-        return
-      }
-
-      const article = { title, body, overview }
-
-      if (this.thumbnail !== '') {
-        article.eye_catch_url = this.thumbnail
-      }
-
       try {
+        const { articleId, title, body } = this
+        const overview = body
+          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
+          .replace(/\r?\n?\s/g, '')
+          .slice(0, 100)
+        if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
+        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
+        if (title === '' || overview === '') {
+          this.publishingArticle = false
+          return
+        }
+
+        const article = { title, body, overview }
+
+        if (this.thumbnail !== '') {
+          article.eye_catch_url = this.thumbnail
+        }
+
         if (
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
