@@ -345,7 +345,6 @@ const actions = {
       await this.cognito.forgotPassword({ userId })
       alert('パスワードをリセットしました。')
     } catch (error) {
-      alert(error.message)
       Promise.reject(error)
     }
   },
