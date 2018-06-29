@@ -225,7 +225,7 @@ export default class CognitoSDK {
             'メールもしくはSMSに届いた認証コードを入力してください（数字6文字）',
             ''
           )
-          if (isNaN(verificationCode) && verificationCode.length !== 6) {
+          if (isNaN(verificationCode) || verificationCode.length !== 6) {
             const errorMessage = '認証コードは数字6文字で入力してください'
             alert(errorMessage)
             reject(new Error(errorMessage))
