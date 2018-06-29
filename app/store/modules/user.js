@@ -341,6 +341,7 @@ const actions = {
   async forgotPassword({ commit }) {
     try {
       const userId = prompt('登録したメールアドレスもしくはユーザーIDを入力してください', '')
+      if (userId === null) return
       await this.cognito.forgotPassword({ userId })
       alert('パスワードをリセットしました。')
     } catch (error) {
