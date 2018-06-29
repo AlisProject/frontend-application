@@ -98,7 +98,8 @@ const state = () => ({
   alisToken: 0,
   notifications: [],
   notificationsLastEvaluatedKey: {},
-  unreadNotification: false
+  unreadNotification: false,
+  searchUsers: []
 })
 
 const getters = {
@@ -125,7 +126,8 @@ const getters = {
   notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
   unreadNotification: (state) => state.unreadNotification,
   hasNotificationsLastEvaluatedKey: (state) =>
-    !!Object.keys(state.notificationsLastEvaluatedKey || {}).length
+    !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
+  searchUsers: (state) => state.searchUsers
 }
 
 const actions = {
@@ -344,7 +346,6 @@ const actions = {
       await this.cognito.forgotPassword({ userId })
       alert('パスワードをリセットしました。')
     } catch (error) {
-      alert(error.message)
       Promise.reject(error)
     }
   },
@@ -479,6 +480,16 @@ const actions = {
     } catch (error) {
       Promise.reject(error)
     }
+  },
+  async getSearchUsers({ commit }) {
+    const user = {
+      icon_image_url: 'https://github.com/y-temp4.png',
+      self_introduction: 'test',
+      user_display_name: '仮想通貨ガチホ太郎',
+      user_id: 'yt4'
+    }
+    const users = Array(10).fill(user)
+    commit(types.SET_SEARCH_USERS, { users })
   }
 }
 
@@ -661,6 +672,9 @@ const mutations = {
   },
   [types.SET_UNREAD_NOTIFICATION](state, { unread }) {
     state.unreadNotification = unread
+  },
+  [types.SET_SEARCH_USERS](state, { users }) {
+    state.searchUsers.push(...users)
   }
 }
 

@@ -33,7 +33,8 @@ const state = () => ({
   hasPublicArticlesLastEvaluatedKey: false,
   hasDraftArticlesLastEvaluatedKey: false,
   isEdited: false,
-  saveStatus: ''
+  saveStatus: '',
+  searchArticles: []
 })
 
 const getters = {
@@ -58,7 +59,8 @@ const getters = {
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
-  saveStatus: (state) => state.saveStatus
+  saveStatus: (state) => state.saveStatus,
+  searchArticles: (state) => state.searchArticles
 }
 
 const actions = {
@@ -322,6 +324,19 @@ const actions = {
   },
   setSaveStatus({ commit }, { saveStatus }) {
     commit(types.SET_SAVE_STATUS, { saveStatus })
+  },
+  async getSearchArticles({ commit, dispatch }) {
+    const { Items: articles } = await this.$axios.$get('/articles/recent', {
+      params: { limit: 10 }
+    })
+    const articlesWithData = await Promise.all(
+      articles.map(async (article) => {
+        const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
+        const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+        return { ...article, userInfo, alisToken, tmp: Math.random() }
+      })
+    )
+    commit(types.SET_SEARCH_ARTICLES, { articles: articlesWithData })
   }
 }
 
@@ -411,6 +426,10 @@ const mutations = {
   },
   [types.SET_SAVE_STATUS](state, { saveStatus }) {
     state.saveStatus = saveStatus
+  },
+  [types.SET_SEARCH_ARTICLES](state, { articles }) {
+    state.searchArticles = articles
+    // state.searchArticles.push(...articles)
   }
 }
 
