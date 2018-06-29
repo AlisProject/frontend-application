@@ -130,12 +130,13 @@
     display: -webkit-box;
     font-size: 16px;
     font-weight: 500;
-    height: 18px;
+    height: 16px;
     letter-spacing: 0.8px;
     margin: 0 120px 10px 0;
     overflow: hidden;
     text-align: left;
     text-overflow: ellipsis;
+    word-break: break-word;
 
     &.without-space {
       margin: 0 0 10px 0;
@@ -156,6 +157,7 @@
     overflow: hidden;
     text-align: left;
     text-overflow: ellipsis;
+    word-break: break-word;
 
     &.without-space {
       margin: 0 0 10px 0;
