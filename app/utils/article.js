@@ -161,7 +161,7 @@ export function showEmbedTweet() {
         const { data: profileInfo } = await axios.get(
           `https://iframe.ly/api/oembed?api_key=${
             process.env.IFRAMELY_API_KEY
-          }&url=${alisIframelyUrl}`
+          }&url=${encodeURIComponent(alisIframelyUrl)}`
         )
         element.innerHTML = `
       ${getTwitterProfileTemplate({ ...profileInfo })}
@@ -171,7 +171,7 @@ export function showEmbedTweet() {
       const { data: result } = await axios.get(
         `https://iframe.ly/api/iframely?api_key=${
           process.env.IFRAMELY_API_KEY
-        }&url=${alisIframelyUrl}`
+        }&url=${encodeURIComponent(alisIframelyUrl)}`
       )
       const { title, description } = result.meta
       const hasTitleOrDescription = title !== undefined || description !== undefined
