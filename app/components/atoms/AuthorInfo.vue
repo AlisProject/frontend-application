@@ -120,7 +120,7 @@ export default {
     word-break: break-word;
 
     &.add-bottom-space {
-      padding-bottom: 4px;
+      padding-bottom: 15px;
     }
   }
 }
