@@ -155,7 +155,7 @@ export default {
                   result = await this.$axios.$get(
                     `https://iframe.ly/api/oembed?api_key=${
                       process.env.IFRAMELY_API_KEY
-                    }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
                   )
                 } catch (error) {
                   const message = isTweet
@@ -187,7 +187,7 @@ export default {
                   result = await this.$axios.$get(
                     `https://iframe.ly/api/iframely?api_key=${
                       process.env.IFRAMELY_API_KEY
-                    }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
                   )
                 } catch (error) {
                   console.error(error)
