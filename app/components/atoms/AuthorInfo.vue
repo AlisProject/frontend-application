@@ -40,8 +40,13 @@ export default {
   },
   computed: {
     hasSelfIntroduction() {
-      if (this.user.self_introduction === undefined) return false
-      if (this.user.self_introduction.trim() === '') return false
+      const { self_introduction: selfIntroduction } = this.user
+
+      if (selfIntroduction === undefined || selfIntroduction === null) {
+        return false
+      }
+      if (selfIntroduction.trim() === '') return false
+
       return true
     },
     imageCaption() {
