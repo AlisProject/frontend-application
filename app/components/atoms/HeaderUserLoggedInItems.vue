@@ -119,7 +119,7 @@ export default {
     logoutUser() {
       try {
         this.logout()
-        this.$router.push('/')
+        location.href = '/'
         this.sendNotification({ text: 'ログアウトしました。' })
       } catch (error) {
         this.sendNotification({ text: 'ログアウトに失敗しました。', type: 'warning' })
