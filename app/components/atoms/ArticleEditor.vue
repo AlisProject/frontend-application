@@ -74,6 +74,22 @@ export default {
       },
       false
     )
+    document.querySelector('.medium-insert-buttons').addEventListener(
+      'drop',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
+    document.querySelector('.medium-insert-buttons').addEventListener(
+      'dragover',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
