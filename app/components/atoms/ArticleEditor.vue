@@ -58,6 +58,8 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
+    this.preventDragAndDrop(window)
+    this.preventDragAndDrop(document.querySelector('.medium-insert-buttons'))
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
@@ -397,6 +399,24 @@ export default {
         this.setIsEdited({ isEdited: true })
       }
       reader.readAsDataURL(target)
+    },
+    preventDragAndDrop(element) {
+      element.addEventListener(
+        'drop',
+        (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        },
+        false
+      )
+      element.addEventListener(
+        'dragover',
+        (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        },
+        false
+      )
     },
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))
