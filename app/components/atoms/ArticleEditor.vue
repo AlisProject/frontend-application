@@ -384,7 +384,7 @@ export default {
     },
     insertDragImage(files) {
       if (this.targetDOM[0].classList.value.includes('area-body')) return
-      const [ target ] = files
+      const [target] = files
       const reader = new FileReader()
       reader.onload = ({ currentTarget: { result } }) => {
         this.targetDOM.after($(createInsertPluginTemplateFromUrl(result)))
