@@ -385,6 +385,7 @@ export default {
     insertDragImage(files) {
       if (this.targetDOM[0].classList.value.includes('area-body')) return
       const [target] = files
+      if (!this.isImageContent(files[0].type)) return
       const reader = new FileReader()
       reader.onload = ({ currentTarget: { result } }) => {
         this.targetDOM.after($(createInsertPluginTemplateFromUrl(result)))
@@ -392,6 +393,9 @@ export default {
         this.setIsEdited({ isEdited: true })
       }
       reader.readAsDataURL(target)
+    },
+    isImageContent(fileType) {
+      return Boolean(fileType.match(/image.*/))
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
