@@ -58,6 +58,22 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
+    window.addEventListener(
+      'drop',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
+    window.addEventListener(
+      'dragover',
+      (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      },
+      false
+    )
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
