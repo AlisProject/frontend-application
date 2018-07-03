@@ -11,8 +11,9 @@
     <div
       class="area-body"
       ref="editable"
+      @dragover="preventDragoverImage"
       @drop="preventDropImage"
-      @dragover="preventDragoverImage"/>
+    />
   </div>
 </template>
 
@@ -26,7 +27,8 @@ import {
   getIframelyUrlTemplate,
   getTwitterProfileTemplate,
   getIframelyEmbedTemplate,
-  getThumbnails
+  getThumbnails,
+  createInsertPluginTemplateFromUrl
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -40,6 +42,7 @@ export default {
   },
   data() {
     return {
+      targetDOM: null,
       editorElement: null,
       updateArticleInterval: null
     }
@@ -55,22 +58,6 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
-    document.body.addEventListener(
-      'drop',
-      (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      },
-      false
-    )
-    document.body.addEventListener(
-      'dragover',
-      (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      },
-      false
-    )
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
@@ -381,19 +368,30 @@ export default {
         }
       }
     },
-    preventDragoverImage(e) {
-      e.preventDefault()
-      e.stopPropagation()
+    preventDragoverImage(event) {
+      event.preventDefault()
+      event.stopPropagation()
+      setTimeout(() => {
+        this.targetDOM = $('.medium-editor-dragover')
+      }, 10)
       return false
     },
-    preventDropImage(e) {
-      e.preventDefault()
-      e.stopPropagation()
-      this.sendNotification({
-        text: 'ドラッグ&ドロップでは画像をアップロードできません。',
-        type: 'warning'
-      })
+    preventDropImage(event) {
+      event.preventDefault()
+      event.stopPropagation()
+      this.insertDragImage(event.dataTransfer.files)
       return false
+    },
+    insertDragImage(files) {
+      if (this.targetDOM[0].classList.value.includes('area-body')) return
+      const [target] = files
+      const reader = new FileReader()
+      reader.onload = ({ currentTarget: { result } }) => {
+        this.targetDOM.after($(createInsertPluginTemplateFromUrl(result)))
+        this.targetDOM = null
+        this.setIsEdited({ isEdited: true })
+      }
+      reader.readAsDataURL(target)
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -455,6 +453,9 @@ export default {
   grid-area: body;
   width: 100%;
   padding-bottom: 120px;
+  &.medium-editor-dragover {
+    background: #fff;
+  }
 }
 
 .medium-editor-placeholder-relative:after,
