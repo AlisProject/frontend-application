@@ -95,7 +95,10 @@ const state = () => ({
   userArticlesLastEvaluatedKey: {},
   hasUserArticlesLastEvaluatedKey: false,
   showRequestLoginModal: false,
-  alisToken: 0
+  alisToken: 0,
+  notifications: [],
+  notificationsLastEvaluatedKey: {},
+  unreadNotification: false
 })
 
 const getters = {
@@ -117,7 +120,12 @@ const getters = {
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
   showRequestLoginModal: (state) => state.showRequestLoginModal,
-  alisToken: (state) => state.alisToken
+  alisToken: (state) => state.alisToken,
+  notifications: (state) => state.notifications,
+  notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
+  unreadNotification: (state) => state.unreadNotification,
+  hasNotificationsLastEvaluatedKey: (state) =>
+    !!Object.keys(state.notificationsLastEvaluatedKey || {}).length
 }
 
 const actions = {
@@ -167,7 +175,9 @@ const actions = {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_LOGIN_ERROR, { type })
   },
   setSignUpAuthFlowInputPhoneNumberModal({ commit }, { isSignUpAuthFlowInputPhoneNumberModal }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_MODAL, { isSignUpAuthFlowInputPhoneNumberModal })
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_MODAL, {
+      isSignUpAuthFlowInputPhoneNumberModal
+    })
   },
   setSignUpAuthFlowInputPhoneNumberPhoneNumber({ commit }, { phoneNumber }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_PHONE_NUMBER, { phoneNumber })
@@ -179,7 +189,9 @@ const actions = {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR, { type })
   },
   setSignUpAuthFlowInputAuthCodeModal({ commit }, { isSignUpAuthFlowInputAuthCodeModal }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_MODAL, { isSignUpAuthFlowInputAuthCodeModal })
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_MODAL, {
+      isSignUpAuthFlowInputAuthCodeModal
+    })
   },
   setSignUpAuthFlowInputAuthCodeAuthCode({ commit }, { authCode }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_AUTH_CODE, { authCode })
@@ -190,8 +202,13 @@ const actions = {
   hideSignUpAuthFlowInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR, { type })
   },
-  setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isSignUpAuthFlowCompletedPhoneNumberAuthModal }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isSignUpAuthFlowCompletedPhoneNumberAuthModal })
+  setSignUpAuthFlowCompletedPhoneNumberAuthModal(
+    { commit },
+    { isSignUpAuthFlowCompletedPhoneNumberAuthModal }
+  ) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, {
+      isSignUpAuthFlowCompletedPhoneNumberAuthModal
+    })
   },
   setLoginModal({ commit }, { showLoginModal }) {
     commit(types.SET_LOGIN_MODAL, { showLoginModal })
@@ -212,7 +229,9 @@ const actions = {
     commit(types.HIDE_LOGIN_ERRORS)
   },
   setSignUpAuthFlowProfileSettingsModal({ commit }, { isSignUpAuthFlowProfileSettingsModal }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL, { isSignUpAuthFlowProfileSettingsModal })
+    commit(types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL, {
+      isSignUpAuthFlowProfileSettingsModal
+    })
   },
   setProfileSettingsUserDisplayName({ commit }, { userDisplayName }) {
     commit(types.SET_PROFILE_SETTINGS_USER_DISPLAY_NAME, { userDisplayName })
@@ -322,10 +341,10 @@ const actions = {
   async forgotPassword({ commit }) {
     try {
       const userId = prompt('登録したメールアドレスもしくはユーザーIDを入力してください', '')
+      if (userId === null) return
       await this.cognito.forgotPassword({ userId })
       alert('パスワードをリセットしました。')
     } catch (error) {
-      alert(error.message)
       Promise.reject(error)
     }
   },
@@ -333,7 +352,10 @@ const actions = {
     commit(types.SET_LOGGED_IN, { loggedIn })
   },
   async putUserInfo({ commit }, { userDisplayName, selfIntroduction }) {
-    await this.$axios.$put('/me/info', { user_display_name: userDisplayName, self_introduction: selfIntroduction })
+    await this.$axios.$put('/me/info', {
+      user_display_name: userDisplayName,
+      self_introduction: selfIntroduction
+    })
   },
   async postUserIcon({ commit }, { iconImage, imageContentType }) {
     try {
@@ -343,7 +365,7 @@ const actions = {
       const result = await this.$axios.$post('/me/info/icon', { icon_image: iconImage }, config)
       return result
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   },
   setProfileSettingsModal({ commit }, { showProfileSettingsModal }) {
@@ -379,16 +401,16 @@ const actions = {
         const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
         await dispatch('setUserInfo', { userId })
         const { userInfo } = state
-        const {
-          Items: articles, LastEvaluatedKey
-        } = await this.$axios.$get(
+        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
           `/users/${userInfo.user_id}/articles/public`,
           { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
         )
         commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
         const articlesWithData = await Promise.all(
           articles.map(async (article) => {
-            const { alis_token: alisToken } = await this.$axios.$get(`/articles/${article.article_id}/alistoken`)
+            const { alis_token: alisToken } = await this.$axios.$get(
+              `/articles/${article.article_id}/alistoken`
+            )
             return { ...article, userInfo, alisToken }
           })
         )
@@ -398,6 +420,24 @@ const actions = {
       } finally {
         commit(types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: false })
       }
+    }
+  },
+  async getNotifications({ commit, dispatch, state }) {
+    try {
+      const {
+        notification_id: notificationId,
+        sort_key: sortKey
+      } = state.notificationsLastEvaluatedKey
+
+      const { Items: notifications, LastEvaluatedKey } = await this.$axios.$get(
+        '/me/notifications',
+        { params: { limit: 10, notification_id: notificationId, sort_key: sortKey } }
+      )
+
+      commit(types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+      commit(types.SET_NOTIFICATIONS, { notifications: notifications })
+    } catch (error) {
+      return Promise.reject(error)
     }
   },
   resetUserArticles({ commit }) {
@@ -420,6 +460,24 @@ const actions = {
       commit(types.SET_USERS_ALIS_TOKEN, { alisToken })
     } catch (error) {
       return Promise.reject(error)
+    }
+  },
+  async getUnreadNotification({ commit }) {
+    try {
+      const { unread } = await this.$axios.$get('/me/unread_notification_managers')
+      commit(types.SET_UNREAD_NOTIFICATION, { unread })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async putUnreadNotification({ commit }) {
+    try {
+      const result = await this.$axios.$put('/me/unread_notification_managers')
+      const unread = false
+      commit(types.SET_UNREAD_NOTIFICATION, { unread })
+      return result
+    } catch (error) {
+      Promise.reject(error)
     }
   }
 }
@@ -450,7 +508,7 @@ const mutations = {
     state.signUpModal.formError[type] = false
   },
   [types.HIDE_SIGN_UP_ERRORS]({ signUpModal: { formError } }) {
-    Object.keys(formError).forEach(key => {
+    Object.keys(formError).forEach((key) => {
       formError[key] = false
     })
   },
@@ -472,7 +530,10 @@ const mutations = {
   [types.HIDE_SIGN_UP_AUTH_FLOW_LOGIN_ERROR](state, { type }) {
     state.signUpAuthFlowModal.login.formError[type] = false
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_MODAL](state, { isSignUpAuthFlowInputPhoneNumberModal }) {
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_MODAL](
+    state,
+    { isSignUpAuthFlowInputPhoneNumberModal }
+  ) {
     state.signUpAuthFlowModal.isInputPhoneNumberModal = isSignUpAuthFlowInputPhoneNumberModal
   },
   [types.SET_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_PHONE_NUMBER](state, { phoneNumber }) {
@@ -484,7 +545,10 @@ const mutations = {
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputPhoneNumber.formError[type] = false
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_MODAL](state, { isSignUpAuthFlowInputAuthCodeModal }) {
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_MODAL](
+    state,
+    { isSignUpAuthFlowInputAuthCodeModal }
+  ) {
     state.signUpAuthFlowModal.isInputAuthCodeModal = isSignUpAuthFlowInputAuthCodeModal
   },
   [types.SET_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_AUTH_CODE](state, { authCode }) {
@@ -496,7 +560,10 @@ const mutations = {
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputAuthCode.formError[type] = false
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isSignUpAuthFlowCompletedPhoneNumberAuthModal }) {
+  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](
+    state,
+    { isSignUpAuthFlowCompletedPhoneNumberAuthModal }
+  ) {
     state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isSignUpAuthFlowCompletedPhoneNumberAuthModal
   },
   [types.SET_LOGIN_MODAL](state, { showLoginModal }) {
@@ -515,11 +582,14 @@ const mutations = {
     state.loginModal.formError[type] = false
   },
   [types.HIDE_LOGIN_ERRORS]({ loginModal: { formError } }) {
-    Object.keys(formError).forEach(key => {
+    Object.keys(formError).forEach((key) => {
       formError[key] = false
     })
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL](state, { isSignUpAuthFlowProfileSettingsModal }) {
+  [types.SET_SIGN_UP_AUTH_FLOW_PROFILE_SETTINGS_MODAL](
+    state,
+    { isSignUpAuthFlowProfileSettingsModal }
+  ) {
     state.signUpAuthFlowModal.isProfileSettingsModal = isSignUpAuthFlowProfileSettingsModal
   },
   [types.SET_PROFILE_SETTINGS_USER_DISPLAY_NAME](state, { userDisplayName }) {
@@ -544,7 +614,7 @@ const mutations = {
     state.showProfileSettingsModal = showProfileSettingsModal
   },
   [types.HIDE_PROFILE_SETTINGS_ERRORS]({ profileSettingsModal: { formError } }) {
-    Object.keys(formError).forEach(key => {
+    Object.keys(formError).forEach((key) => {
       formError[key] = false
     })
   },
@@ -582,6 +652,15 @@ const mutations = {
   },
   [types.SET_USERS_ALIS_TOKEN](state, { alisToken }) {
     state.alisToken = alisToken
+  },
+  [types.SET_NOTIFICATIONS](state, { notifications }) {
+    state.notifications.push(...notifications)
+  },
+  [types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.notificationsLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_UNREAD_NOTIFICATION](state, { unread }) {
+    state.unreadNotification = unread
   }
 }
 

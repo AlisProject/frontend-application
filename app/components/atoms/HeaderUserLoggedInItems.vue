@@ -10,7 +10,16 @@
       src="~assets/images/pc/common/icon_user_noimg.png"
       @click="toggleMenu"
       v-else>
-    <img class="notification-icon" src="~assets/images/pc/common/icon_notification_none.png">
+    <nuxt-link to="/me/notifications">
+      <img
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_bell_mark.png"
+        v-if="unreadNotification">
+      <img
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_bell.png"
+        v-else>
+    </nuxt-link>
     <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
     <div class="menu" v-if="isMenuShown">
       <div class="image-box">
@@ -58,8 +67,15 @@ export default {
     }
   },
   async mounted() {
-    await this.setCurrentUserInfo()
-    await this.getUsersAlisToken()
+    try {
+      await Promise.all([
+        this.setCurrentUserInfo(),
+        this.getUnreadNotification(),
+        this.getUsersAlisToken()
+      ])
+    } catch (error) {
+      console.error(error)
+    }
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeMenu()
@@ -74,7 +90,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUserInfo', 'alisToken'])
+    ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification'])
   },
   methods: {
     toggleMenu() {
@@ -103,9 +119,10 @@ export default {
     logoutUser() {
       try {
         this.logout()
-        this.$router.push('/')
-        this.sendNotification({ text: 'ログアウトしました' })
+        location.href = '/'
+        this.sendNotification({ text: 'ログアウトしました。' })
       } catch (error) {
+        this.sendNotification({ text: 'ログアウトに失敗しました。', type: 'warning' })
         console.error(error)
       }
     },
@@ -145,7 +162,8 @@ export default {
       'logout',
       'setProfileSettingsModal',
       'setCurrentUserInfo',
-      'getUsersAlisToken'
+      'getUsersAlisToken',
+      'getUnreadNotification'
     ])
   }
 }
@@ -175,7 +193,6 @@ export default {
     margin: 20px 10px 0 16px;
     transform: rotate(-90deg);
     width: 16px;
-    cursor: not-allowed;
   }
 
   .search-icon {
@@ -378,7 +395,7 @@ export default {
 
     .notification-icon {
       float: right;
-      margin: 2px 20px 0 0;
+      margin: 5px 20px 0 0;
       transform: rotate(0);
     }
 

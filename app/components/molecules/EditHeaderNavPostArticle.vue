@@ -55,8 +55,8 @@ export default {
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')
         .slice(0, 100)
-      if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
-      if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
+      if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
+      if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
       if (title === '' || overview === '') return
 
       const article = { title, body, overview }
@@ -77,12 +77,13 @@ export default {
           await this.republishPublicArticle({ article, articleId })
         }
         this.$router.push('/me/articles/public')
-        this.sendNotification({ text: '記事を公開しました' })
+        this.sendNotification({ text: '記事を公開しました。' })
       } catch (e) {
+        this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         console.error(e)
       }
     },
-    async togglePopup() {
+    togglePopup() {
       if (!this.publishable) return
       this.isPopupShown = !this.isPopupShown
     },

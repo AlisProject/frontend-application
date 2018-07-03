@@ -23,7 +23,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
-import { getTwitterProfileTemplate, getThumbnails, createInsertPluginTemplateFromUrl } from '~/utils/article'
+import {
+  getIframelyUrlTemplate,
+  getTwitterProfileTemplate,
+  getIframelyEmbedTemplate,
+  getThumbnails,
+  createInsertPluginTemplateFromUrl
+} from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -55,9 +61,6 @@ export default {
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
-      if (pressedEnterkey && e.shiftKey) {
-        e.preventDefault()
-      }
       if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
         e.preventDefault()
       }
@@ -127,41 +130,76 @@ export default {
           if (event.key === 'Enter') {
             const line = this.editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
-            if (
-              urlRegex({ exact: true }).test(trimmedLine) &&
-              trimmedLine.startsWith('https://twitter.com')
-            ) {
+            if (urlRegex({ exact: true }).test(trimmedLine)) {
               const selectedParentElement = this.editorElement.getSelectedParentElement()
               let result
-              try {
-                result = await this.$axios.$get(
-                  `https://iframe.ly/api/oembed?api_key=${
-                    process.env.IFRAMELY_API_KEY
-                  }&url=${trimmedLine}&omit_script=1&omit_css=1`
-                )
-              } catch (error) {
-                console.error(error)
-                return
-              }
+              if (
+                trimmedLine === 'https://twitter.com' ||
+                trimmedLine.startsWith('https://twitter.com/')
+              ) {
+                const isTweet = trimmedLine.split('/')[4] === 'status'
+                try {
+                  result = await this.$axios.$get(
+                    `https://iframe.ly/api/oembed?api_key=${
+                      process.env.IFRAMELY_API_KEY
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
+                  )
+                } catch (error) {
+                  const message = isTweet
+                    ? 'ツイートが取得できませんでした。'
+                    : 'Twitterのユーザー情報が取得できませんでした。'
+                  this.sendNotification({
+                    text: message,
+                    type: 'warning'
+                  })
+                  console.error(error)
+                  return
+                }
 
-              selectedParentElement.innerHTML = ''
+                selectedParentElement.innerHTML = ''
 
-              const isTweet = trimmedLine.split('/')[4] === 'status'
-              if (isTweet) {
-                this.editorElement.pasteHTML(
-                  `<br>
-                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                    <a href="${trimmedLine}" data-iframely-url></a>
-                  </div>
-                  <br>`
-                )
-                iframely.load()
-              } else {
-                this.editorElement.pasteHTML(
-                  `<br>
+                if (isTweet) {
+                  this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
+                  iframely.load()
+                } else {
+                  this.editorElement.pasteHTML(
+                    `<br>
                   ${getTwitterProfileTemplate({ ...result })}
                   <br>`,
-                  { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                    { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                  )
+                }
+              } else {
+                try {
+                  result = await this.$axios.$get(
+                    `https://iframe.ly/api/iframely?api_key=${
+                      process.env.IFRAMELY_API_KEY
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
+                  )
+                } catch (error) {
+                  console.error(error)
+                  return
+                }
+                const { title, description } = result.meta
+                const hasTitleOrDescription = title !== undefined || description !== undefined
+                if (!hasTitleOrDescription) return
+
+                selectedParentElement.innerHTML = ''
+
+                this.editorElement.pasteHTML(
+                  `<br>
+                    ${getIframelyEmbedTemplate({ ...result })}
+                    <br>`,
+                  {
+                    cleanAttrs: [
+                      'iframely-embed-card',
+                      'title',
+                      'description',
+                      'site',
+                      'thumbnail',
+                      'without-space'
+                    ]
+                  }
                 )
               }
             }
@@ -200,7 +238,11 @@ export default {
           if (this.articleId === '') await this.setArticleId()
 
           // Upload images
-          await this.uploadImages()
+          try {
+            await this.uploadImages()
+          } catch (error) {
+            console.error(error)
+          }
 
           // Upload article
           await this.uploadArticle()
@@ -219,7 +261,11 @@ export default {
         const article = { title: '', body: '' }
         await this.postNewArticle({ article })
       } catch (error) {
-        console.error(error)
+        this.sendNotification({
+          text: '記事の作成に失敗しました。',
+          type: 'warning'
+        })
+        throw new Error('Post article failed.')
       }
     },
     onInputTitle() {
@@ -237,7 +283,12 @@ export default {
       const body = this.removeUselessDOMFromArticleBody()
       this.updateBody({ body })
 
-      await this.putArticle()
+      try {
+        await this.putArticle()
+      } catch (error) {
+        this.sendNotification({ text: '記事の更新に失敗しました。', type: 'warning' })
+        throw new Error('Update article failed.')
+      }
     },
     async uploadImages() {
       const images = Array.from(this.$el.querySelectorAll('figure img'))
@@ -259,7 +310,8 @@ export default {
               })
               img.src = imageUrl
             } catch (error) {
-              console.error(error)
+              this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+              throw new Error('Image upload failed.')
             }
           }
         })

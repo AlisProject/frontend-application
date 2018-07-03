@@ -8,6 +8,7 @@
       </ul>
     </nav>
     <article-card-list :articles="userArticles"/>
+    <the-loader :lastEvaluatedKey="userArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
@@ -28,13 +29,28 @@ export default {
     TheLoader,
     AppFooter
   },
+  data() {
+    return {
+      isFetchingArticles: false
+    }
+  },
   computed: {
     ...mapGetters('user', ['userInfo', 'userArticles', 'userArticlesLastEvaluatedKey'])
   },
   methods: {
-    infiniteScroll(event) {
-      if (event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10) {
-        this.getUserArticles({ userId: this.$route.params.userId })
+    async infiniteScroll(event) {
+      if (this.isFetchingArticles) return
+      try {
+        this.isFetchingArticles = true
+        if (
+          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+        ) {
+          return
+        }
+
+        await this.getUserArticles({ userId: this.$route.params.userId })
+      } finally {
+        this.isFetchingArticles = false
       }
     },
     ...mapActions('user', ['getUserArticles'])
@@ -91,7 +107,7 @@ export default {
     "user-info        user-info         user-info "
     "user-profile-nav user-profile-nav  user-profile-nav"
     "...              article-card-list ...       "
-    "...              ...               ...       "
+    "...              loader            ...       "
     "app-footer       app-footer        app-footer";
   }
 

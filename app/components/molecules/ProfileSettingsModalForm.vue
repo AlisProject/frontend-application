@@ -133,6 +133,20 @@ export default {
           await this.setCurrentUserInfo()
           this.uploadedImage = base64Image
         } catch (error) {
+          const toastMessage = document.querySelector('.toast')
+          const modalMask = document.querySelector('.modal-mask')
+          const modalMaskZIndex = Number(
+            window.getComputedStyle(modalMask).getPropertyValue('z-index')
+          )
+          const originalToastZIndex = toastMessage.style.zIndex
+          toastMessage.style.zIndex = modalMaskZIndex + 1
+          this.sendNotification({
+            text: 'アイコン画像をアップロードできませんでした。',
+            type: 'warning'
+          })
+          setTimeout(() => {
+            toastMessage.style.zIndex = originalToastZIndex
+          }, 2500)
           console.error(error)
         }
       }
@@ -178,6 +192,7 @@ export default {
           document.querySelector('.area-user-info-container').style.zIndex = 2
         }
       } catch (error) {
+        this.sendNotification({ text: 'プロフィールを変更できませんでした。', type: 'warning' })
         console.error(error)
       }
     },

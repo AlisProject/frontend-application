@@ -4,7 +4,8 @@
     <default-header-nav
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
-      :showOnlySessionLinks="showOnlySessionLinks"/>
+      :showOnlySessionLinks="showOnlySessionLinks"
+      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
     <no-ssr>
       <edit-header-nav
         v-if="showEditHeaderNav"
@@ -66,6 +67,10 @@ export default {
       default: false
     },
     showEditArticleLink: {
+      type: Boolean,
+      default: false
+    },
+    showOnlySessionLinksOnPc: {
       type: Boolean,
       default: false
     }

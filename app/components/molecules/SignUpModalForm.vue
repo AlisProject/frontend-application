@@ -10,6 +10,7 @@
             placeholder="半角英数字3文字以上"
             maxlength="30"
             autofocus
+            ref="userId"
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')">
@@ -23,6 +24,7 @@
             type="email"
             placeholder="alis@example.com"
             maxlength="256"
+            ref="email"
             @input="setEmail"
             @blur="showError('email')"
             @focus="resetError('email')">
@@ -34,6 +36,7 @@
             class="signup-form-input"
             type="password"
             placeholder="半角英数字8文字以上"
+            ref="password"
             @input="setPassword"
             @blur="showError('password')"
             @focus="resetError('password')">
@@ -150,6 +153,9 @@ export default {
       try {
         await this.register({ userId, email, password })
         this.setSentMail({ sentMail: true })
+        this.$refs.userId.value = ''
+        this.$refs.email.value = ''
+        this.$refs.password.value = ''
         this.resetPassword()
       } catch (error) {
         let errorMessage = ''
