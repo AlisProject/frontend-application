@@ -192,6 +192,10 @@ export function showEmbedTweet() {
             process.env.IFRAMELY_API_KEY
           }&url=${encodeURIComponent(alisIframelyUrl)}`
         )
+        const { title, description } = profileInfo
+        const hasTitleOrDescription = title !== undefined || description !== undefined
+        if (!hasTitleOrDescription) return
+
         element.innerHTML = `
       ${getTwitterProfileTemplate({ ...profileInfo })}
       <br>`
