@@ -162,6 +162,10 @@ export default {
                   this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
                   iframely.load()
                 } else {
+                  const { title, description } = result
+                  const hasTitleOrDescription = title !== undefined || description !== undefined
+                  if (!hasTitleOrDescription) return
+
                   this.editorElement.pasteHTML(
                     `<br>
                   ${getTwitterProfileTemplate({ ...result })}
