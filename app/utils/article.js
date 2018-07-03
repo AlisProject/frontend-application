@@ -2,13 +2,32 @@
 import axios from './axios'
 
 export function createInsertPluginTemplateFromUrl(url) {
-  return `
-    <div class="medium-insert-images">
-      <figure contenteditable="false">
-        <img src="${url}" alt="">
-      </figure>
-    </div>
-  `
+  // This method returns DOM string like this.
+  //
+  // `<div class="medium-insert-images">
+  //   <figure contenteditable="false">
+  //     <img src="${url}" alt="">
+  //   </figure>
+  // </div>`
+
+  const wrapperElement = document.createElement('div')
+  wrapperElement.classList.add('medium-insert-images')
+
+  const figureElement = document.createElement('figure')
+  figureElement.setAttribute('contenteditable', 'false')
+
+  const imageElement = document.createElement('img')
+  imageElement.setAttribute('src', url)
+  imageElement.setAttribute('alt', '')
+
+  figureElement.appendChild(imageElement)
+  wrapperElement.appendChild(figureElement)
+
+  const div = document.createElement('div')
+
+  div.appendChild(wrapperElement)
+
+  return div.innerHTML
 }
 
 export function getThumbnails(images) {
