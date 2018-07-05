@@ -91,7 +91,7 @@ export default {
       this.isPopupShown = false
     },
     selectThumbnail({ target }) {
-      this.updateThumbnail({ thumbnail: target.src })
+      this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
