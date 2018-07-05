@@ -74,9 +74,11 @@ export default {
   methods: {
     toggleEtcPopup() {
       this.isEtcPopupShown = !this.isEtcPopupShown
+      if (this.isSharePopupShown) this.closeSharePopup()
     },
     toggleSharePopup() {
       this.isSharePopupShown = !this.isSharePopupShown
+      if (this.isEtcPopupShown) this.closeEtcPopup()
     },
     closeEtcPopup() {
       this.isEtcPopupShown = false
