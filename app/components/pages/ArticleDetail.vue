@@ -15,8 +15,8 @@
         :isLikedArticle="isLikedArticle"/>
       <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
-      <!-- <article-comments :comments="article.comments"/> -->
     </div>
+    <article-comments :comments="comments"/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
   </div>
@@ -31,7 +31,7 @@ import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleTags from '../atoms/ArticleTags'
-// import ArticleComments from '../organisms/ArticleComments'
+import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
 import { showEmbedTweet } from '~/utils/article'
@@ -44,7 +44,7 @@ export default {
     ArticleSubInfos,
     AuthorInfo,
     // ArticleTags,
-    // ArticleComments,
+    ArticleComments,
     // RelatedArticles,
     AppFooter
   },
@@ -62,6 +62,26 @@ export default {
     showEmbedTweet()
   },
   computed: {
+    comments() {
+      return [
+        {
+          id: 1,
+          body: 'body',
+          user: {
+            username: '山田花子'
+          },
+          publishedAt: 'N分前'
+        },
+        {
+          id: 2,
+          body: 'body',
+          user: {
+            username: '山田花子'
+          },
+          publishedAt: 'N分前'
+        }
+      ]
+    },
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
@@ -73,7 +93,7 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr 75px;
+  grid-template-rows: 100px 50px 1fr min-content 75px;
   // grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
@@ -81,6 +101,7 @@ export default {
     'app-header       app-header       app-header      '
     '...              ...              ...             '
     '...              article          ...             '
+    'article-comments article-comments article-comments'
     // 'related-articles related-articles related-articles'
     'app-footer       app-footer       app-footer      ';
   background: white;
@@ -100,7 +121,6 @@ export default {
     'article-sub-infos'
     // 'tags          '
     'author-info   ';
-  // 'article-comments';
 }
 
 .area-title {
@@ -117,14 +137,14 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px 50px 1fr 75px;
+    grid-template-rows: 100px 50px 1fr min-content 75px;
     // grid-template-rows: 100px 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 70px 0 1fr min-content;
+    grid-template-rows: 70px 0 1fr min-content min-content;
     // grid-template-rows: 70px 0 1fr min-content 75px;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
@@ -132,6 +152,7 @@ export default {
     'app-header       app-header       app-header      '
     '...              ...              ...             '
     'article          article          article         '
+    'article-comments article-comments article-comments'
     // 'related-articles related-articles related-articles'
     'app-footer       app-footer       app-footer      ';
   }
@@ -145,8 +166,8 @@ export default {
       '...            content           ...           '
       // '...            tags           ...           '
       '...            article-sub-infos ...'
-      'footer-actions footer-actions    footer-actions'
-      '...            author-info       ...           ';
+      '...            author-info       ...           '
+      'footer-actions footer-actions    footer-actions';
     // '...            article-comments ...           ';
   }
 

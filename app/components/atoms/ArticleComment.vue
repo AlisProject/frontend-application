@@ -1,13 +1,13 @@
 <template>
   <div class="article-comment">
-    <p class="body">{{comment.body}}</p>
     <div class="commented-user">
-      <img class="commented-user-icon" src="~assets/images/profile-icon1.png">
+      <img class="icon" src="https://avatars0.githubusercontent.com/u/13657589?v=4">
       <ul class="info">
-        <li>{{ comment.user.username }}</li>
-        <li>{{ comment.publishedAt }}</li>
+        <li class="info-content">{{ comment.user.username }}</li>
+        <li class="info-content">{{ comment.publishedAt }}</li>
       </ul>
     </div>
+    <p class="body">{{ comment.body }}</p>
     <div class="action-like"></div>
   </div>
 </template>
@@ -27,30 +27,44 @@ export default {
 .article-comment {
   background-color: #fff;
   border-radius: 4px;
-  border: 1px solid rgba(192, 192, 192, 0.5);
   padding: 24px;
   position: relative;
 
-  .body {
-    color: #040404;
-    font-size: 14.7px;
-    font-weight: 500;
-    line-height: 21px;
-    margin-top: 0;
-    padding-bottom: 40px;
-  }
-
   .commented-user {
-    bottom: 20px;
     color: #5b5b5b;
     font-size: 14px;
+    left: 20px;
     position: absolute;
+    top: 20px;
 
     .info {
+      color: #6e6e6e;
       float: right;
-      margin: 5px;
+      font-size: 12px;
+      list-style: none;
+      margin: 0px 16px;
       padding: 0;
+
+      .info-content {
+        line-height: 1.5;
+      }
     }
+
+    .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+  }
+
+  .body {
+    color: #030303;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.8;
+    margin-top: 40px;
+    padding-bottom: 40px;
+    word-break: break-word;
   }
 
   .action-like {
@@ -71,18 +85,6 @@ export default {
 
 @media screen and (max-width: 640px) {
   .article-comment {
-    padding: 12px;
-
-    .body {
-      color: #030303;
-      font-size: 14px;
-      line-height: 21px;
-    }
-
-    .commented-user {
-      bottom: 10px;
-    }
-
     .action-like {
       background-size: 16px;
       background-position: 7px 10px;
