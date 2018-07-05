@@ -15,14 +15,16 @@
         src="~assets/images/pc/common/icon_search.png">
     </form>
     <nav class="area-nav" v-if="showNav">
-      <span
+      <nuxt-link
+        :to="{ path: '/search', query: { q: this.query }}"
         class="area-article nav-link"
         :class="{ 'selected': showArticles }"
-        @click="showArticleResult">記事</span>
-      <span
+        @click="showArticleResult">記事</nuxt-link>
+      <nuxt-link
+        :to="{ path: '/search/users', query: { q: this.query }}"
         class="area-user nav-link"
         :class="{ 'selected': !showArticles }"
-        @click="showSearchResult">ユーザー</span>
+        @click="showSearchResult">ユーザー</nuxt-link>
     </nav>
     <div class="area-search-result">
       <search-article-card-list :articles="searchArticles" v-if="showArticles"/>
@@ -93,11 +95,7 @@ export default {
       this.query = this.$refs.searchInput.value
       if (!this.query) return
       this.showNav = true
-      history.replaceState(
-        null,
-        null,
-        `/search${this.showArticles ? '' : '/users'}?q=${this.query}`
-      )
+      this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
       try {
         await Promise.all([this.getSearchArticles(), this.getSearchUsers()])
       } catch (error) {
@@ -105,11 +103,9 @@ export default {
       }
     },
     showArticleResult() {
-      history.replaceState(null, null, `/search?q=${this.query}`)
       this.showArticles = true
     },
     showSearchResult() {
-      history.replaceState(null, null, `/search/users?q=${this.query}`)
       this.showArticles = false
     },
     async infiniteScroll(event) {
