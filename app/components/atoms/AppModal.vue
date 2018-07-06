@@ -19,7 +19,7 @@
             </slot>
           </div>
           <div class="modal-content">
-            <slot name="modal-content" />
+            <slot v-if="showModalContent" name="modal-content" />
           </div>
         </div>
       </div>
@@ -34,6 +34,11 @@ export default {
   props: {
     title: {
       type: String,
+      required: false
+    },
+    showModalContent: {
+      type: Boolean,
+      default: true,
       required: false
     }
   },
