@@ -69,8 +69,8 @@ export default {
 
   .comment-textarea {
     border-radius: 0;
-    border: 1px dotted #232538;
     border: none;
+    border: 1px dotted #232538;
     font-family: YuGothic;
     height: 4em;
     margin: 44px 0 8px;
