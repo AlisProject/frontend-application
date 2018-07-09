@@ -38,12 +38,14 @@ jobs:
       - run:
           name: deploy
           command: |
-            yarn build
-            sudo apt-get -y -qq install awscli
-            aws s3 cp .nuxt/dist/ s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist --recursive
-            aws s3 cp app/static/favicon.ico s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
-            aws s3 cp app/static/OGP_1200×630.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
-            aws s3 cp app/static/icon_user_noimg.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
-            aws s3 cp app/static/touch-icon.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
-            sudo npm install -g serverless
-            yarn sls:deploy
+            if [ $ALIS_APP_ID ]; then
+              yarn build
+              sudo apt-get -y -qq install awscli
+              aws s3 cp .nuxt/dist/ s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist --recursive
+              aws s3 cp app/static/favicon.ico s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
+              aws s3 cp app/static/OGP_1200×630.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
+              aws s3 cp app/static/icon_user_noimg.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
+              aws s3 cp app/static/touch-icon.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
+              sudo npm install -g serverless
+              yarn sls:deploy
+            fi
