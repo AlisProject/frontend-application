@@ -11,18 +11,37 @@
         class="comment-textarea"
         type="text"
         placeholder="コメントを入力してください"
-        maxlength="400"/>
-      <span class="comment-submit">コメントする</span>
+        maxlength="400"
+        v-model="comment"/>
+      <span class="comment-submit" @click="submit">コメントする</span>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  data() {
+    return {
+      comment: ''
+    }
+  },
   computed: {
     ...mapGetters('user', ['currentUserInfo'])
+  },
+  methods: {
+    async submit() {
+      try {
+        await this.postArticleComment({
+          articleId: this.$route.params.articleId,
+          comment: this.comment
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    ...mapActions('article', ['postArticleComment'])
   }
 }
 </script>
