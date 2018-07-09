@@ -16,6 +16,9 @@
       <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
     </div>
+    <no-ssr>
+      <article-comment-form v-if="loggedIn"/>
+    </no-ssr>
     <article-comments :comments="comments"/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
@@ -31,6 +34,7 @@ import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleTags from '../atoms/ArticleTags'
+import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
@@ -44,6 +48,7 @@ export default {
     ArticleSubInfos,
     AuthorInfo,
     // ArticleTags,
+    ArticleCommentForm,
     ArticleComments,
     // RelatedArticles,
     AppFooter
@@ -85,7 +90,8 @@ export default {
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle'])
+    ...mapGetters('article', ['likesCount', 'isLikedArticle']),
+    ...mapGetters('user', ['loggedIn'])
   }
 }
 </script>
@@ -93,17 +99,18 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr min-content 75px;
+  grid-template-rows: 100px 50px 1fr min-content min-content 75px;
   // grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    'app-header       app-header       app-header      '
-    '...              ...              ...             '
-    '...              article          ...             '
-    'article-comments article-comments article-comments'
+    'app-header           app-header           app-header      '
+    '...                  ...                  ...             '
+    '...                  article              ...             '
+    'article-comment-form article-comment-form article-comment-form'
+    'article-comments     article-comments     article-comments'
     // 'related-articles related-articles related-articles'
-    'app-footer       app-footer       app-footer      ';
+    'app-footer           app-footer           app-footer      ';
   background: white;
 }
 
@@ -137,24 +144,25 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px 50px 1fr min-content 75px;
+    grid-template-rows: 100px 50px 1fr min-content min-content 75px;
     // grid-template-rows: 100px 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 70px 0 1fr min-content min-content;
+    grid-template-rows: 70px 0 1fr min-content min-content min-content;
     // grid-template-rows: 70px 0 1fr min-content 75px;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
     grid-template-areas:
-    'app-header       app-header       app-header      '
-    '...              ...              ...             '
-    'article          article          article         '
-    'article-comments article-comments article-comments'
+    'app-header           app-header           app-header      '
+    '...                  ...                  ...             '
+    'article              article              article         '
+    'article-comment-form article-comment-form article-comment-form'
+    'article-comments     article-comments     article-comments'
     // 'related-articles related-articles related-articles'
-    'app-footer       app-footer       app-footer      ';
+    'app-footer           app-footer           app-footer      ';
   }
 
   .area-article {

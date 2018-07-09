@@ -1,22 +1,34 @@
 <template>
-  <div class="area-article-comments">
+  <div class="area-article-comments" :class="{ 'without-top-space': !showTopSpace }">
     <article-comment v-for="comment in comments" :comment="comment" :key="comment.id"/>
     <button class="read-more-button">もっと見る</button>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ArticleComment from '../atoms/ArticleComment'
 
 export default {
   components: {
     ArticleComment
   },
+  data() {
+    return {
+      showTopSpace: false
+    }
+  },
   props: {
     comments: {
       type: Array,
       required: true
     }
+  },
+  mounted() {
+    this.showTopSpace = !this.loggedIn
+  },
+  computed: {
+    ...mapGetters('user', ['loggedIn'])
   }
 }
 </script>
@@ -28,6 +40,10 @@ export default {
   grid-area: article-comments;
   grid-gap: 8px;
   padding: 40px calc(50% - 324px) 8px;
+
+  &.without-top-space {
+    padding-top: 0;
+  }
 }
 
 .read-more-button {
