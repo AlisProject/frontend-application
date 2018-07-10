@@ -19,7 +19,7 @@
     <no-ssr>
       <article-comment-form v-if="loggedIn"/>
     </no-ssr>
-    <article-comments :comments="comments"/>
+    <article-comments :comments="article.comments"/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
   </div>

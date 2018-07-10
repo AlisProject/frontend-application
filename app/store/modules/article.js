@@ -152,8 +152,9 @@ const actions = {
       const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
       const alisToken = await dispatch('getAlisToken', { articleId })
       const likesCount = await dispatch('getLikesCount', { articleId })
+      const comments = await dispatch('getArticleComments', { articleId })
       commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken } })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -329,6 +330,22 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getArticleComments({ dispatch }, { articleId }) {
+    try {
+      const { Items: comments } = await this.$axios.$get(`/articles/${articleId}/comments`, {
+        params: { limit: 5 }
+      })
+      const commentsWithData = await Promise.all(
+        comments.map(async (comment) => {
+          const userInfo = await dispatch('getUserInfo', { userId: comment.user_id })
+          return { ...comment, userInfo }
+        })
+      )
+      return commentsWithData
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -418,6 +435,9 @@ const mutations = {
   },
   [types.SET_SAVE_STATUS](state, { saveStatus }) {
     state.saveStatus = saveStatus
+  },
+  [types.SET_ARTICLE_COMMENTS](state, { comments }) {
+    state.article.comments.push(...comments)
   }
 }
 

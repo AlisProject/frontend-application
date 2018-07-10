@@ -1,23 +1,30 @@
 <template>
   <div class="article-comment">
     <div class="commented-user">
-      <img class="icon" src="https://avatars0.githubusercontent.com/u/13657589?v=4">
+      <img class="icon" :src="comment.userInfo.icon_image_url">
       <ul class="info">
-        <li class="info-content">{{ comment.user.username }}</li>
-        <li class="info-content">{{ comment.publishedAt }}</li>
+        <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
+        <li class="info-content">{{ createdAt }}</li>
       </ul>
     </div>
-    <p class="body">{{ comment.body }}</p>
+    <p class="body">{{ comment.text }}</p>
     <div class="action-like"></div>
   </div>
 </template>
 
 <script>
+import { formatDateFromNow } from '~/utils/format'
+
 export default {
   props: {
     comment: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    createdAt() {
+      return formatDateFromNow(this.comment.created_at)
     }
   }
 }
