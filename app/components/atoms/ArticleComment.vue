@@ -1,5 +1,5 @@
 <template>
-  <div class="article-comment">
+  <div class="article-comment" ref="comment">
     <div class="commented-user">
       <img class="icon" :src="comment.userInfo.icon_image_url" v-if="comment.userInfo.icon_image_url !== undefined">
       <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
@@ -10,11 +10,13 @@
     </div>
     <p class="body">{{ comment.text }}</p>
     <div class="action-like" @click="like">いいね</div>
+    <div class="action-delete" @click="deleteComment" v-if="showDeleteAction">削除</div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { formatDateFromNow } from '~/utils/format'
 
 export default {
@@ -27,13 +29,39 @@ export default {
   computed: {
     createdAt() {
       return formatDateFromNow(this.comment.created_at)
-    }
+    },
+    showDeleteAction() {
+      return (
+        this.comment.user_id === this.currentUserInfo.user_id ||
+        this.currentUserInfo.user_id === this.article.user_id
+      )
+    },
+    ...mapGetters('user', ['currentUserInfo']),
+    ...mapGetters('article', ['article'])
   },
   methods: {
     async like() {
       await this.postCommentLike({ commentId: this.comment.comment_id })
     },
-    ...mapActions('article', ['postCommentLike'])
+    async deleteComment(event) {
+      try {
+        await this.deleteArticleComment({ commentId: this.comment.comment_id })
+        const { comment } = this.$refs
+        comment.parentNode.removeChild(comment)
+      } catch (error) {
+        console.error(error)
+        if (error.response.data.message === 'Record Not Found') {
+          this.sendNotification({
+            text: 'コメントはすでに削除されています。削除が反映されるまで今しばらくお待ち下さい。',
+            type: 'warning'
+          })
+        }
+      }
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('article', ['postCommentLike', 'deleteArticleComment'])
   }
 }
 </script>
@@ -86,6 +114,13 @@ export default {
     bottom: 20px;
     position: absolute;
     left: 24px;
+    cursor: pointer;
+  }
+
+  .action-delete {
+    bottom: 20px;
+    position: absolute;
+    right: 24px;
     cursor: pointer;
   }
 }

@@ -384,6 +384,13 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async deleteArticleComment({ commit }, { commentId }) {
+    try {
+      await this.$axios.$delete(`/me/comments/${commentId}`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
