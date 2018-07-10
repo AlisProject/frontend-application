@@ -2,7 +2,7 @@
   <div class="area-article-comment-form">
     <div class="article-comment-form-box">
       <div class="comment-user">
-        <img class="icon" src="https://avatars0.githubusercontent.com/u/13657589?v=4">
+        <img class="icon" :src="currentUserInfo.icon_image_url">
         <ul class="info">
           <li class="info-content">{{ currentUserInfo.user_display_name }}</li>
         </ul>
