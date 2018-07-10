@@ -67,26 +67,6 @@ export default {
     showEmbedTweet()
   },
   computed: {
-    comments() {
-      return [
-        {
-          id: 1,
-          body: 'body',
-          user: {
-            username: '山田花子'
-          },
-          publishedAt: 'N分前'
-        },
-        {
-          id: 2,
-          body: 'body',
-          user: {
-            username: '山田花子'
-          },
-          publishedAt: 'N分前'
-        }
-      ]
-    },
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
