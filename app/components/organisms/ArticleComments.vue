@@ -74,7 +74,7 @@ export default {
 
 @media screen and (max-width: 640px) {
   .area-article-comments {
-    padding: 40px 10px 8px;
+    padding: 40px 10px 48px;
   }
 }
 </style>
