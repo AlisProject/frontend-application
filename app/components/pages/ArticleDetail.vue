@@ -16,9 +16,7 @@
       <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
     </div>
-    <no-ssr>
-      <article-comment-form v-if="loggedIn"/>
-    </no-ssr>
+    <article-comment-form/>
     <article-comments :comments="article.comments"/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
@@ -70,8 +68,7 @@ export default {
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle']),
-    ...mapGetters('user', ['loggedIn'])
+    ...mapGetters('article', ['likesCount', 'isLikedArticle'])
   }
 }
 </script>

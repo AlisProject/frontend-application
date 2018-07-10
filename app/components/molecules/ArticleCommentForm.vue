@@ -1,13 +1,15 @@
 <template>
   <div class="area-article-comment-form">
     <div class="article-comment-form-box">
-      <div class="comment-user">
-        <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
-        <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
-        <ul class="info">
-          <li class="info-content">{{ currentUserInfo.user_display_name }}</li>
-        </ul>
-      </div>
+      <no-ssr>
+        <div class="comment-user" v-if="loggedIn">
+          <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
+          <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
+          <ul class="info">
+            <li class="info-content">{{ currentUserInfo.user_display_name }}</li>
+          </ul>
+        </div>
+      </no-ssr>
       <textarea
         class="comment-textarea"
         :class="{ 'no-border': comment.length !== 0 }"
@@ -34,7 +36,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUserInfo'])
+    ...mapGetters('user', ['loggedIn', 'currentUserInfo'])
   },
   methods: {
     async submit() {
@@ -62,18 +64,14 @@ export default {
     background-color: #fff;
     border-radius: 4px;
     padding: 24px;
-    position: relative;
 
     .comment-user {
       color: #5b5b5b;
       font-size: 14px;
-      left: 20px;
-      position: absolute;
-      top: 20px;
 
       .info {
         color: #6e6e6e;
-        float: right;
+        float: left;
         font-size: 12px;
         list-style: none;
         margin: 8px 16px;
@@ -85,6 +83,7 @@ export default {
       }
 
       .icon {
+        float: left;
         width: 36px;
         height: 36px;
         border-radius: 50%;
@@ -98,11 +97,12 @@ export default {
     border: 1px dotted #232538;
     font-family: YuGothic;
     height: 4em;
-    margin: 44px 0 8px;
+    margin: 14px 0 8px;
     overflow: hidden;
     padding: 5px;
     resize: none;
     width: 100%;
+    box-sizing: border-box;
 
     &.no-border {
       border: none;
