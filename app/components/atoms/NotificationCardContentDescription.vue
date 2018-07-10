@@ -1,6 +1,9 @@
 <template>
-  <p class="area-description">
+  <p class="area-description" v-if="notification.type === 'like'">
     <span class="liked_count">{{ notification.liked_count }}人</span>があなたの記事にいいねしました。"{{ notification.article_title }}"
+  </p>
+  <p class="area-description" v-else-if="notification.type === 'comment'">
+    <span class="liked_count">{{ notification.userInfo.user_display_name }}</span>があなたの記事にコメントしました。"{{ notification.article_title }}"
   </p>
 </template>
 

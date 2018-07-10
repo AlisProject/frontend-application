@@ -434,8 +434,18 @@ const actions = {
         { params: { limit: 10, notification_id: notificationId, sort_key: sortKey } }
       )
 
+      const notificationsWithData = await Promise.all(
+        notifications.map(async (notification) => {
+          let userInfo
+          if (notification.type === 'comment') {
+            userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
+          }
+          return { ...notification, userInfo }
+        })
+      )
+
       commit(types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
-      commit(types.SET_NOTIFICATIONS, { notifications: notifications })
+      commit(types.SET_NOTIFICATIONS, { notifications: notificationsWithData })
     } catch (error) {
       return Promise.reject(error)
     }
