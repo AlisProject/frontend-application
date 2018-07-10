@@ -48,6 +48,8 @@ export default {
         })
         this.addArticleComment({ text: this.comment })
         this.sendNotification({ text: 'コメントを投稿しました。' })
+        this.comment = ''
+        this.$el.querySelector('.comment-textarea').focus()
       } catch (error) {
         console.error(error)
       }
@@ -98,10 +100,13 @@ export default {
   }
 
   .comment-textarea {
+    -webkit-appearance: none;
     border-radius: 0;
     border: none;
     border: 1px dotted #232538;
-    font-family: YuGothic;
+    font-family: YuGothic, 'Helvetica Neue', Helvetica, Arial, 游ゴシック体, '游ゴシック',
+      'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3',
+      'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
     height: 4em;
     margin: 14px 0 8px;
     overflow: hidden;
