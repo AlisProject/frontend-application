@@ -10,11 +10,16 @@
       </div>
       <textarea
         class="comment-textarea"
+        :class="{ 'no-border': comment.length !== 0 }"
         type="text"
         placeholder="コメントを入力してください"
         maxlength="400"
         v-model="comment"/>
-      <span class="comment-submit" @click="submit">コメントする</span>
+      <span
+        class="comment-submit"
+        @click="submit"
+        @keypress.enter="submit"
+        tabindex="0">コメントする</span>
     </div>
   </div>
 </template>
@@ -99,6 +104,10 @@ export default {
     resize: none;
     width: 100%;
 
+    &.no-border {
+      border: none;
+    }
+
     &::-webkit-input-placeholder {
       color: #cecece;
       font-size: 14px;
@@ -106,6 +115,7 @@ export default {
     }
 
     &:focus {
+      border: none;
       outline: 0;
     }
   }
