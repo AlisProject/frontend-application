@@ -9,11 +9,12 @@
       </ul>
     </div>
     <p class="body">{{ comment.text }}</p>
-    <div class="action-like"></div>
+    <div class="action-like" @click="like">いいね</div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { formatDateFromNow } from '~/utils/format'
 
 export default {
@@ -27,6 +28,12 @@ export default {
     createdAt() {
       return formatDateFromNow(this.comment.created_at)
     }
+  },
+  methods: {
+    async like() {
+      await this.postCommentLike({ commentId: this.comment.comment_id })
+    },
+    ...mapActions('article', ['postCommentLike'])
   }
 }
 </script>
@@ -76,31 +83,10 @@ export default {
   }
 
   .action-like {
-    background: url('~assets/images/pc/article/icon_heart.png') no-repeat;
-    background-color: #ff4949;
-    background-size: 18px;
-    background-position: 9px 11px;
-    border-radius: 50%;
-    border: 1px solid #ff4949;
     bottom: 20px;
-    box-shadow: 0px 5px 15px -1px #ff8989;
-    height: 35px;
     position: absolute;
-    right: 24px;
-    width: 35px;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .article-comment {
-    .action-like {
-      background-size: 16px;
-      background-position: 7px 10px;
-      bottom: 16px;
-      height: 30px;
-      right: 16px;
-      width: 30px;
-    }
+    left: 24px;
+    cursor: pointer;
   }
 }
 </style>

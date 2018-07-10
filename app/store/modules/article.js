@@ -377,6 +377,13 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async postCommentLike({ commit }, { commentId }) {
+    try {
+      await this.$axios.$post(`/me/comments/${commentId}/likes`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
