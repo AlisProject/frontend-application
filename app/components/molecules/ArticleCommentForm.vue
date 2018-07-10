@@ -28,6 +28,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -45,11 +46,16 @@ export default {
           articleId: this.$route.params.articleId,
           comment: this.comment
         })
+        this.addArticleComment({ text: this.comment })
+        this.sendNotification({ text: 'コメントを投稿しました。' })
       } catch (error) {
         console.error(error)
       }
     },
-    ...mapActions('article', ['postArticleComment'])
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('article', ['postArticleComment', 'addArticleComment'])
   }
 }
 </script>

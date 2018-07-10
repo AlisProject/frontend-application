@@ -391,6 +391,14 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  addArticleComment({ commit, rootState }, { text }) {
+    const comment = {
+      text,
+      userInfo: rootState.user.currentUserInfo,
+      created_at: new Date().getTime() / 1000
+    }
+    commit(types.ADD_ARTICLE_COMMENT, { comment })
   }
 }
 
@@ -486,6 +494,9 @@ const mutations = {
   },
   [types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
     state.articleCommentsLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.ADD_ARTICLE_COMMENT](state, { comment }) {
+    state.article.comments.unshift(comment)
   }
 }
 
