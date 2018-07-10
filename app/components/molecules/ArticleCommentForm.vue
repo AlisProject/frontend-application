@@ -2,7 +2,8 @@
   <div class="area-article-comment-form">
     <div class="article-comment-form-box">
       <div class="comment-user">
-        <img class="icon" :src="currentUserInfo.icon_image_url">
+        <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
+        <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
         <ul class="info">
           <li class="info-content">{{ currentUserInfo.user_display_name }}</li>
         </ul>

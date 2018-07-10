@@ -1,7 +1,8 @@
 <template>
   <div class="article-comment">
     <div class="commented-user">
-      <img class="icon" :src="comment.userInfo.icon_image_url">
+      <img class="icon" :src="comment.userInfo.icon_image_url" v-if="comment.userInfo.icon_image_url !== undefined">
+      <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
       <ul class="info">
         <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
         <li class="info-content">{{ createdAt }}</li>
