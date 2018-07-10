@@ -33,7 +33,8 @@ const state = () => ({
   hasPublicArticlesLastEvaluatedKey: false,
   hasDraftArticlesLastEvaluatedKey: false,
   isEdited: false,
-  saveStatus: ''
+  saveStatus: '',
+  articleCommentsLastEvaluatedKey: {}
 })
 
 const getters = {
@@ -58,7 +59,10 @@ const getters = {
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
-  saveStatus: (state) => state.saveStatus
+  saveStatus: (state) => state.saveStatus,
+  articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
+  hasArticleCommentsLastEvaluatedKey: (state) =>
+    !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length
 }
 
 const actions = {
@@ -331,10 +335,29 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getArticleComments({ dispatch }, { articleId }) {
+  async getArticleComments({ commit, dispatch, state }, { articleId }) {
     try {
-      const { Items: comments } = await this.$axios.$get(`/articles/${articleId}/comments`, {
-        params: { limit: 5 }
+      const {
+        article_id: articleCommentsarticleId,
+        comment_id: commentId,
+        sort_key: sortKey
+      } = state.articleCommentsLastEvaluatedKey
+      const params =
+        commentId && sortKey
+          ? {
+            limit: 10,
+            comment_id: commentId,
+            article_id: articleCommentsarticleId,
+            sort_key: sortKey
+          }
+          : { limit: 5 }
+
+      const { Items: comments, LastEvaluatedKey } = await this.$axios.$get(
+        `/articles/${articleId}/comments`,
+        { params }
+      )
+      commit(types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || {}
       })
       const commentsWithData = await Promise.all(
         comments.map(async (comment) => {
@@ -343,6 +366,14 @@ const actions = {
         })
       )
       return commentsWithData
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async setArticleComments({ commit, dispatch }, { articleId }) {
+    try {
+      const comments = await dispatch('getArticleComments', { articleId })
+      commit(types.SET_ARTICLE_COMMENTS, { comments })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -438,6 +469,9 @@ const mutations = {
   },
   [types.SET_ARTICLE_COMMENTS](state, { comments }) {
     state.article.comments.push(...comments)
+  },
+  [types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.articleCommentsLastEvaluatedKey = lastEvaluatedKey
   }
 }
 

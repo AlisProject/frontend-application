@@ -1,12 +1,15 @@
 <template>
   <div class="area-article-comments" :class="{ 'without-top-space': !showTopSpace }">
     <article-comment v-for="comment in comments" :comment="comment" :key="comment.id"/>
-    <button class="read-more-button">もっと見る</button>
+    <button
+      class="read-more-button"
+      @click="showComments"
+      v-if="hasArticleCommentsLastEvaluatedKey">もっと見る</button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import ArticleComment from '../atoms/ArticleComment'
 
 export default {
@@ -28,7 +31,14 @@ export default {
     this.showTopSpace = !this.loggedIn
   },
   computed: {
-    ...mapGetters('user', ['loggedIn'])
+    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('article', ['hasArticleCommentsLastEvaluatedKey'])
+  },
+  methods: {
+    async showComments() {
+      await this.setArticleComments({ articleId: this.$route.params.articleId })
+    },
+    ...mapActions('article', ['setArticleComments'])
   }
 }
 </script>
@@ -39,7 +49,7 @@ export default {
   display: grid;
   grid-area: article-comments;
   grid-gap: 8px;
-  padding: 40px calc(50% - 324px) 8px;
+  padding: 40px calc(50% - 324px) 48px;
 
   &.without-top-space {
     padding-top: 0;
@@ -56,7 +66,7 @@ export default {
   cursor: pointer;
   font-family: YuGothic sans-serif;
   font-size: 14px;
-  margin: 40px auto;
+  margin: 40px auto 0;
   outline: none;
   padding: 11px;
   width: 255px;
