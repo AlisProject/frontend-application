@@ -60,6 +60,9 @@ export default {
         case 'articleLike':
           text = `記事の作成・評価には${text}`
           break
+        case 'articleComment':
+          text = `記事へのコメントには${text}`
+          break
         default:
           break
       }

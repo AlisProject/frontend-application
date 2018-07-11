@@ -16,6 +16,7 @@
         type="text"
         placeholder="コメントを入力してください"
         maxlength="400"
+        @focus="checkLogin"
         v-model="comment"/>
       <span
         class="comment-submit"
@@ -40,7 +41,20 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUserInfo'])
   },
   methods: {
+    showModal() {
+      this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
+      window.scrollTo(0, 0)
+      document.querySelector('html,body').style.overflow = 'hidden'
+    },
+    checkLogin() {
+      if (this.loggedIn) return
+      this.showModal()
+    },
     async submit() {
+      if (!this.loggedIn) {
+        this.showModal()
+        return
+      }
       try {
         await this.postArticleComment({
           articleId: this.$route.params.articleId,
@@ -57,7 +71,8 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['postArticleComment', 'addArticleComment'])
+    ...mapActions('article', ['postArticleComment', 'addArticleComment']),
+    ...mapActions('user', ['setRequestLoginModal'])
   }
 }
 </script>
