@@ -94,7 +94,10 @@ const state = () => ({
   userArticles: [],
   userArticlesLastEvaluatedKey: {},
   hasUserArticlesLastEvaluatedKey: false,
-  showRequestLoginModal: false,
+  requestLoginModal: {
+    isShow: false,
+    requestType: ''
+  },
   alisToken: 0,
   notifications: [],
   notificationsLastEvaluatedKey: {},
@@ -119,7 +122,7 @@ const getters = {
   userInfo: (state) => state.userInfo,
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
-  showRequestLoginModal: (state) => state.showRequestLoginModal,
+  requestLoginModal: (state) => state.requestLoginModal,
   alisToken: (state) => state.alisToken,
   notifications: (state) => state.notifications,
   notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
@@ -459,8 +462,8 @@ const actions = {
   resetPassword({ commit }) {
     commit(types.RESET_PASSWORD)
   },
-  setRequestLoginModal({ commit }, { showRequestLoginModal }) {
-    commit(types.SET_REQUEST_LOGIN_MODAL, { showRequestLoginModal })
+  setRequestLoginModal({ commit }, { isShow, requestType }) {
+    commit(types.SET_REQUEST_LOGIN_MODAL, { isShow, requestType })
   },
   async getUsersAlisToken({ commit }) {
     try {
@@ -657,8 +660,9 @@ const mutations = {
   [types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
     state.hasUserArticlesLastEvaluatedKey = hasLastEvaluatedKey
   },
-  [types.SET_REQUEST_LOGIN_MODAL](state, { showRequestLoginModal }) {
-    state.showRequestLoginModal = showRequestLoginModal
+  [types.SET_REQUEST_LOGIN_MODAL](state, { isShow, requestType }) {
+    state.requestLoginModal.isShow = isShow
+    state.requestLoginModal.requestType = requestType
   },
   [types.SET_USERS_ALIS_TOKEN](state, { alisToken }) {
     state.alisToken = alisToken

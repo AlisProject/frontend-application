@@ -46,7 +46,7 @@ export default {
       'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
-      'showRequestLoginModal'
+      'requestLoginModal'
     ])
   },
   methods: {
@@ -83,8 +83,8 @@ export default {
         this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
         this.$router.push('/me/articles/public')
       }
-      if (this.showRequestLoginModal) {
-        this.setRequestLoginModal({ showRequestLoginModal: false })
+      if (this.requestLoginModal.isShow) {
+        this.setRequestLoginModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
