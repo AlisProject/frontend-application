@@ -366,7 +366,10 @@ const actions = {
         comments.map(async (comment) => {
           const userInfo = await dispatch('getUserInfo', { userId: comment.user_id })
           let isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
-          return { ...comment, userInfo, isLiked }
+          const likesCount = await dispatch('getArticleCommentLikesCount', {
+            commentId: comment.comment_id
+          })
+          return { ...comment, userInfo, isLiked, likesCount }
         })
       )
       return commentsWithData
@@ -410,6 +413,14 @@ const actions = {
       const commentIds = []
       commit(types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS, { commentIds })
       return commentIds
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getArticleCommentLikesCount({ commit }, { commentId }) {
+    try {
+      const { count: likesCount } = await this.$axios.$get(`/comments/${commentId}/likes`)
+      return likesCount
     } catch (error) {
       return Promise.reject(error)
     }
