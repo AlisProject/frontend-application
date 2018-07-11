@@ -25,7 +25,7 @@
 
 <script>
 /* eslint-disable no-undef */
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
@@ -64,11 +64,17 @@ export default {
     })
     showEmbedTweet()
   },
+  beforeDestroy() {
+    this.resetArticleCommentsLastEvaluatedKey()
+  },
   computed: {
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
+  },
+  methods: {
+    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey'])
   }
 }
 </script>

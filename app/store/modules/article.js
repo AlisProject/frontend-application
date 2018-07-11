@@ -424,6 +424,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  resetArticleCommentsLastEvaluatedKey({ commit }) {
+    commit(types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY, { lastEvaluatedKey: {} })
   }
 }
 
