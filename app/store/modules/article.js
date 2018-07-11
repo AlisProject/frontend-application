@@ -34,7 +34,8 @@ const state = () => ({
   hasDraftArticlesLastEvaluatedKey: false,
   isEdited: false,
   saveStatus: '',
-  articleCommentsLastEvaluatedKey: {}
+  articleCommentsLastEvaluatedKey: {},
+  articleCommentLikedCommentIds: []
 })
 
 const getters = {
@@ -62,7 +63,8 @@ const getters = {
   saveStatus: (state) => state.saveStatus,
   articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
   hasArticleCommentsLastEvaluatedKey: (state) =>
-    !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length
+    !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length,
+  articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs
 }
 
 const actions = {
@@ -156,6 +158,7 @@ const actions = {
       const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
       const alisToken = await dispatch('getAlisToken', { articleId })
       const likesCount = await dispatch('getLikesCount', { articleId })
+      await dispatch('getIsLikedArticleCommentIds', { articleId })
       const comments = await dispatch('getArticleComments', { articleId })
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
@@ -362,7 +365,8 @@ const actions = {
       const commentsWithData = await Promise.all(
         comments.map(async (comment) => {
           const userInfo = await dispatch('getUserInfo', { userId: comment.user_id })
-          return { ...comment, userInfo }
+          let isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
+          return { ...comment, userInfo, isLiked }
         })
       )
       return commentsWithData
@@ -399,6 +403,16 @@ const actions = {
       created_at: new Date().getTime() / 1000
     }
     commit(types.ADD_ARTICLE_COMMENT, { comment })
+  },
+  async getIsLikedArticleCommentIds({ commit }, { articleId }) {
+    try {
+      // const commentIds = this.$axios.$get(`/me/articles/${articleId}/comments/likes`)
+      const commentIds = []
+      commit(types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS, { commentIds })
+      return commentIds
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -497,6 +511,9 @@ const mutations = {
   },
   [types.ADD_ARTICLE_COMMENT](state, { comment }) {
     state.article.comments.unshift(comment)
+  },
+  [types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS](state, { commentIds }) {
+    state.articleCommentLikedCommentIds = commentIds
   }
 }
 

@@ -9,7 +9,7 @@
       </ul>
     </div>
     <p class="body">{{ comment.text }}</p>
-    <div class="action-like" @click="like">いいね</div>
+    <div class="action-like" @click="like">{{ comment.isLiked || isLiked ? 'いいねした' : 'いいね' }}</div>
     <div class="action-delete" @click="deleteComment" v-if="showDeleteAction">削除</div>
   </div>
 </template>
@@ -24,6 +24,11 @@ export default {
     comment: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      isLiked: false
     }
   },
   computed: {
@@ -42,6 +47,7 @@ export default {
   methods: {
     async like() {
       await this.postCommentLike({ commentId: this.comment.comment_id })
+      this.isLiked = true
     },
     async deleteComment(event) {
       try {
