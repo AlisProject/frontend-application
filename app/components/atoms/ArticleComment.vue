@@ -78,15 +78,21 @@ export default {
         this.currentUserInfo.user_id === this.article.user_id
       )
     },
-    ...mapGetters('user', ['currentUserInfo']),
+    ...mapGetters('user', ['currentUserInfo', 'loggedIn']),
     ...mapGetters('article', ['article'])
   },
   methods: {
     async like() {
-      if (this.isLiked) return
-      await this.postCommentLike({ commentId: this.comment.comment_id })
-      this.isLiked = true
-      this.likesCount += 1
+      if (this.loggedIn) {
+        if (this.isLiked) return
+        await this.postCommentLike({ commentId: this.comment.comment_id })
+        this.isLiked = true
+        this.likesCount += 1
+      } else {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleCommentLike' })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
+      }
     },
     toggleDeleteCommentPopup() {
       this.isDeleteCommentPopupShown = !this.isDeleteCommentPopupShown
@@ -131,7 +137,8 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['postCommentLike', 'deleteArticleComment'])
+    ...mapActions('article', ['postCommentLike', 'deleteArticleComment']),
+    ...mapActions('user', ['setRequestLoginModal'])
   }
 }
 </script>
