@@ -102,6 +102,7 @@ export default {
     async deleteComment(event) {
       try {
         await this.deleteArticleComment({ commentId: this.comment.comment_id })
+        this.sendNotification({ text: 'コメントを削除しました。' })
         const { comment } = this.$refs
         comment.parentNode.removeChild(comment)
       } catch (error) {
