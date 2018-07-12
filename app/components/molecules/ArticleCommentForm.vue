@@ -58,7 +58,7 @@ export default {
       try {
         await this.postArticleComment({
           articleId: this.$route.params.articleId,
-          comment: this.comment
+          comment: this.escapeHTML(this.comment)
         })
         this.addArticleComment({ text: this.comment })
         this.sendNotification({ text: 'コメントを投稿しました。' })
@@ -67,6 +67,14 @@ export default {
       } catch (error) {
         console.error(error)
       }
+    },
+    escapeHTML(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE

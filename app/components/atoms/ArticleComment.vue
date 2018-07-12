@@ -66,8 +66,7 @@ export default {
   },
   computed: {
     commentText() {
-      const escapedComment = this.escapeHTML(this.comment.text)
-      return escapedComment.replace(/\r?\n/g, '<br>')
+      return this.comment.text.replace(/\r?\n/g, '<br>')
     },
     createdAt() {
       return formatDateFromNow(this.comment.created_at)
@@ -114,14 +113,6 @@ export default {
           })
         }
       }
-    },
-    escapeHTML(str) {
-      return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;')
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
