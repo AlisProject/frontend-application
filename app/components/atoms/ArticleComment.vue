@@ -16,7 +16,7 @@
     <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
       ...
       <div class="delete-comment-popup" v-show="isDeleteCommentPopupShown">
-        <span class="delete" @click="deleteArticleComment">
+        <span class="delete" @click="deleteComment">
           削除する
         </span>
       </div>
