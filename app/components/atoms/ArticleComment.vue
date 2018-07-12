@@ -13,7 +13,14 @@
       {{ isLiked ? 'いいねした' : 'いいね' }}
       {{ likesCount }}
     </div>
-    <div class="action-delete" @click="deleteComment" v-if="showDeleteAction">削除</div>
+    <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
+      ...
+      <div class="delete-comment-popup" v-show="isDeleteCommentPopupShown">
+        <span class="delete" @click="deleteArticleComment">
+          削除する
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,8 +38,30 @@ export default {
   },
   data() {
     return {
+      isDeleteCommentPopupShown: false,
       isLiked: this.comment.isLiked,
       likesCount: this.comment.likesCount
+    }
+  },
+  mounted() {
+    this.listen(window, 'click', (event) => {
+      if (!this.$el.querySelector('.action-delete')) return
+      if (!this.$el.querySelector('.action-delete').contains(event.target)) {
+        this.closeDeleteCommentPopup()
+      }
+    })
+    this.listen(window, 'touchstart', (event) => {
+      if (!this.$el.querySelector('.action-delete')) return
+      if (!this.$el.querySelector('.action-delete').contains(event.target)) {
+        this.closeDeleteCommentPopup()
+      }
+    })
+  },
+  destroyed() {
+    if (this._eventRemovers) {
+      this._eventRemovers.forEach((eventRemover) => {
+        eventRemover.remove()
+      })
     }
   },
   computed: {
@@ -55,6 +84,12 @@ export default {
       this.isLiked = true
       this.likesCount += 1
     },
+    toggleDeleteCommentPopup() {
+      this.isDeleteCommentPopupShown = !this.isDeleteCommentPopupShown
+    },
+    closeDeleteCommentPopup() {
+      this.isDeleteCommentPopupShown = false
+    },
     async deleteComment(event) {
       try {
         await this.deleteArticleComment({ commentId: this.comment.comment_id })
@@ -69,6 +104,17 @@ export default {
           })
         }
       }
+    },
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove: function() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -134,6 +180,26 @@ export default {
     position: absolute;
     right: 24px;
     cursor: pointer;
+
+    .delete-comment-popup {
+      background-color: #fff;
+      border-radius: 2px;
+      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 12px;
+      position: absolute;
+      right: -14px;
+      top: 26px;
+      width: 90px;
+      z-index: 1;
+
+      .delete {
+        cursor: pointer;
+        user-select: none;
+      }
+    }
   }
 }
 </style>
