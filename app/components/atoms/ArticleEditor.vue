@@ -391,7 +391,8 @@ export default {
     insertDragImage(files) {
       if (this.targetDOM[0].classList.value.includes('area-body')) return
       const [target] = files
-      if (target.size > 4.5 * 1024 * 1024) {
+      const MAX_UPLOAD = 4.5 * 1024 * 1024 // 4.5 MB
+      if (target.size > MAX_UPLOAD) {
         this.sendNotification({ text: '画像は4.5MBまでアップロード可能です。', type: 'warning' })
         return
       }
