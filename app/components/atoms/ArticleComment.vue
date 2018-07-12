@@ -8,7 +8,7 @@
         <li class="info-content">{{ createdAt }}</li>
       </ul>
     </div>
-    <p class="body">{{ comment.text }}</p>
+    <p class="body" v-html="commentText"/>
     <div class="action-like" @click="like">
       {{ isLiked ? 'いいねした' : 'いいね' }}
       {{ likesCount }}
@@ -65,6 +65,10 @@ export default {
     }
   },
   computed: {
+    commentText() {
+      const escapedComment = this.escapeHTML(this.comment.text)
+      return escapedComment.replace(/\r?\n/g, '<br>')
+    },
     createdAt() {
       return formatDateFromNow(this.comment.created_at)
     },
@@ -104,6 +108,14 @@ export default {
           })
         }
       }
+    },
+    escapeHTML(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
