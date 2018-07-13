@@ -10,14 +10,15 @@
       </no-ssr>
       <textarea
         class="comment-textarea"
-        :class="{ 'no-border': comment.length !== 0 }"
+        :class="{ 'no-border': !isCommentEmpty }"
         type="text"
         placeholder="コメントを入力してください"
         maxlength="400"
         @focus="checkLogin"
-        v-model="comment"/>
+        v-model.trim="comment"/>
       <span
         class="comment-submit"
+        :class="{ 'disable': isCommentEmpty }"
         @click="submit"
         @keypress.enter="submit"
         tabindex="0">コメントする</span>
@@ -59,6 +60,9 @@ export default {
     })
   },
   computed: {
+    isCommentEmpty() {
+      return this.comment.length === 0
+    },
     ...mapGetters('user', ['loggedIn', 'currentUserInfo'])
   },
   methods: {
@@ -76,6 +80,7 @@ export default {
         this.showModal()
         return
       }
+      if (this.isCommentEmpty) return
       try {
         if (this.postingComment) return
         this.postingComment = true
@@ -178,6 +183,11 @@ export default {
     cursor: pointer;
     float: right;
     font-size: 12px;
+
+    &.disable {
+      color: #cecece;
+      cursor: not-allowed;
+    }
   }
 }
 
