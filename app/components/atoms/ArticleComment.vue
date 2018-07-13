@@ -83,21 +83,21 @@ export default {
   },
   methods: {
     async like() {
-      if (this.loggedIn) {
-        if (this.isLiked) return
-        try {
-          this.isLiked = true
-          await this.postCommentLike({ commentId: this.comment.comment_id })
-          this.likesCount += 1
-        } catch (error) {
-          console.error(error)
-          this.isLiked = false
-        }
-      } else {
+      if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleCommentLike' })
         window.scrollTo(0, 0)
         document.querySelector('html').style.overflow = 'hidden'
         document.querySelector('body').style.overflow = 'hidden'
+        return
+      }
+      if (this.isLiked) return
+      try {
+        this.isLiked = true
+        await this.postCommentLike({ commentId: this.comment.comment_id })
+        this.likesCount += 1
+      } catch (error) {
+        console.error(error)
+        this.isLiked = false
       }
     },
     toggleDeleteCommentPopup() {
