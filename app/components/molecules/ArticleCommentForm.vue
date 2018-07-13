@@ -188,6 +188,7 @@ export default {
     &.disable {
       color: #cecece;
       cursor: not-allowed;
+      outline: none;
     }
   }
 }
