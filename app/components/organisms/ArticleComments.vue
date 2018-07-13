@@ -1,6 +1,6 @@
 <template>
   <div class="area-article-comments" :class="{ 'without-top-space': !showTopSpace }">
-    <article-comment v-for="comment in comments" :comment="comment" :key="comment.id"/>
+    <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
     <button
       class="read-more-button"
       @click="showComments"
