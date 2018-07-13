@@ -2,10 +2,9 @@ import users from './users'
 import articles from './articles'
 
 export default {
-  '$get': {
+  $get: {
     ...users.get,
     ...articles.get
   },
-  '$post': {
-  }
+  $post: {}
 }
