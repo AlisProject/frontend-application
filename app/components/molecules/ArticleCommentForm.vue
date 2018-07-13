@@ -39,7 +39,7 @@ export default {
   },
   mounted() {
     const textarea = this.$el.querySelector('.comment-textarea')
-    textarea.style.lineHeight = '20px'
+    textarea.style.lineHeight = '18px'
     textarea.style.height = '60px'
 
     textarea.addEventListener('input', (event) => {
@@ -154,6 +154,7 @@ export default {
     font-family: YuGothic, 'Helvetica Neue', Helvetica, Arial, 游ゴシック体, '游ゴシック',
       'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3',
       'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
+    font-size: 12px;
     height: 4em;
     margin: 14px 0 8px;
     overflow: hidden;
