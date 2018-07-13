@@ -126,7 +126,7 @@ export default {
       }
       target.addEventListener(eventType, callback)
       this._eventRemovers.push({
-        remove: function() {
+        remove() {
           target.removeEventListener(eventType, callback)
         }
       })
