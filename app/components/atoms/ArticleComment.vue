@@ -15,7 +15,7 @@
       <span class="likes-count">{{ likesCount }}</span>
     </div>
     <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
-      ...
+      <img class="icon" src="~assets/images/pc/article/a_icon_menu.png">
       <div class="delete-comment-popup" v-show="isDeleteCommentPopupShown">
         <span class="delete" @click="deleteComment">
           削除する
@@ -210,6 +210,11 @@ export default {
     position: absolute;
     right: 24px;
     cursor: pointer;
+
+    .icon {
+      width: 20px;
+      height: 20px;
+    }
 
     .delete-comment-popup {
       background-color: #fff;
