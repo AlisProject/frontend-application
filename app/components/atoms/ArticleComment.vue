@@ -10,7 +10,7 @@
     </div>
     <p class="body" v-html="commentText"/>
     <div class="action-like" @click="like">
-      <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
+      <img class="icon disable" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
       <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
       <span class="likes-count">{{ likesCount }}</span>
     </div>
@@ -90,7 +90,7 @@ export default {
         document.querySelector('body').style.overflow = 'hidden'
         return
       }
-      if (this.isLiked) return
+      if (this.isLiked || this.comment.isLiked) return
       try {
         this.isLiked = true
         await this.postCommentLike({ commentId: this.comment.comment_id })
@@ -194,6 +194,10 @@ export default {
     .icon {
       width: 16px;
       height: 16px;
+
+      &.disable {
+        cursor: not-allowed;
+      }
     }
 
     .likes-count {
