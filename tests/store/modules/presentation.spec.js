@@ -1,7 +1,7 @@
 import Vuex from 'vuex'
 import { createLocalVue } from '@vue/test-utils'
 import presentation from '@/store/modules/presentation'
-import APIMock from '../../mock/api'
+import axios from '../../helpers/axios'
 
 describe('store/modules/presentation.js', () => {
   let store
@@ -14,7 +14,7 @@ describe('store/modules/presentation.js', () => {
         presentation
       }
     })
-    store.$axios = APIMock
+    store.$axios = axios
   })
 
   afterEach(() => {
