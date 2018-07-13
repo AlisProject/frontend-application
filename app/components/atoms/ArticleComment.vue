@@ -10,8 +10,9 @@
     </div>
     <p class="body" v-html="commentText"/>
     <div class="action-like" @click="like">
-      {{ isLiked ? 'いいねした' : 'いいね' }}
-      {{ likesCount }}
+      <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked">
+      <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
+      <span class="likes-count">{{ likesCount }}</span>
     </div>
     <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
       ...
@@ -185,10 +186,24 @@ export default {
   }
 
   .action-like {
-    bottom: 20px;
-    position: absolute;
-    left: 24px;
+    bottom: 10px;
     cursor: pointer;
+    left: 24px;
+    padding: 10px 0;
+    position: absolute;
+
+    .icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .likes-count {
+      color: #6e6e6e;
+      font-size: 12px;
+      left: 22px;
+      position: absolute;
+      top: 13px;
+    }
   }
 
   .action-delete {
