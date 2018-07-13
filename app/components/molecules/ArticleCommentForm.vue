@@ -56,11 +56,11 @@ export default {
         return
       }
       try {
-        await this.postArticleComment({
+        const commentId = await this.postArticleComment({
           articleId: this.$route.params.articleId,
           comment: this.escapeHTML(this.comment)
         })
-        this.addArticleComment({ text: this.comment })
+        this.addArticleComment({ text: this.comment, commentId })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''
         this.$el.querySelector('.comment-textarea').focus()

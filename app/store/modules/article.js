@@ -333,7 +333,11 @@ const actions = {
   },
   async postArticleComment({ commit }, { articleId, comment }) {
     try {
-      await this.$axios.$post(`/me/articles/${articleId}/comments`, { text: comment })
+      const { comment_id: commentId } = await this.$axios.$post(
+        `/me/articles/${articleId}/comments`,
+        { text: comment }
+      )
+      return commentId
     } catch (error) {
       return Promise.reject(error)
     }
@@ -399,11 +403,12 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  addArticleComment({ commit, rootState }, { text }) {
+  addArticleComment({ commit, rootState }, { text, commentId }) {
     const comment = {
       text,
       userInfo: rootState.user.currentUserInfo,
-      created_at: new Date().getTime() / 1000
+      created_at: new Date().getTime() / 1000,
+      comment_id: commentId
     }
     commit(types.ADD_ARTICLE_COMMENT, { comment })
   },
