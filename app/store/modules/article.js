@@ -408,8 +408,11 @@ const actions = {
       text,
       userInfo: rootState.user.currentUserInfo,
       created_at: new Date().getTime() / 1000,
-      comment_id: commentId
+      comment_id: commentId,
+      isLiked: false,
+      likesCount: 0
     }
+
     commit(types.ADD_ARTICLE_COMMENT, { comment })
   },
   async getIsLikedArticleCommentIds({ commit }, { articleId }) {
