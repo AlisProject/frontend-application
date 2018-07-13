@@ -1,28 +1,30 @@
 <template>
-  <div class="article-comment">
-    <div class="commented-user">
-      <img class="icon" :src="comment.userInfo.icon_image_url" v-if="comment.userInfo.icon_image_url !== undefined">
-      <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
-      <ul class="info">
-        <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
-        <li class="info-content">{{ createdAt }}</li>
-      </ul>
-    </div>
-    <p class="body" v-html="commentText"/>
-    <div class="action-like" @click="like">
-      <img class="icon disable" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
-      <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
-      <span class="likes-count">{{ likesCount }}</span>
-    </div>
-    <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
-      <img class="icon" src="~assets/images/pc/article/a_icon_menu.png">
-      <div class="delete-comment-popup" v-show="isDeleteCommentPopupShown">
-        <span class="delete" @click="deleteComment">
-          削除する
-        </span>
+  <transition name="fade">
+    <div class="article-comment">
+      <div class="commented-user">
+        <img class="icon" :src="comment.userInfo.icon_image_url" v-if="comment.userInfo.icon_image_url !== undefined">
+        <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
+        <ul class="info">
+          <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
+          <li class="info-content">{{ createdAt }}</li>
+        </ul>
+      </div>
+      <p class="body" v-html="commentText"/>
+      <div class="action-like" @click="like">
+        <img class="icon disable" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
+        <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
+        <span class="likes-count">{{ likesCount }}</span>
+      </div>
+      <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
+        <img class="icon" src="~assets/images/pc/article/a_icon_menu.png">
+        <div class="delete-comment-popup" v-show="isDeleteCommentPopupShown">
+          <span class="delete" @click="deleteComment">
+            削除する
+          </span>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -141,6 +143,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 400ms ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .article-comment {
   background-color: #fff;
   border-radius: 4px;
