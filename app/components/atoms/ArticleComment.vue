@@ -10,7 +10,7 @@
     </div>
     <p class="body" v-html="commentText"/>
     <div class="action-like" @click="like">
-      <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked">
+      <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
       <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
       <span class="likes-count">{{ likesCount }}</span>
     </div>
@@ -41,7 +41,7 @@ export default {
     return {
       showComment: true,
       isDeleteCommentPopupShown: false,
-      isLiked: false,
+      isLiked: this.comment.isLiked,
       likesCount: this.comment.likesCount
     }
   },
@@ -137,11 +137,6 @@ export default {
     }),
     ...mapActions('article', ['postCommentLike', 'deleteArticleComment']),
     ...mapActions('user', ['setRequestLoginModal'])
-  },
-  watch: {
-    comment() {
-      this.isLiked = this.comment.isLiked
-    }
   }
 }
 </script>
