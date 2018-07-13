@@ -38,6 +38,28 @@ export default {
       postingComment: false
     }
   },
+  mounted() {
+    const textarea = this.$el.querySelector('.comment-textarea')
+    textarea.style.lineHeight = '20px'
+    textarea.style.height = '60px'
+
+    textarea.addEventListener('input', function(evt) {
+      if (evt.target.scrollHeight > evt.target.offsetHeight) {
+        evt.target.style.height = evt.target.scrollHeight + 'px'
+      } else {
+        let height, lineHeight
+        while (true) {
+          height = Number(evt.target.style.height.split('px')[0])
+          lineHeight = Number(evt.target.style.lineHeight.split('px')[0])
+          evt.target.style.height = height - lineHeight + 'px'
+          if (evt.target.scrollHeight > evt.target.offsetHeight) {
+            evt.target.style.height = evt.target.scrollHeight + 'px'
+            break
+          }
+        }
+      }
+    })
+  },
   computed: {
     ...mapGetters('user', ['loggedIn', 'currentUserInfo'])
   },
