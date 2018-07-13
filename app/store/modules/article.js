@@ -398,6 +398,7 @@ const actions = {
   async deleteArticleComment({ commit }, { commentId }) {
     try {
       await this.$axios.$delete(`/me/comments/${commentId}`)
+      commit(types.DELETE_ARTICLE_COMMENT, { commentId })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -551,6 +552,10 @@ const mutations = {
       return { ...comment, isLiked }
     })
     state.article.comments = [...comments]
+  },
+  [types.DELETE_ARTICLE_COMMENT](state, { commentId }) {
+    const comments = state.article.comments.filter((comment) => comment.comment_id !== commentId)
+    state.article.comments = comments
   }
 }
 

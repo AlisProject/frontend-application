@@ -1,5 +1,5 @@
 <template>
-  <div class="article-comment" v-if="showComment">
+  <div class="article-comment">
     <div class="commented-user">
       <img class="icon" :src="comment.userInfo.icon_image_url" v-if="comment.userInfo.icon_image_url !== undefined">
       <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
@@ -39,7 +39,6 @@ export default {
   },
   data() {
     return {
-      showComment: true,
       isDeleteCommentPopupShown: false,
       isLiked: this.comment.isLiked,
       likesCount: this.comment.likesCount
@@ -47,13 +46,13 @@ export default {
   },
   mounted() {
     this.listen(window, 'click', (event) => {
-      if (!this.$el.querySelector || !this.$el.querySelector('.action-delete')) return
+      if (!this.$el.querySelector('.action-delete')) return
       if (!this.$el.querySelector('.action-delete').contains(event.target)) {
         this.closeDeleteCommentPopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
-      if (!this.$el.querySelector || !this.$el.querySelector('.action-delete')) return
+      if (!this.$el.querySelector('.action-delete')) return
       if (!this.$el.querySelector('.action-delete').contains(event.target)) {
         this.closeDeleteCommentPopup()
       }
@@ -110,7 +109,6 @@ export default {
       try {
         await this.deleteArticleComment({ commentId: this.comment.comment_id })
         this.sendNotification({ text: 'コメントを削除しました。' })
-        this.showComment = false
       } catch (error) {
         console.error(error)
         if (error.response.data.message === 'Record Not Found') {
