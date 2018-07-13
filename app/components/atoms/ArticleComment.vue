@@ -96,7 +96,8 @@ export default {
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleCommentLike' })
         window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
+        document.querySelector('html').style.overflow = 'hidden'
+        document.querySelector('body').style.overflow = 'hidden'
       }
     },
     toggleDeleteCommentPopup() {
