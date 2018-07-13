@@ -23,6 +23,7 @@ export default {
       const { articleId } = this.$route.params
       await this.getIsLikedArticle({ articleId })
       await this.postPv({ articleId })
+      await this.updateArticleCommentsByCommentIds({ articleId })
     } else {
       this.setIsLikedArticle({ liked: false })
     }
@@ -32,7 +33,12 @@ export default {
     ...mapGetters('article', ['article'])
   },
   methods: {
-    ...mapActions('article', ['postPv', 'getIsLikedArticle', 'setIsLikedArticle'])
+    ...mapActions('article', [
+      'postPv',
+      'getIsLikedArticle',
+      'setIsLikedArticle',
+      'updateArticleCommentsByCommentIds'
+    ])
   },
   head() {
     return {

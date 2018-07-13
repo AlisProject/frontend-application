@@ -158,7 +158,6 @@ const actions = {
       const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
       const alisToken = await dispatch('getAlisToken', { articleId })
       const likesCount = await dispatch('getLikesCount', { articleId })
-      await dispatch('getIsLikedArticleCommentIds', { articleId })
       const comments = await dispatch('getArticleComments', { articleId })
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
@@ -417,8 +416,9 @@ const actions = {
   },
   async getIsLikedArticleCommentIds({ commit }, { articleId }) {
     try {
-      // const commentIds = this.$axios.$get(`/me/articles/${articleId}/comments/likes`)
-      const commentIds = []
+      const { comment_ids: commentIds } = await this.$axios.$get(
+        `/me/articles/${articleId}/comments/likes`
+      )
       commit(types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS, { commentIds })
       return commentIds
     } catch (error) {
@@ -435,6 +435,14 @@ const actions = {
   },
   resetArticleCommentsLastEvaluatedKey({ commit }) {
     commit(types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY, { lastEvaluatedKey: {} })
+  },
+  async updateArticleCommentsByCommentIds({ commit, dispatch }, { articleId }) {
+    try {
+      const commentIds = await dispatch('getIsLikedArticleCommentIds', { articleId })
+      commit(types.UPDATE_ARTICLE_COMMENTS_BY_COMMENT_IDS, { commentIds })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -536,6 +544,13 @@ const mutations = {
   },
   [types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS](state, { commentIds }) {
     state.articleCommentLikedCommentIds = commentIds
+  },
+  [types.UPDATE_ARTICLE_COMMENTS_BY_COMMENT_IDS](state, { commentIds }) {
+    const comments = state.article.comments.map((comment) => {
+      const isLiked = commentIds.includes(comment.comment_id)
+      return { ...comment, isLiked }
+    })
+    state.article.comments = [...comments]
   }
 }
 

@@ -41,7 +41,7 @@ export default {
     return {
       showComment: true,
       isDeleteCommentPopupShown: false,
-      isLiked: this.comment.isLiked,
+      isLiked: false,
       likesCount: this.comment.likesCount
     }
   },
@@ -137,6 +137,11 @@ export default {
     }),
     ...mapActions('article', ['postCommentLike', 'deleteArticleComment']),
     ...mapActions('user', ['setRequestLoginModal'])
+  },
+  watch: {
+    comment() {
+      this.isLiked = this.comment.isLiked
+    }
   }
 }
 </script>
