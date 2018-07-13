@@ -5,9 +5,7 @@
         <div class="comment-user" v-if="loggedIn">
           <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
-          <ul class="info">
-            <li class="info-content">{{ currentUserInfo.user_display_name }}</li>
-          </ul>
+          <span class="name">{{ currentUserInfo.user_display_name }}</span>
         </div>
       </no-ssr>
       <textarea
@@ -126,25 +124,19 @@ export default {
     .comment-user {
       color: #5b5b5b;
       font-size: 14px;
-
-      .info {
-        color: #6e6e6e;
-        float: left;
-        font-size: 12px;
-        list-style: none;
-        margin: 8px 16px;
-        padding: 0;
-
-        .info-content {
-          line-height: 1.5;
-        }
-      }
+      display: flex;
+      align-items: center;
 
       .icon {
-        float: left;
-        width: 36px;
-        height: 36px;
         border-radius: 50%;
+        height: 36px;
+        margin-right: 16px;
+        width: 36px;
+      }
+
+      .name {
+        color: #6e6e6e;
+        font-size: 12px;
       }
     }
   }
