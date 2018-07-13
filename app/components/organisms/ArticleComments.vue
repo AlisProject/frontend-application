@@ -18,7 +18,8 @@ export default {
   },
   data() {
     return {
-      showTopSpace: false
+      showTopSpace: false,
+      loadingComments: false
     }
   },
   props: {
@@ -36,7 +37,15 @@ export default {
   },
   methods: {
     async showComments() {
-      await this.setArticleComments({ articleId: this.$route.params.articleId })
+      if (this.loadingComments) return
+      try {
+        this.loadingComments = true
+        await this.setArticleComments({ articleId: this.$route.params.articleId })
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loadingComments = false
+      }
     },
     ...mapActions('article', ['setArticleComments'])
   }
