@@ -84,9 +84,14 @@ export default {
     async like() {
       if (this.loggedIn) {
         if (this.isLiked) return
-        await this.postCommentLike({ commentId: this.comment.comment_id })
-        this.isLiked = true
-        this.likesCount += 1
+        try {
+          this.isLiked = true
+          await this.postCommentLike({ commentId: this.comment.comment_id })
+          this.likesCount += 1
+        } catch (error) {
+          console.error(error)
+          this.isLiked = false
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleCommentLike' })
         window.scrollTo(0, 0)
