@@ -44,16 +44,16 @@ export default {
     textarea.addEventListener('input', (event) => {
       if (event.target.scrollHeight > event.target.offsetHeight) {
         event.target.style.height = `${event.target.scrollHeight}px`
-      } else {
-        let height, lineHeight
-        while (true) {
-          height = Number(event.target.style.height.split('px')[0])
-          lineHeight = Number(event.target.style.lineHeight.split('px')[0])
-          event.target.style.height = `${height - lineHeight}px`
-          if (event.target.scrollHeight > event.target.offsetHeight) {
-            event.target.style.height = `${event.target.scrollHeight}px`
-            break
-          }
+        return
+      }
+      let height, lineHeight
+      while (true) {
+        height = Number(event.target.style.height.split('px')[0])
+        lineHeight = Number(event.target.style.lineHeight.split('px')[0])
+        event.target.style.height = `${height - lineHeight}px`
+        if (event.target.scrollHeight > event.target.offsetHeight) {
+          event.target.style.height = `${event.target.scrollHeight}px`
+          break
         }
       }
     })
