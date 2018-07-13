@@ -43,6 +43,7 @@ export default {
       try {
         this.loadingComments = true
         await this.setArticleComments({ articleId: this.$route.params.articleId })
+        document.activeElement.blur()
       } catch (error) {
         console.error(error)
       } finally {
