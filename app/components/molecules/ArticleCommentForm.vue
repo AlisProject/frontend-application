@@ -34,7 +34,8 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 export default {
   data() {
     return {
-      comment: ''
+      comment: '',
+      postingComment: false
     }
   },
   computed: {
@@ -56,6 +57,8 @@ export default {
         return
       }
       try {
+        if (this.postingComment) return
+        this.postingComment = true
         const commentId = await this.postArticleComment({
           articleId: this.$route.params.articleId,
           text: this.escapeHTML(this.comment)
@@ -66,6 +69,8 @@ export default {
         this.$el.querySelector('.comment-textarea').focus()
       } catch (error) {
         console.error(error)
+      } finally {
+        this.postingComment = false
       }
     },
     escapeHTML(str) {
