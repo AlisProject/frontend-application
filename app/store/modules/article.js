@@ -331,11 +331,11 @@ const actions = {
   setSaveStatus({ commit }, { saveStatus }) {
     commit(types.SET_SAVE_STATUS, { saveStatus })
   },
-  async postArticleComment({ commit }, { articleId, comment }) {
+  async postArticleComment({ commit }, { articleId, text }) {
     try {
       const { comment_id: commentId } = await this.$axios.$post(
         `/me/articles/${articleId}/comments`,
-        { text: comment }
+        { text }
       )
       return commentId
     } catch (error) {
