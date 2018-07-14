@@ -76,11 +76,11 @@ export default {
       this.showModal()
     },
     async submit() {
+      if (this.isCommentEmpty) return
       if (!this.loggedIn) {
         this.showModal()
         return
       }
-      if (this.isCommentEmpty) return
       try {
         if (this.postingComment) return
         this.postingComment = true
