@@ -10,8 +10,8 @@
         </ul>
       </div>
       <p class="body" v-html="commentText"/>
-      <div class="action-like" @click="like">
-        <img class="icon disable" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
+      <div class="action-like" :class="{ 'disable': isLiked || comment.isLiked }" @click="like">
+        <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
         <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
         <span class="likes-count">{{ likesCount }}</span>
       </div>
@@ -202,22 +202,22 @@ export default {
     left: 24px;
     padding: 10px 0;
     position: absolute;
+    display: flex;
+    align-items: center;
+
+    &.disable {
+      cursor: not-allowed;
+    }
 
     .icon {
       width: 16px;
       height: 16px;
-
-      &.disable {
-        cursor: not-allowed;
-      }
+      padding-right: 4px;
     }
 
     .likes-count {
       color: #6e6e6e;
       font-size: 12px;
-      left: 22px;
-      position: absolute;
-      top: 13px;
     }
   }
 
