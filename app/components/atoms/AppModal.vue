@@ -89,7 +89,8 @@ export default {
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
-      document.querySelector('html,body').style.overflow = ''
+      document.querySelector('html').style.overflow = ''
+      document.querySelector('body').style.overflow = ''
     },
     ...mapActions('user', [
       'setSignUpModal',
