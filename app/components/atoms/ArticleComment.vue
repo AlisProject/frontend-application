@@ -10,8 +10,8 @@
         </ul>
       </div>
       <p class="body" v-html="commentText"/>
-      <div class="action-like" :class="{ 'disable': isLiked || comment.isLiked }" @click="like">
-        <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLiked || comment.isLiked">
+      <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
+        <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
         <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
         <span class="likes-count">{{ likesCount }}</span>
       </div>
@@ -42,11 +42,12 @@ export default {
   data() {
     return {
       isDeleteCommentPopupShown: false,
-      isLiked: this.comment.isLiked,
-      likesCount: this.comment.likesCount
+      isLiked: false,
+      likesCount: 0
     }
   },
   mounted() {
+    this.likesCount = this.comment.likesCount
     this.listen(window, 'click', (event) => {
       if (!this.$el.querySelector('.action-delete')) return
       if (!this.$el.querySelector('.action-delete').contains(event.target)) {
@@ -68,6 +69,9 @@ export default {
     }
   },
   computed: {
+    isLikedComment() {
+      return this.isLiked || this.comment.isLiked
+    },
     commentText() {
       return this.comment.text.replace(/\r?\n/g, '<br>')
     },
@@ -92,7 +96,7 @@ export default {
         document.querySelector('body').style.overflow = 'hidden'
         return
       }
-      if (this.isLiked || this.comment.isLiked) return
+      if (this.isLikedComment) return
       try {
         this.isLiked = true
         await this.postCommentLike({ commentId: this.comment.comment_id })
