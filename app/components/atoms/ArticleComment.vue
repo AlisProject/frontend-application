@@ -103,6 +103,12 @@ export default {
         this.likesCount += 1
       } catch (error) {
         console.error(error)
+        if (error.response.data.message === 'Record Not Found') {
+          this.sendNotification({
+            text: 'このコメントはすでに削除されているため、いいねできませんでした。',
+            type: 'warning'
+          })
+        }
         this.isLiked = false
       }
     },
