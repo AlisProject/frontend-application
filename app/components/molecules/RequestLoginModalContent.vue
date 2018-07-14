@@ -55,21 +55,17 @@ export default {
   },
   computed: {
     confirmText() {
-      let text = 'ログインが必要です'
+      const text = 'ログインが必要です'
       switch (this.requestLoginModal.requestType) {
         case 'articleLike':
-          text = `記事の作成・評価には${text}`
-          break
+          return `記事の作成・評価には${text}`
         case 'articleComment':
-          text = `記事へのコメントには${text}`
-          break
+          return `記事へのコメントには${text}`
         case 'articleCommentLike':
-          text = `コメントの評価には${text}`
-          break
+          return `コメントの評価には${text}`
         default:
-          break
+          return text
       }
-      return text
     },
     ...mapGetters('user', ['requestLoginModal'])
   },
