@@ -2,7 +2,7 @@
   <transition name="fade">
     <div class="article-comment">
       <div class="commented-user">
-        <img class="icon" :src="comment.userInfo.icon_image_url" v-if="comment.userInfo.icon_image_url !== undefined">
+        <img class="icon" :src="comment.userInfo.icon_image_url" v-if="hasUserIcon">
         <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
         <ul class="info">
           <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
@@ -31,6 +31,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { formatDateFromNow } from '~/utils/format'
+import urlRegex from 'url-regex'
 
 export default {
   props: {
@@ -69,6 +70,9 @@ export default {
     }
   },
   computed: {
+    hasUserIcon() {
+      return urlRegex().test(this.comment.userInfo.icon_image_url)
+    },
     isLikedComment() {
       return this.isLiked || this.comment.isLiked
     },
