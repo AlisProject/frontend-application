@@ -60,8 +60,8 @@ export default {
     }
     this.preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
-      if (!document.querySelector('.medium-insert-buttons')) return
-      this.preventDragAndDrop(document.querySelector('.medium-insert-buttons'))
+      if (!this.$el.querySelector('.medium-insert-buttons')) return
+      this.preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
       clearInterval(preventDragAndDropInterval)
     }, 100)
     $('.area-body').keydown((e) => {
