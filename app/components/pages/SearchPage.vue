@@ -283,7 +283,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .search-page-container {
-    grid-template-rows: 100px 20px 20px 50px 1fr 75px 75px;
+    grid-template-rows: 60px 20px 20px 50px 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
     "app-header  app-header             app-header"
@@ -296,40 +296,6 @@ export default {
 
     &.user {
       grid-template-columns: 10px 1fr 10px;
-    }
-  }
-
-  .area-nav {
-    grid-area: nav;
-    display: grid;
-    text-align: center;
-    grid-template-rows: 1fr 30px;
-    grid-template-columns: 10px 50px 50px 1fr;
-    grid-column-gap: 10px;
-    /* prettier-ignore */
-    grid-template-areas:
-    "... ...     ...  ..."
-    "... article user ...";
-    box-shadow: 0 11px 8px -8px rgba(0, 0, 0, 0.15);
-
-    .nav-link {
-      font-size: 12px;
-      text-decoration: none;
-      color: #525256;
-      cursor: pointer;
-
-      &.selected {
-        color: #99a2ff;
-        border-bottom: 1px solid #99a2ff;
-      }
-    }
-
-    .area-article {
-      grid-area: article;
-    }
-
-    .area-user {
-      grid-area: user;
     }
   }
 }
