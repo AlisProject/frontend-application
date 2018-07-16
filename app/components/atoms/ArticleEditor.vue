@@ -459,7 +459,6 @@ export default {
 
 .area-title {
   color: #040404;
-  font-family: 'Yu Gothic', YuGothic;
   font-size: 24px;
   font-weight: bold;
   grid-area: title;
@@ -517,7 +516,6 @@ export default {
   border-radius: 4px;
   border: none;
   color: #898989;
-  font-family: 'Yu Gothic', YuGothic;
   font-size: 14px;
   font-weight: 500;
   line-height: 12px;
