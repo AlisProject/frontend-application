@@ -140,7 +140,7 @@ export default {
   &-body {
     .title {
       color: #030303;
-      font-family: Times;
+      font-family: 'Times New Roman', Times, serif;
       font-size: 20px;
       font-weight: bold;
       letter-spacing: 0.2em;
