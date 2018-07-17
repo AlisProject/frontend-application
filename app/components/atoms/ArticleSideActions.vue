@@ -84,7 +84,7 @@ export default {
           await this.getIsLikedArticle({ articleId: this.articleId })
         }
       } else {
-        this.setRequestLoginModal({ showRequestLoginModal: true })
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
       }

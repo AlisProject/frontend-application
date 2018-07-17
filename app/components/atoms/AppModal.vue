@@ -46,7 +46,7 @@ export default {
       'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
-      'showRequestLoginModal'
+      'requestLoginModal'
     ])
   },
   methods: {
@@ -83,13 +83,14 @@ export default {
         this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
         this.$router.push('/me/articles/public')
       }
-      if (this.showRequestLoginModal) {
-        this.setRequestLoginModal({ showRequestLoginModal: false })
+      if (this.requestLoginModal.isShow) {
+        this.setRequestLoginModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
-      document.querySelector('html,body').style.overflow = ''
+      document.querySelector('html').style.overflow = ''
+      document.querySelector('body').style.overflow = ''
     },
     ...mapActions('user', [
       'setSignUpModal',

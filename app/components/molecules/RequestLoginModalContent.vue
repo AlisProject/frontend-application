@@ -1,7 +1,7 @@
 <template>
   <div class="report-modal-content">
     <p class="confirm-text">
-      記事の作成・評価にはログインが必要です
+      {{ confirmText }}
     </p>
     <div class="left">
       <p class="for-submitted-user">
@@ -46,16 +46,32 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppButton from '../atoms/AppButton'
 
 export default {
   components: {
     AppButton
   },
+  computed: {
+    confirmText() {
+      const text = 'ログインが必要です'
+      switch (this.requestLoginModal.requestType) {
+        case 'articleLike':
+          return `記事の作成・評価には${text}`
+        case 'articleComment':
+          return `記事へのコメントには${text}`
+        case 'articleCommentLike':
+          return `コメントの評価には${text}`
+        default:
+          return text
+      }
+    },
+    ...mapGetters('user', ['requestLoginModal'])
+  },
   methods: {
     showSignUpModal() {
-      this.setRequestLoginModal({ showRequestLoginModal: false })
+      this.setRequestLoginModal({ isShow: false })
       this.setSignUpModal({ showSignUpModal: true })
       document.documentElement.scrollTop = 0
       if (window.innerWidth > 550) {
@@ -63,7 +79,7 @@ export default {
       }
     },
     showLoginModal() {
-      this.setRequestLoginModal({ showRequestLoginModal: false })
+      this.setRequestLoginModal({ isShow: false })
       this.setLoginModal({ showLoginModal: true })
       document.documentElement.scrollTop = 0
       if (window.innerWidth > 550) {
