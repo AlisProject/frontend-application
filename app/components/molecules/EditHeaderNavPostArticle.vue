@@ -140,6 +140,7 @@ export default {
       if (this.thumbnail !== '') return
       if (!this.isThumbnailSelected) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
+        return
       }
       if (
         this.isThumbnailSelected &&
