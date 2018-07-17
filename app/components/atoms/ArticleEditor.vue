@@ -48,7 +48,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isEdited']),
+    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -325,6 +325,9 @@ export default {
       // Update thumbnails
       const thumbnails = getThumbnails(images)
       this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
     },
     removeUselessDOMFromArticleBody() {
       const serializedContents = this.editorElement.serialize()
@@ -435,7 +438,8 @@ export default {
       'setIsSaving',
       'postNewArticle',
       'setIsEdited',
-      'setSaveStatus'
+      'setSaveStatus',
+      'updateThumbnail'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }

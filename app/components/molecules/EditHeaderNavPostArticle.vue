@@ -137,6 +137,7 @@ export default {
   },
   watch: {
     suggestedThumbnails() {
+      if (this.thumbnail !== '') return
       if (!this.isThumbnailSelected) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
       }
