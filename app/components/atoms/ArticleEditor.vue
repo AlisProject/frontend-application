@@ -59,7 +59,11 @@ export default {
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
     this.preventDragAndDrop(window)
-    this.preventDragAndDrop(document.querySelector('.medium-insert-buttons'))
+    const preventDragAndDropInterval = setInterval(() => {
+      if (!this.$el.querySelector('.medium-insert-buttons')) return
+      this.preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
+      clearInterval(preventDragAndDropInterval)
+    }, 100)
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
