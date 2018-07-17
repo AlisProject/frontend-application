@@ -30,7 +30,8 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 export default {
   data() {
     return {
-      isPopupShown: false
+      isPopupShown: false,
+      isThumbnailSelected: false
     }
   },
   mounted() {
@@ -91,6 +92,7 @@ export default {
       this.isPopupShown = false
     },
     selectThumbnail({ target }) {
+      this.isThumbnailSelected = true
       this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
     },
     listen(target, eventType, callback) {
@@ -132,6 +134,23 @@ export default {
       'isSaving',
       'isEdited'
     ])
+  },
+  watch: {
+    suggestedThumbnails() {
+      if (this.thumbnail !== '') return
+      if (!this.isThumbnailSelected) {
+        this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
+        return
+      }
+      if (
+        this.isThumbnailSelected &&
+        Array.from(document.querySelectorAll('.thumbnails img')).filter(
+          (img) => img.classList.contains('selected').length !== 0
+        )
+      ) {
+        this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
+      }
+    }
   }
 }
 </script>
