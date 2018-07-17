@@ -11,3 +11,10 @@ export function formatDateWithTime(date) {
     .locale('ja')
     .format('YYYY/MM/DD HH:mm')
 }
+
+export function formatDateFromNow(date) {
+  return moment(date, 'X')
+    .locale('ja')
+    .startOf('minute')
+    .fromNow()
+}

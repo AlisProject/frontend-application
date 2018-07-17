@@ -15,8 +15,9 @@
         :isLikedArticle="isLikedArticle"/>
       <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
-      <!-- <article-comments :comments="article.comments"/> -->
     </div>
+    <article-comment-form/>
+    <article-comments :comments="article.comments"/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
   </div>
@@ -24,14 +25,15 @@
 
 <script>
 /* eslint-disable no-undef */
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
 // import ArticleTags from '../atoms/ArticleTags'
-// import ArticleComments from '../organisms/ArticleComments'
+import ArticleCommentForm from '../molecules/ArticleCommentForm'
+import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
 import { showEmbedTweet } from '~/utils/article'
@@ -44,7 +46,8 @@ export default {
     ArticleSubInfos,
     AuthorInfo,
     // ArticleTags,
-    // ArticleComments,
+    ArticleCommentForm,
+    ArticleComments,
     // RelatedArticles,
     AppFooter
   },
@@ -61,11 +64,17 @@ export default {
     })
     showEmbedTweet()
   },
+  beforeDestroy() {
+    this.resetArticleCommentsLastEvaluatedKey()
+  },
   computed: {
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
+  },
+  methods: {
+    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey'])
   }
 }
 </script>
@@ -73,16 +82,18 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr 75px;
+  grid-template-rows: 100px 50px 1fr min-content min-content 75px;
   // grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    'app-header       app-header       app-header      '
-    '...              ...              ...             '
-    '...              article          ...             '
+    'app-header           app-header           app-header      '
+    '...                  ...                  ...             '
+    '...                  article              ...             '
+    'article-comment-form article-comment-form article-comment-form'
+    'article-comments     article-comments     article-comments'
     // 'related-articles related-articles related-articles'
-    'app-footer       app-footer       app-footer      ';
+    'app-footer           app-footer           app-footer      ';
   background: white;
 }
 
@@ -100,7 +111,6 @@ export default {
     'article-sub-infos'
     // 'tags          '
     'author-info   ';
-  // 'article-comments';
 }
 
 .area-title {
@@ -117,23 +127,25 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px 50px 1fr 75px;
+    grid-template-rows: 100px 50px 1fr min-content min-content 75px;
     // grid-template-rows: 100px 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 70px 0 1fr min-content;
+    grid-template-rows: 70px 0 1fr min-content min-content min-content;
     // grid-template-rows: 70px 0 1fr min-content 75px;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
     grid-template-areas:
-    'app-header       app-header       app-header      '
-    '...              ...              ...             '
-    'article          article          article         '
+    'app-header           app-header           app-header      '
+    '...                  ...                  ...             '
+    'article              article              article         '
+    'article-comment-form article-comment-form article-comment-form'
+    'article-comments     article-comments     article-comments'
     // 'related-articles related-articles related-articles'
-    'app-footer       app-footer       app-footer      ';
+    'app-footer           app-footer           app-footer      ';
   }
 
   .area-article {
@@ -145,8 +157,8 @@ export default {
       '...            content           ...           '
       // '...            tags           ...           '
       '...            article-sub-infos ...'
-      'footer-actions footer-actions    footer-actions'
-      '...            author-info       ...           ';
+      '...            author-info       ...           '
+      'footer-actions footer-actions    footer-actions';
     // '...            article-comments ...           ';
   }
 

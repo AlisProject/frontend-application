@@ -93,7 +93,7 @@ export default {
     },
     selectThumbnail({ target }) {
       this.isThumbnailSelected = true
-      this.updateThumbnail({ thumbnail: target.src })
+      this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
