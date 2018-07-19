@@ -58,6 +58,14 @@ export default {
         }
       }
     })
+
+    const viewportMeta = document.querySelector('meta[name="viewport"]')
+    textarea.addEventListener('touchstart', (event) => {
+      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
+    })
+    textarea.addEventListener('blur', (event) => {
+      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1')
+    })
   },
   computed: {
     isCommentEmpty() {
