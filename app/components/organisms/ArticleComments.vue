@@ -32,6 +32,7 @@ export default {
   },
   mounted() {
     this.showTopSpace = !this.loggedIn
+    this.showTopSpace = this.comments.lenth === 0
   },
   computed: {
     ...mapGetters('user', ['loggedIn']),
