@@ -407,9 +407,11 @@ const actions = {
     }
   },
   addArticleComment({ commit, rootState }, { text, commentId }) {
+    const { currentUserInfo } = rootState.user
     const comment = {
       text,
-      userInfo: rootState.user.currentUserInfo,
+      userInfo: currentUserInfo,
+      user_id: currentUserInfo.user_id,
       created_at: new Date().getTime() / 1000,
       comment_id: commentId,
       isLiked: false,
