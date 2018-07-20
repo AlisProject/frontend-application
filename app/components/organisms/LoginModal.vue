@@ -1,5 +1,5 @@
 <template>
-  <app-modal title="LOGIN" @close="resetStates">
+  <app-modal title="LOGIN" @close="resetStates" :showModalContent="showLoginModal">
     <div slot="modal-content">
       <login-modal-form />
     </div>
@@ -17,7 +17,7 @@ export default {
     LoginModalForm
   },
   computed: {
-    ...mapGetters('user', ['sentMail'])
+    ...mapGetters('user', ['sentMail', 'showLoginModal'])
   },
   methods: {
     resetStates() {

@@ -1,5 +1,5 @@
 <template>
-  <app-modal title="SIGN UP" @close="resetStates">
+  <app-modal title="SIGN UP" @close="resetStates" :showModalContent="showSignUpModal">
     <div slot="modal-header-content" v-if="beforeSendMail">
       <div class="modal-header-warning">
         現在、新規の登録はβ版登録ユーザーのみに限らせていただいています。
@@ -31,7 +31,7 @@ export default {
     beforeSendMail() {
       return !this.sentMail
     },
-    ...mapGetters('user', ['sentMail'])
+    ...mapGetters('user', ['sentMail', 'showSignUpModal'])
   },
   methods: {
     resetStates() {
