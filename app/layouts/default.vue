@@ -66,4 +66,11 @@ body {
     'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3',
     'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
 }
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
 </style>
