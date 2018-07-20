@@ -288,24 +288,25 @@ export default {
       await Promise.all(
         images.map(async (img) => {
           const isBase64Image = img.src.includes('data:')
-          if (isBase64Image) {
-            try {
-              const base64Image = img.src
-              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-              const imageContentType = base64Image.substring(
-                base64Image.match(':').index + 1,
-                base64Image.match(';').index
-              )
-              const { image_url: imageUrl } = await this.postArticleImage({
-                articleId: this.articleId,
-                articleImage: base64Hash,
-                imageContentType
-              })
-              img.src = imageUrl
-            } catch (error) {
-              this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
-              throw new Error('Image upload failed.')
-            }
+          if (!isBase64Image) {
+            return
+          }
+          try {
+            const base64Image = img.src
+            const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+            const imageContentType = base64Image.substring(
+              base64Image.match(':').index + 1,
+              base64Image.match(';').index
+            )
+            const { image_url: imageUrl } = await this.postArticleImage({
+              articleId: this.articleId,
+              articleImage: base64Hash,
+              imageContentType
+            })
+            img.src = imageUrl
+          } catch (error) {
+            this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+            throw new Error('Image upload failed.')
           }
         })
       )
