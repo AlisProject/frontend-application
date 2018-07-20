@@ -93,11 +93,12 @@ export default {
       try {
         if (this.postingComment) return
         this.postingComment = true
+        const escapedComment = this.escapeHTML(this.comment)
         const commentId = await this.postArticleComment({
           articleId: this.$route.params.articleId,
-          text: this.escapeHTML(this.comment)
+          text: escapedComment
         })
-        this.addArticleComment({ text: this.comment, commentId })
+        this.addArticleComment({ text: escapedComment, commentId })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''
         this.$el.querySelector('.comment-textarea').focus()
