@@ -11,8 +11,9 @@
     <div
       class="area-body"
       ref="editable"
+      @dragover="preventDragoverImage"
       @drop="preventDropImage"
-      @dragover="preventDragoverImage"/>
+    />
   </div>
 </template>
 
@@ -26,7 +27,8 @@ import {
   getIframelyUrlTemplate,
   getTwitterProfileTemplate,
   getIframelyEmbedTemplate,
-  getThumbnails
+  getThumbnails,
+  createInsertPluginTemplateFromUrl
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -40,12 +42,13 @@ export default {
   },
   data() {
     return {
+      targetDOM: null,
       editorElement: null,
       updateArticleInterval: null
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isEdited']),
+    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -55,28 +58,15 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
-    document.body.addEventListener(
-      'drop',
-      (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      },
-      false
-    )
-    document.body.addEventListener(
-      'dragover',
-      (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      },
-      false
-    )
+    this.preventDragAndDrop(window)
+    const preventDragAndDropInterval = setInterval(() => {
+      if (!this.$el.querySelector('.medium-insert-buttons')) return
+      this.preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
+      clearInterval(preventDragAndDropInterval)
+    }, 100)
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
-      if (pressedEnterkey && e.shiftKey) {
-        e.preventDefault()
-      }
       if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
         e.preventDefault()
       }
@@ -158,7 +148,7 @@ export default {
                   result = await this.$axios.$get(
                     `https://iframe.ly/api/oembed?api_key=${
                       process.env.IFRAMELY_API_KEY
-                    }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
                   )
                 } catch (error) {
                   const message = isTweet
@@ -178,6 +168,10 @@ export default {
                   this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
                   iframely.load()
                 } else {
+                  const { title, description } = result
+                  const hasTitleOrDescription = title !== undefined || description !== undefined
+                  if (!hasTitleOrDescription) return
+
                   this.editorElement.pasteHTML(
                     `<br>
                   ${getTwitterProfileTemplate({ ...result })}
@@ -190,15 +184,15 @@ export default {
                   result = await this.$axios.$get(
                     `https://iframe.ly/api/iframely?api_key=${
                       process.env.IFRAMELY_API_KEY
-                    }&url=${trimmedLine}&omit_script=1&omit_css=1`
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
                   )
                 } catch (error) {
                   console.error(error)
                   return
                 }
                 const { title, description } = result.meta
-                const hasTitleAndDescription = title === undefined && description === undefined
-                if (!hasTitleAndDescription) return
+                const hasTitleOrDescription = title !== undefined || description !== undefined
+                if (!hasTitleOrDescription) return
 
                 selectedParentElement.innerHTML = ''
 
@@ -335,6 +329,9 @@ export default {
       // Update thumbnails
       const thumbnails = getThumbnails(images)
       this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
     },
     removeUselessDOMFromArticleBody() {
       const serializedContents = this.editorElement.serialize()
@@ -384,19 +381,57 @@ export default {
         }
       }
     },
-    preventDragoverImage(e) {
-      e.preventDefault()
-      e.stopPropagation()
+    preventDragoverImage(event) {
+      event.preventDefault()
+      event.stopPropagation()
+      setTimeout(() => {
+        this.targetDOM = $('.medium-editor-dragover')
+      }, 10)
       return false
     },
-    preventDropImage(e) {
-      e.preventDefault()
-      e.stopPropagation()
-      this.sendNotification({
-        text: 'ドラッグ&ドロップでは画像をアップロードできません。',
-        type: 'warning'
-      })
+    preventDropImage(event) {
+      event.preventDefault()
+      event.stopPropagation()
+      this.insertDragImage(event.dataTransfer.files)
       return false
+    },
+    insertDragImage(files) {
+      if (this.targetDOM[0].classList.value.includes('area-body')) return
+      const [target] = files
+      const MAX_UPLOAD = 4.5 * 1024 * 1024 // 4.5 MB
+      if (target.size > MAX_UPLOAD) {
+        this.sendNotification({ text: '画像は4.5MBまでアップロード可能です。', type: 'warning' })
+        return
+      }
+      if (!this.isImageContent(files[0].type)) return
+      const reader = new FileReader()
+      reader.onload = ({ currentTarget: { result } }) => {
+        this.targetDOM.after($(createInsertPluginTemplateFromUrl(result)))
+        this.targetDOM = null
+        this.setIsEdited({ isEdited: true })
+      }
+      reader.readAsDataURL(target)
+    },
+    preventDragAndDrop(element) {
+      element.addEventListener(
+        'drop',
+        (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        },
+        false
+      )
+      element.addEventListener(
+        'dragover',
+        (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        },
+        false
+      )
+    },
+    isImageContent(fileType) {
+      return Boolean(fileType.match(/image.*/))
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -412,7 +447,8 @@ export default {
       'setIsSaving',
       'postNewArticle',
       'setIsEdited',
-      'setSaveStatus'
+      'setSaveStatus',
+      'updateThumbnail'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }
@@ -458,6 +494,9 @@ export default {
   grid-area: body;
   width: 100%;
   padding-bottom: 120px;
+  &.medium-editor-dragover {
+    background: #fff;
+  }
 }
 
 .medium-editor-placeholder-relative:after,

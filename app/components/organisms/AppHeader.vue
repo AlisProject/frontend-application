@@ -24,7 +24,7 @@
     <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
-    <request-login-modal v-if="showRequestLoginModal"/>
+    <request-login-modal v-if="requestLoginModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -98,7 +98,7 @@ export default {
       'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
-      'showRequestLoginModal'
+      'requestLoginModal'
     ])
   },
   methods: {

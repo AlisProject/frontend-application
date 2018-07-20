@@ -1,4 +1,6 @@
-module.exports = {
+const isProduction = process.env.NODE_ENV === 'production'
+
+const nuxtConfig = {
   /*
   ** Headers of the page
   */
@@ -110,3 +112,19 @@ module.exports = {
     DOMAIN: process.env.DOMAIN
   }
 }
+
+if (!isProduction) {
+  nuxtConfig.axios = {
+    prefix: '/api',
+    proxyHeaders: false,
+    proxy: true
+  }
+  nuxtConfig.proxy = {
+    '/api': {
+      target: process.env.BASE_URL,
+      pathRewrite: { '^/api': '/' }
+    }
+  }
+}
+
+module.exports = nuxtConfig

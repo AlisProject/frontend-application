@@ -34,6 +34,8 @@ const state = () => ({
   hasDraftArticlesLastEvaluatedKey: false,
   isEdited: false,
   saveStatus: '',
+  articleCommentsLastEvaluatedKey: {},
+  articleCommentLikedCommentIds: [],
   searchArticles: []
 })
 
@@ -60,6 +62,10 @@ const getters = {
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
   saveStatus: (state) => state.saveStatus,
+  articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
+  hasArticleCommentsLastEvaluatedKey: (state) =>
+    !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length,
+  articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
   searchArticles: (state) => state.searchArticles
 }
 
@@ -142,6 +148,9 @@ const actions = {
   async getEditDraftArticle({ commit }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/drafts`)
+      if (article.eye_catch_url) {
+        commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
+      }
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
     } catch (error) {
@@ -154,8 +163,9 @@ const actions = {
       const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
       const alisToken = await dispatch('getAlisToken', { articleId })
       const likesCount = await dispatch('getLikesCount', { articleId })
+      const comments = await dispatch('getArticleComments', { articleId })
       commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken } })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -325,6 +335,121 @@ const actions = {
   setSaveStatus({ commit }, { saveStatus }) {
     commit(types.SET_SAVE_STATUS, { saveStatus })
   },
+  async postArticleComment({ commit }, { articleId, text }) {
+    try {
+      const { comment_id: commentId } = await this.$axios.$post(
+        `/me/articles/${articleId}/comments`,
+        { text }
+      )
+      return commentId
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getArticleComments({ commit, dispatch, state }, { articleId }) {
+    try {
+      const {
+        article_id: articleCommentsarticleId,
+        comment_id: commentId,
+        sort_key: sortKey
+      } = state.articleCommentsLastEvaluatedKey
+      const params =
+        commentId && sortKey
+          ? {
+            limit: 10,
+            comment_id: commentId,
+            article_id: articleCommentsarticleId,
+            sort_key: sortKey
+          }
+          : { limit: 5 }
+
+      const { Items: comments, LastEvaluatedKey } = await this.$axios.$get(
+        `/articles/${articleId}/comments`,
+        { params }
+      )
+      commit(types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || {}
+      })
+      const commentsWithData = await Promise.all(
+        comments.map(async (comment) => {
+          const userInfo = await dispatch('getUserInfo', { userId: comment.user_id })
+          let isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
+          const likesCount = await dispatch('getArticleCommentLikesCount', {
+            commentId: comment.comment_id
+          })
+          return { ...comment, userInfo, isLiked, likesCount }
+        })
+      )
+      return commentsWithData
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async setArticleComments({ commit, dispatch }, { articleId }) {
+    try {
+      const comments = await dispatch('getArticleComments', { articleId })
+      commit(types.SET_ARTICLE_COMMENTS, { comments })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async postCommentLike({ commit }, { commentId }) {
+    try {
+      await this.$axios.$post(`/me/comments/${commentId}/likes`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async deleteArticleComment({ commit }, { commentId }) {
+    try {
+      await this.$axios.$delete(`/me/comments/${commentId}`)
+      commit(types.DELETE_ARTICLE_COMMENT, { commentId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  addArticleComment({ commit, rootState }, { text, commentId }) {
+    const comment = {
+      text,
+      userInfo: rootState.user.currentUserInfo,
+      created_at: new Date().getTime() / 1000,
+      comment_id: commentId,
+      isLiked: false,
+      likesCount: 0
+    }
+
+    commit(types.ADD_ARTICLE_COMMENT, { comment })
+  },
+  async getIsLikedArticleCommentIds({ commit }, { articleId }) {
+    try {
+      const { comment_ids: commentIds } = await this.$axios.$get(
+        `/me/articles/${articleId}/comments/likes`
+      )
+      commit(types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS, { commentIds })
+      return commentIds
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getArticleCommentLikesCount({ commit }, { commentId }) {
+    try {
+      const { count: likesCount } = await this.$axios.$get(`/comments/${commentId}/likes`)
+      return likesCount
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetArticleCommentsLastEvaluatedKey({ commit }) {
+    commit(types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY, { lastEvaluatedKey: {} })
+  },
+  async updateArticleCommentsByCommentIds({ commit, dispatch }, { articleId }) {
+    try {
+      const commentIds = await dispatch('getIsLikedArticleCommentIds', { articleId })
+      commit(types.UPDATE_ARTICLE_COMMENTS_BY_COMMENT_IDS, { commentIds })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async getSearchArticles({ commit, dispatch }) {
     const { Items: articles } = await this.$axios.$get('/articles/recent', {
       params: { limit: 10 }
@@ -426,6 +551,29 @@ const mutations = {
   },
   [types.SET_SAVE_STATUS](state, { saveStatus }) {
     state.saveStatus = saveStatus
+  },
+  [types.SET_ARTICLE_COMMENTS](state, { comments }) {
+    state.article.comments.push(...comments)
+  },
+  [types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.articleCommentsLastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.ADD_ARTICLE_COMMENT](state, { comment }) {
+    state.article.comments.unshift(comment)
+  },
+  [types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS](state, { commentIds }) {
+    state.articleCommentLikedCommentIds = commentIds
+  },
+  [types.UPDATE_ARTICLE_COMMENTS_BY_COMMENT_IDS](state, { commentIds }) {
+    const comments = state.article.comments.map((comment) => {
+      const isLiked = commentIds.includes(comment.comment_id)
+      return { ...comment, isLiked }
+    })
+    state.article.comments = [...comments]
+  },
+  [types.DELETE_ARTICLE_COMMENT](state, { commentId }) {
+    const comments = state.article.comments.filter((comment) => comment.comment_id !== commentId)
+    state.article.comments = comments
   },
   [types.SET_SEARCH_ARTICLES](state, { articles }) {
     state.searchArticles = articles
