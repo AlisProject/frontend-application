@@ -206,7 +206,7 @@ export default {
     font-weight: 500;
     line-height: 1.8;
     margin-top: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 18px;
     word-break: break-word;
   }
 
