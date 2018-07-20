@@ -165,7 +165,10 @@ export default {
       let result, cleanAttrs, embedHTML
 
       try {
-        result = (await getResourceFromIframely(isTwitterResource ? 'oembed' : 'iframely', trimmedLine)).data
+        result = (await getResourceFromIframely(
+          isTwitterResource ? 'oembed' : 'iframely',
+          trimmedLine
+        )).data
       } catch (error) {
         if (isTwitterResource) {
           const message = isTweet
