@@ -38,7 +38,7 @@ const nuxtConfig = {
         property: 'og:image',
         content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
       },
-      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
       { hid: 'twitter:site', name: 'twitter:site', content: '@ALIS_media' },
       {
         hid: 'twitter:image',
