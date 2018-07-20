@@ -1,14 +1,14 @@
 <template>
   <transition name="fade">
     <div class="article-comment">
-      <div class="commented-user">
+      <nuxt-link :to="`/users/${comment.userInfo.user_id}`" class="commented-user">
         <img class="icon" :src="comment.userInfo.icon_image_url" v-if="hasUserIcon">
         <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
         <ul class="info">
           <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
           <li class="info-content">{{ createdAt }}</li>
         </ul>
-      </div>
+      </nuxt-link>
       <p class="body" v-html="commentText"/>
       <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
         <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
