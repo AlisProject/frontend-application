@@ -82,6 +82,7 @@ export default {
     },
     checkLogin() {
       if (this.loggedIn) return
+      document.activeElement.blur()
       this.showModal()
     },
     async submit() {
