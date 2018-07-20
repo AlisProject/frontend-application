@@ -8,14 +8,11 @@
           <span class="name">{{ currentUserInfo.user_display_name }}</span>
         </div>
       </no-ssr>
-      <textarea
-        class="comment-textarea"
-        :class="{ 'no-border': !isCommentEmpty }"
-        type="text"
-        placeholder="コメントを入力してください"
-        maxlength="400"
+      <article-comment-textarea
+        :no-border="!isCommentEmpty"
         @focus="checkLogin"
-        v-model.trim="comment"/>
+        v-model="comment"
+      />
       <span
         class="comment-submit"
         :class="{ 'disable': isCommentEmpty }"
@@ -27,45 +24,19 @@
 </template>
 
 <script>
+import ArticleCommentTextarea from '~/components/atoms/ArticleCommentTextarea.vue'
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
+  components: {
+    ArticleCommentTextarea
+  },
   data() {
     return {
       comment: '',
       postingComment: false
     }
-  },
-  mounted() {
-    const textarea = this.$el.querySelector('.comment-textarea')
-    textarea.style.lineHeight = '18px'
-    textarea.style.height = '60px'
-
-    textarea.addEventListener('input', (event) => {
-      if (event.target.scrollHeight > event.target.offsetHeight) {
-        event.target.style.height = `${event.target.scrollHeight}px`
-        return
-      }
-      let height, lineHeight
-      while (true) {
-        height = Number(event.target.style.height.split('px')[0])
-        lineHeight = Number(event.target.style.lineHeight.split('px')[0])
-        event.target.style.height = `${height - lineHeight}px`
-        if (event.target.scrollHeight > event.target.offsetHeight) {
-          event.target.style.height = `${event.target.scrollHeight}px`
-          break
-        }
-      }
-    })
-
-    const viewportMeta = document.querySelector('meta[name="viewport"]')
-    textarea.addEventListener('touchstart', (event) => {
-      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
-    })
-    textarea.addEventListener('blur', (event) => {
-      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1')
-    })
   },
   computed: {
     isCommentEmpty() {
