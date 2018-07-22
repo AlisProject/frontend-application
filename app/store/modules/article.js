@@ -457,10 +457,6 @@ const actions = {
     const articles = await this.$axios.$get('/search/articles', {
       params: { limit, query, page: state.searchArticles.page }
     })
-    if (articles < limit) {
-      commit(types.SET_SEARCH_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
-      return
-    }
     const articlesWithData = await Promise.all(
       articles.map(async (article) => {
         const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
@@ -469,6 +465,10 @@ const actions = {
       })
     )
     commit(types.SET_SEARCH_ARTICLES, { articles: articlesWithData })
+    if (articles.length < limit) {
+      commit(types.SET_SEARCH_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      return
+    }
     commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
   }
 }

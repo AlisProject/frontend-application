@@ -504,11 +504,11 @@ const actions = {
     const users = await this.$axios.$get('/search/users', {
       params: { limit, query, page: state.searchUsers.page }
     })
-    if (users < limit) {
+    commit(types.SET_SEARCH_USERS, { users })
+    if (users.length < limit) {
       commit(types.SET_SEARCH_USERS_IS_LAST_PAGE, { isLastPage: true })
       return
     }
-    commit(types.SET_SEARCH_USERS, { users })
     commit(types.SET_SEARCH_USERS_PAGE, { page: state.searchUsers.page + 1 })
   }
 }
