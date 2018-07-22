@@ -136,8 +136,21 @@ export default {
 
 @media screen and (max-width: 550px) {
   .search-user-card-container {
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
-    padding: 20px;
+    grid-template-columns: 40px 1fr;
+    grid-column-gap: 10px;
+    /* prettier-ignore */
+    grid-template-areas:
+    "author-icon       user-display-name"
+    "author-icon       user-id          "
+    "self-introduction self-introduction";
+    padding: 16px;
+  }
+
+  .area-author-icon {
+    .author-icon {
+      height: 40px;
+      width: 40px;
+    }
   }
 
   .area-self-introduction {
