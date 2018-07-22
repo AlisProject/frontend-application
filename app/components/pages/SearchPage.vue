@@ -87,7 +87,9 @@ export default {
   },
   beforeDestroy() {
     this.resetSearchArticles()
+    this.resetSearchArticlesPage()
     this.resetSearchUsers()
+    this.resetSearchUsersPage()
     this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
@@ -135,8 +137,12 @@ export default {
         this.isFetchingData = false
       }
     },
-    ...mapActions('user', ['getSearchUsers', 'resetSearchUsers']),
-    ...mapActions('article', ['getSearchArticles', 'resetSearchArticles']),
+    ...mapActions('user', ['getSearchUsers', 'resetSearchUsers', 'resetSearchUsersPage']),
+    ...mapActions('article', [
+      'getSearchArticles',
+      'resetSearchArticles',
+      'resetSearchArticlesPage'
+    ]),
     ...mapActions('presentation', ['setNotificationListScrollHeight'])
   }
 }

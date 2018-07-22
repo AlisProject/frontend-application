@@ -465,14 +465,16 @@ const actions = {
       })
     )
     commit(types.SET_SEARCH_ARTICLES, { articles: articlesWithData })
+    commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
     if (articles.length < limit) {
       commit(types.SET_SEARCH_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
-      return
     }
-    commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
   },
   resetSearchArticles({ commit }) {
     commit(types.RESET_SEARCH_ARTICLES)
+  },
+  resetSearchArticlesPage({ commit }) {
+    commit(types.RESET_SEARCH_ARTICLES_PAGE)
   }
 }
 
@@ -597,6 +599,9 @@ const mutations = {
   },
   [types.RESET_SEARCH_ARTICLES](state) {
     state.searchArticles.articles = []
+  },
+  [types.RESET_SEARCH_ARTICLES_PAGE](state) {
+    state.searchArticles.page = 1
   }
 }
 

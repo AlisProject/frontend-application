@@ -505,14 +505,16 @@ const actions = {
       params: { limit, query, page: state.searchUsers.page }
     })
     commit(types.SET_SEARCH_USERS, { users })
+    commit(types.SET_SEARCH_USERS_PAGE, { page: state.searchUsers.page + 1 })
     if (users.length < limit) {
       commit(types.SET_SEARCH_USERS_IS_LAST_PAGE, { isLastPage: true })
-      return
     }
-    commit(types.SET_SEARCH_USERS_PAGE, { page: state.searchUsers.page + 1 })
   },
   resetSearchUsers({ commit }) {
     commit(types.RESET_SEARCH_USERS)
+  },
+  resetSearchUsersPage({ commit }) {
+    commit(types.RESET_SEARCH_USERS_PAGE)
   }
 }
 
@@ -708,6 +710,9 @@ const mutations = {
   },
   [types.RESET_SEARCH_USERS](state) {
     state.searchUsers.users = []
+  },
+  [types.RESET_SEARCH_USERS_PAGE](state) {
+    state.searchUsers.page = 1
   }
 }
 
