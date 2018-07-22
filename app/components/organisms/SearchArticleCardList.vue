@@ -27,20 +27,20 @@ export default {
   grid-area: article-card-list;
   grid-gap: 30px;
   grid-template-columns: repeat(3, 340px);
-  grid-template-rows: repeat(4, 268px);
+  grid-template-rows: repeat(auto-fill, 268px);
 }
 
 @media screen and (max-width: 1296px) {
   .area-search-article-card-list-container {
     grid-template-columns: repeat(2, 340px);
-    grid-template-rows: repeat(6, 268px);
+    grid-template-rows: repeat(auto-fill, 268px);
   }
 }
 
 @media screen and (max-width: 920px) {
   .area-search-article-card-list-container {
     grid-template-columns: 340px;
-    grid-template-rows: repeat(10, 268px);
+    grid-template-rows: repeat(auto-fill, 268px);
   }
 }
 
@@ -48,7 +48,7 @@ export default {
   .area-search-article-card-list-container {
     grid-gap: 15px;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(10, 300px);
+    grid-template-rows: repeat(auto-fill, 300px);
   }
 }
 </style>
