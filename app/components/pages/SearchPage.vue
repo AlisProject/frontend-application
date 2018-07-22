@@ -291,7 +291,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .search-page-container {
-    grid-template-rows: 60px 20px 20px 50px 1fr 75px 75px;
+    grid-template-rows: 60px 20px 20px 50px 1fr 75px;
     /* prettier-ignore */
     grid-template-areas:
     "app-header  app-header             app-header"
@@ -311,6 +311,10 @@ export default {
 @media screen and (max-width: 370px) {
   .search-page-container {
     grid-template-columns: 10px 1fr 10px;
+
+    &.article {
+      grid-template-columns: 10px 1fr 10px;
+    }
   }
 }
 </style>
