@@ -30,7 +30,7 @@
       <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
       <search-user-card-list :users="searchUsers.users" v-else/>
     </div>
-    <the-loader :isLastPage="searchArticles.isLastPage"/>
+    <the-loader :isLastPage="!this.query || searchArticles.isLastPage"/>
     <app-footer/>
   </div>
 </template>
@@ -112,7 +112,7 @@ export default {
       this.showArticles = false
     },
     async infiniteScroll(event) {
-      if (this.isFetchingData) return
+      if (this.isFetchingData || !this.query) return
       try {
         this.isFetchingData = true
         if (
