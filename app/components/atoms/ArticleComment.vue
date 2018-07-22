@@ -176,27 +176,30 @@ export default {
   .commented-user {
     color: #5b5b5b;
     font-size: 14px;
-    left: 20px;
-    position: absolute;
-    top: 20px;
-
-    .info {
-      color: #6e6e6e;
-      float: right;
-      font-size: 12px;
-      list-style: none;
-      margin: 0px 16px;
-      padding: 0;
-
-      .info-content {
-        line-height: 1.5;
-      }
-    }
+    display: flex;
+    align-items: center;
 
     .icon {
       width: 36px;
       height: 36px;
       border-radius: 50%;
+      margin-right: 16px;
+    }
+
+    .info {
+      color: #6e6e6e;
+      font-size: 12px;
+      list-style: none;
+      padding: 0;
+      word-wrap: break-word;
+      margin: 0;
+
+      .info-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 1.5;
+      }
     }
   }
 
@@ -205,7 +208,6 @@ export default {
     font-size: 12px;
     font-weight: 500;
     line-height: 1.8;
-    margin-top: 40px;
     padding-bottom: 40px;
     word-break: break-word;
   }
@@ -263,6 +265,16 @@ export default {
       .delete {
         cursor: pointer;
         user-select: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .article-comment {
+    .commented-user {
+      .info {
+        width: calc(100vw - (10px + 24px + 36px + 16px + 24px + 10px));
       }
     }
   }

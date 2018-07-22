@@ -151,6 +151,9 @@ export default {
       .name {
         color: #6e6e6e;
         font-size: 12px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -205,6 +208,16 @@ export default {
 @media screen and (max-width: 640px) {
   .area-article-comment-form {
     padding: 40px 10px 8px;
+
+    .article-comment-form-box {
+      .comment-user {
+        .name {
+          color: #6e6e6e;
+          font-size: 12px;
+          width: calc(100vw - (10px + 24px + 36px + 16px + 24px + 10px));
+        }
+      }
+    }
   }
 }
 </style>
