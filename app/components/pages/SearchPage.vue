@@ -91,18 +91,21 @@ export default {
   },
   methods: {
     async search() {
-      this.resetSearchData()
-      this.query = this.$refs.searchInput.value
-      if (!this.query) return
-      this.showNav = true
-      this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
       try {
+        this.resetSearchData()
+        this.query = this.$refs.searchInput.value
+        if (this.isFetchingData || !this.query) return
+        this.isFetchingData = true
+        this.showNav = true
+        this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
         await Promise.all([
           this.getSearchArticles({ query: this.query }),
           this.getSearchUsers({ query: this.query })
         ])
       } catch (error) {
         console.error(error)
+      } finally {
+        this.isFetchingData = false
       }
     },
     showArticleResult() {
