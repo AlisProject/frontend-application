@@ -66,14 +66,14 @@ export default {
     this.showNav = !!this.query
   },
   mounted() {
-    if (this.notificationListScrollHeight) {
-      this.$el.scrollTop = this.notificationListScrollHeight
-    }
     this.$refs.searchInput.focus()
     if (location.pathname.startsWith('/search/users')) {
       this.showArticles = false
     }
     this.inputText = this.$route.query.q
+    if (this.notificationListScrollHeight) {
+      this.$el.scrollTop = this.notificationListScrollHeight
+    }
   },
   data() {
     return {
