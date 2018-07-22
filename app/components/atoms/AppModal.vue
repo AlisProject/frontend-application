@@ -19,7 +19,7 @@
             </slot>
           </div>
           <div class="modal-content">
-            <slot name="modal-content" />
+            <slot v-if="showModalContentLately" name="modal-content" />
           </div>
         </div>
       </div>
@@ -35,6 +35,16 @@ export default {
     title: {
       type: String,
       required: false
+    },
+    showModalContent: {
+      type: Boolean,
+      default: true,
+      required: false
+    }
+  },
+  data() {
+    return {
+      showModalContentLately: true
     }
   },
   computed: {
@@ -103,6 +113,18 @@ export default {
       'logout',
       'setRequestLoginModal'
     ])
+  },
+  watch: {
+    showModalContent() {
+      // For preventing display collapse when closing a modal
+      if (this.showModalContent) {
+        this.showModalContentLately = this.showModalContent
+      } else {
+        setTimeout(() => {
+          this.showModalContentLately = this.showModalContent
+        }, 1000)
+      }
+    }
   }
 }
 </script>
@@ -141,7 +163,7 @@ export default {
   &-body {
     .title {
       color: #030303;
-      font-family: Times;
+      font-family: 'Times New Roman', Times, serif;
       font-size: 20px;
       font-weight: bold;
       letter-spacing: 0.2em;

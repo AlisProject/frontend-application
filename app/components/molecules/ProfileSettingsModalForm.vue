@@ -270,7 +270,6 @@ export default {
       border: none;
       border-radius: 0;
       border-bottom: 1px dotted #232538;
-      font-family: YuGothic;
       margin-bottom: 30px;
       padding: 5px 0;
       width: 100%;
