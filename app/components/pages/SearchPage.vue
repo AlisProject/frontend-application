@@ -86,10 +86,14 @@ export default {
     }
   },
   beforeDestroy() {
+    this.resetSearchArticles()
+    this.resetSearchUsers()
     this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
     async search() {
+      this.resetSearchArticles()
+      this.resetSearchUsers()
       this.query = this.$refs.searchInput.value
       if (!this.query) return
       this.showNav = true
@@ -131,8 +135,8 @@ export default {
         this.isFetchingData = false
       }
     },
-    ...mapActions('user', ['getSearchUsers']),
-    ...mapActions('article', ['getSearchArticles']),
+    ...mapActions('user', ['getSearchUsers', 'resetSearchUsers']),
+    ...mapActions('article', ['getSearchArticles', 'resetSearchArticles']),
     ...mapActions('presentation', ['setNotificationListScrollHeight'])
   }
 }

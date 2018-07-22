@@ -470,6 +470,9 @@ const actions = {
       return
     }
     commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
+  },
+  resetSearchArticles({ commit }) {
+    commit(types.RESET_SEARCH_ARTICLES)
   }
 }
 
@@ -591,6 +594,9 @@ const mutations = {
   },
   [types.SET_SEARCH_ARTICLES_PAGE](state, { page }) {
     state.searchArticles.page = page
+  },
+  [types.RESET_SEARCH_ARTICLES](state) {
+    state.searchArticles.articles = []
   }
 }
 
