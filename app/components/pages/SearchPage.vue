@@ -69,7 +69,7 @@ export default {
     if (this.notificationListScrollHeight) {
       this.$el.scrollTop = this.notificationListScrollHeight
     }
-    this.$el.querySelector('.area-search').focus()
+    this.$refs.searchInput.focus()
     if (location.pathname.startsWith('/search/users')) {
       this.showArticles = false
     }
