@@ -15,16 +15,14 @@
         src="~assets/images/pc/common/icon_search.png">
     </form>
     <nav class="area-nav" v-if="showNav">
-      <nuxt-link
-        :to="{ path: '/search', query: { q: this.query }}"
+      <span
         class="area-article nav-link"
         :class="{ 'selected': showArticles }"
-        @click="showArticleResult">記事</nuxt-link>
-      <nuxt-link
-        :to="{ path: '/search/users', query: { q: this.query }}"
+        @click="showArticleResult">記事</span>
+      <span
         class="area-user nav-link"
         :class="{ 'selected': !showArticles }"
-        @click="showSearchResult">ユーザー</nuxt-link>
+        @click="showSearchResult">ユーザー</span>
     </nav>
     <div class="area-search-result">
       <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
@@ -106,9 +104,11 @@ export default {
       }
     },
     showArticleResult() {
+      history.replaceState(null, null, `/search?q=${this.query}`)
       this.showArticles = true
     },
     showSearchResult() {
+      history.replaceState(null, null, `/search/users?q=${this.query}`)
       this.showArticles = false
     },
     async infiniteScroll(event) {
