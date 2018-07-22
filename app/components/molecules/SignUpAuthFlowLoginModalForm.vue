@@ -12,6 +12,7 @@
             type="text"
             placeholder="alis@example.com"
             autofocus
+            ref="userIdOrEmail"
             @input="setUserIdOrEmail"
             @blur="showError('userIdOrEmail')"
             @focus="resetError('userIdOrEmail')">
@@ -22,6 +23,7 @@
             class="signup-form-input"
             type="password"
             placeholder="半角英数字8文字以上"
+            ref="password"
             @input="setPassword"
             @blur="showError('password')"
             @focus="resetError('password')">
@@ -132,6 +134,8 @@ export default {
         this.setSignUpAuthFlowInputPhoneNumberModal({
           isSignUpAuthFlowInputPhoneNumberModal: true
         })
+        this.$refs.userIdOrEmail.value = ''
+        this.$refs.password.value = ''
         this.resetPassword()
       } catch (error) {
         let errorMessage = ''

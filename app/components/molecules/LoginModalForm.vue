@@ -9,6 +9,7 @@
             type="text"
             placeholder="alis@example.com"
             autofocus
+            ref="userIdOrEmail"
             @input="setUserIdOrEmail"
             @blur="showError('userIdOrEmail')"
             @focus="resetError('userIdOrEmail')">
@@ -18,6 +19,7 @@
           <input
             class="signup-form-input"
             type="password"
+            ref="password"
             placeholder="半角英数字8文字以上"
             @input="setPassword"
             @blur="showError('password')"
@@ -128,6 +130,8 @@ export default {
         }
 
         document.querySelector('html,body').style.overflow = ''
+        this.$refs.userIdOrEmail.value = ''
+        this.$refs.password.value = ''
         this.resetPassword()
       } catch (error) {
         let errorMessage = ''

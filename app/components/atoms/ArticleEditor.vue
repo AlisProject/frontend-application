@@ -11,8 +11,9 @@
     <div
       class="area-body"
       ref="editable"
+      @dragover="preventDragoverImage"
       @drop="preventDropImage"
-      @dragover="preventDragoverImage"/>
+    />
   </div>
 </template>
 
@@ -22,7 +23,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
-import { getTwitterProfileTemplate, getThumbnails } from '~/utils/article'
+import {
+  getIframelyUrlTemplate,
+  getTwitterProfileTemplate,
+  getIframelyEmbedTemplate,
+  getThumbnails,
+  createInsertPluginTemplateFromUrl
+} from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -35,12 +42,13 @@ export default {
   },
   data() {
     return {
+      targetDOM: null,
       editorElement: null,
       updateArticleInterval: null
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isEdited']),
+    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -50,28 +58,15 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
-    document.body.addEventListener(
-      'drop',
-      (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      },
-      false
-    )
-    document.body.addEventListener(
-      'dragover',
-      (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      },
-      false
-    )
+    this.preventDragAndDrop(window)
+    const preventDragAndDropInterval = setInterval(() => {
+      if (!this.$el.querySelector('.medium-insert-buttons')) return
+      this.preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
+      clearInterval(preventDragAndDropInterval)
+    }, 100)
     $('.area-body').keydown((e) => {
       const enterKeyCode = 13
       const pressedEnterkey = e.keyCode === enterKeyCode
-      if (pressedEnterkey && e.shiftKey) {
-        e.preventDefault()
-      }
       if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
         e.preventDefault()
       }
@@ -141,49 +136,80 @@ export default {
           if (event.key === 'Enter') {
             const line = this.editorElement.getSelectedParentElement().textContent
             const trimmedLine = line.trim()
-            if (
-              trimmedLine === 'https://twitter.com' ||
-              (urlRegex({ exact: true }).test(trimmedLine) &&
-                trimmedLine.startsWith('https://twitter.com/'))
-            ) {
+            if (urlRegex({ exact: true }).test(trimmedLine)) {
               const selectedParentElement = this.editorElement.getSelectedParentElement()
-              const isTweet = trimmedLine.split('/')[4] === 'status'
               let result
-              try {
-                result = await this.$axios.$get(
-                  `https://iframe.ly/api/oembed?api_key=${
-                    process.env.IFRAMELY_API_KEY
-                  }&url=${trimmedLine}&omit_script=1&omit_css=1`
-                )
-              } catch (error) {
-                const message = isTweet
-                  ? 'ツイートが取得できませんでした。'
-                  : 'Twitterのユーザー情報が取得できませんでした。'
-                this.sendNotification({
-                  text: message,
-                  type: 'warning'
-                })
-                console.error(error)
-                return
-              }
+              if (
+                trimmedLine === 'https://twitter.com' ||
+                trimmedLine.startsWith('https://twitter.com/')
+              ) {
+                const isTweet = trimmedLine.split('/')[4] === 'status'
+                try {
+                  result = await this.$axios.$get(
+                    `https://iframe.ly/api/oembed?api_key=${
+                      process.env.IFRAMELY_API_KEY
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
+                  )
+                } catch (error) {
+                  const message = isTweet
+                    ? 'ツイートが取得できませんでした。'
+                    : 'Twitterのユーザー情報が取得できませんでした。'
+                  this.sendNotification({
+                    text: message,
+                    type: 'warning'
+                  })
+                  console.error(error)
+                  return
+                }
 
-              selectedParentElement.innerHTML = ''
+                selectedParentElement.innerHTML = ''
 
-              if (isTweet) {
-                this.editorElement.pasteHTML(
-                  `<br>
-                  <div data-alis-iframely-url="${trimmedLine}" contenteditable="false">
-                    <a href="${trimmedLine}" data-iframely-url></a>
-                  </div>
-                  <br>`
-                )
-                iframely.load()
-              } else {
-                this.editorElement.pasteHTML(
-                  `<br>
+                if (isTweet) {
+                  this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
+                  iframely.load()
+                } else {
+                  const { title, description } = result
+                  const hasTitleOrDescription = title !== undefined || description !== undefined
+                  if (!hasTitleOrDescription) return
+
+                  this.editorElement.pasteHTML(
+                    `<br>
                   ${getTwitterProfileTemplate({ ...result })}
                   <br>`,
-                  { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                    { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
+                  )
+                }
+              } else {
+                try {
+                  result = await this.$axios.$get(
+                    `https://iframe.ly/api/iframely?api_key=${
+                      process.env.IFRAMELY_API_KEY
+                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
+                  )
+                } catch (error) {
+                  console.error(error)
+                  return
+                }
+                const { title, description } = result.meta
+                const hasTitleOrDescription = title !== undefined || description !== undefined
+                if (!hasTitleOrDescription) return
+
+                selectedParentElement.innerHTML = ''
+
+                this.editorElement.pasteHTML(
+                  `<br>
+                    ${getIframelyEmbedTemplate({ ...result })}
+                    <br>`,
+                  {
+                    cleanAttrs: [
+                      'iframely-embed-card',
+                      'title',
+                      'description',
+                      'site',
+                      'thumbnail',
+                      'without-space'
+                    ]
+                  }
                 )
               }
             }
@@ -303,6 +329,9 @@ export default {
       // Update thumbnails
       const thumbnails = getThumbnails(images)
       this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
     },
     removeUselessDOMFromArticleBody() {
       const serializedContents = this.editorElement.serialize()
@@ -352,19 +381,57 @@ export default {
         }
       }
     },
-    preventDragoverImage(e) {
-      e.preventDefault()
-      e.stopPropagation()
+    preventDragoverImage(event) {
+      event.preventDefault()
+      event.stopPropagation()
+      setTimeout(() => {
+        this.targetDOM = $('.medium-editor-dragover')
+      }, 10)
       return false
     },
-    preventDropImage(e) {
-      e.preventDefault()
-      e.stopPropagation()
-      this.sendNotification({
-        text: 'ドラッグ&ドロップでは画像をアップロードできません。',
-        type: 'warning'
-      })
+    preventDropImage(event) {
+      event.preventDefault()
+      event.stopPropagation()
+      this.insertDragImage(event.dataTransfer.files)
       return false
+    },
+    insertDragImage(files) {
+      if (this.targetDOM[0].classList.value.includes('area-body')) return
+      const [target] = files
+      const MAX_UPLOAD = 4.5 * 1024 * 1024 // 4.5 MB
+      if (target.size > MAX_UPLOAD) {
+        this.sendNotification({ text: '画像は4.5MBまでアップロード可能です。', type: 'warning' })
+        return
+      }
+      if (!this.isImageContent(files[0].type)) return
+      const reader = new FileReader()
+      reader.onload = ({ currentTarget: { result } }) => {
+        this.targetDOM.after($(createInsertPluginTemplateFromUrl(result)))
+        this.targetDOM = null
+        this.setIsEdited({ isEdited: true })
+      }
+      reader.readAsDataURL(target)
+    },
+    preventDragAndDrop(element) {
+      element.addEventListener(
+        'drop',
+        (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        },
+        false
+      )
+      element.addEventListener(
+        'dragover',
+        (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+        },
+        false
+      )
+    },
+    isImageContent(fileType) {
+      return Boolean(fileType.match(/image.*/))
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -380,7 +447,8 @@ export default {
       'setIsSaving',
       'postNewArticle',
       'setIsEdited',
-      'setSaveStatus'
+      'setSaveStatus',
+      'updateThumbnail'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   }
@@ -404,7 +472,6 @@ export default {
 
 .area-title {
   color: #040404;
-  font-family: 'Yu Gothic', YuGothic;
   font-size: 24px;
   font-weight: bold;
   grid-area: title;
@@ -426,6 +493,9 @@ export default {
   grid-area: body;
   width: 100%;
   padding-bottom: 120px;
+  &.medium-editor-dragover {
+    background: #fff;
+  }
 }
 
 .medium-editor-placeholder-relative:after,
@@ -459,7 +529,6 @@ export default {
   border-radius: 4px;
   border: none;
   color: #898989;
-  font-family: 'Yu Gothic', YuGothic;
   font-size: 14px;
   font-weight: 500;
   line-height: 12px;

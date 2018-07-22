@@ -1,15 +1,27 @@
 <template>
   <div class="area-notification-card-image">
-    <img class="profile-icon" src="~assets/images/pc/common/icon_like.png">
+    <img
+      class="profile-icon"
+      src="~assets/images/pc/common/icon_like.png"
+      v-if="notification.type === 'like'">
+    <template v-if="notification.type === 'comment'">
+      <img
+        class="profile-icon"
+        :src="notification.userInfo.icon_image_url"
+        v-if="notification.userInfo.icon_image_url">
+      <img
+        class="profile-icon"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        v-else>
+    </template>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    iconUrl: {
-      type: String,
-      required: false
+    notification: {
+      type: Object
     }
   }
 }

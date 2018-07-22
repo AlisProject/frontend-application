@@ -107,7 +107,7 @@ export default {
     "user-info        user-info         user-info "
     "user-profile-nav user-profile-nav  user-profile-nav"
     "...              article-card-list ...       "
-    "...              ...               ...       "
+    "...              loader            ...       "
     "app-footer       app-footer        app-footer";
   }
 

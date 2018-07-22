@@ -183,7 +183,6 @@ export default {
       border: none;
       border-bottom: 1px dotted #232538;
       border-radius: 0;
-      font-family: YuGothic;
       margin-bottom: 30px;
       padding: 5px 0;
       width: 100%;

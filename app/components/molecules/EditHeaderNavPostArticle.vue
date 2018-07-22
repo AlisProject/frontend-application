@@ -37,7 +37,8 @@ export default {
   data() {
     return {
       publishingArticle: false,
-      isPopupShown: false
+      isPopupShown: false,
+      isThumbnailSelected: false
     }
   },
   mounted() {
@@ -105,7 +106,8 @@ export default {
       this.isPopupShown = false
     },
     selectThumbnail({ target }) {
-      this.updateThumbnail({ thumbnail: target.src })
+      this.isThumbnailSelected = true
+      this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -146,6 +148,23 @@ export default {
       'isSaving',
       'isEdited'
     ])
+  },
+  watch: {
+    suggestedThumbnails() {
+      if (this.thumbnail !== '') return
+      if (!this.isThumbnailSelected) {
+        this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
+        return
+      }
+      if (
+        this.isThumbnailSelected &&
+        Array.from(document.querySelectorAll('.thumbnails img')).filter(
+          (img) => img.classList.contains('selected').length !== 0
+        )
+      ) {
+        this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
+      }
+    }
   }
 }
 </script>

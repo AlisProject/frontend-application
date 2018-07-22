@@ -16,6 +16,7 @@
             placeholder="08012345678"
             maxlength="11"
             autofocus
+            ref="phoneNumber"
             @input="setPhoneNumber"
             @blur="showError('phoneNumber')"
             @focus="resetError('phoneNumber')">
@@ -134,6 +135,7 @@ export default {
         this.setSignUpAuthFlowInputAuthCodeModal({
           isSignUpAuthFlowInputAuthCodeModal: true
         })
+        this.$refs.phoneNumber.value = ''
       } catch (error) {
         let errorMessage = ''
         switch (error.code) {
@@ -189,7 +191,6 @@ export default {
       border: none;
       border-radius: 0;
       border-bottom: 1px dotted #232538;
-      font-family: YuGothic;
       margin-bottom: 30px;
       padding: 5px 0;
       width: 100%;

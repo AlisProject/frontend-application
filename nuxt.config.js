@@ -1,4 +1,6 @@
-module.exports = {
+const isProduction = process.env.NODE_ENV === 'production'
+
+const nuxtConfig = {
   /*
   ** Headers of the page
   */
@@ -36,7 +38,7 @@ module.exports = {
         property: 'og:image',
         content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
       },
-      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
       { hid: 'twitter:site', name: 'twitter:site', content: '@ALIS_media' },
       {
         hid: 'twitter:image',
@@ -110,3 +112,19 @@ module.exports = {
     DOMAIN: process.env.DOMAIN
   }
 }
+
+if (!isProduction) {
+  nuxtConfig.axios = {
+    prefix: '/api',
+    proxyHeaders: false,
+    proxy: true
+  }
+  nuxtConfig.proxy = {
+    '/api': {
+      target: process.env.BASE_URL,
+      pathRewrite: { '^/api': '/' }
+    }
+  }
+}
+
+module.exports = nuxtConfig

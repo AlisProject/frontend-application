@@ -1,7 +1,7 @@
 <template>
   <section>
     <nuxt-link :to="`/${notification.user_id}/articles/${notification.article_id}`" class="notification-card-container">
-      <notification-card-image />
+      <notification-card-image :notification="notification"/>
       <notification-card-content :notification="notification"/>
     </nuxt-link>
   </section>
