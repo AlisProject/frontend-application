@@ -334,9 +334,9 @@ export default {
       }
       // Prevent drag & drop on image
       Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
-        if (element.getAttribute('preventedDragAndDrop') === 'true') return
+        if (element.dataset.preventedDragAndDrop === 'true') return
         this.preventDragAndDrop(element)
-        element.setAttribute('preventedDragAndDrop', 'true')
+        element.dataset.preventedDragAndDrop = true
       })
     },
     removeUselessDOMFromArticleBody() {
