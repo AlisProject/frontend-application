@@ -60,7 +60,7 @@ export default {
   grid-column-gap: 20px;
   grid-row-gap: 10px;
   grid-template-columns: 60px 1fr;
-  grid-template-rows: 16px 14px 40px;
+  grid-template-rows: 16px 14px 1fr;
   padding: 40px;
   /* prettier-ignore */
   grid-template-areas:
@@ -153,9 +153,22 @@ export default {
     }
   }
 
+  .area-user-display-name {
+    .user-display-name {
+      font-weight: normal;
+      line-height: 1.4;
+    }
+  }
+
+  .area-user-id {
+    .user-id {
+      line-height: 0.9;
+    }
+  }
+
   .area-self-introduction {
     .self-introduction {
-      -webkit-line-clamp: 2;
+      color: #6e6e6e;
     }
   }
 }
