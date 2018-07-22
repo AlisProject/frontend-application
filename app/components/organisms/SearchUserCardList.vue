@@ -1,9 +1,9 @@
 <template>
   <div class="area-search-user-card-list-container">
     <search-user-card
-      v-for="(user, i) in users"
+      v-for="user in users"
       :user="user"
-      :key="i"
+      :key="user.user_id"
     />
   </div>
 </template>

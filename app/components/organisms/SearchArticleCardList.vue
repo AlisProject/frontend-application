@@ -3,7 +3,7 @@
     <article-card
       v-for="article in articles"
       :article="article"
-      :key="article.id"
+      :key="article.article_id"
       class="shadow"
       :linkTo="linkTo"
     />
