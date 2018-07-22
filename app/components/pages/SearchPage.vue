@@ -28,7 +28,7 @@
     </nav>
     <div class="area-search-result">
       <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
-      <search-user-card-list :users="searchUsers" v-else/>
+      <search-user-card-list :users="searchUsers.users" v-else/>
     </div>
     <the-loader :isLastPage="searchArticles.isLastPage"/>
     <app-footer/>
@@ -97,7 +97,10 @@ export default {
       this.showNav = true
       this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
       try {
-        await Promise.all([this.getSearchArticles({ query: this.query }), this.getSearchUsers()])
+        await Promise.all([
+          this.getSearchArticles({ query: this.query }),
+          this.getSearchUsers({ query: this.query })
+        ])
       } catch (error) {
         console.error(error)
       }
@@ -121,7 +124,7 @@ export default {
 
         this.showArticles
           ? await this.getSearchArticles({ query: this.query })
-          : await this.getSearchUsers()
+          : await this.getSearchUsers({ query: this.query })
 
         this.canLoadNextData = !this.searchArticles.isLastPage
       } finally {

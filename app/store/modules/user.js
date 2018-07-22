@@ -102,7 +102,11 @@ const state = () => ({
   notifications: [],
   notificationsLastEvaluatedKey: {},
   unreadNotification: false,
-  searchUsers: []
+  searchUsers: {
+    users: [],
+    page: 1,
+    isLastPage: false
+  }
 })
 
 const getters = {
@@ -495,15 +499,17 @@ const actions = {
       Promise.reject(error)
     }
   },
-  async getSearchUsers({ commit }) {
-    const user = {
-      icon_image_url: 'https://github.com/y-temp4.png',
-      self_introduction: 'test',
-      user_display_name: '仮想通貨ガチホ太郎',
-      user_id: 'yt4'
+  async getSearchUsers({ commit, state }, { query }) {
+    const limit = 10
+    const users = await this.$axios.$get('/search/users', {
+      params: { limit, query, page: state.searchUsers.page }
+    })
+    if (users < limit) {
+      commit(types.SET_SEARCH_USERS_IS_LAST_PAGE, { isLastPage: true })
+      return
     }
-    const users = Array(10).fill(user)
     commit(types.SET_SEARCH_USERS, { users })
+    commit(types.SET_SEARCH_USERS_PAGE, { page: state.searchUsers.page + 1 })
   }
 }
 
@@ -689,7 +695,13 @@ const mutations = {
     state.unreadNotification = unread
   },
   [types.SET_SEARCH_USERS](state, { users }) {
-    state.searchUsers.push(...users)
+    state.searchUsers.users.push(...users)
+  },
+  [types.SET_SEARCH_USERS_IS_LAST_PAGE](state, { isLastPage }) {
+    state.searchUsers.isLastPage = isLastPage
+  },
+  [types.SET_SEARCH_USERS_PAGE](state, { page }) {
+    state.searchUsers.page = page
   }
 }
 
