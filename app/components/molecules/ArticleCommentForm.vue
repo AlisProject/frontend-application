@@ -138,10 +138,11 @@ export default {
     padding: 24px;
 
     .comment-user {
-      color: #5b5b5b;
-      font-size: 14px;
-      display: flex;
       align-items: center;
+      color: #5b5b5b;
+      display: flex;
+      font-size: 14px;
+      overflow: hidden;
 
       .icon {
         border-radius: 50%;
@@ -210,16 +211,6 @@ export default {
 @media screen and (max-width: 640px) {
   .area-article-comment-form {
     padding: 40px 10px 8px;
-
-    .article-comment-form-box {
-      .comment-user {
-        .name {
-          color: #6e6e6e;
-          font-size: 12px;
-          width: calc(100vw - (10px + 24px + 36px + 16px + 24px + 10px));
-        }
-      }
-    }
   }
 }
 </style>
