@@ -90,6 +90,7 @@ export default {
 
 .area-user-display-name {
   grid-area: user-display-name;
+  overflow: hidden;
 
   .user-display-name {
     margin: 0;
