@@ -174,10 +174,11 @@ export default {
   position: relative;
 
   .commented-user {
-    color: #5b5b5b;
-    font-size: 14px;
-    display: flex;
     align-items: center;
+    color: #5b5b5b;
+    display: flex;
+    font-size: 14px;
+    text-decoration: none;
 
     .icon {
       width: 36px;
