@@ -36,7 +36,11 @@ const state = () => ({
   saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
   articleCommentLikedCommentIds: [],
-  searchArticles: []
+  searchArticles: {
+    articles: [],
+    page: 1,
+    isLastPage: false
+  }
 })
 
 const getters = {
@@ -353,15 +357,13 @@ const actions = {
         comment_id: commentId,
         sort_key: sortKey
       } = state.articleCommentsLastEvaluatedKey
-      const params =
-        commentId && sortKey
-          ? {
-            limit: 10,
-            comment_id: commentId,
-            article_id: articleCommentsarticleId,
-            sort_key: sortKey
-          }
-          : { limit: 5 }
+      const paramsWithKeys = {
+        limit: 10,
+        comment_id: commentId,
+        article_id: articleCommentsarticleId,
+        sort_key: sortKey
+      }
+      const params = commentId && sortKey ? paramsWithKeys : { limit: 5 }
 
       const { Items: comments, LastEvaluatedKey } = await this.$axios.$get(
         `/articles/${articleId}/comments`,
@@ -450,10 +452,15 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getSearchArticles({ commit, dispatch }) {
-    const { Items: articles } = await this.$axios.$get('/articles/recent', {
-      params: { limit: 10 }
+  async getSearchArticles({ commit, dispatch, state }, { query }) {
+    const limit = 10
+    const articles = await this.$axios.$get('/search/articles', {
+      params: { limit, query, page: state.searchArticles.page }
     })
+    if (articles < limit) {
+      commit(types.SET_SEARCH_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      return
+    }
     const articlesWithData = await Promise.all(
       articles.map(async (article) => {
         const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
@@ -462,6 +469,7 @@ const actions = {
       })
     )
     commit(types.SET_SEARCH_ARTICLES, { articles: articlesWithData })
+    commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
   }
 }
 
@@ -576,8 +584,13 @@ const mutations = {
     state.article.comments = comments
   },
   [types.SET_SEARCH_ARTICLES](state, { articles }) {
-    state.searchArticles = articles
-    // state.searchArticles.push(...articles)
+    state.searchArticles.articles.push(...articles)
+  },
+  [types.SET_SEARCH_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.searchArticles.isLastPage = isLastPage
+  },
+  [types.SET_SEARCH_ARTICLES_PAGE](state, { page }) {
+    state.searchArticles.page = page
   }
 }
 

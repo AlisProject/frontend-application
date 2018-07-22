@@ -27,10 +27,10 @@
         @click="showSearchResult">ユーザー</nuxt-link>
     </nav>
     <div class="area-search-result">
-      <search-article-card-list :articles="searchArticles" v-if="showArticles"/>
+      <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
       <search-user-card-list :users="searchUsers" v-else/>
     </div>
-    <the-loader :lastEvaluatedKey="notificationsLastEvaluatedKey"/>
+    <the-loader :isLastPage="searchArticles.isLastPage"/>
     <app-footer/>
   </div>
 </template>
@@ -97,7 +97,7 @@ export default {
       this.showNav = true
       this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
       try {
-        await Promise.all([this.getSearchArticles(), this.getSearchUsers()])
+        await Promise.all([this.getSearchArticles({ query: this.query }), this.getSearchUsers()])
       } catch (error) {
         console.error(error)
       }
@@ -119,10 +119,11 @@ export default {
           return
         }
 
-        this.showArticles ? await this.getSearchArticles() : await this.getSearchUsers()
+        this.showArticles
+          ? await this.getSearchArticles({ query: this.query })
+          : await this.getSearchUsers()
 
-        this.canLoadNextData = true
-        // this.canLoadNextData = this.hasNotificationsLastEvaluatedKey
+        this.canLoadNextData = !this.searchArticles.isLastPage
       } finally {
         this.isFetchingData = false
       }

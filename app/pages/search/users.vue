@@ -10,9 +10,10 @@ export default {
     SearchPage
   },
   mounted() {
-    if (this.$route.query.q) {
-      this.$store.dispatch('article/getSearchArticles', { query: this.$route.query.q })
-      this.$store.dispatch('user/getSearchUsers', { query: this.$route.query.q })
+    const query = this.$route.query.q
+    if (query) {
+      this.$store.dispatch('article/getSearchArticles', { query })
+      this.$store.dispatch('user/getSearchUsers', { query })
     }
   },
   head: {
