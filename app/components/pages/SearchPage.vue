@@ -86,7 +86,6 @@ export default {
     }
   },
   beforeDestroy() {
-    this.resetSearchData()
     this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
