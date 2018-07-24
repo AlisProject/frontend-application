@@ -70,18 +70,15 @@ export default {
     ...mapGetters('presentation', ['searchArticlesScrollHeight', 'searchUsersScrollHeight'])
   },
   created() {
-    this.showArticles = this.$route.query.context === 'article'
+    this.showArticles = this.$route.query.context !== 'user'
     this.query = this.$route.query.q
     this.showNav = !!this.query
   },
   mounted() {
     this.$refs.searchInput.focus()
     this.inputText = this.$route.query.q
-    if (this.searchArticlesScrollHeight) {
-      this.$el.scrollTop = this.searchArticlesScrollHeight
-    } else if (this.searchUsersScrollHeight) {
-      this.$el.scrollTop = this.searchUsersScrollHeight
-    }
+    if (this.searchArticlesScrollHeight) this.$el.scrollTop = this.searchArticlesScrollHeight
+    if (this.searchUsersScrollHeight) this.$el.scrollTop = this.searchUsersScrollHeight
   },
   data() {
     return {
@@ -164,7 +161,7 @@ export default {
   watch: {
     async $route(to, from) {
       const { query } = to
-      this.showArticles = query.context === 'article'
+      this.showArticles = query.context !== 'user'
       this.showNav = !!query.q
       this.isSearchFirstly = !this.showNav
       await this.fetchSearchedData(query.q)
