@@ -27,11 +27,15 @@
     <div class="area-search-result">
       <no-ssr>
         <template v-if="showArticles">
-          <p class="no-result-message" v-if="searchArticles.articles.length === 0">該当する検索結果が存在しません。</p>
+          <p class="no-result-message" v-if="searchArticles.articles.length === 0">
+           {{ searchArticles.isFetching || isSearchFirstly ? '' : '該当する検索結果が存在しません。'}}
+          </p>
           <search-article-card-list :articles="searchArticles.articles" v-else/>
         </template>
         <template v-else>
-          <p class="no-result-message" v-if="searchUsers.users.length === 0">該当する検索結果が存在しません。</p>
+          <p class="no-result-message" v-if="searchUsers.users.length === 0">
+           {{ searchUsers.isFetching || isSearchFirstly ? '' : '該当する検索結果が存在しません。'}}
+          </p>
           <search-user-card-list :users="searchUsers.users" v-else/>
         </template>
       </no-ssr>
@@ -166,6 +170,7 @@ export default {
       const { query } = to
       this.showArticles = query.context === 'article'
       this.showNav = !!query.q
+      this.isSearchFirstly = !this.showNav
       await this.fetchSearchedData(query.q)
     }
   }
