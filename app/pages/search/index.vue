@@ -9,12 +9,12 @@ export default {
   components: {
     SearchPage
   },
-  mounted() {
-    const query = this.$route.query.q
-    if (query) {
-      this.$store.dispatch('article/getSearchArticles', { query })
-      this.$store.dispatch('user/getSearchUsers', { query })
-    }
+  async mounted() {
+    const { q: query, context } = this.$route.query
+    if (!query) return
+    context === 'article'
+      ? await this.$store.dispatch('article/getSearchArticles', { query })
+      : await this.$store.dispatch('user/getSearchUsers', { query })
   },
   head: {
     title: '検索'
