@@ -343,6 +343,12 @@ export default {
     &.article {
       grid-template-columns: 10px 1fr 10px;
     }
+
+    &.user {
+      .area-search {
+        width: 100%;
+      }
+    }
   }
 }
 </style>
