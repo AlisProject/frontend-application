@@ -59,7 +59,7 @@ export default {
       'notificationsLastEvaluatedKey',
       'hasNotificationsLastEvaluatedKey'
     ]),
-    ...mapGetters('presentation', ['notificationListScrollHeight'])
+    ...mapGetters('presentation', ['searchArticlesScrollHeight', 'searchUsersScrollHeight'])
   },
   created() {
     this.showArticles = this.$route.query.context === 'article'
@@ -69,8 +69,10 @@ export default {
   mounted() {
     this.$refs.searchInput.focus()
     this.inputText = this.$route.query.q
-    if (this.notificationListScrollHeight) {
-      this.$el.scrollTop = this.notificationListScrollHeight
+    if (this.searchArticlesScrollHeight) {
+      this.$el.scrollTop = this.searchArticlesScrollHeight
+    } else if (this.searchUsersScrollHeight) {
+      this.$el.scrollTop = this.searchUsersScrollHeight
     }
   },
   data() {
@@ -85,7 +87,9 @@ export default {
     }
   },
   beforeDestroy() {
-    this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
+    this.showArticles
+      ? this.setSearchArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
+      : this.setSearchUsersScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
     async search() {
@@ -147,7 +151,7 @@ export default {
       'resetSearchArticles',
       'resetSearchArticlesPage'
     ]),
-    ...mapActions('presentation', ['setNotificationListScrollHeight'])
+    ...mapActions('presentation', ['setSearchArticlesScrollHeight', 'setSearchUsersScrollHeight'])
   },
   watch: {
     async $route(to, from) {
