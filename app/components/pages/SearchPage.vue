@@ -7,7 +7,7 @@
         type="text"
         class="form-input"
         required
-        v-model="inputText"
+        v-model.trim="inputText"
         ref="searchInput">
       <img
         @click="search"
@@ -62,7 +62,7 @@ export default {
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   created() {
-    this.showArticles = this.$router.currentRoute.query.context === 'article'
+    this.showArticles = this.$route.query.context === 'article'
     this.query = this.$route.query.q
     this.showNav = !!this.query
   },
@@ -91,7 +91,7 @@ export default {
     async search() {
       try {
         this.resetSearchData()
-        this.query = this.$refs.searchInput.value
+        this.query = this.inputText
         if (this.isFetchingData || !this.query) return
         this.isFetchingData = true
         this.showNav = true
@@ -151,8 +151,10 @@ export default {
   },
   watch: {
     async $route(to, from) {
-      this.showArticles = to.query.context === 'article'
-      await this.fetchSearchedData(to.query.q)
+      const { query } = to
+      this.showArticles = query.context === 'article'
+      this.showNav = !!query.q
+      await this.fetchSearchedData(query.q)
     }
   }
 }

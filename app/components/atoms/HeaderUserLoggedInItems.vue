@@ -20,7 +20,7 @@
         src="~assets/images/pc/common/icon_bell.png"
         v-else>
     </nuxt-link>
-    <nuxt-link to="/search" @click.native="resetSearchStates">
+    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     </nuxt-link>
     <div class="menu" v-if="isMenuShown">
