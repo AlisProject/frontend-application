@@ -82,7 +82,8 @@ export default {
       showArticles: true,
       query: null,
       showNav: false,
-      inputText: ''
+      inputText: '',
+      isSearchFirstly: true
     }
   },
   beforeDestroy() {
@@ -96,7 +97,10 @@ export default {
         if (this.isFetchingData || !this.query) return
         this.isFetchingData = true
         this.showNav = true
-        this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
+        this.isSearchFirstly
+          ? this.$router.replace(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
+          : this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
+        this.isSearchFirstly = false
         await Promise.all([
           this.getSearchArticles({ query: this.query }),
           this.getSearchUsers({ query: this.query })
@@ -141,6 +145,16 @@ export default {
       this.resetSearchUsers()
       this.resetSearchUsersPage()
     },
+    async fetchSearchedData(query) {
+      this.resetSearchData()
+      this.query = query
+      if (typeof this.query !== 'string') return
+      this.inputText = this.query
+      await Promise.all([
+        this.getSearchArticles({ query: this.query }),
+        this.getSearchUsers({ query: this.query })
+      ])
+    },
     ...mapActions('user', ['getSearchUsers', 'resetSearchUsers', 'resetSearchUsersPage']),
     ...mapActions('article', [
       'getSearchArticles',
@@ -148,6 +162,14 @@ export default {
       'resetSearchArticlesPage'
     ]),
     ...mapActions('presentation', ['setNotificationListScrollHeight'])
+  },
+  watch: {
+    async $route(to, from) {
+      console.log(to, from)
+      if (to.query.q !== from.query.q) {
+        await this.fetchSearchedData(to.query.q)
+      }
+    }
   }
 }
 </script>
