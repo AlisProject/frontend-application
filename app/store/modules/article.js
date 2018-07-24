@@ -39,7 +39,8 @@ const state = () => ({
   searchArticles: {
     articles: [],
     page: 1,
-    isLastPage: false
+    isLastPage: false,
+    isFetching: false
   }
 })
 
@@ -453,6 +454,8 @@ const actions = {
     }
   },
   async getSearchArticles({ commit, dispatch, state }, { query }) {
+    if (state.searchArticles.isFetching) return
+    commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: true })
     const limit = 10
     const articles = await this.$axios.$get('/search/articles', {
       params: { limit, query, page: state.searchArticles.page }
@@ -464,6 +467,7 @@ const actions = {
         return { ...article, userInfo, alisToken, tmp: Math.random() }
       })
     )
+    commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: false })
     commit(types.SET_SEARCH_ARTICLES, { articles: articlesWithData })
     commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
     if (articles.length < limit) {
@@ -602,6 +606,9 @@ const mutations = {
   },
   [types.RESET_SEARCH_ARTICLES_PAGE](state) {
     state.searchArticles.page = 1
+  },
+  [types.SET_SEARCH_ARTICLES_IS_FETCHING](state, { isFetching }) {
+    state.searchArticles.isFetching = isFetching
   }
 }
 

@@ -105,7 +105,8 @@ const state = () => ({
   searchUsers: {
     users: [],
     page: 1,
-    isLastPage: false
+    isLastPage: false,
+    isFetching: false
   }
 })
 
@@ -500,10 +501,13 @@ const actions = {
     }
   },
   async getSearchUsers({ commit, state }, { query }) {
+    if (state.searchUsers.isFetching) return
+    commit(types.SET_SEARCH_USERS_IS_FETCHING, { isFetching: true })
     const limit = 10
     const users = await this.$axios.$get('/search/users', {
       params: { limit, query, page: state.searchUsers.page }
     })
+    commit(types.SET_SEARCH_USERS_IS_FETCHING, { isFetching: false })
     commit(types.SET_SEARCH_USERS, { users })
     commit(types.SET_SEARCH_USERS_PAGE, { page: state.searchUsers.page + 1 })
     if (users.length < limit) {
@@ -713,6 +717,9 @@ const mutations = {
   },
   [types.RESET_SEARCH_USERS_PAGE](state) {
     state.searchUsers.page = 1
+  },
+  [types.SET_SEARCH_USERS_IS_FETCHING](state, { isFetching }) {
+    state.searchUsers.isFetching = isFetching
   }
 }
 
