@@ -25,8 +25,10 @@
         :class="{ 'selected': !showArticles }">ユーザー</nuxt-link>
     </nav>
     <div class="area-search-result">
-      <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
-      <search-user-card-list :users="searchUsers.users" v-else/>
+      <no-ssr>
+        <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
+        <search-user-card-list :users="searchUsers.users" v-else/>
+      </no-ssr>
     </div>
     <the-loader :isLastPage="!this.query || searchArticles.isLastPage"/>
     <app-footer/>
