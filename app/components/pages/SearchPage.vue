@@ -15,14 +15,16 @@
         src="~assets/images/pc/common/icon_search.png">
     </form>
     <nav class="area-nav" v-if="showNav">
-      <span
+      <nuxt-link
+        :to="{ path: '/search', query: { q: this.query }}"
         class="area-article nav-link"
         :class="{ 'selected': showArticles }"
-        @click="showArticleResult">記事</span>
-      <span
+        @click="showArticleResult">記事</nuxt-link>
+      <nuxt-link
+        :to="{ path: '/search/users', query: { q: this.query }}"
         class="area-user nav-link"
         :class="{ 'selected': !showArticles }"
-        @click="showSearchResult">ユーザー</span>
+        @click="showSearchResult">ユーザー</nuxt-link>
     </nav>
     <div class="area-search-result">
       <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
@@ -101,22 +103,22 @@ export default {
           ? this.$router.replace(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
           : this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
         this.isSearchFirstly = false
-        await Promise.all([
-          this.getSearchArticles({ query: this.query }),
-          this.getSearchUsers({ query: this.query })
-        ])
+        await this.getSearchData(this.query)
       } catch (error) {
         console.error(error)
       } finally {
         this.isFetchingData = false
       }
     },
+    async getSearchData(query) {
+      this.showArticles
+        ? await this.getSearchArticles({ query })
+        : await this.getSearchUsers({ query })
+    },
     showArticleResult() {
-      history.replaceState(null, null, `/search?q=${this.query}`)
       this.showArticles = true
     },
     showSearchResult() {
-      history.replaceState(null, null, `/search/users?q=${this.query}`)
       this.showArticles = false
     },
     async infiniteScroll(event) {
@@ -130,9 +132,7 @@ export default {
           return
         }
 
-        this.showArticles
-          ? await this.getSearchArticles({ query: this.query })
-          : await this.getSearchUsers({ query: this.query })
+        await this.getSearchData(this.query)
 
         this.canLoadNextData = !this.searchArticles.isLastPage
       } finally {
@@ -150,10 +150,7 @@ export default {
       this.query = query
       if (typeof this.query !== 'string') return
       this.inputText = this.query
-      await Promise.all([
-        this.getSearchArticles({ query: this.query }),
-        this.getSearchUsers({ query: this.query })
-      ])
+      await this.getSearchData(this.query)
     },
     ...mapActions('user', ['getSearchUsers', 'resetSearchUsers', 'resetSearchUsersPage']),
     ...mapActions('article', [
@@ -165,10 +162,8 @@ export default {
   },
   watch: {
     async $route(to, from) {
-      console.log(to, from)
-      if (to.query.q !== from.query.q) {
-        await this.fetchSearchedData(to.query.q)
-      }
+      if (to.query.q === from.query.q) return
+      await this.fetchSearchedData(to.query.q)
     }
   }
 }
