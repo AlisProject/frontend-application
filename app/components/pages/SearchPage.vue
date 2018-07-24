@@ -66,11 +66,7 @@ export default {
       return 'SEARCH'
     },
     ...mapGetters('article', ['searchArticles']),
-    ...mapGetters('user', [
-      'searchUsers',
-      'notificationsLastEvaluatedKey',
-      'hasNotificationsLastEvaluatedKey'
-    ]),
+    ...mapGetters('user', ['searchUsers']),
     ...mapGetters('presentation', ['searchArticlesScrollHeight', 'searchUsersScrollHeight'])
   },
   created() {
