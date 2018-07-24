@@ -16,15 +16,13 @@
     </form>
     <nav class="area-nav" v-if="showNav">
       <nuxt-link
-        :to="{ path: '/search', query: { q: this.query }}"
+        :to="{ path: '/search', query: { context: 'article', q: this.query }}"
         class="area-article nav-link"
-        :class="{ 'selected': showArticles }"
-        @click="showArticleResult">記事</nuxt-link>
+        :class="{ 'selected': showArticles }">記事</nuxt-link>
       <nuxt-link
-        :to="{ path: '/search/users', query: { q: this.query }}"
+        :to="{ path: '/search', query: { context: 'user', q: this.query }}"
         class="area-user nav-link"
-        :class="{ 'selected': !showArticles }"
-        @click="showSearchResult">ユーザー</nuxt-link>
+        :class="{ 'selected': !showArticles }">ユーザー</nuxt-link>
     </nav>
     <div class="area-search-result">
       <search-article-card-list :articles="searchArticles.articles" v-if="showArticles"/>
@@ -64,14 +62,12 @@ export default {
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   created() {
+    this.showArticles = this.$router.currentRoute.query.context === 'article'
     this.query = this.$route.query.q
     this.showNav = !!this.query
   },
   mounted() {
     this.$refs.searchInput.focus()
-    if (location.pathname.startsWith('/search/users')) {
-      this.showArticles = false
-    }
     this.inputText = this.$route.query.q
     if (this.notificationListScrollHeight) {
       this.$el.scrollTop = this.notificationListScrollHeight
@@ -99,9 +95,8 @@ export default {
         if (this.isFetchingData || !this.query) return
         this.isFetchingData = true
         this.showNav = true
-        this.isSearchFirstly
-          ? this.$router.replace(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
-          : this.$router.push(`/search${this.showArticles ? '' : '/users'}?q=${this.query}`)
+        const path = `/search?context=${this.showArticles ? 'article' : 'user'}&q=${this.query}`
+        this.isSearchFirstly ? this.$router.replace(path) : this.$router.push(path)
         this.isSearchFirstly = false
         await this.getSearchData(this.query)
       } catch (error) {
@@ -114,12 +109,6 @@ export default {
       this.showArticles
         ? await this.getSearchArticles({ query })
         : await this.getSearchUsers({ query })
-    },
-    showArticleResult() {
-      this.showArticles = true
-    },
-    showSearchResult() {
-      this.showArticles = false
     },
     async infiniteScroll(event) {
       if (this.isFetchingData || !this.query) return
@@ -162,7 +151,7 @@ export default {
   },
   watch: {
     async $route(to, from) {
-      if (to.query.q === from.query.q) return
+      this.showArticles = to.query.context === 'article'
       await this.fetchSearchedData(to.query.q)
     }
   }
