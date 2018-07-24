@@ -282,6 +282,10 @@ export default {
 
     &.user {
       grid-template-columns: 1fr 70vw 1fr;
+
+      .area-search {
+        width: 340px;
+      }
     }
   }
 
