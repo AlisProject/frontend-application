@@ -159,12 +159,12 @@ export default {
     ...mapActions('presentation', ['setSearchArticlesScrollHeight', 'setSearchUsersScrollHeight'])
   },
   watch: {
-    async $route(to, from) {
+    $route(to, from) {
       const { query } = to
       this.showArticles = query.context !== 'user'
       this.showNav = !!query.q
       this.isSearchFirstly = !this.showNav
-      await this.fetchSearchedData(query.q)
+      this.fetchSearchedData(query.q)
     }
   }
 }
