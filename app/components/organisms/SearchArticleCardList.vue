@@ -17,7 +17,16 @@ export default {
   components: {
     ArticleCard
   },
-  props: ['articles', 'linkTo']
+  props: {
+    articles: {
+      type: Array,
+      required: true
+    },
+    linkTo: {
+      type: String,
+      required: false
+    }
+  }
 }
 </script>
 
