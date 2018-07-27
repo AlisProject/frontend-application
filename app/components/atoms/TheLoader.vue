@@ -1,7 +1,7 @@
 <template>
   <div class="area-loader">
     <no-ssr>
-      <div class="loader" v-if="lastEvaluatedKey !== undefined || !isLastPage">Loading...</div>
+      <div class="loader" v-if="isLoading">Loading...</div>
     </no-ssr>
   </div>
 </template>
@@ -16,6 +16,11 @@ export default {
     isLastPage: {
       type: Boolean,
       required: false
+    }
+  },
+  computed: {
+    isLoading() {
+      return this.lastEvaluatedKey !== undefined || !this.isLastPage
     }
   }
 }
