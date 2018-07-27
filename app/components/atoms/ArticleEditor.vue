@@ -332,6 +332,12 @@ export default {
       if (!thumbnails.includes(this.thumbnail)) {
         this.updateThumbnail({ thumbnail: '' })
       }
+      // Prevent drag & drop on image
+      Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
+        if (element.dataset.preventedDragAndDrop === 'true') return
+        this.preventDragAndDrop(element)
+        element.dataset.preventedDragAndDrop = true
+      })
     },
     removeUselessDOMFromArticleBody() {
       const serializedContents = this.editorElement.serialize()
