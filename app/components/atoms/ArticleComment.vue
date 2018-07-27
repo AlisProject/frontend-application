@@ -172,31 +172,36 @@ export default {
   border-radius: 4px;
   padding: 24px;
   position: relative;
+  overflow: hidden;
 
   .commented-user {
+    align-items: center;
     color: #5b5b5b;
+    display: flex;
     font-size: 14px;
-    left: 20px;
-    position: absolute;
-    top: 20px;
-
-    .info {
-      color: #6e6e6e;
-      float: right;
-      font-size: 12px;
-      list-style: none;
-      margin: 0px 16px;
-      padding: 0;
-
-      .info-content {
-        line-height: 1.5;
-      }
-    }
+    text-decoration: none;
 
     .icon {
       width: 36px;
       height: 36px;
       border-radius: 50%;
+      margin-right: 16px;
+    }
+
+    .info {
+      color: #6e6e6e;
+      font-size: 12px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+
+      .info-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 1.5;
+      }
     }
   }
 
@@ -205,7 +210,6 @@ export default {
     font-size: 12px;
     font-weight: 500;
     line-height: 1.8;
-    margin-top: 40px;
     padding-bottom: 18px;
     word-break: break-word;
   }
