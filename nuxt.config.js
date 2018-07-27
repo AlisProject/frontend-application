@@ -100,9 +100,6 @@ const nuxtConfig = {
           exclude: /(node_modules)/
         })
       }
-      config.plugins = config.plugins.filter(
-        (plugin) => plugin.constructor.name !== 'UglifyJsPlugin'
-      )
     },
     vendor: ['axios']
   },
