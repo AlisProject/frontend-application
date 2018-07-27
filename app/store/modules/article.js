@@ -158,10 +158,12 @@ const actions = {
   async getArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/articles/${articleId}`)
-      const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-      const alisToken = await dispatch('getAlisToken', { articleId })
-      const likesCount = await dispatch('getLikesCount', { articleId })
-      const comments = await dispatch('getArticleComments', { articleId })
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId }),
+        dispatch('getLikesCount', { articleId }),
+        dispatch('getArticleComments', { articleId })
+      ])
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     } catch (error) {
