@@ -75,9 +75,10 @@ export default {
     this.query = this.$route.query.q
     this.showNav = !!this.query
   },
-  mounted() {
+  async mounted() {
     this.$refs.searchInput.focus()
     this.inputText = this.$route.query.q
+    await this.$nextTick()
     if (this.searchArticlesScrollHeight) this.$el.scrollTop = this.searchArticlesScrollHeight
     if (this.searchUsersScrollHeight) this.$el.scrollTop = this.searchUsersScrollHeight
   },
