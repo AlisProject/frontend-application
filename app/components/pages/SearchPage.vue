@@ -47,6 +47,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import SearchUserCardList from '../organisms/SearchUserCardList'
@@ -109,6 +110,7 @@ export default {
         this.isSearchFirstly = false
         await this.getSearchData(this.query)
       } catch (error) {
+        this.ADD_TOAST_MESSAGE({ text: '検索結果の取得に失敗しました。', type: 'warning' })
         console.error(error)
       } finally {
         this.isFetchingData = false
@@ -150,6 +152,7 @@ export default {
       this.inputText = this.query
       await this.getSearchData(this.query)
     },
+    ...mapActions({ ADD_TOAST_MESSAGE }),
     ...mapActions('user', ['getSearchUsers', 'resetSearchUsers', 'resetSearchUsersPage']),
     ...mapActions('article', [
       'getSearchArticles',
