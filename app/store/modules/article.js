@@ -462,8 +462,10 @@ const actions = {
     })
     const articlesWithData = await Promise.all(
       articles.map(async (article) => {
-        const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-        const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+        const [userInfo, alisToken] = await Promise.all([
+          dispatch('getUserInfo', { userId: article.user_id }),
+          dispatch('getAlisToken', { articleId: article.article_id })
+        ])
         return { ...article, userInfo, alisToken, tmp: Math.random() }
       })
     )
