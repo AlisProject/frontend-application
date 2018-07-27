@@ -19,7 +19,8 @@ export default {
       : await this.$store.dispatch('user/getSearchUsers', { query })
   },
   head: {
-    title: '検索'
+    title: '検索',
+    link: [{ rel: 'canonical', href: `https://${process.env.DOMAIN}/search` }]
   }
 }
 </script>
