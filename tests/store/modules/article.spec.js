@@ -36,6 +36,9 @@ describe('store/modules/article.js', () => {
   describe('actions', () => {
     test('"getArticleDetail" sets article, likes, comments data to module', async () => {
       await store.dispatch('article/getArticleDetail', { articleId: '{article_1}' })
+      expect(store.getters['article/article'].body).toBe(
+        'Article overview, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+      )
       expect(store.getters['article/article'].comments).toHaveLength(1)
       expect(store.getters['article/article'].article_id).toBe('{article_1}')
       expect(store.getters['article/likesCount']).toBe(10)
