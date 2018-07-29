@@ -7,6 +7,7 @@
         type="text"
         class="form-input"
         required
+        maxlength="150"
         v-model.trim="inputText"
         ref="searchInput">
       <img
