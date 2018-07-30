@@ -15,12 +15,13 @@ export default {
     },
     isLastPage: {
       type: Boolean,
-      required: false
+      required: false,
+      default: null
     }
   },
   computed: {
     isLoading() {
-      return this.lastEvaluatedKey !== undefined || !this.isLastPage
+      return this.isLastPage === null ? this.lastEvaluatedKey !== undefined : !this.isLastPage
     }
   }
 }
