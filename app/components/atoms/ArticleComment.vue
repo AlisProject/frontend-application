@@ -172,7 +172,6 @@ export default {
   border-radius: 4px;
   padding: 24px;
   position: relative;
-  overflow: hidden;
 
   .commented-user {
     align-items: center;
@@ -194,7 +193,6 @@ export default {
       list-style: none;
       padding: 0;
       margin: 0;
-      overflow: hidden;
 
       .info-content {
         overflow: hidden;
@@ -267,6 +265,20 @@ export default {
       .delete {
         cursor: pointer;
         user-select: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .article-comment {
+    .commented-user {
+      .info {
+        // 10px - padding of .area-article-comments
+        // 24px - padding of .article-comment
+        // 36px - width   of .article-comment .commented-user .icon
+        // 16px - margin  of .article-comment .commented-user .icon
+        width: calc(100vw - (10px + 24px + 36px + 16px + 24px + 10px));
       }
     }
   }
