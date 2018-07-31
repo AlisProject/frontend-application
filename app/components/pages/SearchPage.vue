@@ -77,7 +77,7 @@ export default {
     this.showNav = !!this.query
   },
   async mounted() {
-    this.$refs.searchInput.focus()
+    if (window.innerWidth > 640) this.$refs.searchInput.focus()
     this.inputText = this.$route.query.q
     await this.$nextTick()
     if (this.searchArticlesScrollHeight) this.$el.scrollTop = this.searchArticlesScrollHeight
@@ -102,6 +102,7 @@ export default {
   methods: {
     async search() {
       try {
+        if (window.innerWidth <= 640) document.activeElement.blur()
         this.resetSearchData()
         this.query = this.inputText
         if (this.isFetchingData || !this.query) return
@@ -218,12 +219,12 @@ export default {
   position: relative;
 
   .form-input {
+    -webkit-appearance: none;
     border: none;
     border-radius: 0;
     border-bottom: 1px dotted #232538;
     padding: 5px 24px 5px 0;
     width: 400px;
-    font-family: YuGothic;
 
     &:focus {
       outline: 0;
