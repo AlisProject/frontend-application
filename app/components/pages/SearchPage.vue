@@ -41,7 +41,8 @@
         </div>
       </no-ssr>
     </div>
-    <the-loader :isLastPage="!this.query || searchArticles.isLastPage"/>
+    <the-loader :isLastPage="!this.query || searchArticles.isLastPage" v-if="showArticles"/>
+    <the-loader :isLastPage="!this.query || searchUsers.isLastPage" v-else/>
     <app-footer/>
   </div>
 </template>
