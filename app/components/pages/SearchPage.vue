@@ -219,12 +219,12 @@ export default {
   position: relative;
 
   .form-input {
+    -webkit-appearance: none;
     border: none;
     border-radius: 0;
     border-bottom: 1px dotted #232538;
     padding: 5px 24px 5px 0;
     width: 400px;
-    font-family: YuGothic;
 
     &:focus {
       outline: 0;
