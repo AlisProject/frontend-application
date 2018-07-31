@@ -101,7 +101,13 @@ const state = () => ({
   alisToken: 0,
   notifications: [],
   notificationsLastEvaluatedKey: {},
-  unreadNotification: false
+  unreadNotification: false,
+  searchUsers: {
+    users: [],
+    page: 1,
+    isLastPage: false,
+    isFetching: false
+  }
 })
 
 const getters = {
@@ -128,7 +134,8 @@ const getters = {
   notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
   unreadNotification: (state) => state.unreadNotification,
   hasNotificationsLastEvaluatedKey: (state) =>
-    !!Object.keys(state.notificationsLastEvaluatedKey || {}).length
+    !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
+  searchUsers: (state) => state.searchUsers
 }
 
 const actions = {
@@ -492,6 +499,26 @@ const actions = {
     } catch (error) {
       Promise.reject(error)
     }
+  },
+  async getSearchUsers({ commit, state }, { query }) {
+    if (state.searchUsers.isFetching) return
+    commit(types.SET_SEARCH_USERS_IS_FETCHING, { isFetching: true })
+    const limit = 10
+    const users = await this.$axios.$get('/search/users', {
+      params: { limit, query, page: state.searchUsers.page }
+    })
+    commit(types.SET_SEARCH_USERS_IS_FETCHING, { isFetching: false })
+    commit(types.SET_SEARCH_USERS, { users })
+    commit(types.SET_SEARCH_USERS_PAGE, { page: state.searchUsers.page + 1 })
+    if (users.length < limit) {
+      commit(types.SET_SEARCH_USERS_IS_LAST_PAGE, { isLastPage: true })
+    }
+  },
+  resetSearchUsers({ commit }) {
+    commit(types.RESET_SEARCH_USERS)
+  },
+  resetSearchUsersPage({ commit }) {
+    commit(types.RESET_SEARCH_USERS_PAGE)
   }
 }
 
@@ -675,6 +702,24 @@ const mutations = {
   },
   [types.SET_UNREAD_NOTIFICATION](state, { unread }) {
     state.unreadNotification = unread
+  },
+  [types.SET_SEARCH_USERS](state, { users }) {
+    state.searchUsers.users.push(...users)
+  },
+  [types.SET_SEARCH_USERS_IS_LAST_PAGE](state, { isLastPage }) {
+    state.searchUsers.isLastPage = isLastPage
+  },
+  [types.SET_SEARCH_USERS_PAGE](state, { page }) {
+    state.searchUsers.page = page
+  },
+  [types.RESET_SEARCH_USERS](state) {
+    state.searchUsers.users = []
+  },
+  [types.RESET_SEARCH_USERS_PAGE](state) {
+    state.searchUsers.page = 1
+  },
+  [types.SET_SEARCH_USERS_IS_FETCHING](state, { isFetching }) {
+    state.searchUsers.isFetching = isFetching
   }
 }
 

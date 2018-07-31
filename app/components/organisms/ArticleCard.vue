@@ -62,6 +62,10 @@ a {
     "article-card-content";
 }
 
+.shadow .article-card-container {
+  box-shadow: 0 3px 10px 0 rgba(192, 192, 192, 0.5);
+}
+
 .top {
   grid-column: 1 / 4;
 }

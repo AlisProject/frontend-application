@@ -35,7 +35,13 @@ const state = () => ({
   isEdited: false,
   saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
-  articleCommentLikedCommentIds: []
+  articleCommentLikedCommentIds: [],
+  searchArticles: {
+    articles: [],
+    page: 1,
+    isLastPage: false,
+    isFetching: false
+  }
 })
 
 const getters = {
@@ -64,7 +70,8 @@ const getters = {
   articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
   hasArticleCommentsLastEvaluatedKey: (state) =>
     !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length,
-  articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs
+  articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
+  searchArticles: (state) => state.searchArticles
 }
 
 const actions = {
@@ -351,15 +358,13 @@ const actions = {
         comment_id: commentId,
         sort_key: sortKey
       } = state.articleCommentsLastEvaluatedKey
-      const params =
-        commentId && sortKey
-          ? {
-            limit: 10,
-            comment_id: commentId,
-            article_id: articleCommentsarticleId,
-            sort_key: sortKey
-          }
-          : { limit: 5 }
+      const paramsWithKeys = {
+        limit: 10,
+        comment_id: commentId,
+        article_id: articleCommentsarticleId,
+        sort_key: sortKey
+      }
+      const params = commentId && sortKey ? paramsWithKeys : { limit: 5 }
 
       const { Items: comments, LastEvaluatedKey } = await this.$axios.$get(
         `/articles/${articleId}/comments`,
@@ -449,6 +454,35 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getSearchArticles({ commit, dispatch, state }, { query }) {
+    if (state.searchArticles.isFetching) return
+    commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: true })
+    const limit = 10
+    const articles = await this.$axios.$get('/search/articles', {
+      params: { limit, query, page: state.searchArticles.page }
+    })
+    const articlesWithData = await Promise.all(
+      articles.map(async (article) => {
+        const [userInfo, alisToken] = await Promise.all([
+          dispatch('getUserInfo', { userId: article.user_id }),
+          dispatch('getAlisToken', { articleId: article.article_id })
+        ])
+        return { ...article, userInfo, alisToken, tmp: Math.random() }
+      })
+    )
+    commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: false })
+    commit(types.SET_SEARCH_ARTICLES, { articles: articlesWithData })
+    commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
+    if (articles.length < limit) {
+      commit(types.SET_SEARCH_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+    }
+  },
+  resetSearchArticles({ commit }) {
+    commit(types.RESET_SEARCH_ARTICLES)
+  },
+  resetSearchArticlesPage({ commit }) {
+    commit(types.RESET_SEARCH_ARTICLES_PAGE)
   }
 }
 
@@ -561,6 +595,24 @@ const mutations = {
   [types.DELETE_ARTICLE_COMMENT](state, { commentId }) {
     const comments = state.article.comments.filter((comment) => comment.comment_id !== commentId)
     state.article.comments = comments
+  },
+  [types.SET_SEARCH_ARTICLES](state, { articles }) {
+    state.searchArticles.articles.push(...articles)
+  },
+  [types.SET_SEARCH_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.searchArticles.isLastPage = isLastPage
+  },
+  [types.SET_SEARCH_ARTICLES_PAGE](state, { page }) {
+    state.searchArticles.page = page
+  },
+  [types.RESET_SEARCH_ARTICLES](state) {
+    state.searchArticles.articles = []
+  },
+  [types.RESET_SEARCH_ARTICLES_PAGE](state) {
+    state.searchArticles.page = 1
+  },
+  [types.SET_SEARCH_ARTICLES_IS_FETCHING](state, { isFetching }) {
+    state.searchArticles.isFetching = isFetching
   }
 }
 
