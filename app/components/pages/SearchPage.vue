@@ -307,16 +307,10 @@ export default {
   }
 
   .area-search {
-    .form-input {
-      padding: 5px 0;
-    }
-  }
-
-  .area-search {
     width: 100%;
 
     .form-input {
-      width: 100%;
+      width: calc(100% - 24px);
     }
   }
 }
