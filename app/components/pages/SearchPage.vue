@@ -102,6 +102,7 @@ export default {
   methods: {
     async search() {
       try {
+        if (window.innerWidth <= 640) document.activeElement.blur()
         this.resetSearchData()
         this.query = this.inputText
         if (this.isFetchingData || !this.query) return
