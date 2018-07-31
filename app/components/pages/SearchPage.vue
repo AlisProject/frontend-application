@@ -77,7 +77,7 @@ export default {
     this.showNav = !!this.query
   },
   async mounted() {
-    this.$refs.searchInput.focus()
+    if (window.innerWidth > 640) this.$refs.searchInput.focus()
     this.inputText = this.$route.query.q
     await this.$nextTick()
     if (this.searchArticlesScrollHeight) this.$el.scrollTop = this.searchArticlesScrollHeight
