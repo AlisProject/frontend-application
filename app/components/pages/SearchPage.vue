@@ -29,13 +29,13 @@
       <no-ssr>
         <div v-if="showArticles">
           <p class="no-result-message" v-if="searchArticles.articles.length === 0">
-           {{ searchArticles.isFetching ? '' : '該当する検索結果が存在しません。'}}
+           {{  searchArticles.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
           </p>
           <search-article-card-list :articles="searchArticles.articles" v-else/>
         </div>
         <div v-else>
           <p class="no-result-message" v-if="searchUsers.users.length === 0">
-           {{ searchUsers.isFetching ? '' : '該当する検索結果が存在しません。'}}
+           {{ searchUsers.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
           </p>
           <search-user-card-list :users="searchUsers.users" v-else/>
         </div>
