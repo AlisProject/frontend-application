@@ -1,6 +1,6 @@
 <template>
   <div class="article-container">
-    <app-header showEditHeaderNav showEditArticleLink class="public-article logo-original"/>
+    <app-header showEditHeaderNav showEditArticleLink class="public-article"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
       <div class="area-content" v-html="article.body" />

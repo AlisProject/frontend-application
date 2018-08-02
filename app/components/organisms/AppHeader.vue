@@ -126,22 +126,9 @@ export default {
 
 .area-logo {
   grid-area: logo;
-}
-
-.logo-original {
-  .area-logo {
-    background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
-    background-size: contain;
-    margin: 30px;
-  }
-}
-
-.logo-white {
-  .area-logo {
-    background: url('~assets/images/pc/common/header_logo_white.png') no-repeat;
-    background-size: contain;
-    margin: 30px;
-  }
+  background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
+  background-size: contain;
+  margin: 30px;
 }
 
 @media screen and (max-width: 920px) {
@@ -158,13 +145,10 @@ export default {
       grid-template-rows: 12px 20px 18px;
     }
 
-    .logo-original,
-    .logo-white {
-      .area-logo {
-        background: url('~assets/images/sp/common/header_logo.png') no-repeat;
-        background-size: contain;
-        margin: 0;
-      }
+    .area-logo {
+      background: url('~assets/images/sp/common/header_logo.png') no-repeat;
+      background-size: contain;
+      margin: 0;
     }
   }
 }
@@ -186,13 +170,10 @@ export default {
     background: none;
   }
 
-  .logo-original,
-  .logo-white {
-    .area-logo {
-      background: url('~assets/images/sp/common/header_logo.png') no-repeat;
-      background-size: contain;
-      margin: 0;
-    }
+  .area-logo {
+    background: url('~assets/images/sp/common/header_logo.png') no-repeat;
+    background-size: contain;
+    margin: 0;
   }
 }
 </style>

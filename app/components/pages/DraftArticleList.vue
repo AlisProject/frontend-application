@@ -1,6 +1,6 @@
 <template>
   <div class="draft-article-list-container long-article-card" @scroll="infiniteScroll">
-    <app-header showEditHeaderNav class="drafts logo-original"/>
+    <app-header showEditHeaderNav class="drafts"/>
     <article-card-list :articles="draftArticles" class="draft" :linkTo="'draft'"/>
     <the-loader :lastEvaluatedKey="draftArticlesLastEvaluatedKey"/>
     <app-footer/>

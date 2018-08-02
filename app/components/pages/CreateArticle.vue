@@ -1,6 +1,6 @@
 <template>
   <div class="create-article-container">
-    <app-header showEditHeaderNav showPostArticleLink class="new-article logo-original"/>
+    <app-header showEditHeaderNav showPostArticleLink class="new-article"/>
     <article-editor :putArticle="this.putArticle"/>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="new-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav class="new-articles logo-white"/>
+    <app-header showDefaultHeaderNav class="new-articles"/>
     <article-card-list :articles="newArticles"/>
     <the-loader :lastEvaluatedKey="newArticlesLastEvaluatedKey"/>
     <app-footer/>

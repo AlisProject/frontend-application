@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-header class="logo-original" showDefaultHeaderNav showOnlyLogo/>
+    <app-header showDefaultHeaderNav showOnlyLogo/>
     <div class="logo-mobile"></div>
     <div v-if="error.statusCode === 404">
       <div class="page-404-container">
