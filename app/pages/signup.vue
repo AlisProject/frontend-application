@@ -1,13 +1,13 @@
 <template>
-  <top-page/>
+  <popular-article-list/>
 </template>
 
 <script>
-import TopPage from '~/components/pages/TopPage'
+import PopularArticleList from '~/components/pages/PopularArticleList'
 
 export default {
   components: {
-    TopPage
+    PopularArticleList
   },
   async fetch({ store }) {
     store.dispatch('user/setSignUpModal', { showSignUpModal: true })

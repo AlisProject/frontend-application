@@ -1,5 +1,5 @@
 <template>
-  <div class="top-container popular-article-list-container" @scroll="infiniteScroll">
+  <div class="popular-article-list-container" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav class="topic-crypto logo-white"/>
     <article-card-list :articles="popularArticles"/>
     <the-loader :lastEvaluatedKey="popularArticlesLastEvaluatedKey"/>
@@ -60,7 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.top-container,
 .popular-article-list-container {
   display: grid;
   /* prettier-ignore */
@@ -78,19 +77,19 @@ export default {
 }
 
 @media screen and (max-width: 1296px) {
-  .top-container {
+  .popular-article-list-container {
     grid-template-columns: 1fr 710px 1fr;
   }
 }
 
 @media screen and (max-width: 920px) {
-  .top-container {
+  .popular-article-list-container {
     grid-template-columns: 1fr 340px 1fr;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .top-container {
+  .popular-article-list-container {
     background: #f7f7f7;
     grid-template-rows: 100px 15px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
@@ -98,7 +97,7 @@ export default {
 }
 
 @media screen and (max-width: 370px) {
-  .top-container {
+  .popular-article-list-container {
     grid-template-columns: 10px 1fr 10px;
   }
 }
