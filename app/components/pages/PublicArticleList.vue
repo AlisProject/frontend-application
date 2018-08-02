@@ -61,7 +61,6 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
-  background: #f7f7f7;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
