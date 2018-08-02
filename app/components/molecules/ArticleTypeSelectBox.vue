@@ -9,6 +9,17 @@
 
 <script>
 export default {
+  mounted() {
+    const areaArticleTypeSelectBox = document.querySelector('.area-article-type-select-box')
+    console.log(areaArticleTypeSelectBox)
+    const viewportMeta = document.querySelector('meta[name="viewport"]')
+    areaArticleTypeSelectBox.addEventListener('touchstart', (event) => {
+      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
+    })
+    areaArticleTypeSelectBox.addEventListener('blur', (event) => {
+      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1')
+    })
+  },
   methods: {
     onChangeArticleTypeSelect(event) {
       console.log(event.target.value)
