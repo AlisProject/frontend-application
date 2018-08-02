@@ -53,7 +53,7 @@ export default {
   position: fixed;
   right: -49px;
   text-align: right;
-  top: 340px;
+  top: 170px;
   transform: rotate(90deg);
   width: 160px;
 
@@ -80,7 +80,6 @@ export default {
       padding: 0;
       position: static;
       right: -46px;
-      top: 340px;
       transform: rotate(0);
       width: 160px;
 
@@ -100,7 +99,6 @@ export default {
     padding: 0;
     position: static;
     right: -46px;
-    top: 340px;
     transform: rotate(0);
     width: 160px;
 

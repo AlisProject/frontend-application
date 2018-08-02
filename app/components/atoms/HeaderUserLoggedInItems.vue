@@ -186,7 +186,7 @@ export default {
   padding-top: 10px;
   position: fixed;
   right: -28.5px;
-  top: 340px;
+  top: 150px;
   transform: rotate(90deg);
   width: 134px;
 
@@ -222,7 +222,7 @@ export default {
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
   padding: 24px 41px;
   position: absolute;
-  right: 108px;
+  right: -101px;
   transform: rotate(-90deg);
   width: 240px;
 
@@ -240,7 +240,8 @@ export default {
     border-right: 0px solid transparent;
     border-top: 20px solid transparent;
     margin: -20px -20px 0 0;
-    top: 340px;
+    top: 150px;
+    z-index: -1;
   }
 
   .image-box {
@@ -329,7 +330,6 @@ export default {
       padding: 0;
       position: static;
       right: -46px;
-      top: 340px;
       transform: rotate(0);
       width: 160px;
 
@@ -390,7 +390,6 @@ export default {
     padding: 0;
     position: static;
     right: -46px;
-    top: 340px;
     transform: rotate(0);
     width: 160px;
 
