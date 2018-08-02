@@ -20,7 +20,9 @@
         src="~assets/images/pc/common/icon_bell.png"
         v-else>
     </nuxt-link>
-    <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
+    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
+      <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
+    </nuxt-link>
     <div class="menu" v-if="isMenuShown">
       <div class="image-box">
         <img
@@ -93,6 +95,12 @@ export default {
     ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification'])
   },
   methods: {
+    resetSearchStates() {
+      this.resetSearchArticles()
+      this.resetSearchArticlesPage()
+      this.resetSearchUsers()
+      this.resetSearchUsersPage()
+    },
     toggleMenu() {
       if (!this.isMenuShown) {
         this.forbidScroll()
@@ -163,8 +171,11 @@ export default {
       'setProfileSettingsModal',
       'setCurrentUserInfo',
       'getUsersAlisToken',
-      'getUnreadNotification'
-    ])
+      'getUnreadNotification',
+      'resetSearchUsers',
+      'resetSearchUsersPage'
+    ]),
+    ...mapActions('article', ['resetSearchArticles', 'resetSearchArticlesPage'])
   }
 }
 </script>
@@ -200,7 +211,6 @@ export default {
     margin: 20px 10px 0 5px;
     transform: rotate(-90deg);
     width: 16px;
-    cursor: not-allowed;
   }
 }
 

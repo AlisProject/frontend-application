@@ -1,5 +1,5 @@
 <template>
-  <app-modal :title="title">
+  <app-modal :title="title" :showModalContent="showSignUpAuthFlowModal">
     <div slot="modal-content">
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
@@ -53,7 +53,7 @@ export default {
     isProfileSettingsModal() {
       return this.signUpAuthFlowModal.isProfileSettingsModal
     },
-    ...mapGetters('user', ['signUpAuthFlowModal'])
+    ...mapGetters('user', ['signUpAuthFlowModal', 'showSignUpAuthFlowModal'])
   }
 }
 </script>

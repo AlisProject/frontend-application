@@ -1,14 +1,14 @@
 <template>
   <transition name="fade">
     <div class="article-comment">
-      <div class="commented-user">
+      <nuxt-link :to="`/users/${comment.userInfo.user_id}`" class="commented-user">
         <img class="icon" :src="comment.userInfo.icon_image_url" v-if="hasUserIcon">
         <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
         <ul class="info">
           <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
           <li class="info-content">{{ createdAt }}</li>
         </ul>
-      </div>
+      </nuxt-link>
       <p class="body" v-html="commentText"/>
       <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
         <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
@@ -174,29 +174,32 @@ export default {
   position: relative;
 
   .commented-user {
+    align-items: center;
     color: #5b5b5b;
+    display: flex;
     font-size: 14px;
-    left: 20px;
-    position: absolute;
-    top: 20px;
-
-    .info {
-      color: #6e6e6e;
-      float: right;
-      font-size: 12px;
-      list-style: none;
-      margin: 0px 16px;
-      padding: 0;
-
-      .info-content {
-        line-height: 1.5;
-      }
-    }
+    text-decoration: none;
 
     .icon {
       width: 36px;
       height: 36px;
       border-radius: 50%;
+      margin-right: 16px;
+    }
+
+    .info {
+      color: #6e6e6e;
+      font-size: 12px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .info-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 1.5;
+      }
     }
   }
 
@@ -205,8 +208,7 @@ export default {
     font-size: 12px;
     font-weight: 500;
     line-height: 1.8;
-    margin-top: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 18px;
     word-break: break-word;
   }
 
@@ -263,6 +265,20 @@ export default {
       .delete {
         cursor: pointer;
         user-select: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .article-comment {
+    .commented-user {
+      .info {
+        // 10px - padding of .area-article-comments
+        // 24px - padding of .article-comment
+        // 36px - width   of .article-comment .commented-user .icon
+        // 16px - margin  of .article-comment .commented-user .icon
+        width: calc(100vw - (10px + 24px + 36px + 16px + 24px + 10px));
       }
     }
   }

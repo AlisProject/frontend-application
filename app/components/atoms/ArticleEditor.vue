@@ -332,6 +332,12 @@ export default {
       if (!thumbnails.includes(this.thumbnail)) {
         this.updateThumbnail({ thumbnail: '' })
       }
+      // Prevent drag & drop on image
+      Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
+        if (element.dataset.preventedDragAndDrop === 'true') return
+        this.preventDragAndDrop(element)
+        element.dataset.preventedDragAndDrop = true
+      })
     },
     removeUselessDOMFromArticleBody() {
       const serializedContents = this.editorElement.serialize()
@@ -472,7 +478,6 @@ export default {
 
 .area-title {
   color: #040404;
-  font-family: 'Yu Gothic', YuGothic;
   font-size: 24px;
   font-weight: bold;
   grid-area: title;
@@ -530,7 +535,6 @@ export default {
   border-radius: 4px;
   border: none;
   color: #898989;
-  font-family: 'Yu Gothic', YuGothic;
   font-size: 14px;
   font-weight: 500;
   line-height: 12px;

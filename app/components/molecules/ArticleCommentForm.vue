@@ -82,6 +82,7 @@ export default {
     },
     checkLogin() {
       if (this.loggedIn) return
+      document.activeElement.blur()
       this.showModal()
     },
     async submit() {
@@ -93,11 +94,12 @@ export default {
       try {
         if (this.postingComment) return
         this.postingComment = true
+        const escapedComment = this.escapeHTML(this.comment)
         const commentId = await this.postArticleComment({
           articleId: this.$route.params.articleId,
-          text: this.escapeHTML(this.comment)
+          text: escapedComment
         })
-        this.addArticleComment({ text: this.comment, commentId })
+        this.addArticleComment({ text: escapedComment, commentId })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''
         this.$el.querySelector('.comment-textarea').focus()
@@ -136,10 +138,11 @@ export default {
     padding: 24px;
 
     .comment-user {
-      color: #5b5b5b;
-      font-size: 14px;
-      display: flex;
       align-items: center;
+      color: #5b5b5b;
+      display: flex;
+      font-size: 14px;
+      overflow: hidden;
 
       .icon {
         border-radius: 50%;
@@ -151,6 +154,9 @@ export default {
       .name {
         color: #6e6e6e;
         font-size: 12px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }

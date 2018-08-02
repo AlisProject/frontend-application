@@ -132,7 +132,7 @@ export default {
 .area-footer-actions {
   display: grid;
   grid-area: footer-actions;
-  grid-template-rows: 80px;
+  grid-template-rows: 70px;
   grid-template-columns: 1fr repeat(2, 60px);
   justify-content: right;
 
@@ -236,10 +236,11 @@ export default {
 
 @media screen and (max-width: 640px) {
   .area-footer-actions {
+    background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
     position: relative;
 
     &:after {
-      bottom: 46px;
+      bottom: 35px;
       box-shadow: 0 15px 10px -10px rgba(192, 192, 192, 0.5);
       content: '';
       height: 100px;
