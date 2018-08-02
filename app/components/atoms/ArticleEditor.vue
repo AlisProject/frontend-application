@@ -134,10 +134,14 @@ export default {
         this.setIsEdited({ isEdited: true })
         this.$el.onkeydown = async (event) => {
           if (event.key === 'Enter') {
-            const line = this.editorElement.getSelectedParentElement().textContent
+            const line = MediumEditor.util.getTopBlockContainer(
+              this.editorElement.getSelectedParentElement()
+            ).textContent
             const trimmedLine = line.trim()
             if (urlRegex({ exact: true }).test(trimmedLine)) {
-              const selectedParentElement = this.editorElement.getSelectedParentElement()
+              const selectedParentElement = MediumEditor.util.getTopBlockContainer(
+                this.editorElement.getSelectedParentElement()
+              )
               let result
               if (
                 trimmedLine === 'https://twitter.com' ||
