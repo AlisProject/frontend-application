@@ -390,6 +390,7 @@ export default {
     preventDragoverImage(event) {
       event.preventDefault()
       event.stopPropagation()
+      this.$refs.editable.classList.add('is-dragging-item')
       setTimeout(() => {
         this.targetDOM = $('.medium-editor-dragover')
       }, 10)
@@ -398,10 +399,12 @@ export default {
     preventDropImage(event) {
       event.preventDefault()
       event.stopPropagation()
+      this.$refs.editable.classList.remove('is-dragging-item')
       this.insertDragImage(event.dataTransfer.files)
       return false
     },
     insertDragImage(files) {
+      this.$refs.editable.classList.remove('is-dragging-item')
       if (this.targetDOM[0].classList.value.includes('area-body')) return
       const [target] = files
       const MAX_UPLOAD = 4.5 * 1024 * 1024 // 4.5 MB
@@ -420,10 +423,20 @@ export default {
     },
     preventDragAndDrop(element) {
       element.addEventListener(
+        'dragout',
+        (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          this.$refs.editable.classList.remove('is-dragging-item')
+        },
+        false
+      )
+      element.addEventListener(
         'drop',
         (e) => {
           e.preventDefault()
           e.stopPropagation()
+          this.$refs.editable.classList.remove('is-dragging-item')
         },
         false
       )
@@ -432,6 +445,7 @@ export default {
         (e) => {
           e.preventDefault()
           e.stopPropagation()
+          this.$refs.editable.classList.add('is-dragging-item')
         },
         false
       )
@@ -552,6 +566,16 @@ export default {
   .area-editor-container {
     grid-template-columns: 1fr;
     display: none;
+  }
+}
+</style>
+
+<style lang="scss">
+.area-body {
+  &.is-dragging-item {
+    .medium-insert-buttons {
+      pointer-events: none;
+    }
   }
 }
 </style>
