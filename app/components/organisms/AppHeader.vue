@@ -116,7 +116,7 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 100px 1fr 100px;
+  grid-template-columns: 190px 1fr 190px;
   /* prettier-ignore */
   grid-template-areas:
     "logo nav";
@@ -127,8 +127,7 @@ export default {
 .area-logo {
   grid-area: logo;
   background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
-  background-size: contain;
-  margin: 30px;
+  background-position: center;
 }
 
 @media screen and (max-width: 920px) {
@@ -143,12 +142,6 @@ export default {
       '... nav  ... ...     ...';
       grid-template-columns: 0 min-content 1fr 160px 3px;
       grid-template-rows: 12px 20px 18px;
-    }
-
-    .area-logo {
-      background: url('~assets/images/sp/common/header_logo.png') no-repeat;
-      background-size: contain;
-      margin: 0;
     }
   }
 }
@@ -171,7 +164,7 @@ export default {
   }
 
   .area-logo {
-    background: url('~assets/images/sp/common/header_logo.png') no-repeat;
+    background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
     background-size: contain;
     margin: 0;
   }
