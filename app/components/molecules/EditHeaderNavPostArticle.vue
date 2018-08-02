@@ -4,7 +4,7 @@
       公開する
     </span>
     <div v-show="isPopupShown" class="popup">
-      <h3 class="headline">サムネイルの画像を選択</h3>
+      <h3 class="headline">1. サムネイルの選択</h3>
       <div class="thumbnails">
         <span v-if="suggestedThumbnails.length === 0">
           画像がありません
@@ -17,7 +17,15 @@
           @click.prevent="selectThumbnail"
           class="thumbnail"/>
       </div>
-      <hr class="hr">
+      <h3 class="headline">2. トピックの設定</h3>
+      <div class="article-type-select-box">
+        <select required @change="onChangeArticleTypeSelect" class="article-type-select">
+          <option value='' disabled selected class="placeholder">選択してください</option>
+          <option value="crypto">クリプト</option>
+          <option value="topic1">TOPIC1</option>
+          <option value="topic2">TOPIC2</option>
+        </select>
+      </div>
       <button class="submit" @click="publish" :class="{ disable: !publishable }">公開する</button>
     </div>
   </div>
@@ -31,7 +39,8 @@ export default {
   data() {
     return {
       isPopupShown: false,
-      isThumbnailSelected: false
+      isThumbnailSelected: false,
+      topic: null
     }
   },
   mounted() {
@@ -51,14 +60,15 @@ export default {
   methods: {
     async publish() {
       if (!this.publishable) return
-      const { articleId, title, body } = this
+      const { articleId, title, body, topic } = this
       const overview = body
         .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
         .replace(/\r?\n?\s/g, '')
         .slice(0, 100)
       if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
       if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-      if (title === '' || overview === '') return
+      if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
+      if (title === '' || overview === '' || topic === null) return
 
       const article = { title, body, overview }
 
@@ -94,6 +104,10 @@ export default {
     selectThumbnail({ target }) {
       this.isThumbnailSelected = true
       this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
+    },
+    onChangeArticleTypeSelect(event) {
+      this.$el.querySelector('.article-type-select').style.color = '#858dda'
+      this.topic = event.target.value
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -165,6 +179,9 @@ export default {
 .area-post-article {
   grid-area: post-article;
   position: relative;
+  display: flex;
+  align-self: center;
+  justify-content: center;
 
   .post-article {
     cursor: pointer;
@@ -179,7 +196,7 @@ export default {
   .popup {
     background-color: #ffffff;
     border-radius: 4px;
-    box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     box-sizing: border-box;
     left: -30px;
     padding: 24px;
@@ -190,10 +207,9 @@ export default {
 
     .headline {
       color: #000000;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
-      letter-spacing: 1px;
-      line-height: 24px;
+      line-height: 1.5;
       margin-top: 0;
       text-align: left;
     }
@@ -219,8 +235,58 @@ export default {
       }
     }
 
-    .hr {
-      margin: 20px 0;
+    .article-type-select-box {
+      border-bottom: 1px dotted #232538;
+      margin-bottom: 20px;
+      padding: 6px 1px;
+      position: relative;
+
+      &::after,
+      &::before {
+        position: absolute;
+        right: 0;
+        width: 0;
+        height: 0;
+        padding: 0;
+        content: '';
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        pointer-events: none;
+      }
+
+      &::after {
+        top: 7px;
+        border-bottom: 8px solid rgb(80, 81, 96);
+      }
+
+      &::before {
+        top: 17px;
+        border-top: 8px solid rgb(80, 81, 96);
+      }
+
+      .article-type-select {
+        -webkit-appearance: none;
+        background-image: none;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        color: #cecece;
+        cursor: pointer;
+        font-size: 14px;
+        outline: none;
+        padding-right: 1em;
+        text-indent: 0.01px;
+        text-overflow: ellipsis;
+        width: 100%;
+
+        .placeholder {
+          display: none;
+        }
+
+        &::-ms-expand {
+          display: none;
+        }
+      }
     }
 
     .submit {
