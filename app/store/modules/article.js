@@ -41,7 +41,20 @@ const state = () => ({
     page: 1,
     isLastPage: false,
     isFetching: false
-  }
+  },
+  // topic object structure is like this.
+  //
+  // topics: {
+  //   topic1: {
+  //     newArticles: {
+  //       articles: [],
+  //       page: 1,
+  //       isLastPage: false,
+  //       isFetching: false
+  //     }
+  //   }
+  // }
+  topics: {}
 })
 
 const getters = {
@@ -71,7 +84,8 @@ const getters = {
   hasArticleCommentsLastEvaluatedKey: (state) =>
     !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length,
   articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
-  searchArticles: (state) => state.searchArticles
+  searchArticles: (state) => state.searchArticles,
+  topics: (state) => state.topics
 }
 
 const actions = {
@@ -483,6 +497,36 @@ const actions = {
   },
   resetSearchArticlesPage({ commit }) {
     commit(types.RESET_SEARCH_ARTICLES_PAGE)
+  },
+  async getPopularArticlesByTopic({ commit, dispatch, state }, { topic }) {
+    if (!Object.keys(state.topics).includes(topic)) commit(types.INIT_TOPIC_STATE, { topic })
+    if (!Object.keys(state.topics[topic]).includes('popularArticles')) {
+      commit(types.INIT_TOPIC_POPULAR_ARTICLES_STATE, { topic })
+    }
+    if (state.topics[topic].popularArticles.isFetching) return
+    commit(types.SET_TOPIC_POPULAR_ARTICLES_IS_FETCHING, { isFetching: true, topic })
+    const limit = 10
+    const articles = await this.$axios.$get('/articles/popular', {
+      params: { limit, topic, page: state.topics[topic].popularArticles.page }
+    })
+    const articlesWithData = await Promise.all(
+      articles.map(async (article) => {
+        const [userInfo, alisToken] = await Promise.all([
+          dispatch('getUserInfo', { userId: article.user_id }),
+          dispatch('getAlisToken', { articleId: article.article_id })
+        ])
+        return { ...article, userInfo, alisToken, tmp: Math.random() }
+      })
+    )
+    commit(types.SET_TOPIC_POPULAR_ARTICLES_IS_FETCHING, { isFetching: false, topic })
+    commit(types.SET_TOPIC_POPULAR_ARTICLES, { articles: articlesWithData, topic })
+    commit(types.SET_TOPIC_POPULAR_ARTICLES_PAGE, {
+      page: state.topics[topic].popularArticles.page + 1,
+      topic
+    })
+    if (articles.length < limit) {
+      commit(types.SET_TOPIC_POPULAR_ARTICLES_IS_LAST_PAGE, { isLastPage: true, topic })
+    }
   }
 }
 
@@ -613,6 +657,31 @@ const mutations = {
   },
   [types.SET_SEARCH_ARTICLES_IS_FETCHING](state, { isFetching }) {
     state.searchArticles.isFetching = isFetching
+  },
+  [types.INIT_TOPIC_STATE](state, { topic }) {
+    state.topics[topic] = {}
+  },
+  [types.INIT_TOPIC_POPULAR_ARTICLES_STATE](state, { topic }) {
+    state.topics[topic] = {
+      popularArticles: {
+        articles: [],
+        page: 1,
+        isLastPage: false,
+        isFetching: false
+      }
+    }
+  },
+  [types.SET_TOPIC_POPULAR_ARTICLES_IS_FETCHING](state, { isFetching, topic }) {
+    state.topics[topic].popularArticles.isFetching = isFetching
+  },
+  [types.SET_TOPIC_POPULAR_ARTICLES](state, { articles, topic }) {
+    state.topics[topic].popularArticles.articles.push(...articles)
+  },
+  [types.SET_TOPIC_POPULAR_ARTICLES_PAGE](state, { page, topic }) {
+    state.topics[topic].popularArticles.page = page
+  },
+  [types.SET_TOPIC_POPULAR_ARTICLES_IS_LAST_PAGE](state, { isLastPage, topic }) {
+    state.topics[topic].popularArticles.isLastPage = isLastPage
   }
 }
 
