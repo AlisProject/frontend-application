@@ -4,7 +4,6 @@
       v-for="article in articles"
       :article="article"
       :key="article.article_id"
-      class="shadow"
       :linkTo="linkTo"
     />
   </div>

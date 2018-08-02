@@ -53,6 +53,7 @@ a {
 }
 
 .article-card-container {
+  box-shadow: 0 3px 10px 0 rgba(192, 192, 192, 0.5);
   display: grid;
   grid-template-rows: 88px 180px;
   grid-template-columns: 340px;
@@ -60,10 +61,6 @@ a {
   grid-template-areas:
     "article-card-image"
     "article-card-content";
-}
-
-.shadow .article-card-container {
-  box-shadow: 0 3px 10px 0 rgba(192, 192, 192, 0.5);
 }
 
 .top {
