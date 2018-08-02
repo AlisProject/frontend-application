@@ -1,6 +1,6 @@
 <template>
   <div class="top-container popular-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav class="popular-articles logo-white"/>
+    <app-header showDefaultHeaderNav class="topic-crypto logo-white"/>
     <article-card-list :articles="popularArticles"/>
     <the-loader :lastEvaluatedKey="popularArticlesLastEvaluatedKey"/>
     <app-footer/>

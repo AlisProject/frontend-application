@@ -2,15 +2,20 @@
   <nav class="area-nav">
     <template v-if="!showOnlyLogo && !showOnlySessionLinks">
       <nuxt-link
-        to="/"
-        class="nav-link area-popular-articles"
+        to="#"
+        class="nav-link area-topic-crypto"
         :class="{ hidden: showOnlySessionLinksOnPc }"
-        @click.native="resetScrollPosition">人気記事</nuxt-link>
+        @click.native="resetScrollPosition">クリプト</nuxt-link>
       <nuxt-link
-        to="/articles/recent"
-        class="nav-link area-new-articles"
+        to="#"
+        class="nav-link area-topic-topic1"
         :class="{ hidden: showOnlySessionLinksOnPc }"
-        @click.native="resetScrollPosition">新着記事</nuxt-link>
+        @click.native="resetScrollPosition">TOPIC1</nuxt-link>
+      <nuxt-link
+        to="#"
+        class="nav-link area-topic-topic2"
+        :class="{ hidden: showOnlySessionLinksOnPc }"
+        @click.native="resetScrollPosition">TOPIC2</nuxt-link>
     </template>
   </nav>
 </template>
@@ -47,53 +52,47 @@ export default {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: 1fr 30px 1fr;
-  grid-template-columns: 1fr 60px 42px 60px 1fr;
+  grid-template-rows: 1fr 22px 1fr;
+  grid-template-columns: 1fr repeat(3, auto) 1fr;
+  grid-column-gap: 40px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...             ... ...         ..."
-    "... popular-articles ... new-articles ..."
-    "... ...             ... ...         ...";
+    "... ...          ...          ...          ..."
+    "... topic-crypto topic-topic1 topic-topic2 ..."
+    "... ...          ...          ...          ...";
 }
 
 .nav-link {
   font-size: 14px;
   text-decoration: none;
-  color: #525256;
+  color: #6e6e6e;
+  padding: 0 10px;
+  line-height: 1.6;
 }
 
-.area-popular-articles {
-  grid-area: popular-articles;
+.area-topic-crypto {
+  grid-area: topic-crypto;
 }
 
-.area-new-articles {
-  grid-area: new-articles;
+.area-topic-topic1 {
+  grid-area: topic-topic1;
 }
 
-.popular-articles .area-popular-articles {
+.area-topic-topic2 {
+  grid-area: topic-topic2;
+}
+
+.topic-crypto .area-topic-crypto,
+.topic-topic1 .area-topic-topic1,
+.topic-topic2 .area-topic-topic1 {
   color: white;
   display: block;
-  border-bottom: 2px solid white;
-}
-
-.new-articles .area-new-articles {
-  color: white;
-  display: block;
-  border-bottom: 2px solid white;
+  background: #858dda;
+  border-radius: 10px;
 }
 
 @media screen and (max-width: 920px) {
   .article-container {
-    .area-nav {
-      grid-gap: 20px;
-      /* prettier-ignore */
-      grid-template-areas:
-      'popular-articles new-articles';
-      grid-template-columns: 48px 48px;
-      grid-template-rows: 32px;
-      text-align: left;
-    }
-
     .nav-link {
       display: none;
     }
@@ -105,29 +104,19 @@ export default {
     grid-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:
-      'popular-articles new-articles';
-    grid-template-columns: 48px 48px;
-    grid-template-rows: 36px;
-    text-align: left;
+      'topic-crypto topic-topic1 topic-topic2';
+    grid-template-rows: 20px;
+    grid-template-columns: repeat(3, fit-content(100%));
   }
 
   .nav-link {
-    line-height: 30px;
-    font-size: 12px;
+    font-size: 10px;
+    padding: 0 5px;
+    line-height: 2;
 
     &.hidden {
       display: none;
     }
-  }
-
-  .popular-articles .area-popular-articles {
-    color: #99a2ff;
-    border-bottom: 1px solid #99a2ff;
-  }
-
-  .new-articles .area-new-articles {
-    color: #99a2ff;
-    border-bottom: 1px solid #99a2ff;
   }
 }
 </style>

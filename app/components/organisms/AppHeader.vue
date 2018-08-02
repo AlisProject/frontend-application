@@ -153,9 +153,9 @@ export default {
     /* prettier-ignore */
     grid-template-areas:
       '... ...  ... ...     ...'
-      '... logo ... session ...'
-      '... nav  ... ...     ...';
-    grid-template-columns: 0 min-content 1fr 160px 3px;
+      '... logo logo session ...'
+      '... nav  nav nav     ...';
+    grid-template-columns: 0 auto 1fr 160px 3px;
     grid-template-rows: 9px 29px 15px;
   }
 
