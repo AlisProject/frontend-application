@@ -77,7 +77,7 @@ export default {
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 190px 1fr 75px 75px;
+  grid-template-rows: 100px 20px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
