@@ -6,6 +6,11 @@
       :showOnlyLogo="showOnlyLogo"
       :showOnlySessionLinks="showOnlySessionLinks"
       :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
+    <article-type-select-box
+      v-if="showDefaultHeaderNav"
+      :showOnlyLogo="showOnlyLogo"
+      :showOnlySessionLinks="showOnlySessionLinks"
+      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
     <no-ssr>
       <edit-header-nav
         v-if="showEditHeaderNav"
@@ -33,6 +38,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
+import ArticleTypeSelectBox from '../molecules/ArticleTypeSelectBox'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
@@ -79,6 +85,7 @@ export default {
     DefaultHeaderNav,
     EditHeaderNav,
     HeaderSessionLinks,
+    ArticleTypeSelectBox,
     HeaderUserLoggedInItems,
     SignUpModal,
     SignUpAuthFlowModal,
@@ -116,10 +123,10 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 190px 1fr 190px;
+  grid-template-columns: 190px 1fr 78px 100px;
   /* prettier-ignore */
   grid-template-areas:
-    "logo nav";
+    "logo nav article-type-select-box ...";
   position: relative;
   z-index: 2;
 }
@@ -149,14 +156,14 @@ export default {
 @media screen and (max-width: 550px) {
   .area-app-header-container {
     background: white;
-    grid-gap: 13px;
+    grid-gap: 16px;
     /* prettier-ignore */
     grid-template-areas:
-      '... ...  ... ...     ...'
-      '... logo logo session ...'
-      '... nav  nav nav     ...';
-    grid-template-columns: 0 auto 1fr 160px 3px;
-    grid-template-rows: 9px 29px 15px;
+      '... ...  ...  ...     ...                     ...'
+      '... logo logo session session                 ...'
+      '... nav  nav  nav     article-type-select-box ...';
+    grid-template-columns: 0 auto 1fr 80px 67px 3px;
+    grid-template-rows: 6px 29px 20px;
   }
 
   .background-none.area-app-header-container {

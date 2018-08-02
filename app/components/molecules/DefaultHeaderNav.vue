@@ -39,6 +39,9 @@ export default {
     }
   },
   methods: {
+    onChangeArticleTypeSelect(event) {
+      console.log(event.target.value)
+    },
     resetScrollPosition() {
       this.setArticleListScrollHeight({ scroll: 0 })
     },
