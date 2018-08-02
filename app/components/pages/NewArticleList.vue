@@ -1,6 +1,6 @@
 <template>
   <div class="new-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav class="new-articles"/>
+    <app-header showDefaultHeaderNav :class="`topic-${topic}`"/>
     <article-card-list :articles="newArticles"/>
     <the-loader :lastEvaluatedKey="newArticlesLastEvaluatedKey"/>
     <app-footer/>
@@ -22,6 +22,9 @@ export default {
     AppFooter
   },
   computed: {
+    topic() {
+      return this.$route.query.topics || 'crypto'
+    },
     ...mapGetters('article', [
       'newArticles',
       'newArticlesLastEvaluatedKey',

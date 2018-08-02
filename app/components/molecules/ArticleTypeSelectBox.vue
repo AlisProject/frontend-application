@@ -1,6 +1,6 @@
 <template>
   <div class="area-article-type-select-box">
-    <select required @change="onChangeArticleTypeSelect">
+    <select required @change="onChangeArticleTypeSelect" v-model="selected">
       <option value="newArticles">新着記事</option>
       <option value="popularArticles">人気記事</option>
     </select>
@@ -9,6 +9,13 @@
 
 <script>
 export default {
+  data() {
+    return {
+      selected: this.$route.fullPath.startsWith('/articles/popular')
+        ? 'popularArticles'
+        : 'newArticles'
+    }
+  },
   mounted() {
     const areaArticleTypeSelectBox = document.querySelector('.area-article-type-select-box')
     const viewportMeta = document.querySelector('meta[name="viewport"]')
@@ -21,7 +28,15 @@ export default {
   },
   methods: {
     onChangeArticleTypeSelect(event) {
-      console.log(event.target.value)
+      if (this.$route.fullPath === '/') {
+        this.$router.push('/articles/recent?topic=crypto')
+        return
+      }
+      const to =
+        event.target.value === 'popularArticles'
+          ? this.$route.fullPath.replace('recent', 'popular')
+          : this.$route.fullPath.replace('popular', 'recent')
+      this.$router.push(to)
     }
   }
 }

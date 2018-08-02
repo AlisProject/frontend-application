@@ -2,17 +2,17 @@
   <nav class="area-nav">
     <template v-if="!showOnlyLogo && !showOnlySessionLinks">
       <nuxt-link
-        to="#"
+        :to="{ query: { topics: 'crypto'} }"
         class="nav-link area-topic-crypto"
         :class="{ hidden: showOnlySessionLinksOnPc }"
         @click.native="resetScrollPosition">クリプト</nuxt-link>
       <nuxt-link
-        to="#"
+        :to="{ query: { topics: 'topic1'} }"
         class="nav-link area-topic-topic1"
         :class="{ hidden: showOnlySessionLinksOnPc }"
         @click.native="resetScrollPosition">TOPIC1</nuxt-link>
       <nuxt-link
-        to="#"
+        :to="{ query: { topics: 'topic2'} }"
         class="nav-link area-topic-topic2"
         :class="{ hidden: showOnlySessionLinksOnPc }"
         @click.native="resetScrollPosition">TOPIC2</nuxt-link>
@@ -87,7 +87,7 @@ export default {
 
 .topic-crypto .area-topic-crypto,
 .topic-topic1 .area-topic-topic1,
-.topic-topic2 .area-topic-topic1 {
+.topic-topic2 .area-topic-topic2 {
   color: white;
   display: block;
   background: #858dda;

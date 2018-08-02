@@ -1,6 +1,6 @@
 <template>
   <div class="popular-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav class="topic-crypto logo-white"/>
+    <app-header showDefaultHeaderNav :class="`topic-${topic}`"/>
     <article-card-list :articles="popularArticles"/>
     <the-loader :lastEvaluatedKey="popularArticlesLastEvaluatedKey"/>
     <app-footer/>
@@ -27,6 +27,9 @@ export default {
     }
   },
   computed: {
+    topic() {
+      return this.$route.query.topics || 'crypto'
+    },
     ...mapGetters('article', ['popularArticles', 'popularArticlesLastEvaluatedKey']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
