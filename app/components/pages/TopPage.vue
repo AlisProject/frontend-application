@@ -62,9 +62,6 @@ export default {
 <style lang="scss" scoped>
 .top-container,
 .popular-article-list-container {
-  background: url('~assets/images/pc/bg/bg_top.png') no-repeat;
-  background-color: #f7f7f7;
-  background-size: contain;
   display: grid;
   /* prettier-ignore */
   grid-template-areas:

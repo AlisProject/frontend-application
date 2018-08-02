@@ -60,9 +60,6 @@ export default {
 
 <style lang="scss" scoped>
 .user-article-list-container {
-  background: url('~assets/images/pc/bg/bg_top.png') no-repeat;
-  background-color: #f7f7f7;
-  background-size: contain;
   display: grid;
   grid-template-rows: 100px 300px 1fr 75px 75px;
   grid-template-columns: 1fr 1080px 1fr;
