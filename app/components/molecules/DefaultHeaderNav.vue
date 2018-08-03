@@ -106,7 +106,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .area-nav {
-    grid-gap: 20px;
+    grid-gap: 16px;
     /* prettier-ignore */
     grid-template-areas:
       'topic-crypto topic-topic1 topic-topic2';
@@ -116,7 +116,7 @@ export default {
 
   .nav-link {
     font-size: 10px;
-    padding: 0 5px;
+    padding: 0 9px;
     line-height: 2;
 
     &.hidden {

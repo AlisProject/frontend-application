@@ -327,19 +327,17 @@ export default {
     .logged-in {
       border: none;
       grid-area: session;
-      padding: 0;
       position: static;
       right: -46px;
       transform: rotate(0);
-      width: 160px;
 
       .profile-icon {
         border-radius: 50%;
         float: right;
-        height: 50px;
+        height: 32px;
         transform: rotate(0);
-        width: 50px;
-        margin-top: -16px;
+        width: 32px;
+        margin-top: -8px;
       }
 
       .notification-icon {
@@ -391,15 +389,14 @@ export default {
     position: static;
     right: -46px;
     transform: rotate(0);
-    width: 160px;
 
     .profile-icon {
       border-radius: 50%;
       float: right;
-      height: 50px;
+      height: 32px;
+      margin-top: -4px;
       transform: rotate(0);
-      width: 50px;
-      margin-top: -16px;
+      width: 32px;
     }
 
     .notification-icon {

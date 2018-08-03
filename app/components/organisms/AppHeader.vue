@@ -140,15 +140,23 @@ export default {
   .article-container {
     .area-app-header-container {
       background: white;
-      grid-gap: 13px;
+      grid-gap: 16px;
       /* prettier-ignore */
       grid-template-areas:
-      '... logo ... ...     ...'
-      '... logo ... session ...'
-      '... logo ... ...     ...';
-      grid-template-columns: 0 130px 1fr 160px 3px;
-      grid-template-rows: 13px 16px 23px;
+        '... ...  ... ...     ...'
+        '... logo ... session ...'
+        '... ...  ... ...     ...';
+      grid-template-columns: 3px 67px 1fr 145px 3px;
+      grid-template-rows: 6px 26px 20px;
     }
+
+    .area-logo {
+      background-size: 67px 26px;
+    }
+  }
+
+  .area-logo {
+    background-size: 134px 52px;
   }
 }
 
@@ -158,11 +166,11 @@ export default {
     grid-gap: 16px;
     /* prettier-ignore */
     grid-template-areas:
-      '... ...  ...  ...     ...                     ...'
-      '... logo logo session session                 ...'
-      '... nav  nav  nav     article-type-select-box ...';
-    grid-template-columns: 0 auto 1fr 80px 67px 3px;
-    grid-template-rows: 6px 29px 20px;
+      '... ...  ... ...     ...                     ...'
+      '... logo ... session session                 ...'
+      '... nav  nav nav     article-type-select-box ...';
+    grid-template-columns: 3px 67px 1fr 60px 61px 3px;
+    grid-template-rows: 6px 26px 20px;
   }
 
   .background-none.area-app-header-container {
@@ -170,8 +178,7 @@ export default {
   }
 
   .area-logo {
-    background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
-    background-size: contain;
+    background-size: 67px 26px;
     margin: 0;
   }
 }

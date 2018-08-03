@@ -98,7 +98,7 @@ export default {
   .area-article-type-select-box {
     &::before {
       top: 2px;
-      right: 12px;
+      right: 6px;
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
       border-top: 7px solid #858dda;
