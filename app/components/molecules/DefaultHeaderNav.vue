@@ -58,7 +58,7 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat(3, auto) 1fr;
+  grid-template-columns: 1fr repeat(3, 76px) 1fr;
   grid-column-gap: 40px;
   /* prettier-ignore */
   grid-template-areas:
@@ -101,6 +101,12 @@ export default {
     .nav-link {
       display: none;
     }
+  }
+}
+
+@media screen and (max-width: 670px) {
+  .area-nav {
+    grid-column-gap: 10px;
   }
 }
 
