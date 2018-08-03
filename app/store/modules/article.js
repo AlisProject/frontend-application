@@ -483,6 +483,9 @@ const actions = {
   },
   resetSearchArticlesPage({ commit }) {
     commit(types.RESET_SEARCH_ARTICLES_PAGE)
+  },
+  resetSearchArticlesIsLastPage({ commit }) {
+    commit(types.RESET_SEARCH_ARTICLES_IS_LAST_PAGE)
   }
 }
 
@@ -613,6 +616,9 @@ const mutations = {
   },
   [types.SET_SEARCH_ARTICLES_IS_FETCHING](state, { isFetching }) {
     state.searchArticles.isFetching = isFetching
+  },
+  [types.RESET_SEARCH_ARTICLES_IS_LAST_PAGE](state) {
+    state.searchArticles.isLastPage = false
   }
 }
 
