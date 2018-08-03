@@ -1,5 +1,5 @@
 <template>
-  <div class="area-article-type-select-box">
+  <div class="area-article-type-select-box" v-show="!showOnlyLogo && !showOnlySessionLinks">
     <select required @change="onChangeArticleTypeSelect" v-model="selected">
       <option value="newArticles">新着記事</option>
       <option value="popularArticles">人気記事</option>
@@ -9,6 +9,16 @@
 
 <script>
 export default {
+  props: {
+    showOnlyLogo: {
+      type: Boolean,
+      default: false
+    },
+    showOnlySessionLinks: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       selected: this.$route.fullPath.startsWith('/articles/popular')
