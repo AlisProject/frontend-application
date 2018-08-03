@@ -53,6 +53,9 @@ export default {
 .area-save-status {
   grid-area: save-status;
   color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-link {
