@@ -11,8 +11,9 @@
         v-model.trim="inputText"
         ref="searchInput">
       <img
-        @click="search"
+        @click="onClickSearch"
         class="search-icon"
+        :class="{ 'disabled': inputText === '' }"
         src="~assets/images/pc/common/icon_search.png">
     </form>
     <nav class="area-nav" v-if="showNav">
@@ -118,6 +119,10 @@ export default {
       } finally {
         this.isFetchingData = false
       }
+    },
+    async onClickSearch() {
+      if (this.inputText === '') return
+      await this.search()
     },
     async getSearchData(query) {
       this.showArticles
@@ -244,6 +249,10 @@ export default {
     top: 6px;
     width: 16px;
     cursor: pointer;
+
+    &.disabled {
+      cursor: not-allowed;
+    }
   }
 }
 
