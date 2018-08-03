@@ -29,7 +29,7 @@
     "medium-editor": "^5.23.3",
     "moment": "^2.21.0",
     "normalize.css": "^7.0.0",
-    "nuxt": "^1.4.0",
+    "nuxt": "^1.4.2",
     "nuxt-sass-resources-loader": "^2.0.1",
     "url-regex": "^4.1.1",
     "vuelidate": "^0.6.2",
