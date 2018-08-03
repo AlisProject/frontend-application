@@ -106,7 +106,7 @@ export default {
       this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
     },
     onChangeArticleTypeSelect(event) {
-      this.$el.querySelector('.article-type-select').style.color = '#858dda'
+      this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = event.target.value
     },
     listen(target, eventType, callback) {
