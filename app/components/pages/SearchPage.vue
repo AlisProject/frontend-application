@@ -187,7 +187,7 @@ export default {
 .search-page-container {
   background-size: contain;
   display: grid;
-  grid-gap: 20px;
+  grid-row-gap: 20px;
   grid-template-rows: 100px 60px 20px 80px 1fr 75px 75px;
   /* prettier-ignore */
   grid-template-areas:
