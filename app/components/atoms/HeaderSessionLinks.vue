@@ -4,7 +4,7 @@
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
     <span class="session-link sign-up" @click="showSignUpModal">Sign up</span>
-    /
+    <span class="divider">/</span>
     <span class="session-link login" @click="showLoginModal">Login</span>
   </div>
 </template>
@@ -66,9 +66,14 @@ export default {
   }
 
   .session-link {
-    color: #525256;
+    color: #6e6e6e;
     text-decoration: none;
     cursor: pointer;
+  }
+
+  .divider {
+    color: #6e6e6e;
+    margin: 0 4px;
   }
 }
 
@@ -81,12 +86,19 @@ export default {
       position: static;
       right: -46px;
       transform: rotate(0);
-      width: 160px;
+      width: 100%;
 
       .search-icon {
-        float: left;
         padding: 2px 4px;
         transform: rotate(0);
+      }
+
+      .session-link {
+        font-size: 12px;
+      }
+
+      .divider {
+        font-size: 12px;
       }
     }
   }
@@ -100,12 +112,20 @@ export default {
     position: static;
     right: -46px;
     transform: rotate(0);
-    width: 160px;
+    width: 100%;
+    display: flex;
+    align-items: center;
 
     .search-icon {
-      float: left;
-      padding: 2px 4px;
       transform: rotate(0);
+    }
+
+    .session-link {
+      font-size: 12px;
+    }
+
+    .divider {
+      font-size: 12px;
     }
   }
 }
