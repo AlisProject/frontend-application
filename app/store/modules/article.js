@@ -621,7 +621,9 @@ const mutations = {
   [types.SET_SEARCH_ARTICLES_IS_FETCHING](state, { isFetching }) {
     state.searchArticles.isFetching = isFetching
   },
-<<<<<<< HEAD
+  [types.RESET_SEARCH_ARTICLES_IS_LAST_PAGE](state) {
+    state.searchArticles.isLastPage = false
+  },
   [types.SET_TOPICS](state, { topics }) {
     state.topics = topics
   },
@@ -640,10 +642,6 @@ const mutations = {
     state.isFetching = false
     state.page = 1
     state.isLastPage = false
-=======
-  [types.RESET_SEARCH_ARTICLES_IS_LAST_PAGE](state) {
-    state.searchArticles.isLastPage = false
->>>>>>> upstream/develop
   }
 }
 
