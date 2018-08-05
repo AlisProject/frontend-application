@@ -41,7 +41,7 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 38px 1fr;
-  grid-template-columns: 1fr 56px 42px 108px 1fr 160px 1fr;
+  grid-template-columns: minmax(64px, 1fr) 56px 42px 108px 1fr 160px 1fr;
   grid-column-gap: 40px;
   /* prettier-ignore */
   grid-template-areas:
@@ -98,6 +98,13 @@ export default {
   grid-area: new-article;
   justify-content: center;
   text-decoration: none;
+}
+
+@media screen and (max-width: 780px) {
+  .area-nav {
+    grid-template-columns: 64px 56px 42px 108px 1fr 90px 1fr;
+    grid-column-gap: 20px;
+  }
 }
 
 @media screen and (max-width: 640px) {

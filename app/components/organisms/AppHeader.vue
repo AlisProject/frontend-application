@@ -122,7 +122,7 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 190px 1fr 78px 400px;
+  grid-template-columns: 190px 1fr 78px 190px;
   /* prettier-ignore */
   grid-template-areas:
     "logo nav article-type-select-box ...";
