@@ -45,11 +45,11 @@ export default {
       if (this.isFetchingArticles) return
       try {
         this.isFetchingArticles = true
-        if (
-          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
-        ) {
-          return
-        }
+
+        const isScrollBottom =
+          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
+        if (this.isLastPage || !isScrollBottom) return
+
         await this.getPopularArticles({ topic: this.$route.query.topics || 'crypto' })
       } finally {
         this.isFetchingArticles = false
