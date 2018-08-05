@@ -86,7 +86,6 @@ export default {
   },
   data() {
     return {
-      canLoadNextData: true,
       isFetchingData: false,
       showArticles: true,
       query: null,
@@ -129,16 +128,15 @@ export default {
       if (this.isFetchingData || !this.query) return
       try {
         this.isFetchingData = true
-        if (
-          !this.canLoadNextData ||
-          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
-        ) {
-          return
-        }
+
+        const isLastPage = this.showArticles
+          ? this.searchArticles.isLastPage
+          : this.searchUsers.isLastPage
+        const isScrollBottom =
+          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
+        if (isLastPage || !isScrollBottom) return
 
         await this.getSearchData(this.query)
-
-        this.canLoadNextData = !this.searchArticles.isLastPage
       } finally {
         this.isFetchingData = false
       }
@@ -146,8 +144,10 @@ export default {
     resetSearchData() {
       this.resetSearchArticles()
       this.resetSearchArticlesPage()
+      this.resetSearchArticlesIsLastPage()
       this.resetSearchUsers()
       this.resetSearchUsersPage()
+      this.resetSearchUsersIsLastPage()
     },
     async fetchSearchedData(query) {
       this.resetSearchData()
@@ -157,11 +157,17 @@ export default {
       await this.getSearchData(this.query)
     },
     ...mapActions({ ADD_TOAST_MESSAGE }),
-    ...mapActions('user', ['getSearchUsers', 'resetSearchUsers', 'resetSearchUsersPage']),
+    ...mapActions('user', [
+      'getSearchUsers',
+      'resetSearchUsers',
+      'resetSearchUsersPage',
+      'resetSearchUsersIsLastPage'
+    ]),
     ...mapActions('article', [
       'getSearchArticles',
       'resetSearchArticles',
-      'resetSearchArticlesPage'
+      'resetSearchArticlesPage',
+      'resetSearchArticlesIsLastPage'
     ]),
     ...mapActions('presentation', ['setSearchArticlesScrollHeight', 'setSearchUsersScrollHeight'])
   },
@@ -181,7 +187,7 @@ export default {
 .search-page-container {
   background-size: contain;
   display: grid;
-  grid-gap: 20px;
+  grid-row-gap: 20px;
   grid-template-rows: 100px 60px 20px 80px 1fr 75px 75px;
   /* prettier-ignore */
   grid-template-areas:

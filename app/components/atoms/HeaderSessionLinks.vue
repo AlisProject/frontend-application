@@ -17,8 +17,10 @@ export default {
     resetSearchStates() {
       this.resetSearchArticles()
       this.resetSearchArticlesPage()
+      this.resetSearchArticlesIsLastPage()
       this.resetSearchUsers()
       this.resetSearchUsersPage()
+      this.resetSearchUsersIsLastPage()
     },
     showSignUpModal() {
       this.setSignUpModal({ showSignUpModal: true })
@@ -38,9 +40,14 @@ export default {
       'setSignUpModal',
       'setLoginModal',
       'resetSearchUsers',
-      'resetSearchUsersPage'
+      'resetSearchUsersPage',
+      'resetSearchUsersIsLastPage'
     ]),
-    ...mapActions('article', ['resetSearchArticles', 'resetSearchArticlesPage'])
+    ...mapActions('article', [
+      'resetSearchArticles',
+      'resetSearchArticlesPage',
+      'resetSearchArticlesIsLastPage'
+    ])
   }
 }
 </script>

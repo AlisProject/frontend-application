@@ -98,8 +98,10 @@ export default {
     resetSearchStates() {
       this.resetSearchArticles()
       this.resetSearchArticlesPage()
+      this.resetSearchArticlesIsLastPage()
       this.resetSearchUsers()
       this.resetSearchUsersPage()
+      this.resetSearchUsersIsLastPage()
     },
     toggleMenu() {
       if (!this.isMenuShown) {
@@ -173,9 +175,14 @@ export default {
       'getUsersAlisToken',
       'getUnreadNotification',
       'resetSearchUsers',
-      'resetSearchUsersPage'
+      'resetSearchUsersPage',
+      'resetSearchUsersIsLastPage'
     ]),
-    ...mapActions('article', ['resetSearchArticles', 'resetSearchArticlesPage'])
+    ...mapActions('article', [
+      'resetSearchArticles',
+      'resetSearchArticlesPage',
+      'resetSearchArticlesIsLastPage'
+    ])
   }
 }
 </script>
