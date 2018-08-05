@@ -21,9 +21,9 @@
       <div class="article-type-select-box">
         <select required @change="onChangeArticleTypeSelect" class="article-type-select">
           <option value='' disabled selected class="placeholder">選択してください</option>
-          <option value="crypto">クリプト</option>
-          <option value="topic1">TOPIC1</option>
-          <option value="topic2">TOPIC2</option>
+          <option v-for="topic in topics" :value="topic.name">
+            {{ topic.display_name }}
+          </option>
         </select>
       </div>
       <button class="submit" @click="publish" :class="{ disable: !publishable }">公開する</button>
@@ -42,6 +42,9 @@ export default {
       isThumbnailSelected: false,
       topic: null
     }
+  },
+  async created() {
+    await this.getTopics()
   },
   mounted() {
     this.listen(window, 'click', (event) => {
@@ -132,7 +135,8 @@ export default {
       'updateSuggestedThumbnails',
       'postArticleImage',
       'updateBody',
-      'setIsSaving'
+      'setIsSaving',
+      'getTopics'
     ])
   },
   computed: {
@@ -146,7 +150,8 @@ export default {
       'thumbnail',
       'suggestedThumbnails',
       'isSaving',
-      'isEdited'
+      'isEdited',
+      'topics'
     ])
   },
   watch: {
