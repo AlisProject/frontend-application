@@ -82,10 +82,10 @@ export default {
           location.href.includes('/me/articles/new')
         ) {
           await this.putDraftArticle({ article, articleId })
-          await this.publishDraftArticle({ article, articleId })
+          await this.publishDraftArticle({ article, articleId, topic })
         } else if (location.href.includes('/me/articles/public')) {
           await this.putPublicArticle({ article, articleId })
-          await this.republishPublicArticle({ article, articleId })
+          await this.republishPublicArticle({ article, articleId, topic })
         }
         this.$router.push('/me/articles/public')
         this.sendNotification({ text: '記事を公開しました。' })
