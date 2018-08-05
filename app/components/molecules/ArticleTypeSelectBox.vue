@@ -3,7 +3,7 @@
     class="area-article-type-select-box"
     :class="{ hidden: showOnlySessionLinksOnPc }"
     v-show="!showOnlyLogo && !showOnlySessionLinks">
-    <select required @change="onChangeArticleTypeSelect" v-model="selected">
+    <select required @change="onChangeArticleTypeSelect" v-model="articleType">
       <option value="popularArticles">人気記事</option>
       <option value="newArticles">新着記事</option>
     </select>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -28,14 +28,11 @@ export default {
       default: false
     }
   },
-  data() {
+  mounted() {
     const { fullPath } = this.$route
     const isPopularArticlesPage = fullPath.startsWith('/articles/popular') || fullPath === '/'
-    return {
-      selected: isPopularArticlesPage ? 'popularArticles' : 'newArticles'
-    }
-  },
-  mounted() {
+    this.setArticleType({ articleType: isPopularArticlesPage ? 'popularArticles' : 'newArticles' })
+
     const areaArticleTypeSelectBox = document.querySelector('.area-article-type-select-box')
     const viewportMeta = document.querySelector('meta[name="viewport"]')
     areaArticleTypeSelectBox.addEventListener('touchstart', (event) => {
@@ -45,20 +42,27 @@ export default {
       viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1')
     })
   },
+  computed: {
+    ...mapGetters('article', ['articleType'])
+  },
   methods: {
     onChangeArticleTypeSelect(event) {
       this.resetArticleData()
-      if (this.$route.fullPath === '/') {
+      const { fullPath } = this.$route
+      if (fullPath === '/') {
         this.$router.push('/articles/recent?topic=crypto')
         return
       }
-      const to =
-        event.target.value === 'popularArticles'
-          ? this.$route.fullPath.replace('recent', 'popular')
-          : this.$route.fullPath.replace('popular', 'recent')
+      const isPopularArticles = event.target.value === 'popularArticles'
+      this.setArticleType({
+        articleType: isPopularArticles ? 'popularArticles' : 'newArticles'
+      })
+      const to = isPopularArticles
+        ? fullPath.replace('recent', 'popular')
+        : fullPath.replace('popular', 'recent')
       this.$router.push(to)
     },
-    ...mapActions('article', ['resetArticleData'])
+    ...mapActions('article', ['resetArticleData', 'setArticleType'])
   }
 }
 </script>

@@ -37,13 +37,19 @@ export default {
     await this.getTopics()
   },
   computed: {
-    ...mapGetters('article', ['topics'])
+    ...mapGetters('article', ['topics', 'articleType'])
   },
   methods: {
     to(topic) {
-      return this.$route.fullPath === '/'
-        ? { path: 'articles/popular', query: { topics: topic } }
-        : { query: { topics: topic } }
+      switch (this.$route.fullPath) {
+        case '/':
+          return { path: '/articles/popular', query: { topics: topic } }
+        case '/me/notifications':
+          const to = this.articleType === 'popularArticles' ? 'popular' : 'recent'
+          return { path: `/articles/${to}`, query: { topics: topic } }
+        default:
+          return { path: '/articles/popular', query: { topics: topic } }
+      }
     },
     fetchArticles(event) {
       if (this.$route.fullPath === '/') {

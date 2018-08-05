@@ -42,7 +42,8 @@ const state = () => ({
   page: 1,
   isLastPage: false,
   isFetching: false,
-  topics: []
+  topics: [],
+  articleType: 'popularArticles'
 })
 
 const getters = {
@@ -72,7 +73,8 @@ const getters = {
   topics: (state) => state.topics.sort((a, b) => a.order > b.order),
   isFetching: (state) => state.isFetching,
   page: (state) => state.page,
-  isLastPage: (state) => state.isLastPage
+  isLastPage: (state) => state.isLastPage,
+  articleType: (state) => state.articleType
 }
 
 const actions = {
@@ -499,6 +501,9 @@ const actions = {
   },
   resetArticleData({ commit }) {
     commit(types.RESET_ARTICLE_DATA)
+  },
+  setArticleType({ commit }, { articleType }) {
+    commit(types.SET_ARTICLE_TYPE, { articleType })
   }
 }
 
@@ -642,6 +647,9 @@ const mutations = {
     state.isFetching = false
     state.page = 1
     state.isLastPage = false
+  },
+  [types.SET_ARTICLE_TYPE](state, { articleType }) {
+    state.articleType = articleType
   }
 }
 
