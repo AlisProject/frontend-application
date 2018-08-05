@@ -1,6 +1,6 @@
 <template>
   <div class="new-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav :class="`topic-${topic}`"/>
+    <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
     <article-card-list :articles="newArticles"/>
     <the-loader :lastEvaluatedKey="newArticlesLastEvaluatedKey"/>
     <app-footer/>
@@ -22,23 +22,23 @@ export default {
     AppFooter
   },
   computed: {
-    topic() {
-      return this.$route.query.topics || 'crypto'
-    },
     ...mapGetters('article', [
       'newArticles',
       'newArticlesLastEvaluatedKey',
-      'hasNewArticlesLastEvaluatedKey'
+      'hasNewArticlesLastEvaluatedKey',
+      'topics'
     ]),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   data() {
     return {
       canLoadNextArticles: true,
-      isFetchingArticles: false
+      isFetchingArticles: false,
+      topicNumber: 1
     }
   },
   mounted() {
+    this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
@@ -63,8 +63,18 @@ export default {
         this.isFetchingArticles = false
       }
     },
+    setTopicNumber() {
+      this.topics.forEach((topic) => {
+        if (topic.name === this.$route.query.topics) this.topicNumber = topic.order
+      })
+    },
     ...mapActions('article', ['getNewPagesArticles']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
+  },
+  watch: {
+    $route() {
+      this.setTopicNumber()
+    }
   }
 }
 </script>

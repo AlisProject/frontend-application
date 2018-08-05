@@ -54,7 +54,7 @@ const state = () => ({
   //     }
   //   }
   // }
-  topics: {}
+  topics: []
 })
 
 const getters = {
@@ -85,7 +85,7 @@ const getters = {
     !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length,
   articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
   searchArticles: (state) => state.searchArticles,
-  topics: (state) => state.topics
+  topics: (state) => state.topics.sort((a, b) => a.order > b.order)
 }
 
 const actions = {
@@ -527,6 +527,14 @@ const actions = {
     if (articles.length < limit) {
       commit(types.SET_TOPIC_POPULAR_ARTICLES_IS_LAST_PAGE, { isLastPage: true, topic })
     }
+  },
+  async getTopics({ commit }) {
+    try {
+      const topics = await this.$axios.$get('/topics')
+      commit(types.SET_TOPICS, { topics })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -682,6 +690,9 @@ const mutations = {
   },
   [types.SET_TOPIC_POPULAR_ARTICLES_IS_LAST_PAGE](state, { isLastPage, topic }) {
     state.topics[topic].popularArticles.isLastPage = isLastPage
+  },
+  [types.SET_TOPICS](state, { topics }) {
+    state.topics = topics
   }
 }
 

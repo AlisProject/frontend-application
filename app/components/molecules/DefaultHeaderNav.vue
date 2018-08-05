@@ -2,26 +2,19 @@
   <nav class="area-nav">
     <template v-if="!showOnlyLogo && !showOnlySessionLinks">
       <nuxt-link
-        :to="to('crypto')"
-        class="nav-link area-topic-crypto"
-        :class="{ hidden: showOnlySessionLinksOnPc }"
-        @click.native="resetScrollPosition">クリプト</nuxt-link>
-      <nuxt-link
-        :to="to('topic1')"
-        class="nav-link area-topic-topic1"
-        :class="{ hidden: showOnlySessionLinksOnPc }"
-        @click.native="resetScrollPosition">TOPIC1</nuxt-link>
-      <nuxt-link
-        :to="to('topic2')"
-        class="nav-link area-topic-topic2"
-        :class="{ hidden: showOnlySessionLinksOnPc }"
-        @click.native="resetScrollPosition">TOPIC2</nuxt-link>
+        v-for="topic in topics"
+        :key="topic.order"
+        :to="to(topic.name)"
+        :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
+        @click.native="resetScrollPosition">
+        {{topic.display_name}}
+      </nuxt-link>
     </template>
   </nav>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -38,6 +31,12 @@ export default {
       default: false
     }
   },
+  async created() {
+    await this.getTopics()
+  },
+  computed: {
+    ...mapGetters('article', ['topics'])
+  },
   methods: {
     to(topic) {
       return this.$route.fullPath === '/'
@@ -47,6 +46,7 @@ export default {
     resetScrollPosition() {
       this.setArticleListScrollHeight({ scroll: 0 })
     },
+    ...mapActions('article', ['getTopics']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }
@@ -58,13 +58,13 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat(3, 76px) 1fr;
-  grid-column-gap: 40px;
+  grid-template-columns: 1fr repeat(3, 90px) 1fr;
+  grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...          ...          ...          ..."
-    "... topic-crypto topic-topic1 topic-topic2 ..."
-    "... ...          ...          ...          ...";
+    "... ...    ...    ...    ..."
+    "... topic1 topic2 topic3 ..."
+    "... ...    ...    ...    ...";
 }
 
 .nav-link {
@@ -75,21 +75,21 @@ export default {
   line-height: 1.6;
 }
 
-.area-topic-crypto {
-  grid-area: topic-crypto;
+.area-topic1 {
+  grid-area: topic1;
 }
 
-.area-topic-topic1 {
-  grid-area: topic-topic1;
+.area-topic2 {
+  grid-area: topic2;
 }
 
-.area-topic-topic2 {
-  grid-area: topic-topic2;
+.area-topic3 {
+  grid-area: topic3;
 }
 
-.topic-crypto .area-topic-crypto,
-.topic-topic1 .area-topic-topic1,
-.topic-topic2 .area-topic-topic2 {
+.topic1 .area-topic1,
+.topic2 .area-topic2,
+.topic3 .area-topic3 {
   color: white;
   display: block;
   background: #858dda;
@@ -112,10 +112,10 @@ export default {
 
 @media screen and (max-width: 550px) {
   .area-nav {
-    grid-gap: 16px;
+    grid-gap: 14px;
     /* prettier-ignore */
     grid-template-areas:
-      'topic-crypto topic-topic1 topic-topic2';
+      'topic1 topic2 topic3';
     grid-template-rows: 20px;
     grid-template-columns: repeat(3, fit-content(100%));
   }

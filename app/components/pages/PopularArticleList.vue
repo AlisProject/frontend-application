@@ -1,6 +1,6 @@
 <template>
   <div class="popular-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav :class="`topic-${topic}`"/>
+    <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
     <article-card-list :articles="popularArticles"/>
     <the-loader :lastEvaluatedKey="popularArticlesLastEvaluatedKey"/>
     <app-footer/>
@@ -23,17 +23,16 @@ export default {
   },
   data() {
     return {
-      isFetchingArticles: false
+      isFetchingArticles: false,
+      topicNumber: 1
     }
   },
   computed: {
-    topic() {
-      return this.$route.query.topics || 'crypto'
-    },
-    ...mapGetters('article', ['popularArticles', 'popularArticlesLastEvaluatedKey']),
+    ...mapGetters('article', ['popularArticles', 'popularArticlesLastEvaluatedKey', 'topics']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
+    this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
@@ -56,8 +55,18 @@ export default {
         this.isFetchingArticles = false
       }
     },
+    setTopicNumber() {
+      this.topics.forEach((topic) => {
+        if (topic.name === this.$route.query.topics) this.topicNumber = topic.order
+      })
+    },
     ...mapActions('article', ['getPopularArticles']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
+  },
+  watch: {
+    $route() {
+      this.setTopicNumber()
+    }
   }
 }
 </script>
