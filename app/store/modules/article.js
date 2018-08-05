@@ -76,7 +76,7 @@ const getters = {
   page: (state) => state.page,
   isLastPage: (state) => state.isLastPage,
   articleType: (state) => state.articleType,
-  topicType: (state) => state.topicType
+  topicType: (state) => state.topicType || null
 }
 
 const actions = {
@@ -164,6 +164,7 @@ const actions = {
       }
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
+      commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -194,7 +195,7 @@ const actions = {
       }
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
-      commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic || null })
+      commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
     } catch (error) {
       return Promise.reject(error)
     }
