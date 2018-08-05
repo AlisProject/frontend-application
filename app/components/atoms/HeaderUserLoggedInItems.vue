@@ -322,7 +322,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .logged-in {
       border: none;

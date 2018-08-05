@@ -136,7 +136,7 @@ export default {
   background-position: center;
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .area-app-header-container {
       background: white;

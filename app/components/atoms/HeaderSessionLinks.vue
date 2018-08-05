@@ -77,7 +77,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .session {
       border: none;
@@ -91,6 +91,7 @@ export default {
       .search-icon {
         padding: 2px 4px;
         transform: rotate(0);
+        margin-right: 15px;
       }
 
       .session-link {
@@ -99,6 +100,7 @@ export default {
 
       .divider {
         font-size: 12px;
+        margin: 0 12px;
       }
     }
   }
@@ -118,6 +120,7 @@ export default {
 
     .search-icon {
       transform: rotate(0);
+      margin-right: 15px;
     }
 
     .session-link {
@@ -126,6 +129,7 @@ export default {
 
     .divider {
       font-size: 12px;
+      margin: 0 12px;
     }
   }
 }
