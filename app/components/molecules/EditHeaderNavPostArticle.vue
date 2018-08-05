@@ -56,6 +56,7 @@ export default {
     })
   },
   destroyed() {
+    this.resetArticleTopic()
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
@@ -136,7 +137,8 @@ export default {
       'updateBody',
       'setIsSaving',
       'getTopics',
-      'resetArticleTopic'
+      'resetArticleTopic',
+      'setArticleTopic'
     ])
   },
   computed: {
@@ -147,6 +149,7 @@ export default {
       set(value) {
         this.$el.querySelector('.article-type-select').style.color = '#000'
         this.topic = value
+        this.setArticleTopic({ topicType: value })
       }
     },
     publishable() {

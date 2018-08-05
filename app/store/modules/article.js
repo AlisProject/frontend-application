@@ -511,6 +511,9 @@ const actions = {
   },
   resetArticleTopic({ commit }) {
     commit(types.RESET_ARTICLE_TOPIC)
+  },
+  setArticleTopic({ commit }, { topicType }) {
+    commit(types.SET_ARTICLE_TOPIC, { topicType })
   }
 }
 
