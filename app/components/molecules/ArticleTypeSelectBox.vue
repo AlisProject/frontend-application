@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     showOnlyLogo: {
@@ -45,6 +47,7 @@ export default {
   },
   methods: {
     onChangeArticleTypeSelect(event) {
+      this.resetArticleData()
       if (this.$route.fullPath === '/') {
         this.$router.push('/articles/recent?topic=crypto')
         return
@@ -54,7 +57,8 @@ export default {
           ? this.$route.fullPath.replace('recent', 'popular')
           : this.$route.fullPath.replace('popular', 'recent')
       this.$router.push(to)
-    }
+    },
+    ...mapActions('article', ['resetArticleData'])
   }
 }
 </script>

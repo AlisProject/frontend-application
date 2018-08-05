@@ -42,6 +42,9 @@ const state = () => ({
     isLastPage: false,
     isFetching: false
   },
+  page: 1,
+  isLastPage: false,
+  isFetching: false,
   // topic object structure is like this.
   //
   // topics: {
@@ -85,67 +88,71 @@ const getters = {
     !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length,
   articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
   searchArticles: (state) => state.searchArticles,
-  topics: (state) => state.topics.sort((a, b) => a.order > b.order)
+  topics: (state) => state.topics.sort((a, b) => a.order > b.order),
+  isFetching: (state) => state.isFetching,
+  page: (state) => state.page,
+  isLastPage: (state) => state.isLastPage
 }
 
 const actions = {
-  async getPopularArticles({ commit, dispatch, state }) {
-    if (!state.hasPopularArticlesLastEvaluatedKey) {
-      try {
-        commit(types.SET_HAS_POPULAR_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
-        const {
-          article_id: articleId,
-          score,
-          evaluated_at: evaluatedAt
-        } = state.popularArticlesLastEvaluatedKey
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/articles/popular', {
-          params: { limit: 10, article_id: articleId, score, evaluated_at: evaluatedAt }
-        })
-        commit(types.SET_POPULAR_ARTICLES_LAST_EVALUATED_KEY, {
-          lastEvaluatedKey: LastEvaluatedKey
-        })
-        const articlesWithData = await Promise.all(
-          articles.map(async (article) => {
-            const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-            const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
-            return { ...article, userInfo, alisToken }
-          })
-        )
-        commit(types.SET_POPULAR_ARTICLES, { articles: articlesWithData })
-      } catch (error) {
-        Promise.reject(error)
-      } finally {
-        commit(types.SET_HAS_POPULAR_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: false })
-      }
-    }
-  },
-  async getNewPagesArticles({ commit, getters, dispatch, state }) {
+  async getPopularArticles({ commit, dispatch, state }, { topic }) {
     try {
-      const { article_id: articleId, sort_key: sortKey } = state.newArticlesLastEvaluatedKey
-      let articles = []
-      let LastEvaluatedKey = {}
-      if (articleId && sortKey) {
-        const data = await this.$axios.$get(
-          `/articles/recent?limit=10&article_id=${articleId}&sort_key=${sortKey}`
-        )
-        articles = data.Items
-        LastEvaluatedKey = data.LastEvaluatedKey
-      } else {
-        const data = await this.$axios.$get('/articles/recent?limit=10')
-        articles = data.Items
-        LastEvaluatedKey = data.LastEvaluatedKey
-      }
-      commit(types.SET_NEW_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
+      if (state.isFetching) return
+      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
+      const limit = 10
+      const articles = await this.$axios.$get('/search/articles', {
+        params: { limit, query: topic, page: state.page }
+      })
+      // const articles = await this.$axios.$get('/articles/popular', {
+      //   params: { limit, topic, page: state.page }
+      // })
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
-          const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-          const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
           return { ...article, userInfo, alisToken }
         })
       )
-      commit(types.SET_NEW_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: false })
+      commit(types.SET_POPULAR_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
     } catch (error) {
-      Promise.reject(error)
+      return Promise.reject(error)
+    }
+  },
+  async getNewPagesArticles({ commit, dispatch, state }, { topic }) {
+    try {
+      if (state.isFetching) return
+      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
+      const limit = 10
+      const articles = await this.$axios.$get('/search/articles', {
+        params: { limit, query: topic, page: state.page }
+      })
+      // const articles = await this.$axios.$get('/articles/popular', {
+      //   params: { limit, topic, page: state.page }
+      // })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: false })
+      commit(types.SET_NEW_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
+    } catch (error) {
+      return Promise.reject(error)
     }
   },
   async getUserInfo({ commit }, { userId }) {
@@ -535,6 +542,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  resetArticleData({ commit }) {
+    commit(types.RESET_ARTICLE_DATA)
   }
 }
 
@@ -693,6 +703,22 @@ const mutations = {
   },
   [types.SET_TOPICS](state, { topics }) {
     state.topics = topics
+  },
+  [types.SET_ARTICLES_IS_FETCHING](state, { isFetching }) {
+    state.isFetching = isFetching
+  },
+  [types.SET_ARTICLES_PAGE](state, { page }) {
+    state.page = page
+  },
+  [types.SET_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.isLastPage = isLastPage
+  },
+  [types.RESET_ARTICLE_DATA](state) {
+    state.newArticles = []
+    state.popularArticles = []
+    state.isFetching = false
+    state.page = 1
+    state.isLastPage = false
   }
 }
 

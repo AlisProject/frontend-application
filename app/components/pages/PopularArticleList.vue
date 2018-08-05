@@ -2,7 +2,7 @@
   <div class="popular-article-list-container" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
     <article-card-list :articles="popularArticles"/>
-    <the-loader :lastEvaluatedKey="popularArticlesLastEvaluatedKey"/>
+    <the-loader :isLastPage="isLastPage"/>
     <app-footer/>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['popularArticles', 'popularArticlesLastEvaluatedKey', 'topics']),
+    ...mapGetters('article', ['popularArticles', 'isLastPage', 'topics']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
@@ -49,7 +49,7 @@ export default {
         ) {
           return
         }
-        await this.getPopularArticles()
+        await this.getPopularArticles({ topic: this.$route.query.topics })
       } finally {
         this.isFetchingArticles = false
       }
@@ -63,8 +63,9 @@ export default {
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
-    $route() {
+    $route(to) {
       this.setTopicNumber()
+      this.getPopularArticles({ topic: to.query.topics })
     },
     topics() {
       this.setTopicNumber()

@@ -9,8 +9,9 @@ export default {
   components: {
     PopularArticleList
   },
-  async fetch({ store }) {
-    await store.dispatch('article/getPopularArticles')
+  async fetch({ store, params }) {
+    const topic = params.topics || 'crypto'
+    await store.dispatch('article/getPopularArticles', { topic })
   },
   head() {
     return {

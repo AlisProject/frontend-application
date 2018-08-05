@@ -2,7 +2,7 @@
   <div class="new-article-list-container" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
     <article-card-list :articles="newArticles"/>
-    <the-loader :lastEvaluatedKey="newArticlesLastEvaluatedKey"/>
+    <the-loader :isLastPage="isLastPage"/>
     <app-footer/>
   </div>
 </template>
@@ -22,17 +22,11 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', [
-      'newArticles',
-      'newArticlesLastEvaluatedKey',
-      'hasNewArticlesLastEvaluatedKey',
-      'topics'
-    ]),
+    ...mapGetters('article', ['newArticles', 'isLastPage', 'topics']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   data() {
     return {
-      canLoadNextArticles: true,
       isFetchingArticles: false,
       topicNumber: 1
     }
@@ -51,13 +45,11 @@ export default {
       try {
         this.isFetchingArticles = true
         if (
-          !this.canLoadNextArticles ||
           !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
         ) {
           return
         }
-        await this.getNewPagesArticles()
-        this.canLoadNextArticles = this.hasNewArticlesLastEvaluatedKey
+        await this.getNewPagesArticles({ topic: this.$route.query.topics })
       } finally {
         this.isFetchingArticles = false
       }
@@ -71,8 +63,9 @@ export default {
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
-    $route() {
+    $route(to) {
       this.setTopicNumber()
+      this.getNewPagesArticles({ topic: to.query.topics })
     },
     topics() {
       this.setTopicNumber()

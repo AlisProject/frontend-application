@@ -6,7 +6,7 @@
         :key="topic.order"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
-        @click.native="resetScrollPosition">
+        @click.native="reset">
         {{topic.display_name}}
       </nuxt-link>
     </template>
@@ -32,6 +32,7 @@ export default {
     }
   },
   async created() {
+    if (this.topics.length !== 0) return
     await this.getTopics()
   },
   computed: {
@@ -43,10 +44,11 @@ export default {
         ? { path: 'articles/popular', query: { topics: topic } }
         : { query: { topics: topic } }
     },
-    resetScrollPosition() {
+    reset() {
       this.setArticleListScrollHeight({ scroll: 0 })
+      this.resetArticleData()
     },
-    ...mapActions('article', ['getTopics']),
+    ...mapActions('article', ['getTopics', 'resetArticleData']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }
