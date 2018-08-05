@@ -6,7 +6,7 @@
         :key="topic.order"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
-        @click.native="reset">
+        @click.native="resetScrollHeight">
         {{topic.display_name}}
       </nuxt-link>
     </template>
@@ -44,11 +44,10 @@ export default {
         ? { path: 'articles/popular', query: { topics: topic } }
         : { query: { topics: topic } }
     },
-    reset() {
+    resetScrollHeight() {
       this.setArticleListScrollHeight({ scroll: 0 })
-      this.resetArticleData()
     },
-    ...mapActions('article', ['getTopics', 'resetArticleData']),
+    ...mapActions('article', ['getTopics']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }

@@ -59,11 +59,12 @@ export default {
         if (topic.name === this.$route.query.topics) this.topicNumber = topic.order
       })
     },
-    ...mapActions('article', ['getNewPagesArticles']),
+    ...mapActions('article', ['getNewPagesArticles', 'resetArticleData']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
     $route(to) {
+      this.resetArticleData()
       this.setTopicNumber()
       this.getNewPagesArticles({ topic: to.query.topics })
     },
