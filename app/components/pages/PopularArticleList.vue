@@ -32,7 +32,6 @@ export default {
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
-    this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
@@ -65,6 +64,9 @@ export default {
   },
   watch: {
     $route() {
+      this.setTopicNumber()
+    },
+    topics() {
       this.setTopicNumber()
     }
   }
