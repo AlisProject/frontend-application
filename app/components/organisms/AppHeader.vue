@@ -1,6 +1,6 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/" class="area-logo" @click.native="resetScrollPosition"/>
+    <nuxt-link to="/" class="area-logo" @click.native="fetchArticleData"/>
     <default-header-nav
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
@@ -109,10 +109,13 @@ export default {
     ])
   },
   methods: {
-    resetScrollPosition() {
+    fetchArticleData() {
       this.setArticleListScrollHeight({ scroll: 0 })
+      this.resetArticleData()
+      this.getPopularArticles({ topic: 'crypto' })
     },
-    ...mapActions('presentation', ['setArticleListScrollHeight'])
+    ...mapActions('presentation', ['setArticleListScrollHeight']),
+    ...mapActions('article', ['getPopularArticles', 'resetArticleData'])
   }
 }
 </script>
