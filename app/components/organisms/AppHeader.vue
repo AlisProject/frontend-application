@@ -9,7 +9,8 @@
     <article-type-select-box
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
-      :showOnlySessionLinks="showOnlySessionLinks"/>
+      :showOnlySessionLinks="showOnlySessionLinks"
+      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
     <no-ssr>
       <edit-header-nav
         v-if="showEditHeaderNav"

@@ -1,6 +1,6 @@
 <template>
   <div class="notification-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav showOnlySessionLinksOnPc/>
+    <app-header showDefaultHeaderNav showOnlySessionLinksOnPc class="without-shadow"/>
     <h1 class="area-title">{{ title }}</h1>
     <notification-card-list :notifications="notifications"/>
     <the-loader :lastEvaluatedKey="notificationsLastEvaluatedKey"/>

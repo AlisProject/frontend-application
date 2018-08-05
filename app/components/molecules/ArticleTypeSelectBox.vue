@@ -1,5 +1,8 @@
 <template>
-  <div class="area-article-type-select-box" v-show="!showOnlyLogo && !showOnlySessionLinks">
+  <div
+    class="area-article-type-select-box"
+    :class="{ hidden: showOnlySessionLinksOnPc }"
+    v-show="!showOnlyLogo && !showOnlySessionLinks">
     <select required @change="onChangeArticleTypeSelect" v-model="selected">
       <option value="newArticles">新着記事</option>
       <option value="popularArticles">人気記事</option>
@@ -15,6 +18,10 @@ export default {
       default: false
     },
     showOnlySessionLinks: {
+      type: Boolean,
+      default: false
+    },
+    showOnlySessionLinksOnPc: {
       type: Boolean,
       default: false
     }
@@ -106,6 +113,10 @@ export default {
 
     select {
       font-size: 10px;
+    }
+
+    &.hidden {
+      display: none;
     }
   }
 }
