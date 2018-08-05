@@ -171,6 +171,11 @@ export default {
       '... nav  nav nav     article-type-select-box ...';
     grid-template-columns: 3px 67px 1fr 60px 61px 3px;
     grid-template-rows: 6px 26px 20px;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+
+    &.without-shadow {
+      box-shadow: none;
+    }
   }
 
   .background-none.area-app-header-container {

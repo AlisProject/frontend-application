@@ -94,7 +94,7 @@ export default {
 @media screen and (max-width: 550px) {
   .popular-article-list-container {
     background: #f7f7f7;
-    grid-template-rows: 92px 15px 1fr 75px min-content;
+    grid-template-rows: 92px 28px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }
