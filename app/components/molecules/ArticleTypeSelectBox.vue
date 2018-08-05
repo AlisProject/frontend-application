@@ -4,8 +4,8 @@
     :class="{ hidden: showOnlySessionLinksOnPc }"
     v-show="!showOnlyLogo && !showOnlySessionLinks">
     <select required @change="onChangeArticleTypeSelect" v-model="selected">
-      <option value="newArticles">新着記事</option>
       <option value="popularArticles">人気記事</option>
+      <option value="newArticles">新着記事</option>
     </select>
   </div>
 </template>
@@ -29,10 +29,10 @@ export default {
     }
   },
   data() {
+    const { fullPath } = this.$route
+    const isPopularArticlesPage = fullPath.startsWith('/articles/popular') || fullPath === '/'
     return {
-      selected: this.$route.fullPath.startsWith('/articles/popular')
-        ? 'popularArticles'
-        : 'newArticles'
+      selected: isPopularArticlesPage ? 'popularArticles' : 'newArticles'
     }
   },
   mounted() {
