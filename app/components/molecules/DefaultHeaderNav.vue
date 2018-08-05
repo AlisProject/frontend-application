@@ -4,9 +4,10 @@
       <nuxt-link
         v-for="topic in topics"
         :key="topic.order"
+        :data-topic="topic.name"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
-        @click.native="resetScrollHeight">
+        @click.native="fetchArticles">
         {{topic.display_name}}
       </nuxt-link>
     </template>
@@ -44,10 +45,14 @@ export default {
         ? { path: 'articles/popular', query: { topics: topic } }
         : { query: { topics: topic } }
     },
-    resetScrollHeight() {
-      this.setArticleListScrollHeight({ scroll: 0 })
+    fetchArticles(event) {
+      if (this.$route.fullPath === '/') {
+        this.resetArticleData()
+        this.getPopularArticles({ topic: event.target.dataset.topic })
+      }
+      if (this.$route.path) this.setArticleListScrollHeight({ scroll: 0 })
     },
-    ...mapActions('article', ['getTopics']),
+    ...mapActions('article', ['getTopics', 'resetArticleData', 'getPopularArticles']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }
