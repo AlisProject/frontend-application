@@ -43,7 +43,8 @@ const state = () => ({
   isLastPage: false,
   isFetching: false,
   topics: [],
-  articleType: 'popularArticles'
+  articleType: 'popularArticles',
+  topicType: null
 })
 
 const getters = {
@@ -74,7 +75,8 @@ const getters = {
   isFetching: (state) => state.isFetching,
   page: (state) => state.page,
   isLastPage: (state) => state.isLastPage,
-  articleType: (state) => state.articleType
+  articleType: (state) => state.articleType,
+  topicType: (state) => state.topicType
 }
 
 const actions = {
@@ -192,6 +194,7 @@ const actions = {
       }
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
+      commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -504,6 +507,9 @@ const actions = {
   },
   setArticleType({ commit }, { articleType }) {
     commit(types.SET_ARTICLE_TYPE, { articleType })
+  },
+  resetArticleTopic({ commit }) {
+    commit(types.RESET_ARTICLE_TOPIC)
   }
 }
 
@@ -650,6 +656,12 @@ const mutations = {
   },
   [types.SET_ARTICLE_TYPE](state, { articleType }) {
     state.articleType = articleType
+  },
+  [types.SET_ARTICLE_TOPIC](state, { topicType }) {
+    state.topicType = topicType
+  },
+  [types.RESET_ARTICLE_TOPIC](state) {
+    state.topicType = null
   }
 }
 

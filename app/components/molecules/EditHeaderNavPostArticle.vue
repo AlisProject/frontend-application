@@ -19,12 +19,14 @@
       </div>
       <h3 class="headline">2. トピックの設定</h3>
       <div class="article-type-select-box">
-        <select required @change="onChangeArticleTypeSelect" class="article-type-select">
-          <option value='' disabled selected class="placeholder">選択してください</option>
-          <option v-for="topic in topics" :value="topic.name">
-            {{ topic.display_name }}
-          </option>
-        </select>
+        <no-ssr>
+          <select required @change="onChangeArticleTypeSelect" class="article-type-select" v-model="topicType">
+            <option value='null' disabled selected class="placeholder">選択してください</option>
+            <option v-for="topic in topics" :value="topic.name">
+              {{ topic.display_name }}
+            </option>
+          </select>
+        </no-ssr>
       </div>
       <button class="submit" @click="publish" :class="{ disable: !publishable }">公開する</button>
     </div>
@@ -92,6 +94,7 @@ export default {
         }
         this.$router.push('/me/articles/public')
         this.sendNotification({ text: '記事を公開しました。' })
+        this.resetArticleTopic()
       } catch (e) {
         this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         console.error(e)
@@ -136,7 +139,8 @@ export default {
       'postArticleImage',
       'updateBody',
       'setIsSaving',
-      'getTopics'
+      'getTopics',
+      'resetArticleTopic'
     ])
   },
   computed: {
@@ -151,7 +155,8 @@ export default {
       'suggestedThumbnails',
       'isSaving',
       'isEdited',
-      'topics'
+      'topics',
+      'topicType'
     ])
   },
   watch: {
