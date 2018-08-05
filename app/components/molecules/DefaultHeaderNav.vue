@@ -52,11 +52,10 @@ export default {
       }
     },
     fetchArticles(event) {
-      if (this.$route.fullPath === '/') {
-        this.resetArticleData()
-        this.getPopularArticles({ topic: event.target.dataset.topic })
-      }
-      if (this.$route.path) this.setArticleListScrollHeight({ scroll: 0 })
+      this.setArticleListScrollHeight({ scroll: 0 })
+      if (this.$route.fullPath !== '/') return
+      this.resetArticleData()
+      this.getPopularArticles({ topic: event.target.dataset.topic })
     },
     ...mapActions('article', ['getTopics', 'resetArticleData', 'getPopularArticles']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
