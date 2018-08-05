@@ -50,7 +50,7 @@ export default {
         ) {
           return
         }
-        await this.getPopularArticles({ topic: this.$route.query.topics })
+        await this.getPopularArticles({ topic: this.$route.query.topics || 'crypto' })
       } finally {
         this.isFetchingArticles = false
       }
