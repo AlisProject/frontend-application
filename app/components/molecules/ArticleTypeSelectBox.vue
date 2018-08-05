@@ -3,7 +3,7 @@
     class="area-article-type-select-box"
     :class="{ hidden: showOnlySessionLinksOnPc }"
     v-show="!showOnlyLogo && !showOnlySessionLinks">
-    <select required @change="onChangeArticleTypeSelect" v-model="articleType">
+    <select required v-model="articleType">
       <option value="popularArticles">人気記事</option>
       <option value="newArticles">新着記事</option>
     </select>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
@@ -43,25 +43,29 @@ export default {
     })
   },
   computed: {
-    ...mapGetters('article', ['articleType'])
+    articleType: {
+      get() {
+        return this.$store.getters['article/articleType']
+      },
+      set(value) {
+        this.resetArticleData()
+        const { fullPath } = this.$route
+        if (fullPath === '/') {
+          this.$router.push('/articles/recent?topic=crypto')
+          return
+        }
+        const isPopularArticles = value === 'popularArticles'
+        this.setArticleType({
+          articleType: isPopularArticles ? 'popularArticles' : 'newArticles'
+        })
+        const to = isPopularArticles
+          ? fullPath.replace('recent', 'popular')
+          : fullPath.replace('popular', 'recent')
+        this.$router.push(to)
+      }
+    }
   },
   methods: {
-    onChangeArticleTypeSelect(event) {
-      this.resetArticleData()
-      const { fullPath } = this.$route
-      if (fullPath === '/') {
-        this.$router.push('/articles/recent?topic=crypto')
-        return
-      }
-      const isPopularArticles = event.target.value === 'popularArticles'
-      this.setArticleType({
-        articleType: isPopularArticles ? 'popularArticles' : 'newArticles'
-      })
-      const to = isPopularArticles
-        ? fullPath.replace('recent', 'popular')
-        : fullPath.replace('popular', 'recent')
-      this.$router.push(to)
-    },
     ...mapActions('article', ['resetArticleData', 'setArticleType'])
   }
 }

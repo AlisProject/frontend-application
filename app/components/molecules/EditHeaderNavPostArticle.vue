@@ -20,7 +20,7 @@
       <h3 class="headline">2. トピックの設定</h3>
       <div class="article-type-select-box">
         <no-ssr>
-          <select required @change="onChangeArticleTypeSelect" class="article-type-select" v-model="topicType">
+          <select required class="article-type-select" v-model="topicType">
             <option value='null' disabled selected class="placeholder">選択してください</option>
             <option v-for="topic in topics" :value="topic.name">
               {{ topic.display_name }}
@@ -111,10 +111,6 @@ export default {
       this.isThumbnailSelected = true
       this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
     },
-    onChangeArticleTypeSelect(event) {
-      this.$el.querySelector('.article-type-select').style.color = '#000'
-      this.topic = event.target.value
-    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
@@ -144,6 +140,15 @@ export default {
     ])
   },
   computed: {
+    topicType: {
+      get() {
+        return this.$store.getters['article/topicType']
+      },
+      set(value) {
+        this.$el.querySelector('.article-type-select').style.color = '#000'
+        this.topic = value
+      }
+    },
     publishable() {
       return !this.isEdited && !this.isSaving
     },
@@ -155,8 +160,7 @@ export default {
       'suggestedThumbnails',
       'isSaving',
       'isEdited',
-      'topics',
-      'topicType'
+      'topics'
     ])
   },
   watch: {

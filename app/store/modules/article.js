@@ -194,7 +194,7 @@ const actions = {
       }
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
-      commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
+      commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic || null })
     } catch (error) {
       return Promise.reject(error)
     }
