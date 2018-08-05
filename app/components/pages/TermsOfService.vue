@@ -1,6 +1,6 @@
 <template>
   <div class="article-container">
-    <app-header showDefaultHeaderNav showOnlySessionLinks/>
+    <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
     <div class="area-article">
       <h1 class="area-title">{{ title }}</h1>
       <div class="area-content" v-html="$md.render(body)" />
