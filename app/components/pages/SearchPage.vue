@@ -1,6 +1,6 @@
 <template>
   <div class="search-page-container" :class="showArticles ? 'article' : 'user'" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav showOnlySessionLinks/>
+    <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
     <h1 class="area-title">{{ title }}</h1>
     <form @submit.prevent="search" class="area-search">
       <input
