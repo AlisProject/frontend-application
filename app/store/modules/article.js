@@ -480,12 +480,9 @@ const actions = {
       articles.map(async (article) => {
         const [userInfo, alisToken] = await Promise.all([
           dispatch('getUserInfo', { userId: article.user_id }),
-          // dispatch('getAlisToken', { articleId: article.article_id })
-          dispatch('getAlisTokenDebug', { articleId: article.article_id })
-        ]).catch(() => {
-          return [1, 2]
-        })
-        return { ...article, userInfo, alisToken, tmp: Math.random() }
+          dispatch('getAlisToken', { articleId: article.article_id })
+        ])
+        return { ...article, userInfo, alisToken }
       })
     )
     commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: false })
@@ -493,16 +490,6 @@ const actions = {
     commit(types.SET_SEARCH_ARTICLES_PAGE, { page: state.searchArticles.page + 1 })
     if (articles.length < limit) {
       commit(types.SET_SEARCH_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
-    }
-  },
-  async getAlisTokenDebug({ commit }, { articleId, page }) {
-    try {
-      // const { alis_token: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
-      throw new Error(1)
-      // return alisToken
-    } catch (error) {
-      return Promise.reject(error)
-      // return 1000
     }
   },
   resetSearchArticles({ commit }) {
