@@ -138,7 +138,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .area-user-info-container {
-    box-shadow: 0px 10px 10px -10px gray inset;
+    box-shadow: 0px 10px 10px -10px rgba(0, 0, 0, 0.3) inset;
     grid-column-gap: 20px;
     grid-row-gap: 5px;
     grid-template-columns: 1fr 60px 280px 1fr;
