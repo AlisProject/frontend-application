@@ -80,7 +80,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .public-article-list-container {
-    grid-template-rows: 100px 40px 1fr 75px min-content;
+    grid-template-rows: 100px 24px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }
