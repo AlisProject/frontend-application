@@ -41,7 +41,10 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 38px 1fr;
-  grid-template-columns: minmax(64px, 1fr) 56px 42px 108px 1fr 160px 1fr;
+  // 320px - half width of .area-editor-container
+  // 190px - width      of .area-logo
+  // 40px  - margin     of this grid-column-gap
+  grid-template-columns: calc(50vw - 320px - 190px - 40px) 56px 42px 108px 1fr 160px 1fr;
   grid-column-gap: 40px;
   /* prettier-ignore */
   grid-template-areas:
