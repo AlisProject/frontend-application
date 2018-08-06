@@ -50,14 +50,14 @@ export default {
           event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
         if (this.isLastPage || !isScrollBottom) return
 
-        await this.getNewPagesArticles({ topic: this.$route.query.topics })
+        await this.getNewPagesArticles({ topic: this.$route.query.topic })
       } finally {
         this.isFetchingArticles = false
       }
     },
     setTopicNumber() {
       this.topics.forEach((topic) => {
-        if (topic.name === this.$route.query.topics) this.topicNumber = topic.order
+        if (topic.name === this.$route.query.topic) this.topicNumber = topic.order
       })
     },
     ...mapActions('article', ['getNewPagesArticles', 'resetArticleData']),
@@ -67,7 +67,7 @@ export default {
     $route(to) {
       this.resetArticleData()
       this.setTopicNumber()
-      this.getNewPagesArticles({ topic: to.query.topics })
+      this.getNewPagesArticles({ topic: to.query.topic })
     },
     topics() {
       this.setTopicNumber()

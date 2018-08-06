@@ -43,12 +43,12 @@ export default {
     to(topic) {
       switch (this.$route.fullPath) {
         case '/':
-          return { path: '/articles/popular', query: { topics: topic } }
+          return { path: '/articles/popular', query: { topic } }
         case '/me/notifications':
           const to = this.articleType === 'popularArticles' ? 'popular' : 'recent'
-          return { path: `/articles/${to}`, query: { topics: topic } }
+          return { path: `/articles/${to}`, query: { topic } }
         default:
-          return { query: { topics: topic } }
+          return { query: { topic } }
       }
     },
     resetScrollHeight() {
