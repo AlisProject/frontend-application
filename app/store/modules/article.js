@@ -261,11 +261,11 @@ const actions = {
       }
     }
   },
-  async publishDraftArticle({ commit }, { article, articleId, topic }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, { ...article, topic })
+  async publishDraftArticle({ commit }, { articleId, topic }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, { topic })
   },
-  async republishPublicArticle({ commit }, { article, articleId, topic }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/republish`, { ...article, topic })
+  async republishPublicArticle({ commit }, { articleId, topic }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/republish`, { topic })
   },
   async unpublishPublicArticle({ commit }, { articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public/unpublish`)
