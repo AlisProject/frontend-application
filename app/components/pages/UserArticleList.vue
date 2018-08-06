@@ -1,6 +1,6 @@
 <template>
   <div class="user-article-list-container long-article-card" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles background-none without-shadow"/>
+    <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles"/>
     <user-article-list-user-info :user="userInfo" />
     <nav class="area-user-profile-nav">
       <ul class="user-profile-nav-ul">
@@ -96,7 +96,7 @@ export default {
   .user-article-list-container {
     background: #fff;
     grid-template-columns: 1fr 350px 1fr;
-    grid-template-rows: 100px 150px 50px 1fr 75px min-content;
+    grid-template-rows: 70px min-content 50px 1fr 75px min-content;
     grid-row-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:

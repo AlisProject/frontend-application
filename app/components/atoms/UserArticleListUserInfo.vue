@@ -126,6 +126,7 @@ export default {
     line-height: 22px;
     text-align: left;
     word-wrap: break-word;
+    margin-bottom: 0;
   }
 }
 
@@ -138,19 +139,17 @@ export default {
 
 @media screen and (max-width: 550px) {
   .area-user-info-container {
-    box-shadow: 0px 10px 10px -10px rgba(0, 0, 0, 0.3) inset;
     grid-column-gap: 20px;
     grid-row-gap: 5px;
     grid-template-columns: 1fr 60px 280px 1fr;
-    grid-template-rows: 20px 16px 12px 1fr;
-    margin-top: -50px;
+    grid-template-rows: 16px 12px 1fr;
     /* prettier-ignore */
     grid-template-areas:
-      "... ...          ...               ..."
       "... profile-icon user-display-name ..."
       "... profile-icon user-id           ..."
       "... ...          self-introduction ...";
     text-align: left;
+    padding: 5px 0;
   }
 
   .area-profile-icon {

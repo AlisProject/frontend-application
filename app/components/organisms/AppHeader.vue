@@ -182,10 +182,6 @@ export default {
     }
   }
 
-  .background-none.area-app-header-container {
-    background: none;
-  }
-
   .area-logo {
     background-size: 67px 26px;
     margin: 0;
