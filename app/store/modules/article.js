@@ -139,8 +139,13 @@ const actions = {
     return userInfo
   },
   async getAlisToken({ commit }, { articleId }) {
-    const { alis_token: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
-    return alisToken
+    try {
+      const { alis_token: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
+      return alisToken
+    } catch (error) {
+      console.error(error)
+      return 0
+    }
   },
   async getLikesCount({ commit }, { articleId }) {
     const { count: likesCount } = await this.$axios.$get(`/articles/${articleId}/likes`)
