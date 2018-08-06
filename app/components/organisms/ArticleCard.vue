@@ -61,6 +61,15 @@ a {
   grid-template-areas:
     "article-card-image"
     "article-card-content";
+  transition: all 400ms ease;
+
+  &:hover {
+    box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.5);
+
+    &:active {
+      box-shadow: 0 0 4px 0 rgba(133, 141, 218, 0.5);
+    }
+  }
 }
 
 .top {
