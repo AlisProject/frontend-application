@@ -216,7 +216,7 @@ export default {
     box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     box-sizing: border-box;
     left: -30px;
-    padding: 24px;
+    padding: 40px 20px;
     position: absolute;
     top: 30px;
     width: 350px;
@@ -232,11 +232,10 @@ export default {
     }
 
     .thumbnails {
-      height: 80px;
       overflow-x: scroll;
       overflow-y: hidden;
       white-space: nowrap;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
 
       .no-thumbnail-message {
         font-size: 14px;
@@ -261,7 +260,7 @@ export default {
 
     .article-type-select-box {
       border-bottom: 1px dotted #232538;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
       padding: 6px 1px;
       position: relative;
 
