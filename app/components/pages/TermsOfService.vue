@@ -1,5 +1,5 @@
 <template>
-  <div class="article-container">
+  <div class="terms-of-service-container">
     <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
     <div class="area-article">
       <h1 class="area-title">{{ title }}</h1>
@@ -234,7 +234,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article-container {
+.terms-of-service-container {
   display: grid;
   grid-template-rows: 100px 50px 1fr 75px;
   grid-template-columns: 1fr 640px 1fr;
@@ -267,21 +267,22 @@ export default {
 
 .area-content {
   grid-area: content;
-  width: 640px;
-
-  ol {
-    width: 640px;
-  }
 }
 
 @media screen and (max-width: 1080px) {
-  .article-container {
+  .terms-of-service-container {
     grid-template-rows: 100px 50px 1fr 75px;
   }
 }
 
-@media screen and (max-width: 640px) {
-  .article-container {
+@media screen and (max-width: 820px) {
+  .terms-of-service-container {
+    grid-template-columns: 80px 1fr 80px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .terms-of-service-container {
     grid-template-rows: 70px 0 1fr min-content;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */

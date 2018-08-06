@@ -1,5 +1,5 @@
 <template>
-  <div class="article-container">
+  <div class="public-article-container">
     <app-header showEditHeaderNav showEditArticleLink class="public-article without-shadow"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article-container {
+.public-article-container {
   display: grid;
   grid-template-rows: 100px 50px 1fr;
   grid-template-columns: 1fr 640px 1fr;
@@ -66,13 +66,13 @@ export default {
 }
 
 @media screen and (max-width: 1080px) {
-  .article-container {
+  .public-article-container {
     grid-template-rows: 100px 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
-  .article-container {
+  .public-article-container {
     grid-template-rows: 70px 0 1fr;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
