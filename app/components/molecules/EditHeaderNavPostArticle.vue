@@ -6,7 +6,7 @@
     <div v-show="isPopupShown" class="popup">
       <h3 class="headline">1. サムネイルの選択</h3>
       <div class="thumbnails">
-        <span v-if="suggestedThumbnails.length === 0">
+        <span class="no-thumbnail-message" v-if="suggestedThumbnails.length === 0">
           画像がありません
         </span>
         <img
@@ -236,6 +236,13 @@ export default {
       overflow-x: scroll;
       overflow-y: hidden;
       white-space: nowrap;
+      margin-bottom: 30px;
+
+      .no-thumbnail-message {
+        font-size: 14px;
+        margin-top: 20px;
+        display: block;
+      }
 
       .thumbnail {
         box-sizing: border-box;
