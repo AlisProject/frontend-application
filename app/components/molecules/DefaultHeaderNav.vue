@@ -48,7 +48,7 @@ export default {
           const to = this.articleType === 'popularArticles' ? 'popular' : 'recent'
           return { path: `/articles/${to}`, query: { topics: topic } }
         default:
-          return { path: '/articles/popular', query: { topics: topic } }
+          return { query: { topics: topic } }
       }
     },
     fetchArticles(event) {
