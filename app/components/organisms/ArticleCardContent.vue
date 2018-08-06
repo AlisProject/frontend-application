@@ -95,8 +95,8 @@ export default {
     .area-article-card-content {
       border-bottom-left-radius: 6px;
       border-bottom-right-radius: 6px;
-      grid-template-rows: 50px 40px 40px;
-      grid-gap: 12px;
+      grid-template-rows: 50px 38px 40px;
+      grid-gap: 13px;
       padding: 18px 12px;
     }
   }
@@ -104,9 +104,9 @@ export default {
   .area-article-card-content {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
-    grid-template-rows: 50px 40px 40px;
+    grid-template-rows: 50px 38px 40px;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 12px;
+    grid-gap: 13px;
     /* prettier-ignore */
     grid-template-areas:
         "title    title   "
