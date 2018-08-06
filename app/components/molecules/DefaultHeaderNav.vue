@@ -66,7 +66,7 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat(3, 90px) 1fr;
+  grid-template-columns: 1fr repeat(3, 78px) 1fr;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
