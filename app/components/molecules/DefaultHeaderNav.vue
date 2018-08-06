@@ -7,7 +7,7 @@
         :data-topic="topic.name"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
-        @click.native="fetchArticles">
+        @click.native="resetScrollHeight">
         {{topic.display_name}}
       </nuxt-link>
     </template>
@@ -51,13 +51,10 @@ export default {
           return { query: { topics: topic } }
       }
     },
-    fetchArticles(event) {
+    resetScrollHeight() {
       this.setArticleListScrollHeight({ scroll: 0 })
-      if (this.$route.fullPath !== '/') return
-      this.resetArticleData()
-      this.getPopularArticles({ topic: event.target.dataset.topic })
     },
-    ...mapActions('article', ['getTopics', 'resetArticleData', 'getPopularArticles']),
+    ...mapActions('article', ['getTopics']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }

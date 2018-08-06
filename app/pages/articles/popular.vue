@@ -11,6 +11,7 @@ export default {
   },
   async fetch({ store, query }) {
     const topic = query.topics || 'crypto'
+    store.dispatch('article/resetArticleData')
     await store.dispatch('article/getPopularArticles', { topic })
   },
   head() {
