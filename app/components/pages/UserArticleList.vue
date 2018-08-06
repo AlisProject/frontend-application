@@ -1,6 +1,6 @@
 <template>
   <div class="user-article-list-container long-article-card" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles background-none"/>
+    <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles background-none without-shadow"/>
     <user-article-list-user-info :user="userInfo" />
     <nav class="area-user-profile-nav">
       <ul class="user-profile-nav-ul">
