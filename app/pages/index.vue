@@ -9,10 +9,8 @@ export default {
   components: {
     PopularArticleList
   },
-  async fetch({ store, params }) {
-    const topic = params.topic || 'crypto'
-    store.dispatch('article/resetArticleData')
-    await store.dispatch('article/getPopularArticles', { topic })
+  fetch({ redirect }) {
+    redirect('/articles/popular?topic=crypto')
   },
   head() {
     return {

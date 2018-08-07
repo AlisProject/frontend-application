@@ -1,6 +1,6 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/" class="area-logo" @click.native="resetScrollHeight"/>
+    <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetScrollHeight"/>
     <default-header-nav
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"

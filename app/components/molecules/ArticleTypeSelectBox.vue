@@ -30,7 +30,7 @@ export default {
   },
   mounted() {
     const { fullPath } = this.$route
-    const isPopularArticlesPage = fullPath.startsWith('/articles/popular') || fullPath === '/'
+    const isPopularArticlesPage = fullPath.startsWith('/articles/popular')
     this.setArticleType({ articleType: isPopularArticlesPage ? 'popularArticles' : 'newArticles' })
 
     const areaArticleTypeSelectBox = document.querySelector('.area-article-type-select-box')
@@ -50,10 +50,6 @@ export default {
       set(value) {
         this.resetArticleData()
         const { fullPath } = this.$route
-        if (fullPath === '/') {
-          this.$router.push('/articles/recent?topic=crypto')
-          return
-        }
         const isPopularArticles = value === 'popularArticles'
         this.setArticleType({
           articleType: isPopularArticles ? 'popularArticles' : 'newArticles'

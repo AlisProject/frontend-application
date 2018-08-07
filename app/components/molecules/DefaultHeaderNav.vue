@@ -42,8 +42,6 @@ export default {
   methods: {
     to(topic) {
       switch (this.$route.fullPath) {
-        case '/':
-          return { path: '/articles/popular', query: { topic } }
         case '/me/notifications':
           const to = this.articleType === 'popularArticles' ? 'popular' : 'recent'
           return { path: `/articles/${to}`, query: { topic } }
