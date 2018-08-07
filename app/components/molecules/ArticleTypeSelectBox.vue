@@ -29,10 +29,6 @@ export default {
     }
   },
   mounted() {
-    const { fullPath } = this.$route
-    const isPopularArticlesPage = fullPath.startsWith('/articles/popular')
-    this.setArticleType({ articleType: isPopularArticlesPage ? 'popularArticles' : 'newArticles' })
-
     const areaArticleTypeSelectBox = document.querySelector('.area-article-type-select-box')
     const viewportMeta = document.querySelector('meta[name="viewport"]')
     areaArticleTypeSelectBox.addEventListener('touchstart', (event) => {
