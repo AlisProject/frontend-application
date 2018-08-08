@@ -85,7 +85,7 @@ export default {
   }
 
   select {
-    -webkit-appearance: none;
+    appearance: none;
     background-image: none;
     background: transparent;
     border: none;
@@ -101,6 +101,14 @@ export default {
 
     &::-ms-expand {
       display: none;
+    }
+  }
+}
+
+@-moz-document url-prefix() {
+  .area-article-type-select-box {
+    &::before {
+      top: 10px !important;
     }
   }
 }

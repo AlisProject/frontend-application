@@ -288,7 +288,7 @@ export default {
       }
 
       .article-type-select {
-        -webkit-appearance: none;
+        appearance: none;
         background-image: none;
         background: transparent;
         border: none;
@@ -313,6 +313,7 @@ export default {
     }
 
     .submit {
+      background: white;
       border-radius: 4px;
       border: 1.5px solid #99a2ff;
       color: #99a2ff;
@@ -331,6 +332,18 @@ export default {
           cursor: not-allowed;
         }
       }
+    }
+  }
+}
+
+@-moz-document url-prefix() {
+  .article-type-select-box {
+    &::after {
+      top: 15px !important;
+    }
+
+    &::before {
+      top: 25px !important;
     }
   }
 }
