@@ -28,16 +28,6 @@ export default {
       default: false
     }
   },
-  mounted() {
-    const areaArticleTypeSelectBox = document.querySelector('.area-article-type-select-box')
-    const viewportMeta = document.querySelector('meta[name="viewport"]')
-    areaArticleTypeSelectBox.addEventListener('touchstart', (event) => {
-      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
-    })
-    areaArticleTypeSelectBox.addEventListener('blur', (event) => {
-      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1')
-    })
-  },
   computed: {
     articleType: {
       get() {
@@ -116,7 +106,7 @@ export default {
 @media screen and (max-width: 550px) {
   .area-article-type-select-box {
     &::before {
-      top: 2px;
+      top: -3px;
       right: 6px;
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
@@ -124,11 +114,23 @@ export default {
     }
 
     select {
-      font-size: 10px;
+      font-size: 16px;
+      transform: scale(0.6);
+      padding-right: 0;
+      width: 70px;
+      margin: -14px;
     }
 
     &.hidden {
       display: none;
+    }
+  }
+
+  @-moz-document url-prefix() {
+    .area-article-type-select-box {
+      &::before {
+        top: 4px !important;
+      }
     }
   }
 }
