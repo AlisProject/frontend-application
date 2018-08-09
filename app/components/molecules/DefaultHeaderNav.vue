@@ -66,7 +66,7 @@ $topicCount: 4;
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat($topicCount, 78px) 1fr;
+  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 1fr;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
@@ -81,6 +81,7 @@ $topicCount: 4;
   color: #6e6e6e;
   padding: 0 10px;
   line-height: 1.6;
+  white-space: nowrap;
 }
 
 @for $i from 1 through $topicCount {
@@ -128,6 +129,12 @@ $topicCount: 4;
     &.hidden {
       display: none;
     }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .area-nav {
+    grid-gap: 2px;
   }
 }
 </style>
