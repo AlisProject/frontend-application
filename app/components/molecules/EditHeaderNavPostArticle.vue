@@ -144,6 +144,7 @@ export default {
   computed: {
     topicType: {
       get() {
+        this.topic = this.$store.getters['article/topicType']
         return this.$store.getters['article/topicType']
       },
       set(value) {
