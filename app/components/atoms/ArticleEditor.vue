@@ -219,6 +219,9 @@ export default {
           cleanAttrs
         }
       )
+
+      // Prevent drop image on OGP content
+      this.preventDropImageOnOGPContent()
     },
     async updateArticle() {
       try {
@@ -233,8 +236,6 @@ export default {
         this.setIsEdited({ isEdited: false })
         this.setSaveStatus({ saveStatus: 'Saving...' })
         if (this.articleId === '') await this.setArticleId()
-
-        this.preventDropImageOnOGPContent()
 
         // Upload images
         try {
