@@ -28,7 +28,8 @@ import {
   getTwitterProfileTemplate,
   getIframelyEmbedTemplate,
   getThumbnails,
-  createInsertPluginTemplateFromUrl
+  createInsertPluginTemplateFromUrl,
+  getResourceFromIframely
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -132,89 +133,7 @@ export default {
       })
       this.editorElement.subscribe('editableInput', (event, editable) => {
         this.setIsEdited({ isEdited: true })
-        this.$el.onkeydown = async (event) => {
-          if (event.key === 'Enter') {
-            const line = this.editorElement.getSelectedParentElement().textContent
-            const trimmedLine = line.trim()
-            if (urlRegex({ exact: true }).test(trimmedLine)) {
-              const selectedParentElement = this.editorElement.getSelectedParentElement()
-              let result
-              if (
-                trimmedLine === 'https://twitter.com' ||
-                trimmedLine.startsWith('https://twitter.com/')
-              ) {
-                const isTweet = trimmedLine.split('/')[4] === 'status'
-                try {
-                  result = await this.$axios.$get(
-                    `https://iframe.ly/api/oembed?api_key=${
-                      process.env.IFRAMELY_API_KEY
-                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
-                  )
-                } catch (error) {
-                  const message = isTweet
-                    ? 'ツイートが取得できませんでした。'
-                    : 'Twitterのユーザー情報が取得できませんでした。'
-                  this.sendNotification({
-                    text: message,
-                    type: 'warning'
-                  })
-                  console.error(error)
-                  return
-                }
-
-                selectedParentElement.innerHTML = ''
-
-                if (isTweet) {
-                  this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
-                  iframely.load()
-                } else {
-                  const { title, description } = result
-                  const hasTitleOrDescription = title !== undefined || description !== undefined
-                  if (!hasTitleOrDescription) return
-
-                  this.editorElement.pasteHTML(
-                    `<br>
-                  ${getTwitterProfileTemplate({ ...result })}
-                  <br>`,
-                    { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
-                  )
-                }
-              } else {
-                try {
-                  result = await this.$axios.$get(
-                    `https://iframe.ly/api/iframely?api_key=${
-                      process.env.IFRAMELY_API_KEY
-                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
-                  )
-                } catch (error) {
-                  console.error(error)
-                  return
-                }
-                const { title, description } = result.meta
-                const hasTitleOrDescription = title !== undefined || description !== undefined
-                if (!hasTitleOrDescription) return
-
-                selectedParentElement.innerHTML = ''
-
-                this.editorElement.pasteHTML(
-                  `<br>
-                    ${getIframelyEmbedTemplate({ ...result })}
-                    <br>`,
-                  {
-                    cleanAttrs: [
-                      'iframely-embed-card',
-                      'title',
-                      'description',
-                      'site',
-                      'thumbnail',
-                      'without-space'
-                    ]
-                  }
-                )
-              }
-            }
-          }
-        }
+        this.$el.onkeydown = (event) => this.handleEditorInput(event)
       })
       $(() => {
         $('.area-body').mediumInsert({
@@ -232,36 +151,103 @@ export default {
         })
       })
     },
+    async handleEditorInput(event) {
+      const line = this.editorElement.getSelectedParentElement().textContent
+      const trimmedLine = line.trim()
+      if (event.key !== 'Enter' || !urlRegex({ exact: true }).test(trimmedLine)) {
+        // Enter もしくは URL 構造でない場合は行う処理がない
+        return
+      }
+      const selectedParentElement = this.editorElement.getSelectedParentElement()
+      const isTwitterResource =
+        trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
+      const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
+      let result, cleanAttrs, embedHTML
+
+      try {
+        result = (await getResourceFromIframely(
+          isTwitterResource ? 'oembed' : 'iframely',
+          trimmedLine
+        )).data
+      } catch (error) {
+        if (isTwitterResource) {
+          const message = isTweet
+            ? 'ツイートが取得できませんでした。'
+            : 'Twitterのユーザー情報が取得できませんでした。'
+          this.sendNotification({
+            text: message,
+            type: 'warning'
+          })
+        }
+        console.error(error)
+        return
+      }
+
+      if (isTweet) {
+        this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
+        iframely.load()
+        return
+      }
+
+      if (!isTwitterResource) {
+        const { title, description } = result.meta
+        const hasTitleOrDescription = title !== undefined || description !== undefined
+        if (!hasTitleOrDescription) return
+        embedHTML = getIframelyEmbedTemplate({ ...result })
+        cleanAttrs = [
+          'iframely-embed-card',
+          'title',
+          'description',
+          'site',
+          'thumbnail',
+          'without-space'
+        ]
+      } else {
+        const { title, description } = result
+        const hasTitleOrDescription = title !== undefined || description !== undefined
+        if (!hasTitleOrDescription) return
+        embedHTML = getTwitterProfileTemplate({ ...result })
+        cleanAttrs = ['twitter-profile-card', 'title', 'description', 'site']
+      }
+
+      selectedParentElement.innerHTML = ''
+      this.editorElement.pasteHTML(
+        `<br>
+          ${embedHTML}
+          <br>`,
+        {
+          cleanAttrs
+        }
+      )
+    },
     async updateArticle() {
       try {
-        await (async () => {
-          // Do nothing if user don't edit article
-          if (!this.isEdited) {
-            this.setSaveStatus({ saveStatus: '' })
-            return
-          }
+        // Do nothing if user don't edit article
+        if (!this.isEdited) {
+          this.setSaveStatus({ saveStatus: '' })
+          return
+        }
 
-          // Init
-          this.setIsSaving({ isSaving: true })
-          this.setIsEdited({ isEdited: false })
-          this.setSaveStatus({ saveStatus: 'Saving...' })
-          if (this.articleId === '') await this.setArticleId()
+        // Init
+        this.setIsSaving({ isSaving: true })
+        this.setIsEdited({ isEdited: false })
+        this.setSaveStatus({ saveStatus: 'Saving...' })
+        if (this.articleId === '') await this.setArticleId()
 
-          this.preventDropImageOnOGPContent()
+        this.preventDropImageOnOGPContent()
 
-          // Upload images
-          try {
-            await this.uploadImages()
-          } catch (error) {
-            console.error(error)
-          }
+        // Upload images
+        try {
+          await this.uploadImages()
+        } catch (error) {
+          console.error(error)
+        }
 
-          // Upload article
-          await this.uploadArticle()
+        // Upload article
+        await this.uploadArticle()
 
-          this.setSaveStatus({ saveStatus: 'Saved' })
-          this.setIsSaving({ isSaving: false })
-        })()
+        this.setSaveStatus({ saveStatus: 'Saved' })
+        this.setIsSaving({ isSaving: false })
       } catch (error) {
         console.error(error)
       } finally {
@@ -307,24 +293,25 @@ export default {
       await Promise.all(
         images.map(async (img) => {
           const isBase64Image = img.src.includes('data:')
-          if (isBase64Image) {
-            try {
-              const base64Image = img.src
-              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-              const imageContentType = base64Image.substring(
-                base64Image.match(':').index + 1,
-                base64Image.match(';').index
-              )
-              const { image_url: imageUrl } = await this.postArticleImage({
-                articleId: this.articleId,
-                articleImage: base64Hash,
-                imageContentType
-              })
-              img.src = imageUrl
-            } catch (error) {
-              this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
-              throw new Error('Image upload failed.')
-            }
+          if (!isBase64Image) {
+            return
+          }
+          try {
+            const base64Image = img.src
+            const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+            const imageContentType = base64Image.substring(
+              base64Image.match(':').index + 1,
+              base64Image.match(';').index
+            )
+            const { image_url: imageUrl } = await this.postArticleImage({
+              articleId: this.articleId,
+              articleImage: base64Hash,
+              imageContentType
+            })
+            img.src = imageUrl
+          } catch (error) {
+            this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+            throw new Error('Image upload failed.')
           }
         })
       )
