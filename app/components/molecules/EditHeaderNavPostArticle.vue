@@ -144,8 +144,12 @@ export default {
   computed: {
     topicType: {
       get() {
-        this.topic = this.$store.getters['article/topicType']
-        return this.$store.getters['article/topicType']
+        const articleTopicType = this.$store.getters['article/topicType']
+        if (articleTopicType !== null) {
+          this.$el.querySelector('.article-type-select').style.color = '#000'
+          this.topic = articleTopicType
+        }
+        return articleTopicType
       },
       set(value) {
         this.$el.querySelector('.article-type-select').style.color = '#000'
