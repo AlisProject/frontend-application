@@ -29,7 +29,9 @@ import {
   getIframelyEmbedTemplate,
   getThumbnails,
   createInsertPluginTemplateFromUrl,
-  getResourceFromIframely
+  getResourceFromIframely,
+  preventDragAndDrop,
+  preventDropImageOnOGPContent
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -59,10 +61,10 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
-    this.preventDragAndDrop(window)
+    preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
       if (!this.$el.querySelector('.medium-insert-buttons')) return
-      this.preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
+      preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
       clearInterval(preventDragAndDropInterval)
     }, 100)
     $('.area-body').keydown((e) => {
@@ -221,7 +223,7 @@ export default {
       )
 
       // Prevent drop image on OGP content
-      this.preventDropImageOnOGPContent()
+      preventDropImageOnOGPContent()
     },
     async updateArticle() {
       try {
@@ -325,7 +327,7 @@ export default {
       // Prevent drag & drop on image
       Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
         if (element.dataset.preventedDragAndDrop === 'true') return
-        this.preventDragAndDrop(element)
+        preventDragAndDrop(element)
         element.dataset.preventedDragAndDrop = true
       })
     },
@@ -407,31 +409,6 @@ export default {
         this.setIsEdited({ isEdited: true })
       }
       reader.readAsDataURL(target)
-    },
-    preventDragAndDrop(element) {
-      element.addEventListener(
-        'drop',
-        (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        },
-        false
-      )
-      element.addEventListener(
-        'dragover',
-        (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        },
-        false
-      )
-    },
-    preventDropImageOnOGPContent() {
-      Array.from(this.$el.querySelectorAll('[data-alis-iframely-url]')).forEach((element) => {
-        if (element.dataset.preventedDragAndDrop === 'true') return
-        this.preventDragAndDrop(element)
-        element.dataset.preventedDragAndDrop = true
-      })
     },
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))
