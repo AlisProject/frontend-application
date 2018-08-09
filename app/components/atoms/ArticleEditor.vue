@@ -247,6 +247,8 @@ export default {
           this.setSaveStatus({ saveStatus: 'Saving...' })
           if (this.articleId === '') await this.setArticleId()
 
+          this.preventDropImageOnOGPContent()
+
           // Upload images
           try {
             await this.uploadImages()
@@ -435,6 +437,13 @@ export default {
         },
         false
       )
+    },
+    preventDropImageOnOGPContent() {
+      Array.from(this.$el.querySelectorAll('[data-alis-iframely-url]')).forEach((element) => {
+        if (element.dataset.preventedDragAndDrop === 'true') return
+        this.preventDragAndDrop(element)
+        element.dataset.preventedDragAndDrop = true
+      })
     },
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))
