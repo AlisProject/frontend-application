@@ -127,16 +127,14 @@ a {
 @media screen and (max-width: 550px) {
   .long-article-card {
     .article-card-container {
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
+      border-radius: 6px;
       grid-template-columns: 1fr;
       grid-template-rows: 120px 180px;
     }
   }
 
   .article-card-container {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
+    border-radius: 6px;
     grid-template-columns: 1fr;
     grid-template-rows: 120px 180px;
   }
