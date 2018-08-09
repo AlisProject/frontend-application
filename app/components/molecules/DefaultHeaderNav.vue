@@ -64,13 +64,13 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat(3, 78px) 1fr;
+  grid-template-columns: 1fr repeat(4, 78px) 1fr;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...    ...    ...    ..."
-    "... topic1 topic2 topic3 ..."
-    "... ...    ...    ...    ...";
+    "... ...    ...    ...    ...    ..."
+    "... topic1 topic2 topic3 topic4 ..."
+    "... ...    ...    ...    ...    ...";
 }
 
 .nav-link {
@@ -93,9 +93,14 @@ export default {
   grid-area: topic3;
 }
 
+.area-topic4 {
+  grid-area: topic4;
+}
+
 .topic1 .area-topic1,
 .topic2 .area-topic2,
-.topic3 .area-topic3 {
+.topic3 .area-topic3,
+.topic4 .area-topic4 {
   color: white;
   display: block;
   background: #858dda;
@@ -121,9 +126,9 @@ export default {
     grid-gap: 14px;
     /* prettier-ignore */
     grid-template-areas:
-      'topic1 topic2 topic3';
+      'topic1 topic2 topic3 topic4';
     grid-template-rows: 20px;
-    grid-template-columns: repeat(3, fit-content(100%));
+    grid-template-columns: repeat(4, fit-content(100%));
   }
 
   .nav-link {
