@@ -29,7 +29,9 @@ import {
   getIframelyEmbedTemplate,
   getThumbnails,
   createInsertPluginTemplateFromUrl,
-  getResourceFromIframely
+  getResourceFromIframely,
+  preventDragAndDrop,
+  preventDropImageOnOGPContent
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -59,10 +61,10 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
-    this.preventDragAndDrop(window)
+    preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
       if (!this.$el.querySelector('.medium-insert-buttons')) return
-      this.preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
+      preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
       clearInterval(preventDragAndDropInterval)
     }, 100)
     $('.area-body').keydown((e) => {
@@ -219,6 +221,9 @@ export default {
           cleanAttrs
         }
       )
+
+      // Prevent drop image on OGP content
+      preventDropImageOnOGPContent()
     },
     async updateArticle() {
       try {
@@ -322,7 +327,7 @@ export default {
       // Prevent drag & drop on image
       Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
         if (element.dataset.preventedDragAndDrop === 'true') return
-        this.preventDragAndDrop(element)
+        preventDragAndDrop(element)
         element.dataset.preventedDragAndDrop = true
       })
     },
@@ -404,24 +409,6 @@ export default {
         this.setIsEdited({ isEdited: true })
       }
       reader.readAsDataURL(target)
-    },
-    preventDragAndDrop(element) {
-      element.addEventListener(
-        'drop',
-        (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        },
-        false
-      )
-      element.addEventListener(
-        'dragover',
-        (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        },
-        false
-      )
     },
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))

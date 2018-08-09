@@ -7,7 +7,7 @@ import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import EditDraftArticle from '~/components/pages/EditDraftArticle'
 import head from '~/utils/editor-head'
-import { showEmbedTweet, getThumbnails } from '~/utils/article'
+import { showEmbedTweet, getThumbnails, preventDropImageOnOGPContent } from '~/utils/article'
 
 export default {
   components: {
@@ -28,6 +28,7 @@ export default {
       editorBody.dataset.placeholder =
         body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet()
+      preventDropImageOnOGPContent()
     } catch (error) {
       this.sendNotification({ text: '記事データの取得に失敗しました。', type: 'warning' })
       console.error(error)

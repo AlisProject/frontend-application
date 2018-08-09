@@ -231,3 +231,30 @@ export function getResourceFromIframely(type, url) {
     )}&omit_script=1&omit_css=1`
   )
 }
+
+export function preventDragAndDrop(element) {
+  element.addEventListener(
+    'drop',
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    false
+  )
+  element.addEventListener(
+    'dragover',
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    false
+  )
+}
+
+export function preventDropImageOnOGPContent() {
+  Array.from(document.querySelectorAll('[data-alis-iframely-url]')).forEach((element) => {
+    if (element.dataset.preventedDragAndDrop === 'true') return
+    preventDragAndDrop(element)
+    element.dataset.preventedDragAndDrop = true
+  })
+}
