@@ -59,12 +59,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$topicCount: 4;
+
 .area-nav {
   grid-area: nav;
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat(4, 78px) 1fr;
+  grid-template-columns: 1fr repeat($topicCount, 78px) 1fr;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
@@ -81,30 +83,17 @@ export default {
   line-height: 1.6;
 }
 
-.area-topic1 {
-  grid-area: topic1;
-}
+@for $i from 1 through $topicCount {
+  .area-topic#{$i} {
+    grid-area: topic#{$i};
+  }
 
-.area-topic2 {
-  grid-area: topic2;
-}
-
-.area-topic3 {
-  grid-area: topic3;
-}
-
-.area-topic4 {
-  grid-area: topic4;
-}
-
-.topic1 .area-topic1,
-.topic2 .area-topic2,
-.topic3 .area-topic3,
-.topic4 .area-topic4 {
-  color: white;
-  display: block;
-  background: #858dda;
-  border-radius: 10px;
+  .topic#{$i} .area-topic#{$i} {
+    color: white;
+    display: block;
+    background: #858dda;
+    border-radius: 10px;
+  }
 }
 
 @media screen and (max-width: 920px) {
@@ -128,7 +117,7 @@ export default {
     grid-template-areas:
       'topic1 topic2 topic3 topic4';
     grid-template-rows: 20px;
-    grid-template-columns: repeat(4, fit-content(100%));
+    grid-template-columns: repeat($topicCount, fit-content(100%));
   }
 
   .nav-link {
