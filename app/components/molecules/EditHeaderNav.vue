@@ -59,6 +59,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  white-space: nowrap;
 }
 
 .nav-link {
