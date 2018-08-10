@@ -85,12 +85,9 @@ const actions = {
       if (state.isFetching) return
       commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
       const limit = 10
-      const articles = await this.$axios.$get('/search/articles', {
-        params: { limit, query: topic, page: state.page }
+      const { Items: articles } = await this.$axios.$get('/articles/popular', {
+        params: { topic, limit, page: state.page }
       })
-      // const articles = await this.$axios.$get('/articles/popular', {
-      //   params: { limit, topic, page: state.page }
-      // })
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const [userInfo, alisToken] = await Promise.all([
@@ -115,12 +112,9 @@ const actions = {
       if (state.isFetching) return
       commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
       const limit = 10
-      const articles = await this.$axios.$get('/search/articles', {
-        params: { limit, query: topic, page: state.page }
+      const { Items: articles } = await this.$axios.$get('/articles/recent', {
+        params: { topic, limit, page: state.page }
       })
-      // const articles = await this.$axios.$get('/articles/popular', {
-      //   params: { limit, topic, page: state.page }
-      // })
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const [userInfo, alisToken] = await Promise.all([
