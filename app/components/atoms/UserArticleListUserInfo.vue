@@ -64,9 +64,6 @@ export default {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
       document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
-      if (document.querySelector('.area-user-info-container')) {
-        document.querySelector('.area-user-info-container').style.zIndex = 1
-      }
     },
     ...mapActions('user', ['setProfileSettingsModal'])
   }
