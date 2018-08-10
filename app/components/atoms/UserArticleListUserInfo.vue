@@ -104,6 +104,12 @@ export default {
 
 .area-user-display-name {
   grid-area: user-display-name;
+
+  .user-display-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .area-user-id {
@@ -140,14 +146,14 @@ export default {
 @media screen and (max-width: 550px) {
   .area-user-info-container {
     grid-column-gap: 20px;
-    grid-row-gap: 5px;
-    grid-template-columns: 1fr 60px 280px 1fr;
+    grid-row-gap: 8px;
+    grid-template-columns: 1fr 60px 240px 10px 1fr;
     grid-template-rows: 16px 12px 1fr;
     /* prettier-ignore */
     grid-template-areas:
-      "... profile-icon user-display-name ..."
-      "... profile-icon user-id           ..."
-      "... ...          self-introduction ...";
+      "... profile-icon user-display-name ...               ..."
+      "... profile-icon user-id           user-id           ..."
+      "... ...          self-introduction self-introduction ...";
     text-align: left;
     padding: 5px 0;
   }
@@ -160,7 +166,7 @@ export default {
 
     .profile-edit {
       bottom: 10px;
-      right: -260px;
+      right: -290px;
       cursor: pointer;
     }
   }
@@ -185,13 +191,19 @@ export default {
 
 @media screen and (max-width: 375px) {
   .area-user-info-container {
-    grid-template-columns: 1fr 60px 250px 1fr;
+    grid-template-columns: 1fr 60px 210px 20px 1fr;
+  }
+
+  .area-profile-icon {
+    .profile-edit {
+      right: -260px;
+    }
   }
 }
 
 @media screen and (max-width: 320px) {
   .area-user-info-container {
-    grid-template-columns: 1fr 60px 200px 1fr;
+    grid-template-columns: 1fr 60px 170px 10px 1fr;
   }
 
   .area-profile-icon {
