@@ -185,6 +185,8 @@ export default {
         return
       }
 
+      selectedParentElement.innerHTML = ''
+
       if (isTweet) {
         this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
         iframely.load()
@@ -212,7 +214,6 @@ export default {
         cleanAttrs = ['twitter-profile-card', 'title', 'description', 'site']
       }
 
-      selectedParentElement.innerHTML = ''
       this.editorElement.pasteHTML(
         `<br>
           ${embedHTML}
