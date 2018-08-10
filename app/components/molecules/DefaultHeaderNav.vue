@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$topicCount: 4;
+$topicCount: 3;
 
 .area-nav {
   grid-area: nav;
@@ -70,9 +70,9 @@ $topicCount: 4;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...    ...    ...    ...    ..."
-    "... topic1 topic2 topic3 topic4 ..."
-    "... ...    ...    ...    ...    ...";
+    "... ...    ...    ...    ..."
+    "... topic1 topic2 topic3 ..."
+    "... ...    ...    ...    ...";
 }
 
 .nav-link {
@@ -116,7 +116,7 @@ $topicCount: 4;
     grid-gap: 14px;
     /* prettier-ignore */
     grid-template-areas:
-      'topic1 topic2 topic3 topic4';
+      'topic1 topic2 topic3';
     grid-template-rows: 20px;
     grid-template-columns: repeat($topicCount, fit-content(100%));
   }
