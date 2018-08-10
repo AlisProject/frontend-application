@@ -61,7 +61,7 @@ export default {
 <style lang="scss" scoped>
 .user-article-list-container {
   display: grid;
-  grid-template-rows: 100px 300px 1fr 75px 75px;
+  grid-template-rows: 100px auto 1fr 75px 75px;
   grid-template-columns: 1fr 1080px 1fr;
   /* prettier-ignore */
   grid-template-areas:

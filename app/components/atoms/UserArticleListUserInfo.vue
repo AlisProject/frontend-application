@@ -1,5 +1,5 @@
 <template>
-  <div class="area-user-info-container">
+  <div class="area-user-info-container" :class="{ 'with-bottom-space': !hasSelfIntroduction }">
     <div class="area-profile-icon">
       <img
         class="profile-icon"
@@ -44,6 +44,16 @@ export default {
     }
   },
   computed: {
+    hasSelfIntroduction() {
+      const { self_introduction: selfIntroduction } = this.user
+
+      if (selfIntroduction === undefined || selfIntroduction === null) {
+        return false
+      }
+      if (selfIntroduction.trim() === '') return false
+
+      return true
+    },
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
@@ -67,9 +77,9 @@ export default {
 .area-user-info-container {
   display: grid;
   grid-area: user-info;
-  grid-template-rows: 80px 20px 10px 1fr;
+  grid-template-rows: 100px auto auto 1fr;
   grid-template-columns: 1fr 400px 1fr;
-  grid-gap: 10px;
+  grid-gap: 8px;
   /* prettier-ignore */
   grid-template-areas:
     "... profile-icon      ..."
@@ -77,6 +87,7 @@ export default {
     "... user-id           ..."
     "... self-introduction ...";
   text-align: center;
+  padding-bottom: 60px;
 }
 
 .area-profile-icon {
@@ -93,7 +104,7 @@ export default {
     background-image: url('~/assets/images/sp/common/icon_editprofile.png');
     background-repeat: no-repeat;
     background-size: 20px;
-    bottom: 0;
+    bottom: 20px;
     cursor: pointer;
     height: 22px;
     position: absolute;
@@ -106,6 +117,7 @@ export default {
   grid-area: user-display-name;
 
   .user-display-name {
+    margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -118,8 +130,7 @@ export default {
   .user-id {
     color: #6e6e6e;
     font-size: 12px;
-    height: 12px;
-    line-height: 18px;
+    margin: 0;
   }
 }
 
@@ -130,9 +141,9 @@ export default {
     color: #030303;
     font-size: 14px;
     line-height: 22px;
+    margin: 0;
     text-align: left;
     word-wrap: break-word;
-    margin-bottom: 0;
   }
 }
 
@@ -156,6 +167,10 @@ export default {
       "... ...          self-introduction self-introduction ...";
     text-align: left;
     padding: 5px 0;
+
+    &.with-bottom-space {
+      padding-bottom: 16px;
+    }
   }
 
   .area-profile-icon {
@@ -168,18 +183,6 @@ export default {
       bottom: 10px;
       right: -290px;
       cursor: pointer;
-    }
-  }
-
-  .area-user-display-name {
-    .user-display-name {
-      margin: 0;
-    }
-  }
-
-  .area-user-id {
-    .user-id {
-      margin: 0;
     }
   }
 
