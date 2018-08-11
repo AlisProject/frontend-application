@@ -1,6 +1,6 @@
 <template>
   <div class="draft-article-list-container long-article-card" @scroll="infiniteScroll">
-    <app-header showEditHeaderNav class="drafts logo-original"/>
+    <app-header showEditHeaderNav class="drafts"/>
     <article-card-list :articles="draftArticles" class="draft" :linkTo="'draft'"/>
     <the-loader :lastEvaluatedKey="draftArticlesLastEvaluatedKey"/>
     <app-footer/>
@@ -62,7 +62,6 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
-  background: #f7f7f7;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -82,7 +81,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .draft-article-list-container {
-    grid-template-rows: 100px 40px 1fr 75px min-content;
+    grid-template-rows: 100px 24px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }

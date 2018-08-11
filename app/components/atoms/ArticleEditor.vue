@@ -237,7 +237,7 @@ export default {
         // Init
         this.setIsSaving({ isSaving: true })
         this.setIsEdited({ isEdited: false })
-        this.setSaveStatus({ saveStatus: 'Saving...' })
+        this.setSaveStatus({ saveStatus: '保存中' })
         if (this.articleId === '') await this.setArticleId()
 
         // Upload images
@@ -250,7 +250,7 @@ export default {
         // Upload article
         await this.uploadArticle()
 
-        this.setSaveStatus({ saveStatus: 'Saved' })
+        this.setSaveStatus({ saveStatus: '保存済み' })
         this.setIsSaving({ isSaving: false })
       } catch (error) {
         console.error(error)

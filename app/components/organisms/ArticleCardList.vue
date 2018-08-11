@@ -38,7 +38,7 @@ export default {
   .long-article-card .area-article-card-list-container {
     grid-template-columns: 710px;
     grid-template-rows: repeat(auto-fill, 178px);
-    grid-gap: 40px;
+    grid-gap: 16px;
   }
 
   .area-article-card-list-container {
@@ -51,7 +51,7 @@ export default {
   .long-article-card .area-article-card-list-container {
     grid-template-columns: 340px;
     grid-template-rows: repeat(auto-fill, 268px);
-    grid-gap: 30px;
+    grid-gap: 16px;
   }
 
   .area-article-card-list-container {
@@ -62,13 +62,13 @@ export default {
 
 @media screen and (max-width: 550px) {
   .long-article-card .area-article-card-list-container {
-    grid-gap: 15px;
+    grid-gap: 16px;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fill, 300px);
   }
 
   .area-article-card-list-container {
-    grid-gap: 15px;
+    grid-gap: 16px;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fill, 300px);
   }
