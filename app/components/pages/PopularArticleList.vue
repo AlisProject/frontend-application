@@ -61,13 +61,19 @@ export default {
         if (topic.name === this.$route.query.topic) this.topicNumber = topic.order
       })
     },
-    ...mapActions('article', ['getPopularArticles', 'resetArticleData', 'setArticleType']),
+    ...mapActions('article', [
+      'getPopularArticles',
+      'resetArticleData',
+      'setArticleType',
+      'setTopicDisplayName'
+    ]),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
     $route(to) {
       this.resetArticleData()
       this.setTopicNumber()
+      this.setTopicDisplayName({ topicName: to.query.topic })
       this.getPopularArticles({ topic: to.query.topic })
     },
     topics() {

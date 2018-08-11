@@ -44,7 +44,8 @@ const state = () => ({
   isFetching: false,
   topics: [],
   articleType: 'popularArticles',
-  topicType: null
+  topicType: null,
+  topicDisplayName: ''
 })
 
 const getters = {
@@ -76,7 +77,8 @@ const getters = {
   page: (state) => state.page,
   isLastPage: (state) => state.isLastPage,
   articleType: (state) => state.articleType,
-  topicType: (state) => state.topicType || null
+  topicType: (state) => state.topicType || null,
+  topicDisplayName: (state) => state.topicDisplayName
 }
 
 const actions = {
@@ -513,6 +515,9 @@ const actions = {
   },
   setArticleTopic({ commit }, { topicType }) {
     commit(types.SET_ARTICLE_TOPIC, { topicType })
+  },
+  setTopicDisplayName({ commit }, { topicName }) {
+    commit(types.SET_TOPIC_DISPLAY_NAME, { topicName })
   }
 }
 
@@ -665,6 +670,13 @@ const mutations = {
   },
   [types.RESET_ARTICLE_TOPIC](state) {
     state.topicType = null
+  },
+  [types.SET_TOPIC_DISPLAY_NAME](state, { topicName }) {
+    state.topics.forEach((topic) => {
+      if (topic.name === topicName) {
+        state.topicDisplayName = topic.display_name
+      }
+    })
   }
 }
 
