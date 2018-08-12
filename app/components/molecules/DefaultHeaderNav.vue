@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      beforeClickedLinkName: null
+      beforeClickedLinkName: this.$route.query.topic
     }
   },
   async created() {
