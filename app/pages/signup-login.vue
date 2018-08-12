@@ -13,7 +13,10 @@ export default {
     store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
     store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: true })
 
-    await store.dispatch('article/getPopularArticles')
+    const topic = 'crypto'
+    await store.dispatch('article/getTopics')
+    store.dispatch('article/resetArticleData')
+    await store.dispatch('article/getPopularArticles', { topic })
   },
   mounted() {
     if (window.innerWidth <= 550) {

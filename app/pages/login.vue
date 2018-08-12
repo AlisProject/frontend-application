@@ -12,7 +12,10 @@ export default {
   async fetch({ store }) {
     store.dispatch('user/setLoginModal', { showLoginModal: true })
 
-    await store.dispatch('article/getPopularArticles')
+    const topic = 'crypto'
+    await store.dispatch('article/getTopics')
+    store.dispatch('article/resetArticleData')
+    await store.dispatch('article/getPopularArticles', { topic })
   },
   mounted() {
     window.scrollTo(0, 0)
