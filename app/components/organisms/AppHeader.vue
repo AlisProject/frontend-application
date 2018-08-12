@@ -110,6 +110,7 @@ export default {
   },
   methods: {
     resetData() {
+      // 同一のページの場合は記事情報をリセットしない
       if (this.$route.fullPath === '/articles/popular?topic=crypto') return
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })

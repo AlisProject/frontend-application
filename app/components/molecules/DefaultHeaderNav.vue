@@ -50,6 +50,7 @@ export default {
       return { path: `/articles/${to}`, query: { topic } }
     },
     resetData(event) {
+      // 同一のページの場合は記事情報をリセットしない
       if (this.beforeClickedLinkName === event.target.dataset.topic) return
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
