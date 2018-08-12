@@ -1,6 +1,6 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetScrollHeight"/>
+    <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
     <default-header-nav
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
@@ -109,7 +109,9 @@ export default {
     ])
   },
   methods: {
-    resetScrollHeight() {
+    resetData() {
+      if (this.$route.fullPath === '/articles/popular?topic=crypto') return
+      this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },
     ...mapActions('presentation', ['setArticleListScrollHeight']),

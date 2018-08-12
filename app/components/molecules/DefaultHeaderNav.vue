@@ -7,7 +7,7 @@
         :data-topic="topic.name"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
-        @click.native="resetScrollHeight">
+        @click.native="resetData">
         {{topic.display_name}}
       </nuxt-link>
     </template>
@@ -32,6 +32,11 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      beforeClickedLinkName: null
+    }
+  },
   async created() {
     if (this.topics.length !== 0) return
     await this.getTopics()
@@ -44,10 +49,13 @@ export default {
       const to = this.articleType === 'popularArticles' ? 'popular' : 'recent'
       return { path: `/articles/${to}`, query: { topic } }
     },
-    resetScrollHeight() {
+    resetData(event) {
+      if (this.beforeClickedLinkName === event.target.dataset.topic) return
+      this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
+      this.beforeClickedLinkName = event.target.dataset.topic
     },
-    ...mapActions('article', ['getTopics']),
+    ...mapActions('article', ['getTopics', 'resetArticleData']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
 }

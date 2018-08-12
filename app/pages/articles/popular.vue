@@ -13,7 +13,6 @@ export default {
     const { topic } = query
     await store.dispatch('article/getTopics')
     store.dispatch('article/setTopicDisplayName', { topicName: topic })
-    store.dispatch('article/resetArticleData')
     await store.dispatch('article/getPopularArticles', { topic })
   },
   head() {
