@@ -93,6 +93,10 @@ export default {
       display: none;
     }
   }
+
+  &.hide-on-pc {
+    display: none;
+  }
 }
 
 @-moz-document url-prefix() {
@@ -106,7 +110,7 @@ export default {
 @media screen and (max-width: 550px) {
   .area-article-type-select-box {
     &::before {
-      top: -3px;
+      top: 6px;
       right: 6px;
       border-left: 4px solid transparent;
       border-right: 4px solid transparent;
@@ -119,6 +123,10 @@ export default {
       padding-right: 0;
       width: 70px;
       margin: -14px;
+    }
+
+    &.hide-on-pc {
+      display: block;
     }
 
     &.hidden {

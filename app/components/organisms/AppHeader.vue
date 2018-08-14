@@ -7,6 +7,7 @@
       :showOnlySessionLinks="showOnlySessionLinks"
       :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
     <article-type-select-box
+      class="hide-on-pc"
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
       :showOnlySessionLinks="showOnlySessionLinks"

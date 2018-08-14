@@ -10,14 +10,21 @@
         @click.native="resetData">
         {{topic.display_name}}
       </nuxt-link>
+      <article-type-select-box
+       v-if="!showOnlyLogo && !showOnlySessionLinks"
+       class="hidden" />
     </template>
   </nav>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import ArticleTypeSelectBox from '../molecules/ArticleTypeSelectBox'
 
 export default {
+  components: {
+    ArticleTypeSelectBox
+  },
   props: {
     showOnlyLogo: {
       type: Boolean,
@@ -70,13 +77,13 @@ $topicCount: 3;
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 1fr;
+  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 10px 78px 1fr;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...    ...    ...    ..."
-    "... topic1 topic2 topic3 ..."
-    "... ...    ...    ...    ...";
+    "... ...    ...    ...    ... ...                     ..."
+    "... topic1 topic2 topic3 ... article-type-select-box ..."
+    "... ...    ...    ...    ... ...                     ...";
 }
 
 .nav-link {
