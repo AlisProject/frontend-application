@@ -151,17 +151,17 @@ export default {
         '... ...  ... ...     ...'
         '... logo ... session ...'
         '... ...  ... ...     ...';
-      grid-template-columns: 3px 67px 1fr 145px 3px;
+      grid-template-columns: 3px 75px 1fr 145px 3px;
       grid-template-rows: 6px 26px 20px;
     }
 
     .area-logo {
-      background-size: 67px 26px;
+      background-size: 75px 26px;
     }
   }
 
   .area-logo {
-    background-size: 134px 52px;
+    background-size: 150px 52px;
   }
 }
 
@@ -174,7 +174,7 @@ export default {
       '... ...  ... ...     ...                     ...'
       '... logo ... session session                 ...'
       '... nav  nav nav     article-type-select-box ...';
-    grid-template-columns: 3px 67px 1fr 60px 61px 3px;
+    grid-template-columns: 3px 75px 1fr 60px 61px 3px;
     grid-template-rows: 6px 26px 20px;
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
 
@@ -184,7 +184,7 @@ export default {
   }
 
   .area-logo {
-    background-size: 67px 26px;
+    background-size: 75px 26px;
     margin: 0;
   }
 }
