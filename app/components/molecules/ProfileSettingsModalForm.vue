@@ -188,9 +188,6 @@ export default {
           })
         }
         this.sendNotification({ text: 'プロフィールを変更しました' })
-        if (document.querySelector('.area-user-info-container')) {
-          document.querySelector('.area-user-info-container').style.zIndex = 2
-        }
       } catch (error) {
         this.sendNotification({ text: 'プロフィールを変更できませんでした。', type: 'warning' })
         console.error(error)
