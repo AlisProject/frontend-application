@@ -128,7 +128,7 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 190px 1fr 78px 190px;
+  grid-template-columns: 170px 1fr 78px 190px;
   /* prettier-ignore */
   grid-template-areas:
     "logo nav article-type-select-box ...";
@@ -140,6 +140,7 @@ export default {
   grid-area: logo;
   background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
   background-position: center;
+  background-size: 94px 25px;
 }
 
 @media screen and (max-width: 920px) and (min-width: 551px) {
@@ -152,17 +153,9 @@ export default {
         '... ...  ... ...     ...'
         '... logo ... session ...'
         '... ...  ... ...     ...';
-      grid-template-columns: 3px 67px 1fr 145px 3px;
+      grid-template-columns: 3px 94px 1fr 145px 3px;
       grid-template-rows: 6px 26px 20px;
     }
-
-    .area-logo {
-      background-size: 67px 26px;
-    }
-  }
-
-  .area-logo {
-    background-size: 134px 52px;
   }
 }
 
@@ -175,7 +168,7 @@ export default {
       '... ...  ... ...     ...                     ...'
       '... logo ... session session                 ...'
       '... nav  nav nav     article-type-select-box ...';
-    grid-template-columns: 3px 67px 1fr 60px 61px 3px;
+    grid-template-columns: 3px 94px 1fr 60px 61px 3px;
     grid-template-rows: 6px 26px 20px;
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
 
@@ -185,7 +178,6 @@ export default {
   }
 
   .area-logo {
-    background-size: 67px 26px;
     margin: 0;
   }
 }
