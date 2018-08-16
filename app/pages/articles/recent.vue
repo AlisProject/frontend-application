@@ -9,7 +9,11 @@ export default {
   components: {
     NewArticleList
   },
-  async fetch({ store, query }) {
+  async fetch({ store, query, from = {} }) {
+    if (from.name === 'articles-popular') {
+      store.dispatch('article/resetArticleData')
+    }
+    store.dispatch('article/setArticleType', { articleType: 'newArticles' })
     const { topic } = query
     await store.dispatch('article/getTopics')
     store.dispatch('article/setTopicDisplayName', { topicName: topic })

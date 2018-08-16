@@ -9,7 +9,11 @@ export default {
   components: {
     PopularArticleList
   },
-  async fetch({ store, query }) {
+  async fetch({ store, query, from = {} }) {
+    if (from.name === 'articles-recent') {
+      store.dispatch('article/resetArticleData')
+    }
+    store.dispatch('article/setArticleType', { articleType: 'popularArticles' })
     const { topic } = query
     await store.dispatch('article/getTopics')
     store.dispatch('article/setTopicDisplayName', { topicName: topic })
