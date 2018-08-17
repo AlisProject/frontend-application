@@ -20,8 +20,8 @@
       <h3 class="headline">2. トピックの設定</h3>
       <div class="article-type-select-box">
         <no-ssr>
-          <select required class="article-type-select" v-model="topicType">
-            <option value='null' disabled selected class="placeholder">選択してください</option>
+          <select required class="article-type-select" :value="topicType" @change="handleChangeTopicType">
+            <option value='' disabled selected class="placeholder">選択してください</option>
             <option v-for="topic in topics" :value="topic.name">
               {{ topic.display_name }}
             </option>
@@ -123,6 +123,11 @@ export default {
         }
       })
     },
+    handleChangeTopicType(event) {
+      this.$el.querySelector('.article-type-select').style.color = '#000'
+      this.topic = event.target.value
+      this.setArticleTopic({ topicType: this.topic })
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -142,21 +147,6 @@ export default {
     ])
   },
   computed: {
-    topicType: {
-      get() {
-        const articleTopicType = this.$store.getters['article/topicType']
-        if (articleTopicType !== null) {
-          this.$el.querySelector('.article-type-select').style.color = '#000'
-          this.topic = articleTopicType
-        }
-        return articleTopicType
-      },
-      set(value) {
-        this.$el.querySelector('.article-type-select').style.color = '#000'
-        this.topic = value
-        this.setArticleTopic({ topicType: value })
-      }
-    },
     publishable() {
       return !this.isEdited && !this.isSaving
     },
@@ -168,7 +158,8 @@ export default {
       'suggestedThumbnails',
       'isSaving',
       'isEdited',
-      'topics'
+      'topics',
+      'topicType'
     ])
   },
   watch: {
@@ -186,6 +177,11 @@ export default {
       ) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
       }
+    },
+    topicType() {
+      if (this.topicType === null) return
+      this.$el.querySelector('.article-type-select').style.color = '#000'
+      this.topic = this.topicType
     }
   }
 }
