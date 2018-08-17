@@ -7,6 +7,7 @@
         :data-topic="topic.name"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
+        :event="disabled ? '' : 'click'"
         @click.native="resetData">
         {{topic.display_name}}
       </nuxt-link>
@@ -42,7 +43,11 @@ export default {
     await this.getTopics()
   },
   computed: {
-    ...mapGetters('article', ['topics', 'articleType'])
+    disabled() {
+      // 記事の取得中はトピックの遷移をできないようにする
+      return this.isFetching === true
+    },
+    ...mapGetters('article', ['topics', 'articleType', 'isFetching'])
   },
   methods: {
     to(topic) {
@@ -52,9 +57,10 @@ export default {
     resetData(event) {
       // 同一のページの場合は記事情報をリセットしない
       if (this.beforeClickedLinkName === event.target.dataset.topic) return
+      this.beforeClickedLinkName = event.target.dataset.topic
+      if (this.disabled) return
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
-      this.beforeClickedLinkName = event.target.dataset.topic
     },
     ...mapActions('article', ['getTopics', 'resetArticleData']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
