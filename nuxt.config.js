@@ -99,7 +99,7 @@ module.exports = {
         })
       }
     },
-    vendor: ['axios']
+    vendor: ['axios', 'moment']
   },
   css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
   env: {
