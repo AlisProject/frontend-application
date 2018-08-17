@@ -70,7 +70,7 @@ $topicCount: 3;
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 1fr;
+  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 60px;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
