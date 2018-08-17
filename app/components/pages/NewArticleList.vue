@@ -32,7 +32,6 @@ export default {
     }
   },
   mounted() {
-    this.setArticleType({ articleType: 'newArticles' })
     this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
@@ -61,12 +60,7 @@ export default {
         if (topic.name === this.$route.query.topic) this.topicNumber = topic.order
       })
     },
-    ...mapActions('article', [
-      'getNewPagesArticles',
-      'resetArticleData',
-      'setArticleType',
-      'setTopicDisplayName'
-    ]),
+    ...mapActions('article', ['getNewPagesArticles', 'resetArticleData', 'setTopicDisplayName']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {

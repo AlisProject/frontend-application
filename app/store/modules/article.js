@@ -41,11 +41,11 @@ const state = () => ({
   },
   page: 1,
   isLastPage: false,
-  isFetching: false,
   topics: [],
   articleType: 'popularArticles',
   topicType: null,
-  topicDisplayName: ''
+  topicDisplayName: '',
+  fetchingArticleTopic: ''
 })
 
 const getters = {
@@ -73,19 +73,18 @@ const getters = {
   articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
   searchArticles: (state) => state.searchArticles,
   topics: (state) => state.topics.sort((a, b) => a.order > b.order),
-  isFetching: (state) => state.isFetching,
   page: (state) => state.page,
   isLastPage: (state) => state.isLastPage,
   articleType: (state) => state.articleType,
   topicType: (state) => state.topicType || null,
-  topicDisplayName: (state) => state.topicDisplayName
+  topicDisplayName: (state) => state.topicDisplayName,
+  fetchingArticleTopic: (state) => state.fetchingArticleTopic
 }
 
 const actions = {
   async getPopularArticles({ commit, dispatch, state }, { topic }) {
     try {
-      if (state.isFetching) return
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
+      commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
       const limit = 10
       const { Items: articles } = await this.$axios.$get('/articles/popular', {
         params: { topic, limit, page: state.page }
@@ -99,7 +98,11 @@ const actions = {
           return { ...article, userInfo, alisToken }
         })
       )
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: false })
+
+      // 新着記事の取得処理直後に人気記事の取得が始まると、本来は人気記事のみ表示されるべき画面で
+      // 新着記事が表示されるため、新着記事の取得中は人気記事の追加を行わない。
+      // また、トピックに対しても同様の問題が生じるため別トピックの取得中は記事の追加を行わない。
+      if (state.articleType === 'newArticles' || state.fetchingArticleTopic !== topic) return
       commit(types.SET_POPULAR_ARTICLES, { articles: articlesWithData })
       commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
       if (articles.length < limit) {
@@ -111,8 +114,7 @@ const actions = {
   },
   async getNewPagesArticles({ commit, dispatch, state }, { topic }) {
     try {
-      if (state.isFetching) return
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
+      commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
       const limit = 10
       const { Items: articles } = await this.$axios.$get('/articles/recent', {
         params: { topic, limit, page: state.page }
@@ -126,7 +128,11 @@ const actions = {
           return { ...article, userInfo, alisToken }
         })
       )
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: false })
+
+      // 人気記事の取得処理直後に新着記事の取得が始まると、本来は新着記事のみ表示されるべき画面で
+      // 人気記事が表示されるため、人気記事の取得中は新着記事の追加を行わない。
+      // また、トピックに対しても同様の問題が生じるため別トピックの取得中は記事の追加を行わない。
+      if (state.articleType === 'popularArticles' || state.fetchingArticleTopic !== topic) return
       commit(types.SET_NEW_ARTICLES, { articles: articlesWithData })
       commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
       if (articles.length < limit) {
@@ -648,9 +654,6 @@ const mutations = {
   [types.SET_TOPICS](state, { topics }) {
     state.topics = topics
   },
-  [types.SET_ARTICLES_IS_FETCHING](state, { isFetching }) {
-    state.isFetching = isFetching
-  },
   [types.SET_ARTICLES_PAGE](state, { page }) {
     state.page = page
   },
@@ -679,6 +682,9 @@ const mutations = {
         state.topicDisplayName = topic.display_name
       }
     })
+  },
+  [types.SET_FETCHING_ARTICLE_TOPIC](state, { topic }) {
+    state.fetchingArticleTopic = topic
   }
 }
 
