@@ -20,7 +20,9 @@
         src="~assets/images/pc/common/icon_bell.png"
         v-else>
     </nuxt-link>
-    <img class="search-icon" src="~assets/images/pc/common/icon_search_none.png">
+    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
+      <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
+    </nuxt-link>
     <div class="menu" v-if="isMenuShown">
       <div class="image-box">
         <img
@@ -93,6 +95,14 @@ export default {
     ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification'])
   },
   methods: {
+    resetSearchStates() {
+      this.resetSearchArticles()
+      this.resetSearchArticlesPage()
+      this.resetSearchArticlesIsLastPage()
+      this.resetSearchUsers()
+      this.resetSearchUsersPage()
+      this.resetSearchUsersIsLastPage()
+    },
     toggleMenu() {
       if (!this.isMenuShown) {
         this.forbidScroll()
@@ -163,7 +173,15 @@ export default {
       'setProfileSettingsModal',
       'setCurrentUserInfo',
       'getUsersAlisToken',
-      'getUnreadNotification'
+      'getUnreadNotification',
+      'resetSearchUsers',
+      'resetSearchUsersPage',
+      'resetSearchUsersIsLastPage'
+    ]),
+    ...mapActions('article', [
+      'resetSearchArticles',
+      'resetSearchArticlesPage',
+      'resetSearchArticlesIsLastPage'
     ])
   }
 }
@@ -175,7 +193,7 @@ export default {
   padding-top: 10px;
   position: fixed;
   right: -28.5px;
-  top: 340px;
+  top: 150px;
   transform: rotate(90deg);
   width: 134px;
 
@@ -200,7 +218,6 @@ export default {
     margin: 20px 10px 0 5px;
     transform: rotate(-90deg);
     width: 16px;
-    cursor: not-allowed;
   }
 }
 
@@ -212,7 +229,7 @@ export default {
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
   padding: 24px 41px;
   position: absolute;
-  right: 108px;
+  right: -101px;
   transform: rotate(-90deg);
   width: 240px;
 
@@ -230,7 +247,8 @@ export default {
     border-right: 0px solid transparent;
     border-top: 20px solid transparent;
     margin: -20px -20px 0 0;
-    top: 340px;
+    top: 150px;
+    z-index: -1;
   }
 
   .image-box {
@@ -311,25 +329,22 @@ export default {
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .logged-in {
       border: none;
       grid-area: session;
-      padding: 0;
       position: static;
       right: -46px;
-      top: 340px;
       transform: rotate(0);
-      width: 160px;
 
       .profile-icon {
         border-radius: 50%;
         float: right;
-        height: 50px;
+        height: 32px;
         transform: rotate(0);
-        width: 50px;
-        margin-top: -16px;
+        width: 32px;
+        margin-top: -8px;
       }
 
       .notification-icon {
@@ -380,17 +395,15 @@ export default {
     padding: 0;
     position: static;
     right: -46px;
-    top: 340px;
     transform: rotate(0);
-    width: 160px;
 
     .profile-icon {
       border-radius: 50%;
       float: right;
-      height: 50px;
+      height: 32px;
+      margin-top: -4px;
       transform: rotate(0);
-      width: 50px;
-      margin-top: -16px;
+      width: 32px;
     }
 
     .notification-icon {

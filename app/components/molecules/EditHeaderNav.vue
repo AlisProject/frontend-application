@@ -3,7 +3,7 @@
     <span class="area-save-status">{{ saveStatus }}</span>
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
-    <a href="/me/articles/new" class="nav-link area-new-article">新規作成</a>
+    <a href="/me/articles/new" class="area-new-article">新規作成</a>
     <edit-header-nav-edit-article v-show="showEditArticleLink"/>
     <edit-header-nav-post-article v-show="showPostArticleLink"/>
   </nav>
@@ -40,9 +40,12 @@ export default {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: 1fr 30px 1fr;
-  grid-template-columns: 1fr 70px 70px 70px 1fr 160px 1fr;
-  grid-column-gap: 10px;
+  grid-template-rows: 1fr 38px 1fr;
+  // 320px - half width of .area-editor-container
+  // 170px - width      of .area-logo
+  // 40px  - margin     of this grid-column-gap
+  grid-template-columns: calc(50vw - 320px - 170px - 40px) 56px 42px 108px 1fr 160px 1fr;
+  grid-column-gap: 40px;
   /* prettier-ignore */
   grid-template-areas:
     "...          ...             ...    ...         ... ...          ..."
@@ -53,12 +56,19 @@ export default {
 .area-save-status {
   grid-area: save-status;
   color: #666;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .nav-link {
   font-size: 14px;
   text-decoration: none;
   color: #929292;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .area-public-articles {
@@ -68,8 +78,8 @@ export default {
 .public-article .area-public-articles,
 .public-articles .area-public-articles {
   color: #99a2ff;
-  display: block;
   border-bottom: 2px solid #99a2ff;
+  margin-top: 2px;
 }
 
 .area-drafts {
@@ -78,18 +88,27 @@ export default {
 
 .drafts .area-drafts {
   color: #99a2ff;
-  display: block;
   border-bottom: 2px solid #99a2ff;
+  margin-top: 2px;
 }
 
 .area-new-article {
+  align-items: center;
+  background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
+  border-radius: 4px;
+  color: white;
+  display: flex;
+  font-size: 14px;
   grid-area: new-article;
+  justify-content: center;
+  text-decoration: none;
 }
 
-.new-article .area-new-article {
-  color: #99a2ff;
-  display: block;
-  border-bottom: 2px solid #99a2ff;
+@media screen and (max-width: 780px) {
+  .area-nav {
+    grid-template-columns: 64px 56px 42px 108px 1fr 90px 1fr;
+    grid-column-gap: 20px;
+  }
 }
 
 @media screen and (max-width: 640px) {

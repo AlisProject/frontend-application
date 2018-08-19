@@ -4,9 +4,9 @@
       公開する
     </span>
     <div v-show="isPopupShown" class="popup">
-      <h3 class="headline">サムネイルの画像を選択</h3>
+      <h3 class="headline">1. サムネイルの選択</h3>
       <div class="thumbnails">
-        <span v-if="suggestedThumbnails.length === 0">
+        <span class="no-thumbnail-message" v-if="suggestedThumbnails.length === 0">
           画像がありません
         </span>
         <img
@@ -17,7 +17,17 @@
           @click.prevent="selectThumbnail"
           class="thumbnail"/>
       </div>
-      <hr class="hr">
+      <h3 class="headline">2. トピックの設定</h3>
+      <div class="article-type-select-box">
+        <no-ssr>
+          <select required class="article-type-select" :value="topicType" @change="handleChangeTopicType">
+            <option value='' disabled selected class="placeholder">選択してください</option>
+            <option v-for="topic in topics" :value="topic.name">
+              {{ topic.display_name }}
+            </option>
+          </select>
+        </no-ssr>
+      </div>
       <button
         class="submit"
         @click="publish"
@@ -38,8 +48,12 @@ export default {
     return {
       publishingArticle: false,
       isPopupShown: false,
-      isThumbnailSelected: false
+      isThumbnailSelected: false,
+      topic: null
     }
+  },
+  async created() {
+    await this.getTopics()
   },
   mounted() {
     this.listen(window, 'click', (event) => {
@@ -49,6 +63,7 @@ export default {
     })
   },
   destroyed() {
+    this.resetArticleTopic()
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
@@ -57,21 +72,19 @@ export default {
   },
   methods: {
     async publish() {
-      if (!this.publishable) return
-      if (this.publishingArticle) return
-      this.publishingArticle = true
       try {
-        const { articleId, title, body } = this
+        if (!this.publishable) return
+        if (this.publishingArticle) return
+        this.publishingArticle = true
+        const { articleId, title, body, topic } = this
         const overview = body
           .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
           .replace(/\r?\n?\s/g, '')
           .slice(0, 100)
         if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
         if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-        if (title === '' || overview === '') {
-          this.publishingArticle = false
-          return
-        }
+        if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
+        if (title === '' || overview === '' || topic === null) return
 
         const article = { title, body, overview }
 
@@ -84,13 +97,14 @@ export default {
           location.href.includes('/me/articles/new')
         ) {
           await this.putDraftArticle({ article, articleId })
-          await this.publishDraftArticle({ article, articleId })
+          await this.publishDraftArticle({ article, articleId, topic })
         } else if (location.href.includes('/me/articles/public')) {
           await this.putPublicArticle({ article, articleId })
-          await this.republishPublicArticle({ article, articleId })
+          await this.republishPublicArticle({ article, articleId, topic })
         }
         this.$router.push('/me/articles/public')
         this.sendNotification({ text: '記事を公開しました。' })
+        this.resetArticleTopic()
       } catch (e) {
         this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         console.error(e)
@@ -120,6 +134,11 @@ export default {
         }
       })
     },
+    handleChangeTopicType(event) {
+      this.$el.querySelector('.article-type-select').style.color = '#000'
+      this.topic = event.target.value
+      this.setArticleTopic({ topicType: this.topic })
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -132,7 +151,10 @@ export default {
       'updateSuggestedThumbnails',
       'postArticleImage',
       'updateBody',
-      'setIsSaving'
+      'setIsSaving',
+      'getTopics',
+      'resetArticleTopic',
+      'setArticleTopic'
     ])
   },
   computed: {
@@ -146,7 +168,9 @@ export default {
       'thumbnail',
       'suggestedThumbnails',
       'isSaving',
-      'isEdited'
+      'isEdited',
+      'topics',
+      'topicType'
     ])
   },
   watch: {
@@ -164,6 +188,11 @@ export default {
       ) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
       }
+    },
+    topicType() {
+      if (this.topicType === null) return
+      this.$el.querySelector('.article-type-select').style.color = '#000'
+      this.topic = this.topicType
     }
   }
 }
@@ -179,6 +208,9 @@ export default {
 .area-post-article {
   grid-area: post-article;
   position: relative;
+  display: flex;
+  align-self: center;
+  justify-content: center;
 
   .post-article {
     cursor: pointer;
@@ -193,10 +225,10 @@ export default {
   .popup {
     background-color: #ffffff;
     border-radius: 4px;
-    box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     box-sizing: border-box;
     left: -30px;
-    padding: 24px;
+    padding: 40px 20px;
     position: absolute;
     top: 30px;
     width: 350px;
@@ -204,19 +236,24 @@ export default {
 
     .headline {
       color: #000000;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
-      letter-spacing: 1px;
-      line-height: 24px;
+      line-height: 1.5;
       margin-top: 0;
       text-align: left;
     }
 
     .thumbnails {
-      height: 80px;
       overflow-x: scroll;
       overflow-y: hidden;
       white-space: nowrap;
+      margin-bottom: 40px;
+
+      .no-thumbnail-message {
+        font-size: 14px;
+        margin-top: 20px;
+        display: block;
+      }
 
       .thumbnail {
         box-sizing: border-box;
@@ -233,11 +270,62 @@ export default {
       }
     }
 
-    .hr {
-      margin: 20px 0;
+    .article-type-select-box {
+      border-bottom: 1px dotted #232538;
+      margin-bottom: 40px;
+      padding: 6px 1px;
+      position: relative;
+
+      &::after,
+      &::before {
+        position: absolute;
+        right: 0;
+        width: 0;
+        height: 0;
+        padding: 0;
+        content: '';
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        pointer-events: none;
+      }
+
+      &::after {
+        top: 7px;
+        border-bottom: 8px solid rgb(80, 81, 96);
+      }
+
+      &::before {
+        top: 17px;
+        border-top: 8px solid rgb(80, 81, 96);
+      }
+
+      .article-type-select {
+        appearance: none;
+        background-image: none;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        color: #cecece;
+        cursor: pointer;
+        font-size: 14px;
+        outline: none;
+        padding-right: 1em;
+        text-indent: 0.01px;
+        text-overflow: ellipsis;
+        width: 100%;
+
+        .placeholder {
+          display: none;
+        }
+
+        &::-ms-expand {
+          display: none;
+        }
+      }
     }
 
     .submit {
+      background: white;
       border-radius: 4px;
       border: 1.5px solid #99a2ff;
       color: #99a2ff;
@@ -256,6 +344,18 @@ export default {
           cursor: not-allowed;
         }
       }
+    }
+  }
+}
+
+@-moz-document url-prefix() {
+  .article-type-select-box {
+    &::after {
+      top: 15px !important;
+    }
+
+    &::before {
+      top: 25px !important;
     }
   }
 }

@@ -1,19 +1,22 @@
 <template>
-  <top-page/>
+  <popular-article-list/>
 </template>
 
 <script>
-import TopPage from '~/components/pages/TopPage'
+import PopularArticleList from '~/components/pages/PopularArticleList'
 
 export default {
   components: {
-    TopPage
+    PopularArticleList
   },
   async fetch({ store }) {
     store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
     store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: true })
 
-    await store.dispatch('article/getPopularArticles')
+    const topic = 'crypto'
+    await store.dispatch('article/getTopics')
+    store.dispatch('article/resetArticleData')
+    await store.dispatch('article/getPopularArticles', { topic })
   },
   mounted() {
     if (window.innerWidth <= 550) {

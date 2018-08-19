@@ -1,5 +1,5 @@
 <template>
-  <div class="area-article-comments" :class="{ 'without-top-space': !showTopSpace }">
+  <div class="area-article-comments">
     <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
     <app-button
       class="read-more-button"
@@ -20,7 +20,6 @@ export default {
   },
   data() {
     return {
-      showTopSpace: false,
       loadingComments: false
     }
   },
@@ -29,9 +28,6 @@ export default {
       type: Array,
       required: true
     }
-  },
-  mounted() {
-    this.showTopSpace = !this.loggedIn
   },
   computed: {
     ...mapGetters('user', ['loggedIn']),
@@ -61,11 +57,7 @@ export default {
   display: grid;
   grid-area: article-comments;
   grid-gap: 8px;
-  padding: 40px calc(50% - 324px) 48px;
-
-  &.without-top-space {
-    padding-top: 0;
-  }
+  padding: 0 calc(50% - 324px) 48px;
 }
 
 .read-more-button {

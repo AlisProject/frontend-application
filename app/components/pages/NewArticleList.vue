@@ -1,8 +1,8 @@
 <template>
   <div class="new-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav class="new-articles logo-white"/>
+    <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
     <article-card-list :articles="newArticles"/>
-    <the-loader :lastEvaluatedKey="newArticlesLastEvaluatedKey"/>
+    <the-loader :isLastPage="isLastPage"/>
     <app-footer/>
   </div>
 </template>
@@ -22,20 +22,17 @@ export default {
     AppFooter
   },
   computed: {
-    ...mapGetters('article', [
-      'newArticles',
-      'newArticlesLastEvaluatedKey',
-      'hasNewArticlesLastEvaluatedKey'
-    ]),
+    ...mapGetters('article', ['newArticles', 'isLastPage', 'topics']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   data() {
     return {
-      canLoadNextArticles: true,
-      isFetchingArticles: false
+      isFetchingArticles: false,
+      topicNumber: 1
     }
   },
   mounted() {
+    this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
@@ -48,29 +45,40 @@ export default {
       if (this.isFetchingArticles) return
       try {
         this.isFetchingArticles = true
-        if (
-          !this.canLoadNextArticles ||
-          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
-        ) {
-          return
-        }
-        await this.getNewPagesArticles()
-        this.canLoadNextArticles = this.hasNewArticlesLastEvaluatedKey
+
+        const isScrollBottom =
+          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
+        if (this.isLastPage || !isScrollBottom) return
+
+        await this.getNewPagesArticles({ topic: this.$route.query.topic })
       } finally {
         this.isFetchingArticles = false
       }
     },
-    ...mapActions('article', ['getNewPagesArticles']),
+    setTopicNumber() {
+      this.topics.forEach((topic) => {
+        if (topic.name === this.$route.query.topic) this.topicNumber = topic.order
+      })
+    },
+    ...mapActions('article', ['getNewPagesArticles', 'resetArticleData', 'setTopicDisplayName']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
+  },
+  watch: {
+    $route(to) {
+      this.resetArticleData()
+      this.setTopicNumber()
+      this.setTopicDisplayName({ topicName: to.query.topic })
+      this.getNewPagesArticles({ topic: to.query.topic })
+    },
+    topics() {
+      this.setTopicNumber()
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .new-article-list-container {
-  background: url('~assets/images/pc/bg/bg_top.png') no-repeat;
-  background-color: #f7f7f7;
-  background-size: contain;
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
@@ -80,7 +88,7 @@ export default {
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 190px 1fr 75px 75px;
+  grid-template-rows: 100px 20px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -100,8 +108,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    background: #f7f7f7;
-    grid-template-rows: 100px 15px 1fr 75px min-content;
+    grid-template-rows: 92px 28px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }
