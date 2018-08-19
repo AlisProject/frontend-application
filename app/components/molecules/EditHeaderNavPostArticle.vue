@@ -108,8 +108,8 @@ export default {
         this.sendNotification({ text: '記事を公開しました。' })
         this.resetArticleTopic()
       } catch (e) {
-        this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         this.publishingArticle = false
+        this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         console.error(e)
       }
     },
