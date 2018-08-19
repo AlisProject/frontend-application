@@ -34,6 +34,8 @@
           <vue-tags-input
             v-model="tag"
             :tags="tags"
+            :max-tags="5"
+            :maxlength="25"
             @tags-changed="newTags => tags = newTags"
           />
         </no-ssr>
