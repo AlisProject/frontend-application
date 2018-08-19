@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     handleChangeArticleType(event) {
-      this.resetArticleData()
       const { fullPath } = this.$route
       const isPopularArticles = event.target.value === 'popularArticles'
       this.setArticleType({
@@ -44,7 +43,7 @@ export default {
         : fullPath.replace('popular', 'recent')
       this.$router.push(to)
     },
-    ...mapActions('article', ['resetArticleData', 'setArticleType'])
+    ...mapActions('article', ['setArticleType'])
   }
 }
 </script>

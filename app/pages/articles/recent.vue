@@ -10,14 +10,13 @@ export default {
     NewArticleList
   },
   async fetch({ store, query, from = {} }) {
-    // 人気・新着記事の切り替えをセレクトボックスで行った場合は記事データがリセットされるが、
-    // その後人気記事一覧ページから新着記事一覧ページへブラウザの戻るボタンで戻った場合は
-    // 記事データがリセットされない。
-    // 記事データをリセットしないと、取得する記事のページ情報が正しくないため
-    // 記事が表示されなくなってしまう。
+    // 新着記事の初期化
+    // 人気・新着記事の切り替えを行った場合のみ記事データの初期化を行う。
+    // 記事から遷移してきた場合は、スクロール位置を保持させるため初期化はしない。
     if (from.name === 'articles-popular') {
       store.dispatch('article/resetArticleData')
     }
+
     store.dispatch('article/setArticleType', { articleType: 'newArticles' })
     const { topic } = query
     await store.dispatch('article/getTopics')
