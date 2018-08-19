@@ -4,7 +4,7 @@
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
     <span class="session-link sign-up" @click="showSignUpModal">Sign up</span>
-    /
+    <span class="divider">/</span>
     <span class="session-link login" @click="showLoginModal">Login</span>
   </div>
 </template>
@@ -17,8 +17,10 @@ export default {
     resetSearchStates() {
       this.resetSearchArticles()
       this.resetSearchArticlesPage()
+      this.resetSearchArticlesIsLastPage()
       this.resetSearchUsers()
       this.resetSearchUsersPage()
+      this.resetSearchUsersIsLastPage()
     },
     showSignUpModal() {
       this.setSignUpModal({ showSignUpModal: true })
@@ -38,9 +40,14 @@ export default {
       'setSignUpModal',
       'setLoginModal',
       'resetSearchUsers',
-      'resetSearchUsersPage'
+      'resetSearchUsersPage',
+      'resetSearchUsersIsLastPage'
     ]),
-    ...mapActions('article', ['resetSearchArticles', 'resetSearchArticlesPage'])
+    ...mapActions('article', [
+      'resetSearchArticles',
+      'resetSearchArticlesPage',
+      'resetSearchArticlesIsLastPage'
+    ])
   }
 }
 </script>
@@ -53,7 +60,7 @@ export default {
   position: fixed;
   right: -49px;
   text-align: right;
-  top: 340px;
+  top: 170px;
   transform: rotate(90deg);
   width: 160px;
 
@@ -66,13 +73,18 @@ export default {
   }
 
   .session-link {
-    color: #525256;
+    color: #6e6e6e;
     text-decoration: none;
     cursor: pointer;
   }
+
+  .divider {
+    color: #6e6e6e;
+    margin: 0 4px;
+  }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .session {
       border: none;
@@ -80,14 +92,22 @@ export default {
       padding: 0;
       position: static;
       right: -46px;
-      top: 340px;
       transform: rotate(0);
-      width: 160px;
+      width: 100%;
 
       .search-icon {
-        float: left;
         padding: 2px 4px;
         transform: rotate(0);
+        margin-right: 15px;
+      }
+
+      .session-link {
+        font-size: 12px;
+      }
+
+      .divider {
+        font-size: 12px;
+        margin: 0 12px;
       }
     }
   }
@@ -100,14 +120,23 @@ export default {
     padding: 0;
     position: static;
     right: -46px;
-    top: 340px;
     transform: rotate(0);
-    width: 160px;
+    width: 100%;
+    display: flex;
+    align-items: center;
 
     .search-icon {
-      float: left;
-      padding: 2px 4px;
       transform: rotate(0);
+      margin-right: 15px;
+    }
+
+    .session-link {
+      font-size: 12px;
+    }
+
+    .divider {
+      font-size: 12px;
+      margin: 0 12px;
     }
   }
 }

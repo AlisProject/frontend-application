@@ -1,5 +1,5 @@
 <template>
-  <div class="area-user-info-container">
+  <div class="area-user-info-container" :class="{ 'with-bottom-space': !hasSelfIntroduction }">
     <div class="area-profile-icon">
       <img
         class="profile-icon"
@@ -44,6 +44,16 @@ export default {
     }
   },
   computed: {
+    hasSelfIntroduction() {
+      const { self_introduction: selfIntroduction } = this.user
+
+      if (selfIntroduction === undefined || selfIntroduction === null) {
+        return false
+      }
+      if (selfIntroduction.trim() === '') return false
+
+      return true
+    },
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
@@ -54,9 +64,6 @@ export default {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
       document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
-      if (document.querySelector('.area-user-info-container')) {
-        document.querySelector('.area-user-info-container').style.zIndex = 1
-      }
     },
     ...mapActions('user', ['setProfileSettingsModal'])
   }
@@ -67,9 +74,9 @@ export default {
 .area-user-info-container {
   display: grid;
   grid-area: user-info;
-  grid-template-rows: 80px 20px 10px 1fr;
+  grid-template-rows: 100px auto auto 1fr;
   grid-template-columns: 1fr 400px 1fr;
-  grid-gap: 10px;
+  grid-gap: 8px;
   /* prettier-ignore */
   grid-template-areas:
     "... profile-icon      ..."
@@ -77,6 +84,7 @@ export default {
     "... user-id           ..."
     "... self-introduction ...";
   text-align: center;
+  padding-bottom: 60px;
 }
 
 .area-profile-icon {
@@ -93,7 +101,7 @@ export default {
     background-image: url('~/assets/images/sp/common/icon_editprofile.png');
     background-repeat: no-repeat;
     background-size: 20px;
-    bottom: 0;
+    bottom: 20px;
     cursor: pointer;
     height: 22px;
     position: absolute;
@@ -104,6 +112,13 @@ export default {
 
 .area-user-display-name {
   grid-area: user-display-name;
+
+  .user-display-name {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .area-user-id {
@@ -112,8 +127,7 @@ export default {
   .user-id {
     color: #6e6e6e;
     font-size: 12px;
-    height: 12px;
-    line-height: 18px;
+    margin: 0;
   }
 }
 
@@ -124,6 +138,7 @@ export default {
     color: #030303;
     font-size: 14px;
     line-height: 22px;
+    margin: 0;
     text-align: left;
     word-wrap: break-word;
   }
@@ -138,19 +153,21 @@ export default {
 
 @media screen and (max-width: 550px) {
   .area-user-info-container {
-    box-shadow: 0px 10px 10px -10px gray inset;
     grid-column-gap: 20px;
-    grid-row-gap: 5px;
-    grid-template-columns: 1fr 60px 280px 1fr;
-    grid-template-rows: 20px 16px 12px 1fr;
-    margin-top: -50px;
+    grid-row-gap: 8px;
+    grid-template-columns: 1fr 60px 240px 10px 1fr;
+    grid-template-rows: 16px 12px 1fr;
     /* prettier-ignore */
     grid-template-areas:
-      "... ...          ...               ..."
-      "... profile-icon user-display-name ..."
-      "... profile-icon user-id           ..."
-      "... ...          self-introduction ...";
+      "... profile-icon user-display-name ...               ..."
+      "... profile-icon user-id           user-id           ..."
+      "... ...          self-introduction self-introduction ...";
     text-align: left;
+    padding: 5px 0;
+
+    &.with-bottom-space {
+      padding-bottom: 16px;
+    }
   }
 
   .area-profile-icon {
@@ -161,20 +178,8 @@ export default {
 
     .profile-edit {
       bottom: 10px;
-      right: -260px;
+      right: -290px;
       cursor: pointer;
-    }
-  }
-
-  .area-user-display-name {
-    .user-display-name {
-      margin: 0;
-    }
-  }
-
-  .area-user-id {
-    .user-id {
-      margin: 0;
     }
   }
 
@@ -186,13 +191,19 @@ export default {
 
 @media screen and (max-width: 375px) {
   .area-user-info-container {
-    grid-template-columns: 1fr 60px 250px 1fr;
+    grid-template-columns: 1fr 60px 210px 20px 1fr;
+  }
+
+  .area-profile-icon {
+    .profile-edit {
+      right: -260px;
+    }
   }
 }
 
 @media screen and (max-width: 320px) {
   .area-user-info-container {
-    grid-template-columns: 1fr 60px 200px 1fr;
+    grid-template-columns: 1fr 60px 170px 10px 1fr;
   }
 
   .area-profile-icon {

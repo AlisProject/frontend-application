@@ -1,7 +1,12 @@
 <template>
-  <header class="area-app-header-container">
-    <nuxt-link to="/" class="area-logo" @click.native="resetScrollPosition"/>
+  <header class="area-app-header-container" :class="{ 'with-edit-header-nav': showEditHeaderNav }">
+    <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
     <default-header-nav
+      v-if="showDefaultHeaderNav"
+      :showOnlyLogo="showOnlyLogo"
+      :showOnlySessionLinks="showOnlySessionLinks"
+      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
+    <article-type-select-box
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
       :showOnlySessionLinks="showOnlySessionLinks"
@@ -33,6 +38,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
+import ArticleTypeSelectBox from '../molecules/ArticleTypeSelectBox'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
@@ -79,6 +85,7 @@ export default {
     DefaultHeaderNav,
     EditHeaderNav,
     HeaderSessionLinks,
+    ArticleTypeSelectBox,
     HeaderUserLoggedInItems,
     SignUpModal,
     SignUpAuthFlowModal,
@@ -102,10 +109,14 @@ export default {
     ])
   },
   methods: {
-    resetScrollPosition() {
+    resetData() {
+      // 同一のページの場合は記事情報をリセットしない
+      if (this.$route.fullPath === '/articles/popular?topic=crypto') return
+      this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },
-    ...mapActions('presentation', ['setArticleListScrollHeight'])
+    ...mapActions('presentation', ['setArticleListScrollHeight']),
+    ...mapActions('article', ['getPopularArticles', 'resetArticleData'])
   }
 }
 </script>
@@ -116,54 +127,40 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 100px 1fr 100px;
+  grid-template-columns: 170px 1fr 78px calc(50vw - 210px);
   /* prettier-ignore */
   grid-template-areas:
-    "logo nav";
+    "logo nav article-type-select-box ...";
   position: relative;
   z-index: 2;
+
+  &.with-edit-header-nav {
+    grid-template-columns: 170px 1fr 78px 190px;
+  }
 }
 
 .area-logo {
   grid-area: logo;
+  background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
+  background-position: center;
+  background-size: 94px 25px;
 }
 
-.logo-original {
-  .area-logo {
-    background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
-    background-size: contain;
-    margin: 30px;
-  }
-}
-
-.logo-white {
-  .area-logo {
-    background: url('~assets/images/pc/common/header_logo_white.png') no-repeat;
-    background-size: contain;
-    margin: 30px;
-  }
-}
-
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .area-app-header-container {
       background: white;
-      grid-gap: 13px;
+      grid-gap: 16px;
       /* prettier-ignore */
       grid-template-areas:
-      '... ...  ... ...     ...'
-      '... logo ... session ...'
-      '... nav  ... ...     ...';
-      grid-template-columns: 0 min-content 1fr 160px 3px;
-      grid-template-rows: 12px 20px 18px;
-    }
+        '... ...  ... ...     ...'
+        '... logo ... session ...'
+        '... ...  ... ...     ...';
+      grid-template-columns: 3px 94px 1fr 145px 3px;
+      grid-template-rows: 6px 26px 20px;
 
-    .logo-original,
-    .logo-white {
-      .area-logo {
-        background: url('~assets/images/sp/common/header_logo.png') no-repeat;
-        background-size: contain;
-        margin: 0;
+      &.with-edit-header-nav {
+        grid-template-columns: 3px 94px 1fr 145px 3px;
       }
     }
   }
@@ -172,27 +169,27 @@ export default {
 @media screen and (max-width: 550px) {
   .area-app-header-container {
     background: white;
-    grid-gap: 13px;
+    grid-gap: 16px;
     /* prettier-ignore */
     grid-template-areas:
-      '... ...  ... ...     ...'
-      '... logo ... session ...'
-      '... nav  ... ...     ...';
-    grid-template-columns: 0 min-content 1fr 160px 3px;
-    grid-template-rows: 9px 29px 15px;
-  }
+      '... ...  ... ...     ...                     ...'
+      '... logo ... session session                 ...'
+      '... nav  nav nav     article-type-select-box ...';
+    grid-template-columns: 3px 94px 1fr 60px 61px 3px;
+    grid-template-rows: 6px 26px 20px;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
 
-  .background-none.area-app-header-container {
-    background: none;
-  }
-
-  .logo-original,
-  .logo-white {
-    .area-logo {
-      background: url('~assets/images/sp/common/header_logo.png') no-repeat;
-      background-size: contain;
-      margin: 0;
+    &.without-shadow {
+      box-shadow: none;
     }
+
+    &.with-edit-header-nav {
+      grid-template-columns: 3px 94px 1fr 60px 61px 3px;
+    }
+  }
+
+  .area-logo {
+    margin: 0;
   }
 }
 </style>
