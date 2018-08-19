@@ -11,8 +11,8 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
 
       - run: yarn install
 
@@ -45,5 +45,6 @@ jobs:
             aws s3 cp app/static/OGP_1200×630.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
             aws s3 cp app/static/icon_user_noimg.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
             aws s3 cp app/static/touch-icon.png s3://$DIST_S3_BUCKET_NAME/d/nuxt/dist/
+            aws s3 cp app/static/error.html s3://$DIST_S3_BUCKET_NAME/d/nuxt/views/
             sudo npm install -g serverless
             yarn sls:deploy
