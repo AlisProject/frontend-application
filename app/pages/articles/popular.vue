@@ -12,7 +12,9 @@ export default {
   async fetch({ store, query, from = {} }) {
     // 人気記事の初期化
     // 人気・新着記事の切り替えを行った場合のみ記事データの初期化を行う。
-    // 記事から遷移してきた場合は、スクロール位置を保持させるため初期化はしない。
+    // 記事データをリセットしないと、取得する記事のページ情報が正しくないため
+    // 記事が表示されなくなってしまう。
+    // 記事から遷移してきた場合は、スクロール位置を保持させたいので初期化はしない。
     if (from.name === 'articles-recent') {
       store.dispatch('article/resetArticleData')
     }
