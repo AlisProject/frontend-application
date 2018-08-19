@@ -10,6 +10,11 @@ export default {
     PopularArticleList
   },
   async fetch({ store, query, from = {} }) {
+    // 人気・新着記事の切り替えをセレクトボックスで行った場合は記事データがリセットされるが、
+    // その後新着記事一覧ページから人気記事一覧ページへブラウザの戻るボタンで戻った場合は
+    // 記事データがリセットされない。
+    // 記事データをリセットしないと、取得する記事のページ情報が正しくないため
+    // 記事が表示されなくなってしまう。
     if (from.name === 'articles-recent') {
       store.dispatch('article/resetArticleData')
     }
