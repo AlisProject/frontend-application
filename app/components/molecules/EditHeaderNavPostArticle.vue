@@ -74,7 +74,6 @@ export default {
     async publish() {
       try {
         if (!this.publishable) return
-        if (this.publishingArticle) return
         this.publishingArticle = true
         const { articleId, title, body, topic } = this
         const overview = body
@@ -109,7 +108,10 @@ export default {
         this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         console.error(e)
       } finally {
-        this.publishingArticle = false
+        // 記事の公開処理後、公開済み記事一覧へのページ遷移中に公開ボタンを押させない
+        setTimeout(() => {
+          this.publishingArticle = false
+        }, 1000)
       }
     },
     togglePopup() {
