@@ -83,7 +83,10 @@ export default {
         if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
         if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
         if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
-        if (title === '' || overview === '' || topic === null) return
+        if (title === '' || overview === '' || topic === null) {
+          this.publishingArticle = false
+          return
+        }
 
         const article = { title, body, overview }
 
@@ -106,12 +109,8 @@ export default {
         this.resetArticleTopic()
       } catch (e) {
         this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
+        this.publishingArticle = false
         console.error(e)
-      } finally {
-        // 記事の公開処理後、公開済み記事一覧へのページ遷移中に公開ボタンを押させない
-        setTimeout(() => {
-          this.publishingArticle = false
-        }, 1000)
       }
     },
     togglePopup() {
