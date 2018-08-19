@@ -327,7 +327,7 @@ export default {
 
     .tag-box {
       border: 1px dotted #232538;
-      height: 92px;
+      min-height: 92px;
       margin-bottom: 40px;
     }
 
@@ -387,8 +387,33 @@ export default {
   .vue-tags-input .input {
     border: none;
   }
-  .tag.valid {
-    background-color: gray;
+
+  .tags {
+    .new-tag-input-wrapper input {
+      font-size: 12px;
+    }
+
+    .tag {
+      border-radius: 4px;
+      font-size: 12px;
+      padding: 6px 5px 6px 8px;
+
+      .content {
+        color: #858dda;
+      }
+
+      &.valid {
+        background-color: rgba(133, 141, 218, 0.05);
+      }
+
+      &.tag.deletion-mark {
+        background-color: rgba(133, 141, 218, 0.25);
+      }
+
+      .icon-close {
+        color: rgb(76, 92, 163) !important;
+      }
+    }
   }
 }
 </style>
