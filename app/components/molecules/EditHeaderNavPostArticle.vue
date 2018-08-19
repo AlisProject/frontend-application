@@ -28,6 +28,16 @@
           </select>
         </no-ssr>
       </div>
+      <h3 class="headline">3. タグの設定</h3>
+      <div class="tag-box">
+        <no-ssr>
+          <vue-tags-input
+            v-model="tag"
+            :tags="tags"
+            @tags-changed="newTags => tags = newTags"
+          />
+        </no-ssr>
+      </div>
       <button class="submit" @click="publish" :class="{ disable: !publishable }">公開する</button>
     </div>
   </div>
@@ -42,7 +52,9 @@ export default {
     return {
       isPopupShown: false,
       isThumbnailSelected: false,
-      topic: null
+      topic: null,
+      tag: '',
+      tags: []
     }
   },
   async created() {
@@ -313,6 +325,12 @@ export default {
       }
     }
 
+    .tag-box {
+      border: 1px dotted #232538;
+      height: 92px;
+      margin-bottom: 40px;
+    }
+
     .submit {
       background: white;
       border-radius: 4px;
@@ -360,6 +378,17 @@ export default {
     font-size: 12px;
     line-height: 30px;
     text-align: center;
+  }
+}
+</style>
+
+<style lang="scss">
+.tag-box {
+  .vue-tags-input .input {
+    border: none;
+  }
+  .tag.valid {
+    background-color: gray;
   }
 }
 </style>
