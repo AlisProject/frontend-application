@@ -154,13 +154,17 @@ export default {
       })
     },
     async handleEditorInput(event) {
-      const line = this.editorElement.getSelectedParentElement().textContent
+      const line = MediumEditor.util.getTopBlockContainer(
+        this.editorElement.getSelectedParentElement()
+      ).textContent
       const trimmedLine = line.trim()
       if (event.key !== 'Enter' || !urlRegex({ exact: true }).test(trimmedLine)) {
         // Enter もしくは URL 構造でない場合は行う処理がない
         return
       }
-      const selectedParentElement = this.editorElement.getSelectedParentElement()
+      const selectedParentElement = MediumEditor.util.getTopBlockContainer(
+        this.editorElement.getSelectedParentElement()
+      )
       const isTwitterResource =
         trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
       const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'

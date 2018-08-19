@@ -40,7 +40,13 @@
           />
         </no-ssr>
       </div>
-      <button class="submit" @click="publish" :class="{ disable: !publishable }">公開する</button>
+      <button
+        class="submit"
+        @click="publish"
+        :class="{ disable: !publishable }"
+        :disabled="publishingArticle">
+        公開する
+      </button>
     </div>
   </div>
 </template>
@@ -52,6 +58,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 export default {
   data() {
     return {
+      publishingArticle: false,
       isPopupShown: false,
       isThumbnailSelected: false,
       topic: null,
@@ -79,24 +86,28 @@ export default {
   },
   methods: {
     async publish() {
-      if (!this.publishable) return
-      const { articleId, title, body, topic } = this
-      const overview = body
-        .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-        .replace(/\r?\n?\s/g, '')
-        .slice(0, 100)
-      if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
-      if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-      if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
-      if (title === '' || overview === '' || topic === null) return
-
-      const article = { title, body, overview }
-
-      if (this.thumbnail !== '') {
-        article.eye_catch_url = this.thumbnail
-      }
-
       try {
+        if (!this.publishable) return
+        this.publishingArticle = true
+        const { articleId, title, body, topic } = this
+        const overview = body
+          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
+          .replace(/\r?\n?\s/g, '')
+          .slice(0, 100)
+        if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
+        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
+        if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
+        if (title === '' || overview === '' || topic === null) {
+          this.publishingArticle = false
+          return
+        }
+
+        const article = { title, body, overview }
+
+        if (this.thumbnail !== '') {
+          article.eye_catch_url = this.thumbnail
+        }
+
         if (
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
@@ -111,6 +122,7 @@ export default {
         this.sendNotification({ text: '記事を公開しました。' })
         this.resetArticleTopic()
       } catch (e) {
+        this.publishingArticle = false
         this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
         console.error(e)
       }
