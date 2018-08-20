@@ -37,6 +37,7 @@
             :max-tags="5"
             :maxlength="25"
             placeholder="タグを入力してください"
+            @before-adding-tag="checkDuplicateTag"
             @tags-changed="newTags => tags = newTags"
           />
         </no-ssr>
@@ -154,6 +155,21 @@ export default {
       this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = event.target.value
       this.setArticleTopic({ topicType: this.topic })
+    },
+    checkDuplicateTag({ tag: addingTag, addTag }) {
+      let isValid = true
+      this.tags.forEach((tag) => {
+        // タグは大文字小文字を区別しない
+        // 例：「AAA」というタグがすでにあるとき、「aaa」というタグは追加できない
+        if (tag.text.toLowerCase() === addingTag.text.toLowerCase()) {
+          this.sendNotification({
+            text: 'すでに存在するタグのため、追加できません。',
+            type: 'warning'
+          })
+          isValid = false
+        }
+      })
+      if (isValid) addTag()
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
