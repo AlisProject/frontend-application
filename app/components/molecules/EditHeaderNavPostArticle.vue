@@ -36,6 +36,7 @@
             :tags="tags"
             :max-tags="5"
             :maxlength="25"
+            placeholder="タグを入力してください"
             @tags-changed="newTags => tags = newTags"
           />
         </no-ssr>
@@ -416,13 +417,25 @@ export default {
   }
 
   .tags {
-    .new-tag-input-wrapper input {
+    .new-tag-input-wrapper {
       font-size: 12px;
+      margin: 4px;
+
+      input {
+        &::-webkit-input-placeholder {
+          color: #cecece;
+        }
+
+        ::-moz-placeholder {
+          color: #cecece;
+        }
+      }
     }
 
     .tag {
       border-radius: 4px;
       font-size: 12px;
+      margin: 4px;
       padding: 6px 5px 6px 8px;
 
       .content {
