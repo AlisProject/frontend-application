@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash'
 import * as types from '../mutation-types'
 
 const namespaced = true
@@ -50,8 +51,8 @@ const state = () => ({
 
 const getters = {
   article: (state) => state.article,
-  popularArticles: (state) => state.popularArticles,
-  newArticles: (state) => state.newArticles,
+  popularArticles: (state) => uniqBy(state.popularArticles, 'article_id'),
+  newArticles: (state) => uniqBy(state.newArticles, 'article_id'),
   publicArticles: (state) => state.publicArticles,
   draftArticles: (state) => state.draftArticles,
   articleId: (state) => state.articleId,
