@@ -34,6 +34,8 @@ export default {
         // タグは大文字小文字を区別しない
         // 例：「AAA」というタグがすでにあるとき、「aaa」というタグは追加できない
         if (tag.text.toLowerCase() === addingTag.text.toLowerCase()) {
+          // アラートを表示中は再度アラートを表示しない
+          if (this.toastMessages.length > 0) return
           this.sendNotification({
             text: 'すでに存在するタグのため、追加できません。',
             type: 'warning'
@@ -49,6 +51,7 @@ export default {
     ...mapActions('article', ['updateTags'])
   },
   computed: {
+    ...mapGetters(['toastMessages']),
     ...mapGetters('article', ['tags'])
   },
   watch: {
