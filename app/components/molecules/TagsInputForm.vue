@@ -29,41 +29,39 @@ export default {
       this.updateTags({ tags })
     },
     checkTags({ tag: addingTag, addTag }) {
-      const hasDuplicateTag = this.checkDuplicateTag(addingTag)
-      const hasNotAllowedTag = this.checkNotAllowedTag(addingTag)
-      if (hasDuplicateTag || hasNotAllowedTag) return
+      const hasDuplicateTag = this.checkHasDuplicateTag(addingTag)
+      const hasDisallowedTag = this.checkHasDisallowedTag(addingTag)
+      if (hasDuplicateTag || hasDisallowedTag) {
+        this.showAlert({ hasDuplicateTag, hasDisallowedTag })
+        return
+      }
       addTag()
     },
-    checkDuplicateTag(addingTag) {
-      let isValid = true
-      this.tags.forEach((tag) => {
-        // タグは大文字小文字を区別しない
-        // 例：「AAA」というタグがすでにあるとき、「aaa」というタグは追加できない
-        if (tag.text.toLowerCase() === addingTag.text.toLowerCase()) {
-          // アラートを表示中は再度アラートを表示しない
-          if (this.toastMessages.length > 0) return
-          this.sendNotification({
-            text: 'すでに存在するタグのため、追加できません。',
-            type: 'warning'
-          })
-          isValid = false
-        }
-      })
-      return !isValid
+    checkHasDuplicateTag(addingTag) {
+      // タグは大文字小文字を区別しない
+      // 例：「AAA」というタグがすでにあるとき、「aaa」というタグは追加できない
+      const hasDuplicateTag = this.tags.reduce(
+        (acc, crr) => acc || crr.text.toLowerCase() === addingTag.text.toLowerCase(),
+        false
+      )
+      return hasDuplicateTag
     },
-    checkNotAllowedTag(addingTag) {
+    checkHasDisallowedTag(addingTag) {
       const ALLOWED_TAG_REGEX = /^(?!.*(--| {2}))([a-zA-Z0-9ぁ-んァ-ン一-龥][a-zA-Z0-9ぁ-んァ-ン一-龥- ]*[a-zA-Z0-9ぁ-んァ-ン一-龥]|[a-zA-Z0-9ぁ-んァ-ン一-龥])$/
-      if (addingTag.text.match(ALLOWED_TAG_REGEX)) {
-        return false
-      } else {
-        // アラートを表示中は再度アラートを表示しない
-        if (this.toastMessages.length > 0) return
-        this.sendNotification({
-          text: 'タグを追加できません。',
-          type: 'warning'
-        })
-        return true
-      }
+      const hasDisallowedTag = !addingTag.text.match(ALLOWED_TAG_REGEX)
+      return hasDisallowedTag
+    },
+    showAlert({ hasDuplicateTag, hasDisallowedTag }) {
+      // アラートを表示中は再度アラートを表示しない
+      if (this.toastMessages.length > 0) return
+      let message = ''
+      if (hasDuplicateTag) message = 'すでに存在するタグのため、追加できません。'
+      if (hasDisallowedTag) message = 'タグを追加できません。'
+      if (message === '') return
+      this.sendNotification({
+        text: message,
+        type: 'warning'
+      })
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
