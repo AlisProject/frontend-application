@@ -110,7 +110,7 @@ export default {
           color: #cecece;
         }
 
-        ::-moz-placeholder {
+        &::-moz-placeholder {
           color: #cecece;
         }
       }
