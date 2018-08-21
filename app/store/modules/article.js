@@ -673,6 +673,7 @@ const mutations = {
     state.fetchingArticleTopic = topic
   },
   [types.SET_ARTICLE_TAGS](state, { tags = [] }) {
+    // vue-tags-input の形式に適するようにタグを整形
     const formattedTags = tags.map((tag) => {
       return {
         text: tag,
