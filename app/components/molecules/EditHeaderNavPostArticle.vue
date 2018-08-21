@@ -38,7 +38,7 @@
             :maxlength="25"
             placeholder="タグを入力してください"
             @before-adding-tag="checkDuplicateTag"
-            @tags-changed="newTags => tags = newTags"
+            @tags-changed="handleTagsChanged"
           />
         </no-ssr>
       </div>
@@ -64,8 +64,7 @@ export default {
       isPopupShown: false,
       isThumbnailSelected: false,
       topic: null,
-      tag: '',
-      tags: []
+      tag: ''
     }
   },
   async created() {
@@ -173,6 +172,9 @@ export default {
       })
       if (isValid) addTag()
     },
+    handleTagsChanged(tags) {
+      this.updateTags({ tags })
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -188,7 +190,8 @@ export default {
       'setIsSaving',
       'getTopics',
       'resetArticleTopic',
-      'setArticleTopic'
+      'setArticleTopic',
+      'updateTags'
     ])
   },
   computed: {
@@ -204,7 +207,8 @@ export default {
       'isSaving',
       'isEdited',
       'topics',
-      'topicType'
+      'topicType',
+      'tags'
     ])
   },
   watch: {

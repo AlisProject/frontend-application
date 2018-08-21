@@ -13,14 +13,6 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
-  tags: [
-    {
-      id: Math.random()
-        .toString(36)
-        .slice(-9),
-      name: ''
-    }
-  ],
   suggestedThumbnails: [],
   thumbnail: '',
   isSaving: false,
@@ -45,7 +37,8 @@ const state = () => ({
   articleType: 'popularArticles',
   topicType: null,
   topicDisplayName: '',
-  fetchingArticleTopic: ''
+  fetchingArticleTopic: '',
+  tags: []
 })
 
 const getters = {
@@ -78,7 +71,8 @@ const getters = {
   articleType: (state) => state.articleType,
   topicType: (state) => state.topicType || null,
   topicDisplayName: (state) => state.topicDisplayName,
-  fetchingArticleTopic: (state) => state.fetchingArticleTopic
+  fetchingArticleTopic: (state) => state.fetchingArticleTopic,
+  tags: (state) => state.tags
 }
 
 const actions = {
@@ -172,6 +166,7 @@ const actions = {
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
+      commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -205,6 +200,7 @@ const actions = {
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
+      commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -284,12 +280,6 @@ const actions = {
   },
   updateBody({ commit }, { body }) {
     commit(types.UPDATE_BODY, { body })
-  },
-  addTag({ commit }, { id, name }) {
-    commit(types.ADD_TAG, { id, name })
-  },
-  updateTag({ commit }, { id, name }) {
-    commit(types.UPDATE_TAG, { id, name })
   },
   updateSuggestedThumbnails({ commit }, { thumbnails }) {
     commit(types.UPDATE_SUGGESTED_THUMBNAILS, { thumbnails })
@@ -526,6 +516,9 @@ const actions = {
   },
   setTopicDisplayName({ commit }, { topicName }) {
     commit(types.SET_TOPIC_DISPLAY_NAME, { topicName })
+  },
+  updateTags({ commit }, { tags }) {
+    commit(types.UPDATE_TAGS, { tags })
   }
 }
 
@@ -563,13 +556,6 @@ const mutations = {
   },
   [types.UPDATE_BODY](state, { body }) {
     state.body = body
-  },
-  [types.ADD_TAG](state, { id, name }) {
-    state.tags.unshift({ id, name })
-  },
-  [types.UPDATE_TAG](state, { id, name }) {
-    const tagIndex = state.tags.findIndex((tag) => tag.id === id)
-    state.tags[tagIndex] = { id, name }
   },
   [types.UPDATE_SUGGESTED_THUMBNAILS](state, { thumbnails }) {
     state.suggestedThumbnails = thumbnails
@@ -685,6 +671,18 @@ const mutations = {
   },
   [types.SET_FETCHING_ARTICLE_TOPIC](state, { topic }) {
     state.fetchingArticleTopic = topic
+  },
+  [types.SET_ARTICLE_TAGS](state, { tags = [] }) {
+    const formattedTags = tags.map((tag) => {
+      return {
+        text: tag,
+        tiClasses: ['valid']
+      }
+    })
+    state.tags = formattedTags
+  },
+  [types.UPDATE_TAGS](state, { tags }) {
+    state.tags = tags
   }
 }
 
