@@ -110,15 +110,17 @@ export default {
           article.eye_catch_url = this.thumbnail
         }
 
+        const tags = this.tags.map((tag) => tag.text)
+
         if (
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
         ) {
           await this.putDraftArticle({ article, articleId })
-          await this.publishDraftArticle({ article, articleId, topic })
+          await this.publishDraftArticle({ articleId, topic, tags })
         } else if (location.href.includes('/me/articles/public')) {
           await this.putPublicArticle({ article, articleId })
-          await this.republishPublicArticle({ article, articleId, topic })
+          await this.republishPublicArticle({ articleId, topic, tags })
         }
         this.$router.push('/me/articles/public')
         this.sendNotification({ text: '記事を公開しました。' })
