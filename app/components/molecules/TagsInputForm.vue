@@ -135,7 +135,7 @@ export default {
       }
 
       .icon-close {
-        color: rgb(76, 92, 163) !important;
+        color: rgb(76, 92, 163);
       }
     }
   }
