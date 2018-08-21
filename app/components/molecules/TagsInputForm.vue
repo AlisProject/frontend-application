@@ -7,7 +7,7 @@
         :max-tags="5"
         :maxlength="25"
         placeholder="タグを入力してください"
-        @before-adding-tag="checkDuplicateTag"
+        @before-adding-tag="checkTags"
         @tags-changed="handleTagsChanged"
       />
     </no-ssr>
@@ -28,7 +28,13 @@ export default {
     handleTagsChanged(tags) {
       this.updateTags({ tags })
     },
-    checkDuplicateTag({ tag: addingTag, addTag }) {
+    checkTags({ tag: addingTag, addTag }) {
+      const hasDuplicateTag = this.checkDuplicateTag(addingTag)
+      const hasNotAllowedTag = this.checkNotAllowedTag(addingTag)
+      if (hasDuplicateTag || hasNotAllowedTag) return
+      addTag()
+    },
+    checkDuplicateTag(addingTag) {
       let isValid = true
       this.tags.forEach((tag) => {
         // タグは大文字小文字を区別しない
@@ -43,7 +49,21 @@ export default {
           isValid = false
         }
       })
-      if (isValid) addTag()
+      return !isValid
+    },
+    checkNotAllowedTag(addingTag) {
+      const ALLOWED_TAG_REGEX = /^(?!.*(--| {2}))([a-zA-Z0-9ぁ-んァ-ン一-龥][a-zA-Z0-9ぁ-んァ-ン一-龥- ]*[a-zA-Z0-9ぁ-んァ-ン一-龥]|[a-zA-Z0-9ぁ-んァ-ン一-龥])$/
+      if (addingTag.text.match(ALLOWED_TAG_REGEX)) {
+        return false
+      } else {
+        // アラートを表示中は再度アラートを表示しない
+        if (this.toastMessages.length > 0) return
+        this.sendNotification({
+          text: 'タグを追加できません。',
+          type: 'warning'
+        })
+        return true
+      }
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
