@@ -8,8 +8,7 @@
         :maxlength="25"
         placeholder="タグを入力してください"
         @before-adding-tag="checkTags"
-        @tags-changed="handleTagsChanged"
-      />
+        @tags-changed="handleTagsChanged" />
     </no-ssr>
   </div>
 </template>
@@ -31,6 +30,7 @@ export default {
     checkTags({ tag: addingTag, addTag }) {
       const hasDuplicateTag = this.checkHasDuplicateTag(addingTag)
       const hasDisallowedTag = this.checkHasDisallowedTag(addingTag)
+      // 追加できないタグがある場合はタグを追加せず、アラートを表示する
       if (hasDuplicateTag || hasDisallowedTag) {
         this.showAlert({ hasDuplicateTag, hasDisallowedTag })
         return
@@ -54,18 +54,14 @@ export default {
     showAlert({ hasDuplicateTag, hasDisallowedTag }) {
       // アラートを表示中は再度アラートを表示しない
       if (this.toastMessages.length > 0) return
+
       let message = ''
       if (hasDuplicateTag) message = 'すでに存在するタグのため、追加できません。'
       if (hasDisallowedTag) message = 'タグを追加できません。'
       if (message === '') return
-      this.sendNotification({
-        text: message,
-        type: 'warning'
-      })
+      this.sendNotification({ text: message, type: 'warning' })
     },
-    ...mapActions({
-      sendNotification: ADD_TOAST_MESSAGE
-    }),
+    ...mapActions({ sendNotification: ADD_TOAST_MESSAGE }),
     ...mapActions('article', ['updateTags'])
   },
   computed: {
@@ -74,7 +70,7 @@ export default {
   },
   watch: {
     tags(newTags, oldTags) {
-      // タグが5つあるときタグの入力ができないようにする
+      // タグが5つあるとき、タグの入力ができないようにする
       if (newTags.length === 5) {
         this.$el.querySelector('.new-tag-input-wrapper').style.display = 'none'
         return
