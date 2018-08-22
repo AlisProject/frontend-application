@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="tags-input-form">
+    <div class="tags-input-form" @click="focusToTagInputForm">
       <no-ssr>
         <vue-tags-input
           v-model="tag"
@@ -78,6 +78,9 @@ export default {
 
       this.errorMessage = message
     },
+    focusToTagInputForm() {
+      this.$el.querySelector('.new-tag-input').focus()
+    },
     ...mapActions('article', ['updateTags'])
   },
   computed: {
@@ -101,7 +104,7 @@ export default {
       // タグが5つある状態でタグを消したとき、タグの入力をできるようにする
       if (newTagInputWrapper.style.display === 'none') {
         newTagInputWrapper.style.display = 'flex'
-        this.$el.querySelector('.new-tag-input').focus()
+        this.focusToTagInputForm()
       }
     }
   }
@@ -113,6 +116,7 @@ export default {
   border: 1px dotted #232538;
   min-height: 92px;
   margin-bottom: 4px;
+  cursor: text;
 }
 
 .error-message {
