@@ -1,26 +1,34 @@
 <template>
-  <div class="tags-input-form">
-    <no-ssr>
-      <vue-tags-input
-        v-model="tag"
-        :tags="tags"
-        :max-tags="5"
-        :maxlength="25"
-        placeholder="タグを入力してください"
-        @before-adding-tag="checkTags"
-        @tags-changed="handleTagsChanged" />
-    </no-ssr>
-  </div>
+  <section>
+    <div class="tags-input-form">
+      <no-ssr>
+        <vue-tags-input
+          v-model="tag"
+          :tags="tags"
+          :max-tags="5"
+          :maxlength="25"
+          placeholder="タグを入力してください"
+          :class="{ 'invalid-tag': isInvalidTag }"
+          @before-adding-tag="checkTags"
+          @tags-changed="handleTagsChanged" />
+      </no-ssr>
+    </div>
+    <span class="error-message">
+      {{ errorMessage }}
+    </span>
+  </section>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
     return {
-      tag: ''
+      tag: '',
+      // isInvalidTagがtrueのとき、入力中のタグの文字色を赤くする
+      isInvalidTag: false,
+      errorMessage: ''
     }
   },
   methods: {
@@ -32,7 +40,8 @@ export default {
       const hasDisallowedTag = this.checkHasDisallowedTag(addingTag)
       // 追加できないタグがある場合はタグを追加せず、アラートを表示する
       if (hasDuplicateTag || hasDisallowedTag) {
-        this.showAlert({ hasDuplicateTag, hasDisallowedTag })
+        this.showErrorMessage({ hasDuplicateTag, hasDisallowedTag })
+        this.isInvalidTag = true
         return
       }
       addTag()
@@ -61,24 +70,25 @@ export default {
       })
       return hasDisallowedTag
     },
-    showAlert({ hasDuplicateTag, hasDisallowedTag }) {
-      // アラートを表示中は再度アラートを表示しない
-      if (this.toastMessages.length > 0) return
-
+    showErrorMessage({ hasDuplicateTag, hasDisallowedTag }) {
       let message = ''
-      if (hasDuplicateTag) message = 'すでに存在するタグのため、追加できません。'
-      if (hasDisallowedTag) message = 'タグを追加できません。'
+      if (hasDuplicateTag) message = 'すでにご入力いただいているタグと重複しています'
+      if (hasDisallowedTag) message = 'ご利用いただける記号は-（ハイフン）のみとなります'
       if (message === '') return
-      this.sendNotification({ text: message, type: 'warning' })
+
+      this.errorMessage = message
     },
-    ...mapActions({ sendNotification: ADD_TOAST_MESSAGE }),
     ...mapActions('article', ['updateTags'])
   },
   computed: {
-    ...mapGetters(['toastMessages']),
     ...mapGetters('article', ['tags'])
   },
   watch: {
+    tag() {
+      // 入力中のタグを編集したとき、エラーを消しタグの色を黒色にもどす
+      this.isInvalidTag = false
+      this.errorMessage = ''
+    },
     tags(newTags, oldTags) {
       const newTagInputWrapper = this.$el.querySelector('.new-tag-input-wrapper')
 
@@ -102,14 +112,29 @@ export default {
 .tags-input-form {
   border: 1px dotted #232538;
   min-height: 92px;
-  margin-bottom: 40px;
+  margin-bottom: 4px;
+}
+
+.error-message {
+  color: #f06273;
+  display: block;
+  font-size: 12px;
+  margin-bottom: 22px;
+  min-height: 14px;
+  text-align: left;
 }
 </style>
 
 <style lang="scss">
 .tags-input-form {
-  .vue-tags-input .input {
-    border: none;
+  .vue-tags-input {
+    .input {
+      border: none;
+    }
+
+    &.invalid-tag .new-tag-input-wrapper input {
+      color: #f06273;
+    }
   }
 
   .tags {
