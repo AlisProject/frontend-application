@@ -80,15 +80,17 @@ export default {
   },
   watch: {
     tags(newTags, oldTags) {
+      const newTagInputWrapper = this.$el.querySelector('.new-tag-input-wrapper')
+
       // タグが5つあるとき、タグの入力ができないようにする
       if (newTags.length === 5) {
-        this.$el.querySelector('.new-tag-input-wrapper').style.display = 'none'
+        newTagInputWrapper.style.display = 'none'
         return
       }
 
       // タグが5つある状態でタグを消したとき、タグの入力をできるようにする
-      if (newTags.length === 4 && oldTags.length === 5) {
-        this.$el.querySelector('.new-tag-input-wrapper').style.display = 'flex'
+      if (newTagInputWrapper.style.display === 'none') {
+        newTagInputWrapper.style.display = 'flex'
         this.$el.querySelector('.new-tag-input').focus()
       }
     }
