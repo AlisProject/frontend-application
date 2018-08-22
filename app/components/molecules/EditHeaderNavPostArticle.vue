@@ -28,6 +28,8 @@
           </select>
         </no-ssr>
       </div>
+      <h3 class="headline">3. タグの設定</h3>
+      <tags-input-form />
       <button
         class="submit"
         @click="publish"
@@ -42,8 +44,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import TagsInputForm from '../molecules/TagsInputForm'
 
 export default {
+  components: {
+    TagsInputForm
+  },
   data() {
     return {
       publishingArticle: false,
@@ -94,15 +100,18 @@ export default {
           article.eye_catch_url = this.thumbnail
         }
 
+        // タグのデータ形式をAPIに適するように整形
+        const tags = this.tags.map((tag) => tag.text)
+
         if (
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
         ) {
           await this.putDraftArticle({ article, articleId })
-          await this.publishDraftArticle({ article, articleId, topic })
+          await this.publishDraftArticle({ articleId, topic, tags })
         } else if (location.href.includes('/me/articles/public')) {
           await this.putPublicArticle({ article, articleId })
-          await this.republishPublicArticle({ article, articleId, topic })
+          await this.republishPublicArticle({ articleId, topic, tags })
         }
         this.$router.push('/me/articles/public')
         this.sendNotification({ text: '記事を公開しました。' })
@@ -171,7 +180,8 @@ export default {
       'isSaving',
       'isEdited',
       'topics',
-      'topicType'
+      'topicType',
+      'tags'
     ])
   },
   watch: {

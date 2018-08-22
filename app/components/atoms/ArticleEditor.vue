@@ -19,7 +19,6 @@
 
 <script>
 /* eslint no-undef: 0 */
-/* eslint-disable space-before-function-paren */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
@@ -359,19 +358,6 @@ export default {
       })
       return matches.length ? matches : null
     },
-    addEmptyTag() {
-      if (this.tags.length >= 5) return
-      this.addTag({
-        id: Math.random()
-          .toString(36)
-          .slice(-9),
-        name: ''
-      })
-    },
-    onInputTag({ target }) {
-      const { id, value: name } = target
-      this.updateTag({ id, name })
-    },
     handleResize() {
       if (window.innerWidth <= 640) {
         if (!this.showRestrictEditArticleModal) {
@@ -424,8 +410,6 @@ export default {
     ...mapActions('article', [
       'updateTitle',
       'updateBody',
-      'addTag',
-      'updateTag',
       'updateSuggestedThumbnails',
       'postArticleImage',
       'setRestrictEditArticleModal',
@@ -452,7 +436,6 @@ export default {
   grid-template-areas:
     "title"
     "body ";
-  // "tags ";
 }
 
 .area-title {
@@ -487,44 +470,6 @@ export default {
 .medium-editor-placeholder:after {
   color: #898989;
   font-style: normal;
-}
-
-.area-tags {
-  grid-area: tags;
-  position: relative;
-}
-
-.add-tag-button {
-  border-radius: 50%;
-  border: none;
-  box-shadow: 0 3px 10px 0 rgba(146, 146, 146, 0.5);
-  color: #cacaca;
-  height: 32px;
-  left: -50px;
-  position: absolute;
-  width: 32px;
-
-  &:focus {
-    outline: 0;
-  }
-}
-
-.tag {
-  background: #eee;
-  border-radius: 4px;
-  border: none;
-  color: #898989;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 12px;
-  padding: 4px;
-  text-align: center;
-  margin: 0 2px 4px;
-  display: inline-block;
-
-  &:focus {
-    outline: 0;
-  }
 }
 
 @media screen and (max-width: 640px) {
