@@ -1,6 +1,8 @@
 <template>
   <footer class="area-app-footer-container">
     <nuxt-link to="/users/ALIS-official" class="link">公式アナウンス</nuxt-link>
+    <nuxt-link to="/users/AB2" class="link">技術ブログ</nuxt-link>
+    <a href="https://github.com/AlisProject/api-docs" class="link" target="_blank">API</a>
     <nuxt-link to="/terms" class="link">利用規約</nuxt-link>
     <nuxt-link to="/privacy" class="link">プライバシーポリシー</nuxt-link>
     <nuxt-link to="/token-use-guidline" class="link">ALISトークン利用ガイドライン</nuxt-link>
