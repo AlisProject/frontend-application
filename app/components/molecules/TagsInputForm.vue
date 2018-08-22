@@ -47,8 +47,18 @@ export default {
       return hasDuplicateTag
     },
     checkHasDisallowedTag(addingTag) {
-      const ALLOWED_TAG_REGEX = /^(?!.*(--| {2}))([a-zA-Z0-9ぁ-んァ-ン一-龥][a-zA-Z0-9ぁ-んァ-ン一-龥- ]*[a-zA-Z0-9ぁ-んァ-ン一-龥]|[a-zA-Z0-9ぁ-んァ-ン一-龥])$/
-      const hasDisallowedTag = !addingTag.text.match(ALLOWED_TAG_REGEX)
+      const DENIED_SYMBOL_PATTERN = /([!-,./:-@[-`{-~]|--| {2})/
+      const ALLOWED_SYMBOLS = ['-', ' ']
+      let hasDisallowedTag = ''
+
+      hasDisallowedTag = addingTag.text.match(DENIED_SYMBOL_PATTERN)
+      if (hasDisallowedTag) return hasDisallowedTag
+
+      ALLOWED_SYMBOLS.forEach((symbol) => {
+        if (addingTag.text[0] === symbol || addingTag.text.slice(-1) === symbol) {
+          hasDisallowedTag = true
+        }
+      })
       return hasDisallowedTag
     },
     showAlert({ hasDuplicateTag, hasDisallowedTag }) {
