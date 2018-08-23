@@ -92,6 +92,9 @@ export default {
       this.isInvalidTag = false
       this.errorMessage = ''
     },
+    isInvalidTag() {
+      this.$emit('change-tag-validation-state', this.isInvalidTag)
+    },
     tags(newTags, oldTags) {
       const newTagInputWrapper = this.$el.querySelector('.new-tag-input-wrapper')
 

@@ -29,11 +29,11 @@
         </no-ssr>
       </div>
       <h3 class="headline">3. タグの設定</h3>
-      <tags-input-form />
+      <tags-input-form @change-tag-validation-state="onChangeTagValidationState"/>
       <button
         class="submit"
         @click="publish"
-        :class="{ disable: !publishable }"
+        :class="{ disable: !publishable || isInvalidTag}"
         :disabled="publishingArticle">
         公開する
       </button>
@@ -55,7 +55,8 @@ export default {
       publishingArticle: false,
       isPopupShown: false,
       isThumbnailSelected: false,
-      topic: null
+      topic: null,
+      isInvalidTag: false
     }
   },
   async created() {
@@ -79,7 +80,11 @@ export default {
   methods: {
     async publish() {
       try {
-        if (!this.publishable) return
+        // 「公開する」ボタンを押した瞬間はisInvalidTagの値が更新されないため、
+        // isInvalidTagの状態が更新されるまで待つ
+        await this.$nextTick()
+
+        if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
         const { articleId, title, body, topic } = this
         const overview = body
@@ -148,6 +153,9 @@ export default {
       this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = event.target.value
       this.setArticleTopic({ topicType: this.topic })
+    },
+    onChangeTagValidationState(isInvalid) {
+      this.isInvalidTag = isInvalid
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
