@@ -104,7 +104,7 @@ module.exports = {
         })
       }
     },
-    vendor: ['axios', '@johmun/vue-tags-input']
+    vendor: ['axios', 'moment', '@johmun/vue-tags-input']
   },
   css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
   env: {
