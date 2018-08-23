@@ -63,6 +63,8 @@ export default {
           return `記事へのコメントには${text}`
         case 'articleCommentLike':
           return `コメントの評価には${text}`
+        case 'articleTip':
+          return `投げ銭をするためには${text}`
         default:
           return text
       }

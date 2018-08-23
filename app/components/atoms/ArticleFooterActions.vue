@@ -1,16 +1,17 @@
 <template>
   <div class="area-footer-actions">
-    <div class="action like" :class="{ liked: this.isLikedArticle }" @click="like">
+    <div class="action area-like" :class="{ liked: this.isLikedArticle }" @click="like">
       <span class="likes-count">{{ formattedLikesCount }}</span>
     </div>
-    <div class="action share" @click="toggleSharePopup">
+    <div class="action area-tip" @click="tip" />
+    <div class="action area-share" @click="toggleSharePopup">
       <div class="share-popup" v-show="isSharePopupShown">
         <a class="share-twitter" target="_blank">
           Twitterでシェアする
         </a>
       </div>
     </div>
-    <div class="action etc" @click="toggleEtcPopup">
+    <div class="action area-etc" @click="toggleEtcPopup">
       <div class="etc-popup" v-show="isEtcPopupShown">
         <span class="report" @click="showPopupReportModal">
           通報する
@@ -111,6 +112,19 @@ export default {
         }
       }
     },
+    async tip() {
+      if (this.loggedIn) {
+        this.setReportModal({ showReportModal: true })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
+      } else {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleTip' })
+        window.scrollTo(0, 0)
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
+      }
+    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
@@ -133,15 +147,18 @@ export default {
   display: grid;
   grid-area: footer-actions;
   grid-template-rows: 70px;
-  grid-template-columns: 1fr repeat(2, 60px);
-  justify-content: right;
+  grid-template-columns: 100px 80px 1fr repeat(2, 60px);
+  /* prettier-ignore */
+  grid-template-areas:
+    'like tip ... share etc';
 
   .action {
     width: 60px;
     height: 60px;
   }
 
-  .etc {
+  .area-etc {
+    grid-area: etc;
     background: url('~assets/images/pc/article/btn_etc.png') no-repeat;
     background-size: 54px;
     background-position-y: 10px;
@@ -169,7 +186,8 @@ export default {
     }
   }
 
-  .share {
+  .area-share {
+    grid-area: share;
     background: url('~assets/images/pc/article/btn_share.png') no-repeat;
     background-size: 54px;
     position: relative;
@@ -203,7 +221,8 @@ export default {
     }
   }
 
-  .like {
+  .area-like {
+    grid-area: like;
     background: url('~assets/images/pc/article/btn_like.png') no-repeat;
     background-size: 80px;
     cursor: pointer;
@@ -232,12 +251,23 @@ export default {
       width: 30px;
     }
   }
+
+  .area-tip {
+    background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
+    background-size: 80px;
+    cursor: pointer;
+    grid-area: tip;
+    height: 80px;
+    width: 80px;
+    background-position-y: -4px;
+  }
 }
 
 @media screen and (max-width: 640px) {
   .area-footer-actions {
     background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
     position: relative;
+    grid-template-columns: 80px 80px 1fr repeat(2, 60px);
 
     &:after {
       bottom: 35px;
