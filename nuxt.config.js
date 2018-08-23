@@ -1,6 +1,4 @@
-const isProduction = process.env.NODE_ENV === 'production'
-
-const nuxtConfig = {
+module.exports = {
   /*
   ** Headers of the page
   */
@@ -74,7 +72,12 @@ const nuxtConfig = {
     preset: 'default',
     breaks: true
   },
-  plugins: ['~/plugins/axios', '~/plugins/vuelidate', { src: '~plugins/gtm.js', ssr: false }],
+  plugins: [
+    '~/plugins/axios',
+    '~/plugins/vuelidate',
+    { src: '~plugins/gtm.js', ssr: false },
+    { src: '~/plugins/vue-tags-input', ssr: false }
+  ],
   axios: {
     baseURL: process.env.BASE_URL,
     proxyHeaders: false
@@ -101,7 +104,7 @@ const nuxtConfig = {
         })
       }
     },
-    vendor: ['axios']
+    vendor: ['axios', '@johmun/vue-tags-input']
   },
   css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
   env: {
@@ -112,19 +115,3 @@ const nuxtConfig = {
     DOMAIN: process.env.DOMAIN
   }
 }
-
-if (!isProduction) {
-  nuxtConfig.axios = {
-    prefix: '/api',
-    proxyHeaders: false,
-    proxy: true
-  }
-  nuxtConfig.proxy = {
-    '/api': {
-      target: process.env.BASE_URL,
-      pathRewrite: { '^/api': '/' }
-    }
-  }
-}
-
-module.exports = nuxtConfig

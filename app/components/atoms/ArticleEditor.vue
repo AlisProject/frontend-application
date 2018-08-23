@@ -19,7 +19,6 @@
 
 <script>
 /* eslint no-undef: 0 */
-/* eslint-disable space-before-function-paren */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
@@ -28,7 +27,10 @@ import {
   getTwitterProfileTemplate,
   getIframelyEmbedTemplate,
   getThumbnails,
-  createInsertPluginTemplateFromUrl
+  createInsertPluginTemplateFromUrl,
+  getResourceFromIframely,
+  preventDragAndDrop,
+  preventDropImageOnOGPContent
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -58,10 +60,10 @@ export default {
       document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
-    this.preventDragAndDrop(window)
+    preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
       if (!this.$el.querySelector('.medium-insert-buttons')) return
-      this.preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
+      preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
       clearInterval(preventDragAndDropInterval)
     }, 100)
     $('.area-body').keydown((e) => {
@@ -132,89 +134,7 @@ export default {
       })
       this.editorElement.subscribe('editableInput', (event, editable) => {
         this.setIsEdited({ isEdited: true })
-        this.$el.onkeydown = async (event) => {
-          if (event.key === 'Enter') {
-            const line = this.editorElement.getSelectedParentElement().textContent
-            const trimmedLine = line.trim()
-            if (urlRegex({ exact: true }).test(trimmedLine)) {
-              const selectedParentElement = this.editorElement.getSelectedParentElement()
-              let result
-              if (
-                trimmedLine === 'https://twitter.com' ||
-                trimmedLine.startsWith('https://twitter.com/')
-              ) {
-                const isTweet = trimmedLine.split('/')[4] === 'status'
-                try {
-                  result = await this.$axios.$get(
-                    `https://iframe.ly/api/oembed?api_key=${
-                      process.env.IFRAMELY_API_KEY
-                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
-                  )
-                } catch (error) {
-                  const message = isTweet
-                    ? 'ツイートが取得できませんでした。'
-                    : 'Twitterのユーザー情報が取得できませんでした。'
-                  this.sendNotification({
-                    text: message,
-                    type: 'warning'
-                  })
-                  console.error(error)
-                  return
-                }
-
-                selectedParentElement.innerHTML = ''
-
-                if (isTweet) {
-                  this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
-                  iframely.load()
-                } else {
-                  const { title, description } = result
-                  const hasTitleOrDescription = title !== undefined || description !== undefined
-                  if (!hasTitleOrDescription) return
-
-                  this.editorElement.pasteHTML(
-                    `<br>
-                  ${getTwitterProfileTemplate({ ...result })}
-                  <br>`,
-                    { cleanAttrs: ['twitter-profile-card', 'title', 'description', 'site'] }
-                  )
-                }
-              } else {
-                try {
-                  result = await this.$axios.$get(
-                    `https://iframe.ly/api/iframely?api_key=${
-                      process.env.IFRAMELY_API_KEY
-                    }&url=${encodeURIComponent(trimmedLine)}&omit_script=1&omit_css=1`
-                  )
-                } catch (error) {
-                  console.error(error)
-                  return
-                }
-                const { title, description } = result.meta
-                const hasTitleOrDescription = title !== undefined || description !== undefined
-                if (!hasTitleOrDescription) return
-
-                selectedParentElement.innerHTML = ''
-
-                this.editorElement.pasteHTML(
-                  `<br>
-                    ${getIframelyEmbedTemplate({ ...result })}
-                    <br>`,
-                  {
-                    cleanAttrs: [
-                      'iframely-embed-card',
-                      'title',
-                      'description',
-                      'site',
-                      'thumbnail',
-                      'without-space'
-                    ]
-                  }
-                )
-              }
-            }
-          }
-        }
+        this.$el.onkeydown = (event) => this.handleEditorInput(event)
       })
       $(() => {
         $('.area-body').mediumInsert({
@@ -232,34 +152,109 @@ export default {
         })
       })
     },
+    async handleEditorInput(event) {
+      const line = MediumEditor.util.getTopBlockContainer(
+        this.editorElement.getSelectedParentElement()
+      ).textContent
+      const trimmedLine = line.trim()
+      if (event.key !== 'Enter' || !urlRegex({ exact: true }).test(trimmedLine)) {
+        // Enter もしくは URL 構造でない場合は行う処理がない
+        return
+      }
+      const selectedParentElement = MediumEditor.util.getTopBlockContainer(
+        this.editorElement.getSelectedParentElement()
+      )
+      const isTwitterResource =
+        trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
+      const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
+      let result, cleanAttrs, embedHTML
+
+      try {
+        result = (await getResourceFromIframely(
+          isTwitterResource ? 'oembed' : 'iframely',
+          trimmedLine
+        )).data
+      } catch (error) {
+        if (isTwitterResource) {
+          const message = isTweet
+            ? 'ツイートが取得できませんでした。'
+            : 'Twitterのユーザー情報が取得できませんでした。'
+          this.sendNotification({
+            text: message,
+            type: 'warning'
+          })
+        }
+        console.error(error)
+        return
+      }
+
+      selectedParentElement.innerHTML = ''
+
+      if (isTweet) {
+        this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
+        iframely.load()
+        return
+      }
+
+      if (!isTwitterResource) {
+        const { title, description } = result.meta
+        const hasTitleOrDescription = title !== undefined || description !== undefined
+        if (!hasTitleOrDescription) return
+        embedHTML = getIframelyEmbedTemplate({ ...result })
+        cleanAttrs = [
+          'iframely-embed-card',
+          'title',
+          'description',
+          'site',
+          'thumbnail',
+          'without-space'
+        ]
+      } else {
+        const { title, description } = result
+        const hasTitleOrDescription = title !== undefined || description !== undefined
+        if (!hasTitleOrDescription) return
+        embedHTML = getTwitterProfileTemplate({ ...result })
+        cleanAttrs = ['twitter-profile-card', 'title', 'description', 'site']
+      }
+
+      this.editorElement.pasteHTML(
+        `<br>
+          ${embedHTML}
+          <br>`,
+        {
+          cleanAttrs
+        }
+      )
+
+      // Prevent drop image on OGP content
+      preventDropImageOnOGPContent()
+    },
     async updateArticle() {
       try {
-        await (async () => {
-          // Do nothing if user don't edit article
-          if (!this.isEdited) {
-            this.setSaveStatus({ saveStatus: '' })
-            return
-          }
+        // Do nothing if user don't edit article
+        if (!this.isEdited) {
+          this.setSaveStatus({ saveStatus: '' })
+          return
+        }
 
-          // Init
-          this.setIsSaving({ isSaving: true })
-          this.setIsEdited({ isEdited: false })
-          this.setSaveStatus({ saveStatus: 'Saving...' })
-          if (this.articleId === '') await this.setArticleId()
+        // Init
+        this.setIsSaving({ isSaving: true })
+        this.setIsEdited({ isEdited: false })
+        this.setSaveStatus({ saveStatus: '保存中' })
+        if (this.articleId === '') await this.setArticleId()
 
-          // Upload images
-          try {
-            await this.uploadImages()
-          } catch (error) {
-            console.error(error)
-          }
+        // Upload images
+        try {
+          await this.uploadImages()
+        } catch (error) {
+          console.error(error)
+        }
 
-          // Upload article
-          await this.uploadArticle()
+        // Upload article
+        await this.uploadArticle()
 
-          this.setSaveStatus({ saveStatus: 'Saved' })
-          this.setIsSaving({ isSaving: false })
-        })()
+        this.setSaveStatus({ saveStatus: '保存済み' })
+        this.setIsSaving({ isSaving: false })
       } catch (error) {
         console.error(error)
       } finally {
@@ -305,24 +300,25 @@ export default {
       await Promise.all(
         images.map(async (img) => {
           const isBase64Image = img.src.includes('data:')
-          if (isBase64Image) {
-            try {
-              const base64Image = img.src
-              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-              const imageContentType = base64Image.substring(
-                base64Image.match(':').index + 1,
-                base64Image.match(';').index
-              )
-              const { image_url: imageUrl } = await this.postArticleImage({
-                articleId: this.articleId,
-                articleImage: base64Hash,
-                imageContentType
-              })
-              img.src = imageUrl
-            } catch (error) {
-              this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
-              throw new Error('Image upload failed.')
-            }
+          if (!isBase64Image) {
+            return
+          }
+          try {
+            const base64Image = img.src
+            const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+            const imageContentType = base64Image.substring(
+              base64Image.match(':').index + 1,
+              base64Image.match(';').index
+            )
+            const { image_url: imageUrl } = await this.postArticleImage({
+              articleId: this.articleId,
+              articleImage: base64Hash,
+              imageContentType
+            })
+            img.src = imageUrl
+          } catch (error) {
+            this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+            throw new Error('Image upload failed.')
           }
         })
       )
@@ -332,6 +328,12 @@ export default {
       if (!thumbnails.includes(this.thumbnail)) {
         this.updateThumbnail({ thumbnail: '' })
       }
+      // Prevent drag & drop on image
+      Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
+        if (element.dataset.preventedDragAndDrop === 'true') return
+        preventDragAndDrop(element)
+        element.dataset.preventedDragAndDrop = true
+      })
     },
     removeUselessDOMFromArticleBody() {
       const serializedContents = this.editorElement.serialize()
@@ -355,19 +357,6 @@ export default {
         matches.push(arr)
       })
       return matches.length ? matches : null
-    },
-    addEmptyTag() {
-      if (this.tags.length >= 5) return
-      this.addTag({
-        id: Math.random()
-          .toString(36)
-          .slice(-9),
-        name: ''
-      })
-    },
-    onInputTag({ target }) {
-      const { id, value: name } = target
-      this.updateTag({ id, name })
     },
     handleResize() {
       if (window.innerWidth <= 640) {
@@ -412,24 +401,6 @@ export default {
       }
       reader.readAsDataURL(target)
     },
-    preventDragAndDrop(element) {
-      element.addEventListener(
-        'drop',
-        (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        },
-        false
-      )
-      element.addEventListener(
-        'dragover',
-        (e) => {
-          e.preventDefault()
-          e.stopPropagation()
-        },
-        false
-      )
-    },
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))
     },
@@ -439,8 +410,6 @@ export default {
     ...mapActions('article', [
       'updateTitle',
       'updateBody',
-      'addTag',
-      'updateTag',
       'updateSuggestedThumbnails',
       'postArticleImage',
       'setRestrictEditArticleModal',
@@ -467,7 +436,6 @@ export default {
   grid-template-areas:
     "title"
     "body ";
-  // "tags ";
 }
 
 .area-title {
@@ -502,44 +470,6 @@ export default {
 .medium-editor-placeholder:after {
   color: #898989;
   font-style: normal;
-}
-
-.area-tags {
-  grid-area: tags;
-  position: relative;
-}
-
-.add-tag-button {
-  border-radius: 50%;
-  border: none;
-  box-shadow: 0 3px 10px 0 rgba(146, 146, 146, 0.5);
-  color: #cacaca;
-  height: 32px;
-  left: -50px;
-  position: absolute;
-  width: 32px;
-
-  &:focus {
-    outline: 0;
-  }
-}
-
-.tag {
-  background: #eee;
-  border-radius: 4px;
-  border: none;
-  color: #898989;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 12px;
-  padding: 4px;
-  text-align: center;
-  margin: 0 2px 4px;
-  display: inline-block;
-
-  &:focus {
-    outline: 0;
-  }
 }
 
 @media screen and (max-width: 640px) {

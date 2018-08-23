@@ -45,6 +45,9 @@ export default {
 .area-post-article {
   grid-area: post-article;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .post-article {
     cursor: pointer;

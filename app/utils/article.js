@@ -217,3 +217,44 @@ export function showEmbedTweet() {
     iframely.load()
   })
 }
+
+export function getResourceFromIframely(type, url) {
+  if (!type || !url) {
+    throw new TypeError('type and url must be string.')
+  }
+  if (!['oembed', 'iframely'].includes(type)) {
+    throw new TypeError('type must be either "oembed", "iframely"')
+  }
+  return axios.get(
+    `https://iframe.ly/api/${type}?api_key=${process.env.IFRAMELY_API_KEY}&url=${encodeURIComponent(
+      url
+    )}&omit_script=1&omit_css=1`
+  )
+}
+
+export function preventDragAndDrop(element) {
+  element.addEventListener(
+    'drop',
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    false
+  )
+  element.addEventListener(
+    'dragover',
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    false
+  )
+}
+
+export function preventDropImageOnOGPContent() {
+  Array.from(document.querySelectorAll('[data-alis-iframely-url]')).forEach((element) => {
+    if (element.dataset.preventedDragAndDrop === 'true') return
+    preventDragAndDrop(element)
+    element.dataset.preventedDragAndDrop = true
+  })
+}

@@ -1,6 +1,6 @@
 <template>
   <div class="help-container">
-    <app-header showDefaultHeaderNav showOnlySessionLinks class="logo-original"/>
+    <app-header showDefaultHeaderNav showOnlySessionLinks/>
     <div class="area-help">
       <h1 class="title">お問い合わせ</h1>
       <p class="description">

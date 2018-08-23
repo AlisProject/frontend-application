@@ -1,41 +1,41 @@
 <template>
-  <new-article-list/>
+  <popular-article-list/>
 </template>
 
 <script>
-import NewArticleList from '~/components/pages/NewArticleList'
+import PopularArticleList from '~/components/pages/PopularArticleList'
 
 export default {
   components: {
-    NewArticleList
+    PopularArticleList
   },
   async fetch({ store, query, from = {} }) {
-    // 新着記事の初期化
+    // 人気記事の初期化
     // 人気・新着記事の切り替えを行った場合のみ記事データの初期化を行う。
     // 記事から遷移してきた場合は、スクロール位置を保持させたいので初期化はしない。
-    if (from.name === 'articles-popular') {
+    if (from.name === 'articles-recent') {
       store.dispatch('article/resetArticleData')
     }
 
-    store.dispatch('article/setArticleType', { articleType: 'newArticles' })
+    store.dispatch('article/setArticleType', { articleType: 'popularArticles' })
     const { topic } = query
     await store.dispatch('article/getTopics')
     store.dispatch('article/setTopicDisplayName', { topicName: topic })
-    await store.dispatch('article/getNewPagesArticles', { topic })
+    await store.dispatch('article/getPopularArticles', { topic })
   },
   head() {
     return {
-      title: `${this.$store.state.article.topicDisplayName} - 新着記事`,
+      title: `${this.$store.state.article.topicDisplayName} - 人気記事`,
       meta: [
         {
           hid: `og:title`,
           property: 'og:title',
-          content: `${this.$store.state.article.topicDisplayName} - 新着記事 | ALIS`
+          content: `${this.$store.state.article.topicDisplayName} - 人気記事 | ALIS`
         },
         {
           hid: `og:description`,
           property: 'og:description',
-          content: `${this.$store.state.article.topicDisplayName}の新着記事一覧`
+          content: `${this.$store.state.article.topicDisplayName}の人気記事一覧`
         }
       ]
     }

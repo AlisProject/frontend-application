@@ -1,6 +1,6 @@
 <template>
   <div class="user-article-list-container long-article-card" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles logo-white background-none"/>
+    <app-header showDefaultHeaderNav showOnlySessionLinks class="public-articles"/>
     <user-article-list-user-info :user="userInfo" />
     <nav class="area-user-profile-nav">
       <ul class="user-profile-nav-ul">
@@ -60,11 +60,8 @@ export default {
 
 <style lang="scss" scoped>
 .user-article-list-container {
-  background: url('~assets/images/pc/bg/bg_top.png') no-repeat;
-  background-color: #f7f7f7;
-  background-size: contain;
   display: grid;
-  grid-template-rows: 100px 300px 1fr 75px 75px;
+  grid-template-rows: 100px auto 1fr 75px 75px;
   grid-template-columns: 1fr 1080px 1fr;
   /* prettier-ignore */
   grid-template-areas:
@@ -99,7 +96,7 @@ export default {
   .user-article-list-container {
     background: #fff;
     grid-template-columns: 1fr 350px 1fr;
-    grid-template-rows: 100px 150px 50px 1fr 75px min-content;
+    grid-template-rows: 70px min-content 50px 1fr 75px min-content;
     grid-row-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:

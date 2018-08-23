@@ -1,6 +1,6 @@
 <template>
   <div class="public-article-list-container long-article-card" @scroll="infiniteScroll">
-    <app-header showEditHeaderNav class="public-articles logo-original"/>
+    <app-header showEditHeaderNav class="public-articles"/>
     <article-card-list :articles="publicArticles" :linkTo="'public'"/>
     <!-- <the-loader :lastEvaluatedKey="publicArticlesLastEvaluatedKey"/> -->
     <app-footer/>
@@ -61,7 +61,6 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
-  background: #f7f7f7;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -81,7 +80,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .public-article-list-container {
-    grid-template-rows: 100px 40px 1fr 75px min-content;
+    grid-template-rows: 100px 24px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }

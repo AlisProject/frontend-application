@@ -138,10 +138,11 @@ export default {
     padding: 24px;
 
     .comment-user {
-      color: #5b5b5b;
-      font-size: 14px;
-      display: flex;
       align-items: center;
+      color: #5b5b5b;
+      display: flex;
+      font-size: 14px;
+      overflow: hidden;
 
       .icon {
         border-radius: 50%;
@@ -153,6 +154,9 @@ export default {
       .name {
         color: #6e6e6e;
         font-size: 12px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }

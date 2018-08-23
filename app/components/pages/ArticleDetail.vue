@@ -1,10 +1,10 @@
 <template>
   <div class="article-container">
-    <app-header showDefaultHeaderNav class="logo-original"/>
+    <app-header showOnlySessionLinks class="without-shadow"/>
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
       <div class="area-content" v-html="article.body" />
-      <!-- <article-tags :tags="article.tags"/> -->
+      <article-tags :tags="article.tags"/>
       <article-footer-actions
         :articleId="article.article_id"
         :likesCount="likesCount"
@@ -31,7 +31,7 @@ import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
-// import ArticleTags from '../atoms/ArticleTags'
+import ArticleTags from '../atoms/ArticleTags'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
@@ -45,7 +45,7 @@ export default {
     ArticleSideActions,
     ArticleSubInfos,
     AuthorInfo,
-    // ArticleTags,
+    ArticleTags,
     ArticleCommentForm,
     ArticleComments,
     // RelatedArticles,
@@ -107,9 +107,9 @@ export default {
   grid-template-areas:
     'title         '
     'content       '
-    'footer-actions'
+    'tags          '
     'article-sub-infos'
-    // 'tags          '
+    'footer-actions'
     'author-info   ';
 }
 
@@ -155,7 +155,7 @@ export default {
     grid-template-areas:
       '...            title             ...           '
       '...            content           ...           '
-      // '...            tags           ...           '
+      '...            tags              ...           '
       '...            article-sub-infos ...'
       '...            author-info       ...           '
       'footer-actions footer-actions    footer-actions';
