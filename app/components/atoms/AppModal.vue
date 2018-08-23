@@ -56,7 +56,8 @@ export default {
       'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
-      'requestLoginModal'
+      'requestLoginModal',
+      'showTipModal'
     ])
   },
   methods: {
@@ -93,6 +94,9 @@ export default {
       if (this.requestLoginModal.isShow) {
         this.setRequestLoginModal({ isShow: false })
       }
+      if (this.showTipModal) {
+        this.setTipModal({ showTipModal: false })
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -108,7 +112,8 @@ export default {
       'setRestrictEditArticleModal',
       'resetPassword',
       'logout',
-      'setRequestLoginModal'
+      'setRequestLoginModal',
+      'setTipModal'
     ])
   },
   watch: {

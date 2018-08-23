@@ -107,7 +107,8 @@ const state = () => ({
     page: 1,
     isLastPage: false,
     isFetching: false
-  }
+  },
+  showTipModal: false
 })
 
 const getters = {
@@ -135,7 +136,8 @@ const getters = {
   unreadNotification: (state) => state.unreadNotification,
   hasNotificationsLastEvaluatedKey: (state) =>
     !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
-  searchUsers: (state) => state.searchUsers
+  searchUsers: (state) => state.searchUsers,
+  showTipModal: (state) => state.showTipModal
 }
 
 const actions = {
@@ -522,6 +524,9 @@ const actions = {
   },
   resetSearchUsersIsLastPage({ commit }) {
     commit(types.RESET_SEARCH_USERS_IS_LAST_PAGE)
+  },
+  setTipModal({ commit }, { showTipModal }) {
+    commit(types.SET_TIP_MODAL, { showTipModal })
   }
 }
 
@@ -726,6 +731,9 @@ const mutations = {
   },
   [types.RESET_SEARCH_USERS_IS_LAST_PAGE](state) {
     state.searchUsers.isLastPage = false
+  },
+  [types.SET_TIP_MODAL](state, { showTipModal }) {
+    state.showTipModal = showTipModal
   }
 }
 
