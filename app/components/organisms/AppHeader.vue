@@ -1,5 +1,5 @@
 <template>
-  <header class="area-app-header-container">
+  <header class="area-app-header-container" :class="{ 'with-edit-header-nav': showEditHeaderNav }">
     <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
     <default-header-nav
       v-if="showDefaultHeaderNav"
@@ -127,12 +127,16 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 170px 1fr 78px 190px;
+  grid-template-columns: 170px 1fr 78px calc(50vw - 210px);
   /* prettier-ignore */
   grid-template-areas:
     "logo nav article-type-select-box ...";
   position: relative;
   z-index: 2;
+
+  &.with-edit-header-nav {
+    grid-template-columns: 170px 1fr 78px 190px;
+  }
 }
 
 .area-logo {
@@ -154,6 +158,10 @@ export default {
         '... ...  ... ...     ...';
       grid-template-columns: 3px 94px 1fr 145px 3px;
       grid-template-rows: 6px 26px 20px;
+
+      &.with-edit-header-nav {
+        grid-template-columns: 3px 94px 1fr 145px 3px;
+      }
     }
   }
 }
@@ -173,6 +181,10 @@ export default {
 
     &.without-shadow {
       box-shadow: none;
+    }
+
+    &.with-edit-header-nav {
+      grid-template-columns: 3px 94px 1fr 60px 61px 3px;
     }
   }
 

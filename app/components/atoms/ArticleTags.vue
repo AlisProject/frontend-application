@@ -1,7 +1,7 @@
 <template>
   <div class="area-tags">
-    <span class="tag" v-for="tag in tags" :key="tag.name">
-      {{ tag.name }}
+    <span class="tag" v-for="tag in tags" :key="tag">
+      {{ tag }}
     </span>
   </div>
 </template>
@@ -11,7 +11,7 @@ export default {
   props: {
     tags: {
       type: Array,
-      required: true
+      required: false
     }
   }
 }
@@ -20,16 +20,26 @@ export default {
 <style lang="scss" scoped>
 .area-tags {
   grid-area: tags;
+  margin-bottom: -10px;
 }
 
 .tag {
-  background: #eee;
+  background-color: rgba(133, 141, 218, 0.05);
   border-radius: 4px;
-  color: #4c4c4c;
+  color: #858dda;
   display: inline-block;
-  font-size: 14px;
-  line-height: 12px;
-  margin: 0.2em;
-  padding: 0.4em 1.5em;
+  font-size: 12px;
+  margin: 0 20px 20px 0;
+  padding: 6px 8px;
+}
+
+@media screen and (max-width: 640px) {
+  .area-tags {
+    margin-bottom: 0;
+  }
+
+  .tag {
+    margin: 0 10px 10px 0;
+  }
 }
 </style>
