@@ -96,6 +96,7 @@ export default {
       }
       if (this.showTipModal) {
         this.setTipModal({ showTipModal: false })
+        this.hideTipFlowModalContent()
       }
       this.$emit('close')
       this.resetPassword()
@@ -113,7 +114,8 @@ export default {
       'resetPassword',
       'logout',
       'setRequestLoginModal',
-      'setTipModal'
+      'setTipModal',
+      'hideTipFlowModalContent'
     ])
   },
   watch: {

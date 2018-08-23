@@ -108,7 +108,11 @@ const state = () => ({
     isLastPage: false,
     isFetching: false
   },
-  showTipModal: false
+  showTipModal: false,
+  tipFlowModal: {
+    isSelectTipAmountModal: false,
+    isConfirmationModal: false
+  }
 })
 
 const getters = {
@@ -137,7 +141,8 @@ const getters = {
   hasNotificationsLastEvaluatedKey: (state) =>
     !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
   searchUsers: (state) => state.searchUsers,
-  showTipModal: (state) => state.showTipModal
+  showTipModal: (state) => state.showTipModal,
+  tipFlowModal: (state) => state.tipFlowModal
 }
 
 const actions = {
@@ -527,6 +532,15 @@ const actions = {
   },
   setTipModal({ commit }, { showTipModal }) {
     commit(types.SET_TIP_MODAL, { showTipModal })
+  },
+  setTipFlowSelectTipAmountModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_SELECT_TIP_AMOUNT_MODAL, { isShow })
+  },
+  setTipFlowConfirmationModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_CONFIRMATION_MODAL, { isShow })
+  },
+  hideTipFlowModalContent({ commit }) {
+    commit(types.HIDE_TIP_FLOW_MODAL_CONTENT)
   }
 }
 
@@ -734,6 +748,16 @@ const mutations = {
   },
   [types.SET_TIP_MODAL](state, { showTipModal }) {
     state.showTipModal = showTipModal
+  },
+  [types.SET_TIP_FLOW_SELECT_TIP_AMOUNT_MODAL](state, { isShow }) {
+    state.tipFlowModal.isSelectTipAmountModal = isShow
+  },
+  [types.SET_TIP_FLOW_CONFIRMATION_MODAL](state, { isShow }) {
+    state.tipFlowModal.isConfirmationModal = isShow
+  },
+  [types.HIDE_TIP_FLOW_MODAL_CONTENT](state) {
+    state.tipFlowModal.isSelectTipAmountModal = false
+    state.tipFlowModal.isConfirmationModal = false
   }
 }
 

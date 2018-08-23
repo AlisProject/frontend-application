@@ -115,6 +115,7 @@ export default {
     async tip() {
       if (this.loggedIn) {
         this.setTipModal({ showTipModal: true })
+        this.setTipFlowSelectTipAmountModal({ isShow: true })
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
       } else {
@@ -136,7 +137,12 @@ export default {
         }
       })
     },
-    ...mapActions('user', ['setReportModal', 'setRequestLoginModal', 'setTipModal']),
+    ...mapActions('user', [
+      'setReportModal',
+      'setRequestLoginModal',
+      'setTipModal',
+      'setTipFlowSelectTipAmountModal'
+    ]),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
 }
