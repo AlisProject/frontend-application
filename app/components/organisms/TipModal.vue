@@ -1,5 +1,5 @@
 <template>
-  <app-modal title="" class="cover-screen">
+  <app-modal title="">
     <div slot="modal-content">
       <tip-flow-select-tip-amount-modal v-if="isSelectTipAmountModal"/>
       <tip-flow-confirmation-modal v-if="isConfirmationModal"/>
