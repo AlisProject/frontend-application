@@ -72,7 +72,12 @@ module.exports = {
     preset: 'default',
     breaks: true
   },
-  plugins: ['~/plugins/axios', '~/plugins/vuelidate', { src: '~plugins/gtm.js', ssr: false }],
+  plugins: [
+    '~/plugins/axios',
+    '~/plugins/vuelidate',
+    { src: '~plugins/gtm.js', ssr: false },
+    { src: '~/plugins/vue-tags-input', ssr: false }
+  ],
   axios: {
     baseURL: process.env.BASE_URL,
     proxyHeaders: false
@@ -99,7 +104,7 @@ module.exports = {
         })
       }
     },
-    vendor: ['axios']
+    vendor: ['axios', 'moment', '@johmun/vue-tags-input']
   },
   css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
   env: {

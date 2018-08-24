@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash'
 import * as types from '../mutation-types'
 
 const namespaced = true
@@ -13,14 +14,6 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
-  tags: [
-    {
-      id: Math.random()
-        .toString(36)
-        .slice(-9),
-      name: ''
-    }
-  ],
   suggestedThumbnails: [],
   thumbnail: '',
   isSaving: false,
@@ -41,17 +34,18 @@ const state = () => ({
   },
   page: 1,
   isLastPage: false,
-  isFetching: false,
   topics: [],
   articleType: 'popularArticles',
   topicType: null,
-  topicDisplayName: ''
+  topicDisplayName: '',
+  fetchingArticleTopic: '',
+  tags: []
 })
 
 const getters = {
   article: (state) => state.article,
-  popularArticles: (state) => state.popularArticles,
-  newArticles: (state) => state.newArticles,
+  popularArticles: (state) => uniqBy(state.popularArticles, 'article_id'),
+  newArticles: (state) => uniqBy(state.newArticles, 'article_id'),
   publicArticles: (state) => state.publicArticles,
   draftArticles: (state) => state.draftArticles,
   articleId: (state) => state.articleId,
@@ -73,19 +67,19 @@ const getters = {
   articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
   searchArticles: (state) => state.searchArticles,
   topics: (state) => state.topics.sort((a, b) => a.order > b.order),
-  isFetching: (state) => state.isFetching,
   page: (state) => state.page,
   isLastPage: (state) => state.isLastPage,
   articleType: (state) => state.articleType,
   topicType: (state) => state.topicType || null,
-  topicDisplayName: (state) => state.topicDisplayName
+  topicDisplayName: (state) => state.topicDisplayName,
+  fetchingArticleTopic: (state) => state.fetchingArticleTopic,
+  tags: (state) => state.tags
 }
 
 const actions = {
   async getPopularArticles({ commit, dispatch, state }, { topic }) {
     try {
-      if (state.isFetching) return
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
+      commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
       const limit = 10
       const { Items: articles } = await this.$axios.$get('/articles/popular', {
         params: { topic, limit, page: state.page }
@@ -99,7 +93,11 @@ const actions = {
           return { ...article, userInfo, alisToken }
         })
       )
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: false })
+
+      // 新着記事の取得処理直後に人気記事の取得が始まると、本来は人気記事のみ表示されるべき画面で
+      // 新着記事が表示されるため、新着記事の取得中は人気記事の追加を行わない。
+      // また、トピックに対しても同様の問題が生じるため別トピックの取得中は記事の追加を行わない。
+      if (state.articleType === 'newArticles' || state.fetchingArticleTopic !== topic) return
       commit(types.SET_POPULAR_ARTICLES, { articles: articlesWithData })
       commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
       if (articles.length < limit) {
@@ -111,8 +109,7 @@ const actions = {
   },
   async getNewPagesArticles({ commit, dispatch, state }, { topic }) {
     try {
-      if (state.isFetching) return
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: true })
+      commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
       const limit = 10
       const { Items: articles } = await this.$axios.$get('/articles/recent', {
         params: { topic, limit, page: state.page }
@@ -126,7 +123,11 @@ const actions = {
           return { ...article, userInfo, alisToken }
         })
       )
-      commit(types.SET_ARTICLES_IS_FETCHING, { isFetching: false })
+
+      // 人気記事の取得処理直後に新着記事の取得が始まると、本来は新着記事のみ表示されるべき画面で
+      // 人気記事が表示されるため、人気記事の取得中は新着記事の追加を行わない。
+      // また、トピックに対しても同様の問題が生じるため別トピックの取得中は記事の追加を行わない。
+      if (state.articleType === 'popularArticles' || state.fetchingArticleTopic !== topic) return
       commit(types.SET_NEW_ARTICLES, { articles: articlesWithData })
       commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
       if (articles.length < limit) {
@@ -166,6 +167,7 @@ const actions = {
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
+      commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -173,10 +175,12 @@ const actions = {
   async getArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/articles/${articleId}`)
-      const userInfo = await dispatch('getUserInfo', { userId: article.user_id })
-      const alisToken = await dispatch('getAlisToken', { articleId })
-      const likesCount = await dispatch('getLikesCount', { articleId })
-      const comments = await dispatch('getArticleComments', { articleId })
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId }),
+        dispatch('getLikesCount', { articleId }),
+        dispatch('getArticleComments', { articleId })
+      ])
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     } catch (error) {
@@ -197,6 +201,7 @@ const actions = {
       commit(types.SET_ARTICLE, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
+      commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -262,11 +267,11 @@ const actions = {
       }
     }
   },
-  async publishDraftArticle({ commit }, { articleId, topic }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, { topic })
+  async publishDraftArticle({ commit }, { articleId, topic, tags }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, { topic, tags })
   },
-  async republishPublicArticle({ commit }, { articleId, topic }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/republish`, { topic })
+  async republishPublicArticle({ commit }, { articleId, topic, tags }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/republish`, { topic, tags })
   },
   async unpublishPublicArticle({ commit }, { articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public/unpublish`)
@@ -276,12 +281,6 @@ const actions = {
   },
   updateBody({ commit }, { body }) {
     commit(types.UPDATE_BODY, { body })
-  },
-  addTag({ commit }, { id, name }) {
-    commit(types.ADD_TAG, { id, name })
-  },
-  updateTag({ commit }, { id, name }) {
-    commit(types.UPDATE_TAG, { id, name })
   },
   updateSuggestedThumbnails({ commit }, { thumbnails }) {
     commit(types.UPDATE_SUGGESTED_THUMBNAILS, { thumbnails })
@@ -518,6 +517,9 @@ const actions = {
   },
   setTopicDisplayName({ commit }, { topicName }) {
     commit(types.SET_TOPIC_DISPLAY_NAME, { topicName })
+  },
+  updateTags({ commit }, { tags }) {
+    commit(types.UPDATE_TAGS, { tags })
   }
 }
 
@@ -555,13 +557,6 @@ const mutations = {
   },
   [types.UPDATE_BODY](state, { body }) {
     state.body = body
-  },
-  [types.ADD_TAG](state, { id, name }) {
-    state.tags.unshift({ id, name })
-  },
-  [types.UPDATE_TAG](state, { id, name }) {
-    const tagIndex = state.tags.findIndex((tag) => tag.id === id)
-    state.tags[tagIndex] = { id, name }
   },
   [types.UPDATE_SUGGESTED_THUMBNAILS](state, { thumbnails }) {
     state.suggestedThumbnails = thumbnails
@@ -646,9 +641,6 @@ const mutations = {
   [types.SET_TOPICS](state, { topics }) {
     state.topics = topics
   },
-  [types.SET_ARTICLES_IS_FETCHING](state, { isFetching }) {
-    state.isFetching = isFetching
-  },
   [types.SET_ARTICLES_PAGE](state, { page }) {
     state.page = page
   },
@@ -677,6 +669,22 @@ const mutations = {
         state.topicDisplayName = topic.display_name
       }
     })
+  },
+  [types.SET_FETCHING_ARTICLE_TOPIC](state, { topic }) {
+    state.fetchingArticleTopic = topic
+  },
+  [types.SET_ARTICLE_TAGS](state, { tags = [] }) {
+    // vue-tags-input の形式に適するようにタグを整形
+    const formattedTags = tags.map((tag) => {
+      return {
+        text: tag,
+        tiClasses: ['valid']
+      }
+    })
+    state.tags = formattedTags
+  },
+  [types.UPDATE_TAGS](state, { tags }) {
+    state.tags = tags
   }
 }
 

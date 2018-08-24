@@ -3,7 +3,7 @@
     class="area-article-type-select-box"
     :class="{ hidden: showOnlySessionLinksOnPc }"
     v-show="!showOnlyLogo && !showOnlySessionLinks">
-    <select required v-model="articleType">
+    <select required :value="articleType" @change="handleChangeArticleType">
       <option value="popularArticles">人気記事</option>
       <option value="newArticles">新着記事</option>
     </select>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   props: {
@@ -29,26 +29,21 @@ export default {
     }
   },
   computed: {
-    articleType: {
-      get() {
-        return this.$store.getters['article/articleType']
-      },
-      set(value) {
-        this.resetArticleData()
-        const { fullPath } = this.$route
-        const isPopularArticles = value === 'popularArticles'
-        this.setArticleType({
-          articleType: isPopularArticles ? 'popularArticles' : 'newArticles'
-        })
-        const to = isPopularArticles
-          ? fullPath.replace('recent', 'popular')
-          : fullPath.replace('popular', 'recent')
-        this.$router.push(to)
-      }
-    }
+    ...mapGetters('article', ['topics', 'articleType'])
   },
   methods: {
-    ...mapActions('article', ['resetArticleData', 'setArticleType'])
+    handleChangeArticleType(event) {
+      const { fullPath } = this.$route
+      const isPopularArticles = event.target.value === 'popularArticles'
+      this.setArticleType({
+        articleType: isPopularArticles ? 'popularArticles' : 'newArticles'
+      })
+      const to = isPopularArticles
+        ? fullPath.replace('recent', 'popular')
+        : fullPath.replace('popular', 'recent')
+      this.$router.push(to)
+    },
+    ...mapActions('article', ['setArticleType'])
   }
 }
 </script>
