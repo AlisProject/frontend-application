@@ -60,5 +60,10 @@ export default {
     // 74px - half height of .tip-flow-completed-modal
     margin-top: calc(50vh - 74px);
   }
+
+  .close-button {
+    // 74px - half height of .tip-flow-completed-modal
+    margin: 40px auto calc(50vh - 74px);
+  }
 }
 </style>
