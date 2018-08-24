@@ -49,7 +49,10 @@ export default {
     font-size: 16px;
     line-height: 28px;
     display: inline;
-    margin-right: 40px;
+
+    &:nth-child(1) {
+      margin-right: 40px;
+    }
 
     .published-at,
     .token-amount {
