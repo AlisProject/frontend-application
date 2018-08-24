@@ -25,7 +25,7 @@
     </span>
     <div class="triangle-mark" />
     <div class="token-amount-box">
-      <span class="token-amount">{{ tipTokenAmount }}</span>
+      <span class="token-amount">{{ tipTokenAmountForUser }}</span>
       <span class="unit">ALIS</span>
     </div>
       <span class="error-message">
@@ -39,6 +39,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 
 export default {
@@ -51,6 +52,10 @@ export default {
     }
   },
   computed: {
+    tipTokenAmountForUser() {
+      const formatNumber = 10 ** 18
+      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString()
+    },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
     },
@@ -58,15 +63,25 @@ export default {
     ...mapGetters('article', ['article'])
   },
   methods: {
-    moveToCompletedPage() {
-      if (this.alisToken < this.tipTokenAmount) {
+    async moveToCompletedPage() {
+      await this.getUsersAlisToken()
+
+      const formattedTipTokenAmount = new BigNumber(this.tipTokenAmountForUser)
+      const formattedAlisToken = new BigNumber('10.500')
+      // const formattedAlisToken = new BigNumber(this.alisToken)
+
+      if (formattedAlisToken.isLessThan(formattedTipTokenAmount)) {
         this.errorMessage = 'トークンが不足しています'
         return
       }
       this.setTipFlowConfirmationModal({ isShow: false })
       this.setTipFlowCompletedModal({ isShow: true })
     },
-    ...mapActions('user', ['setTipFlowConfirmationModal', 'setTipFlowCompletedModal'])
+    ...mapActions('user', [
+      'setTipFlowConfirmationModal',
+      'setTipFlowCompletedModal',
+      'getUsersAlisToken'
+    ])
   }
 }
 </script>

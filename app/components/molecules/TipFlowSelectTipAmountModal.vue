@@ -24,7 +24,7 @@
     </span>
     <div class="triangle-mark" />
     <div class="token-amount-box">
-      <span class="token-amount">{{ tipTokenAmount }}</span>
+      <span class="token-amount">{{ tipTokenAmountForUser }}</span>
       <span class="unit">ALIS</span>
     </div>
     <div class="select-unit-box">
@@ -55,6 +55,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 
 export default {
@@ -63,11 +64,18 @@ export default {
   },
   data() {
     return {
-      tipTokenAmount: 0,
+      tipTokenAmount: new BigNumber(0),
       errorMessage: ''
     }
   },
+  mounted() {
+    this.getUsersAlisToken()
+  },
   computed: {
+    tipTokenAmountForUser() {
+      const formatNumber = 10 ** 18
+      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString()
+    },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
     },
@@ -76,11 +84,21 @@ export default {
   },
   methods: {
     addTipTokenAmount(amount) {
-      // TODO: BigNumber等のライブラリを使う
-      const isAddableToken = this.tipTokenAmount <= 10.5 - amount
-      // const isAddableToken = this.tipTokenAmount <= this.alisToken - amount
-      if (!isAddableToken) return
-      this.tipTokenAmount += amount
+      const formatNumber = 10 ** 18
+      const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
+      const formattedAlisTokenAmount = new BigNumber('10.500').multipliedBy(formatNumber)
+      // const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
+      const formattedTipTokenAmount = this.tipTokenAmount
+      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+        formattedAlisTokenAmount.minus(formattedAmount)
+      )
+
+      if (!isAddableToken) {
+        this.errorMessage = 'トークンが不足しています'
+        return
+      }
+      this.errorMessage = ''
+      this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
     },
     moveToConfirmationPage() {
       if (this.tipTokenAmount === 0) {
