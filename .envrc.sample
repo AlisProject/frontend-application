@@ -1,0 +1,41 @@
+# --- ALIS ---
+
+## ALISのアプリケーションID
+## すべてのサブシステムで同じ値を使う必要がある
+export ALIS_APP_ID=alis
+
+# AWSのリージョン
+export REGION=ap-northeast-1
+
+# ALIS Serverless aplicationにより生成されたAWS Cognitoの情報
+# see: https://github.com/AlisProject/serverless-application
+export USER_POOL_ID=ap-northeast-1_1OI5XXXX
+export CLIENT_ID=3blv8falksulbexxxxxxxxxxxx
+
+# デプロイするAWS S3 バケット名
+export DIST_S3_BUCKET_NAME=${ALIS_APP_ID}ssm-dist-s3-bucket
+
+# 構築するアプリケーションのドメイン
+export DOMAIN=${ALIS_APP_ID}example.com
+
+# ALIS Serverless aplicationにより生成されたAWS API Gatewayの情報
+# see: https://github.com/AlisProject/serverless-application
+export BASE_URL=https://${ALIS_APP_ID}example.com/api
+
+# Iframely API KEY
+export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
+
+# API Gateway name for Nuxt
+# see: https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html
+export NUXT_API_GATEWAY_NAME=${ALIS_APP_ID}
+
+# --- AWS ---
+
+## aws-cli
+## aws-cliが依存する環境変数。
+##   - see: https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-environment.html
+## .credentialsファイルよりもこちらの環境変数が優先される
+## Cloud formationのデプロイやS3作成など重要な操作を行うため、管理者レベルの権限を持つ必要がある。
+export AWS_DEFAULT_REGION=${REGION}
+export AWS_ACCESS_KEY_ID=AKIAJZCGSXXXXXXXXXX
+export AWS_SECRET_ACCESS_KEY=iU6/q6ls5i5pDBPxxxxxxxxxxxxxxxxxxxx
