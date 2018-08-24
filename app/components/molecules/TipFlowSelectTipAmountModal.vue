@@ -30,16 +30,19 @@
     <div class="select-unit-box">
       <img
         @click="addTipTokenAmount(10)"
+        data-token-amount="10"
         class="unit-item"
         src="~assets/images/pc/article/btn_etc.png"
         alt="10ALIS">
       <img
         @click="addTipTokenAmount(1)"
+        data-token-amount="1"
         class="unit-item"
         src="~assets/images/pc/article/btn_etc.png"
         alt="1ALIS">
       <img
         @click="addTipTokenAmount(0.1)"
+        data-token-amount="0.1"
         class="unit-item"
         src="~assets/images/pc/article/btn_etc.png"
         alt="0.1ALIS">
@@ -69,6 +72,20 @@ export default {
     }
   },
   mounted() {
+    let lastTouch = 0
+    // スマホでのダブルタップ時に拡大しない
+    this.$el.addEventListener(
+      'touchend',
+      (event) => {
+        const now = window.performance.now()
+        if (now - lastTouch <= 500) {
+          this.addTipTokenAmount(event.target.dataset.tokenAmount)
+          event.preventDefault()
+        }
+        lastTouch = now
+      },
+      true
+    )
     this.getUsersAlisToken()
   },
   computed: {
