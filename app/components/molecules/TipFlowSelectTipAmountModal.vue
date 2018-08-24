@@ -200,4 +200,21 @@ export default {
     margin: 8px 0 40px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .tip-flow-select-tip-amount-modal {
+    .title {
+      font-size: 14px;
+      font-weight: normal;
+      letter-spacing: 4px;
+      margin: 20px 0 0;
+    }
+
+    .description {
+      color: #6e6e6e;
+      font-size: 12px;
+      margin-top: 30px;
+    }
+  }
+}
 </style>

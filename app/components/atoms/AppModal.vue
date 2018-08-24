@@ -216,6 +216,7 @@ export default {
       margin-top: 0;
       max-width: 550px;
       width: calc(100% - 60px);
+      overflow: scroll;
     }
   }
 
