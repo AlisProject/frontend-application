@@ -1,6 +1,6 @@
 <template>
   <div class="area-footer-actions">
-    <div class="action area-like" :class="{ liked: this.isLikedArticle }" @click="like">
+    <div class="action area-like" :class="{ liked: isLikedArticle }" @click="like">
       <span class="likes-count">{{ formattedLikesCount }}</span>
     </div>
     <div class="action area-tip" @click="tip" />
@@ -153,7 +153,7 @@ export default {
   display: grid;
   grid-area: footer-actions;
   grid-template-rows: 70px;
-  grid-template-columns: 100px 80px 1fr repeat(2, 60px);
+  grid-template-columns: repeat(2, 80px) 1fr repeat(2, 60px);
   /* prettier-ignore */
   grid-template-areas:
     'like tip ... share etc';
@@ -235,26 +235,35 @@ export default {
     width: 80px;
     height: 80px;
     position: relative;
-    background-position-y: -4px;
+
+    .likes-count {
+      align-items: center;
+      background-color: #fff;
+      border-radius: 50%;
+      border: 1px solid #ff4949;
+      color: #ff4949;
+      display: flex;
+      font-size: 12px;
+      height: 24px;
+      justify-content: center;
+      position: absolute;
+      right: 27px;
+      top: -26px;
+      width: 24px;
+    }
 
     &.liked {
-      background-position-y: -4px;
       background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
       background-size: 80px;
       cursor: not-allowed;
       height: 80px;
       position: relative;
       width: 80px;
-    }
 
-    .likes-count {
-      color: #585858;
-      font-size: 14px;
-      position: absolute;
-      right: -35px;
-      text-align: left;
-      top: 28px;
-      width: 30px;
+      .likes-count {
+        background-color: #ff4949;
+        color: #fff;
+      }
     }
   }
 
@@ -265,7 +274,6 @@ export default {
     grid-area: tip;
     height: 80px;
     width: 80px;
-    background-position-y: -4px;
   }
 }
 
@@ -287,12 +295,14 @@ export default {
 
     .action {
       z-index: 1;
+    }
 
-      .likes-count {
-        top: -18px;
-        right: 24px;
-        text-align: center;
-      }
+    .area-like.liked {
+      background-position-y: -4px;
+    }
+
+    .area-tip {
+      background-position-y: -4px;
     }
   }
 }

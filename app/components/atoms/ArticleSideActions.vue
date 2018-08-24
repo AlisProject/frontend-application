@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="article-side-actions" v-show="scrollY > 300">
-      <div class="action like" :class="{ liked: this.isLikedArticle }" @click="like">
+      <div class="action like" :class="{ liked: isLikedArticle }" @click="like">
         <span class="likes-count">{{ formattedLikesCount }}</span>
       </div>
       <div class="action share" @click="toggleSharePopup">
@@ -128,6 +128,22 @@ export default {
     position: relative;
     width: 80px;
 
+    .likes-count {
+      align-items: center;
+      background-color: #fff;
+      border-radius: 50%;
+      border: 1px solid #ff4949;
+      color: #ff4949;
+      display: flex;
+      font-size: 12px;
+      height: 24px;
+      justify-content: center;
+      left: 27px;
+      position: absolute;
+      top: -26px;
+      width: 24px;
+    }
+
     &.liked {
       background-position-y: -4px;
       background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
@@ -136,16 +152,11 @@ export default {
       height: 80px;
       position: relative;
       width: 80px;
-    }
 
-    .likes-count {
-      color: #585858;
-      font-size: 14px;
-      left: 25px;
-      position: absolute;
-      text-align: center;
-      top: -22px;
-      width: 30px;
+      .likes-count {
+        background-color: #ff4949;
+        color: #fff;
+      }
     }
   }
 

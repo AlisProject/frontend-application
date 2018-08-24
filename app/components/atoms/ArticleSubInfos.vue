@@ -42,6 +42,7 @@ export default {
 <style lang="scss" scoped>
 .area-article-sub-infos-container {
   grid-area: article-sub-infos;
+  margin-bottom: 40px;
 
   .article-sub-info {
     color: #6e6e6e;
