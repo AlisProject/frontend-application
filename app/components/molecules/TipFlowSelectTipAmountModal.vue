@@ -103,108 +103,101 @@ export default {
 
 
 <style lang="scss" scoped>
-.title {
-  color: #030303;
-  margin: 60px 0 0;
-  font-size: 20px;
-  text-align: center;
-  letter-spacing: 4px;
-}
-
-.description {
-  text-align: center;
-  color: #030303;
-  font-size: 14px;
-  display: block;
-  margin-top: 60px;
-}
-
-.author-icon {
-  border-radius: 50%;
-  display: block;
-  height: 80px;
-  margin: 40px auto 0;
-  width: 80px;
-}
-
-.user-display-name {
-  display: block;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 16px;
-  color: #030303;
-  letter-spacing: 0.8px;
-}
-
-.user-id {
-  display: block;
-  text-align: center;
-  font-size: 12px;
-  margin-top: 4px;
-  color: #6e6e6e;
-  letter-spacing: 0.8px;
-}
-
-.triangle-mark {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 16px 20px 16px;
-  border-color: transparent transparent rgb(218, 220, 243) transparent;
-  margin: 20px auto 0;
-}
-
-.token-amount-box {
-  height: 80px;
-  width: 80px;
-  border: 2px solid #858dda;
-  background-color: #ffffff;
-  border-radius: 50%;
-  margin: 20px auto 0;
-
-  .token-amount {
-    color: #858dda;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-    display: block;
-    margin-top: 22px;
-  }
-
-  .unit {
-    color: #858dda;
-    font-size: 14px;
-    text-align: center;
-    display: block;
-    margin-top: 2px;
-  }
-}
-
-.select-unit-box {
+.tip-flow-select-tip-amount-modal {
+  align-items: center;
   display: flex;
-  margin: 24px auto 0;
-  text-align: center;
-  justify-content: space-around;
-  width: 180px;
+  flex-flow: column nowrap;
 
-  .unit-item {
-    height: 60px;
-    width: 60px;
+  .title {
+    color: #030303;
+    font-size: 20px;
+    letter-spacing: 4px;
+    margin: 10px 0 0;
   }
-}
 
-.error-message {
-  color: #f06273;
-  display: block;
-  font-size: 12px;
-  margin-top: 34px;
-  min-height: 14px;
-  text-align: center;
-}
+  .description {
+    color: #030303;
+    font-size: 14px;
+    margin-top: 60px;
+  }
 
-.to-next-page-button {
-  text-align: center;
-  display: block;
-  margin: 8px auto 60px;
+  .author-icon {
+    border-radius: 50%;
+    height: 80px;
+    margin-top: 40px;
+    width: 80px;
+  }
+
+  .user-display-name {
+    color: #030303;
+    font-size: 14px;
+    letter-spacing: 0.8px;
+    margin-top: 16px;
+  }
+
+  .user-id {
+    color: #6e6e6e;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    margin-top: 4px;
+  }
+
+  .triangle-mark {
+    border-color: transparent transparent rgb(218, 220, 243) transparent;
+    border-style: solid;
+    border-width: 0 16px 20px 16px;
+    height: 0;
+    margin-top: 20px;
+    width: 0;
+  }
+
+  .token-amount-box {
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 50%;
+    border: 2px solid #858dda;
+    display: flex;
+    flex-flow: column nowrap;
+    height: 80px;
+    margin-top: 20px;
+    width: 80px;
+
+    .token-amount {
+      color: #858dda;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 22px;
+    }
+
+    .unit {
+      color: #858dda;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+  }
+
+  .select-unit-box {
+    display: flex;
+    justify-content: space-around;
+    margin: 24px auto 0;
+    text-align: center;
+    width: 180px;
+
+    .unit-item {
+      height: 60px;
+      width: 60px;
+    }
+  }
+
+  .error-message {
+    color: #f06273;
+    font-size: 12px;
+    margin-top: 34px;
+    min-height: 14px;
+  }
+
+  .to-next-page-button {
+    margin: 8px 0 40px;
+  }
 }
 </style>
