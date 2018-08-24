@@ -111,8 +111,10 @@ const state = () => ({
   showTipModal: false,
   tipFlowModal: {
     isSelectTipAmountModal: false,
-    isConfirmationModal: false
-  }
+    isConfirmationModal: false,
+    isCompletedModal: false
+  },
+  tipTokenAmount: 0
 })
 
 const getters = {
@@ -142,7 +144,8 @@ const getters = {
     !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
   searchUsers: (state) => state.searchUsers,
   showTipModal: (state) => state.showTipModal,
-  tipFlowModal: (state) => state.tipFlowModal
+  tipFlowModal: (state) => state.tipFlowModal,
+  tipTokenAmount: (state) => state.tipTokenAmount
 }
 
 const actions = {
@@ -541,6 +544,12 @@ const actions = {
   },
   hideTipFlowModalContent({ commit }) {
     commit(types.HIDE_TIP_FLOW_MODAL_CONTENT)
+  },
+  setTipTokenAmount({ commit }, { tipTokenAmount }) {
+    commit(types.SET_TIP_TOKEN_AMOUNT, { tipTokenAmount })
+  },
+  setTipFlowCompletedModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_COMPLETED_MODAL, { isShow })
   }
 }
 
@@ -758,6 +767,13 @@ const mutations = {
   [types.HIDE_TIP_FLOW_MODAL_CONTENT](state) {
     state.tipFlowModal.isSelectTipAmountModal = false
     state.tipFlowModal.isConfirmationModal = false
+    state.tipFlowModal.isCompletedModal = false
+  },
+  [types.SET_TIP_TOKEN_AMOUNT](state, { tipTokenAmount }) {
+    state.tipTokenAmount = tipTokenAmount
+  },
+  [types.SET_TIP_FLOW_COMPLETED_MODAL](state, { isShow }) {
+    state.tipFlowModal.isCompletedModal = isShow
   }
 }
 

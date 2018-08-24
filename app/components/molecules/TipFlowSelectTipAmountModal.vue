@@ -33,18 +33,21 @@ export default {
   methods: {
     addTipTokenAmount(amount) {
       // TODO: BigNumber等のライブラリを使う
-      const isAddableToken = this.tipTokenAmount <= this.alisToken - amount
+      const isAddableToken = this.tipTokenAmount <= 10.5 - amount
+      // const isAddableToken = this.tipTokenAmount <= this.alisToken - amount
       if (!isAddableToken) return
       this.tipTokenAmount += amount
     },
     moveToConfirmationPage() {
+      this.setTipTokenAmount({ tipTokenAmount: this.tipTokenAmount })
       this.setTipFlowSelectTipAmountModal({ isShow: false })
       this.setTipFlowConfirmationModal({ isShow: true })
     },
     ...mapActions('user', [
       'getUsersAlisToken',
       'setTipFlowSelectTipAmountModal',
-      'setTipFlowConfirmationModal'
+      'setTipFlowConfirmationModal',
+      'setTipTokenAmount'
     ])
   }
 }
