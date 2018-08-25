@@ -4,7 +4,7 @@
       <div class="action like" :class="{ liked: isLikedArticle }" @click="like">
         <span class="likes-count">{{ formattedLikesCount }}</span>
       </div>
-      <div class="action share" @click="toggleSharePopup">
+      <div class="sub-action share" @click="toggleSharePopup">
         <div class="share-popup" v-show="isSharePopupShown">
           <a class="share-twitter" target="_blank">
             Twitterでシェアする
@@ -115,18 +115,26 @@ export default {
   left: calc(50% - 450px);
 
   .action {
-    width: 60px;
-    height: 60px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .sub-action {
+    height: 40px;
+    width: 40px;
   }
 
   .like {
-    background-position-y: -4px;
-    background: url('~assets/images/pc/article/btn_like.png') no-repeat;
-    background-size: 80px;
+    background: #fff url('~assets/images/pc/article/icon_like.png') no-repeat;
+    background-position: 9px;
+    background-size: 32px;
+    border-radius: 50%;
+    border: 1px solid #ff4949;
+    box-shadow: 0px 2px 15px -1px #ff4949;
     cursor: pointer;
-    height: 80px;
     position: relative;
-    width: 80px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
 
     .likes-count {
       align-items: center;
@@ -138,20 +146,19 @@ export default {
       font-size: 12px;
       height: 24px;
       justify-content: center;
-      left: 27px;
       position: absolute;
-      top: -26px;
+      right: 12px;
+      top: -36px;
       width: 24px;
     }
 
     &.liked {
-      background-position-y: -4px;
-      background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
-      background-size: 80px;
+      background: #ff4949 url('~assets/images/pc/article/icon_like_selected.png') no-repeat;
+      background-position: 9px;
+      background-size: 32px;
+      border-radius: 50%;
       cursor: not-allowed;
-      height: 80px;
       position: relative;
-      width: 80px;
 
       .likes-count {
         background-color: #ff4949;
@@ -161,26 +168,30 @@ export default {
   }
 
   .share {
-    background: url('~assets/images/pc/article/btn_share.png') no-repeat;
-    background-size: 60px;
+    grid-area: share;
+    background: #fff url('~assets/images/pc/article/icon_share.png') no-repeat;
+    background-position: 8px;
+    background-size: 24px;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
     position: relative;
     cursor: pointer;
 
     .share-popup {
       background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
       background-color: #ffffff;
-      background-size: 24px;
+      background-size: 22px;
       background-position-x: 16px;
-      background-position-y: 14px;
+      background-position-y: 12px;
       border-radius: 4px;
       box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
-      padding: 16px 16px 16px 48px;
+      padding: 12px 12px 12px 48px;
       position: absolute;
-      right: 12px;
-      top: 56px;
+      right: 0;
+      top: 48px;
       width: 200px;
       z-index: 1;
 
