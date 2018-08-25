@@ -296,7 +296,7 @@ export default {
   .area-footer-actions {
     background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
     position: relative;
-    grid-template-columns: 0 repeat(2, 52px) 1fr repeat(2, 40px) 0;
+    grid-template-columns: 0 repeat(2, 40px) 1fr repeat(2, 40px) 0;
     /* prettier-ignore */
     grid-template-areas:
       '... like tip ... share etc ...';
@@ -314,6 +314,31 @@ export default {
     .action,
     .sub-action {
       z-index: 1;
+    }
+
+    .action {
+      height: 40px;
+      width: 40px;
+    }
+
+    .area-like {
+      background-position: 7px;
+      background-size: 24px;
+
+      .likes-count {
+        right: 6px;
+        top: -32px;
+      }
+
+      &.liked {
+        background-position: 7px;
+        background-size: 24px;
+      }
+    }
+
+    .area-tip {
+      background-position: 8px;
+      background-size: 24px;
     }
   }
 }
