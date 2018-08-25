@@ -27,6 +27,8 @@ export default {
     closeModal() {
       this.setTipModal({ showTipModal: false })
       this.setTipFlowCompletedModal({ isShow: false })
+      document.querySelector('html').style.overflow = ''
+      document.querySelector('body').style.overflow = ''
     },
     ...mapActions('user', ['setTipModal', 'setTipFlowCompletedModal'])
   }
