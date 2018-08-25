@@ -28,24 +28,13 @@
       <span class="unit">ALIS</span>
     </div>
     <div class="select-unit-box">
-      <img
-        @click="addTipTokenAmount(10)"
-        data-token-amount="10"
-        class="unit-item"
-        src="~assets/images/pc/article/btn_etc.png"
-        alt="10ALIS">
-      <img
-        @click="addTipTokenAmount(1)"
-        data-token-amount="1"
-        class="unit-item"
-        src="~assets/images/pc/article/btn_etc.png"
-        alt="1ALIS">
-      <img
-        @click="addTipTokenAmount(0.1)"
-        data-token-amount="0.1"
-        class="unit-item"
-        src="~assets/images/pc/article/btn_etc.png"
-        alt="0.1ALIS">
+      <div
+        v-for="unit in orderedUnitList"
+        @click="addTipTokenAmount(unit.amount)"
+        :data-token-amount="unit.name"
+        :class="`unit-item unit-${unit.name}`">
+        {{ unit.amount }}
+      </div>
     </div>
     <span class="error-message">
       {{ errorMessage }}
@@ -68,7 +57,12 @@ export default {
   data() {
     return {
       tipTokenAmount: new BigNumber(0),
-      errorMessage: ''
+      errorMessage: '',
+      unitList: [
+        { amount: 10, name: '10', order: 1 },
+        { amount: 1, name: '1', order: 2 },
+        { amount: 0.1, name: '01', order: 3 }
+      ]
     }
   },
   mounted() {
@@ -95,6 +89,9 @@ export default {
     },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
+    },
+    orderedUnitList() {
+      return this.unitList.sort((a, b) => a.order > b.order)
     },
     ...mapGetters('user', ['alisToken']),
     ...mapGetters('article', ['article'])
@@ -216,11 +213,37 @@ export default {
     justify-content: space-around;
     margin: 24px auto 0;
     text-align: center;
-    width: 180px;
+    width: 220px;
 
     .unit-item {
-      height: 60px;
-      width: 60px;
+      height: 40px;
+      width: 40px;
+      box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.8);
+      border-radius: 50%;
+      font-size: 10px;
+      color: #858dda;
+      line-height: 5.8;
+
+      &.unit-10 {
+        background: #fff url('~assets/images/pc/article/icon_chip_10.png') no-repeat;
+        background-size: 16px;
+        background-position-x: 12px;
+        background-position-y: 5px;
+      }
+
+      &.unit-1 {
+        background: #fff url('~assets/images/pc/article/icon_chip_1.png') no-repeat;
+        background-size: 16px;
+        background-position-x: 12px;
+        background-position-y: 5px;
+      }
+
+      &.unit-01 {
+        background: #fff url('~assets/images/pc/article/icon_chip_01.png') no-repeat;
+        background-size: 16px;
+        background-position-x: 12px;
+        background-position-y: 5px;
+      }
     }
   }
 
