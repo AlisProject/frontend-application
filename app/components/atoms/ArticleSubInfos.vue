@@ -65,7 +65,7 @@ export default {
 @media screen and (max-width: 640px) {
   .area-article-sub-infos-container {
     grid-area: article-sub-infos;
-    margin-bottom: 40px;
+    margin-bottom: 0;
 
     .article-sub-info {
       font-size: 14px;
