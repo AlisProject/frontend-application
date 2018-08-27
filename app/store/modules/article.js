@@ -39,7 +39,13 @@ const state = () => ({
   topicType: null,
   topicDisplayName: '',
   fetchingArticleTopic: '',
-  tags: []
+  tags: [],
+  tagArticles: {
+    articles: [],
+    page: 1,
+    isLastPage: false,
+    isFetching: false
+  }
 })
 
 const getters = {
@@ -73,7 +79,8 @@ const getters = {
   topicType: (state) => state.topicType || null,
   topicDisplayName: (state) => state.topicDisplayName,
   fetchingArticleTopic: (state) => state.fetchingArticleTopic,
-  tags: (state) => state.tags
+  tags: (state) => state.tags,
+  tagArticles: (state) => state.tagArticles
 }
 
 const actions = {
@@ -520,6 +527,32 @@ const actions = {
   },
   updateTags({ commit }, { tags }) {
     commit(types.UPDATE_TAGS, { tags })
+  },
+  async getTagArticles({ commit, dispatch, state }, { tag }) {
+    if (state.tagArticles.isFetching) return
+    commit(types.SET_TAG_ARTICLES_IS_FETCHING, { isFetching: true })
+    const limit = 9
+    const articles = await this.$axios.$get('/search/articles', {
+      params: { limit, query: tag, page: state.tagArticles.page }
+    })
+    // const articles = await this.$axios.$get('/search/articles', {
+    //   params: { limit, tag, page: state.tagArticles.page }
+    // })
+    const articlesWithData = await Promise.all(
+      articles.map(async (article) => {
+        const [userInfo, alisToken] = await Promise.all([
+          dispatch('getUserInfo', { userId: article.user_id }),
+          dispatch('getAlisToken', { articleId: article.article_id })
+        ])
+        return { ...article, userInfo, alisToken }
+      })
+    )
+    commit(types.SET_TAG_ARTICLES_IS_FETCHING, { isFetching: false })
+    commit(types.SET_TAG_ARTICLES, { articles: articlesWithData })
+    commit(types.SET_TAG_ARTICLES_PAGE, { page: state.tagArticles.page + 1 })
+    if (articles.length < limit) {
+      commit(types.SET_TAG_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+    }
   }
 }
 
@@ -685,6 +718,21 @@ const mutations = {
   },
   [types.UPDATE_TAGS](state, { tags }) {
     state.tags = tags
+  },
+  [types.SET_TAG_ARTICLES](state, { articles }) {
+    state.tagArticles.articles.push(...articles)
+  },
+  [types.SET_TAG_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.tagArticles.isLastPage = isLastPage
+  },
+  [types.SET_TAG_ARTICLES_PAGE](state, { page }) {
+    state.tagArticles.page = page
+  },
+  [types.SET_TAG_ARTICLES_IS_FETCHING](state, { isFetching }) {
+    state.tagArticles.isFetching = isFetching
+  },
+  [types.RESET_TAG_ARTICLES](state) {
+    state.tagArticles.articles = []
   }
 }
 
