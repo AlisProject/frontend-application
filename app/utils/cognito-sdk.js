@@ -5,8 +5,7 @@ import {
   CognitoUserAttribute,
   CognitoRefreshToken
 } from 'amazon-cognito-identity-js'
-import config from 'aws-sdk/lib/config'
-import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
+import { config, CognitoIdentityServiceProvider } from 'aws-sdk'
 
 export default class CognitoSDK {
   constructor() {
