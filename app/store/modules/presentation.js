@@ -6,14 +6,16 @@ const state = () => ({
   articleListScrollHeight: 0,
   notificationListScrollHeight: 0,
   searchArticlesScrollHeight: 0,
-  searchUsersScrollHeight: 0
+  searchUsersScrollHeight: 0,
+  searchTagsScrollHeight: 0
 })
 
 const getters = {
   articleListScrollHeight: (state) => state.articleListScrollHeight,
   notificationListScrollHeight: (state) => state.notificationListScrollHeight,
   searchArticlesScrollHeight: (state) => state.searchArticlesScrollHeight,
-  searchUsersScrollHeight: (state) => state.searchUsersScrollHeight
+  searchUsersScrollHeight: (state) => state.searchUsersScrollHeight,
+  searchTagsScrollHeight: (state) => state.searchTagsScrollHeight
 }
 
 const actions = {
@@ -28,6 +30,9 @@ const actions = {
   },
   setSearchUsersScrollHeight({ commit }, { scrollHeight }) {
     commit(types.SET_SEARCH_USERS_SCROLL_HEIGHT, { scrollHeight })
+  },
+  setSearchTagsScrollHeight({ commit }, { scrollHeight }) {
+    commit(types.SET_SEARCH_TAGS_SCROLL_HEIGHT, { scrollHeight })
   }
 }
 
@@ -43,6 +48,9 @@ const mutations = {
   },
   [types.SET_SEARCH_USERS_SCROLL_HEIGHT](state, { scrollHeight }) {
     state.searchUsersScrollHeight = scrollHeight
+  },
+  [types.SET_SEARCH_TAGS_SCROLL_HEIGHT](state, { scrollHeight }) {
+    state.searchTagsScrollHeight = scrollHeight
   }
 }
 
