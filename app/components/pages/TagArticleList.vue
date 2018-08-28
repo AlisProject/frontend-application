@@ -1,23 +1,24 @@
 <template>
-  <div class="tag-article-list">
+  <div class="tag-article-list" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
     <div class="area-tag">
       {{ this.$route.params.tag }}
     </div>
     <div class="area-nav">
-      nav
+      <span class="nav-content">
+        新規記事
+      </span>
     </div>
     <div class="area-tag-articles">
       <search-article-card-list :articles="tagArticles.articles"/>
     </div>
+    <the-loader :isLastPage="tagArticles.isLastPage"/>
     <app-footer/>
   </div>
 </template>
 
 <script>
-// import { mapGetters, mapActions } from 'vuex'
-import { mapGetters } from 'vuex'
-// import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import TheLoader from '../atoms/TheLoader'
@@ -30,8 +31,41 @@ export default {
     TheLoader,
     AppFooter
   },
+  data() {
+    return {
+      isFetchingData: false
+    }
+  },
   computed: {
-    ...mapGetters('article', ['tagArticles'])
+    ...mapGetters('article', ['tagArticles']),
+    ...mapGetters('presentation', ['tagArticlesScrollHeight'])
+  },
+  mounted() {
+    if (this.tagArticlesScrollHeight) {
+      this.$el.scrollTop = this.tagArticlesScrollHeight
+    }
+  },
+  beforeDestroy() {
+    this.setTagArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
+  },
+  methods: {
+    async infiniteScroll(event) {
+      if (this.isFetchingData) return
+      try {
+        this.isFetchingData = true
+
+        const isLastPage = this.tagArticles.isLastPage
+        const isScrollBottom =
+          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
+        if (isLastPage || !isScrollBottom) return
+
+        await this.getTagArticles({ tag: this.$route.params.tag })
+      } finally {
+        this.isFetchingData = false
+      }
+    },
+    ...mapActions('article', ['getTagArticles']),
+    ...mapActions('presentation', ['setTagArticlesScrollHeight'])
   }
 }
 </script>
@@ -40,10 +74,9 @@ export default {
 <style lang="scss" scoped>
 .tag-article-list {
   display: grid;
-  grid-row-gap: 20px;
+  grid-row-gap: 40px;
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 30px 30px 1fr 75px 75px;
-  // grid-template-rows: 100px 60px 20px 80px 1fr 75px 75px;
+  grid-template-rows: 100px 40px 30px 1fr 75px 75px;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header             app-header"
@@ -63,10 +96,24 @@ export default {
   font-size: 20px;
   letter-spacing: 0.25px;
   line-height: 1.5;
+  padding-left: 10px;
 }
 
 .area-nav {
   grid-area: nav;
+  grid-template-columns: 48px 1fr;
+  /* prettier-ignore */
+  grid-template-areas:
+    'nav-content ...';
+  padding-left: 10px;
+
+  .nav-content {
+    grid-area: nav-content;
+    border-bottom: 1px solid #99a2ff;
+    color: #858dda;
+    font-size: 12px;
+    padding-bottom: 14px;
+  }
 }
 
 .area-tag-articles {
@@ -88,13 +135,14 @@ export default {
 @media screen and (max-width: 640px) {
   .tag-article-list {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 40px 20px 1fr 75px min-content;
+    grid-template-rows: 100px 40px 30px 1fr 75px min-content;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .search-page-container {
-    grid-template-rows: 60px 20px 20px 50px 1fr 75px;
+  .tag-article-list {
+    grid-row-gap: 20px;
+    grid-template-rows: 60px 40px 30px 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header  app-header             app-header"
@@ -103,6 +151,26 @@ export default {
       "...         tag-articles           ...       "
       "...         loader                 ...       "
       "app-footer  app-footer             app-footer";
+  }
+
+  .area-tag {
+    padding-left: 0;
+  }
+
+  .area-nav {
+    box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.15);
+    // 170px - half width of article-card
+    padding-left: calc(50vw - 170px);
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .tag-article-list {
+    grid-template-columns: 10px 1fr 10px;
+  }
+
+  .area-nav {
+    padding-left: 10px;
   }
 }
 </style>

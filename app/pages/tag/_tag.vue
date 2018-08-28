@@ -9,9 +9,13 @@ export default {
   components: {
     TagArticleList
   },
-  async fetch({ store, params }) {
-    const { tag } = params
-    await store.dispatch('article/getTagArticles', { tag })
+  async fetch({ store, params, error }) {
+    try {
+      const { tag } = params
+      await store.dispatch('article/getTagArticles', { tag })
+    } catch (e) {
+      error({ statusCode: 404 })
+    }
   },
   head: {
     title: 'タグ'
