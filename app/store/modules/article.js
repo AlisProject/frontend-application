@@ -43,8 +43,7 @@ const state = () => ({
   tagArticles: {
     articles: [],
     page: 1,
-    isLastPage: false,
-    isFetching: false
+    isLastPage: false
   }
 })
 
@@ -529,8 +528,6 @@ const actions = {
     commit(types.UPDATE_TAGS, { tags })
   },
   async getTagArticles({ commit, dispatch, state }, { tag }) {
-    if (state.tagArticles.isFetching) return
-    commit(types.SET_TAG_ARTICLES_IS_FETCHING, { isFetching: true })
     const limit = 9
     const articles = await this.$axios.$get('/search/articles', {
       params: { limit, tag, page: state.tagArticles.page }
@@ -544,7 +541,6 @@ const actions = {
         return { ...article, userInfo, alisToken }
       })
     )
-    commit(types.SET_TAG_ARTICLES_IS_FETCHING, { isFetching: false })
     commit(types.SET_TAG_ARTICLES, { articles: articlesWithData })
     commit(types.SET_TAG_ARTICLES_PAGE, { page: state.tagArticles.page + 1 })
     if (articles.length < limit) {
@@ -728,13 +724,9 @@ const mutations = {
   [types.SET_TAG_ARTICLES_PAGE](state, { page }) {
     state.tagArticles.page = page
   },
-  [types.SET_TAG_ARTICLES_IS_FETCHING](state, { isFetching }) {
-    state.tagArticles.isFetching = isFetching
-  },
   [types.RESET_TAG_ARTICLES_DATA](state) {
     state.tagArticles.articles = []
     state.tagArticles.page = 1
-    state.tagArticles.isFetching = false
     state.tagArticles.isLastPage = false
   }
 }
