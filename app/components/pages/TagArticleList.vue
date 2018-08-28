@@ -124,6 +124,7 @@ export default {
 }
 
 .no-result-message {
+  color: #5e5e5e;
   text-align: center;
 }
 
