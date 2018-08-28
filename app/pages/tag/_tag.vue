@@ -10,11 +10,15 @@ export default {
     TagArticleList
   },
   async fetch({ store, params, error }) {
+    const { tag = null } = params
+    if (tag === null || (tag && tag.length >= 25)) {
+      error({ statusCode: 404 })
+      return
+    }
     try {
-      const { tag } = params
       await store.dispatch('article/getTagArticles', { tag })
     } catch (e) {
-      error({ statusCode: 404 })
+      error({ statusCode: 500 })
     }
   },
   head: {

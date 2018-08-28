@@ -10,7 +10,10 @@
       </span>
     </div>
     <div class="area-tag-articles">
-      <search-article-card-list :articles="tagArticles.articles"/>
+      <p class="no-result-message" v-if="tagArticles.articles.length === 0">
+        該当する記事が存在しません。
+      </p>
+      <search-article-card-list :articles="tagArticles.articles" v-else/>
     </div>
     <the-loader :isLastPage="tagArticles.isLastPage"/>
     <app-footer/>
@@ -118,6 +121,10 @@ export default {
 
 .area-tag-articles {
   grid-area: tag-articles;
+}
+
+.no-result-message {
+  text-align: center;
 }
 
 @media screen and (max-width: 1296px) {
