@@ -166,7 +166,7 @@ export default {
   }
 
   .area-nav {
-    box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 5px -5px rgba(0, 0, 0, 0.15);
     // 170px - half width of article-card
     padding-left: calc(50vw - 170px);
   }
