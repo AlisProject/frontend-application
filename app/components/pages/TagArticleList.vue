@@ -150,7 +150,7 @@ export default {
 @media screen and (max-width: 550px) {
   .tag-article-list {
     grid-row-gap: 20px;
-    grid-template-rows: 60px 40px 30px 1fr 75px 75px;
+    grid-template-rows: 60px 40px 30px 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header  app-header             app-header"
