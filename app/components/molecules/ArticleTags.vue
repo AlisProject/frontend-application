@@ -24,10 +24,8 @@ export default {
   methods: {
     reset() {
       this.resetTagArticles()
-      this.setTagArticlesScrollHeight({ scrollHeight: 0 })
     },
-    ...mapActions('article', ['resetTagArticles']),
-    ...mapActions('presentation', ['setTagArticlesScrollHeight'])
+    ...mapActions('article', ['resetTagArticles'])
   }
 }
 </script>
