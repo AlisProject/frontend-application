@@ -533,11 +533,8 @@ const actions = {
     commit(types.SET_TAG_ARTICLES_IS_FETCHING, { isFetching: true })
     const limit = 9
     const articles = await this.$axios.$get('/search/articles', {
-      params: { limit, query: tag, page: state.tagArticles.page }
+      params: { limit, tag, page: state.tagArticles.page }
     })
-    // const articles = await this.$axios.$get('/search/articles', {
-    //   params: { limit, tag, page: state.tagArticles.page }
-    // })
     const articlesWithData = await Promise.all(
       articles.map(async (article) => {
         const [userInfo, alisToken] = await Promise.all([
