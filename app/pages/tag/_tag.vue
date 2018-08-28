@@ -13,6 +13,7 @@ export default {
     // タグに関連する記事の初期化
     // 記事もしくはユーザーページから遷移してきた場合は、スクロール位置を保持させたいので初期化はしない。
     if (from.name !== 'user-articles-articleId' && from.name !== 'users-userId') {
+      store.dispatch('article/resetTagArticles')
       store.dispatch('presentation/setTagArticlesScrollHeight', { scrollHeight: 0 })
     }
 

@@ -551,8 +551,8 @@ const actions = {
       commit(types.SET_TAG_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
     }
   },
-  resetTagArticles({ commit }) {
-    commit(types.RESET_TAG_ARTICLES)
+  resetTagArticlesData({ commit }) {
+    commit(types.RESET_TAG_ARTICLES_DATA)
   }
 }
 
@@ -731,8 +731,11 @@ const mutations = {
   [types.SET_TAG_ARTICLES_IS_FETCHING](state, { isFetching }) {
     state.tagArticles.isFetching = isFetching
   },
-  [types.RESET_TAG_ARTICLES](state) {
+  [types.RESET_TAG_ARTICLES_DATA](state) {
     state.tagArticles.articles = []
+    state.tagArticles.page = 1
+    state.tagArticles.isFetching = false
+    state.tagArticles.isLastPage = false
   }
 }
 

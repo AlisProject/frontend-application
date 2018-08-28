@@ -4,7 +4,6 @@
       v-for="tag in tags"
       :key="tag"
       :to="`/tag/${tag}`"
-      @click.native="reset"
       class="tag">
       {{ tag }}
     </nuxt-link>
@@ -12,20 +11,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   props: {
     tags: {
       type: Array,
       required: false
     }
-  },
-  methods: {
-    reset() {
-      this.resetTagArticles()
-    },
-    ...mapActions('article', ['resetTagArticles'])
   }
 }
 </script>
