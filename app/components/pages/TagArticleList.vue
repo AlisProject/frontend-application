@@ -115,7 +115,7 @@ export default {
     border-bottom: 1px solid #99a2ff;
     color: #858dda;
     font-size: 12px;
-    padding-bottom: 14px;
+    padding-bottom: 12px;
   }
 }
 
