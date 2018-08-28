@@ -9,6 +9,7 @@
           :maxlength="25"
           placeholder="タグを入力してください"
           :class="{ 'invalid-tag': isInvalidTag }"
+          :autocomplete-items="filteredItems"
           @before-adding-tag="checkTags"
           @tags-changed="handleTagsChanged" />
       </no-ssr>
@@ -28,7 +29,14 @@ export default {
       tag: '',
       // isInvalidTagがtrueのとき、入力中のタグの文字色を赤くする
       isInvalidTag: false,
-      errorMessage: ''
+      errorMessage: '',
+      autocompleteItems: [
+        { text: 'aaa' },
+        { text: 'bbb' },
+        { text: 'AAA' },
+        { text: 'あああ' },
+        { text: 'ラーメン' }
+      ]
     }
   },
   methods: {
@@ -81,9 +89,29 @@ export default {
     focusToTagInputForm() {
       this.$el.querySelector('.new-tag-input').focus()
     },
+    repositionAutocompletePopup() {
+      const tagsInputFormRect = document.querySelector('.tags-input-form').getBoundingClientRect()
+      const newTagInputWrappeRect = document
+        .querySelector('.new-tag-input-wrapper')
+        .getBoundingClientRect()
+
+      // vue-tags-input の autocomplete が表示されるまで少し待つ必要がある
+      setTimeout(() => {
+        if (document.querySelector('.autocomplete')) {
+          document.querySelector('.autocomplete').style.left = `
+          ${newTagInputWrappeRect.x - tagsInputFormRect.x}px
+        `
+        }
+      }, 100)
+    },
     ...mapActions('article', ['updateTags'])
   },
   computed: {
+    filteredItems() {
+      return this.autocompleteItems.filter((item) => {
+        return new RegExp(this.tag, 'i').test(item.text) && !this.checkHasDuplicateTag(item)
+      })
+    },
     ...mapGetters('article', ['tags'])
   },
   watch: {
@@ -91,6 +119,8 @@ export default {
       // 入力中のタグを編集したとき、エラーを消しタグの色を黒色にもどす
       this.isInvalidTag = false
       this.errorMessage = ''
+
+      this.repositionAutocompletePopup()
     },
     isInvalidTag() {
       this.$emit('change-tag-validation-state', this.isInvalidTag)
@@ -133,6 +163,18 @@ export default {
 </style>
 
 <style lang="scss">
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .tags-input-form {
   .vue-tags-input {
     .input {
@@ -141,6 +183,28 @@ export default {
 
     &.invalid-tag .new-tag-input-wrapper input {
       color: #f06273;
+    }
+
+    .autocomplete {
+      width: auto;
+      border: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+      border-radius: 4px;
+      padding: 4px 8px;
+      text-align: left;
+      // autocomplete の popup の位置が変わる間、表示を遅らせてちらつかせないようにする
+      animation: fadein 100ms linear 0s;
+
+      .item {
+        padding: 2px 0;
+        color: #6e6e6e;
+        font-size: 12px;
+
+        &.selected-item {
+          background-color: transparent;
+          color: #858dda;
+        }
+      }
     }
   }
 
