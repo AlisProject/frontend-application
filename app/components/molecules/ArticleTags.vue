@@ -1,18 +1,33 @@
 <template>
   <div class="area-tags">
-    <span class="tag" v-for="tag in tags" :key="tag">
+    <nuxt-link
+      v-for="tag in tags"
+      :key="tag"
+      :to="`/tag/${tag}`"
+      @click.native="reset"
+      class="tag">
       {{ tag }}
-    </span>
+    </nuxt-link>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     tags: {
       type: Array,
       required: false
     }
+  },
+  methods: {
+    reset() {
+      this.resetTagArticles()
+      this.setTagArticlesScrollHeight({ scrollHeight: 0 })
+    },
+    ...mapActions('article', ['resetTagArticles']),
+    ...mapActions('presentation', ['setTagArticlesScrollHeight'])
   }
 }
 </script>
@@ -31,6 +46,7 @@ export default {
   font-size: 12px;
   margin: 0 20px 20px 0;
   padding: 6px 8px;
+  text-decoration: none;
 }
 
 @media screen and (max-width: 640px) {

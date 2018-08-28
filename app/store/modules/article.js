@@ -553,6 +553,9 @@ const actions = {
     if (articles.length < limit) {
       commit(types.SET_TAG_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
     }
+  },
+  resetTagArticles({ commit }) {
+    commit(types.RESET_TAG_ARTICLES)
   }
 }
 
