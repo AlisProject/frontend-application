@@ -18,7 +18,7 @@ export default {
     }
 
     const { tag = null } = params
-    if (tag === null || (tag && tag.length >= 25)) {
+    if (tag === null || (tag && tag.length > 25)) {
       error({ statusCode: 404 })
       return
     }
