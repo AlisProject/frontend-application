@@ -1,26 +1,36 @@
 <template>
   <div class="area-tags">
-    <nuxt-link
+    <span
       v-for="tag in tags"
       :key="tag"
-      :to="`/tag/${tag}`"
+      @click="onClick(tag)"
       class="tag">
       {{ tag }}
-    </nuxt-link>
+    </span>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   props: {
     tags: {
       type: Array,
       required: false
     }
+  },
+  methods: {
+    onClick(value) {
+      this.resetTagArticlesData()
+      this.setTagArticlesScrollHeight({ scrollHeight: 0 })
+      this.$router.push(`/tag/${value}`)
+    },
+    ...mapActions('article', ['resetTagArticlesData']),
+    ...mapActions('presentation', ['setTagArticlesScrollHeight'])
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .area-tags {
   grid-area: tags;
@@ -31,6 +41,7 @@ export default {
   background-color: rgba(133, 141, 218, 0.05);
   border-radius: 4px;
   color: #858dda;
+  cursor: pointer;
   display: inline-block;
   font-size: 12px;
   margin: 0 20px 20px 0;
