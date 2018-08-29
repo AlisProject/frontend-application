@@ -31,6 +31,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .area-tags {
   grid-area: tags;
