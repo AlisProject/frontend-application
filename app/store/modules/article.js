@@ -41,6 +41,7 @@ const state = () => ({
   fetchingArticleTopic: '',
   tags: [],
   tagArticles: {
+    currentTag: '',
     articles: [],
     page: 1,
     isLastPage: false
@@ -528,6 +529,7 @@ const actions = {
     commit(types.UPDATE_TAGS, { tags })
   },
   async getTagArticles({ commit, dispatch, state }, { tag }) {
+    commit(types.SET_TAG_ARTICLES_CURRENT_TAG, { tag })
     const limit = 9
     const articles = await this.$axios.$get('/search/articles', {
       params: { limit, tag, page: state.tagArticles.page }
@@ -728,6 +730,9 @@ const mutations = {
     state.tagArticles.articles = []
     state.tagArticles.page = 1
     state.tagArticles.isLastPage = false
+  },
+  [types.SET_TAG_ARTICLES_CURRENT_TAG](state, { tag }) {
+    state.tagArticles.currentTag = tag
   }
 }
 
