@@ -165,6 +165,7 @@ export default {
       font-size: 12px;
       margin: 4px;
       padding: 6px 5px 6px 8px;
+      word-break: break-word;
 
       .content {
         color: #858dda;
