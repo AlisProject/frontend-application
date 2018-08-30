@@ -30,17 +30,12 @@ export default {
       // isInvalidTagがtrueのとき、入力中のタグの文字色を赤くする
       isInvalidTag: false,
       errorMessage: '',
-      autocompleteItems: [
-        { text: 'aaa', count: 1 },
-        { text: 'bbb', count: 1 },
-        { text: 'aaaa', count: 10 },
-        { text: 'あああ', count: 1 },
-        { text: 'ラーメン', count: 1 }
-      ]
+      autocompleteItems: []
     }
   },
   methods: {
     handleTagsChanged(tags) {
+      this.autocompleteItems = []
       this.updateTags({ tags })
     },
     checkTags({ tag: addingTag, addTag }) {
@@ -102,7 +97,25 @@ export default {
           ${newTagInputWrappeRect.x - tagsInputFormRect.x}px
         `
         }
-      }, 100)
+      }, 700)
+    },
+    initItems() {
+      if (this.tag.length === 0) return
+
+      const mockData = [
+        { text: 'aaa', count: 1 },
+        { text: 'bbb', count: 2 },
+        { text: 'cccc', count: 3 },
+        { text: 'dddd', count: 4 },
+        { text: 'aaaa', count: 10 }
+      ]
+
+      clearTimeout(this.debounce)
+      this.debounce = setTimeout(() => {
+        this.autocompleteItems = mockData.filter((item) => {
+          return item.text.includes(this.tag) && !this.checkHasDuplicateTag(item)
+        })
+      }, 600)
     },
     ...mapActions('article', ['updateTags'])
   },
@@ -129,6 +142,8 @@ export default {
       this.errorMessage = ''
 
       this.repositionAutocompletePopup()
+
+      this.initItems()
     },
     isInvalidTag() {
       this.$emit('change-tag-validation-state', this.isInvalidTag)
