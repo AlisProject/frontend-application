@@ -31,11 +31,11 @@ export default {
       isInvalidTag: false,
       errorMessage: '',
       autocompleteItems: [
-        { text: 'aaa' },
-        { text: 'bbb' },
-        { text: 'AAA' },
-        { text: 'あああ' },
-        { text: 'ラーメン' }
+        { text: 'aaa', count: 1 },
+        { text: 'bbb', count: 1 },
+        { text: 'aaaa', count: 10 },
+        { text: 'あああ', count: 1 },
+        { text: 'ラーメン', count: 1 }
       ]
     }
   },
@@ -108,9 +108,17 @@ export default {
   },
   computed: {
     filteredItems() {
-      return this.autocompleteItems.filter((item) => {
-        return new RegExp(this.tag, 'i').test(item.text) && !this.checkHasDuplicateTag(item)
+      const filteredItems = this.autocompleteItems.filter((item) => {
+        return item.text.includes(this.tag) && !this.checkHasDuplicateTag(item)
       })
+      setTimeout(() => {
+        if (document.querySelectorAll('.autocomplete ul div').length > 0) {
+          Array.from(document.querySelectorAll('.autocomplete ul div')).forEach((item, i) => {
+            item.dataset.count = `(${filteredItems[i].count})`
+          })
+        }
+      }, 100)
+      return filteredItems
     },
     ...mapGetters('article', ['tags'])
   },
@@ -199,6 +207,12 @@ export default {
         padding: 2px 0;
         color: #6e6e6e;
         font-size: 12px;
+
+        div {
+          &:after {
+            content: attr(data-count);
+          }
+        }
 
         &.selected-item {
           background-color: transparent;
