@@ -99,7 +99,7 @@ export default {
         }
       }, 700)
     },
-    initItems() {
+    updateAutocompleteItems() {
       if (this.tag.length === 0) return
 
       const mockData = [
@@ -107,7 +107,12 @@ export default {
         { text: 'bbb', count: 2 },
         { text: 'cccc', count: 3 },
         { text: 'dddd', count: 4 },
-        { text: 'aaaa', count: 10 }
+        { text: 'aaaa', count: 10 },
+        { text: 'abcabc', count: 1 },
+        { text: 'b-b-b', count: 2 },
+        { text: 'CCCC', count: 3 },
+        { text: 'あいうえお', count: 4 },
+        { text: 'あああ', count: 10 }
       ]
 
       clearTimeout(this.debounce)
@@ -117,6 +122,15 @@ export default {
         })
       }, 600)
     },
+    addTagCounts(items) {
+      setTimeout(() => {
+        if (document.querySelectorAll('.autocomplete ul div').length > 0) {
+          Array.from(document.querySelectorAll('.autocomplete ul div')).forEach((item, i) => {
+            item.dataset.count = `(${items[i].count})`
+          })
+        }
+      }, 100)
+    },
     ...mapActions('article', ['updateTags'])
   },
   computed: {
@@ -124,13 +138,8 @@ export default {
       const filteredItems = this.autocompleteItems.filter((item) => {
         return item.text.includes(this.tag) && !this.checkHasDuplicateTag(item)
       })
-      setTimeout(() => {
-        if (document.querySelectorAll('.autocomplete ul div').length > 0) {
-          Array.from(document.querySelectorAll('.autocomplete ul div')).forEach((item, i) => {
-            item.dataset.count = `(${filteredItems[i].count})`
-          })
-        }
-      }, 100)
+      // タグのサジェスト時にタグの件数を表示
+      this.addTagCounts(filteredItems)
       return filteredItems
     },
     ...mapGetters('article', ['tags'])
@@ -143,7 +152,7 @@ export default {
 
       this.repositionAutocompletePopup()
 
-      this.initItems()
+      this.updateAutocompleteItems()
     },
     isInvalidTag() {
       this.$emit('change-tag-validation-state', this.isInvalidTag)
