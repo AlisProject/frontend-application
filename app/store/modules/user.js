@@ -93,7 +93,6 @@ const state = () => ({
   userInfo: {},
   userArticles: [],
   userArticlesLastEvaluatedKey: {},
-  hasUserArticlesLastEvaluatedKey: false,
   requestLoginModal: {
     isShow: false,
     requestType: ''
@@ -128,6 +127,8 @@ const getters = {
   userInfo: (state) => state.userInfo,
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
+  hasUserArticlesLastEvaluatedKey: (state) =>
+    !!Object.keys(state.userArticlesLastEvaluatedKey || {}).length,
   requestLoginModal: (state) => state.requestLoginModal,
   alisToken: (state) => state.alisToken,
   notifications: (state) => state.notifications,
@@ -405,31 +406,28 @@ const actions = {
     }
   },
   async getUserArticles({ commit, dispatch, state }, { userId }) {
-    if (!state.hasUserArticlesLastEvaluatedKey) {
-      try {
-        commit(types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
-        const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
-        await dispatch('setUserInfo', { userId })
-        const { userInfo } = state
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
-          `/users/${userInfo.user_id}/articles/public`,
-          { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
-        )
-        commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
-        const articlesWithData = await Promise.all(
-          articles.map(async (article) => {
-            const { alis_token: alisToken } = await this.$axios.$get(
-              `/articles/${article.article_id}/alistoken`
-            )
-            return { ...article, userInfo, alisToken }
-          })
-        )
-        commit(types.SET_USER_ARTICLES, { articles: articlesWithData })
-      } catch (error) {
-        Promise.reject(error)
-      } finally {
-        commit(types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: false })
-      }
+    try {
+      const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
+      await dispatch('setUserInfo', { userId })
+      const { userInfo } = state
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+        `/users/${userInfo.user_id}/articles/public`,
+        { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+      )
+      commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || {}
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const { alis_token: alisToken } = await this.$axios.$get(
+            `/articles/${article.article_id}/alistoken`
+          )
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_USER_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
     }
   },
   async getNotifications({ commit, dispatch, state }) {
@@ -686,9 +684,6 @@ const mutations = {
     state.signUpModal.formData.password = ''
     state.signUpAuthFlowModal.login.formData.password = ''
     state.loginModal.formData.password = ''
-  },
-  [types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
-    state.hasUserArticlesLastEvaluatedKey = hasLastEvaluatedKey
   },
   [types.SET_REQUEST_LOGIN_MODAL](state, { isShow, requestType }) {
     state.requestLoginModal.isShow = isShow

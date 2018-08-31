@@ -2,7 +2,7 @@
   <div class="new-article-list-container" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
     <article-card-list :articles="newArticles"/>
-    <the-loader :isLastPage="isLastPage"/>
+    <the-loader :isLoading="!isLastPage"/>
     <app-footer/>
   </div>
 </template>
