@@ -51,6 +51,12 @@ export default {
         this.closeSharePopup()
       }
     })
+    this.listen(window, 'touchstart', (event) => {
+      if (!this.$el.contains(event.target)) {
+        this.closeEtcPopup()
+        this.closeSharePopup()
+      }
+    })
     this.$el.querySelector(
       '.share-twitter'
     ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
