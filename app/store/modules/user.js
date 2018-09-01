@@ -127,8 +127,7 @@ const getters = {
   userInfo: (state) => state.userInfo,
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
-  hasUserArticlesLastEvaluatedKey: (state) =>
-    !!Object.keys(state.userArticlesLastEvaluatedKey || {}).length,
+  hasUserArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey !== null,
   requestLoginModal: (state) => state.requestLoginModal,
   alisToken: (state) => state.alisToken,
   notifications: (state) => state.notifications,
@@ -405,7 +404,8 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getUserArticles({ commit, dispatch, state }, { userId }) {
+  async getUserArticles({ commit, dispatch, state, getters }, { userId }) {
+    if (!getters.hasUserArticlesLastEvaluatedKey) return
     try {
       const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
       await dispatch('setUserInfo', { userId })
@@ -415,7 +415,7 @@ const actions = {
         { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
       )
       commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, {
-        lastEvaluatedKey: LastEvaluatedKey || {}
+        lastEvaluatedKey: LastEvaluatedKey || null
       })
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {

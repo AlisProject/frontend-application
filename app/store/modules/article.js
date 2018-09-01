@@ -62,8 +62,7 @@ const getters = {
   gotArticleData: (state) => state.gotArticleData,
   publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
   draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
-  hasDraftArticlesLastEvaluatedKey: (state) =>
-    !!Object.keys(state.draftArticlesLastEvaluatedKey || {}).length,
+  hasDraftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey !== null,
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
@@ -254,13 +253,14 @@ const actions = {
     }
   },
   async getDraftArticles({ commit, getters }) {
+    if (!getters.hasDraftArticlesLastEvaluatedKey) return
     try {
       const { article_id: articleId, sort_key: sortKey } = getters.draftArticlesLastEvaluatedKey
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/drafts', {
         params: { limit: 10, article_id: articleId, sort_key: sortKey }
       })
       commit(types.SET_DRAFT_ARTICLES_LAST_EVALUATED_KEY, {
-        lastEvaluatedKey: LastEvaluatedKey || {}
+        lastEvaluatedKey: LastEvaluatedKey || null
       })
       const userInfo = await this.$axios.$get('/me/info')
       const articlesWithData = articles.map((article) => {
