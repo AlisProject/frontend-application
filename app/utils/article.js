@@ -258,3 +258,8 @@ export function preventDropImageOnOGPContent() {
     element.dataset.preventedDragAndDrop = true
   })
 }
+
+export function htmlDecode(text) {
+  const doc = new DOMParser().parseFromString(text, 'text/html')
+  return doc.documentElement.textContent
+}
