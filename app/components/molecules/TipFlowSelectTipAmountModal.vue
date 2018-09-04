@@ -115,8 +115,9 @@ export default {
       this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
     },
     moveToConfirmationPage() {
-      if (this.tipTokenAmount === 0) {
-        this.errorMessage = '送付するトークン量を選択してください'
+      global.a = this.tipTokenAmount
+      if (this.tipTokenAmount.isEqualTo(0)) {
+        this.errorMessage = '贈るトークン量を選択してください'
         return
       }
       this.setTipTokenAmount({ tipTokenAmount: this.tipTokenAmount })
