@@ -458,6 +458,7 @@ const actions = {
         notifications.map(async (notification) => {
           let userInfo
           if (notification.type === 'comment') {
+            // if (notification.type === 'comment' || notification.type === 'tip') {
             userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
           }
           return { ...notification, userInfo }
