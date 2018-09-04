@@ -551,6 +551,15 @@ const actions = {
   },
   setTipFlowCompletedModal({ commit }, { isShow }) {
     commit(types.SET_TIP_FLOW_COMPLETED_MODAL, { isShow })
+  },
+  async postTipToken({ commit }, { tipTokenAmount }) {
+    try {
+      await this.$axios.$get('/me/wallet/balance')
+      console.log(tipTokenAmount)
+      // await this.$axios.$get('/me/wallet/tip', { tipTokenAmount })
+    } catch (error) {
+      Promise.reject(error)
+    }
   }
 }
 

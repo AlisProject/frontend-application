@@ -64,23 +64,33 @@ export default {
   },
   methods: {
     async moveToCompletedPage() {
-      await this.getUsersAlisToken()
+      try {
+        await this.getUsersAlisToken()
 
-      const formattedTipTokenAmount = new BigNumber(this.tipTokenAmountForUser)
-      const formattedAlisToken = new BigNumber('10.500')
-      // const formattedAlisToken = new BigNumber(this.alisToken)
+        const formattedTipTokenAmount = new BigNumber(this.tipTokenAmountForUser)
+        const formattedAlisToken = new BigNumber('10.500')
+        // const formattedAlisToken = new BigNumber(this.alisToken)
 
-      if (formattedAlisToken.isLessThan(formattedTipTokenAmount)) {
-        this.errorMessage = 'トークンが不足しています'
-        return
+        if (formattedAlisToken.isLessThan(formattedTipTokenAmount)) {
+          this.errorMessage = 'トークンが不足しています'
+          return
+        }
+
+        const tipTokenAmount = new BigNumber(this.tipTokenAmount).toString()
+
+        await this.postTipToken({ tipTokenAmount })
+
+        this.setTipFlowConfirmationModal({ isShow: false })
+        this.setTipFlowCompletedModal({ isShow: true })
+      } catch (error) {
+        console.error(error)
       }
-      this.setTipFlowConfirmationModal({ isShow: false })
-      this.setTipFlowCompletedModal({ isShow: true })
     },
     ...mapActions('user', [
       'setTipFlowConfirmationModal',
       'setTipFlowCompletedModal',
-      'getUsersAlisToken'
+      'getUsersAlisToken',
+      'postTipToken'
     ])
   }
 }
