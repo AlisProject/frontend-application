@@ -1,11 +1,11 @@
 <template>
   <div class="tip-flow-confirmation-modal">
     <h1 class="title">
-      トークン送付の確認
+      贈る量の確認
     </h1>
     <span class="description">
-      以下の内容をご確認の上、トークンの送付ボタンを押してください
-      ※送付の取り消しはできませんのでご注意ください
+      以下の内容をご確認の上、トークンを贈るボタンを押してください
+      ※贈り先の取り消しはできませんのでご注意ください
     </span>
     <img
       class="author-icon"
@@ -32,7 +32,7 @@
       {{ errorMessage }}
     </span>
     <app-button class="to-next-page-button" @click="moveToCompletedPage">
-      トークンを送付する
+      トークンを贈る
     </app-button>
   </div>
 </template>

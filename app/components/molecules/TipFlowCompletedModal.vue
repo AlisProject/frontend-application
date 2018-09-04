@@ -1,10 +1,10 @@
 <template>
   <div class="tip-flow-completed-modal">
     <span class="completed-message">
-      トークンの送付を受け付けました
+      贈り物を受け付けました
     </span>
     <span class="description">
-      受付を完了しました。送付先へ届くまでしばらくお待ち下さい
+      受付を完了しました。贈り先へ届くまでしばらくお待ち下さい
     </span>
     <app-button class="close-button" @click="closeModal">
       閉じる

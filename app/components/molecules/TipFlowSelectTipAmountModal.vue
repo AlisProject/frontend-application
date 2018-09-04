@@ -1,10 +1,10 @@
 <template>
   <div class="tip-flow-select-tip-amount-modal">
     <h1 class="title">
-      トークンの送付
+      トークンを贈る
     </h1>
     <span class="description">
-      お送り先をご確認の上、送付量を決めて確認画面へお進みください
+      お贈り先をご確認の上、贈る量を決めて確認画面へお進みください
     </span>
     <img
       class="author-icon"
