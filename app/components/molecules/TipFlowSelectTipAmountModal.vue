@@ -31,7 +31,7 @@
       <div
         v-for="unit in orderedUnitList"
         @click="addTipTokenAmount(unit.amount)"
-        :data-token-amount="unit.name"
+        :data-token-amount="unit.amount"
         :class="`unit-item unit-${unit.name}`">
         {{ unit.amount }}
       </div>
