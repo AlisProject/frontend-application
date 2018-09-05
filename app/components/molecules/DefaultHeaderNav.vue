@@ -1,14 +1,16 @@
 <template>
   <nav class="area-nav">
-    <nuxt-link
-      v-for="topic in topics"
-      :key="topic.order"
-      :data-topic="topic.name"
-      :to="to(topic.name)"
-      :class="`nav-link area-topic${topic.order}`"
-      @click.native="resetData">
-      {{topic.display_name}}
-    </nuxt-link>
+    <div class="area-nav-links">
+      <nuxt-link
+        v-for="topic in topics"
+        :key="topic.order"
+        :data-topic="topic.name"
+        :to="to(topic.name)"
+        :class="`nav-link area-topic${topic.order}`"
+        @click.native="resetData">
+        {{topic.display_name}}
+      </nuxt-link>
+    </div>
     <article-type-select-box />
   </nav>
 </template>
@@ -59,13 +61,23 @@ $topicCount: 3;
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 0 70px 1fr;
+  grid-template-columns: 1fr auto 0 70px 1fr;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...    ...    ...    ... ...                     ..."
-    "... topic1 topic2 topic3 ... article-type-select-box ..."
-    "... ...    ...    ...    ... ...                     ...";
+    "... ...       ... ...                     ..."
+    "... nav-links ... article-type-select-box ..."
+    "... ...       ... ...                     ...";
+}
+
+.area-nav-links {
+  grid-area: nav-links;
+  display: grid;
+  grid-column-gap: 30px;
+  grid-template-columns: repeat($topicCount, fit-content(100%));
+  /* prettier-ignore */
+  grid-template-areas:
+    "topic1 topic2 topic3";
 }
 
 .nav-link {
@@ -109,11 +121,16 @@ $topicCount: 3;
     grid-gap: 14px;
     /* prettier-ignore */
     grid-template-areas:
-      'topic1 topic2 topic3 ... article-type-select-box';
+      'nav-links ... article-type-select-box';
     grid-template-rows: 20px;
-    grid-template-columns: repeat($topicCount, fit-content(100%)) 1fr 62px;
+    grid-template-columns: auto 1fr 62px;
     padding: 0 18px;
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .area-nav-links {
+    grid-column-gap: 20px;
+    overflow: scroll;
   }
 
   .nav-link {
