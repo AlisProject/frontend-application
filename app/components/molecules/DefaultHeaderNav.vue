@@ -1,36 +1,25 @@
 <template>
   <nav class="area-nav">
-    <template v-if="!showOnlyLogo && !showOnlySessionLinks">
-      <nuxt-link
-        v-for="topic in topics"
-        :key="topic.order"
-        :data-topic="topic.name"
-        :to="to(topic.name)"
-        :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
-        @click.native="resetData">
-        {{topic.display_name}}
-      </nuxt-link>
-    </template>
+    <nuxt-link
+      v-for="topic in topics"
+      :key="topic.order"
+      :data-topic="topic.name"
+      :to="to(topic.name)"
+      :class="`nav-link area-topic${topic.order}`"
+      @click.native="resetData">
+      {{topic.display_name}}
+    </nuxt-link>
+    <article-type-select-box />
   </nav>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import ArticleTypeSelectBox from '../molecules/ArticleTypeSelectBox'
 
 export default {
-  props: {
-    showOnlyLogo: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinks: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinksOnPc: {
-      type: Boolean,
-      default: false
-    }
+  components: {
+    ArticleTypeSelectBox
   },
   data() {
     return {
@@ -70,13 +59,13 @@ $topicCount: 3;
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 60px;
+  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 0 70px 1fr;
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...    ...    ...    ..."
-    "... topic1 topic2 topic3 ..."
-    "... ...    ...    ...    ...";
+    "... ...    ...    ...    ... ...                     ..."
+    "... topic1 topic2 topic3 ... article-type-select-box ..."
+    "... ...    ...    ...    ... ...                     ...";
 }
 
 .nav-link {
@@ -120,9 +109,11 @@ $topicCount: 3;
     grid-gap: 14px;
     /* prettier-ignore */
     grid-template-areas:
-      'topic1 topic2 topic3';
+      'topic1 topic2 topic3 ... article-type-select-box';
     grid-template-rows: 20px;
-    grid-template-columns: repeat($topicCount, fit-content(100%));
+    grid-template-columns: repeat($topicCount, fit-content(100%)) 1fr 62px;
+    padding: 0 18px;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
   }
 
   .nav-link {

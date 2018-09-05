@@ -1,6 +1,7 @@
 <template>
   <div class="new-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
+    <app-header />
+    <default-header-nav :class="`topic${topicNumber}`" />
     <article-card-list :articles="newArticles"/>
     <the-loader :isLoading="!isLastPage"/>
     <app-footer/>
@@ -10,6 +11,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
+import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
@@ -17,6 +19,7 @@ import AppFooter from '../organisms/AppFooter'
 export default {
   components: {
     AppHeader,
+    DefaultHeaderNav,
     ArticleCardList,
     TheLoader,
     AppFooter
@@ -83,12 +86,13 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header        app-header"
+    "nav         nav               nav       "
     "...         ...               ...       "
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 20px 1fr 75px 75px;
+  grid-template-rows: 100px 30px 40px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -108,7 +112,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    grid-template-rows: 66px 28px 1fr 75px min-content;
+    grid-template-rows: 66px 28px 30px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }

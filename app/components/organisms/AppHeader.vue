@@ -37,8 +37,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
-import ArticleTypeSelectBox from '../molecules/ArticleTypeSelectBox'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
@@ -82,10 +80,8 @@ export default {
     }
   },
   components: {
-    DefaultHeaderNav,
     EditHeaderNav,
     HeaderSessionLinks,
-    ArticleTypeSelectBox,
     HeaderUserLoggedInItems,
     SignUpModal,
     SignUpAuthFlowModal,
