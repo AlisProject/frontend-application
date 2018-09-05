@@ -74,6 +74,7 @@ export default {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
     },
     isMyArticle() {
+      if (!this.currentUser) return false
       return this.articleUserId === this.currentUser.userId
     },
     ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser']),
