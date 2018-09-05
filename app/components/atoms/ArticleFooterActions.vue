@@ -3,7 +3,9 @@
     <div class="action area-like" :class="{ liked: isLikedArticle }" @click="like">
       <span class="likes-count">{{ formattedLikesCount }}</span>
     </div>
-    <div class="action area-tip" @click="tip" v-if="!isMyArticle"/>
+    <no-ssr>
+      <div class="action area-tip" @click="tip" v-if="!isMyArticle"/>
+    </no-ssr>
     <div class="sub-action area-share" @click="toggleSharePopup">
       <div class="share-popup" v-show="isSharePopupShown">
         <a class="share-twitter" target="_blank">
