@@ -25,7 +25,7 @@ export default {
   color: #7f7f7f;
   display: -webkit-box;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.5;
   margin: 0;
   overflow: hidden;
 }

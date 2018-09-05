@@ -23,13 +23,8 @@ export default {
 <style lang="scss" scoped>
 .area-date {
   color: #7f7f7f;
-  font-size: 14px;
+  font-size: 12px;
   margin: 0;
-}
-
-@media screen and (max-width: 640px) {
-  .area-date {
-    font-size: 12px;
-  }
+  align-self: flex-end;
 }
 </style>

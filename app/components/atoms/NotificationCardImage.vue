@@ -34,25 +34,14 @@ export default {
   overflow: hidden;
   display: flex;
   justify-content: flex-end;
-  align-items: center;
-  padding: 10px;
+  align-items: flex-start;
+  padding: 12px;
 
   .profile-icon {
     border-radius: 50%;
     cursor: pointer;
-    height: 64px;
-    width: 64px;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .area-notification-card-image {
-    padding: 0px;
-
-    .profile-icon {
-      height: 40px;
-      width: 40px;
-    }
+    height: 40px;
+    width: 40px;
   }
 }
 </style>
