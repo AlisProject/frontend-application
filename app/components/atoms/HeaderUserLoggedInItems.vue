@@ -33,10 +33,7 @@
           src="~assets/images/pc/common/icon_user_noimg.png"
           class="profile-image"
           v-else>
-      </div>
-      <div class="token-amount">
-        <p class="alis-hold-amount">ALIS保有数</p>
-        <p class="alis-token-amount">{{ alisToken }} <span class="token-unit">ALIS</span></p>
+        <p class="alis-token-amount">{{ alisToken }} ALIS</p>
       </div>
       <ul class="menu-links">
         <li class="menu-link">
@@ -192,6 +189,7 @@ export default {
   grid-area: session;
   display: flex;
   align-items: center;
+  position: relative;
 
   .search-icon {
     width: 24px;
@@ -217,11 +215,11 @@ export default {
   box-sizing: border-box;
   color: #000000;
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-  padding: 24px 41px;
+  padding: 24px 92px 50px;
   position: absolute;
-  right: calc(50vw - 540px);
-  top: 100px;
-  width: 240px;
+  right: 0;
+  top: 80px;
+  width: 280px;
 
   &:before {
     content: '';
@@ -232,56 +230,46 @@ export default {
   }
 
   .image-box {
-    height: 160px;
-    margin: -24px 0 0 -41px;
+    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    height: 180px;
+    margin: -24px -92px 0 -92px;
     overflow: hidden;
-    width: 240px;
+    text-align: center;
+    width: 280px;
 
     .profile-image {
+      border-radius: 50%;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+      height: 60px;
+      margin-top: 40px;
       object-fit: cover;
-      width: 100%;
-    }
-  }
-
-  .token-amount {
-    color: #040404;
-
-    .alis-hold-amount {
-      background: url('~assets/images/pc/common/icon_alistoken.png') no-repeat;
-      background-size: 18px;
-      font-size: 14px;
-      line-height: 18px;
-      margin: 30px 20px 0;
-      padding-left: 24px;
-      width: 100px;
+      width: 60px;
     }
 
     .alis-token-amount {
-      font-size: 28px;
-      font-weight: bold;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 500;
       margin-top: 10px;
-      text-align: center;
-
-      .token-unit {
-        font-size: 14px;
-      }
     }
   }
 
   .menu-links {
     list-style: none;
     padding: 0;
+    margin: 50px 0;
 
     .menu-link {
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
       height: 24px;
       letter-spacing: 1px;
       line-height: 24px;
-      margin-bottom: 12px;
-      padding-left: 0.5em;
-      width: 119px;
+      margin-bottom: 40px;
+      white-space: nowrap;
 
       a {
         display: block;
@@ -298,9 +286,9 @@ export default {
   .logout {
     color: #000;
     cursor: pointer;
+    display: block;
     font-size: 14px;
-    line-height: 21px;
-    margin-left: 6px;
+    margin-top: 80px;
     text-decoration: none;
 
     &:visited {
@@ -338,10 +326,8 @@ export default {
       border-radius: 0;
       filter: none;
       height: calc(100vh + 26px);
-      right: 0;
+      right: -22px;
       top: 0;
-      transform: rotate(0);
-      width: 280px;
       z-index: 1;
 
       &:before {
@@ -349,18 +335,13 @@ export default {
       }
 
       .image-box {
-        height: 160px;
+        background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+        border-radius: 0;
+        height: 180px;
+        margin: -24px -92px 0 -92px;
+        overflow: hidden;
+        text-align: center;
         width: 280px;
-      }
-
-      .menu-links {
-        list-style: none;
-        padding: 0;
-        margin-bottom: 40px;
-
-        .menu-link {
-          margin-bottom: 20px;
-        }
       }
     }
 
@@ -372,7 +353,7 @@ export default {
       height: 4000px;
       opacity: 0.5;
       position: absolute;
-      right: 0;
+      right: -22px;
       top: -26px;
       width: 100vw;
     }
@@ -401,10 +382,8 @@ export default {
     border-radius: 0;
     filter: none;
     height: calc(100vh + 26px);
-    right: 0;
+    right: -22px;
     top: 0;
-    transform: rotate(0);
-    width: 280px;
     z-index: 1;
 
     &:before {
@@ -412,18 +391,13 @@ export default {
     }
 
     .image-box {
-      height: 160px;
+      background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+      border-radius: 0;
+      height: 180px;
+      margin: -24px -92px 0 -92px;
+      overflow: hidden;
+      text-align: center;
       width: 280px;
-    }
-
-    .menu-links {
-      list-style: none;
-      padding: 0;
-      margin-bottom: 40px;
-
-      .menu-link {
-        margin-bottom: 20px;
-      }
     }
   }
 
@@ -435,7 +409,7 @@ export default {
     height: 4000px;
     opacity: 0.5;
     position: absolute;
-    right: 0;
+    right: -22px;
     top: -26px;
     width: 100vw;
   }
