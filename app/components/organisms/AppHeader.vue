@@ -146,6 +146,22 @@ export default {
   }
 }
 
+@media screen and (max-width: 920px) and (min-width: 551px) {
+  .article-container {
+    .area-app-header-container {
+      max-width: 100%;
+      background: white;
+      grid-template-columns: 94px 1fr auto;
+      grid-template-rows: 66px;
+      padding: 0 22px 0 18px;
+    }
+
+    .area-logo {
+      background-size: 94px 25px;
+    }
+  }
+}
+
 @media screen and (max-width: 550px) {
   .area-app-header-container {
     max-width: 100%;

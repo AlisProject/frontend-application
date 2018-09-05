@@ -86,6 +86,36 @@ export default {
   }
 }
 
+@media screen and (max-width: 920px) and (min-width: 551px) {
+  .article-container {
+    .session {
+      .search-icon {
+        width: 16px;
+        margin-right: 20px;
+      }
+
+      .login {
+        font-size: 12px;
+        margin-right: 16px;
+
+        &::after {
+          content: '/';
+          padding-left: 12px;
+        }
+      }
+
+      .sign-up {
+        background: none;
+        box-shadow: none;
+        color: #6e6e6e;
+        font-size: 12px;
+        height: auto;
+        width: auto;
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 550px) {
   .session {
     .search-icon {

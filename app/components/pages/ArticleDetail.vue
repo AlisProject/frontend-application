@@ -82,7 +82,7 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr min-content min-content 75px;
+  grid-template-rows: 100px 40px 1fr min-content min-content 75px;
   // grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
@@ -127,14 +127,14 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px 50px 1fr min-content min-content 75px;
+    grid-template-rows: 100px 40px 1fr min-content min-content 75px;
     // grid-template-rows: 100px 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 70px 0 1fr min-content min-content min-content;
+    grid-template-rows: 66px 0 1fr min-content min-content min-content;
     // grid-template-rows: 70px 0 1fr min-content 75px;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */

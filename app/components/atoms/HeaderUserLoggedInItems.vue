@@ -315,6 +315,70 @@ export default {
   }
 }
 
+@media screen and (max-width: 920px) and (min-width: 551px) {
+  .article-container {
+    .logged-in {
+      .search-icon {
+        width: 16px;
+        margin-right: 24px;
+      }
+
+      .notification-icon {
+        width: 16px;
+        margin-right: 24px;
+      }
+
+      .profile-icon {
+        height: 32px;
+        width: 32px;
+      }
+    }
+
+    .menu {
+      border-radius: 0;
+      filter: none;
+      height: calc(100vh + 26px);
+      right: 0;
+      top: 0;
+      transform: rotate(0);
+      width: 280px;
+      z-index: 1;
+
+      &:before {
+        display: none;
+      }
+
+      .image-box {
+        height: 160px;
+        width: 280px;
+      }
+
+      .menu-links {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 40px;
+
+        .menu-link {
+          margin-bottom: 20px;
+        }
+      }
+    }
+
+    .cover {
+      background: black;
+      border-radius: 4px;
+      box-sizing: border-box;
+      color: #000000;
+      height: 4000px;
+      opacity: 0.5;
+      position: absolute;
+      right: 0;
+      top: -26px;
+      width: 100vw;
+    }
+  }
+}
+
 @media screen and (max-width: 550px) {
   .logged-in {
     .search-icon {
