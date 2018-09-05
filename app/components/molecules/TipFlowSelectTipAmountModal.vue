@@ -100,7 +100,7 @@ export default {
     addTipTokenAmount(amount) {
       const formatNumber = 10 ** 18
       const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
-      const formattedAlisTokenAmount = new BigNumber('10.500').multipliedBy(formatNumber)
+      const formattedAlisTokenAmount = new BigNumber('10000.500').multipliedBy(formatNumber)
       // const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
       const formattedTipTokenAmount = this.tipTokenAmount
       const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
@@ -111,6 +111,17 @@ export default {
         this.errorMessage = 'トークンが不足しています'
         return
       }
+
+      const formattedMaxTokenAmount = new BigNumber('9999.9').multipliedBy(formatNumber)
+      const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
+        formattedMaxTokenAmount.minus(formattedAmount)
+      )
+
+      if (hasExceededMaxTipToken) {
+        this.errorMessage = '一度に贈れるトークンは 9999.9 ALIS 以下となります'
+        return
+      }
+
       this.errorMessage = ''
       this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
     },
