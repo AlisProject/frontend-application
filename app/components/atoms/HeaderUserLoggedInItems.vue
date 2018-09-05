@@ -6,11 +6,11 @@
     <nuxt-link to="/me/notifications">
       <img
         class="notification-icon"
-        src="~assets/images/pc/common/icon_bell_mark.png"
+        src="~assets/images/pc/common/icon_notification_mark.png"
         v-if="unreadNotification">
       <img
         class="notification-icon"
-        src="~assets/images/pc/common/icon_bell.png"
+        src="~assets/images/pc/common/icon_notification.png"
         v-else>
     </nuxt-link>
     <img
