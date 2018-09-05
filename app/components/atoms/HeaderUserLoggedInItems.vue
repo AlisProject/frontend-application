@@ -1,15 +1,8 @@
 <template>
   <div class="logged-in">
-    <img
-      class="profile-icon"
-      :src="currentUserInfo.icon_image_url"
-      @click="toggleMenu"
-      v-if="currentUserInfo.icon_image_url !== undefined">
-    <img
-      class="profile-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
-      @click="toggleMenu"
-      v-else>
+    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
+      <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
+    </nuxt-link>
     <nuxt-link to="/me/notifications">
       <img
         class="notification-icon"
@@ -20,9 +13,16 @@
         src="~assets/images/pc/common/icon_bell.png"
         v-else>
     </nuxt-link>
-    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
-      <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
-    </nuxt-link>
+    <img
+      class="profile-icon"
+      :src="currentUserInfo.icon_image_url"
+      @click="toggleMenu"
+      v-if="currentUserInfo.icon_image_url !== undefined">
+    <img
+      class="profile-icon"
+      src="~assets/images/pc/common/icon_user_noimg.png"
+      @click="toggleMenu"
+      v-else>
     <div class="menu" v-if="isMenuShown">
       <div class="image-box">
         <img
@@ -189,35 +189,25 @@ export default {
 
 <style lang="scss" scoped>
 .logged-in {
-  border-top: 6px solid #858dda;
-  padding-top: 10px;
-  position: fixed;
-  right: -28.5px;
-  top: 150px;
-  transform: rotate(90deg);
-  width: 134px;
+  grid-area: session;
+  display: flex;
+  align-items: center;
+
+  .search-icon {
+    width: 24px;
+    margin-right: 40px;
+  }
+
+  .notification-icon {
+    width: 24px;
+    margin-right: 40px;
+  }
 
   .profile-icon {
     border-radius: 50%;
     cursor: pointer;
-    float: left;
-    height: 60px;
-    transform: rotate(-90deg);
-    width: 60px;
-  }
-
-  .notification-icon {
-    float: left;
-    margin: 20px 10px 0 16px;
-    transform: rotate(-90deg);
-    width: 16px;
-  }
-
-  .search-icon {
-    float: left;
-    margin: 20px 10px 0 5px;
-    transform: rotate(-90deg);
-    width: 16px;
+    height: 40px;
+    width: 40px;
   }
 }
 
@@ -229,8 +219,8 @@ export default {
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
   padding: 24px 41px;
   position: absolute;
-  right: -101px;
-  transform: rotate(-90deg);
+  right: calc(50vw - 540px);
+  top: 100px;
   width: 240px;
 
   &:before {
@@ -239,16 +229,6 @@ export default {
     position: absolute;
     right: 0;
     width: 0;
-  }
-
-  &:before {
-    border-bottom: 20px solid transparent;
-    border-left: 40px solid white;
-    border-right: 0px solid transparent;
-    border-top: 20px solid transparent;
-    margin: -20px -20px 0 0;
-    top: 150px;
-    z-index: -1;
   }
 
   .image-box {
@@ -329,103 +309,39 @@ export default {
   }
 }
 
-@media screen and (max-width: 920px) and (min-width: 551px) {
-  .article-container {
-    .logged-in {
-      border: none;
-      grid-area: session;
-      position: static;
-      right: -46px;
-      transform: rotate(0);
-
-      .profile-icon {
-        border-radius: 50%;
-        float: right;
-        height: 32px;
-        transform: rotate(0);
-        width: 32px;
-        margin-top: -8px;
-      }
-
-      .notification-icon {
-        float: right;
-        margin: 2px 20px 0 0;
-        transform: rotate(0);
-      }
-
-      .search-icon {
-        float: right;
-        margin: 4px 22px 0 0;
-        transform: rotate(0);
-      }
-    }
-
-    .menu {
-      right: -16px;
-      top: -26px;
-      width: 280px;
-      transform: rotate(0);
-
-      &:before {
-        display: none;
-      }
-
-      .image-box {
-        height: 160px;
-        width: 280px;
-      }
-
-      .menu-links {
-        list-style: none;
-        padding: 0;
-        margin-bottom: 40px;
-
-        .menu-link {
-          margin-bottom: 20px;
-        }
-      }
-    }
+@media screen and (max-width: 1080px) {
+  .menu {
+    right: 34px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .logged-in {
-    border: none;
-    grid-area: session;
-    padding: 0;
-    position: static;
-    right: -46px;
-    transform: rotate(0);
-
-    .profile-icon {
-      border-radius: 50%;
-      float: right;
-      height: 32px;
-      margin-top: -4px;
-      transform: rotate(0);
-      width: 32px;
+    .search-icon {
+      width: 16px;
+      margin-right: 24px;
     }
 
     .notification-icon {
-      float: right;
-      margin: 5px 20px 0 0;
-      transform: rotate(0);
+      width: 16px;
+      margin-right: 24px;
     }
 
-    .search-icon {
-      float: right;
-      margin: 5px 22px 0 0;
-      transform: rotate(0);
+    .profile-icon {
+      height: 32px;
+      width: 32px;
     }
   }
 
   .menu {
-    right: -16px;
-    top: -26px;
-    width: 280px;
+    border-radius: 0;
+    filter: none;
+    height: calc(100vh + 26px);
+    right: 0;
+    top: 0;
     transform: rotate(0);
+    width: 280px;
     z-index: 1;
-    height: 101vh;
 
     &:before {
       display: none;
@@ -452,16 +368,12 @@ export default {
     border-radius: 4px;
     box-sizing: border-box;
     color: #000000;
-    filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
     height: 4000px;
     opacity: 0.5;
     position: absolute;
-    right: -16px;
+    right: 0;
     top: -26px;
-    transform: rotate(-90deg);
-    transform: rotate(0);
     width: 100vw;
-    z-index: -1;
   }
 }
 </style>

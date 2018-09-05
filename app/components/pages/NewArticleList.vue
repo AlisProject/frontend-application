@@ -108,7 +108,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    grid-template-rows: 92px 28px 1fr 75px min-content;
+    grid-template-rows: 66px 28px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }

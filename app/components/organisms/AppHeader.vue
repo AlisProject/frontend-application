@@ -1,7 +1,7 @@
 <template>
-  <header class="area-app-header-container" :class="{ 'with-edit-header-nav': showEditHeaderNav }">
+  <header class="area-app-header-container">
     <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
-    <default-header-nav
+    <!-- <default-header-nav
       v-if="showDefaultHeaderNav"
       :showOnlyLogo="showOnlyLogo"
       :showOnlySessionLinks="showOnlySessionLinks"
@@ -16,16 +16,16 @@
         v-if="showEditHeaderNav"
         :showPostArticleLink="showPostArticleLink"
         :showEditArticleLink="showEditArticleLink"/>
-    </no-ssr>
+    </no-ssr> -->
     <template v-if="!showOnlyLogo">
       <no-ssr>
         <header-session-links v-if="!loggedIn"/>
         <header-user-logged-in-items v-else />
       </no-ssr>
     </template>
-    <sign-up-modal v-show="this.showSignUpModal"/>
-    <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>
-    <login-modal v-show="this.showLoginModal"/>
+    <sign-up-modal v-show="showSignUpModal"/>
+    <sign-up-auth-flow-modal v-show="showSignUpAuthFlowModal"/>
+    <login-modal v-show="showLoginModal"/>
     <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
@@ -127,69 +127,40 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 170px 1fr 78px calc(50vw - 210px);
+  max-width: 1080px;
+  grid-template-columns: 150px 1fr auto;
   /* prettier-ignore */
   grid-template-areas:
-    "logo nav article-type-select-box ...";
-  position: relative;
+    "logo ... session";
   z-index: 2;
-
-  &.with-edit-header-nav {
-    grid-template-columns: 170px 1fr 78px 190px;
-  }
+  padding-left: calc(50vw - 540px);
 }
 
 .area-logo {
   grid-area: logo;
   background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
   background-position: center;
-  background-size: 94px 25px;
+  background-size: 150px 40px;
 }
 
-@media screen and (max-width: 920px) and (min-width: 551px) {
-  .article-container {
-    .area-app-header-container {
-      background: white;
-      grid-gap: 16px;
-      /* prettier-ignore */
-      grid-template-areas:
-        '... ...  ... ...     ...'
-        '... logo ... session ...'
-        '... ...  ... ...     ...';
-      grid-template-columns: 3px 94px 1fr 145px 3px;
-      grid-template-rows: 6px 26px 20px;
-
-      &.with-edit-header-nav {
-        grid-template-columns: 3px 94px 1fr 145px 3px;
-      }
-    }
+@media screen and (max-width: 1080px) {
+  .area-app-header-container {
+    max-width: calc(100% - 68px);
+    padding-left: 34px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .area-app-header-container {
+    max-width: 100%;
     background: white;
-    grid-gap: 16px;
-    /* prettier-ignore */
-    grid-template-areas:
-      '... ...  ... ...     ...                     ...'
-      '... logo ... session session                 ...'
-      '... nav  nav nav     article-type-select-box ...';
-    grid-template-columns: 3px 94px 1fr 60px 61px 3px;
-    grid-template-rows: 6px 26px 20px;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
-
-    &.without-shadow {
-      box-shadow: none;
-    }
-
-    &.with-edit-header-nav {
-      grid-template-columns: 3px 94px 1fr 60px 61px 3px;
-    }
+    grid-template-columns: 94px 1fr auto;
+    grid-template-rows: 66px;
+    padding: 0 22px 0 18px;
   }
 
   .area-logo {
-    margin: 0;
+    background-size: 94px 25px;
   }
 }
 </style>

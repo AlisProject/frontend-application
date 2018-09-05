@@ -3,9 +3,8 @@
     <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
-    <span class="session-link sign-up" @click="showSignUpModal">Sign up</span>
-    <span class="divider">/</span>
-    <span class="session-link login" @click="showLoginModal">Login</span>
+    <span class="login" @click="showLoginModal">ログイン</span>
+    <span class="sign-up" @click="showSignUpModal">新規登録</span>
   </div>
 </template>
 
@@ -55,88 +54,62 @@ export default {
 
 <style lang="scss" scoped>
 .session {
-  border-top: 6px solid #858dda;
-  padding-top: 38px;
-  position: fixed;
-  right: -49px;
-  text-align: right;
-  top: 170px;
-  transform: rotate(90deg);
-  width: 160px;
+  grid-area: session;
+  align-items: center;
+  display: flex;
 
   .search-icon {
-    float: left;
-    padding-right: 4px;
-    transform: rotate(-90deg);
-    width: 16px;
     cursor: pointer;
+    margin-right: 40px;
+    width: 24px;
   }
 
-  .session-link {
+  .login {
     color: #6e6e6e;
-    text-decoration: none;
     cursor: pointer;
+    font-size: 14px;
+    margin-right: 40px;
   }
 
-  .divider {
-    color: #6e6e6e;
-    margin: 0 4px;
-  }
-}
-
-@media screen and (max-width: 920px) and (min-width: 551px) {
-  .article-container {
-    .session {
-      border: none;
-      grid-area: session;
-      padding: 0;
-      position: static;
-      right: -46px;
-      transform: rotate(0);
-      width: 100%;
-
-      .search-icon {
-        padding: 2px 4px;
-        transform: rotate(0);
-        margin-right: 15px;
-      }
-
-      .session-link {
-        font-size: 12px;
-      }
-
-      .divider {
-        font-size: 12px;
-        margin: 0 12px;
-      }
-    }
+  .sign-up {
+    background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
+    border-radius: 4px;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 100;
+    height: 34px;
+    line-height: 2.5;
+    text-align: center;
+    width: 96px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .session {
-    border: none;
-    grid-area: session;
-    padding: 0;
-    position: static;
-    right: -46px;
-    transform: rotate(0);
-    width: 100%;
-    display: flex;
-    align-items: center;
-
     .search-icon {
-      transform: rotate(0);
-      margin-right: 15px;
+      width: 16px;
+      margin-right: 20px;
     }
 
-    .session-link {
+    .login {
       font-size: 12px;
+      margin-right: 16px;
+
+      &::after {
+        content: '/';
+        padding-left: 12px;
+      }
     }
 
-    .divider {
+    .sign-up {
+      background: none;
+      box-shadow: none;
+      color: #6e6e6e;
       font-size: 12px;
-      margin: 0 12px;
+      height: auto;
+      width: auto;
     }
   }
 }
