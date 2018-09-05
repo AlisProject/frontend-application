@@ -23,6 +23,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -33,6 +34,10 @@ export default {
   },
   props: {
     articleId: {
+      type: String,
+      required: true
+    },
+    articleUserId: {
       type: String,
       required: true
     },
@@ -69,8 +74,9 @@ export default {
     formattedLikesCount() {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
     },
-    ...mapGetters('user', ['loggedIn', 'showReportModal']),
-    ...mapGetters('article', ['article'])
+    ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser']),
+    ...mapGetters('article', ['article']),
+    ...mapGetters(['toastMessages'])
   },
   methods: {
     toggleEtcPopup() {
@@ -114,6 +120,11 @@ export default {
     },
     async tip() {
       if (this.loggedIn) {
+        if (this.articleUserId === this.currentUser.userId) {
+          if (this.toastMessages.length > 0) return
+          this.sendNotification({ text: '自分が作成した記事にはトークンを贈れません' })
+          return
+        }
         this.setTipModal({ showTipModal: true })
         this.setTipFlowSelectTipAmountModal({ isShow: true })
         window.scrollTo(0, 0)
@@ -137,6 +148,9 @@ export default {
         }
       })
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', [
       'setReportModal',
       'setRequestLoginModal',
