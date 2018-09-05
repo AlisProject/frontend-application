@@ -52,9 +52,9 @@
         </div>
       </no-ssr>
     </div>
-    <the-loader :isLastPage="!this.query || searchArticles.isLastPage" v-if="searchContentType === 'article'"/>
-    <the-loader :isLastPage="!this.query || searchUsers.isLastPage" v-else-if="searchContentType === 'user'"/>
-    <the-loader :isLastPage="!this.query || searchTags.isLastPage" v-else-if="searchContentType === 'tag'"/>
+    <the-loader :isLoading="showNav && !searchArticles.isLastPage" v-if="searchContentType === 'article'"/>
+    <the-loader :isLoading="showNav && !searchUsers.isLastPage" v-else-if="searchContentType === 'user'"/>
+    <the-loader :isLoading="showNav && !searchTags.isLastPage" v-else-if="searchContentType === 'tag'"/>
     <app-footer/>
   </div>
 </template>
@@ -65,7 +65,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import SearchUserCardList from '../organisms/SearchUserCardList'
-import ArticleTags from '../atoms/ArticleTags'
+import ArticleTags from '../molecules/ArticleTags'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 

@@ -9,19 +9,9 @@
 <script>
 export default {
   props: {
-    lastEvaluatedKey: {
-      type: Object,
-      required: false
-    },
-    isLastPage: {
+    isLoading: {
       type: Boolean,
-      required: false,
-      default: null
-    }
-  },
-  computed: {
-    isLoading() {
-      return this.isLastPage === null ? this.lastEvaluatedKey !== undefined : !this.isLastPage
+      required: true
     }
   }
 }

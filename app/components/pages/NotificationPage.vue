@@ -3,7 +3,7 @@
     <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
     <h1 class="area-title">{{ title }}</h1>
     <notification-card-list :notifications="notifications"/>
-    <the-loader :lastEvaluatedKey="notificationsLastEvaluatedKey"/>
+    <the-loader :isLoading="hasNotificationsLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
@@ -26,11 +26,7 @@ export default {
     title() {
       return 'お知らせ'
     },
-    ...mapGetters('user', [
-      'notifications',
-      'notificationsLastEvaluatedKey',
-      'hasNotificationsLastEvaluatedKey'
-    ]),
+    ...mapGetters('user', ['notifications', 'hasNotificationsLastEvaluatedKey']),
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
