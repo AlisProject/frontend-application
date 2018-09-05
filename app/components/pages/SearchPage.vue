@@ -123,7 +123,7 @@ export default {
         this.setSearchUsersScrollHeight({ scrollHeight: this.$el.scrollTop })
         break
       case 'tag':
-        this.setTagUsersScrollHeight({ scrollHeight: this.$el.scrollTop })
+        this.setTagArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
         break
       default:
         break
@@ -226,7 +226,11 @@ export default {
       'resetSearchArticlesPage',
       'resetSearchArticlesIsLastPage'
     ]),
-    ...mapActions('presentation', ['setSearchArticlesScrollHeight', 'setSearchUsersScrollHeight']),
+    ...mapActions('presentation', [
+      'setSearchArticlesScrollHeight',
+      'setSearchUsersScrollHeight',
+      'setTagArticlesScrollHeight'
+    ]),
     ...mapActions('tag', [
       'getSearchTags',
       'resetSearchTags',
