@@ -228,13 +228,15 @@ export default {
     width: 220px;
 
     .unit-item {
-      height: 40px;
-      width: 40px;
-      box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.8);
       border-radius: 50%;
-      font-size: 10px;
+      box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.8);
       color: #858dda;
+      cursor: pointer;
+      font-size: 10px;
+      height: 40px;
       line-height: 5.8;
+      user-select: none;
+      width: 40px;
 
       &.unit-10 {
         background: #fff url('~assets/images/pc/article/icon_chip_10.png') no-repeat;

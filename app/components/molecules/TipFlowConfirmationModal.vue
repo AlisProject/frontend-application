@@ -68,7 +68,7 @@ export default {
         await this.getUsersAlisToken()
 
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmountForUser)
-        const formattedAlisToken = new BigNumber('10.500')
+        const formattedAlisToken = new BigNumber('10000.500')
         // const formattedAlisToken = new BigNumber(this.alisToken)
 
         if (formattedAlisToken.isLessThan(formattedTipTokenAmount)) {
