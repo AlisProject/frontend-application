@@ -366,6 +366,7 @@ export default {
         }
       } else {
         if (this.showRestrictEditArticleModal) {
+          document.querySelector('html,body').style.overflow = ''
           this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
         }
       }
