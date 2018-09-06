@@ -101,16 +101,10 @@ export default {
       this.resetSearchUsersIsLastPage()
     },
     toggleMenu() {
-      if (!this.isMenuShown) {
-        this.forbidScroll()
-      } else {
-        this.resetScroll()
-      }
       this.isMenuShown = !this.isMenuShown
     },
     closeMenu() {
       this.isMenuShown = false
-      this.resetScroll()
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -134,33 +128,7 @@ export default {
       }
     },
     showProfileSettingsModal() {
-      window.scrollTo(0, 0)
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
-      this.forbidScroll()
-    },
-    forbidScroll() {
-      if (window.innerWidth <= 550) {
-        window.scrollTo(0, 0)
-      }
-      if (window.innerWidth <= 920) {
-        if (document.querySelector('[class$=-article-list-container]')) {
-          document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
-        }
-        document.querySelector('html,body').style.overflow = 'hidden'
-        window.addEventListener('touchmove', this.scrollOff, false)
-      }
-    },
-    resetScroll() {
-      if (window.innerWidth <= 920) {
-        if (document.querySelector('[class$=-article-list-container]')) {
-          document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
-        }
-        document.querySelector('html,body').style.overflow = ''
-        window.removeEventListener('touchmove', this.scrollOff, false)
-      }
-    },
-    scrollOf(e) {
-      e.preventDefault()
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -191,11 +159,7 @@ export default {
   align-items: center;
   position: relative;
 
-  .search-icon {
-    width: 24px;
-    margin-right: 40px;
-  }
-
+  .search-icon,
   .notification-icon {
     width: 24px;
     margin-right: 40px;
@@ -221,21 +185,12 @@ export default {
   top: 80px;
   width: 280px;
 
-  &:before {
-    content: '';
-    height: 0;
-    position: absolute;
-    right: 0;
-    width: 0;
-  }
-
   .image-box {
     background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     height: 180px;
     margin: -24px -92px 0 -92px;
-    overflow: hidden;
     text-align: center;
     width: 280px;
 
@@ -303,70 +258,9 @@ export default {
   }
 }
 
-@media screen and (max-width: 920px) and (min-width: 551px) {
-  .article-container {
-    .logged-in {
-      .search-icon {
-        width: 16px;
-        margin-right: 24px;
-      }
-
-      .notification-icon {
-        width: 16px;
-        margin-right: 24px;
-      }
-
-      .profile-icon {
-        height: 32px;
-        width: 32px;
-      }
-    }
-
-    .menu {
-      border-radius: 0;
-      filter: none;
-      height: calc(100vh + 26px);
-      right: -22px;
-      top: 0;
-      z-index: 1;
-
-      &:before {
-        display: none;
-      }
-
-      .image-box {
-        background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
-        border-radius: 0;
-        height: 180px;
-        margin: -24px -92px 0 -92px;
-        overflow: hidden;
-        text-align: center;
-        width: 280px;
-      }
-    }
-
-    .cover {
-      background: black;
-      border-radius: 4px;
-      box-sizing: border-box;
-      color: #000000;
-      height: 4000px;
-      opacity: 0.5;
-      position: absolute;
-      right: -22px;
-      top: -26px;
-      width: 100vw;
-    }
-  }
-}
-
-@media screen and (max-width: 550px) {
+@mixin spStyles() {
   .logged-in {
-    .search-icon {
-      width: 16px;
-      margin-right: 24px;
-    }
-
+    .search-icon,
     .notification-icon {
       width: 16px;
       margin-right: 24px;
@@ -381,8 +275,9 @@ export default {
   .menu {
     border-radius: 0;
     filter: none;
-    height: calc(100vh + 26px);
-    right: -22px;
+    height: 100vh;
+    position: fixed;
+    right: 0;
     top: 0;
     z-index: 1;
 
@@ -403,15 +298,24 @@ export default {
 
   .cover {
     background: black;
-    border-radius: 4px;
     box-sizing: border-box;
     color: #000000;
-    height: 4000px;
+    height: 100vh;
     opacity: 0.5;
-    position: absolute;
-    right: -22px;
-    top: -26px;
+    position: fixed;
+    right: 0;
+    top: 0;
     width: 100vw;
   }
+}
+
+@media screen and (max-width: 920px) and (min-width: 551px) {
+  .article-container {
+    @include spStyles();
+  }
+}
+
+@media screen and (max-width: 550px) {
+  @include spStyles();
 }
 </style>
