@@ -1,18 +1,21 @@
 <template>
   <div class="create-article-container">
-    <app-header showEditHeaderNav showPostArticleLink/>
-    <article-editor :putArticle="this.putArticle"/>
+    <app-header />
+    <edit-header-nav />
+    <article-editor :putArticle="putArticle"/>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
+import EditHeaderNav from '../molecules/EditHeaderNav'
 import ArticleEditor from '../atoms/ArticleEditor'
 
 export default {
   components: {
     AppHeader,
+    EditHeaderNav,
     ArticleEditor
   },
   computed: {
@@ -32,19 +35,14 @@ export default {
 <style lang="scss" scoped>
 .create-article-container {
   display: grid;
-  grid-template-rows: 100px 50px 650px 75px;
+  grid-template-rows: 100px 40px 50px 650px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header app-header"
+    "nav         nav        nav       "
     "...         ...        ...       "
     "...         editor     ...       "
     "...         ...        ...       ";
-}
-
-@media screen and (max-width: 640px) {
-  .create-article-container {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
 }
 </style>

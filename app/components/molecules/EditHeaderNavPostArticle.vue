@@ -232,6 +232,7 @@ export default {
   justify-content: center;
 
   .post-article {
+    color: #858dda;
     cursor: pointer;
     user-select: none;
     display: inline-block;
@@ -246,7 +247,6 @@ export default {
     border-radius: 4px;
     box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     box-sizing: border-box;
-    left: -30px;
     padding: 40px 20px;
     position: absolute;
     top: 30px;

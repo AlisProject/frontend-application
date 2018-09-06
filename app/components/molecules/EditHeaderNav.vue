@@ -1,33 +1,19 @@
 <template>
   <nav class="area-nav">
-    <span class="area-save-status">{{ saveStatus }}</span>
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
-    <a href="/me/articles/new" class="area-new-article">新規作成</a>
-    <edit-header-nav-edit-article v-show="showEditArticleLink"/>
-    <edit-header-nav-post-article v-show="showPostArticleLink"/>
+    <span class="area-save-status">{{ saveStatus }}</span>
+    <edit-header-nav-post-article />
   </nav>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import EditHeaderNavEditArticle from '../molecules/EditHeaderNavEditArticle'
 import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
 
 export default {
   components: {
-    EditHeaderNavEditArticle,
     EditHeaderNavPostArticle
-  },
-  props: {
-    showPostArticleLink: {
-      type: Boolean,
-      default: false
-    },
-    showEditArticleLink: {
-      type: Boolean,
-      default: false
-    }
   },
   computed: {
     ...mapGetters('article', ['saveStatus'])
@@ -40,22 +26,21 @@ export default {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: 1fr 38px 1fr;
-  // 320px - half width of .area-editor-container
-  // 170px - width      of .area-logo
-  // 40px  - margin     of this grid-column-gap
-  grid-template-columns: calc(50vw - 320px - 170px - 40px) 56px 42px 108px 1fr 160px 1fr;
-  grid-column-gap: 40px;
+  grid-template-rows: 30px;
+  grid-template-columns: 70px 70px 1fr 90px auto;
+  grid-row-gap: 50px;
   /* prettier-ignore */
   grid-template-areas:
-    "...          ...             ...    ...         ... ...          ..."
-    "save-status  public-articles drafts new-article ... post-article ..."
-    "...          ...             ...    ...         ... ...          ...";
+    "public-articles drafts ... save-status post-article";
+  max-width: 640px;
+  margin-left: calc(50vw - 320px);
+  border-bottom: 1px solid rgba(#6e6e6e, 0.1);
 }
 
 .area-save-status {
   grid-area: save-status;
-  color: #666;
+  color: #6e6e6e;
+  font-size: 14px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,13 +87,6 @@ export default {
   grid-area: new-article;
   justify-content: center;
   text-decoration: none;
-}
-
-@media screen and (max-width: 780px) {
-  .area-nav {
-    grid-template-columns: 64px 56px 42px 108px 1fr 90px 1fr;
-    grid-column-gap: 20px;
-  }
 }
 
 @media screen and (max-width: 640px) {
