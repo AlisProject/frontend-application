@@ -83,7 +83,7 @@ export default {
         this.setTipFlowConfirmationModal({ isShow: false })
         this.setTipFlowCompletedModal({ isShow: true })
       } catch (error) {
-        console.error(error)
+        this.errorMessage = 'エラーが発生しました。時間を置いて再度お試しください'
       }
     },
     ...mapActions('user', [
