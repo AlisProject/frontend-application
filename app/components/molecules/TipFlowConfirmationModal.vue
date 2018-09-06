@@ -76,9 +76,9 @@ export default {
           return
         }
 
-        const tipTokenAmount = new BigNumber(this.tipTokenAmount).toString()
+        const tipValue = new BigNumber(this.tipTokenAmount).toString()
 
-        await this.postTipToken({ tipTokenAmount })
+        await this.postTipToken({ tipValue, articleId: this.article.article_id })
 
         this.setTipFlowConfirmationModal({ isShow: false })
         this.setTipFlowCompletedModal({ isShow: true })
