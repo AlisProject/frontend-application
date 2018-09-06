@@ -103,9 +103,10 @@ export default {
       this.resetSearchUsersPage()
       this.resetSearchUsersIsLastPage()
     },
-    toggleMenu() {
+    async toggleMenu() {
       if (!this.isMenuShown) {
         this.forbidScroll()
+        await this.getUsersAlisToken()
       } else {
         this.resetScroll()
       }
