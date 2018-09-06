@@ -1,28 +1,10 @@
 <template>
   <header class="area-app-header-container">
     <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
-    <!-- <default-header-nav
-      v-if="showDefaultHeaderNav"
-      :showOnlyLogo="showOnlyLogo"
-      :showOnlySessionLinks="showOnlySessionLinks"
-      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
-    <article-type-select-box
-      v-if="showDefaultHeaderNav"
-      :showOnlyLogo="showOnlyLogo"
-      :showOnlySessionLinks="showOnlySessionLinks"
-      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
     <no-ssr>
-      <edit-header-nav
-        v-if="showEditHeaderNav"
-        :showPostArticleLink="showPostArticleLink"
-        :showEditArticleLink="showEditArticleLink"/>
-    </no-ssr> -->
-    <template v-if="!showOnlyLogo">
-      <no-ssr>
-        <header-session-links v-if="!loggedIn"/>
-        <header-user-logged-in-items v-else />
-      </no-ssr>
-    </template>
+      <header-session-links v-if="!loggedIn"/>
+      <header-user-logged-in-items v-else />
+    </no-ssr>
     <sign-up-modal v-show="showSignUpModal"/>
     <sign-up-auth-flow-modal v-show="showSignUpAuthFlowModal"/>
     <login-modal v-show="showLoginModal"/>
@@ -37,7 +19,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
@@ -49,38 +30,7 @@ import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
 import RequestLoginModal from '../organisms/RequestLoginModal'
 
 export default {
-  props: {
-    showDefaultHeaderNav: {
-      type: Boolean,
-      default: false
-    },
-    showEditHeaderNav: {
-      type: Boolean,
-      default: false
-    },
-    showOnlyLogo: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinks: {
-      type: Boolean,
-      default: false
-    },
-    showPostArticleLink: {
-      type: Boolean,
-      default: false
-    },
-    showEditArticleLink: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinksOnPc: {
-      type: Boolean,
-      default: false
-    }
-  },
   components: {
-    EditHeaderNav,
     HeaderSessionLinks,
     HeaderUserLoggedInItems,
     SignUpModal,

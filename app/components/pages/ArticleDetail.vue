@@ -1,6 +1,6 @@
 <template>
   <div class="article-container">
-    <app-header showOnlySessionLinks class="without-shadow"/>
+    <app-header />
     <div class="area-article">
       <h1 class="area-title">{{ article.title }}</h1>
       <div class="area-content" v-html="article.body" />
