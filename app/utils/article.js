@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* global iframely */
 import axios from './axios'
 
 export function createInsertPluginTemplateFromUrl(url) {

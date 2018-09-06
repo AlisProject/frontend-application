@@ -24,7 +24,6 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
