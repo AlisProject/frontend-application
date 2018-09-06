@@ -2,38 +2,10 @@
   <nav class="area-nav">
     <h1 class="area-title">記事一覧</h1>
     <a href="/me/articles/new" class="area-new-article">新規作成</a>
-    <!-- <edit-header-nav-edit-article v-show="showEditArticleLink"/>
-    <edit-header-nav-post-article v-show="showPostArticleLink"/> -->
-    <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済</nuxt-link>
+    <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
   </nav>
 </template>
-
-<script>
-import { mapGetters } from 'vuex'
-// import EditHeaderNavEditArticle from '../molecules/EditHeaderNavEditArticle'
-// import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
-
-export default {
-  components: {
-    // EditHeaderNavEditArticle,
-    // EditHeaderNavPostArticle
-  },
-  props: {
-    showPostArticleLink: {
-      type: Boolean,
-      default: false
-    },
-    showEditArticleLink: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    ...mapGetters('article', ['saveStatus'])
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .area-nav {
@@ -49,7 +21,6 @@ export default {
     "public-articles drafts ... ...        ";
   max-width: 1080px;
   margin-left: calc(50vw - 540px);
-  // padding-left: calc(50vw - 540px);
   border-bottom: 1px solid rgba(#6e6e6e, 0.1);
 }
 
@@ -75,44 +46,38 @@ export default {
   grid-area: public-articles;
 }
 
-.public-article .area-public-articles,
-.public-articles .area-public-articles {
-  color: #99a2ff;
-  border-bottom: 2px solid #99a2ff;
-  margin-top: 2px;
-}
-
 .area-drafts {
   grid-area: drafts;
 }
 
+.public-article .area-public-articles,
+.public-articles .area-public-articles,
 .drafts .area-drafts {
   color: #99a2ff;
   border-bottom: 2px solid #99a2ff;
-  margin-top: 2px;
 }
 
 .area-new-article {
+  grid-area: new-article;
   align-items: center;
   background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
   border-radius: 4px;
   color: white;
   display: flex;
   font-size: 14px;
-  grid-area: new-article;
   justify-content: center;
   text-decoration: none;
+  width: 110px;
 }
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 1080px) {
   .area-nav {
-    grid-template-columns: 64px 56px 42px 108px 1fr 90px 1fr;
-    grid-column-gap: 20px;
+    max-width: calc(100% - 68px);
+    margin-left: 34px;
   }
 }
 
 @media screen and (max-width: 640px) {
-  .area-save-status,
   .area-new-article {
     display: none;
   }
@@ -120,31 +85,37 @@ export default {
 
 @media screen and (max-width: 550px) {
   .area-nav {
+    border: none;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
     grid-gap: 20px;
+    grid-template-columns: 48px 48px;
+    grid-template-rows: 28px;
+    margin-left: 0;
+    max-width: 100%;
+    padding-left: 22px;
     /* prettier-ignore */
     grid-template-areas:
       'public-articles drafts';
-    grid-template-columns: 48px 48px;
-    grid-template-rows: 36px;
-    text-align: left;
   }
 
-  .public-article .nav-link {
+  .public-article .nav-link,
+  .area-title {
     display: none;
   }
 
   .nav-link {
     font-size: 12px;
-    line-height: 30px;
-    text-align: center;
   }
 
-  .public-articles .area-public-articles {
-    border-bottom: 1px solid #99a2ff;
-  }
-
+  .public-articles .area-public-articles,
   .drafts .area-drafts {
     border-bottom: 1px solid #99a2ff;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .area-nav {
+    padding-left: 10px;
   }
 }
 </style>
