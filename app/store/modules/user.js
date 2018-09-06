@@ -553,9 +553,7 @@ const actions = {
   },
   async postTipToken({ commit }, { tipValue, articleId }) {
     try {
-      await this.$axios.$get('/me/wallet/balance')
-      console.log(tipValue, articleId)
-      // await this.$axios.$post('/me/wallet/tip', { tip_value: tipValue, article_id: articleId })
+      await this.$axios.$post('/me/wallet/tip', { tip_value: tipValue, article_id: articleId })
     } catch (error) {
       return Promise.reject(error)
     }

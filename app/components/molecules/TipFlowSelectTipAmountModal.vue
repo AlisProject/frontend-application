@@ -100,8 +100,7 @@ export default {
     addTipTokenAmount(amount) {
       const formatNumber = 10 ** 18
       const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
-      const formattedAlisTokenAmount = new BigNumber('10000.500').multipliedBy(formatNumber)
-      // const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
+      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
       const formattedTipTokenAmount = this.tipTokenAmount
       const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
         formattedAlisTokenAmount.minus(formattedAmount)
