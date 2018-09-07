@@ -1,6 +1,6 @@
 <template>
   <p class="area-overview">
-    {{ decodedOverview || overview }}
+    {{ decodedOverview }}
   </p>
 </template>
 
@@ -14,13 +14,10 @@ export default {
       required: false
     }
   },
-  data() {
-    return {
-      decodedOverview: null
+  computed: {
+    decodedOverview() {
+      return htmlDecode(this.overview)
     }
-  },
-  mounted() {
-    this.decodedOverview = htmlDecode(this.overview)
   }
 }
 </script>

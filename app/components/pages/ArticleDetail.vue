@@ -2,7 +2,7 @@
   <div class="article-container">
     <app-header showOnlySessionLinks class="without-shadow"/>
     <div class="area-article">
-      <h1 class="area-title">{{ decodedTitle || article.title }}</h1>
+      <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
       <article-tags :tags="article.tags"/>
       <article-footer-actions
@@ -57,13 +57,7 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      decodedTitle: null
-    }
-  },
   mounted() {
-    this.decodedTitle = htmlDecode(this.article.title)
     const figcaptions = document.querySelectorAll('figcaption')
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
@@ -74,6 +68,9 @@ export default {
     this.resetArticleCommentsLastEvaluatedKey()
   },
   computed: {
+    decodedTitle() {
+      return htmlDecode(this.article.title)
+    },
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },

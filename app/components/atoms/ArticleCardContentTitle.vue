@@ -1,6 +1,6 @@
 <template>
   <h2 class="area-title">
-    {{ decodedTitle || title }}
+    {{ decodedTitle }}
   </h2>
 </template>
 
@@ -14,13 +14,10 @@ export default {
       required: false
     }
   },
-  data() {
-    return {
-      decodedTitle: null
+  computed: {
+    decodedTitle() {
+      return htmlDecode(this.title)
     }
-  },
-  mounted() {
-    this.decodedTitle = htmlDecode(this.title)
   }
 }
 </script>
