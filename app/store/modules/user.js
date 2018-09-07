@@ -106,7 +106,14 @@ const state = () => ({
     page: 1,
     isLastPage: false,
     isFetching: false
-  }
+  },
+  showTipModal: false,
+  tipFlowModal: {
+    isSelectTipAmountModal: false,
+    isConfirmationModal: false,
+    isCompletedModal: false
+  },
+  tipTokenAmount: 0
 })
 
 const getters = {
@@ -135,7 +142,10 @@ const getters = {
   unreadNotification: (state) => state.unreadNotification,
   hasNotificationsLastEvaluatedKey: (state) =>
     !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
-  searchUsers: (state) => state.searchUsers
+  searchUsers: (state) => state.searchUsers,
+  showTipModal: (state) => state.showTipModal,
+  tipFlowModal: (state) => state.tipFlowModal,
+  tipTokenAmount: (state) => state.tipTokenAmount
 }
 
 const actions = {
@@ -520,6 +530,31 @@ const actions = {
   },
   resetSearchUsersIsLastPage({ commit }) {
     commit(types.RESET_SEARCH_USERS_IS_LAST_PAGE)
+  },
+  setTipModal({ commit }, { showTipModal }) {
+    commit(types.SET_TIP_MODAL, { showTipModal })
+  },
+  setTipFlowSelectTipAmountModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_SELECT_TIP_AMOUNT_MODAL, { isShow })
+  },
+  setTipFlowConfirmationModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_CONFIRMATION_MODAL, { isShow })
+  },
+  hideTipFlowModalContent({ commit }) {
+    commit(types.HIDE_TIP_FLOW_MODAL_CONTENT)
+  },
+  setTipTokenAmount({ commit }, { tipTokenAmount }) {
+    commit(types.SET_TIP_TOKEN_AMOUNT, { tipTokenAmount })
+  },
+  setTipFlowCompletedModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_COMPLETED_MODAL, { isShow })
+  },
+  async postTipToken({ commit }, { tipValue, articleId }) {
+    try {
+      await this.$axios.$post('/me/wallet/tip', { tip_value: tipValue, article_id: articleId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -721,6 +756,26 @@ const mutations = {
   },
   [types.RESET_SEARCH_USERS_IS_LAST_PAGE](state) {
     state.searchUsers.isLastPage = false
+  },
+  [types.SET_TIP_MODAL](state, { showTipModal }) {
+    state.showTipModal = showTipModal
+  },
+  [types.SET_TIP_FLOW_SELECT_TIP_AMOUNT_MODAL](state, { isShow }) {
+    state.tipFlowModal.isSelectTipAmountModal = isShow
+  },
+  [types.SET_TIP_FLOW_CONFIRMATION_MODAL](state, { isShow }) {
+    state.tipFlowModal.isConfirmationModal = isShow
+  },
+  [types.HIDE_TIP_FLOW_MODAL_CONTENT](state) {
+    state.tipFlowModal.isSelectTipAmountModal = false
+    state.tipFlowModal.isConfirmationModal = false
+    state.tipFlowModal.isCompletedModal = false
+  },
+  [types.SET_TIP_TOKEN_AMOUNT](state, { tipTokenAmount }) {
+    state.tipTokenAmount = tipTokenAmount
+  },
+  [types.SET_TIP_FLOW_COMPLETED_MODAL](state, { isShow }) {
+    state.tipFlowModal.isCompletedModal = isShow
   }
 }
 

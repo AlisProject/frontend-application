@@ -42,13 +42,17 @@ export default {
 <style lang="scss" scoped>
 .area-article-sub-infos-container {
   grid-area: article-sub-infos;
+  margin-bottom: 40px;
 
   .article-sub-info {
     color: #6e6e6e;
     font-size: 16px;
     line-height: 28px;
     display: inline;
-    margin-right: 40px;
+
+    &:nth-child(1) {
+      margin-right: 40px;
+    }
 
     .published-at,
     .token-amount {
@@ -61,7 +65,7 @@ export default {
 @media screen and (max-width: 640px) {
   .area-article-sub-infos-container {
     grid-area: article-sub-infos;
-    margin-bottom: 40px;
+    margin-bottom: 0;
 
     .article-sub-info {
       font-size: 14px;

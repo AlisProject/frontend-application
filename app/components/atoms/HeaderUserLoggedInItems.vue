@@ -100,7 +100,10 @@ export default {
       this.resetSearchUsersPage()
       this.resetSearchUsersIsLastPage()
     },
-    toggleMenu() {
+    async toggleMenu() {
+      if (!this.isMenuShown) {
+        await this.getUsersAlisToken()
+      }
       this.isMenuShown = !this.isMenuShown
     },
     closeMenu() {

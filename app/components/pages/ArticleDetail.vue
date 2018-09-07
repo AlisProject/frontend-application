@@ -7,6 +7,7 @@
       <article-tags :tags="article.tags"/>
       <article-footer-actions
         :articleId="article.article_id"
+        :articleUserId="article.user_id"
         :likesCount="likesCount"
         :isLikedArticle="isLikedArticle"/>
       <article-side-actions
