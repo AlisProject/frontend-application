@@ -78,12 +78,12 @@ export default {
         const tipValue = new BigNumber(this.tipTokenAmount).toNumber()
 
         await this.postTipToken({ tipValue, articleId: this.article.article_id })
-
-        this.setTipFlowConfirmationModal({ isShow: false })
-        this.setTipFlowCompletedModal({ isShow: true })
       } catch (error) {
         this.errorMessage = 'エラーが発生しました。時間を置いて再度お試しください'
+        return
       }
+      this.setTipFlowConfirmationModal({ isShow: false })
+      this.setTipFlowCompletedModal({ isShow: true })
     },
     ...mapActions('user', [
       'setTipFlowConfirmationModal',
