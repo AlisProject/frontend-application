@@ -8,7 +8,7 @@
   <p class="area-description" v-else-if="notification.type === 'tip'">
     <span class="liked_count">{{ notification.userInfo.user_display_name }}</span>
     から
-    <span class="liked_count">{{ notification.token }}ALIS</span>
+    <span class="liked_count">{{ notification.tip_value }}ALIS</span>
     受け取りました。"{{ notification.article_title }}"
   </p>
   <p class="area-description" v-else-if="notification.type === 'tip_error'">

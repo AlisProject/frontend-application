@@ -22,29 +22,9 @@ import NotificationCardImage from '../atoms/NotificationCardImage'
 import NotificationCardContent from '../molecules/NotificationCardContent'
 
 export default {
-  // props: {
-  //   notification: {
-  //     type: Object
-  //   }
-  // },
-  data() {
-    return {
-      notification: {
-        article_id: 'xw0R2pMndPZV',
-        article_title: '記事タイトルのテスト',
-        created_at: 1535100160,
-        liked_count: 1,
-        notification_id: 'tip-yt4-xw0R2pMndPZV',
-        sort_key: 1535100160478902,
-        // type: 'tip',
-        type: 'tip_error',
-        user_id: 'yt4',
-        token: 999,
-        userInfo: {
-          user_display_name: 'ほげ',
-          icon_image_url: 'https://github.com/y-temp4.png'
-        }
-      }
+  props: {
+    notification: {
+      type: Object
     }
   },
   components: {
