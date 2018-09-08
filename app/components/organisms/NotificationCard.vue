@@ -1,7 +1,7 @@
 <template>
   <section>
     <nuxt-link
-      :to="`/users/${notification.user_id}`"
+      :to="`/users/${notification.acted_user_id}`"
       class="notification-card-container"
       v-if="notification.type === 'tip'">
       <notification-card-image :notification="notification"/>
