@@ -8,7 +8,7 @@
   <p class="area-description" v-else-if="notification.type === 'tip'">
     <span class="liked_count">{{ notification.userInfo.user_display_name }}</span>
     から
-    <span class="liked_count">{{ notification.tip_value }}ALIS</span>
+    <span class="liked_count">{{ tipTokenAmountForUser }}ALIS</span>
     受け取りました。"{{ notification.article_title }}"
   </p>
   <p class="area-description" v-else-if="notification.type === 'tip_error'">
@@ -18,11 +18,19 @@
 </template>
 
 <script>
+import { BigNumber } from 'bignumber.js'
+
 export default {
   props: {
     notification: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    tipTokenAmountForUser() {
+      const formatNumber = 10 ** 18
+      return new BigNumber(this.notification.tip_value).div(formatNumber).toString()
     }
   }
 }
