@@ -8,14 +8,7 @@
       <notification-card-content :notification="notification"/>
     </nuxt-link>
     <nuxt-link
-      :to="`/${notification.article_user_id}/articles/${notification.article_id}`"
-      class="notification-card-container"
-      v-else-if="notification.type === 'tip_error'">
-      <notification-card-image :notification="notification"/>
-      <notification-card-content :notification="notification"/>
-    </nuxt-link>
-    <nuxt-link
-      :to="`/${notification.user_id}/articles/${notification.article_id}`"
+      :to="`/${notification.type === 'tip_error' ? notification.article_user_id : notification.user_id}/articles/${notification.article_id}`"
       class="notification-card-container"
       v-else>
       <notification-card-image :notification="notification"/>
