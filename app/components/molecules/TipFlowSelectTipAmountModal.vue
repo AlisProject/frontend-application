@@ -229,11 +229,12 @@ export default {
     .unit-item {
       border-radius: 50%;
       box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.8);
+      box-sizing: border-box;
       color: #858dda;
       cursor: pointer;
       font-size: 10px;
       height: 40px;
-      line-height: 5.8;
+      padding-top: 24px;
       user-select: none;
       width: 40px;
 
