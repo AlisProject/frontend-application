@@ -1,7 +1,7 @@
 <template>
   <div class="area-footer-actions">
     <div class="action area-like" :class="{ liked: isLikedArticle }" @click="like">
-      <span class="likes-count">{{ formattedLikesCount }}</span>
+      <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
     </div>
     <no-ssr>
       <div class="action area-tip" @click="tip" v-if="!isMyArticle"/>
@@ -205,6 +205,7 @@ export default {
       border-radius: 50%;
       border: 1px solid #ff4949;
       color: #ff4949;
+      cursor: auto;
       display: flex;
       font-size: 12px;
       height: 24px;
