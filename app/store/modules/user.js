@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
@@ -137,7 +138,7 @@ const getters = {
   hasUserArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey !== null,
   requestLoginModal: (state) => state.requestLoginModal,
   alisToken: (state) => state.alisToken,
-  notifications: (state) => state.notifications,
+  notifications: (state) => uniqBy(state.notifications, 'notification_id'),
   notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
   unreadNotification: (state) => state.unreadNotification,
   hasNotificationsLastEvaluatedKey: (state) =>
@@ -557,6 +558,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  resetNotificationData({ commit }) {
+    commit(types.RESET_NOTIFICATION_DATA)
   }
 }
 
@@ -778,6 +782,10 @@ const mutations = {
   },
   [types.SET_TIP_FLOW_COMPLETED_MODAL](state, { isShow }) {
     state.tipFlowModal.isCompletedModal = isShow
+  },
+  [types.RESET_NOTIFICATION_DATA](state) {
+    state.notifications = []
+    state.notificationsLastEvaluatedKey = {}
   }
 }
 
