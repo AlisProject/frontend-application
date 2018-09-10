@@ -24,7 +24,7 @@ export default {
   display: grid;
   grid-area: notification-card-list;
   grid-gap: 14px;
-  grid-template-rows: repeat(auto-fill, auto);
+  grid-auto-rows: min-content;
 }
 
 @media screen and (max-width: 640px) {
