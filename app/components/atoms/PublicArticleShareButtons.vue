@@ -26,6 +26,11 @@ export default {
         this.closeCopyPopup()
       }
     })
+    this.listen(window, 'touchstart', (event) => {
+      if (!this.$el.contains(event.target)) {
+        this.closeCopyPopup()
+      }
+    })
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)

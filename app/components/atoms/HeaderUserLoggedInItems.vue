@@ -10,7 +10,7 @@
       src="~assets/images/pc/common/icon_user_noimg.png"
       @click="toggleMenu"
       v-else>
-    <nuxt-link to="/me/notifications">
+    <span class="notification-link" @click="moveToNotificationPage">
       <img
         class="notification-icon"
         src="~assets/images/pc/common/icon_bell_mark.png"
@@ -19,7 +19,7 @@
         class="notification-icon"
         src="~assets/images/pc/common/icon_bell.png"
         v-else>
-    </nuxt-link>
+    </span>
     <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     </nuxt-link>
@@ -106,6 +106,7 @@ export default {
     toggleMenu() {
       if (!this.isMenuShown) {
         this.forbidScroll()
+        this.getUsersAlisToken()
       } else {
         this.resetScroll()
       }
@@ -165,6 +166,11 @@ export default {
     scrollOf(e) {
       e.preventDefault()
     },
+    moveToNotificationPage() {
+      this.resetNotificationData()
+      this.getNotifications()
+      this.$router.push('/me/notifications')
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -176,7 +182,9 @@ export default {
       'getUnreadNotification',
       'resetSearchUsers',
       'resetSearchUsersPage',
-      'resetSearchUsersIsLastPage'
+      'resetSearchUsersIsLastPage',
+      'resetNotificationData',
+      'getNotifications'
     ]),
     ...mapActions('article', [
       'resetSearchArticles',
@@ -204,6 +212,10 @@ export default {
     height: 60px;
     transform: rotate(-90deg);
     width: 60px;
+  }
+
+  .notification-link {
+    cursor: pointer;
   }
 
   .notification-icon {

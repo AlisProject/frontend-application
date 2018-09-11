@@ -2,7 +2,7 @@
   <div class="draft-article-list-container long-article-card" @scroll="infiniteScroll">
     <app-header showEditHeaderNav class="drafts"/>
     <article-card-list :articles="draftArticles" class="draft" :linkTo="'draft'"/>
-    <the-loader :lastEvaluatedKey="draftArticlesLastEvaluatedKey"/>
+    <the-loader :isLoading="hasDraftArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['draftArticles', 'draftArticlesLastEvaluatedKey'])
+    ...mapGetters('article', ['draftArticles', 'hasDraftArticlesLastEvaluatedKey'])
   },
   methods: {
     async infiniteScroll(event) {

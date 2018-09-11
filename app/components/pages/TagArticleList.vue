@@ -15,7 +15,7 @@
       </p>
       <search-article-card-list :articles="tagArticles.articles" v-else/>
     </div>
-    <the-loader :isLastPage="tagArticles.isLastPage"/>
+    <the-loader :isLoading="!tagArticles.isLastPage"/>
     <app-footer/>
   </div>
 </template>

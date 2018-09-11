@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
@@ -93,7 +94,6 @@ const state = () => ({
   userInfo: {},
   userArticles: [],
   userArticlesLastEvaluatedKey: {},
-  hasUserArticlesLastEvaluatedKey: false,
   requestLoginModal: {
     isShow: false,
     requestType: ''
@@ -107,7 +107,14 @@ const state = () => ({
     page: 1,
     isLastPage: false,
     isFetching: false
-  }
+  },
+  showTipModal: false,
+  tipFlowModal: {
+    isSelectTipAmountModal: false,
+    isConfirmationModal: false,
+    isCompletedModal: false
+  },
+  tipTokenAmount: 0
 })
 
 const getters = {
@@ -128,14 +135,18 @@ const getters = {
   userInfo: (state) => state.userInfo,
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
+  hasUserArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey !== null,
   requestLoginModal: (state) => state.requestLoginModal,
   alisToken: (state) => state.alisToken,
-  notifications: (state) => state.notifications,
+  notifications: (state) => uniqBy(state.notifications, 'notification_id'),
   notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
   unreadNotification: (state) => state.unreadNotification,
   hasNotificationsLastEvaluatedKey: (state) =>
     !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
-  searchUsers: (state) => state.searchUsers
+  searchUsers: (state) => state.searchUsers,
+  showTipModal: (state) => state.showTipModal,
+  tipFlowModal: (state) => state.tipFlowModal,
+  tipTokenAmount: (state) => state.tipTokenAmount
 }
 
 const actions = {
@@ -404,32 +415,30 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getUserArticles({ commit, dispatch, state }, { userId }) {
-    if (!state.hasUserArticlesLastEvaluatedKey) {
-      try {
-        commit(types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
-        const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
-        await dispatch('setUserInfo', { userId })
-        const { userInfo } = state
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
-          `/users/${userInfo.user_id}/articles/public`,
-          { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
-        )
-        commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
-        const articlesWithData = await Promise.all(
-          articles.map(async (article) => {
-            const { alis_token: alisToken } = await this.$axios.$get(
-              `/articles/${article.article_id}/alistoken`
-            )
-            return { ...article, userInfo, alisToken }
-          })
-        )
-        commit(types.SET_USER_ARTICLES, { articles: articlesWithData })
-      } catch (error) {
-        Promise.reject(error)
-      } finally {
-        commit(types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: false })
-      }
+  async getUserArticles({ commit, dispatch, state, getters }, { userId }) {
+    if (!getters.hasUserArticlesLastEvaluatedKey) return
+    try {
+      const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
+      await dispatch('setUserInfo', { userId })
+      const { userInfo } = state
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+        `/users/${userInfo.user_id}/articles/public`,
+        { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+      )
+      commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || null
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const { alis_token: alisToken } = await this.$axios.$get(
+            `/articles/${article.article_id}/alistoken`
+          )
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_USER_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
     }
   },
   async getNotifications({ commit, dispatch, state }) {
@@ -447,8 +456,10 @@ const actions = {
       const notificationsWithData = await Promise.all(
         notifications.map(async (notification) => {
           let userInfo
-          if (notification.type === 'comment') {
+          if (notification.type === 'comment' || notification.type === 'tip') {
             userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
+          } else if (notification.type === 'tip_error') {
+            userInfo = await this.$axios.$get(`/users/${notification.article_user_id}/info`)
           }
           return { ...notification, userInfo }
         })
@@ -522,6 +533,34 @@ const actions = {
   },
   resetSearchUsersIsLastPage({ commit }) {
     commit(types.RESET_SEARCH_USERS_IS_LAST_PAGE)
+  },
+  setTipModal({ commit }, { showTipModal }) {
+    commit(types.SET_TIP_MODAL, { showTipModal })
+  },
+  setTipFlowSelectTipAmountModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_SELECT_TIP_AMOUNT_MODAL, { isShow })
+  },
+  setTipFlowConfirmationModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_CONFIRMATION_MODAL, { isShow })
+  },
+  hideTipFlowModalContent({ commit }) {
+    commit(types.HIDE_TIP_FLOW_MODAL_CONTENT)
+  },
+  setTipTokenAmount({ commit }, { tipTokenAmount }) {
+    commit(types.SET_TIP_TOKEN_AMOUNT, { tipTokenAmount })
+  },
+  setTipFlowCompletedModal({ commit }, { isShow }) {
+    commit(types.SET_TIP_FLOW_COMPLETED_MODAL, { isShow })
+  },
+  async postTipToken({ commit }, { tipValue, articleId }) {
+    try {
+      await this.$axios.$post('/me/wallet/tip', { tip_value: tipValue, article_id: articleId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetNotificationData({ commit }) {
+    commit(types.RESET_NOTIFICATION_DATA)
   }
 }
 
@@ -687,9 +726,6 @@ const mutations = {
     state.signUpAuthFlowModal.login.formData.password = ''
     state.loginModal.formData.password = ''
   },
-  [types.SET_HAS_USER_ARTICLES_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
-    state.hasUserArticlesLastEvaluatedKey = hasLastEvaluatedKey
-  },
   [types.SET_REQUEST_LOGIN_MODAL](state, { isShow, requestType }) {
     state.requestLoginModal.isShow = isShow
     state.requestLoginModal.requestType = requestType
@@ -726,6 +762,30 @@ const mutations = {
   },
   [types.RESET_SEARCH_USERS_IS_LAST_PAGE](state) {
     state.searchUsers.isLastPage = false
+  },
+  [types.SET_TIP_MODAL](state, { showTipModal }) {
+    state.showTipModal = showTipModal
+  },
+  [types.SET_TIP_FLOW_SELECT_TIP_AMOUNT_MODAL](state, { isShow }) {
+    state.tipFlowModal.isSelectTipAmountModal = isShow
+  },
+  [types.SET_TIP_FLOW_CONFIRMATION_MODAL](state, { isShow }) {
+    state.tipFlowModal.isConfirmationModal = isShow
+  },
+  [types.HIDE_TIP_FLOW_MODAL_CONTENT](state) {
+    state.tipFlowModal.isSelectTipAmountModal = false
+    state.tipFlowModal.isConfirmationModal = false
+    state.tipFlowModal.isCompletedModal = false
+  },
+  [types.SET_TIP_TOKEN_AMOUNT](state, { tipTokenAmount }) {
+    state.tipTokenAmount = tipTokenAmount
+  },
+  [types.SET_TIP_FLOW_COMPLETED_MODAL](state, { isShow }) {
+    state.tipFlowModal.isCompletedModal = isShow
+  },
+  [types.RESET_NOTIFICATION_DATA](state) {
+    state.notifications = []
+    state.notificationsLastEvaluatedKey = {}
   }
 }
 

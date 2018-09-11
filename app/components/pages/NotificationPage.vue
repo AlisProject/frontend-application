@@ -3,7 +3,7 @@
     <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
     <h1 class="area-title">{{ title }}</h1>
     <notification-card-list :notifications="notifications"/>
-    <the-loader :lastEvaluatedKey="notificationsLastEvaluatedKey"/>
+    <the-loader :isLoading="hasNotificationsLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
@@ -26,11 +26,7 @@ export default {
     title() {
       return 'お知らせ'
     },
-    ...mapGetters('user', [
-      'notifications',
-      'notificationsLastEvaluatedKey',
-      'hasNotificationsLastEvaluatedKey'
-    ]),
+    ...mapGetters('user', ['notifications', 'hasNotificationsLastEvaluatedKey']),
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
@@ -82,17 +78,18 @@ export default {
     "...         notification-card-list ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
-  grid-template-columns: 1fr 680px 1fr;
-  grid-template-rows: 100px 80px 1fr 75px 75px;
+  grid-template-columns: 1fr 640px 1fr;
+  grid-template-rows: 100px 50px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
 .area-title {
-  font-size: 25px;
+  font-size: 20px;
   grid-area: title;
-  letter-spacing: 0.05em;
+  letter-spacing: 1.33px;
+  margin: 0;
 }
 
 @media screen and (max-width: 920px) {

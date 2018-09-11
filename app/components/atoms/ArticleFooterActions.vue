@@ -1,16 +1,19 @@
 <template>
   <div class="area-footer-actions">
-    <div class="action like" :class="{ liked: this.isLikedArticle }" @click="like">
-      <span class="likes-count">{{ formattedLikesCount }}</span>
+    <div class="action area-like" :class="{ liked: isLikedArticle }" @click="like">
+      <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
     </div>
-    <div class="action share" @click="toggleSharePopup">
+    <no-ssr>
+      <div class="action area-tip" @click="tip" v-if="!isMyArticle"/>
+    </no-ssr>
+    <div class="sub-action area-share" @click="toggleSharePopup">
       <div class="share-popup" v-show="isSharePopupShown">
         <a class="share-twitter" target="_blank">
           Twitterでシェアする
         </a>
       </div>
     </div>
-    <div class="action etc" @click="toggleEtcPopup">
+    <div class="sub-action area-etc" @click="toggleEtcPopup">
       <div class="etc-popup" v-show="isEtcPopupShown">
         <span class="report" @click="showPopupReportModal">
           通報する
@@ -35,6 +38,10 @@ export default {
       type: String,
       required: true
     },
+    articleUserId: {
+      type: String,
+      required: true
+    },
     likesCount: {
       type: Number,
       required: true
@@ -46,6 +53,12 @@ export default {
   },
   mounted() {
     this.listen(window, 'click', (event) => {
+      if (!this.$el.contains(event.target)) {
+        this.closeEtcPopup()
+        this.closeSharePopup()
+      }
+    })
+    this.listen(window, 'touchstart', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeEtcPopup()
         this.closeSharePopup()
@@ -68,8 +81,13 @@ export default {
     formattedLikesCount() {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
     },
-    ...mapGetters('user', ['loggedIn', 'showReportModal']),
-    ...mapGetters('article', ['article'])
+    isMyArticle() {
+      if (!this.currentUser) return false
+      return this.articleUserId === this.currentUser.userId
+    },
+    ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser']),
+    ...mapGetters('article', ['article']),
+    ...mapGetters(['toastMessages'])
   },
   methods: {
     toggleEtcPopup() {
@@ -111,6 +129,20 @@ export default {
         }
       }
     },
+    async tip() {
+      if (this.loggedIn) {
+        this.setTipModal({ showTipModal: true })
+        this.setTipFlowSelectTipAmountModal({ isShow: true })
+        window.scrollTo(0, 0)
+        document.querySelector('html,body').style.overflow = 'hidden'
+      } else {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleTip' })
+        window.scrollTo(0, 0)
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
+      }
+    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
@@ -122,7 +154,12 @@ export default {
         }
       })
     },
-    ...mapActions('user', ['setReportModal', 'setRequestLoginModal']),
+    ...mapActions('user', [
+      'setReportModal',
+      'setRequestLoginModal',
+      'setTipModal',
+      'setTipFlowSelectTipAmountModal'
+    ]),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
 }
@@ -132,49 +169,87 @@ export default {
 .area-footer-actions {
   display: grid;
   grid-area: footer-actions;
-  grid-template-rows: 70px;
-  grid-template-columns: 1fr repeat(2, 60px);
-  justify-content: right;
+  grid-template-rows: 52px;
+  grid-template-columns: repeat(2, 52px) 1fr repeat(2, 40px);
+  grid-column-gap: 20px;
+  /* prettier-ignore */
+  grid-template-areas:
+    'like tip ... share etc';
+  align-items: center;
 
   .action {
-    width: 60px;
-    height: 60px;
+    height: 52px;
+    width: 52px;
   }
 
-  .etc {
-    background: url('~assets/images/pc/article/btn_etc.png') no-repeat;
-    background-size: 54px;
-    background-position-y: 10px;
-    position: relative;
+  .sub-action {
+    height: 40px;
+    width: 40px;
+  }
+
+  .area-like {
+    grid-area: like;
+    background: #fff url('~assets/images/pc/article/icon_like.png') no-repeat;
+    background-position: 9px;
+    background-size: 32px;
+    border-radius: 50%;
+    border: 1px solid #ff4949;
+    box-shadow: 0px 2px 15px -1px #ff4949;
     cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
 
-    .etc-popup {
-      background-color: #ffffff;
-      border-radius: 4px;
-      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
-      cursor: default;
-      box-sizing: border-box;
-      font-size: 14px;
-      padding: 12px;
+    .likes-count {
+      align-items: center;
+      background-color: #fff;
+      border-radius: 50%;
+      border: 1px solid #ff4949;
+      color: #ff4949;
+      cursor: auto;
+      display: flex;
+      font-size: 12px;
+      height: 24px;
+      justify-content: center;
       position: absolute;
-      right: 34px;
-      top: 62px;
-      width: 90px;
-      z-index: 1;
+      right: 12px;
+      top: -36px;
+      width: 24px;
+    }
 
-      .report {
-        cursor: pointer;
-        user-select: none;
+    &.liked {
+      background: #ff4949 url('~assets/images/pc/article/icon_like_selected.png') no-repeat;
+      background-position: 9px;
+      background-size: 32px;
+      border-radius: 50%;
+      cursor: not-allowed;
+      position: relative;
+
+      .likes-count {
+        background-color: #ff4949;
+        color: #fff;
       }
     }
   }
 
-  .share {
-    background: url('~assets/images/pc/article/btn_share.png') no-repeat;
-    background-size: 54px;
+  .area-tip {
+    grid-area: tip;
+    background: #858dda url('~assets/images/pc/article/icon_chip.png') no-repeat;
+    background-position: 10px;
+    background-size: 32px;
+    box-shadow: 0px 2px 15px -1px #858dda;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+
+  .area-share {
+    grid-area: share;
+    background: #fff url('~assets/images/pc/article/icon_share.png') no-repeat;
+    background-position: 8px;
+    background-size: 24px;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
     position: relative;
     cursor: pointer;
-    background-position-y: 10px;
 
     .share-popup {
       background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
@@ -189,8 +264,8 @@ export default {
       font-size: 14px;
       padding: 12px 12px 12px 48px;
       position: absolute;
-      right: 34px;
-      top: 62px;
+      right: 0;
+      top: 48px;
       width: 200px;
       z-index: 1;
 
@@ -203,33 +278,34 @@ export default {
     }
   }
 
-  .like {
-    background: url('~assets/images/pc/article/btn_like.png') no-repeat;
-    background-size: 80px;
+  .area-etc {
+    grid-area: etc;
+    background: #fff url('~assets/images/pc/article/icon_etc.png') no-repeat;
+    background-position: 8px;
+    background-size: 24px;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
-    width: 80px;
-    height: 80px;
     position: relative;
-    background-position-y: -4px;
 
-    &.liked {
-      background-position-y: -4px;
-      background: url('~assets/images/pc/article/btn_like_selected.png') no-repeat;
-      background-size: 80px;
-      cursor: not-allowed;
-      height: 80px;
-      position: relative;
-      width: 80px;
-    }
-
-    .likes-count {
-      color: #585858;
+    .etc-popup {
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
       font-size: 14px;
+      padding: 12px;
       position: absolute;
-      right: -35px;
-      text-align: left;
-      top: 28px;
-      width: 30px;
+      right: 0;
+      top: 48px;
+      width: 90px;
+      z-index: 1;
+
+      .report {
+        cursor: pointer;
+        user-select: none;
+      }
     }
   }
 }
@@ -238,9 +314,13 @@ export default {
   .area-footer-actions {
     background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
     position: relative;
+    grid-template-columns: 0 repeat(2, 40px) 1fr repeat(2, 40px) 0;
+    /* prettier-ignore */
+    grid-template-areas:
+      '... like tip ... share etc ...';
 
     &:after {
-      bottom: 35px;
+      bottom: 26px;
       box-shadow: 0 15px 10px -10px rgba(192, 192, 192, 0.5);
       content: '';
       height: 100px;
@@ -249,14 +329,34 @@ export default {
       width: 100%;
     }
 
-    .action {
+    .action,
+    .sub-action {
       z-index: 1;
+    }
+
+    .action {
+      height: 40px;
+      width: 40px;
+    }
+
+    .area-like {
+      background-position: 7px;
+      background-size: 24px;
 
       .likes-count {
-        top: -18px;
-        right: 24px;
-        text-align: center;
+        right: 6px;
+        top: -32px;
       }
+
+      &.liked {
+        background-position: 7px;
+        background-size: 24px;
+      }
+    }
+
+    .area-tip {
+      background-position: 8px;
+      background-size: 24px;
     }
   }
 }

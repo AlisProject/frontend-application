@@ -8,7 +8,7 @@
       </ul>
     </nav>
     <article-card-list :articles="userArticles"/>
-    <the-loader :lastEvaluatedKey="userArticlesLastEvaluatedKey"/>
+    <the-loader :isLoading="hasUserArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['userInfo', 'userArticles', 'userArticlesLastEvaluatedKey'])
+    ...mapGetters('user', ['userInfo', 'userArticles', 'hasUserArticlesLastEvaluatedKey'])
   },
   methods: {
     async infiniteScroll(event) {
