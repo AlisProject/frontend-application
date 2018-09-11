@@ -31,7 +31,7 @@
       <span class="error-message">
       {{ errorMessage }}
     </span>
-    <app-button class="to-next-page-button" @click="moveToCompletedPage">
+    <app-button class="send-token-button" @click="moveToCompletedPage">
       トークンを贈る
     </app-button>
   </div>
@@ -178,7 +178,7 @@ export default {
     min-height: 14px;
   }
 
-  .to-next-page-button {
+  .send-token-button {
     margin: 8px 0 40px;
   }
 }

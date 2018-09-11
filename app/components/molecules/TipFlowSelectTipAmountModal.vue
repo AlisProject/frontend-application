@@ -39,7 +39,7 @@
     <span class="error-message">
       {{ errorMessage }}
     </span>
-    <app-button class="to-next-page-button" @click="moveToConfirmationPage">
+    <app-button class="to-confirmation-page-button" @click="moveToConfirmationPage">
       確認画面へ進む
     </app-button>
   </div>
@@ -111,13 +111,13 @@ export default {
         return
       }
 
-      const formattedMaxTokenAmount = new BigNumber('9999.9').multipliedBy(formatNumber)
+      const formattedMaxTokenAmount = new BigNumber('999.9').multipliedBy(formatNumber)
       const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
         formattedMaxTokenAmount.minus(formattedAmount)
       )
 
       if (hasExceededMaxTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 9999.9 ALIS 以下となります'
+        this.errorMessage = '一度に贈れるトークンは 999.9 ALIS 以下となります'
         return
       }
 
@@ -268,7 +268,7 @@ export default {
     min-height: 14px;
   }
 
-  .to-next-page-button {
+  .to-confirmation-page-button {
     margin: 8px 0 40px;
   }
 }
