@@ -131,6 +131,10 @@ $topicCount: 3;
   .area-nav-links {
     grid-column-gap: 20px;
     overflow: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .nav-link {
