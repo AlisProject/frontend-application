@@ -3,7 +3,7 @@
     <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     </nuxt-link>
-    <nuxt-link to="/me/notifications">
+    <span class="notification-link" @click="moveToNotificationPage">
       <img
         class="notification-icon"
         src="~assets/images/pc/common/icon_notification_mark.png"
@@ -12,7 +12,7 @@
         class="notification-icon"
         src="~assets/images/pc/common/icon_notification.png"
         v-else>
-    </nuxt-link>
+    </span>
     <img
       class="profile-icon"
       :src="currentUserInfo.icon_image_url"
@@ -100,9 +100,12 @@ export default {
       this.resetSearchUsersPage()
       this.resetSearchUsersIsLastPage()
     },
-    async toggleMenu() {
+    toggleMenu() {
       if (!this.isMenuShown) {
-        await this.getUsersAlisToken()
+        this.forbidScroll()
+        this.getUsersAlisToken()
+      } else {
+        this.resetScroll()
       }
       this.isMenuShown = !this.isMenuShown
     },
@@ -133,6 +136,11 @@ export default {
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
     },
+    moveToNotificationPage() {
+      this.resetNotificationData()
+      this.getNotifications()
+      this.$router.push('/me/notifications')
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -144,7 +152,9 @@ export default {
       'getUnreadNotification',
       'resetSearchUsers',
       'resetSearchUsersPage',
-      'resetSearchUsersIsLastPage'
+      'resetSearchUsersIsLastPage',
+      'resetNotificationData',
+      'getNotifications'
     ]),
     ...mapActions('article', [
       'resetSearchArticles',
@@ -161,6 +171,10 @@ export default {
   display: flex;
   align-items: center;
   position: relative;
+
+  .notification-link {
+    cursor: pointer;
+  }
 
   .search-icon,
   .notification-icon {

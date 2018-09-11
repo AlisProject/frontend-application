@@ -2,7 +2,7 @@
   <transition name="fade">
     <div class="article-side-actions" v-show="scrollY > 300">
       <div class="action like" :class="{ liked: isLikedArticle }" @click="like">
-        <span class="likes-count">{{ formattedLikesCount }}</span>
+        <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
       </div>
       <div class="sub-action share" @click="toggleSharePopup">
         <div class="share-popup" v-show="isSharePopupShown">
@@ -142,6 +142,7 @@ export default {
       border-radius: 50%;
       border: 1px solid #ff4949;
       color: #ff4949;
+      cursor: auto;
       display: flex;
       font-size: 12px;
       height: 24px;
