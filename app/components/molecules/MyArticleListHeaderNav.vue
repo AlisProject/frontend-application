@@ -25,12 +25,14 @@
 }
 
 .area-title {
-  grid-area: title;
+  align-self: center;
   color: #030303;
   font-size: 20px;
   font-weight: 500;
-  letter-spacing: 1.33px;
+  grid-area: title;
   justify-self: flex-start;
+  letter-spacing: 1.33px;
+  margin: 0;
 }
 
 .nav-link {
