@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header />
-    <edit-header-nav />
+    <edit-header-nav class="drafts" />
     <article-editor :title="title" :putArticle="putArticle"/>
   </div>
 </template>

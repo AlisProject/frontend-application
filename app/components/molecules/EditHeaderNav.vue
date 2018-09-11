@@ -26,7 +26,7 @@ export default {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: 30px;
+  grid-template-rows: auto;
   grid-template-columns: 70px 70px 1fr 90px auto;
   grid-row-gap: 50px;
   /* prettier-ignore */
