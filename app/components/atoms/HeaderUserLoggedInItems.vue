@@ -102,10 +102,7 @@ export default {
     },
     toggleMenu() {
       if (!this.isMenuShown) {
-        this.forbidScroll()
         this.getUsersAlisToken()
-      } else {
-        this.resetScroll()
       }
       this.isMenuShown = !this.isMenuShown
     },
