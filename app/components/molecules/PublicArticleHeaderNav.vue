@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開済み</nuxt-link>
+    <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開中</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <edit-header-nav-edit-article />
   </nav>
