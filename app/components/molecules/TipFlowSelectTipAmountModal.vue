@@ -111,13 +111,13 @@ export default {
         return
       }
 
-      const formattedMaxTokenAmount = new BigNumber('9999.9').multipliedBy(formatNumber)
+      const formattedMaxTokenAmount = new BigNumber('999.9').multipliedBy(formatNumber)
       const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
         formattedMaxTokenAmount.minus(formattedAmount)
       )
 
       if (hasExceededMaxTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 9999.9 ALIS 以下となります'
+        this.errorMessage = '一度に贈れるトークンは 999.9 ALIS 以下となります'
         return
       }
 
