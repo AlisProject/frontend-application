@@ -63,7 +63,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
 .draft-article-list-container {
   display: grid;
