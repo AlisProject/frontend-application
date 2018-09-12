@@ -33,10 +33,10 @@ export default {
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
-    // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態なるため、
+    // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
     // 画面の高さに合うまで要素を取得する。
 
-    // 画面の高さにあっているかをスクロールできるかどうかで判定
+    // 画面の高さに合っているかをスクロールできるかどうかで判定
     if (!isPageScrollable(this.$el)) {
       if (this.isLastPage) return
       this.getPopularArticles({ topic: this.$route.query.topic })
@@ -79,7 +79,7 @@ export default {
 
       // 取得したデータが反映されるまで待つ
       await this.$nextTick()
-      // 画面の高さにあっているかをスクロールできるかどうかで判定
+      // 画面の高さに合っているかをスクロールできるかどうかで判定
       if (isPageScrollable(this.$el)) return
       this.getPopularArticles({ topic: this.$route.query.topic })
     },
