@@ -14,6 +14,7 @@ import AppHeader from '../organisms/AppHeader'
 import NotificationCardList from '../organisms/NotificationCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -63,6 +64,18 @@ export default {
     },
     ...mapActions('user', ['getNotifications']),
     ...mapActions('presentation', ['setNotificationListScrollHeight'])
+  },
+  watch: {
+    async notifications() {
+      // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
+      // 画面の高さに合うまで要素を取得する。
+
+      // 取得したデータが反映されるまで待つ
+      await this.$nextTick()
+      // 画面の高さに合っているかをスクロールできるかどうかで判定
+      if (isPageScrollable(this.$el)) return
+      this.getNotifications()
+    }
   }
 }
 </script>
