@@ -46,6 +46,7 @@ export default {
   },
   mounted() {
     if (!isPageScrollable(this.$el)) {
+      if (this.tagArticles.isLastPage) return
       this.getTagArticles({ tag: this.$route.params.tag })
     }
     if (this.tagArticlesScrollHeight) {

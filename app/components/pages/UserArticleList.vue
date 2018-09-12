@@ -37,6 +37,7 @@ export default {
   },
   mounted() {
     if (!isPageScrollable(this.$el)) {
+      if (!this.hasUserArticlesLastEvaluatedKey) return
       this.getUserArticles({ userId: this.$route.params.userId })
     }
   },

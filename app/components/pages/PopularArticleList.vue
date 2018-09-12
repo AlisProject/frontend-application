@@ -34,6 +34,7 @@ export default {
   },
   mounted() {
     if (!isPageScrollable(this.$el)) {
+      if (this.isLastPage) return
       this.getPopularArticles({ topic: this.$route.query.topic })
     }
     this.setTopicNumber()
