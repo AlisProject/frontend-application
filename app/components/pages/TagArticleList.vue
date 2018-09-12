@@ -26,6 +26,7 @@ import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { fetchDataIfNotScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -44,6 +45,10 @@ export default {
     ...mapGetters('presentation', ['tagArticlesScrollHeight'])
   },
   mounted() {
+    fetchDataIfNotScrollable(
+      this.$el,
+      this.getTagArticles.bind(this, { tag: this.$route.params.tag })
+    )
     if (this.tagArticlesScrollHeight) {
       this.$el.scrollTop = this.tagArticlesScrollHeight
     }
@@ -69,6 +74,15 @@ export default {
     },
     ...mapActions('article', ['getTagArticles']),
     ...mapActions('presentation', ['setTagArticlesScrollHeight'])
+  },
+  watch: {
+    async 'tagArticles.articles'() {
+      await this.$nextTick()
+      fetchDataIfNotScrollable(
+        this.$el,
+        this.getTagArticles.bind(this, { tag: this.$route.params.tag })
+      )
+    }
   }
 }
 </script>

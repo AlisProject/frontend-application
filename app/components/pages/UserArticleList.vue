@@ -20,6 +20,7 @@ import UserArticleListUserInfo from '../atoms/UserArticleListUserInfo'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { fetchDataIfNotScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -33,6 +34,12 @@ export default {
     return {
       isFetchingArticles: false
     }
+  },
+  mounted() {
+    fetchDataIfNotScrollable(
+      this.$el,
+      this.getUserArticles.bind(this, { userId: this.$route.params.userId })
+    )
   },
   computed: {
     ...mapGetters('user', ['userInfo', 'userArticles', 'hasUserArticlesLastEvaluatedKey'])
@@ -54,6 +61,15 @@ export default {
       }
     },
     ...mapActions('user', ['getUserArticles'])
+  },
+  watch: {
+    async userArticles() {
+      await this.$nextTick()
+      fetchDataIfNotScrollable(
+        this.$el,
+        this.getUserArticles.bind(this, { userId: this.$route.params.userId })
+      )
+    }
   }
 }
 </script>

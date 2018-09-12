@@ -56,6 +56,7 @@ import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import SearchUserCardList from '../organisms/SearchUserCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { fetchDataIfNotScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -177,6 +178,14 @@ export default {
     ...mapActions('presentation', ['setSearchArticlesScrollHeight', 'setSearchUsersScrollHeight'])
   },
   watch: {
+    async 'searchArticles.articles'() {
+      await this.$nextTick()
+      fetchDataIfNotScrollable(this.$el, this.getSearchArticles.bind(this, { query: this.query }))
+    },
+    async 'searchUsers.users'() {
+      await this.$nextTick()
+      fetchDataIfNotScrollable(this.$el, this.getSearchUsers.bind(this, { query: this.query }))
+    },
     $route(to, from) {
       const { query } = to
       this.showArticles = query.context !== 'user'

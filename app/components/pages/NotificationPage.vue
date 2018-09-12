@@ -14,6 +14,7 @@ import AppHeader from '../organisms/AppHeader'
 import NotificationCardList from '../organisms/NotificationCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { fetchDataIfNotScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -63,6 +64,12 @@ export default {
     },
     ...mapActions('user', ['getNotifications']),
     ...mapActions('presentation', ['setNotificationListScrollHeight'])
+  },
+  watch: {
+    async notifications() {
+      await this.$nextTick()
+      fetchDataIfNotScrollable(this.$el, this.getNotifications)
+    }
   }
 }
 </script>

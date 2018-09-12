@@ -13,6 +13,7 @@ import AppHeader from '../organisms/AppHeader'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { fetchDataIfNotScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -46,6 +47,12 @@ export default {
       }
     },
     ...mapActions('article', ['getDraftArticles'])
+  },
+  watch: {
+    async draftArticles() {
+      await this.$nextTick()
+      fetchDataIfNotScrollable(this.$el, this.getDraftArticles)
+    }
   }
 }
 </script>

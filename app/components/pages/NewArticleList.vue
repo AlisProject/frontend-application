@@ -13,6 +13,7 @@ import AppHeader from '../organisms/AppHeader'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { fetchDataIfNotScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -32,6 +33,10 @@ export default {
     }
   },
   mounted() {
+    fetchDataIfNotScrollable(
+      this.$el,
+      this.getNewPagesArticles.bind(this, { topic: this.$route.query.topic })
+    )
     this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
@@ -64,6 +69,13 @@ export default {
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
+    async newArticles() {
+      await this.$nextTick()
+      fetchDataIfNotScrollable(
+        this.$el,
+        this.getNewPagesArticles.bind(this, { topic: this.$route.query.topic })
+      )
+    },
     $route(to) {
       this.resetArticleData()
       this.setTopicNumber()
