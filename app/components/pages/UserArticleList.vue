@@ -20,7 +20,7 @@ import UserArticleListUserInfo from '../atoms/UserArticleListUserInfo'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { fetchDataIfNotScrollable } from '~/utils/client'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -36,10 +36,9 @@ export default {
     }
   },
   mounted() {
-    fetchDataIfNotScrollable(
-      this.$el,
-      this.getUserArticles.bind(this, { userId: this.$route.params.userId })
-    )
+    if (!isPageScrollable(this.$el)) {
+      this.getUserArticles({ userId: this.$route.params.userId })
+    }
   },
   computed: {
     ...mapGetters('user', ['userInfo', 'userArticles', 'hasUserArticlesLastEvaluatedKey'])
@@ -65,10 +64,8 @@ export default {
   watch: {
     async userArticles() {
       await this.$nextTick()
-      fetchDataIfNotScrollable(
-        this.$el,
-        this.getUserArticles.bind(this, { userId: this.$route.params.userId })
-      )
+      if (isPageScrollable(this.$el)) return
+      this.getUserArticles({ userId: this.$route.params.userId })
     }
   }
 }

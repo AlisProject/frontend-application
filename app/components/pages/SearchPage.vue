@@ -56,7 +56,7 @@ import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import SearchUserCardList from '../organisms/SearchUserCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { fetchDataIfNotScrollable } from '~/utils/client'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -180,11 +180,13 @@ export default {
   watch: {
     async 'searchArticles.articles'() {
       await this.$nextTick()
-      fetchDataIfNotScrollable(this.$el, this.getSearchArticles.bind(this, { query: this.query }))
+      if (isPageScrollable(this.$el)) return
+      this.getSearchArticles({ query: this.query })
     },
     async 'searchUsers.users'() {
       await this.$nextTick()
-      fetchDataIfNotScrollable(this.$el, this.getSearchUsers.bind(this, { query: this.query }))
+      if (isPageScrollable(this.$el)) return
+      this.getSearchUsers({ query: this.query })
     },
     $route(to, from) {
       const { query } = to
