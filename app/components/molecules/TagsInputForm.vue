@@ -9,7 +9,7 @@
           :maxlength="25"
           placeholder="タグを入力してください"
           :class="{ 'invalid-tag': isInvalidTag }"
-          :autocomplete-items="filteredItems"
+          :autocomplete-items="autocompleteItems"
           @before-adding-tag="checkTags"
           @tags-changed="handleTagsChanged" />
       </no-ssr>
@@ -97,29 +97,26 @@ export default {
           ${newTagInputWrappeRect.x - tagsInputFormRect.x}px
         `
         }
-      }, 700)
+      }, 1000)
     },
     updateAutocompleteItems() {
       if (this.tag.length === 0) return
 
-      const mockData = [
-        { text: 'aaa', count: 1 },
-        { text: 'bbb', count: 2 },
-        { text: 'cccc', count: 3 },
-        { text: 'dddd', count: 4 },
-        { text: 'aaaa', count: 10 },
-        { text: 'abcabc', count: 1 },
-        { text: 'b-b-b', count: 2 },
-        { text: 'CCCC', count: 3 },
-        { text: 'あいうえお', count: 4 },
-        { text: 'あああ', count: 10 }
-      ]
-
       clearTimeout(this.debounce)
-      this.debounce = setTimeout(() => {
-        this.autocompleteItems = mockData.filter((item) => {
-          return item.text.includes(this.tag) && !this.checkHasDuplicateTag(item)
+      this.debounce = setTimeout(async () => {
+        if (this.tag === '') return false
+        const items = await this.$axios.$get('/search/tags', {
+          params: { query: this.tag }
+          // params: { query: this.tag, limit: 5 }
         })
+        const formattedItems = items.map((tag) => {
+          return { ...tag, text: tag.name }
+        })
+        this.autocompleteItems = formattedItems.filter((tag) => {
+          return !this.checkHasDuplicateTag(tag)
+        })
+        // タグのサジェスト時にタグの件数を表示
+        this.addTagCounts(this.autocompleteItems)
       }, 600)
     },
     addTagCounts(items) {
@@ -129,19 +126,11 @@ export default {
             item.dataset.count = `(${items[i].count})`
           })
         }
-      }, 100)
+      }, 10)
     },
     ...mapActions('article', ['updateTags'])
   },
   computed: {
-    filteredItems() {
-      const filteredItems = this.autocompleteItems.filter((item) => {
-        return item.text.includes(this.tag) && !this.checkHasDuplicateTag(item)
-      })
-      // タグのサジェスト時にタグの件数を表示
-      this.addTagCounts(filteredItems)
-      return filteredItems
-    },
     ...mapGetters('article', ['tags'])
   },
   watch: {
@@ -151,8 +140,10 @@ export default {
       this.errorMessage = ''
 
       this.repositionAutocompletePopup()
-
       this.updateAutocompleteItems()
+    },
+    autocompleteItems() {
+      this.repositionAutocompletePopup()
     },
     isInvalidTag() {
       this.$emit('change-tag-validation-state', this.isInvalidTag)
