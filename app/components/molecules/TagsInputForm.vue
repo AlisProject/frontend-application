@@ -98,7 +98,7 @@ export default {
       if (this.tag === '') return
 
       const items = await this.$axios.$get('/search/tags', {
-        params: { query: this.tag }
+        params: { query: this.tag, limit: 5, page: 1 }
       })
       const formattedItems = items.map((tag) => {
         return { ...tag, text: tag.name }
