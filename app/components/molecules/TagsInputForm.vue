@@ -90,43 +90,32 @@ export default {
         .querySelector('.new-tag-input-wrapper')
         .getBoundingClientRect()
 
-      // vue-tags-input の autocomplete が表示されるまで少し待つ必要がある
-      setTimeout(() => {
-        const autocompleteWrapper = document.querySelector('.autocomplete')
-        if (!autocompleteWrapper) return
-        autocompleteWrapper.style.left = `${newTagInputWrappeRect.x - tagsInputFormRect.x}px`
-      }, 1000)
+      const autocompleteWrapper = document.querySelector('.autocomplete')
+      if (!autocompleteWrapper) return
+      autocompleteWrapper.style.left = `${newTagInputWrappeRect.x - tagsInputFormRect.x}px`
     },
-    updateAutocompleteItems() {
-      if (this.tag.length === 0) return
+    async updateAutocompleteItems() {
+      if (this.tag === '') return
 
-      clearTimeout(this.debounce)
-      this.debounce = setTimeout(async () => {
-        if (this.tag === '') return false
-        const items = await this.$axios.$get('/search/tags', {
-          params: { query: this.tag }
-          // params: { query: this.tag, limit: 5 }
-        })
-        const formattedItems = items.map((tag) => {
-          return { ...tag, text: tag.name }
-        })
-        this.autocompleteItems = formattedItems.filter((tag) => {
-          return !this.checkHasDuplicateTag(tag)
-        })
+      const items = await this.$axios.$get('/search/tags', {
+        params: { query: this.tag }
+      })
+      const formattedItems = items.map((tag) => {
+        return { ...tag, text: tag.name }
+      })
+      const autocompleteItems = formattedItems.filter((tag) => {
+        return !this.checkHasDuplicateTag(tag)
+      })
 
-        // タグのサジェスト時にタグの件数を表示
-        this.addTagCounts(this.autocompleteItems)
-      }, 600)
+      this.autocompleteItems = autocompleteItems
     },
     addTagCounts(items) {
-      // タグのサジェスト結果を表示する要素が描画されるまで待つ
-      setTimeout(() => {
-        const showingAutocompleteItems = document.querySelectorAll('.autocomplete ul div')
-        if (showingAutocompleteItems.length < 0) return
-        Array.from(showingAutocompleteItems).forEach((item, i) => {
-          item.dataset.count = `(${items[i].count})`
-        })
-      }, 10)
+      const showingAutocompleteItems = document.querySelectorAll('.autocomplete ul div')
+      if (showingAutocompleteItems.length < 0) return
+      Array.from(showingAutocompleteItems).forEach((item, i) => {
+        console.log(items[i].count)
+        item.dataset.count = `(${items[i].count})`
+      })
     },
     ...mapActions('article', ['updateTags'])
   },
@@ -139,12 +128,20 @@ export default {
       this.isInvalidTag = false
       this.errorMessage = ''
 
-      this.repositionAutocompletePopup()
-      this.updateAutocompleteItems()
-    },
-    autocompleteItems() {
-      console.log(this.autocompleteItems)
-      this.repositionAutocompletePopup()
+      // 入力中のタグをすべて消し、再度入力するときに消す前のサジェスト結果を表示しないために
+      // サジェスト結果をリセットする
+      if (this.tag === '') {
+        this.autocompleteItems = []
+      }
+
+      clearTimeout(this.debounce)
+      this.debounce = setTimeout(async () => {
+        await this.updateAutocompleteItems()
+        // vue-tags-input の autocomplete 要素が表示されるまで少し待つ必要がある
+        await this.$nextTick()
+        this.addTagCounts(this.autocompleteItems)
+        this.repositionAutocompletePopup()
+      }, 600)
     },
     isInvalidTag() {
       this.$emit('change-tag-validation-state', this.isInvalidTag)
