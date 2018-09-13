@@ -222,6 +222,8 @@ export default {
         font-size: 12px;
 
         div {
+          white-space: nowrap;
+
           &:after {
             content: attr(data-count);
           }
