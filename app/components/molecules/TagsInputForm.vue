@@ -10,6 +10,7 @@
           placeholder="タグを入力してください"
           :class="{ 'invalid-tag': isInvalidTag }"
           :autocomplete-items="autocompleteItems"
+          :autocomplete-always-open="true"
           @before-adding-tag="checkTags"
           @tags-changed="handleTagsChanged" />
       </no-ssr>
