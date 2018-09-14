@@ -18,7 +18,7 @@
 </template>
 
 <script>
-/* eslint no-undef: 0 */
+/* global $, MediumEditor, iframely */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'

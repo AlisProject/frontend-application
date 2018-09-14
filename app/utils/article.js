@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* global iframely */
 import axios from './axios'
 import { XmlEntities } from 'html-entities'
 
