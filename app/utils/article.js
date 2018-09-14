@@ -172,6 +172,7 @@ export function getIframelyEmbedTemplate({ url, meta, links }) {
 export function showEmbedTweet() {
   document.querySelectorAll('[data-alis-iframely-url]').forEach(async (element) => {
     const { alisIframelyUrl } = element.dataset
+
     if (
       alisIframelyUrl === 'https://twitter.com' ||
       alisIframelyUrl.startsWith('https://twitter.com/')
@@ -200,6 +201,15 @@ export function showEmbedTweet() {
       ${getTwitterProfileTemplate({ ...profileInfo })}
       <br>`
       }
+    } else if (alisIframelyUrl.startsWith('https://gist.github.com/')) {
+      const anchorElement = document.createElement('a')
+      anchorElement.setAttribute('href', alisIframelyUrl)
+      anchorElement.setAttribute('data-iframely-url', '')
+
+      const div = document.createElement('div')
+      div.appendChild(anchorElement)
+
+      element.innerHTML = div.innerHTML
     } else {
       const { data: result } = await axios.get(
         `https://iframe.ly/api/iframely?api_key=${

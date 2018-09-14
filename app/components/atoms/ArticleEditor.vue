@@ -167,6 +167,7 @@ export default {
       const isTwitterResource =
         trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
       const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
+      const isGistResource = trimmedLine.startsWith('https://gist.github.com/')
       let result, cleanAttrs, embedHTML
 
       try {
@@ -190,7 +191,7 @@ export default {
 
       selectedParentElement.innerHTML = ''
 
-      if (isTweet) {
+      if (isTweet || isGistResource) {
         this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
         iframely.load()
         return
