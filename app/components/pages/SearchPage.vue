@@ -1,5 +1,5 @@
 <template>
-  <div class="search-page-container" :class="showArticles ? 'article' : 'user'" @scroll="infiniteScroll">
+  <div class="search-page-container" :class="searchContentType" @scroll="infiniteScroll">
     <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
     <h1 class="area-title">{{ title }}</h1>
     <form @submit.prevent="search" class="area-search">
@@ -20,30 +20,40 @@
       <nuxt-link
         :to="{ path: '/search', query: { context: 'article', q: this.query }}"
         class="area-article nav-link"
-        :class="{ 'selected': showArticles }">記事</nuxt-link>
+        :class="{ 'selected': searchContentType === 'article' }">記事</nuxt-link>
       <nuxt-link
         :to="{ path: '/search', query: { context: 'user', q: this.query }}"
         class="area-user nav-link"
-        :class="{ 'selected': !showArticles }">ユーザー</nuxt-link>
+        :class="{ 'selected': searchContentType === 'user' }">ユーザー</nuxt-link>
+      <nuxt-link
+        :to="{ path: '/search', query: { context: 'tag', q: this.query }}"
+        class="area-tag nav-link"
+        :class="{ 'selected': searchContentType === 'tag' }">タグ</nuxt-link>
     </nav>
     <div class="area-search-result">
       <no-ssr>
-        <div v-if="showArticles">
+        <div v-if="searchContentType === 'article'">
           <p class="no-result-message" v-if="searchArticles.articles.length === 0">
            {{  searchArticles.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
           </p>
           <search-article-card-list :articles="searchArticles.articles" v-else/>
         </div>
-        <div v-else>
+        <div v-else-if="searchContentType === 'user'">
           <p class="no-result-message" v-if="searchUsers.users.length === 0">
            {{ searchUsers.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
           </p>
           <search-user-card-list :users="searchUsers.users" v-else/>
         </div>
+        <div v-else-if="searchContentType === 'tag'">
+          <p class="no-result-message" v-if="searchTags.tags.length === 0">
+           {{ searchTags.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
+          </p>
+          <article-tags :tags="searchTags.tags" v-else/>
+        </div>
       </no-ssr>
     </div>
-    <the-loader :isLoading="showNav && !searchArticles.isLastPage" v-if="showArticles"/>
-    <the-loader :isLoading="showNav && !searchUsers.isLastPage" v-else/>
+    <the-loader :isLoading="showNav && !searchArticles.isLastPage" v-if="searchContentType === 'article'"/>
+    <the-loader :isLoading="showNav && !searchUsers.isLastPage" v-else-if="searchContentType === 'user'"/>
     <app-footer/>
   </div>
 </template>
@@ -54,6 +64,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import SearchUserCardList from '../organisms/SearchUserCardList'
+import ArticleTags from '../molecules/ArticleTags'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable } from '~/utils/client'
@@ -63,6 +74,7 @@ export default {
     AppHeader,
     SearchArticleCardList,
     SearchUserCardList,
+    ArticleTags,
     TheLoader,
     AppFooter
   },
@@ -72,10 +84,15 @@ export default {
     },
     ...mapGetters('article', ['searchArticles']),
     ...mapGetters('user', ['searchUsers']),
-    ...mapGetters('presentation', ['searchArticlesScrollHeight', 'searchUsersScrollHeight'])
+    ...mapGetters('presentation', [
+      'searchArticlesScrollHeight',
+      'searchUsersScrollHeight',
+      'searchTagsScrollHeight'
+    ]),
+    ...mapGetters('tag', ['searchTags'])
   },
   created() {
-    this.showArticles = this.$route.query.context !== 'user'
+    this.searchContentType = this.$route.query.context
     this.query = this.$route.query.q
     this.showNav = !!this.query
   },
@@ -85,11 +102,12 @@ export default {
     await this.$nextTick()
     if (this.searchArticlesScrollHeight) this.$el.scrollTop = this.searchArticlesScrollHeight
     if (this.searchUsersScrollHeight) this.$el.scrollTop = this.searchUsersScrollHeight
+    if (this.searchTagsScrollHeight) this.$el.scrollTop = this.searchTagsScrollHeight
   },
   data() {
     return {
       isFetchingData: false,
-      showArticles: true,
+      searchContentType: '',
       query: null,
       showNav: false,
       inputText: '',
@@ -97,9 +115,19 @@ export default {
     }
   },
   beforeDestroy() {
-    this.showArticles
-      ? this.setSearchArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
-      : this.setSearchUsersScrollHeight({ scrollHeight: this.$el.scrollTop })
+    switch (this.searchContentType) {
+      case 'article':
+        this.setSearchArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
+        break
+      case 'user':
+        this.setSearchUsersScrollHeight({ scrollHeight: this.$el.scrollTop })
+        break
+      case 'tag':
+        this.setTagArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
+        break
+      default:
+        break
+    }
   },
   methods: {
     async search() {
@@ -110,7 +138,7 @@ export default {
         if (this.isFetchingData || !this.query) return
         this.isFetchingData = true
         this.showNav = true
-        const path = `/search?context=${this.showArticles ? 'article' : 'user'}&q=${this.query}`
+        const path = `/search?context=${this.searchContentType}&q=${this.query}`
         this.isSearchFirstly ? this.$router.replace(path) : this.$router.push(path)
         this.isSearchFirstly = false
         await this.getSearchData(this.query)
@@ -126,18 +154,35 @@ export default {
       await this.search()
     },
     async getSearchData(query) {
-      this.showArticles
-        ? await this.getSearchArticles({ query })
-        : await this.getSearchUsers({ query })
+      switch (this.searchContentType) {
+        case 'article':
+          await this.getSearchArticles({ query })
+          break
+        case 'user':
+          await this.getSearchUsers({ query })
+          break
+        case 'tag':
+          await this.getSearchTags({ query })
+          break
+        default:
+          break
+      }
     },
     async infiniteScroll(event) {
       if (this.isFetchingData || !this.query) return
       try {
         this.isFetchingData = true
-
-        const isLastPage = this.showArticles
-          ? this.searchArticles.isLastPage
-          : this.searchUsers.isLastPage
+        let isLastPage = false
+        switch (this.searchContentType) {
+          case 'article':
+            isLastPage = this.searchArticles.isLastPage
+            break
+          case 'user':
+            isLastPage = this.searchUsers.isLastPage
+            break
+          default:
+            break
+        }
         const isScrollBottom =
           event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
         if (isLastPage || !isScrollBottom) return
@@ -175,7 +220,12 @@ export default {
       'resetSearchArticlesPage',
       'resetSearchArticlesIsLastPage'
     ]),
-    ...mapActions('presentation', ['setSearchArticlesScrollHeight', 'setSearchUsersScrollHeight'])
+    ...mapActions('presentation', [
+      'setSearchArticlesScrollHeight',
+      'setSearchUsersScrollHeight',
+      'setTagArticlesScrollHeight'
+    ]),
+    ...mapActions('tag', ['getSearchTags'])
   },
   watch: {
     async 'searchArticles.articles'() {
@@ -200,7 +250,7 @@ export default {
     },
     $route(to, from) {
       const { query } = to
-      this.showArticles = query.context !== 'user'
+      this.searchContentType = query.context
       this.showNav = !!query.q
       this.isSearchFirstly = !this.showNav
       this.fetchSearchedData(query.q)
@@ -232,7 +282,8 @@ export default {
     grid-template-columns: 1fr 1080px 1fr;
   }
 
-  &.user {
+  &.user,
+  &.tag {
     grid-template-columns: 1fr 640px 1fr;
   }
 }
@@ -282,13 +333,13 @@ export default {
   display: grid;
   text-align: center;
   grid-template-rows: 1fr 30px 1fr;
-  grid-template-columns: 1fr 70px 70px 1fr;
+  grid-template-columns: 1fr repeat(3, 70px) 1fr;
   grid-column-gap: 10px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...     ...  ..."
-    "... article user ..."
-    "... ...     ...  ...";
+    "... ...     ...  ... ..."
+    "... article user tag ..."
+    "... ...     ...  ... ...";
 
   .nav-link {
     font-size: 14px;
@@ -308,6 +359,10 @@ export default {
 
   .area-user {
     grid-area: user;
+  }
+
+  .area-tag {
+    grid-area: tag;
   }
 }
 
@@ -333,7 +388,8 @@ export default {
       grid-template-columns: 1fr 340px 1fr;
     }
 
-    &.user {
+    &.user,
+    &.tag {
       grid-template-columns: 1fr 70vw 1fr;
 
       .area-search {
@@ -375,7 +431,8 @@ export default {
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
 
-    &.user {
+    &.user,
+    &.tag {
       grid-template-columns: 10px 1fr 10px;
     }
   }
@@ -389,7 +446,8 @@ export default {
       grid-template-columns: 10px 1fr 10px;
     }
 
-    &.user {
+    &.user,
+    &.tag {
       .area-search {
         width: 100%;
       }
