@@ -8,7 +8,7 @@
           :max-tags="5"
           :maxlength="25"
           placeholder="タグを入力してください"
-          :class="{ 'invalid-tag': isInvalidTag }"
+          :class="{ 'invalid-tag': isInvalidTag, 'hide-autocomplete-items': !hasAutocompleteItems }"
           :autocomplete-items="autocompleteItems"
           :autocomplete-always-open="true"
           @before-adding-tag="checkTags"
@@ -118,6 +118,9 @@ export default {
     ...mapActions('article', ['updateTags'])
   },
   computed: {
+    hasAutocompleteItems() {
+      return this.autocompleteItems.length > 0
+    },
     ...mapGetters('article', ['tags'])
   },
   watch: {
@@ -186,6 +189,10 @@ export default {
 
     &.invalid-tag .new-tag-input-wrapper input {
       color: #f06273;
+    }
+
+    &.hide-autocomplete-items .autocomplete {
+      display: none;
     }
 
     .autocomplete {
