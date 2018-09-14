@@ -54,7 +54,6 @@
     </div>
     <the-loader :isLoading="showNav && !searchArticles.isLastPage" v-if="searchContentType === 'article'"/>
     <the-loader :isLoading="showNav && !searchUsers.isLastPage" v-else-if="searchContentType === 'user'"/>
-    <the-loader :isLoading="showNav && !searchTags.isLastPage" v-else-if="searchContentType === 'tag'"/>
     <app-footer/>
   </div>
 </template>
@@ -180,9 +179,6 @@ export default {
           case 'user':
             isLastPage = this.searchUsers.isLastPage
             break
-          case 'tag':
-            isLastPage = this.searchTags.isLastPage
-            break
           default:
             break
         }
@@ -202,9 +198,6 @@ export default {
       this.resetSearchUsers()
       this.resetSearchUsersPage()
       this.resetSearchUsersIsLastPage()
-      this.resetSearchTags()
-      this.resetSearchTagsPage()
-      this.resetSearchTagsIsLastPage()
     },
     async fetchSearchedData(query) {
       this.resetSearchData()
@@ -231,12 +224,7 @@ export default {
       'setSearchUsersScrollHeight',
       'setTagArticlesScrollHeight'
     ]),
-    ...mapActions('tag', [
-      'getSearchTags',
-      'resetSearchTags',
-      'resetSearchTagsPage',
-      'resetSearchTagsIsLastPage'
-    ])
+    ...mapActions('tag', ['getSearchTags'])
   },
   watch: {
     $route(to, from) {
