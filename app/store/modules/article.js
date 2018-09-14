@@ -80,7 +80,8 @@ const getters = {
   topicDisplayName: (state) => state.topicDisplayName,
   fetchingArticleTopic: (state) => state.fetchingArticleTopic,
   tags: (state) => state.tags,
-  tagArticles: (state) => state.tagArticles
+  tagArticles: (state) => state.tagArticles,
+  hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey
 }
 
 const actions = {
