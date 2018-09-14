@@ -1,15 +1,22 @@
 <template>
   <h2 class="area-title">
-    {{ title }}
+    {{ decodedTitle }}
   </h2>
 </template>
 
 <script>
+import { htmlDecode } from '~/utils/article'
+
 export default {
   props: {
     title: {
       type: String,
       required: false
+    }
+  },
+  computed: {
+    decodedTitle() {
+      return htmlDecode(this.title)
     }
   }
 }

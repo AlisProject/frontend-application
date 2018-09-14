@@ -2,7 +2,7 @@
   <div class="article-container">
     <app-header showOnlySessionLinks class="without-shadow"/>
     <div class="area-article">
-      <h1 class="area-title">{{ article.title }}</h1>
+      <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
       <article-tags :tags="article.tags"/>
       <article-footer-actions
@@ -37,7 +37,7 @@ import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
 // import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
-import { showEmbedTweet } from '~/utils/article'
+import { showEmbedTweet, htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -69,6 +69,9 @@ export default {
     this.resetArticleCommentsLastEvaluatedKey()
   },
   computed: {
+    decodedTitle() {
+      return htmlDecode(this.article.title)
+    },
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },

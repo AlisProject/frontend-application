@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import axios from './axios'
+import { XmlEntities } from 'html-entities'
 
 export function createInsertPluginTemplateFromUrl(url) {
   // This method returns DOM string like this.
@@ -257,4 +258,9 @@ export function preventDropImageOnOGPContent() {
     preventDragAndDrop(element)
     element.dataset.preventedDragAndDrop = true
   })
+}
+
+export function htmlDecode(text) {
+  const entities = new XmlEntities()
+  return entities.decode(text)
 }

@@ -1,15 +1,22 @@
 <template>
   <p class="area-overview">
-    {{ overview }}
+    {{ decodedOverview }}
   </p>
 </template>
 
 <script>
+import { htmlDecode } from '~/utils/article'
+
 export default {
   props: {
     overview: {
       type: String,
       required: false
+    }
+  },
+  computed: {
+    decodedOverview() {
+      return htmlDecode(this.overview)
     }
   }
 }
