@@ -173,35 +173,24 @@ export function showEmbedTweet() {
   document.querySelectorAll('[data-alis-iframely-url]').forEach(async (element) => {
     const { alisIframelyUrl } = element.dataset
 
-    if (
+    const isTwitterResource =
       alisIframelyUrl === 'https://twitter.com' ||
       alisIframelyUrl.startsWith('https://twitter.com/')
-    ) {
-      const isTweet = alisIframelyUrl.split('/')[4] === 'status'
-      if (isTweet) {
-        const anchorElement = document.createElement('a')
-        anchorElement.setAttribute('href', alisIframelyUrl)
-        anchorElement.setAttribute('data-iframely-url', '')
+    const isTweet = isTwitterResource && alisIframelyUrl.split('/')[4] === 'status'
+    const isGistResource = alisIframelyUrl.startsWith('https://gist.github.com/')
+    let result
 
-        const div = document.createElement('div')
-        div.appendChild(anchorElement)
+    try {
+      result = (await getResourceFromIframely(
+        isTwitterResource ? 'oembed' : 'iframely',
+        alisIframelyUrl
+      )).data
+    } catch (error) {
+      console.error(error)
+      return
+    }
 
-        element.innerHTML = div.innerHTML
-      } else {
-        const { data: profileInfo } = await axios.get(
-          `https://iframe.ly/api/oembed?api_key=${
-            process.env.IFRAMELY_API_KEY
-          }&url=${encodeURIComponent(alisIframelyUrl)}`
-        )
-        const { title, description } = profileInfo
-        const hasTitleOrDescription = title !== undefined || description !== undefined
-        if (!hasTitleOrDescription) return
-
-        element.innerHTML = `
-      ${getTwitterProfileTemplate({ ...profileInfo })}
-      <br>`
-      }
-    } else if (alisIframelyUrl.startsWith('https://gist.github.com/')) {
+    if (isTweet || isGistResource) {
       const anchorElement = document.createElement('a')
       anchorElement.setAttribute('href', alisIframelyUrl)
       anchorElement.setAttribute('data-iframely-url', '')
@@ -210,12 +199,19 @@ export function showEmbedTweet() {
       div.appendChild(anchorElement)
 
       element.innerHTML = div.innerHTML
+      iframely.load()
+      return
+    }
+
+    if (isTwitterResource) {
+      const { title, description } = result
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
+
+      element.innerHTML = `
+      ${getTwitterProfileTemplate({ ...result })}
+      <br>`
     } else {
-      const { data: result } = await axios.get(
-        `https://iframe.ly/api/iframely?api_key=${
-          process.env.IFRAMELY_API_KEY
-        }&url=${encodeURIComponent(alisIframelyUrl)}`
-      )
       const { title, description } = result.meta
       const hasTitleOrDescription = title !== undefined || description !== undefined
       if (!hasTitleOrDescription) return
@@ -224,7 +220,6 @@ export function showEmbedTweet() {
       ${getIframelyEmbedTemplate({ ...result })}
       <br>`
     }
-    iframely.load()
   })
 }
 
