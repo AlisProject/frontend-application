@@ -113,7 +113,6 @@ export default {
       const showingAutocompleteItems = document.querySelectorAll('.autocomplete ul div')
       if (showingAutocompleteItems.length < 0) return
       Array.from(showingAutocompleteItems).forEach((item, i) => {
-        console.log(items[i].count)
         item.dataset.count = `(${items[i].count})`
       })
     },
@@ -184,18 +183,6 @@ export default {
 </style>
 
 <style lang="scss">
-@keyframes fadein {
-  0% {
-    opacity: 0;
-  }
-  90% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 .tags-input-form {
   .vue-tags-input {
     .input {
@@ -213,8 +200,6 @@ export default {
       border-radius: 4px;
       padding: 4px 8px;
       text-align: left;
-      // autocomplete の popup の位置が変わる間、表示を遅らせてちらつかせないようにする
-      animation: fadein 100ms linear 0s;
 
       .item {
         padding: 2px 0;
