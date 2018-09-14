@@ -91,9 +91,9 @@ export default {
         .querySelector('.new-tag-input-wrapper')
         .getBoundingClientRect()
 
-      const autocompleteWrapper = document.querySelector('.autocomplete')
-      if (!autocompleteWrapper) return
-      autocompleteWrapper.style.left = `${newTagInputWrappeRect.x - tagsInputFormRect.x}px`
+      document.querySelector('.autocomplete').style.left = `
+        ${newTagInputWrappeRect.x - tagsInputFormRect.x}px
+      `
     },
     async updateAutocompleteItems() {
       if (this.tag === '') return
@@ -111,9 +111,7 @@ export default {
       this.autocompleteItems = autocompleteItems
     },
     addTagCounts(items) {
-      const showingAutocompleteItems = document.querySelectorAll('.autocomplete ul div')
-      if (showingAutocompleteItems.length < 0) return
-      Array.from(showingAutocompleteItems).forEach((item, i) => {
+      Array.from(document.querySelectorAll('.autocomplete ul div')).forEach((item, i) => {
         item.dataset.count = `(${items[i].count})`
       })
     },
@@ -130,15 +128,11 @@ export default {
 
       // 入力中のタグをすべて消し、再度入力するときに消す前のサジェスト結果を表示しないために
       // サジェスト結果をリセットする
-      if (this.tag === '') {
-        this.autocompleteItems = []
-      }
+      if (this.tag === '') this.autocompleteItems = []
 
       clearTimeout(this.debounce)
       this.debounce = setTimeout(async () => {
         await this.updateAutocompleteItems()
-        // vue-tags-input の autocomplete 要素が表示されるまで少し待つ必要がある
-        await this.$nextTick()
         this.addTagCounts(this.autocompleteItems)
         this.repositionAutocompletePopup()
       }, 600)
