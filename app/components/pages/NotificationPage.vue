@@ -73,7 +73,7 @@ export default {
       // 取得したデータが反映されるまで待つ
       await this.$nextTick()
       // 画面の高さに合っているかをスクロールできるかどうかで判定
-      if (isPageScrollable(this.$el)) return
+      if (isPageScrollable(this.$el) || !this.hasNotificationsLastEvaluatedKey) return
       this.getNotifications()
     }
   }
