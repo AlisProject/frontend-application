@@ -176,15 +176,10 @@ export default {
           trimmedLine
         )).data
       } catch (error) {
-        if (isTwitterResource) {
-          const message = isTweet
-            ? 'ツイートが取得できませんでした。'
-            : 'Twitterのユーザー情報が取得できませんでした。'
-          this.sendNotification({
-            text: message,
-            type: 'warning'
-          })
-        }
+        this.sendNotification({
+          text: 'リンク先の情報を取得できませんでした。',
+          type: 'warning'
+        })
         console.error(error)
         return
       }
