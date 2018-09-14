@@ -203,15 +203,23 @@ export function showEmbedTweet() {
       return
     }
 
-    const { title, description } = isTwitterResource ? result : result.meta
-    const hasTitleOrDescription = title !== undefined || description !== undefined
-    if (!hasTitleOrDescription) return
+    if (isTwitterResource) {
+      const { title, description } = result
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
 
-    const template = isTwitterResource
-      ? getTwitterProfileTemplate({ ...result })
-      : getIframelyEmbedTemplate({ ...result })
+      element.innerHTML = `
+      ${getTwitterProfileTemplate({ ...result })}
+      <br>`
+    } else {
+      const { title, description } = result.meta
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
 
-    element.innerHTML = `${template}<br>`
+      element.innerHTML = `
+      ${getIframelyEmbedTemplate({ ...result })}
+      <br>`
+    }
   })
 }
 
