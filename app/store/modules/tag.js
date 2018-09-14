@@ -16,24 +16,16 @@ const getters = {
 }
 
 const actions = {
-  async getSearchTags({ commit, getters }, { query }) {
-    if (getters.searchTags.isFetching) return
+  async getSearchTags({ commit, state }, { query }) {
+    if (state.searchTags.isFetching) return
     commit(types.SET_SEARCH_TAGS_IS_FETCHING, { isFetching: true })
     const limit = 10
-    const tags = [
-      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-      'bbb',
-      'ccc',
-      'ラーメン',
-      'aaaaaaaaaaaaaaaa',
-      'aaaaaaaaaaaaaaaabbbbbbbbbbbbbb'
-    ]
-    // const tags = await this.$axios.$get('/search/tags', {
-    //   params: { limit, query, page: getters.searchTags.page }
-    // })
+    const tags = await this.$axios.$get('/search/tags', {
+      params: { limit, query, page: state.searchTags.page }
+    })
     commit(types.SET_SEARCH_TAGS_IS_FETCHING, { isFetching: false })
-    commit(types.SET_SEARCH_TAGS, { tags })
-    commit(types.SET_SEARCH_TAGS_PAGE, { page: getters.searchTags.page + 1 })
+    commit(types.SET_SEARCH_TAGS, { tags: tags.map((tag) => tag.name) })
+    commit(types.SET_SEARCH_TAGS_PAGE, { page: state.searchTags.page + 1 })
     if (tags.length < limit) {
       commit(types.SET_SEARCH_TAGS_IS_LAST_PAGE, { isLastPage: true })
     }
@@ -42,7 +34,7 @@ const actions = {
     commit(types.RESET_SEARCH_TAGS)
   },
   resetSearchTagsPage({ commit }) {
-    commit(types.SET_SEARCH_TAGS_PAGE, { page: 0 })
+    commit(types.SET_SEARCH_TAGS_PAGE, { page: 1 })
   },
   resetSearchTagsIsLastPage({ commit }) {
     commit(types.SET_SEARCH_TAGS_IS_LAST_PAGE, { isLastPage: false })
