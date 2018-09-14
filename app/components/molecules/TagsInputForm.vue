@@ -129,8 +129,7 @@ export default {
       this.isInvalidTag = false
       this.errorMessage = ''
 
-      // 入力中のタグをすべて消し、再度入力するときに消す前のサジェスト結果を表示しないために
-      // サジェスト結果をリセットする
+      // 入力中のタグをすべて消したときに、サジェスト結果をリセットするために必要
       if (this.tag === '') this.autocompleteItems = []
 
       clearTimeout(this.debounce)
