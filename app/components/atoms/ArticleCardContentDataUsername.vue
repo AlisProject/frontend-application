@@ -1,13 +1,20 @@
 <template>
-  <p class="area-name">{{ username }}</p>
+  <p class="area-name">{{ decodedUsername }}</p>
 </template>
 
 <script>
+import { htmlDecode } from '~/utils/article'
+
 export default {
   props: {
     username: {
       type: String,
       required: false
+    }
+  },
+  computed: {
+    decodedUsername() {
+      return htmlDecode(this.username)
     }
   }
 }
