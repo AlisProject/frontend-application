@@ -15,7 +15,7 @@ const getters = {
 
 const actions = {
   async getSearchTags({ commit, state }, { query }) {
-    const limit = 10
+    const limit = 5
     const tags = await this.$axios.$get('/search/tags', {
       params: { limit, query, page: state.searchTags.page }
     })
