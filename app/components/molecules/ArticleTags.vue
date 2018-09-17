@@ -1,12 +1,20 @@
 <template>
   <div class="area-tags">
-    <span
+    <nuxt-link
+      v-for="tag in tags"
+      :to="`/tag/${tag}`"
+      :key="tag"
+      @click.native="onClick(tag)"
+      class="tag">
+      {{ tag }}
+    </nuxt-link>
+    <!-- <span
       v-for="tag in tags"
       :key="tag"
       @click="onClick(tag)"
       class="tag">
       {{ tag }}
-    </span>
+    </span> -->
   </div>
 </template>
 
@@ -22,6 +30,7 @@ export default {
   },
   methods: {
     onClick(value) {
+      console.log(111)
       this.resetTagArticlesData()
       this.setTagArticlesScrollHeight({ scrollHeight: 0 })
       this.$router.push(`/tag/${value}`)
