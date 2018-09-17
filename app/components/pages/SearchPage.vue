@@ -235,7 +235,13 @@ export default {
       // 取得したデータが反映されるまで待つ
       await this.$nextTick()
       // 画面の高さに合っているかをスクロールできるかどうかで判定
-      if (isPageScrollable(this.$el) || this.searchArticles.isLastPage) return
+      if (
+        isPageScrollable(this.$el) ||
+        this.searchArticles.isLastPage ||
+        this.searchArticles.articles.length === 0
+      ) {
+        return
+      }
       this.getSearchArticles({ query: this.query })
     },
     async 'searchUsers.users'() {
@@ -245,7 +251,13 @@ export default {
       // 取得したデータが反映されるまで待つ
       await this.$nextTick()
       // 画面の高さに合っているかをスクロールできるかどうかで判定
-      if (isPageScrollable(this.$el) || this.searchUsers.isLastPage) return
+      if (
+        isPageScrollable(this.$el) ||
+        this.searchUsers.isLastPage ||
+        this.searchUsers.users.length === 0
+      ) {
+        return
+      }
       this.getSearchUsers({ query: this.query })
     },
     $route(to, from) {
