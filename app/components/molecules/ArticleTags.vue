@@ -1,33 +1,23 @@
 <template>
   <div class="area-tags">
-    <span
+    <nuxt-link
       v-for="tag in tags"
+      :to="{ path: `/tag/${tag}`, query: { from: 'articleTag' }}"s
       :key="tag"
       @click="onClick(tag)"
       class="tag">
       {{ tag }}
-    </span>
+    </nuxt-link>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   props: {
     tags: {
       type: Array,
       required: false
     }
-  },
-  methods: {
-    onClick(value) {
-      this.resetTagArticlesData()
-      this.setTagArticlesScrollHeight({ scrollHeight: 0 })
-      this.$router.push(`/tag/${value}`)
-    },
-    ...mapActions('article', ['resetTagArticlesData']),
-    ...mapActions('presentation', ['setTagArticlesScrollHeight'])
   }
 }
 </script>
