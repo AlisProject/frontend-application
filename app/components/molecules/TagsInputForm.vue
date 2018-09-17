@@ -129,6 +129,18 @@ export default {
       this.isInvalidTag = false
       this.errorMessage = ''
 
+      const addingTag = { text: this.tag }
+      const hasDuplicateTag = this.checkHasDuplicateTag(addingTag)
+      const hasDisallowedTag = this.checkHasDisallowedTag(addingTag)
+
+      // 追加できないタグを入力中はアラートを表示する
+      if (hasDuplicateTag || hasDisallowedTag) {
+        this.showErrorMessage({ hasDuplicateTag, hasDisallowedTag })
+        this.isInvalidTag = true
+        this.autocompleteItems = []
+        return
+      }
+
       // 入力中のタグをすべて消したときに、サジェスト結果をリセットするために必要
       if (this.tag === '') this.autocompleteItems = []
 
