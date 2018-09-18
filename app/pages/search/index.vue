@@ -14,9 +14,19 @@ export default {
   async mounted() {
     const { q: query, context } = this.$route.query
     if (!query) return
-    context === 'article'
-      ? await this.$store.dispatch('article/getSearchArticles', { query })
-      : await this.$store.dispatch('user/getSearchUsers', { query })
+    switch (context) {
+      case 'article':
+        await this.$store.dispatch('article/getSearchArticles', { query })
+        break
+      case 'user':
+        await this.$store.dispatch('user/getSearchUsers', { query })
+        break
+      case 'tag':
+        await this.$store.dispatch('tag/getSearchTags', { query })
+        break
+      default:
+        break
+    }
   },
   head: {
     title: '検索',

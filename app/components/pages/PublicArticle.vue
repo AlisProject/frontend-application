@@ -2,7 +2,7 @@
   <div class="public-article-container">
     <app-header showEditHeaderNav showEditArticleLink class="public-article without-shadow"/>
     <div class="area-article">
-      <h1 class="area-title">{{ article.title }}</h1>
+      <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
     </div>
     <public-article-share-buttons/>
@@ -10,9 +10,9 @@
 </template>
 
 <script>
-/* eslint-disable no-undef */
 import AppHeader from '../organisms/AppHeader'
 import PublicArticleShareButtons from '../atoms/PublicArticleShareButtons'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -23,6 +23,11 @@ export default {
     article: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    decodedTitle() {
+      return htmlDecode(this.article.title)
     }
   }
 }

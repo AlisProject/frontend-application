@@ -8,7 +8,9 @@
           :max-tags="5"
           :maxlength="25"
           placeholder="タグを入力してください"
-          :class="{ 'invalid-tag': isInvalidTag }"
+          :class="{ 'invalid-tag': isInvalidTag, 'hide-autocomplete-items': !hasAutocompleteItems }"
+          :autocomplete-items="autocompleteItems"
+          :autocomplete-always-open="true"
           @before-adding-tag="checkTags"
           @tags-changed="handleTagsChanged" />
       </no-ssr>
@@ -28,11 +30,13 @@ export default {
       tag: '',
       // isInvalidTagがtrueのとき、入力中のタグの文字色を赤くする
       isInvalidTag: false,
-      errorMessage: ''
+      errorMessage: '',
+      autocompleteItems: []
     }
   },
   methods: {
     handleTagsChanged(tags) {
+      this.autocompleteItems = []
       this.updateTags({ tags })
     },
     checkTags({ tag: addingTag, addTag }) {
@@ -81,9 +85,42 @@ export default {
     focusToTagInputForm() {
       this.$el.querySelector('.new-tag-input').focus()
     },
+    repositionAutocompletePopup() {
+      const tagsInputFormRect = document.querySelector('.tags-input-form').getBoundingClientRect()
+      const newTagInputWrappeRect = document
+        .querySelector('.new-tag-input-wrapper')
+        .getBoundingClientRect()
+
+      document.querySelector('.autocomplete').style.left = `
+        ${newTagInputWrappeRect.x - tagsInputFormRect.x}px
+      `
+    },
+    async updateAutocompleteItems() {
+      if (this.tag === '') return
+
+      const items = await this.$axios.$get('/search/tags', {
+        params: { query: this.tag, limit: 5, page: 1 }
+      })
+      const formattedItems = items.map((tag) => {
+        return { ...tag, text: tag.name }
+      })
+      const autocompleteItems = formattedItems.filter((tag) => {
+        return !this.checkHasDuplicateTag(tag)
+      })
+
+      this.autocompleteItems = autocompleteItems
+    },
+    addTagCounts(items) {
+      Array.from(document.querySelectorAll('.autocomplete ul div')).forEach((item, i) => {
+        item.dataset.count = `(${items[i].count})`
+      })
+    },
     ...mapActions('article', ['updateTags'])
   },
   computed: {
+    hasAutocompleteItems() {
+      return this.autocompleteItems.length > 0
+    },
     ...mapGetters('article', ['tags'])
   },
   watch: {
@@ -91,6 +128,16 @@ export default {
       // 入力中のタグを編集したとき、エラーを消しタグの色を黒色にもどす
       this.isInvalidTag = false
       this.errorMessage = ''
+
+      // 入力中のタグをすべて消したときに、サジェスト結果をリセットするために必要
+      if (this.tag === '') this.autocompleteItems = []
+
+      clearTimeout(this.debounce)
+      this.debounce = setTimeout(async () => {
+        await this.updateAutocompleteItems()
+        this.addTagCounts(this.autocompleteItems)
+        this.repositionAutocompletePopup()
+      }, 600)
     },
     isInvalidTag() {
       this.$emit('change-tag-validation-state', this.isInvalidTag)
@@ -141,6 +188,38 @@ export default {
 
     &.invalid-tag .new-tag-input-wrapper input {
       color: #f06273;
+    }
+
+    &.hide-autocomplete-items .autocomplete {
+      display: none;
+    }
+
+    .autocomplete {
+      width: auto;
+      border: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+      border-radius: 4px;
+      padding: 4px 8px;
+      text-align: left;
+
+      .item {
+        padding: 2px 0;
+        color: #6e6e6e;
+        font-size: 12px;
+
+        div {
+          white-space: nowrap;
+
+          &:after {
+            content: attr(data-count);
+          }
+        }
+
+        &.selected-item {
+          background-color: transparent;
+          color: #858dda;
+        }
+      }
     }
   }
 

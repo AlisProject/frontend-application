@@ -18,7 +18,7 @@
 </template>
 
 <script>
-/* eslint no-undef: 0 */
+/* global $, MediumEditor, iframely */
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
@@ -167,6 +167,7 @@ export default {
       const isTwitterResource =
         trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
       const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
+      const isGistResource = trimmedLine.startsWith('https://gist.github.com/')
       let result, cleanAttrs, embedHTML
 
       try {
@@ -175,22 +176,17 @@ export default {
           trimmedLine
         )).data
       } catch (error) {
-        if (isTwitterResource) {
-          const message = isTweet
-            ? 'ツイートが取得できませんでした。'
-            : 'Twitterのユーザー情報が取得できませんでした。'
-          this.sendNotification({
-            text: message,
-            type: 'warning'
-          })
-        }
+        this.sendNotification({
+          text: 'リンク先の情報を取得できませんでした。',
+          type: 'warning'
+        })
         console.error(error)
         return
       }
 
       selectedParentElement.innerHTML = ''
 
-      if (isTweet) {
+      if (isTweet || isGistResource) {
         this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
         iframely.load()
         return
