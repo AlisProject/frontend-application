@@ -17,7 +17,7 @@
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
-        {{ user.user_display_name }}
+        {{ decodedUserDisplayName }}
       </p>
     </div>
     <div class="area-user-id">
@@ -27,7 +27,7 @@
     </div>
     <div class="area-self-introduction">
       <p class="self-introduction">
-        {{ user.self_introduction }}
+        {{ decodedSelfIntroduction }}
       </p>
     </div>
   </div>
@@ -35,6 +35,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   props: {
@@ -44,6 +45,13 @@ export default {
     }
   },
   computed: {
+    decodedUserDisplayName() {
+      return htmlDecode(this.user.user_display_name)
+    },
+    decodedSelfIntroduction() {
+      if (!this.hasSelfIntroduction) return ''
+      return htmlDecode(this.user.self_introduction)
+    },
     hasSelfIntroduction() {
       const { self_introduction: selfIntroduction } = this.user
 

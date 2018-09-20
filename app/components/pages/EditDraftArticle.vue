@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header showEditHeaderNav showPostArticleLink/>
-    <article-editor :title="title" :putArticle="this.putArticle"/>
+    <article-editor :title="decodedTitle" :putArticle="this.putArticle"/>
   </div>
 </template>
 
@@ -9,6 +9,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleEditor from '../atoms/ArticleEditor'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -16,6 +17,9 @@ export default {
     ArticleEditor
   },
   computed: {
+    decodedTitle() {
+      return htmlDecode(this.title)
+    },
     ...mapGetters('article', ['title', 'body'])
   },
   methods: {
