@@ -9,7 +9,7 @@ export default {
   components: {
     TagArticleList
   },
-  async fetch({ store, params, error, from = {}, query }) {
+  async fetch({ store, params, error, from = {} }) {
     const { tag = null } = params
 
     // タグに関連する記事の初期化
@@ -18,8 +18,7 @@ export default {
     // スクロール位置を保持させたいので初期化はしない。
     if (
       (from.name !== 'user-articles-articleId' && from.name !== 'users-userId') ||
-      store.state.article.tagArticles.currentTag !== tag ||
-      query.from === 'articleTag'
+      store.state.article.tagArticles.currentTag !== tag
     ) {
       store.dispatch('article/resetTagArticlesData')
       store.dispatch('presentation/setTagArticlesScrollHeight', { scrollHeight: 0 })
