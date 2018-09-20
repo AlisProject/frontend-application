@@ -3,7 +3,7 @@
     <app-header />
     <public-article-header-nav class="public-article" />
     <div class="area-article">
-      <h1 class="area-title">{{ article.title }}</h1>
+      <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
     </div>
     <public-article-share-buttons/>
@@ -14,6 +14,7 @@
 import AppHeader from '../organisms/AppHeader'
 import PublicArticleHeaderNav from '../molecules/PublicArticleHeaderNav'
 import PublicArticleShareButtons from '../atoms/PublicArticleShareButtons'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -25,6 +26,11 @@ export default {
     article: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    decodedTitle() {
+      return htmlDecode(this.article.title)
     }
   }
 }

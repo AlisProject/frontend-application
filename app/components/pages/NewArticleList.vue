@@ -15,6 +15,7 @@ import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -35,6 +36,14 @@ export default {
     }
   },
   mounted() {
+    // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
+    // 画面の高さに合うまで要素を取得する。
+
+    // 画面の高さに合っているかをスクロールできるかどうかで判定
+    if (!isPageScrollable(this.$el)) {
+      if (this.isLastPage) return
+      this.getNewPagesArticles({ topic: this.$route.query.topic })
+    }
     this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
@@ -67,6 +76,16 @@ export default {
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
+    async newArticles() {
+      // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
+      // 画面の高さに合うまで要素を取得する。
+
+      // 取得したデータが反映されるまで待つ
+      await this.$nextTick()
+      // 画面の高さに合っているかをスクロールできるかどうかで判定
+      if (isPageScrollable(this.$el) || this.isLastPage) return
+      this.getNewPagesArticles({ topic: this.$route.query.topic })
+    },
     $route(to) {
       this.resetArticleData()
       this.setTopicNumber()

@@ -5,7 +5,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import PublicArticle from '~/components/pages/PublicArticle'
-import { showEmbedTweet } from '~/utils/article'
+import { showEmbedTweet, htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -20,8 +20,11 @@ export default {
     ...mapGetters('article', ['article'])
   },
   head() {
+    const { article } = this.$store.state.article
+    const decodedArticleTitle = htmlDecode(article.title)
+
     return {
-      title: this.$store.state.article.article.title,
+      title: decodedArticleTitle,
       link: [
         {
           rel: 'stylesheet',
