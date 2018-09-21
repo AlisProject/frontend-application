@@ -406,4 +406,9 @@
       }
     }
   }
+
+  .iframely-embed {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+  }
 }
