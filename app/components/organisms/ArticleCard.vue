@@ -130,6 +130,10 @@ a {
       border-radius: 6px;
       grid-template-columns: 1fr;
       grid-template-rows: 120px 180px;
+
+      &:hover {
+        box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+      }
     }
   }
 
@@ -137,6 +141,10 @@ a {
     border-radius: 6px;
     grid-template-columns: 1fr;
     grid-template-rows: 120px 180px;
+
+    &:hover {
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+    }
   }
 }
 </style>
