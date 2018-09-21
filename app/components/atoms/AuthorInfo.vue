@@ -12,17 +12,19 @@
         src="~assets/images/pc/common/icon_user_noimg.png"
         v-else>
       <ul class="info">
-        <li class="user-display-name">{{ user.user_display_name }}</li>
+        <li class="user-display-name">{{ decodedUserDisplayName }}</li>
         <li class="user-id">@{{ user.user_id }}</li>
       </ul>
     </div>
     <span class="body" v-if="hasSelfIntroduction">
-      {{ user.self_introduction }}
+      {{ decodedSelfIntroduction }}
     </span>
   </nuxt-link>
 </template>
 
 <script>
+import { htmlDecode } from '~/utils/article'
+
 export default {
   props: {
     user: {
@@ -31,6 +33,13 @@ export default {
     }
   },
   computed: {
+    decodedUserDisplayName() {
+      return htmlDecode(this.user.user_display_name)
+    },
+    decodedSelfIntroduction() {
+      if (!this.hasSelfIntroduction) return ''
+      return htmlDecode(this.user.self_introduction)
+    },
     hasSelfIntroduction() {
       const { self_introduction: selfIntroduction } = this.user
 
