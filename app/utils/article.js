@@ -179,6 +179,9 @@ export function showEmbedTweet() {
       alisIframelyUrl.startsWith('https://twitter.com/')
     const isTweet = isTwitterResource && alisIframelyUrl.split('/')[4] === 'status'
     const isGistResource = alisIframelyUrl.startsWith('https://gist.github.com/')
+    const isYouTubeResource =
+      alisIframelyUrl.startsWith('https://www.youtube.com/watch?v=') ||
+      alisIframelyUrl.startsWith('https://youtu.be/')
     let result
 
     try {
@@ -191,7 +194,7 @@ export function showEmbedTweet() {
       return
     }
 
-    if (isTweet || isGistResource) {
+    if (isTweet || isGistResource || isYouTubeResource) {
       const anchorElement = document.createElement('a')
       anchorElement.setAttribute('href', alisIframelyUrl)
       anchorElement.setAttribute('data-iframely-url', '')
