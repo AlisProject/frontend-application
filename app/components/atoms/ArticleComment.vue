@@ -31,7 +31,10 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { formatDateFromNow } from '~/utils/format'
+import Autolinker from 'autolinker'
 import urlRegex from 'url-regex'
+
+const autolinker = new Autolinker()
 
 export default {
   props: {
@@ -77,7 +80,7 @@ export default {
       return this.isLiked || this.comment.isLiked
     },
     commentText() {
-      return this.comment.text.replace(/\r?\n/g, '<br>')
+      return autolinker.link(this.comment.text.replace(/\r?\n/g, '<br>'))
     },
     createdAt() {
       return formatDateFromNow(this.comment.created_at)
