@@ -289,4 +289,20 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 320px) {
+  .tip-flow-select-tip-amount-modal {
+    .title {
+      margin: 0;
+    }
+
+    .description {
+      margin-top: 12px;
+    }
+
+    .error-message {
+      margin-top: 24px;
+    }
+  }
+}
 </style>
