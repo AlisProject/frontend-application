@@ -16,14 +16,19 @@ const getters = {
 
 const actions = {
   async getSearchTags({ commit, state }, { query }) {
-    if (state.searchTags.isFetching) return
-    commit(types.SET_SEARCH_TAGS_IS_FETCHING, { isFetching: true })
-    const limit = 5
-    const tags = await this.$axios.$get('/search/tags', {
-      params: { limit, query, page: state.searchTags.page }
-    })
-    commit(types.SET_SEARCH_TAGS_IS_FETCHING, { isFetching: false })
-    commit(types.SET_SEARCH_TAGS, { tags: tags.map((tag) => tag.name) })
+    try {
+      if (state.searchTags.isFetching) return
+      commit(types.SET_SEARCH_TAGS_IS_FETCHING, { isFetching: true })
+      const limit = 5
+      const tags = await this.$axios.$get('/search/tags', {
+        params: { limit, query, page: state.searchTags.page }
+      })
+      commit(types.SET_SEARCH_TAGS, { tags: tags.map((tag) => tag.name) })
+    } catch (error) {
+      return Promise.reject(error)
+    } finally {
+      commit(types.SET_SEARCH_TAGS_IS_FETCHING, { isFetching: false })
+    }
   },
   resetSearchTags({ commit }) {
     commit(types.SET_SEARCH_TAGS, { tags: [] })
