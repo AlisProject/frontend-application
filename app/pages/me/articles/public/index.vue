@@ -14,7 +14,7 @@ export default {
     await this.$store.dispatch('article/getPublicArticles')
   },
   head: {
-    title: '公開済み記事一覧'
+    title: '公開中記事一覧'
   }
 }
 </script>

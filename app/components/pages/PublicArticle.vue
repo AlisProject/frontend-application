@@ -1,6 +1,7 @@
 <template>
   <div class="public-article-container">
-    <app-header showEditHeaderNav showEditArticleLink class="public-article without-shadow"/>
+    <app-header />
+    <public-article-header-nav class="public-article" />
     <div class="area-article">
       <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
@@ -11,12 +12,14 @@
 
 <script>
 import AppHeader from '../organisms/AppHeader'
+import PublicArticleHeaderNav from '../molecules/PublicArticleHeaderNav'
 import PublicArticleShareButtons from '../atoms/PublicArticleShareButtons'
 import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
     AppHeader,
+    PublicArticleHeaderNav,
     PublicArticleShareButtons
   },
   props: {
@@ -36,13 +39,14 @@ export default {
 <style lang="scss" scoped>
 .public-article-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr;
+  grid-template-rows: 100px auto 50px 1fr;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    'app-header       app-header       app-header      '
-    '...              ...              ...             '
-    '...              article          ...             ';
+    'app-header app-header app-header'
+    'nav        nav        nav       '
+    '...        ...        ...       '
+    '...        article    ...       ';
   background: white;
 }
 
@@ -64,6 +68,7 @@ export default {
   letter-spacing: 0.1em;
   line-height: 1.5;
   word-break: break-all;
+  margin: 0;
 }
 
 .area-content {
@@ -72,19 +77,14 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .public-article-container {
-    grid-template-rows: 100px 50px 1fr 950px 75px;
+    grid-template-rows: 100px auto 50px 1fr 950px 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .public-article-container {
-    grid-template-rows: 70px 0 1fr;
+    grid-template-rows: 70px 20px 0 1fr;
     grid-template-columns: 10px 1fr 10px;
-    /* prettier-ignore */
-    grid-template-areas:
-    'app-header       app-header       app-header      '
-    '...              ...              ...             '
-    'article          article          article         ';
   }
 
   .area-article {

@@ -11,7 +11,7 @@
       開発をお待ち頂けると幸いです。
     </p>
     <app-button class="back-button" @click="closeModal">
-      公開済み記事一覧に戻る
+      公開中記事一覧に戻る
     </app-button>
   </div>
 </template>

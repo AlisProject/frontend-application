@@ -1,6 +1,6 @@
 <template>
   <div class="tag-article-list" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav showOnlySessionLinks class="without-shadow"/>
+    <app-header />
     <div class="area-tag">
       {{ this.$route.params.tag }}
     </div>
