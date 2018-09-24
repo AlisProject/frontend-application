@@ -193,20 +193,19 @@ export default {
   box-sizing: border-box;
   color: #000000;
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-  padding: 24px 92px 50px;
+  padding: 24px 0 28px;
   position: absolute;
   right: 0;
   top: 80px;
-  width: 280px;
+  width: 224px;
 
   .image-box {
     background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     height: 180px;
-    margin: -24px -92px 0 -92px;
+    margin: -24px 0 0 0;
     text-align: center;
-    width: 280px;
 
     .profile-image {
       border-radius: 50%;
@@ -227,8 +226,8 @@ export default {
 
   .menu-links {
     list-style: none;
+    margin: 20px 0;
     padding: 0;
-    margin: 50px 0;
 
     .menu-link {
       cursor: pointer;
@@ -237,7 +236,7 @@ export default {
       height: 24px;
       letter-spacing: 1px;
       line-height: 24px;
-      margin-bottom: 40px;
+      padding: 10px 64px;
       white-space: nowrap;
 
       a {
@@ -257,7 +256,7 @@ export default {
     cursor: pointer;
     display: block;
     font-size: 14px;
-    margin-top: 80px;
+    padding: 10px 64px;
     text-decoration: none;
 
     &:visited {
@@ -303,10 +302,8 @@ export default {
       background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
       border-radius: 0;
       height: 180px;
-      margin: -24px -92px 0 -92px;
       overflow: hidden;
       text-align: center;
-      width: 280px;
     }
   }
 
