@@ -5,7 +5,7 @@
         <div class="comment-user" v-if="loggedIn">
           <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
-          <span class="name">{{ currentUserInfo.user_display_name }}</span>
+          <span class="name">{{ decodedUserDisplayName }}</span>
         </div>
       </no-ssr>
       <textarea
@@ -29,6 +29,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   data() {
@@ -68,6 +69,9 @@ export default {
     })
   },
   computed: {
+    decodedUserDisplayName() {
+      return htmlDecode(this.currentUserInfo.user_display_name)
+    },
     isCommentEmpty() {
       return this.comment.length === 0
     },
