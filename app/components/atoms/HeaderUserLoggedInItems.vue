@@ -193,7 +193,7 @@ export default {
   box-sizing: border-box;
   color: #000000;
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-  padding: 24px 0 28px;
+  padding: 24px 0 20px;
   position: absolute;
   right: 0;
   top: 80px;
@@ -248,6 +248,10 @@ export default {
           color: #000;
         }
       }
+
+      &:hover {
+        background-color: rgba(131, 139, 215, 0.2);
+      }
     }
   }
 
@@ -256,11 +260,17 @@ export default {
     cursor: pointer;
     display: block;
     font-size: 14px;
+    height: 24px;
+    line-height: 24px;
     padding: 10px 64px;
     text-decoration: none;
 
     &:visited {
       color: #000;
+    }
+
+    &:hover {
+      background-color: rgba(131, 139, 215, 0.2);
     }
   }
 }
