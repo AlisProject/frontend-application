@@ -37,16 +37,18 @@
       </div>
       <ul class="menu-links">
         <li class="menu-link">
-          <a href="/me/articles/new">新規記事作成</a>
+          <a class="menu-link-inner" href="/me/articles/new">新規記事作成</a>
         </li>
         <li class="menu-link">
-          <nuxt-link to="/me/articles/public">記事一覧</nuxt-link>
+          <nuxt-link class="menu-link-inner" to="/me/articles/public">記事一覧</nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
+          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
         </li>
         <li class="menu-link" @click="showProfileSettingsModal">
-          ユーザー設定
+          <span class="menu-link-inner">
+            ユーザー設定
+          </span>
         </li>
       </ul>
       <span class="logout" @click="logoutUser">ログアウト</span>
@@ -233,24 +235,24 @@ export default {
       cursor: pointer;
       font-size: 14px;
       font-weight: 500;
-      height: 24px;
       letter-spacing: 1px;
-      line-height: 24px;
-      padding: 10px 64px;
       white-space: nowrap;
 
-      a {
-        display: block;
-        text-decoration: none;
+      &:hover {
+        background-color: rgba(131, 139, 215, 0.2);
+      }
+
+      .menu-link-inner {
         color: #000;
+        display: block;
+        height: 24px;
+        line-height: 24px;
+        padding: 10px 64px;
+        text-decoration: none;
 
         &:visited {
           color: #000;
         }
-      }
-
-      &:hover {
-        background-color: rgba(131, 139, 215, 0.2);
       }
     }
   }
