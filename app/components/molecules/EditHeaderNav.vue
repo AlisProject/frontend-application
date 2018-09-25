@@ -1,5 +1,5 @@
 <template>
-  <nav class="area-nav">
+  <nav class="area-nav" :class="{ 'is-fixed': isFixed }">
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開中</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
     <span class="area-save-status">{{ saveStatus }}</span>
@@ -15,8 +15,24 @@ export default {
   components: {
     EditHeaderNavPostArticle
   },
+  data() {
+    return {
+      isFixed: false
+    }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   computed: {
     ...mapGetters('article', ['saveStatus'])
+  },
+  methods: {
+    handleScroll() {
+      this.isFixed = window.scrollY >= 100
+    }
   }
 }
 </script>
@@ -26,15 +42,22 @@ export default {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: auto;
   grid-template-columns: 70px 70px 1fr 90px auto;
-  grid-row-gap: 50px;
   /* prettier-ignore */
   grid-template-areas:
     "public-articles drafts ... save-status post-article";
-  max-width: 640px;
-  margin-left: calc(50vw - 320px);
+  background: #fff;
   border-bottom: 1px solid rgba(#6e6e6e, 0.1);
+  height: 40px;
+  margin: auto;
+  width: 640px;
+  z-index: 1;
+
+  &.is-fixed {
+    left: 0;
+    position: fixed;
+    right: 0;
+  }
 }
 
 .area-save-status {
