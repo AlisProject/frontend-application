@@ -51,7 +51,8 @@ export default {
       return true
     },
     imageCaption() {
-      return `${this.user.user_display_name}'s icon'`
+      const decodedUserDisplayName = htmlDecode(this.user.user_display_name)
+      return `${decodedUserDisplayName}'s icon'`
     }
   }
 }

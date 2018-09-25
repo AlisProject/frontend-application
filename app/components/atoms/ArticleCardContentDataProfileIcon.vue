@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { htmlDecode } from '~/utils/article'
+
 export default {
   props: {
     user: {
@@ -21,7 +23,8 @@ export default {
   },
   computed: {
     imageCaption() {
-      return `${this.user.user_display_name}'s icon'`
+      const decodedUserDisplayName = htmlDecode(this.user.user_display_name)
+      return `${decodedUserDisplayName}'s icon'`
     }
   }
 }
