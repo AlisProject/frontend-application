@@ -1,8 +1,6 @@
 <template>
   <div
-    class="area-article-type-select-box"
-    :class="{ hidden: showOnlySessionLinksOnPc }"
-    v-show="!showOnlyLogo && !showOnlySessionLinks">
+    class="area-article-type-select-box">
     <select required :value="articleType" @change="handleChangeArticleType">
       <option value="popularArticles">人気記事</option>
       <option value="newArticles">新着記事</option>
@@ -14,20 +12,6 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  props: {
-    showOnlyLogo: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinks: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinksOnPc: {
-      type: Boolean,
-      default: false
-    }
-  },
   computed: {
     ...mapGetters('article', ['topics', 'articleType'])
   },
@@ -114,10 +98,6 @@ export default {
       padding-right: 0;
       width: 70px;
       margin: -14px;
-    }
-
-    &.hidden {
-      display: none;
     }
   }
 

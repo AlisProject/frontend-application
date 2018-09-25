@@ -1,12 +1,14 @@
 <template>
   <div class="area-tags">
-    <span
+    <nuxt-link
       v-for="tag in tags"
+      :to="`/tag/${tag}`"
       :key="tag"
-      @click="onClick(tag)"
       class="tag">
-      {{ tag }}
-    </span>
+      <span class="tag-inner" @click="resetData">
+        {{ tag }}
+      </span>
+    </nuxt-link>
   </div>
 </template>
 
@@ -21,10 +23,9 @@ export default {
     }
   },
   methods: {
-    onClick(value) {
+    resetData() {
       this.resetTagArticlesData()
       this.setTagArticlesScrollHeight({ scrollHeight: 0 })
-      this.$router.push(`/tag/${value}`)
     },
     ...mapActions('article', ['resetTagArticlesData']),
     ...mapActions('presentation', ['setTagArticlesScrollHeight'])
@@ -46,8 +47,12 @@ export default {
   display: inline-block;
   font-size: 12px;
   margin: 0 20px 20px 0;
-  padding: 6px 8px;
   text-decoration: none;
+
+  .tag-inner {
+    display: inline-block;
+    padding: 6px 8px;
+  }
 }
 
 @media screen and (max-width: 640px) {

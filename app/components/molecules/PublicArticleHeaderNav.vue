@@ -2,49 +2,44 @@
   <nav class="area-nav">
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開中</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
-    <span class="area-save-status">{{ saveStatus }}</span>
-    <edit-header-nav-post-article />
+    <edit-header-nav-edit-article />
   </nav>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
+import EditHeaderNavEditArticle from '../molecules/EditHeaderNavEditArticle'
 
 export default {
   components: {
-    EditHeaderNavPostArticle
-  },
-  computed: {
-    ...mapGetters('article', ['saveStatus'])
+    EditHeaderNavEditArticle
   }
 }
 </script>
+
 
 <style lang="scss" scoped>
 .area-nav {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: auto;
-  grid-template-columns: 70px 70px 1fr 90px auto;
+  grid-template-rows: 30px;
+  grid-template-columns: 70px 70px 1fr auto;
   grid-row-gap: 50px;
   /* prettier-ignore */
   grid-template-areas:
-    "public-articles drafts ... save-status post-article";
+    "public-articles drafts ... post-article";
   max-width: 640px;
   margin-left: calc(50vw - 320px);
   border-bottom: 1px solid rgba(#6e6e6e, 0.1);
 }
 
-.area-save-status {
-  grid-area: save-status;
-  color: #6e6e6e;
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  white-space: nowrap;
+.area-title {
+  grid-area: title;
+  color: #030303;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 1.33px;
+  justify-self: flex-start;
 }
 
 .nav-link {
@@ -53,76 +48,83 @@ export default {
   color: #929292;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .area-public-articles {
   grid-area: public-articles;
 }
 
-.public-article .area-public-articles,
-.public-articles .area-public-articles {
-  color: #99a2ff;
-  border-bottom: 2px solid #99a2ff;
-  margin-top: 2px;
-}
-
 .area-drafts {
   grid-area: drafts;
 }
 
+.public-article .area-public-articles,
+.public-articles .area-public-articles,
 .drafts .area-drafts {
   color: #99a2ff;
   border-bottom: 2px solid #99a2ff;
-  margin-top: 2px;
 }
 
 .area-new-article {
+  grid-area: new-article;
   align-items: center;
   background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
   border-radius: 4px;
   color: white;
   display: flex;
   font-size: 14px;
-  grid-area: new-article;
   justify-content: center;
   text-decoration: none;
+  width: 110px;
+}
+
+@media screen and (max-width: 1080px) {
+  .area-nav {
+    max-width: calc(100% - 68px);
+    margin-left: 34px;
+  }
 }
 
 @media screen and (max-width: 640px) {
-  .area-save-status,
-  .area-new-article {
+  .area-nav {
     display: none;
   }
 }
 
 @media screen and (max-width: 550px) {
   .area-nav {
+    border: none;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
     grid-gap: 20px;
+    grid-template-columns: 48px 48px;
+    grid-template-rows: 28px;
+    margin-left: 0;
+    max-width: 100%;
+    padding-left: 22px;
     /* prettier-ignore */
     grid-template-areas:
       'public-articles drafts';
-    grid-template-columns: 48px 48px;
-    grid-template-rows: 36px;
-    text-align: left;
   }
 
-  .public-article .nav-link {
+  .public-article .nav-link,
+  .area-title {
     display: none;
   }
 
   .nav-link {
     font-size: 12px;
-    line-height: 30px;
-    text-align: center;
   }
 
-  .public-articles .area-public-articles {
-    border-bottom: 1px solid #99a2ff;
-  }
-
+  .public-articles .area-public-articles,
   .drafts .area-drafts {
     border-bottom: 1px solid #99a2ff;
+  }
+}
+
+@media screen and (max-width: 370px) {
+  .area-nav {
+    padding-left: 10px;
   }
 }
 </style>

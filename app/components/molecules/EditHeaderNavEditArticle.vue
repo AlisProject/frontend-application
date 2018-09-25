@@ -1,11 +1,11 @@
 <template>
   <div class="area-post-article">
-    <a :href="`/me/articles/public/${this.$route.params.articleId}/edit`" class="nav-link post-article">
-      編集する
-    </a>
     <span @click="unpublish" class="nav-link unpublish-article">
       下書きに戻す
     </span>
+    <a :href="`/me/articles/public/${this.$route.params.articleId}/edit`" class="nav-link post-article">
+      編集
+    </a>
   </div>
 </template>
 
@@ -39,15 +39,16 @@ export default {
 .nav-link {
   font-size: 14px;
   text-decoration: none;
-  color: #929292;
+  color: #858dda;
 }
 
 .area-post-article {
   grid-area: post-article;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+  .unpublish-article {
+    cursor: pointer;
+    margin-right: 32px;
+  }
 
   .post-article {
     cursor: pointer;
@@ -57,11 +58,6 @@ export default {
     &.disable {
       cursor: not-allowed;
     }
-  }
-
-  .unpublish-article {
-    cursor: pointer;
-    margin-left: 1em;
   }
 }
 

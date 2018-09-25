@@ -199,4 +199,16 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 320px) {
+  .tip-flow-confirmation-modal {
+    .title {
+      margin: 0;
+    }
+
+    .description {
+      margin-top: 12px;
+    }
+  }
+}
 </style>
