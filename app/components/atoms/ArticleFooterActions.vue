@@ -134,7 +134,9 @@ export default {
         this.setTipModal({ showTipModal: true })
         this.setTipFlowSelectTipAmountModal({ isShow: true })
         window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleTip' })
         window.scrollTo(0, 0)
