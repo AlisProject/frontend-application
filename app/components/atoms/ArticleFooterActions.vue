@@ -25,7 +25,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { htmlDecode } from '~/utils/article'
 
 export default {
   data() {
@@ -69,7 +68,7 @@ export default {
       '.share-twitter'
     ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       location.href
-    )}&text=${encodeURIComponent(`${this.decodedArticleTitle} | ALIS`)}`
+    )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
   },
   destroyed() {
     if (this._eventRemovers) {
@@ -85,9 +84,6 @@ export default {
     isMyArticle() {
       if (!this.currentUser) return false
       return this.articleUserId === this.currentUser.userId
-    },
-    decodedArticleTitle() {
-      return htmlDecode(this.article.title)
     },
     ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser']),
     ...mapGetters('article', ['article']),

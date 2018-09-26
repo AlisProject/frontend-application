@@ -12,7 +12,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import { htmlDecode } from '~/utils/article'
 
 export default {
   data() {
@@ -50,10 +49,7 @@ export default {
     twitterShareUrl() {
       return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         this.shareUrl
-      )}&text=${encodeURIComponent(`${this.decodedArticleTitle} | ALIS`)}`
-    },
-    decodedArticleTitle() {
-      return htmlDecode(this.article.title)
+      )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
     },
     ...mapGetters('article', ['article'])
   },

@@ -17,7 +17,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { htmlDecode } from '~/utils/article'
 
 export default {
   props: {
@@ -51,7 +50,7 @@ export default {
       '.share-twitter'
     ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       location.href
-    )}&text=${encodeURIComponent(`${this.decodedArticleTitle} | ALIS`)}`
+    )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
@@ -64,9 +63,6 @@ export default {
   computed: {
     formattedLikesCount() {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
-    },
-    decodedArticleTitle() {
-      return htmlDecode(this.article.title)
     },
     ...mapGetters('user', ['loggedIn']),
     ...mapGetters('article', ['article'])
