@@ -58,7 +58,7 @@ export default {
       return new BigNumber(this.tipTokenAmount).div(formatNumber).toString()
     },
     imageCaption() {
-      return `${this.decodedUserDisplayName}'s icon'`
+      return `${this.article.userInfo.user_display_name}'s icon'`
     },
     decodedUserDisplayName() {
       return htmlDecode(this.article.userInfo.user_display_name)
