@@ -133,6 +133,7 @@ export default {
       }
     },
     showProfileSettingsModal() {
+      this.closeMenu()
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
     },
     moveToNotificationPage() {
