@@ -51,7 +51,7 @@ export default {
   height: 40px;
   margin: auto;
   width: 640px;
-  z-index: 1;
+  z-index: 2001;
 
   &.is-fixed {
     left: 0;
