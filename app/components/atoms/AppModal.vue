@@ -69,8 +69,7 @@ export default {
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
         if (
           this.signUpAuthFlowModal.isLoginModal ||
-          this.signUpAuthFlowModal.isInputPhoneNumberModal ||
-          this.signUpAuthFlowModal.isInputAuthCodeModal
+          this.signUpAuthFlowModal.isInputAliasUserIdModal
         ) {
           await this.logout()
         }
