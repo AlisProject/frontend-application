@@ -116,18 +116,11 @@ export default {
       if (this.invalidSubmit) return
       const { userIdOrEmail, password } = this.loginModal.formData
       try {
-        const result = await this.login({ userId: userIdOrEmail, password })
+        await this.login({ userId: userIdOrEmail, password })
         await this.setCurrentUserInfo()
         this.setLoginModal({ showLoginModal: false })
 
-        if (!result.phoneNumberVerified) {
-          this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: true })
-          this.setSignUpAuthFlowInputPhoneNumberModal({
-            isSignUpAuthFlowInputPhoneNumberModal: true
-          })
-        } else {
-          this.sendNotification({ text: 'ログインしました' })
-        }
+        this.sendNotification({ text: 'ログインしました' })
 
         document.querySelector('html,body').style.overflow = ''
         this.$refs.userIdOrEmail.value = ''

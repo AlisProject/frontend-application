@@ -333,10 +333,8 @@ const actions = {
   async login({ commit }, { userId, password }) {
     try {
       const result = await this.cognito.login({ userId, password })
-      if (!result.phoneNumberVerified) {
-        commit(types.SET_LOGGED_IN, { loggedIn: true })
-        commit(types.SET_CURRENT_USER, { user: result })
-      }
+      commit(types.SET_LOGGED_IN, { loggedIn: true })
+      commit(types.SET_CURRENT_USER, { user: result })
       return result
     } catch (error) {
       return Promise.reject(error)
