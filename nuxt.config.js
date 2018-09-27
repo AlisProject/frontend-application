@@ -112,6 +112,7 @@ module.exports = {
     REGION: process.env.REGION,
     USER_POOL_ID: process.env.USER_POOL_ID,
     CLIENT_ID: process.env.CLIENT_ID,
-    DOMAIN: process.env.DOMAIN
+    DOMAIN: process.env.DOMAIN,
+    APP_WEB_DOMAIN: process.env.APP_WEB_DOMAIN
   }
 }

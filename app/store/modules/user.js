@@ -2,6 +2,7 @@ import { uniqBy } from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
+import CognitoAuthSDK from '~/utils/cognito-auth-sdk'
 
 const namespaced = true
 
@@ -561,6 +562,25 @@ const actions = {
   },
   resetNotificationData({ commit }) {
     commit(types.RESET_NOTIFICATION_DATA)
+  },
+  initCognitoAuth({ state }, { identityProvider }) {
+    state.identityProvider = identityProvider
+    this.cognitoAuth = new CognitoAuthSDK(identityProvider)
+  },
+  async checkAuthByLine({ commit, dispatch }, { code }) {
+    dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
+
+    const result = await this.$axios.$post('/sns_login_initiate', { code })
+    this.cognitoAuth.setTokens(result)
+
+    const session = await dispatch('getUserSession')
+    commit(types.SET_LOGGED_IN, { loggedIn: true })
+    commit(types.SET_CURRENT_USER, { user: session })
+
+    const hasAliasUserId = result.hasAliasUserId === 'true'
+    const status = result.status
+
+    return { hasAliasUserId, status }
   }
 }
 

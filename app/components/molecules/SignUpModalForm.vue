@@ -44,6 +44,7 @@
         </div>
       </form>
     </div>
+    <!-- TODO: サインアップのボタンが表示される -->
     <div class="modal-footer">
       <p class="error-message">{{ errorMessage }}</p>
 

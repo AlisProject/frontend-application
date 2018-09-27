@@ -20,6 +20,7 @@
     "@johmun/vue-tags-input": "^1.5.5",
     "@nuxtjs/axios": "^5.3.1",
     "@nuxtjs/markdownit": "^1.2.0",
+    "amazon-cognito-auth-js": "^1.2.4",
     "amazon-cognito-identity-js": "^2.0.2",
     "aws-sdk": "^2.215.1",
     "aws-serverless-express": "^3.0.2",
