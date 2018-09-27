@@ -116,8 +116,8 @@ export default {
         this.setSignUpAuthFlowInputAuthCodeModal({
           isSignUpAuthFlowInputAuthCodeModal: false
         })
-        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
-          isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
+        this.setSignUpAuthFlowProfileSettingsModal({
+          isSignUpAuthFlowProfileSettingsModal: true
         })
       } catch (error) {
         let errorMessage = ''
@@ -143,7 +143,7 @@ export default {
       'showSignUpAuthFlowInputAuthCodeError',
       'hideSignUpAuthFlowInputAuthCodeError',
       'setSignUpAuthFlowInputAuthCodeModal',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowProfileSettingsModal',
       'verifySMSCode',
       'refreshUserSession'
     ])
