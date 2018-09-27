@@ -33,6 +33,7 @@ const state = () => ({
     isCompletedPhoneNumberAuthModal: false,
     isProfileSettingsModal: false,
     isInputAliasUserIdModal: false,
+    isCompletedAuthModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -612,6 +613,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setSignUpAuthFlowCompletedAuthModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL, { isShow })
   }
 }
 
@@ -849,6 +853,9 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputAliasUserId.formError[type] = false
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isCompletedAuthModal = isShow
   }
 }
 
