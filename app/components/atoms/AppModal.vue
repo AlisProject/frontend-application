@@ -57,7 +57,8 @@ export default {
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
-      'showTipModal'
+      'showTipModal',
+      'requestPhoneNumberVerifyModal'
     ])
   },
   methods: {
@@ -97,6 +98,9 @@ export default {
         this.setTipModal({ showTipModal: false })
         this.hideTipFlowModalContent()
       }
+      if (this.requestPhoneNumberVerifyModal.isShow) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -114,7 +118,8 @@ export default {
       'logout',
       'setRequestLoginModal',
       'setTipModal',
-      'hideTipFlowModalContent'
+      'hideTipFlowModalContent',
+      'setRequestPhoneNumberVerifyModal'
     ])
   },
   watch: {

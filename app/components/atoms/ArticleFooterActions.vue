@@ -131,6 +131,11 @@ export default {
     },
     async tip() {
       if (this.loggedIn) {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleTip' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          return
+        }
         this.setTipModal({ showTipModal: true })
         this.setTipFlowSelectTipAmountModal({ isShow: true })
         window.scrollTo(0, 0)
@@ -160,7 +165,9 @@ export default {
       'setReportModal',
       'setRequestLoginModal',
       'setTipModal',
-      'setTipFlowSelectTipAmountModal'
+      'setTipFlowSelectTipAmountModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ]),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }

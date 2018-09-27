@@ -125,7 +125,29 @@ const state = () => ({
     isConfirmationModal: false,
     isCompletedModal: false
   },
-  tipTokenAmount: 0
+  tipTokenAmount: 0,
+  requestPhoneNumberVerifyModal: {
+    isShow: false,
+    requestType: '',
+    isInputPhoneNumberModal: false,
+    isInputAuthCodeModal: false,
+    inputPhoneNumber: {
+      formData: {
+        phoneNumber: ''
+      },
+      formError: {
+        phoneNumber: false
+      }
+    },
+    inputAuthCode: {
+      formData: {
+        authCode: ''
+      },
+      formError: {
+        authCode: false
+      }
+    }
+  }
 })
 
 const getters = {
@@ -157,7 +179,8 @@ const getters = {
   searchUsers: (state) => state.searchUsers,
   showTipModal: (state) => state.showTipModal,
   tipFlowModal: (state) => state.tipFlowModal,
-  tipTokenAmount: (state) => state.tipTokenAmount
+  tipTokenAmount: (state) => state.tipTokenAmount,
+  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal
 }
 
 const actions = {
@@ -614,6 +637,12 @@ const actions = {
   },
   setSignUpAuthFlowCompletedAuthModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL, { isShow })
+  },
+  setRequestPhoneNumberVerifyModal({ commit }, { isShow, requestType }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL, { isShow, requestType })
+  },
+  setRequestPhoneNumberVerifyInputPhoneNumberModal({ commit }, { isShow }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_MODAL, { isShow })
   }
 }
 
@@ -854,6 +883,13 @@ const mutations = {
   },
   [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL](state, { isShow }) {
     state.signUpAuthFlowModal.isCompletedAuthModal = isShow
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL](state, { isShow, requestType }) {
+    state.requestPhoneNumberVerifyModal.isShow = isShow
+    state.requestPhoneNumberVerifyModal.requestType = requestType
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_MODAL](state, { isShow }) {
+    state.requestPhoneNumberVerifyModal.isInputPhoneNumberModal = isShow
   }
 }
 
