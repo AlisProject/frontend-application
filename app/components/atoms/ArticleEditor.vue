@@ -30,7 +30,8 @@ import {
   createInsertPluginTemplateFromUrl,
   getResourceFromIframely,
   preventDragAndDrop,
-  preventDropImageOnOGPContent
+  preventDropImageOnOGPContent,
+  isYouTubeVideoURL
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -168,9 +169,7 @@ export default {
         trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
       const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
       const isGistResource = trimmedLine.startsWith('https://gist.github.com/')
-      const isYouTubeResource =
-        trimmedLine.startsWith('https://www.youtube.com/watch?v=') ||
-        trimmedLine.startsWith('https://youtu.be/')
+      const isYouTubeResource = isYouTubeVideoURL(trimmedLine)
       let result, cleanAttrs, embedHTML
 
       try {
