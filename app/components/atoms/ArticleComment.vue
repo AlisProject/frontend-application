@@ -88,7 +88,7 @@ export default {
         this.currentUserInfo.user_id === this.article.user_id
       )
     },
-    ...mapGetters('user', ['currentUserInfo', 'loggedIn']),
+    ...mapGetters('user', ['currentUserInfo', 'loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
   },
   methods: {
@@ -99,6 +99,15 @@ export default {
         document.querySelector('html').style.overflow = 'hidden'
         document.querySelector('body').style.overflow = 'hidden'
         return
+      } else {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCommentLike' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          document.querySelector('html').style.overflow = 'hidden'
+          document.querySelector('body').style.overflow = 'hidden'
+          return
+        }
       }
       if (this.isLikedComment) return
       try {
@@ -151,7 +160,11 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('article', ['postCommentLike', 'deleteArticleComment']),
-    ...mapActions('user', ['setRequestLoginModal'])
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ])
   }
 }
 </script>
