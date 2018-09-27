@@ -32,6 +32,7 @@ const state = () => ({
     isInputAuthCodeModal: false,
     isCompletedPhoneNumberAuthModal: false,
     isProfileSettingsModal: false,
+    isInputAliasUserIdModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -66,6 +67,14 @@ const state = () => ({
       formError: {
         userDisplayName: false,
         selfIntroduction: false
+      }
+    },
+    inputAliasUserId: {
+      formData: {
+        aliasUserId: ''
+      },
+      formError: {
+        aliasUserId: false
       }
     }
   },
@@ -581,6 +590,28 @@ const actions = {
     const status = result.status
 
     return { hasAliasUserId, status }
+  },
+  setSignUpAuthFlowInputAliasUserIdModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_MODAL, { isShow })
+  },
+  setSignUpAuthFlowAliasUserId({ commit }, { aliasUserId }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_ALIAS_USER_ID, { aliasUserId })
+  },
+  showSignUpAuthFlowInputAliasUserIdError({ commit }, { type }) {
+    commit(types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR, { type })
+  },
+  hideSignUpAuthFlowInputAliasUserIdError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR, { type })
+  },
+  async postAliasUserId({ state }, { aliasUserId }) {
+    try {
+      const userId = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+      )
+      await this.$axios.$post('/alias_user', { user_id: userId, alias_user_id: aliasUserId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -806,6 +837,18 @@ const mutations = {
   [types.RESET_NOTIFICATION_DATA](state) {
     state.notifications = []
     state.notificationsLastEvaluatedKey = {}
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isInputAliasUserIdModal = isShow
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_ALIAS_USER_ID](state, { aliasUserId }) {
+    state.signUpAuthFlowModal.inputAliasUserId.formData.aliasUserId = aliasUserId
+  },
+  [types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputAliasUserId.formError[type] = true
+  },
+  [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputAliasUserId.formError[type] = false
   }
 }
 

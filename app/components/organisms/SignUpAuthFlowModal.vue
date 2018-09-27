@@ -6,6 +6,7 @@
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
+      <sign-up-auth-flow-input-alias-user-id-form v-if="isInputAliasUserIdModal" />
     </div>
   </app-modal>
 </template>
@@ -18,6 +19,7 @@ import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlow
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
 import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
+import SignUpAuthFlowInputAliasUserIdForm from '../molecules/SignUpAuthFlowInputAliasUserIdForm'
 
 export default {
   components: {
@@ -26,7 +28,8 @@ export default {
     SignUpAuthFlowInputPhoneNumberModalForm,
     SignUpAuthFlowInputAuthCodeModalForm,
     SignUpAuthFlowCompletedPhoneNumberAuthModal,
-    ProfileSettingsModalForm
+    ProfileSettingsModalForm,
+    SignUpAuthFlowInputAliasUserIdForm
   },
   computed: {
     title() {
@@ -52,6 +55,9 @@ export default {
     },
     isProfileSettingsModal() {
       return this.signUpAuthFlowModal.isProfileSettingsModal
+    },
+    isInputAliasUserIdModal() {
+      return this.signUpAuthFlowModal.isInputAliasUserIdModal
     },
     ...mapGetters('user', ['signUpAuthFlowModal', 'showSignUpAuthFlowModal'])
   }
