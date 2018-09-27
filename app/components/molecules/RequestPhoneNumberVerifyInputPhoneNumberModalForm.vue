@@ -71,42 +71,43 @@ export default {
     },
     showErrorInvalidPhoneNember() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        (!this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.minLength ||
-          !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.maxLength)
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        (!this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.minLength ||
+          !this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.maxLength)
       )
     },
     showErrorPhoneNumberNumeric() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.numeric
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        !this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.numeric
       )
     },
     showErrorPhoneNumberJapanesePhoneNumber() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.japanesePhoneNumber
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        !this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber
+          .japanesePhoneNumber
       )
     },
     invalidSubmit() {
-      return this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.$invalid
+      return this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.$invalid
     },
     hasUserIdOrEmailError() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.userIdOrEmail &&
-        this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.userIdOrEmail.$error
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.userIdOrEmail &&
+        this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.userIdOrEmail.$error
       )
     },
     hasPhoneNumberError() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.$error
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.$error
       )
     },
-    ...mapGetters('user', ['signUpAuthFlowModal', 'requestPhoneNumberVerifyModal'])
+    ...mapGetters('user', ['requestPhoneNumberVerifyModal', 'requestPhoneNumberVerifyModal'])
   },
   validations: {
-    signUpAuthFlowModal: {
+    requestPhoneNumberVerifyModal: {
       inputPhoneNumber: {
         formData: {
           phoneNumber: {
@@ -122,34 +123,26 @@ export default {
   },
   methods: {
     setPhoneNumber(e) {
-      this.setSignUpAuthFlowInputPhoneNumberPhoneNumber({ phoneNumber: e.target.value })
+      this.setRequestPhoneNumberVerifyInputPhoneNumberPhoneNumber({ phoneNumber: e.target.value })
     },
     showError(type) {
-      this.$v.signUpAuthFlowModal.inputPhoneNumber.formData[type].$touch()
-      this.showSignUpAuthFlowInputPhoneNumberError({ type })
+      this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData[type].$touch()
+      this.showRequestPhoneNumberVerifyInputPhoneNumberError({ type })
     },
     resetError(type) {
-      this.$v.signUpAuthFlowModal.inputPhoneNumber.formData[type].$reset()
-      this.hideSignUpAuthFlowInputPhoneNumberError({ type })
+      this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData[type].$reset()
+      this.hideRequestPhoneNumberVerifyInputPhoneNumberError({ type })
     },
     async onSubmit() {
       if (this.invalidSubmit) return
-      const { userIdOrEmail } = this.signUpAuthFlowModal.login.formData
-      const { phoneNumber } = this.signUpAuthFlowModal.inputPhoneNumber.formData
+      const { phoneNumber } = this.requestPhoneNumberVerifyModal.inputPhoneNumber.formData
 
       try {
-        await this.updatePhoneNumber({
-          userId: userIdOrEmail,
-          phoneNumber: `+81${phoneNumber.slice(1)}`
-        })
+        await this.updatePhoneNumber({ phoneNumber: `+81${phoneNumber.slice(1)}` })
         await this.sendConfirm()
 
-        this.setSignUpAuthFlowInputPhoneNumberModal({
-          isSignUpAuthFlowInputPhoneNumberModal: false
-        })
-        this.setSignUpAuthFlowInputAuthCodeModal({
-          isSignUpAuthFlowInputAuthCodeModal: true
-        })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: false })
+        this.setRequestPhoneNumberVerifyInputAuthCodeModal({ isShow: true })
         this.$refs.phoneNumber.value = ''
       } catch (error) {
         let errorMessage = ''
@@ -162,11 +155,11 @@ export default {
       }
     },
     ...mapActions('user', [
-      'setSignUpAuthFlowInputPhoneNumberModal',
-      'setSignUpAuthFlowInputPhoneNumberPhoneNumber',
-      'showSignUpAuthFlowInputPhoneNumberError',
-      'hideSignUpAuthFlowInputPhoneNumberError',
-      'setSignUpAuthFlowInputAuthCodeModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberPhoneNumber',
+      'showRequestPhoneNumberVerifyInputPhoneNumberError',
+      'hideRequestPhoneNumberVerifyInputPhoneNumberError',
+      'setRequestPhoneNumberVerifyInputAuthCodeModal',
       'updatePhoneNumber',
       'sendConfirm'
     ])

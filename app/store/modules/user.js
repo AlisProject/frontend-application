@@ -643,6 +643,27 @@ const actions = {
   },
   setRequestPhoneNumberVerifyInputPhoneNumberModal({ commit }, { isShow }) {
     commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_MODAL, { isShow })
+  },
+  setRequestPhoneNumberVerifyInputPhoneNumberPhoneNumber({ commit }, { phoneNumber }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_PHONE_NUMBER, { phoneNumber })
+  },
+  showRequestPhoneNumberVerifyInputPhoneNumberError({ commit }, { type }) {
+    commit(types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR, { type })
+  },
+  hideRequestPhoneNumberVerifyInputPhoneNumberError({ commit }, { type }) {
+    commit(types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR, { type })
+  },
+  setRequestPhoneNumberVerifyInputAuthCodeModal({ commit }, { isShow }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_MODAL, { isShow })
+  },
+  setRequestPhoneNumberVerifyInputAuthCodeAuthCode({ commit }, { authCode }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_AUTH_CODE, { authCode })
+  },
+  showRequestPhoneNumberVerifyInputAuthCodeError({ commit }, { type }) {
+    commit(types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR, { type })
+  },
+  hideRequestPhoneNumberVerifyInputAuthCodeError({ commit }, { type }) {
+    commit(types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR, { type })
   }
 }
 
@@ -890,6 +911,27 @@ const mutations = {
   },
   [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_MODAL](state, { isShow }) {
     state.requestPhoneNumberVerifyModal.isInputPhoneNumberModal = isShow
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_PHONE_NUMBER](state, { phoneNumber }) {
+    state.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber = phoneNumber
+  },
+  [types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputPhoneNumber.formError[type] = true
+  },
+  [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputPhoneNumber.formError[type] = false
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_MODAL](state, { isShow }) {
+    state.requestPhoneNumberVerifyModal.isInputAuthCodeModal = isShow
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_AUTH_CODE](state, { authCode }) {
+    state.requestPhoneNumberVerifyModal.inputAuthCode.formData.authCode = authCode
+  },
+  [types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = true
+  },
+  [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = false
   }
 }
 
