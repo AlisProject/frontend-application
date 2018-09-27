@@ -69,9 +69,12 @@ export default {
   components: {
     AppButton
   },
-  created() {
+  async created() {
+    await this.setCurrentUserInfo()
     this.userDisplayName =
-      htmlDecode(this.currentUserInfo.user_display_name) || this.currentUser.userId
+      htmlDecode(this.currentUserInfo.user_display_name) ||
+      this.currentUserInfo.alias_user_id ||
+      this.currentUser.userId
     this.selfIntroduction = htmlDecode(this.currentUserInfo.self_introduction) || ''
     this.setUserDisplayName(this.userDisplayName)
     this.setSelfIntroduction(this.selfIntroduction)
