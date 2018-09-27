@@ -65,6 +65,8 @@ export default {
           return `コメントの評価には${text}`
         case 'articleTip':
           return `トークンを贈るには${text}`
+        case 'viewPublicArticles':
+          return `自分の公開済み記事一覧を閲覧するためには${text}`
         default:
           return text
       }

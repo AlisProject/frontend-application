@@ -44,7 +44,11 @@
           </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link class="menu-link-inner" to="/me/articles/public">記事一覧</nuxt-link>
+          <nuxt-link class="reset-link-style" to="/me/articles/public" event="">
+            <span class="menu-link-inner" @click="moveToPublicArticlesPage">
+              記事一覧
+            </span>
+          </nuxt-link>
         </li>
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
@@ -156,6 +160,18 @@ export default {
         return
       }
       location.href = '/me/articles/new'
+    },
+    moveToPublicArticlesPage() {
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'viewPublicArticles' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        window.scrollTo(0, 0)
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
+        return
+      }
+      this.$router.push('/me/articles/public')
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
