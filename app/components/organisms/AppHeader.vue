@@ -82,7 +82,7 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "logo ... session";
-  z-index: 2;
+  z-index: 2002;
   padding-left: calc(50vw - 540px);
 }
 
