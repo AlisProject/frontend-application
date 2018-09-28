@@ -19,8 +19,8 @@
   grid-template-areas:
     "title           title  ... new-article"
     "public-articles drafts ... ...        ";
-  max-width: 1080px;
-  margin-left: calc(50vw - 540px);
+  width: 1080px;
+  margin: 0 auto;
   border-bottom: 1px solid rgba(#6e6e6e, 0.1);
 }
 
