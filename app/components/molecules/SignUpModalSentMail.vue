@@ -28,6 +28,9 @@ export default {
   components: {
     AppButton
   },
+  mounted() {
+    document.querySelector('.modal-container').style.maxWidth = '800px'
+  },
   methods: {
     transitToTop() {
       this.setSignUpModal({ showSignUpModal: false })

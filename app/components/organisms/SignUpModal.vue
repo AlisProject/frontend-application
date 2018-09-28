@@ -1,13 +1,5 @@
 <template>
-  <app-modal title="SIGN UP" @close="resetStates" :showModalContent="showSignUpModal">
-    <div slot="modal-header-content" v-if="beforeSendMail">
-      <div class="modal-header-warning">
-        現在、新規の登録はβ版登録ユーザーのみに限らせていただいています。
-        登録希望の方は
-        <a href="http://eepurl.com/drM0Jr" target="_blank" rel="noopener noreferrer nofollow">ウェイティングリスト</a>
-        にご登録ください。
-      </div>
-    </div>
+  <app-modal title="" @close="resetStates" :showModalContent="showSignUpModal">
     <div slot="modal-content">
       <sign-up-modal-form v-if="beforeSendMail" />
       <sign-up-modal-sent-mail v-else />
