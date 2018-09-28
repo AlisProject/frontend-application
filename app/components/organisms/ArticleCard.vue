@@ -39,7 +39,9 @@ export default {
           link = `/me/articles/draft/${this.article.article_id}/edit`
           break
         default:
-          link = `/${this.article.user_id}/articles/${this.article.article_id}`
+          link = `/${this.article.alias_user_id || this.article.user_id}/articles/${
+            this.article.article_id
+          }`
       }
       return link
     }

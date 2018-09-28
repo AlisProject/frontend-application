@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/users/${user.user_id}`" tag="div" class="search-user-card-container">
+  <nuxt-link :to="`/users/${user.alias_user_id || user.user_id}`" tag="div" class="search-user-card-container">
     <div class="area-author-icon">
       <img
         class="author-icon"
@@ -19,7 +19,7 @@
     </div>
     <div class="area-user-id">
       <p class="user-id">
-        @{{ user.user_id }}
+        @{{ user.alias_user_id || user.user_id }}
       </p>
     </div>
     <div class="area-self-introduction">

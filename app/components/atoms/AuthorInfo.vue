@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/users/${user.user_id}`" class="area-author-info">
+  <nuxt-link :to="`/users/${user.alias_user_id || user.user_id}`" class="area-author-info">
     <div class="author">
       <img
         class="icon"
@@ -13,7 +13,7 @@
         v-else>
       <ul class="info">
         <li class="user-display-name">{{ decodedUserDisplayName }}</li>
-        <li class="user-id">@{{ user.user_id }}</li>
+        <li class="user-id">@{{ user.alias_user_id || user.user_id }}</li>
       </ul>
     </div>
     <span class="body" v-if="hasSelfIntroduction">

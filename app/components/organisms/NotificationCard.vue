@@ -1,14 +1,16 @@
 <template>
   <section>
     <nuxt-link
-      :to="`/users/${notification.acted_user_id}`"
+      :to="`/users/${notification.acted_alias_user_id || notification.acted_user_id}`"
       class="notification-card-container"
       v-if="notification.type === 'tip'">
       <notification-card-image :notification="notification"/>
       <notification-card-content :notification="notification"/>
     </nuxt-link>
     <nuxt-link
-      :to="`/${notification.type === 'tip_error' ? notification.article_user_id : notification.user_id}/articles/${notification.article_id}`"
+      :to="`/${notification.type === 'tip_error' ?
+        notification.article_alias_user_id || notification.article_user_id :
+        notification.alias_user_id || notification.user_id}/articles/${notification.article_id}`"
       class="notification-card-container"
       v-else>
       <notification-card-image :notification="notification"/>

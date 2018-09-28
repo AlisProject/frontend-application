@@ -20,7 +20,7 @@
       {{ decodedUserDisplayName }}
     </span>
     <span class="user-id">
-      @{{ article.userInfo.user_id }}
+      @{{ article.userInfo.alias_user_id || article.userInfo.user_id }}
     </span>
     <div class="triangle-mark" />
     <div class="token-amount-box">

@@ -22,7 +22,7 @@
     </div>
     <div class="area-user-id">
       <p class="user-id">
-        @{{ user.user_id }}
+        @{{ user.alias_user_id || user.user_id }}
       </p>
     </div>
     <div class="area-self-introduction">
@@ -63,9 +63,13 @@ export default {
       return true
     },
     isCurrentUser() {
-      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
+      return (
+        this.loggedIn &&
+        this.$route.params.userId ===
+          (this.currentUserInfo.alias_user_id || this.currentUserInfo.user_id)
+      )
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser'])
+    ...mapGetters('user', ['loggedIn', 'currentUserInfo'])
   },
   methods: {
     showProfileSettingsModal() {

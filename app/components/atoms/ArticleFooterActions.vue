@@ -83,9 +83,9 @@ export default {
     },
     isMyArticle() {
       if (!this.currentUser) return false
-      return this.articleUserId === this.currentUser.userId
+      return this.articleUserId === (this.currentUserInfo.alias_user_id || this.currentUser.userId)
     },
-    ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser']),
+    ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser', 'currentUserInfo']),
     ...mapGetters('article', ['article']),
     ...mapGetters(['toastMessages'])
   },

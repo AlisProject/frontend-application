@@ -51,7 +51,7 @@
           </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
+          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.alias_user_id || currentUserInfo.user_id}`">マイページ</nuxt-link>
         </li>
         <li class="menu-link" @click="showProfileSettingsModal">
           <span class="menu-link-inner">

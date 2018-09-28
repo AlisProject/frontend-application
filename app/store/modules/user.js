@@ -454,7 +454,7 @@ const actions = {
       await dispatch('setUserInfo', { userId })
       const { userInfo } = state
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
-        `/users/${userInfo.user_id}/articles/public`,
+        `/users/${userInfo.alias_user_id || userInfo.user_id}/articles/public`,
         { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
       )
       commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, {
@@ -489,9 +489,9 @@ const actions = {
         notifications.map(async (notification) => {
           let userInfo
           if (notification.type === 'comment' || notification.type === 'tip') {
-            userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
+            userInfo = await this.$axios.$get(`/users/${notification.acted_alias_user_id || notification.acted_user_id}/info`)
           } else if (notification.type === 'tip_error') {
-            userInfo = await this.$axios.$get(`/users/${notification.article_user_id}/info`)
+            userInfo = await this.$axios.$get(`/users/${notification.article_alias_user_id || notification.article_user_id}/info`)
           }
           return { ...notification, userInfo }
         })
