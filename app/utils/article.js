@@ -179,6 +179,7 @@ export function showEmbedTweet() {
       alisIframelyUrl.startsWith('https://twitter.com/')
     const isTweet = isTwitterResource && alisIframelyUrl.split('/')[4] === 'status'
     const isGistResource = alisIframelyUrl.startsWith('https://gist.github.com/')
+    const isYouTubeResource = isYouTubeVideoURL(alisIframelyUrl)
     let result
 
     try {
@@ -191,7 +192,7 @@ export function showEmbedTweet() {
       return
     }
 
-    if (isTweet || isGistResource) {
+    if (isTweet || isGistResource || isYouTubeResource) {
       const anchorElement = document.createElement('a')
       anchorElement.setAttribute('href', alisIframelyUrl)
       anchorElement.setAttribute('data-iframely-url', '')
@@ -268,4 +269,21 @@ export function preventDropImageOnOGPContent() {
 export function htmlDecode(text) {
   const entities = new XmlEntities()
   return entities.decode(text)
+}
+
+export function isYouTubeVideoURL(url) {
+  // 参考：
+  // https://github.com/itteco/iframely/blob/ef79303fdd8400ca958827a787a3f18bb9044073/plugins/domains/youtube.com/youtube.video.js
+  const regexes = [
+    /^https?:\/\/(?:www\.)?youtube\.com\/(?:tv#\/)?watch\/?\?(?:[^&]+&)*v=([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/youtu.be\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/m\.youtube\.com\/#\/watch\?(?:[^&]+&)*v=([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube\.com\/v\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube\.com\/user\/[a-zA-Z0-9_-]+\/?\?v=([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube-nocookie\.com\/(?:v|embed)\/([a-zA-Z0-9_-]+)/i
+  ]
+  const isYouTubeVideoURL = regexes.some((regex) => regex.test(url))
+
+  return isYouTubeVideoURL
 }
