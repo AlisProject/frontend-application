@@ -22,10 +22,9 @@ export default {
 
 <style lang="scss" scoped>
 .app-button {
-  background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+  background: linear-gradient(#858dda);
   border-radius: 18px;
   border: none;
-  box-shadow: 0 0 10px gray;
   color: #fff;
   cursor: pointer;
   display: block;
@@ -36,8 +35,11 @@ export default {
   text-decoration: none;
   width: 265px;
 
+  &:hover,
   &:focus {
-    opacity: 0.8;
+    background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
+    transition: all 400ms ease;
   }
 
   &:target {
@@ -48,6 +50,7 @@ export default {
     background: white;
     color: #6e6e6e;
     cursor: default;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
   }
 
   a {
