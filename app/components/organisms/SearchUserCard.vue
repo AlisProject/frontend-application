@@ -14,7 +14,7 @@
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
-        {{ user.user_display_name }}
+        {{ decodedUserDisplayName }}
       </p>
     </div>
     <div class="area-user-id">
@@ -24,13 +24,15 @@
     </div>
     <div class="area-self-introduction">
       <p class="self-introduction" :class="{ 'add-bottom-space': !hasSelfIntroduction }">
-        {{ user.self_introduction }}
+        {{ decodedSelfIntroduction }}
       </p>
     </div>
   </nuxt-link>
 </template>
 
 <script>
+import { htmlDecode } from '~/utils/article'
+
 export default {
   props: {
     user: {
@@ -46,6 +48,12 @@ export default {
     },
     imageCaption() {
       return `${this.user.user_display_name}'s icon'`
+    },
+    decodedUserDisplayName() {
+      return htmlDecode(this.user.user_display_name)
+    },
+    decodedSelfIntroduction() {
+      return htmlDecode(this.user.self_introduction)
     }
   }
 }

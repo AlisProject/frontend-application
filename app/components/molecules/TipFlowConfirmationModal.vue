@@ -18,7 +18,7 @@
       :alt="imageCaption"
       v-else>
     <span class="user-display-name">
-      {{ article.userInfo.user_display_name }}
+      {{ decodedUserDisplayName }}
     </span>
     <span class="user-id">
       @{{ article.userInfo.user_id }}
@@ -41,6 +41,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -58,6 +59,9 @@ export default {
     },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
+    },
+    decodedUserDisplayName() {
+      return htmlDecode(this.article.userInfo.user_display_name)
     },
     ...mapGetters('user', ['tipTokenAmount', 'alisToken']),
     ...mapGetters('article', ['article'])

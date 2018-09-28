@@ -5,7 +5,7 @@
         <img class="icon" :src="comment.userInfo.icon_image_url" v-if="hasUserIcon">
         <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
         <ul class="info">
-          <li class="info-content">{{ comment.userInfo.user_display_name }}</li>
+          <li class="info-content">{{ decodedUserDisplayName }}</li>
           <li class="info-content">{{ createdAt }}</li>
         </ul>
       </nuxt-link>
@@ -32,6 +32,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { formatDateFromNow } from '~/utils/format'
 import urlRegex from 'url-regex'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   props: {
@@ -87,6 +88,9 @@ export default {
         this.comment.user_id === this.currentUserInfo.user_id ||
         this.currentUserInfo.user_id === this.article.user_id
       )
+    },
+    decodedUserDisplayName() {
+      return htmlDecode(this.comment.userInfo.user_display_name)
     },
     ...mapGetters('user', ['currentUserInfo', 'loggedIn']),
     ...mapGetters('article', ['article'])

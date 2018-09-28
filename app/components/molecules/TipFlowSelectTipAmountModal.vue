@@ -17,7 +17,7 @@
       :alt="imageCaption"
       v-else>
     <span class="user-display-name">
-      {{ article.userInfo.user_display_name }}
+      {{ decodedUserDisplayName }}
     </span>
     <span class="user-id">
       @{{ article.userInfo.user_id }}
@@ -49,6 +49,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -92,6 +93,9 @@ export default {
     },
     orderedUnitList() {
       return this.unitList.sort((a, b) => a.order > b.order)
+    },
+    decodedUserDisplayName() {
+      return htmlDecode(this.article.userInfo.user_display_name)
     },
     ...mapGetters('user', ['alisToken']),
     ...mapGetters('article', ['article'])
