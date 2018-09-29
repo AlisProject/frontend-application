@@ -28,8 +28,8 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "public-articles drafts ... post-article";
-  max-width: 640px;
-  margin-left: calc(50vw - 320px);
+  width: 640px;
+  margin: 0 auto;
   border-bottom: 1px solid rgba(#6e6e6e, 0.1);
 }
 
@@ -82,7 +82,6 @@ export default {
 @media screen and (max-width: 1080px) {
   .area-nav {
     max-width: calc(100% - 68px);
-    margin-left: 34px;
   }
 }
 
