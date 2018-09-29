@@ -2,8 +2,8 @@
   <div>
     <img class="logo" src="~assets/images/pc/common/header_logo_original.png">
     <div class="modal-body">
-      <div class="email-auth">
-        <h2 class="email-auth-title">メールアドレスで登録する</h2>
+      <div class="email-auth" v-show="isShowEmailAuth">
+        <h2 class="email-auth-title" v-show="isShowEmailAuth && isShowSNSAuth">メールアドレスで登録する</h2>
         <form class="signup-form" @keypress.enter.prevent="onSubmit">
           <div class="signup-form-group" :class="{ 'error': hasUserIdError }">
             <label class="signup-form-label">ユーザーID</label>
@@ -57,15 +57,32 @@
           </app-button>
         </div>
       </div>
-      <div class="divider" />
-      <div class="sns-auth">
-        <h2 class="sns-auth-title">外部サイトで登録する</h2>
+      <div class="divider" v-show="isShowEmailAuth && isShowSNSAuth"/>
+      <div class="sns-auth" v-show="isShowSNSAuth">
+        <h2 class="sns-auth-title" v-show="isShowEmailAuth && isShowSNSAuth">外部サイトで登録する</h2>
+        <template v-if="isShowOnlySNSAuth">
+          <p class="brand-message">
+            ALISは、記事を読む人こそ主役になれるメディアです。
+          </p>
+          <p class="brand-message">
+            記事を書くことだけでなく、読むことも大切な役割なので、報酬を受け取ることができます。
+          </p>
+          <p class="brand-message">
+            書く人と読む人が、一緒に読む価値のある情報を作り出しすべての人に公開できるメディアになります。
+          </p>
+        </template>
         <button class="line-button">
           LINEではじめる
         </button>
         <button class="twitter-button">
           twitterではじめる
         </button>
+        <p
+          class="for-email-signup"
+          @click="showEmailAuth"
+          v-show="isShowOnlySNSAuth">
+          メールではじめる
+        </p>
         <p class="agreement-confirmation text-align-left">
           上記を押した場合、
           <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・
@@ -92,11 +109,20 @@ function userId(value) {
 export default {
   data() {
     return {
+      isShowEmailAuth: true,
+      isShowSNSAuth: true,
       errorMessage: ''
     }
   },
   mounted() {
     document.querySelector('.modal-container').style.maxWidth = '1034px'
+    window.addEventListener('resize', this.handleResize)
+    this.switchAuthType()
+    this.listen(window, 'click', (event) => {
+      if (!document.querySelector('.modal-container').contains(event.target)) {
+        window.removeEventListener('resize', this.handleResize)
+      }
+    })
   },
   components: {
     AppButton
@@ -125,6 +151,12 @@ export default {
     },
     hasPasswordError() {
       return this.signUpModal.formError.password && this.$v.signUpModal.formData.password.$error
+    },
+    isShowOnlyEmailAuth() {
+      return this.isShowEmailAuth && !this.isShowSNSAuth
+    },
+    isShowOnlySNSAuth() {
+      return !this.isShowEmailAuth && this.isShowSNSAuth
     },
     ...mapGetters('user', ['signUpModal'])
   },
@@ -169,6 +201,17 @@ export default {
       this.setSignUpModal({ showSignUpModal: false })
       this.setLoginModal({ showLoginModal: true })
     },
+    handleResize() {
+      this.switchAuthType()
+    },
+    switchAuthType() {
+      this.isShowEmailAuth = window.innerWidth > 920
+      this.isShowSNSAuth = true
+    },
+    showEmailAuth() {
+      this.isShowEmailAuth = true
+      this.isShowSNSAuth = false
+    },
     async onSubmit() {
       if (this.invalidSubmit) return
       const { userId, email, password } = this.signUpModal.formData
@@ -192,6 +235,17 @@ export default {
         }
         this.errorMessage = errorMessage
       }
+    },
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
     },
     ...mapActions('user', [
       'setSentMail',
@@ -356,7 +410,7 @@ export default {
 }
 
 .twitter-button {
-  margin: 60px 0;
+  margin: 30px 0 60px;
   background-color: #1da1f3;
   @include sns-button();
 }
@@ -372,6 +426,46 @@ export default {
   align-items: center;
   justify-content: center;
   margin: 0 -30px -20px;
+}
+
+@media screen and (max-width: 920px) {
+  .email-auth,
+  .sns-auth {
+    max-width: 100%;
+  }
+
+  .signup-form {
+    margin: 30px auto 0;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .brand-message {
+    color: #4e4e4e;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 324px;
+    width: 100%;
+  }
+
+  .twitter-button {
+    margin: 30px 0;
+  }
+
+  .for-email-signup {
+    margin: 0 0 30px 0;
+    color: #4e4e4e;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .for-login-user {
+    margin: 30px -30px -30px;
+  }
 }
 
 @media screen and (max-width: 320px) {
