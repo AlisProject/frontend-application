@@ -388,7 +388,9 @@ const actions = {
       })
       const commentsWithData = await Promise.all(
         comments.map(async (comment) => {
-          const userInfo = await dispatch('getUserInfo', { userId: comment.alias_user_id || comment.user_id })
+          const userInfo = await dispatch('getUserInfo', {
+            userId: comment.alias_user_id || comment.user_id
+          })
           let isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
           const likesCount = await dispatch('getArticleCommentLikesCount', {
             commentId: comment.comment_id
