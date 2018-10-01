@@ -605,8 +605,10 @@ const actions = {
   async checkAuthByLine({ commit, dispatch }, { code }) {
     dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
 
-    const result = await this.$axios.$post('/sns_login_initiate', { code })
+    const result = await this.$axios.$post('/login/line', { code })
     this.cognitoAuth.setTokens(result)
+
+    await dispatch('refreshUserSession')
 
     const session = await dispatch('getUserSession')
     commit(types.SET_LOGGED_IN, { loggedIn: true })
@@ -634,7 +636,7 @@ const actions = {
       const userId = localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       )
-      await this.$axios.$post('/alias_user', { user_id: userId, alias_user_id: aliasUserId })
+      await this.$axios.$post('/me/alias', { user_id: userId, alias_user_id: aliasUserId })
     } catch (error) {
       return Promise.reject(error)
     }
