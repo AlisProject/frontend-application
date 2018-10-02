@@ -670,6 +670,14 @@ const actions = {
   },
   hideRequestPhoneNumberVerifyInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR, { type })
+  },
+  async getLineAuthorizeURL() {
+    try {
+      const { callback_url: callbackUrl } = await this.$axios.$get('/login/line/authorize_url')
+      return callbackUrl
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 

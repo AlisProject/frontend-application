@@ -71,9 +71,9 @@
             書く人と読む人が、一緒に読む価値のある情報を作り出しすべての人に公開できるメディアになります。
           </p>
         </template>
-        <button class="line-button">
+        <a class="line-button" :href="lineAuthorizeURL">
           LINEではじめる
-        </button>
+        </a>
         <button class="twitter-button">
           twitterではじめる
         </button>
@@ -111,10 +111,12 @@ export default {
     return {
       isShowEmailAuth: true,
       isShowSNSAuth: true,
-      errorMessage: ''
+      errorMessage: '',
+      lineAuthorizeURL: null
     }
   },
-  mounted() {
+  async mounted() {
+    this.lineAuthorizeURL = await this.getLineAuthorizeURL()
     document.querySelector('.modal-container').style.maxWidth = '1034px'
     window.addEventListener('resize', this.handleResize)
     this.switchAuthType()
@@ -257,7 +259,8 @@ export default {
       'register',
       'setSignUpModal',
       'setLoginModal',
-      'resetPassword'
+      'resetPassword',
+      'getLineAuthorizeURL'
     ])
   }
 }
@@ -392,6 +395,7 @@ export default {
 @mixin sns-button {
   border-radius: 18px;
   border: none;
+  box-sizing: border-box;
   color: #fff;
   cursor: pointer;
   display: block;
