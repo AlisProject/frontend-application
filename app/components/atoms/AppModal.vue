@@ -7,7 +7,7 @@
             <div class="modal-header-content">
               <slot name="modal-header-content" />
             </div>
-            <span class="modal-header-default-button" @click="closeModal">
+            <span class="modal-header-default-button" @click="closeModal" v-if="isShowCloseModalButton">
               ✕
             </span>
           </div>
@@ -37,6 +37,11 @@ export default {
       required: false
     },
     showModalContent: {
+      type: Boolean,
+      default: true,
+      required: false
+    },
+    isShowCloseModalButton: {
       type: Boolean,
       default: true,
       required: false

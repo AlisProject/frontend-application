@@ -1,5 +1,5 @@
 <template>
-  <app-modal :title="title" :showModalContent="showSignUpAuthFlowModal">
+  <app-modal :title="title" :showModalContent="showSignUpAuthFlowModal" :isShowCloseModalButton="isShowCloseModalButton">
     <div slot="modal-content">
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
@@ -64,6 +64,9 @@ export default {
     },
     isCompletedAuthModal() {
       return this.signUpAuthFlowModal.isCompletedAuthModal
+    },
+    isShowCloseModalButton() {
+      return !this.isInputPhoneNumberModal
     },
     ...mapGetters('user', ['signUpAuthFlowModal', 'showSignUpAuthFlowModal'])
   }
