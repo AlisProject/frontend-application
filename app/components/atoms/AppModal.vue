@@ -176,10 +176,9 @@ export default {
   &-body {
     .title {
       color: #030303;
-      font-family: 'Times New Roman', Times, serif;
       font-size: 20px;
-      font-weight: bold;
-      letter-spacing: 0.2em;
+      font-weight: 100;
+      letter-spacing: 5px;
       line-height: 24px;
       margin: 50px 20px 0;
       text-align: center;
