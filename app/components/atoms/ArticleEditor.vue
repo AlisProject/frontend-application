@@ -31,7 +31,8 @@ import {
   getResourceFromIframely,
   preventDragAndDrop,
   preventDropImageOnOGPContent,
-  isYouTubeVideoURL
+  isYouTubeVideoURL,
+  isInstagramURL
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -170,6 +171,7 @@ export default {
       const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
       const isGistResource = trimmedLine.startsWith('https://gist.github.com/')
       const isYouTubeResource = isYouTubeVideoURL(trimmedLine)
+      const isInstagramResource = isInstagramURL(trimmedLine)
       let result, cleanAttrs, embedHTML
 
       try {
@@ -188,7 +190,7 @@ export default {
 
       selectedParentElement.innerHTML = ''
 
-      if (isTweet || isGistResource || isYouTubeResource) {
+      if (isTweet || isGistResource || isYouTubeResource || isInstagramResource) {
         this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
         iframely.load()
         return

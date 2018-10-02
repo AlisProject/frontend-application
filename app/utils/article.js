@@ -180,6 +180,7 @@ export function showEmbedTweet() {
     const isTweet = isTwitterResource && alisIframelyUrl.split('/')[4] === 'status'
     const isGistResource = alisIframelyUrl.startsWith('https://gist.github.com/')
     const isYouTubeResource = isYouTubeVideoURL(alisIframelyUrl)
+    const isInstagramResource = isInstagramURL(alisIframelyUrl)
     let result
 
     try {
@@ -192,7 +193,7 @@ export function showEmbedTweet() {
       return
     }
 
-    if (isTweet || isGistResource || isYouTubeResource) {
+    if (isTweet || isGistResource || isYouTubeResource || isInstagramResource) {
       const anchorElement = document.createElement('a')
       anchorElement.setAttribute('href', alisIframelyUrl)
       anchorElement.setAttribute('data-iframely-url', '')
@@ -286,4 +287,17 @@ export function isYouTubeVideoURL(url) {
   const isYouTubeVideoURL = regexes.some((regex) => regex.test(url))
 
   return isYouTubeVideoURL
+}
+
+export function isInstagramURL(url) {
+  // 参考：
+  // https://github.com/itteco/iframely/blob/245043afd1698d88f1ed05c6b7b075148aca1841/plugins/domains/instagram.com.js
+  const regexes = [
+    /^https?:\/\/(?:www.)?instagram\.com\/(?:[a-zA-Z0-9_-]+\/)?(?:p|tv)\/([a-zA-Z0-9_-]+)\/?/i,
+    /^https?:\/\/instagr\.am\/(?:[a-zA-Z0-9_-]+\/)?p\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/instagram\.com\/(?:[a-zA-Z0-9_-]+\/)?(?:p|tv)\/([a-zA-Z0-9_-]+)$/i
+  ]
+  const isInstagramURL = regexes.some((regex) => regex.test(url))
+
+  return isInstagramURL
 }
