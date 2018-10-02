@@ -6,7 +6,7 @@
     </div>
     <div class="area-nav">
       <span class="nav-content">
-        新規記事
+        新着記事
       </span>
     </div>
     <div class="area-tag-articles">

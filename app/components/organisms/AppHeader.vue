@@ -77,13 +77,13 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  max-width: 1080px;
+  width: 1080px;
   grid-template-columns: 150px 1fr auto;
   /* prettier-ignore */
   grid-template-areas:
     "logo ... session";
-  z-index: 2;
-  padding-left: calc(50vw - 540px);
+  z-index: 2002;
+  justify-self: center;
 }
 
 .area-logo {
@@ -96,14 +96,13 @@ export default {
 @media screen and (max-width: 1080px) {
   .area-app-header-container {
     max-width: calc(100% - 68px);
-    padding-left: 34px;
   }
 }
 
 @media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .area-app-header-container {
-      max-width: 100%;
+      max-width: calc(100% - 40px);
       background: white;
       grid-template-columns: 94px 1fr auto;
       grid-template-rows: 66px;
@@ -118,7 +117,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .area-app-header-container {
-    max-width: 100%;
+    max-width: calc(100% - 40px);
     background: white;
     grid-template-columns: 94px 1fr auto;
     grid-template-rows: 66px;
