@@ -63,16 +63,16 @@
           </p>
         </template>
         <a class="line-button" :href="lineAuthorizeURL">
-          LINEではじめる
+          LINEでログイン
         </a>
         <button class="twitter-button">
-          twitterではじめる
+          twitterでログイン
         </button>
         <p
           class="for-email-signup"
           @click="showEmailAuth"
           v-show="isShowOnlySNSAuth">
-          メールではじめる
+          メールでログイン
         </p>
         <p class="agreement-confirmation text-align-left">
           上記を押した場合、
