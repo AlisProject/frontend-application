@@ -26,11 +26,16 @@ export default {
   head() {
     const { topicDisplayName } = this.$store.state.article
     const isTopPage = topicDisplayName === 'クリプト'
-    const topPageTitle = 'ALIS - A Rewards System to Distinguish Trustworthy Articles.'
+    const topPageTitle = 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア'
     return {
       title: isTopPage ? topPageTitle : `${topicDisplayName} - 人気記事`,
       titleTemplate: isTopPage ? '' : '%s | ALIS',
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `${topicDisplayName}の人気記事一覧`
+        },
         {
           hid: `og:title`,
           property: 'og:title',
@@ -39,9 +44,7 @@ export default {
         {
           hid: `og:description`,
           property: 'og:description',
-          content: isTopPage
-            ? `ALIS is Japan's First Social Media Using Blockchain Technology`
-            : `${topicDisplayName}の人気記事一覧`
+          content: `${topicDisplayName}の人気記事一覧`
         }
       ]
     }
