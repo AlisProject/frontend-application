@@ -20,6 +20,7 @@
     "@johmun/vue-tags-input": "^1.5.5",
     "@nuxtjs/axios": "^5.3.1",
     "@nuxtjs/markdownit": "^1.2.0",
+    "alis-editor": "https://github.com/alisproject/alis-editor#v0.1.1",
     "amazon-cognito-identity-js": "^2.0.2",
     "aws-sdk": "^2.215.1",
     "aws-serverless-express": "^3.0.2",
@@ -33,6 +34,7 @@
     "nuxt": "^1.4.2",
     "nuxt-sass-resources-loader": "^2.0.1",
     "url-regex": "^4.1.1",
+    "uuid": "^3.3.2",
     "vuelidate": "^0.6.2",
     "vuex-toast": "^0.1.3"
   },
