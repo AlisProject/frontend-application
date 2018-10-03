@@ -605,7 +605,7 @@ const actions = {
   async checkAuthByLine({ commit, dispatch }, { code }) {
     dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
 
-    const result = await this.$axios.$post('/login/line', { code })
+    const result = await this.$axios.$post('/login/line/authorize_request', { code })
     this.cognitoAuth.setTokens(result)
 
     await dispatch('refreshUserSession')
