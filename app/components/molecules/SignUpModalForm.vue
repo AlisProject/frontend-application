@@ -116,10 +116,10 @@ export default {
     }
   },
   async mounted() {
+    this.switchAuthType()
     this.lineAuthorizeURL = await this.getLineAuthorizeURL()
     document.querySelector('.modal-container').style.maxWidth = '1034px'
     window.addEventListener('resize', this.handleResize)
-    this.switchAuthType()
     this.listen(window, 'click', (event) => {
       if (!document.querySelector('.modal-container').contains(event.target)) {
         window.removeEventListener('resize', this.handleResize)
