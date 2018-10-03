@@ -2,7 +2,7 @@
   <div>
     <img class="logo" src="~assets/images/pc/common/header_logo_original.png">
     <div class="modal-body">
-      <div class="email-auth" v-show="isShowEmailAuth">
+      <div class="email-auth" v-show="isShowEmailAuth" :class="{ isSelectedEmailAuth }">
         <h2 class="email-auth-title" v-show="isShowEmailAuth && isShowSNSAuth">メールアドレスでログインする</h2>
         <form class="signup-form" @keypress.enter="onSubmit">
           <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
@@ -100,7 +100,8 @@ export default {
       isShowEmailAuth: true,
       isShowSNSAuth: true,
       errorMessage: '',
-      lineAuthorizeURL: null
+      lineAuthorizeURL: null,
+      isSelectedEmailAuth: false
     }
   },
   async mounted() {
@@ -174,12 +175,14 @@ export default {
       this.switchAuthType()
     },
     switchAuthType() {
+      if (this.isSelectedEmailAuth) return
       this.isShowEmailAuth = window.innerWidth > 920
       this.isShowSNSAuth = true
     },
     showEmailAuth() {
       this.isShowEmailAuth = true
       this.isShowSNSAuth = false
+      this.isSelectedEmailAuth = true
     },
     async onSubmit() {
       if (this.invalidSubmit) return
@@ -264,6 +267,15 @@ export default {
 .email-auth {
   max-width: 520px;
   width: 100%;
+
+  &.isSelectedEmailAuth {
+    max-width: 100%;
+
+    .signup-form {
+      margin: 30px auto 0;
+      max-width: 400px;
+    }
+  }
 }
 
 .signup-form {
