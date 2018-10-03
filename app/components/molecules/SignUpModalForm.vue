@@ -120,11 +120,9 @@ export default {
     this.lineAuthorizeURL = await this.getLineAuthorizeURL()
     document.querySelector('.modal-container').style.maxWidth = '1034px'
     window.addEventListener('resize', this.handleResize)
-    this.listen(window, 'click', (event) => {
-      if (!document.querySelector('.modal-container').contains(event.target)) {
-        window.removeEventListener('resize', this.handleResize)
-      }
-    })
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
   },
   components: {
     AppButton

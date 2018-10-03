@@ -5,9 +5,9 @@
       <header-session-links v-if="!loggedIn"/>
       <header-user-logged-in-items v-else />
     </no-ssr>
-    <sign-up-modal v-show="showSignUpModal"/>
-    <sign-up-auth-flow-modal v-show="showSignUpAuthFlowModal"/>
-    <login-modal v-show="showLoginModal"/>
+    <sign-up-modal v-if="showSignUpModal"/>
+    <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
+    <login-modal v-if="showLoginModal"/>
     <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
