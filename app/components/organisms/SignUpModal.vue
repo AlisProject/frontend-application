@@ -1,5 +1,9 @@
 <template>
-  <app-modal :title="title" @close="resetStates" :showModalContent="showSignUpModal">
+  <app-modal
+    :title="title"
+    @close="resetStates"
+    :showModalContent="showSignUpModal"
+    :maxWidth="beforeSendMail ? 1034 : 800">
     <div slot="modal-content">
       <sign-up-modal-form v-if="beforeSendMail" />
       <sign-up-modal-sent-mail v-else />
