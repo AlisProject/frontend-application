@@ -24,18 +24,24 @@ export default {
     await store.dispatch('article/getPopularArticles', { topic })
   },
   head() {
+    const { topicDisplayName } = this.$store.state.article
+    const isTopPage = topicDisplayName === 'クリプト'
+    const topPageTitle = 'ALIS - A Rewards System to Distinguish Trustworthy Articles.'
     return {
-      title: `${this.$store.state.article.topicDisplayName} - 人気記事`,
+      title: isTopPage ? topPageTitle : `${topicDisplayName} - 人気記事`,
+      titleTemplate: isTopPage ? '' : '%s | ALIS',
       meta: [
         {
           hid: `og:title`,
           property: 'og:title',
-          content: `${this.$store.state.article.topicDisplayName} - 人気記事 | ALIS`
+          content: isTopPage ? topPageTitle : `${topicDisplayName} - 人気記事 | ALIS`
         },
         {
           hid: `og:description`,
           property: 'og:description',
-          content: `${this.$store.state.article.topicDisplayName}の人気記事一覧`
+          content: isTopPage
+            ? `ALIS is Japan's First Social Media Using Blockchain Technology`
+            : `${topicDisplayName}の人気記事一覧`
         }
       ]
     }
