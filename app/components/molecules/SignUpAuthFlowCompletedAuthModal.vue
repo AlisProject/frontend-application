@@ -2,12 +2,11 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        ALISへようこそ
+        ALISへの登録が完了しました！
       </p>
       <p class="description">
-        ALISトークンを報酬として受け取ることができるようになりました。ALIS
-        で多くの人や信頼できる人から支持される記事を書くか、信頼できる記事
-        をいち早くみつけるほど多くのALISトークンが配布されます。
+        引き続き電話番号の登録が完了すると、自分で作成した記事へいいねをもらったり、誰かの記事にいいねを行うとALISトークンがゲットできます！
+        ぜひたくさん使ってALISトークンをゲットしてください！
       </p>
       <img
         class="completed-auth-img"
@@ -16,7 +15,7 @@
     </div>
     <div class="modal-footer">
       <app-button class="to-next-step-button" @click="transitToNextStep">
-        {{ phoneNumberVerified ? 'プロフィールを作成する' : '電話番号認証へ進む' }}
+        次へ
       </app-button>
       <button class="to-top-button" @click="transitToTop">
         TOPに戻る
@@ -77,8 +76,11 @@ export default {
   margin: 0 auto;
 
   .announce {
-    @include default-text();
-    font-size: 14px;
+    color: #030303;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 1.14px;
+    line-height: 1.5px;
     margin: 60px 0 0;
     text-align: center;
   }

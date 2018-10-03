@@ -1,5 +1,5 @@
 <template>
-  <app-modal title="" @close="resetStates" :showModalContent="showSignUpModal">
+  <app-modal :title="title" @close="resetStates" :showModalContent="showSignUpModal">
     <div slot="modal-content">
       <sign-up-modal-form v-if="beforeSendMail" />
       <sign-up-modal-sent-mail v-else />
@@ -20,6 +20,9 @@ export default {
     SignUpModalSentMail
   },
   computed: {
+    title() {
+      return this.sentMail ? '新規登録' : ''
+    },
     beforeSendMail() {
       return !this.sentMail
     },

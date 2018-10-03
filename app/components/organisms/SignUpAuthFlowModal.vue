@@ -36,12 +36,18 @@ export default {
   },
   computed: {
     title() {
-      if (this.isCompletedPhoneNumberAuthModal) {
-        return 'CONGRATULATIONS!!'
+      if (this.isInputAliasUserIdModal) {
+        return 'SNS認証完了'
+      } else if (this.isCompletedAuthModal) {
+        return ''
+      } else if (this.isInputPhoneNumberModal) {
+        return '電話番号の登録'
+      } else if (this.isInputAuthCodeModal) {
+        return '認証コードの確認'
       } else if (this.isProfileSettingsModal) {
-        return 'PROFILE'
+        return 'プロフィール'
       } else {
-        return 'SIGN UP'
+        return '新規登録'
       }
     },
     isLoginModal() {

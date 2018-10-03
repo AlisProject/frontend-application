@@ -25,7 +25,7 @@
     <div class="modal-footer">
       <p class="error-message">{{ errorMessage }}</p>
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
-        次へ
+        登録を完了する
       </app-button>
     </div>
   </div>
