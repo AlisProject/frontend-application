@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-header showDefaultHeaderNav showOnlyLogo class="without-shadow"/>
+    <app-header class="center"/>
     <div class="logo-mobile"></div>
     <div v-if="error.statusCode === 404">
       <div class="page-404-container">
@@ -57,6 +57,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.center {
+  margin: 0 auto;
+}
+
 .page-500-container,
 .page-404-container {
   background: url('~/assets/images/pc/common/image_bg404.jpg') no-repeat;
