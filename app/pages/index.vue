@@ -10,7 +10,7 @@ export default {
     PopularArticleList
   },
   fetch({ redirect }) {
-    // メタタグ内のタイトルをトップページのものにするために &from=top のパラメータを付与
+    // &from=top のパラメータは、遷移先でTOPページからのリダイレクトで遷移されたかの判定に使用
     redirect('/articles/popular?topic=crypto&from=top')
   },
   head() {
