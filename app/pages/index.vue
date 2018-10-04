@@ -10,7 +10,7 @@ export default {
     PopularArticleList
   },
   fetch({ redirect }) {
-    redirect('/articles/popular?topic=crypto')
+    redirect('/articles/popular?topic=crypto&from=top')
   },
   head() {
     return {

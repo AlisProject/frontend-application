@@ -25,7 +25,7 @@ export default {
   },
   head() {
     const { topicDisplayName } = this.$store.state.article
-    const isTopPage = topicDisplayName === 'クリプト'
+    const isTopPage = this.$route.query.from === 'top'
     const topPageTitle = 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア'
     return {
       title: isTopPage ? topPageTitle : `${topicDisplayName} - 人気記事`,
