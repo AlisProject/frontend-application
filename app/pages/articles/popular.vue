@@ -24,18 +24,28 @@ export default {
     await store.dispatch('article/getPopularArticles', { topic })
   },
   head() {
+    const { topicDisplayName } = this.$store.state.article
+    // pages/index.vue からリダイレクトされた場合、メタタグ内のタイトルはトップページのものを表示する
+    const isTopPage = this.$route.query.from === 'top'
+    const topPageTitle = 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア'
     return {
-      title: `${this.$store.state.article.topicDisplayName} - 人気記事`,
+      title: isTopPage ? topPageTitle : `${topicDisplayName} - 人気記事`,
+      titleTemplate: isTopPage ? '' : '%s | ALIS',
       meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `${topicDisplayName}の人気記事一覧`
+        },
         {
           hid: `og:title`,
           property: 'og:title',
-          content: `${this.$store.state.article.topicDisplayName} - 人気記事 | ALIS`
+          content: isTopPage ? topPageTitle : `${topicDisplayName} - 人気記事 | ALIS`
         },
         {
           hid: `og:description`,
           property: 'og:description',
-          content: `${this.$store.state.article.topicDisplayName}の人気記事一覧`
+          content: `${topicDisplayName}の人気記事一覧`
         }
       ]
     }
