@@ -9,7 +9,7 @@ module.exports = {
         async: true
       }
     ],
-    title: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.',
+    title: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア',
     titleTemplate: '%s | ALIS',
     meta: [
       { charset: 'utf-8' },
@@ -23,7 +23,7 @@ module.exports = {
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'ALIS - A Rewards System to Distinguish Trustworthy Articles.'
+        content: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア'
       },
       {
         hid: 'og:description',
