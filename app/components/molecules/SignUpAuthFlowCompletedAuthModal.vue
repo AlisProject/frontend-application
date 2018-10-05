@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import AppButton from '../atoms/AppButton'
 
 export default {
@@ -35,24 +35,12 @@ export default {
   async mounted() {
     await this.getUserSession()
   },
-  computed: {
-    phoneNumberVerified() {
-      return this.currentUser.phoneNumberVerified
-    },
-    ...mapGetters('user', ['currentUser'])
-  },
   methods: {
     transitToNextStep() {
       this.setSignUpAuthFlowCompletedAuthModal({ isShow: false })
-      if (this.phoneNumberVerified) {
-        this.setSignUpAuthFlowProfileSettingsModal({
-          isSignUpAuthFlowProfileSettingsModal: true
-        })
-      } else {
-        this.setSignUpAuthFlowInputPhoneNumberModal({
-          isSignUpAuthFlowInputPhoneNumberModal: true
-        })
-      }
+      this.setSignUpAuthFlowInputPhoneNumberModal({
+        isSignUpAuthFlowInputPhoneNumberModal: true
+      })
     },
     transitToTop() {
       document.querySelector('html,body').style.overflow = ''
@@ -63,7 +51,6 @@ export default {
     ...mapActions('user', [
       'setSignUpAuthFlowModal',
       'setSignUpAuthFlowCompletedAuthModal',
-      'setSignUpAuthFlowProfileSettingsModal',
       'getUserSession',
       'setSignUpAuthFlowInputPhoneNumberModal'
     ])
