@@ -12,6 +12,7 @@ const setHeaders = (req, res, next) => {
   res.header('x-frame-options', 'DENY')
   res.header('x-content-type-options', 'nosniff')
   res.header('Cache-Control', 'max-age=120')
+  res.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
   next()
 }
 
