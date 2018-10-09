@@ -614,7 +614,7 @@ const actions = {
     commit(types.SET_LOGGED_IN, { loggedIn: true })
     commit(types.SET_CURRENT_USER, { user: session })
 
-    const hasAliasUserId = result.hasAliasUserId === 'true'
+    const hasAliasUserId = result.has_alias_user_id
     const status = result.status
 
     return { hasAliasUserId, status }

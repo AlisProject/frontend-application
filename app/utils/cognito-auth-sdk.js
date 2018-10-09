@@ -19,7 +19,12 @@ export default class CognitoAuthSDK {
     this.auth = new CognitoAuth(this.authData)
   }
 
-  setTokens({ lastAuthUser, idToken, accessToken, refreshToken }) {
+  setTokens({
+    last_auth_user: lastAuthUser,
+    id_token: idToken,
+    access_token: accessToken,
+    refresh_token: refreshToken
+  }) {
     const key = `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}`
     const keyWithLastAuthUser = `${key}.${lastAuthUser}`
     localStorage.setItem(`${key}.LastAuthUser`, lastAuthUser)
