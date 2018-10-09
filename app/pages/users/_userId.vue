@@ -22,20 +22,18 @@ export default {
     this.$store.dispatch('user/resetUserArticlesLastEvaluatedKey')
   },
   head() {
-    const userId =
-      this.$store.state.user.userInfo.alias_user_id || this.$store.state.user.userInfo.user_id
     return {
-      title: userId,
+      title: this.$store.state.user.userInfo.user_id,
       meta: [
         {
           hid: `og:title`,
           property: 'og:title',
-          content: `${userId} | ALIS`
+          content: `${this.$store.state.user.userInfo.user_id} | ALIS`
         },
         {
           hid: `og:description`,
           property: 'og:description',
-          content: `${userId}'s page.`
+          content: `${this.$store.state.user.userInfo.user_id}'s page.`
         },
         {
           hid: `og:type`,

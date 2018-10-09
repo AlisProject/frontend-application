@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="article-comment">
-      <nuxt-link :to="`/users/${comment.userInfo.alias_user_id || comment.userInfo.user_id}`" class="commented-user">
+      <nuxt-link :to="`/users/${comment.userInfo.user_id}`" class="commented-user">
         <img class="icon" :src="comment.userInfo.icon_image_url" v-if="hasUserIcon">
         <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
         <ul class="info">

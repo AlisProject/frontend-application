@@ -95,7 +95,7 @@ const actions = {
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const [userInfo, alisToken] = await Promise.all([
-            dispatch('getUserInfo', { userId: article.alias_user_id || article.user_id }),
+            dispatch('getUserInfo', { userId: article.user_id }),
             dispatch('getAlisToken', { articleId: article.article_id })
           ])
           return { ...article, userInfo, alisToken }
@@ -125,7 +125,7 @@ const actions = {
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const [userInfo, alisToken] = await Promise.all([
-            dispatch('getUserInfo', { userId: article.alias_user_id || article.user_id }),
+            dispatch('getUserInfo', { userId: article.user_id }),
             dispatch('getAlisToken', { articleId: article.article_id })
           ])
           return { ...article, userInfo, alisToken }
@@ -184,7 +184,7 @@ const actions = {
     try {
       const article = await this.$axios.$get(`/articles/${articleId}`)
       const [userInfo, alisToken, likesCount, comments] = await Promise.all([
-        dispatch('getUserInfo', { userId: article.alias_user_id || article.user_id }),
+        dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
         dispatch('getLikesCount', { articleId }),
         dispatch('getArticleComments', { articleId })
@@ -388,9 +388,7 @@ const actions = {
       })
       const commentsWithData = await Promise.all(
         comments.map(async (comment) => {
-          const userInfo = await dispatch('getUserInfo', {
-            userId: comment.alias_user_id || comment.user_id
-          })
+          const userInfo = await dispatch('getUserInfo', { userId: comment.user_id })
           let isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
           const likesCount = await dispatch('getArticleCommentLikesCount', {
             commentId: comment.comment_id
@@ -431,7 +429,7 @@ const actions = {
     const comment = {
       text,
       userInfo: currentUserInfo,
-      user_id: currentUserInfo.alias_user_id || currentUserInfo.user_id,
+      user_id: currentUserInfo.user_id,
       created_at: new Date().getTime() / 1000,
       comment_id: commentId,
       isLiked: false,
@@ -480,7 +478,7 @@ const actions = {
     const articlesWithData = await Promise.all(
       articles.map(async (article) => {
         const [userInfo, alisToken] = await Promise.all([
-          dispatch('getUserInfo', { userId: article.alias_user_id || article.user_id }),
+          dispatch('getUserInfo', { userId: article.user_id }),
           dispatch('getAlisToken', { articleId: article.article_id })
         ])
         return { ...article, userInfo, alisToken }
@@ -537,7 +535,7 @@ const actions = {
     const articlesWithData = await Promise.all(
       articles.map(async (article) => {
         const [userInfo, alisToken] = await Promise.all([
-          dispatch('getUserInfo', { userId: article.alias_user_id || article.user_id }),
+          dispatch('getUserInfo', { userId: article.user_id }),
           dispatch('getAlisToken', { articleId: article.article_id })
         ])
         return { ...article, userInfo, alisToken }

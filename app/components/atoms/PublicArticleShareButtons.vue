@@ -42,8 +42,9 @@ export default {
   },
   computed: {
     shareUrl() {
-      return `https://${process.env.DOMAIN}/${this.article.alias_user_id ||
-        this.article.user_id}/articles/${this.article.article_id}`
+      return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
+        this.article.article_id
+      }`
     },
     twitterShareUrl() {
       return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
