@@ -639,6 +639,7 @@ const actions = {
         dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
       }
 
+      this.cognitoAuth.removeTokens({ lastAuthUser: userId })
       this.cognitoAuth.setTokens(result)
     } catch (error) {
       return Promise.reject(error)
