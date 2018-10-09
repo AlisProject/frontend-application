@@ -608,12 +608,6 @@ const actions = {
     const result = await this.$axios.$post('/login/line/authorize_request', { code })
     this.cognitoAuth.setTokens(result)
 
-    await dispatch('refreshUserSession')
-
-    const session = await dispatch('getUserSession')
-    commit(types.SET_LOGGED_IN, { loggedIn: true })
-    commit(types.SET_CURRENT_USER, { user: session })
-
     const hasAliasUserId = result.has_alias_user_id
     const status = result.status
 
@@ -631,12 +625,21 @@ const actions = {
   hideSignUpAuthFlowInputAliasUserIdError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR, { type })
   },
-  async postAliasUserId({ state }, { aliasUserId }) {
+  async postAliasUserId({ state, dispatch }, { aliasUserId }) {
     try {
       const userId = localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       )
-      await this.$axios.$post('/me/alias', { user_id: userId, alias_user_id: aliasUserId })
+      const result = await this.$axios.$post('/me/alias', {
+        user_id: userId,
+        alias_user_id: aliasUserId
+      })
+
+      if (!this.cognitoAuth) {
+        dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
+      }
+
+      this.cognitoAuth.setTokens(result)
     } catch (error) {
       return Promise.reject(error)
     }

@@ -28,6 +28,7 @@ export default {
         this.$store.dispatch('user/setSignUpAuthFlowInputAliasUserIdModal', { isShow: true })
         return
       }
+      await this.$store.dispatch('user/getUserSession')
       if (status === 'login') return
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
       this.$store.dispatch('user/setSignUpAuthFlowCompletedAuthModal', { isShow: true })

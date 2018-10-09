@@ -104,6 +104,7 @@ export default {
 
       try {
         await this.postAliasUserId({ aliasUserId })
+        await this.getUserSession()
         this.setSignUpAuthFlowInputAliasUserIdModal({ isShow: false })
         this.setSignUpAuthFlowCompletedAuthModal({ isShow: true })
       } catch (error) {
@@ -126,7 +127,8 @@ export default {
       'hideSignUpAuthFlowInputAliasUserIdError',
       'postAliasUserId',
       'setSignUpAuthFlowInputAliasUserIdModal',
-      'setSignUpAuthFlowCompletedAuthModal'
+      'setSignUpAuthFlowCompletedAuthModal',
+      'getUserSession'
     ])
   }
 }
