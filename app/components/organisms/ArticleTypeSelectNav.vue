@@ -3,12 +3,14 @@
     <nuxt-link
       class="nav-link"
       :class="{ 'selected': isPopularArticles }"
+      @click="handleClickPopularArticlePath"
       :to="moveToPoplarArticles">
       人気記事
     </nuxt-link>
     <nuxt-link
       class="nav-link"
       :class="{ 'selected': isNewArticles }"
+      @click="handleClickNewArticlePath"
       :to="moveToNewArticles">
       新着記事
     </nuxt-link>
@@ -22,13 +24,11 @@ export default {
   computed: {
     moveToPoplarArticles() {
       const { fullPath } = this.$route
-      this.setArticleType({ articleType: 'popularArticles' })
       const to = fullPath.replace('recent', 'popular')
       return to
     },
     moveToNewArticles() {
       const { fullPath } = this.$route
-      this.setArticleType({ articleType: 'newArticles' })
       const to = fullPath.replace('popular', 'recent')
       return to
     },
@@ -41,6 +41,12 @@ export default {
     ...mapGetters('article', ['topics', 'articleType'])
   },
   methods: {
+    handleClickPopularArticlePath() {
+      this.setArticleType({ articleType: 'popularArticles' })
+    },
+    handleClickNewArticlePath() {
+      this.setArticleType({ articleType: 'newArticles' })
+    },
     ...mapActions('article', ['setArticleType'])
   }
 }
