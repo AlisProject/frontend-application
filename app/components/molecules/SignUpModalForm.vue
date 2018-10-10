@@ -91,8 +91,14 @@
         </p>
       </div>
     </div>
-    <div class="for-login-user" @click="transitToLogin">
-      ログインされる方はこちら
+    <div
+      class="for-login-user"
+      @click="transitToLogin"
+      v-if="isShowEmailAuth && isShowSNSAuth">
+      ログインの方はこちら
+    </div>
+    <div class="for-login-user-sp" v-else>
+      ログインの方は<span class="for-login-user-link" @click="transitToLogin">こちら</span>
     </div>
   </div>
 </template>
@@ -476,8 +482,17 @@ export default {
     cursor: pointer;
   }
 
-  .for-login-user {
-    margin: 30px -30px -30px;
+  .for-login-user-sp {
+    color: #6e6e6e;
+    font-size: 12px;
+    margin: 60px auto 0;
+    max-width: 320px;
+    text-align: right;
+  }
+
+  .for-login-user-link {
+    color: #858dda;
+    cursor: pointer;
   }
 }
 

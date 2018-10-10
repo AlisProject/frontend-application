@@ -82,8 +82,14 @@
         </p>
       </div>
     </div>
-    <div class="for-login-user" @click="transitToSignup">
+    <div
+      class="for-login-user"
+      @click="transitToSignup"
+      v-if="isShowEmailAuth && isShowSNSAuth">
       新規登録の方はこちら
+    </div>
+    <div class="for-login-user-sp" v-else>
+      新規登録の方は<span class="for-login-user-link" @click="transitToSignup">こちら</span>
     </div>
   </div>
 </template>
@@ -461,8 +467,17 @@ export default {
     cursor: pointer;
   }
 
-  .for-login-user {
-    margin: 30px -30px -30px;
+  .for-login-user-sp {
+    color: #6e6e6e;
+    font-size: 12px;
+    margin: 60px auto 0;
+    max-width: 320px;
+    text-align: right;
+  }
+
+  .for-login-user-link {
+    color: #858dda;
+    cursor: pointer;
   }
 }
 
