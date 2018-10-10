@@ -118,8 +118,8 @@ export default {
   },
   async mounted() {
     this.switchAuthType()
-    this.lineAuthorizeURL = await this.getLineAuthorizeURL()
     window.addEventListener('resize', this.handleResize)
+    this.lineAuthorizeURL = await this.getLineAuthorizeURL()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
