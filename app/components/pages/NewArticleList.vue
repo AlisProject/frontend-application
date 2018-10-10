@@ -13,7 +13,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
-import ArticleTypeSelectNav from '../molecules/ArticleTypeSelectNav'
+import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
