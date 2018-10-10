@@ -11,18 +11,13 @@
         {{topic.display_name}}
       </nuxt-link>
     </div>
-    <article-type-select-box />
   </nav>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import ArticleTypeSelectBox from '../molecules/ArticleTypeSelectBox'
 
 export default {
-  components: {
-    ArticleTypeSelectBox
-  },
   data() {
     return {
       beforeClickedLinkName: this.$route.query.topic
@@ -54,38 +49,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$topicCount: 3;
+$topicCount: 5;
 
 .area-nav {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr auto 0 70px 1fr;
-  grid-column-gap: 30px;
+  grid-template-rows: 1fr 32px 1fr;
+  grid-template-columns: 1fr;
+  width: 1080px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...       ... ...                     ..."
-    "... nav-links ... article-type-select-box ..."
-    "... ...       ... ...                     ...";
+    "...      "
+    "nav-links"
+    "...      ";
+  justify-self: center;
+  border-bottom: 1px solid rgba(#6e6e6e, 0.1);
 }
 
 .area-nav-links {
   grid-area: nav-links;
   display: grid;
-  grid-column-gap: 30px;
+  grid-column-gap: 20px;
   grid-template-columns: repeat($topicCount, fit-content(100%));
   /* prettier-ignore */
   grid-template-areas:
-    "topic1 topic2 topic3";
+    "topic1 topic2 topic3 topic4 topic5";
 }
 
 .nav-link {
   font-size: 14px;
   text-decoration: none;
   color: #6e6e6e;
-  padding: 0 10px;
-  line-height: 1.6;
   white-space: nowrap;
 }
 
@@ -95,10 +90,15 @@ $topicCount: 3;
   }
 
   .topic#{$i} .area-topic#{$i} {
-    color: white;
     display: block;
-    background: #858dda;
-    border-radius: 10px;
+    color: #858dda;
+    border-bottom: 2px solid #99a2ff;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .area-nav {
+    max-width: calc(100% - 68px);
   }
 }
 
@@ -121,16 +121,17 @@ $topicCount: 3;
     grid-gap: 14px;
     /* prettier-ignore */
     grid-template-areas:
-      'nav-links ... article-type-select-box';
-    grid-template-rows: 20px;
-    grid-template-columns: auto 1fr 62px;
-    padding: 0 18px;
+      '... nav-links ...';
+    grid-template-rows: 28px;
+    grid-template-columns: 0 1fr 0;
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+    max-width: 100%;
   }
 
   .area-nav-links {
     grid-column-gap: 20px;
     overflow: scroll;
+    padding-top: 4px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -139,18 +140,16 @@ $topicCount: 3;
 
   .nav-link {
     font-size: 10px;
-    padding: 0 9px;
-    line-height: 2;
 
     &.hidden {
       display: none;
     }
   }
-}
 
-@media screen and (max-width: 320px) {
-  .area-nav {
-    grid-gap: 2px;
+  @for $i from 1 through $topicCount {
+    .topic#{$i} .area-topic#{$i} {
+      border-bottom: 1px solid #99a2ff;
+    }
   }
 }
 </style>
