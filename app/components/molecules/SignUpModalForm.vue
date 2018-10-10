@@ -60,17 +60,6 @@
       <div class="divider" v-show="isShowEmailAuth && isShowSNSAuth"/>
       <div class="sns-auth" v-show="isShowSNSAuth">
         <h2 class="sns-auth-title" v-show="isShowEmailAuth && isShowSNSAuth">外部サイトで登録する</h2>
-        <template v-if="isShowOnlySNSAuth">
-          <p class="brand-message">
-            ALISは、記事を読む人こそ主役になれるメディアです。
-          </p>
-          <p class="brand-message">
-            記事を書くことだけでなく、読むことも大切な役割なので、報酬を受け取ることができます。
-          </p>
-          <p class="brand-message">
-            書く人と読む人が、一緒に読む価値のある情報を作り出しすべての人に公開できるメディアになります。
-          </p>
-        </template>
         <a class="line-button" :href="lineAuthorizeURL">
           LINEではじめる
         </a>
@@ -459,14 +448,8 @@ export default {
     width: 100%;
   }
 
-  .brand-message {
-    color: #4e4e4e;
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 1.5;
-    margin: 0;
-    max-width: 324px;
-    width: 100%;
+  .line-button {
+    margin-top: 10px;
   }
 
   .twitter-button {
