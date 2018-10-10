@@ -148,4 +148,12 @@ export default {
     border-bottom: 1px solid #99a2ff;
   }
 }
+
+@media screen and (max-height: 414px) {
+  .area-nav {
+    &.is-fixed {
+      position: initial;
+    }
+  }
+}
 </style>

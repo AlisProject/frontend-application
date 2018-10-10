@@ -10,7 +10,8 @@ export default {
     PopularArticleList
   },
   fetch({ redirect }) {
-    redirect('/articles/popular?topic=crypto')
+    // &from=top のパラメータは、遷移先でTOPページからのリダイレクトで遷移されたかの判定に使用
+    redirect('/articles/popular?topic=crypto&from=top')
   },
   head() {
     return {
