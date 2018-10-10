@@ -29,16 +29,18 @@ export default {
   },
   computed: {
     confirmText() {
-      const text = 'ログインが必要です'
+      const text = '新規登録・ログインが必要です'
       switch (this.requestLoginModal.requestType) {
         case 'articleLike':
-          return `記事の作成・評価には${text}`
+          return `記事へいいねを行うには${text}`
         case 'articleComment':
-          return `記事へのコメントには${text}`
+          return `記事へのコメントを行うには${text}`
         case 'articleCommentLike':
-          return `コメントの評価には${text}`
+          return `コメントへいいねを行うには${text}`
         case 'articleTip':
           return `トークンを贈るには${text}`
+        case 'articleReport':
+          return `記事を通報するには${text}`
         default:
           return text
       }
