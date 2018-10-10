@@ -1,21 +1,39 @@
 <template>
-  <div id="mobile-editor-wrapper">
+  <div
+    id="mobile-editor-wrapper"
+    :class="{
+      'is-modalopened': isOpenModal
+    }"
+  >
     <alis-editor
+      style="position: relative;z-index: 1"
+      @export="handlePublishEditor"
       :initialState="blocks"
+    />
+    <MobileEditorPublishModal
+      v-if="isOpenModal"
+      @close="handleCloseModal"
+      :thumbnails="blocks.filter((block) => block.type === 'Image')"
     />
   </div>
 </template>
 
 <script>
+import MobileEditorPublishModal from '~/components/organisms/MobileEditorPublishModal.vue'
+import AppModal from '~/components/atoms/AppModal.vue'
 import AlisEditor from 'alis-editor'
 import uuid from 'uuid/v4'
 
 export default {
+  name: 'mobile-editor-page',
   components: {
-    AlisEditor
+    AppModal,
+    AlisEditor,
+    MobileEditorPublishModal
   },
   data() {
     return {
+      isOpenModal: false,
       blocks: [
         {
           id: uuid(),
@@ -82,6 +100,14 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    handleCloseModal() {
+      this.isOpenModal = false
+    },
+    handlePublishEditor() {
+      this.isOpenModal = true
+    }
   }
 }
 </script>
@@ -92,6 +118,12 @@ export default {
   max-width: 424px;
   margin: 0 auto;
 }
+
+#mobile-editor-wrapper.is-modalopened {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
 html {
   font-size: 10px;
 }
