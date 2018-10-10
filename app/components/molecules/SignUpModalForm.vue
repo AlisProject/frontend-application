@@ -97,7 +97,7 @@
       v-if="isShowEmailAuth && isShowSNSAuth">
       ログインの方はこちら
     </div>
-    <div class="for-login-user-sp" v-else>
+    <div class="for-login-user-sp" :class="{ isSelectedEmailAuth }" v-else>
       ログインの方は<span class="for-login-user-link" @click="transitToLogin">こちら</span>
     </div>
   </div>
@@ -488,6 +488,10 @@ export default {
     margin: 60px auto 0;
     max-width: 320px;
     text-align: right;
+
+    &.isSelectedEmailAuth {
+      margin: -20px auto 0;
+    }
   }
 
   .for-login-user-link {
