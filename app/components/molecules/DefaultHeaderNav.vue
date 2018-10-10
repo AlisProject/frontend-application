@@ -6,7 +6,7 @@
         :key="topic.order"
         :data-topic="topic.name"
         :to="to(topic.name)"
-        :class="`nav-link area-topic${topic.order}`"
+        :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
         @click.native="resetData">
         {{topic.display_name}}
       </nuxt-link>
@@ -41,6 +41,9 @@ export default {
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
       this.beforeClickedLinkName = event.target.dataset.topic
+    },
+    isTopPage(topicOrder) {
+      return this.$route.query.from === 'top' && topicOrder === 1
     },
     ...mapActions('article', ['getTopics', 'resetArticleData']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
@@ -82,17 +85,17 @@ $topicCount: 5;
   text-decoration: none;
   color: #6e6e6e;
   white-space: nowrap;
+
+  &.nuxt-link-exact-active {
+    display: block;
+    color: #858dda;
+    border-bottom: 2px solid #99a2ff;
+  }
 }
 
 @for $i from 1 through $topicCount {
   .area-topic#{$i} {
     grid-area: topic#{$i};
-  }
-
-  .topic#{$i} .area-topic#{$i} {
-    display: block;
-    color: #858dda;
-    border-bottom: 2px solid #99a2ff;
   }
 }
 
@@ -144,10 +147,8 @@ $topicCount: 5;
     &.hidden {
       display: none;
     }
-  }
 
-  @for $i from 1 through $topicCount {
-    .topic#{$i} .area-topic#{$i} {
+    &.nuxt-link-exact-active {
       border-bottom: 1px solid #99a2ff;
     }
   }

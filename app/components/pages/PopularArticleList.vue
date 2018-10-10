@@ -1,7 +1,7 @@
 <template>
   <div class="popular-article-list-container" @scroll="infiniteScroll">
     <app-header />
-    <default-header-nav :class="`topic${topicNumber}`" />
+    <default-header-nav/>
     <article-type-select-nav />
     <article-card-list :articles="popularArticles"/>
     <the-loader :isLoading="!isLastPage"/>
@@ -47,7 +47,6 @@ export default {
       if (this.isLastPage) return
       this.getPopularArticles({ topic: this.$route.query.topic })
     }
-    this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
@@ -70,11 +69,6 @@ export default {
         this.isFetchingArticles = false
       }
     },
-    setTopicNumber() {
-      this.topics.forEach((topic) => {
-        if (topic.name === this.$route.query.topic) this.topicNumber = topic.order
-      })
-    },
     ...mapActions('article', ['getPopularArticles', 'resetArticleData', 'setTopicDisplayName']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
@@ -91,12 +85,8 @@ export default {
     },
     $route(to) {
       this.resetArticleData()
-      this.setTopicNumber()
       this.setTopicDisplayName({ topicName: to.query.topic })
       this.getPopularArticles({ topic: to.query.topic })
-    },
-    topics() {
-      this.setTopicNumber()
     }
   }
 }
