@@ -2,10 +2,10 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        {{ confirmText }}
+        {{ confirmTextPrefix }}<span class="br"/>SMSによるアカウント認証が必要です
       </p>
       <p class="description">
-        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます
+        以下にご入力いただいた電話番号にSMSで認証コードを送らせていただきます
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
@@ -54,25 +54,24 @@ export default {
     AppButton
   },
   computed: {
-    confirmText() {
-      const text = 'SMSによるアカウント認証が必要です'
+    confirmTextPrefix() {
       switch (this.requestPhoneNumberVerifyModal.requestType) {
         case 'articleCreate':
-          return `記事の作成を行うには${text}`
+          return '記事の作成を行うには'
         case 'viewPublicArticles':
-          return `記事一覧をひらくには${text}`
+          return '記事一覧をひらくには'
         case 'articleLike':
-          return `記事へいいねを行うには${text}`
+          return '記事へいいねを行うには'
         case 'articleComment':
-          return `記事へコメントを行うには${text}`
+          return '記事へコメントを行うには'
         case 'articleCommentLike':
-          return `コメントへいいねを行うには${text}`
+          return 'コメントへいいねを行うには'
         case 'articleTip':
-          return `トークンを贈るには${text}`
+          return 'トークンを贈るには'
         case 'articleReport':
-          return `記事を通報するには${text}`
+          return '記事を通報するには'
         default:
-          return text
+          return ''
       }
     },
     showErrorInvalidPhoneNember() {
@@ -180,12 +179,14 @@ export default {
   .announce {
     @include default-text();
     font-size: 14px;
+    letter-spacing: 0.17px;
     margin: 60px 0 0;
     text-align: center;
   }
 
   .description {
     @include default-text();
+    color: #6e6e6e;
     margin: 20px 0 0;
     text-align: center;
   }
@@ -246,6 +247,27 @@ export default {
     color: #f06273;
     font-size: 12px;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+  .modal-body {
+    .announce {
+      color: #030303;
+    }
+
+    .description {
+      letter-spacing: 0.8px;
+      margin: 20px auto;
+      max-width: 256px;
+      text-align: left;
+    }
   }
 }
 
