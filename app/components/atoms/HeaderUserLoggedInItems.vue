@@ -151,7 +151,7 @@ export default {
     },
     moveToNewArticlePage() {
       if (!this.currentUser.phoneNumberVerified) {
-        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleLike' })
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
         window.scrollTo(0, 0)
         if (window.innerWidth > 550) {

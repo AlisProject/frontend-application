@@ -55,18 +55,20 @@ export default {
   },
   computed: {
     confirmText() {
-      const text = '電話番号の認証が必要です'
+      const text = 'SMSによるアカウント認証が必要です'
       switch (this.requestPhoneNumberVerifyModal.requestType) {
+        case 'articleCreate':
+          return `記事の作成を行うには${text}`
+        case 'viewPublicArticles':
+          return `記事一覧をひらくには${text}`
         case 'articleLike':
-          return `記事の作成・評価には${text}`
+          return `記事へいいねを行うには${text}`
         case 'articleComment':
-          return `記事へのコメントには${text}`
+          return `記事へコメントを行うには${text}`
         case 'articleCommentLike':
-          return `コメントの評価には${text}`
+          return `コメントへいいねを行うには${text}`
         case 'articleTip':
           return `トークンを贈るには${text}`
-        case 'viewPublicArticles':
-          return `自分の公開済み記事一覧を閲覧するためには${text}`
         default:
           return text
       }
