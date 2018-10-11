@@ -106,6 +106,15 @@ export default {
     },
     showPopupReportModal() {
       if (this.loggedIn) {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleReport' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          if (window.innerWidth > 550) {
+            document.querySelector('html,body').style.overflow = 'hidden'
+          }
+          return
+        }
         this.setReportModal({ showReportModal: true })
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'

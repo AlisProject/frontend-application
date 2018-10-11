@@ -69,6 +69,8 @@ export default {
           return `コメントへいいねを行うには${text}`
         case 'articleTip':
           return `トークンを贈るには${text}`
+        case 'articleReport':
+          return `記事を通報するには${text}`
         default:
           return text
       }
