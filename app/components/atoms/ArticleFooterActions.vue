@@ -110,7 +110,7 @@ export default {
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
       } else {
-        this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleReport' })
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
       }
