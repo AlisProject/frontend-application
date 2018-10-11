@@ -68,12 +68,13 @@ $topicCount: 5;
     "...      ";
   justify-self: center;
   border-bottom: 1px solid rgba(#6e6e6e, 0.1);
+  margin-bottom: -2px;
 }
 
 .area-nav-links {
   grid-area: nav-links;
   display: grid;
-  grid-column-gap: 20px;
+  grid-column-gap: 30px;
   grid-template-columns: repeat($topicCount, fit-content(100%));
   /* prettier-ignore */
   grid-template-areas:
@@ -129,6 +130,7 @@ $topicCount: 5;
     grid-template-columns: 0 1fr 0;
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
     max-width: 100%;
+    margin-bottom: 0;
   }
 
   .area-nav-links {
