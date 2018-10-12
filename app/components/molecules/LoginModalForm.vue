@@ -409,6 +409,18 @@ export default {
   margin: 0 -30px -20px;
 }
 
+.for-login-user-sp {
+  color: #6e6e6e;
+  font-size: 12px;
+  margin: 60px auto 0;
+  max-width: 320px;
+  text-align: right;
+
+  &.isSelectedEmailAuth {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 920px) {
   .email-auth,
   .sns-auth {
@@ -436,18 +448,6 @@ export default {
     font-weight: bold;
     text-align: center;
     cursor: pointer;
-  }
-
-  .for-login-user-sp {
-    color: #6e6e6e;
-    font-size: 12px;
-    margin: 60px auto 0;
-    max-width: 320px;
-    text-align: right;
-
-    &.isSelectedEmailAuth {
-      display: none;
-    }
   }
 
   .for-login-user-link {
