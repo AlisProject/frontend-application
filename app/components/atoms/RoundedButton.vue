@@ -41,6 +41,11 @@ export default {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  transition: all 0.2s ease-out;
+}
+
+.rounded-button[disabled] {
+  opacity: 0.5;
 }
 
 .rounded-button.is-fluid {

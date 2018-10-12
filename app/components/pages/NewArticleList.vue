@@ -1,7 +1,8 @@
 <template>
   <div class="new-article-list-container" @scroll="infiniteScroll">
     <app-header />
-    <default-header-nav :class="`topic${topicNumber}`" />
+    <default-header-nav/>
+    <article-type-select-nav />
     <article-card-list :articles="newArticles"/>
     <the-loader :isLoading="!isLastPage"/>
     <app-footer/>
@@ -12,6 +13,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
+import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
@@ -21,6 +23,7 @@ export default {
   components: {
     AppHeader,
     DefaultHeaderNav,
+    ArticleTypeSelectNav,
     ArticleCardList,
     TheLoader,
     AppFooter
@@ -44,7 +47,6 @@ export default {
       if (this.isLastPage) return
       this.getNewPagesArticles({ topic: this.$route.query.topic })
     }
-    this.setTopicNumber()
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
@@ -67,11 +69,6 @@ export default {
         this.isFetchingArticles = false
       }
     },
-    setTopicNumber() {
-      this.topics.forEach((topic) => {
-        if (topic.name === this.$route.query.topic) this.topicNumber = topic.order
-      })
-    },
     ...mapActions('article', ['getNewPagesArticles', 'resetArticleData', 'setTopicDisplayName']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
@@ -88,12 +85,8 @@ export default {
     },
     $route(to) {
       this.resetArticleData()
-      this.setTopicNumber()
       this.setTopicDisplayName({ topicName: to.query.topic })
       this.getNewPagesArticles({ topic: to.query.topic })
-    },
-    topics() {
-      this.setTopicNumber()
     }
   }
 }
@@ -104,14 +97,14 @@ export default {
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header        app-header"
-    "nav         nav               nav       "
-    "...         ...               ...       "
-    "...         article-card-list ...       "
-    "...         loader            ...       "
-    "app-footer  app-footer        app-footer";
+    "app-header              app-header              app-header"
+    "nav                     nav                     nav       "
+    "article-type-select-nav article-type-select-nav article-type-select-nav"
+    "...                     article-card-list       ...       "
+    "...                     loader                  ...       "
+    "app-footer              app-footer              app-footer";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 30px 40px 1fr 75px 75px;
+  grid-template-rows: 100px 30px 84px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -131,7 +124,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    grid-template-rows: 66px 28px 30px 1fr 75px min-content;
+    grid-template-rows: 66px 28px 60px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }
