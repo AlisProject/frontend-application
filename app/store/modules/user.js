@@ -678,6 +678,28 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getTwitterAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/twitter/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
+    dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
+
+    const result = await this.$axios.$post('/login/twitter', {
+      oauth_token: oauthToken,
+      oauth_verifier: oauthVerifier
+    })
+    this.cognitoAuth.setTokens(result)
+
+    const hasAliasUserId = result.has_alias_user_id
+    const status = result.status
+
+    return { hasAliasUserId, status }
   }
 }
 

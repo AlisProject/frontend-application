@@ -63,9 +63,9 @@
         <a class="line-button" :href="lineAuthorizeURL">
           LINEではじめる
         </a>
-        <button class="twitter-button">
+        <a class="twitter-button" :href="twitterAuthorizeURL">
           twitterではじめる
-        </button>
+        </a>
         <p
           class="for-email-signup"
           @click="showEmailAuth"
@@ -108,6 +108,7 @@ export default {
       isShowSNSAuth: true,
       errorMessage: '',
       lineAuthorizeURL: null,
+      twitterAuthorizeURL: null,
       isSelectedEmailAuth: false
     }
   },
@@ -115,6 +116,7 @@ export default {
     this.switchAuthType()
     window.addEventListener('resize', this.handleResize)
     this.lineAuthorizeURL = await this.getLineAuthorizeURL()
+    this.twitterAuthorizeURL = await this.getTwitterAuthorizeURL()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
@@ -255,7 +257,8 @@ export default {
       'setSignUpModal',
       'setLoginModal',
       'resetPassword',
-      'getLineAuthorizeURL'
+      'getLineAuthorizeURL',
+      'getTwitterAuthorizeURL'
     ])
   }
 }
