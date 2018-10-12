@@ -11,6 +11,12 @@ export default {
   components: {
     PopularArticleList
   },
+  async fetch({ store }) {
+    const topic = 'crypto'
+    await store.dispatch('article/getTopics')
+    store.dispatch('article/resetArticleData')
+    await store.dispatch('article/getPopularArticles', { topic })
+  },
   async mounted() {
     try {
       const { oauth_token: oauthToken, oauth_verifier: oauthVerifier } = this.$route.query
