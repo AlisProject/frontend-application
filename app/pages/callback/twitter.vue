@@ -3,6 +3,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import PopularArticleList from '~/components/pages/PopularArticleList'
 
 export default {
@@ -30,8 +32,27 @@ export default {
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
       this.$store.dispatch('user/setSignUpAuthFlowCompletedAuthModal', { isShow: true })
     } catch (error) {
-      console.error(error)
+      const { message } = error.response.data
+      switch (message) {
+        case 'EmailExistsException':
+          this.sendNotification({
+            text: 'ご利用いただいたSNSに紐づくメールアドレスは既に登録されています'
+          })
+          this.$store.dispatch('user/setSignUpModal', { showSignUpModal: true })
+          break
+        default:
+          this.sendNotification({
+            text: 'エラーが発生しました',
+            type: 'warning'
+          })
+          break
+      }
     }
+  },
+  methods: {
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    })
   }
 }
 </script>
