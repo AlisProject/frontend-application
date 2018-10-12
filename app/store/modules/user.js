@@ -600,7 +600,7 @@ const actions = {
   async checkAuthByLine({ commit, dispatch }, { code }) {
     dispatch('initCognitoAuth')
 
-    const result = await this.$axios.$post('/login/line/authorize_request', { code })
+    const result = await this.$axios.$post('/login/line', { code })
     this.cognitoAuth.setTokens(result)
 
     const hasAliasUserId = result.has_alias_user_id
@@ -672,7 +672,7 @@ const actions = {
   },
   async getLineAuthorizeURL() {
     try {
-      const { callback_url: callbackUrl } = await this.$axios.$get('/login/line/authorize_url')
+      const { callback_url: callbackUrl } = await this.$axios.$get('/login/line/authorization_url')
       return callbackUrl
     } catch (error) {
       return Promise.reject(error)
