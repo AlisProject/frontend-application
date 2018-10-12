@@ -108,9 +108,10 @@ export default {
         this.setSignUpAuthFlowInputAliasUserIdModal({ isShow: false })
         this.setSignUpAuthFlowCompletedAuthModal({ isShow: true })
       } catch (error) {
+        const { message } = error.response.data
         let errorMessage = ''
-        switch (error.code) {
-          case 'UsernameExistsException':
+        switch (message) {
+          case 'Invalid parameter: This id is already in use.':
             errorMessage = 'ユーザーIDはすでに存在します'
             break
           default:
@@ -207,7 +208,7 @@ export default {
 }
 
 .modal-footer {
-  width: 270px;
+  width: 278px;
   margin: 90px auto 40px;
 
   .to-next-step-button {
@@ -218,6 +219,7 @@ export default {
     color: #f06273;
     font-size: 12px;
     width: 100%;
+    text-align: center;
   }
 }
 
