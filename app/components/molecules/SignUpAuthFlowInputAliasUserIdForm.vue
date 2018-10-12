@@ -2,7 +2,7 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        ユーザーIDを入力して登録を完了してください
+        ユーザーIDを入力して<span class="br"/>登録を完了してください
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasAliasUserIdError }">
@@ -185,7 +185,7 @@ export default {
     }
 
     .error-message {
-      bottom: 0;
+      top: 40px;
       color: #f06273;
       font-size: 12px;
       position: absolute;
@@ -221,15 +221,22 @@ export default {
   }
 }
 
-@media screen and (max-width: 320px) {
-  .modal-body {
-    .signup-form {
-      margin-top: 30px;
-
-      &-input {
-        margin-bottom: 10px;
-      }
+@media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
     }
+  }
+
+  .modal-footer {
+    margin: 100px auto 50px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .modal-footer {
+    width: 250px;
   }
 }
 </style>

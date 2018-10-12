@@ -84,5 +84,17 @@ export default {
       white-space: pre;
     }
   }
+
+  .announce {
+    margin: 20vh 0 0;
+  }
+
+  .description {
+    max-width: 80%;
+  }
+
+  .to-next-step-button {
+    margin: 60px auto 10vh;
+  }
 }
 </style>

@@ -230,6 +230,12 @@ export default {
       max-width: 550px;
       width: calc(100% - 60px);
     }
+
+    &-body {
+      .title {
+        margin: 60px 20px 0;
+      }
+    }
   }
 
   .cover-screen {

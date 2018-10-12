@@ -442,7 +442,7 @@ export default {
   }
 
   .for-email-signup {
-    margin: 0 0 30px 0;
+    margin: 10px 0 30px 0;
     color: #4e4e4e;
     font-size: 14px;
     font-weight: bold;
@@ -453,6 +453,14 @@ export default {
   .for-login-user-link {
     color: #858dda;
     cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .logo {
+    margin: 0 auto 80px;
+    display: block;
+    padding-top: 40px;
   }
 }
 
