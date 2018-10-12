@@ -19,7 +19,7 @@ export default {
       }
       const { code } = this.$route.query
 
-      // history.replaceState(null, null, '/articles/popular?topic=crypto')
+      history.replaceState(null, null, '/articles/popular?topic=crypto')
 
       if (!code) return
       const { hasAliasUserId, status } = await this.$store.dispatch('user/checkAuthByLine', {
