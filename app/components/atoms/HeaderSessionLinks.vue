@@ -4,14 +4,23 @@
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
     <span class="login" @click="showLoginModal">ログイン</span>
-    <span class="sign-up" @click="showSignUpModal">新規登録</span>
+    <app-button class="sign-up pc" @click="showSignUpModal">
+      新規登録
+    </app-button>
+    <span class="sign-up sp" @click="showSignUpModal">
+      新規登録
+    </span>
   </div>
 </template>
 
 <script>
+import AppButton from '../atoms/AppButton'
 import { mapActions } from 'vuex'
 
 export default {
+  components: {
+    AppButton
+  },
   methods: {
     resetSearchStates() {
       this.resetSearchArticles()
@@ -72,17 +81,26 @@ export default {
   }
 
   .sign-up {
-    background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
-    border-radius: 4px;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
-    color: #fff;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 100;
-    height: 34px;
-    line-height: 2.5;
-    text-align: center;
-    width: 96px;
+    &.pc {
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 100;
+      height: 34px;
+      line-height: 2.5;
+      text-align: center;
+      width: 96px;
+
+      &:before,
+      &:after {
+        border-radius: 4px;
+      }
+    }
+
+    &.sp {
+      display: none;
+    }
   }
 }
 
@@ -105,12 +123,20 @@ export default {
       }
 
       .sign-up {
-        background: none;
-        box-shadow: none;
-        color: #6e6e6e;
-        font-size: 12px;
-        height: auto;
-        width: auto;
+        &.pc {
+          display: none;
+        }
+
+        &.sp {
+          background: none;
+          box-shadow: none;
+          color: #6e6e6e;
+          cursor: pointer;
+          display: initial;
+          font-size: 12px;
+          height: auto;
+          width: auto;
+        }
       }
     }
   }
@@ -134,12 +160,20 @@ export default {
     }
 
     .sign-up {
-      background: none;
-      box-shadow: none;
-      color: #6e6e6e;
-      font-size: 12px;
-      height: auto;
-      width: auto;
+      &.pc {
+        display: none;
+      }
+
+      &.sp {
+        background: none;
+        box-shadow: none;
+        color: #6e6e6e;
+        cursor: pointer;
+        display: initial;
+        font-size: 12px;
+        height: auto;
+        width: auto;
+      }
     }
   }
 }
