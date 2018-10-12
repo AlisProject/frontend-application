@@ -40,9 +40,6 @@
           <app-button class="login-button" :disabled="invalidSubmit" @click="onSubmit">
             ログインする
           </app-button>
-          <p class="for-signup-user">
-            新規登録をされる方は<span class="link" @click="transitToSignup">こちら</span>
-          </p>
           <p class="for-password-forgot-user">
             パスワードを忘れた方は<span class="link" @click="forgotPassword">こちら</span>
           </p>
@@ -346,7 +343,6 @@ export default {
     width: 100%;
   }
 
-  .for-signup-user,
   .for-password-forgot-user {
     @include default-text();
     text-align: right;
