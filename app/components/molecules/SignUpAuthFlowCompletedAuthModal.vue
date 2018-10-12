@@ -23,7 +23,7 @@ export default {
     AppButton
   },
   async mounted() {
-    await this.getUserSession()
+    await this.setCurrentUserInfo()
   },
   methods: {
     transitToNextStep() {
@@ -41,7 +41,7 @@ export default {
     ...mapActions('user', [
       'setSignUpAuthFlowModal',
       'setSignUpAuthFlowCompletedAuthModal',
-      'getUserSession',
+      'setCurrentUserInfo',
       'setSignUpAuthFlowInputPhoneNumberModal'
     ])
   }
