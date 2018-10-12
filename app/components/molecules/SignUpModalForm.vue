@@ -235,17 +235,6 @@ export default {
         this.errorMessage = errorMessage
       }
     },
-    listen(target, eventType, callback) {
-      if (!this._eventRemovers) {
-        this._eventRemovers = []
-      }
-      target.addEventListener(eventType, callback)
-      this._eventRemovers.push({
-        remove() {
-          target.removeEventListener(eventType, callback)
-        }
-      })
-    },
     ...mapActions('user', [
       'setSentMail',
       'setSignUpUserId',

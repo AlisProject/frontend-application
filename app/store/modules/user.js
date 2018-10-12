@@ -594,12 +594,11 @@ const actions = {
   resetNotificationData({ commit }) {
     commit(types.RESET_NOTIFICATION_DATA)
   },
-  initCognitoAuth({ state }, { identityProvider }) {
-    state.identityProvider = identityProvider
-    this.cognitoAuth = new CognitoAuthSDK(identityProvider)
+  initCognitoAuth({ state }) {
+    this.cognitoAuth = new CognitoAuthSDK()
   },
   async checkAuthByLine({ commit, dispatch }, { code }) {
-    dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
+    dispatch('initCognitoAuth')
 
     const result = await this.$axios.$post('/login/line/authorize_request', { code })
     this.cognitoAuth.setTokens(result)
@@ -632,7 +631,7 @@ const actions = {
       })
 
       if (!this.cognitoAuth) {
-        dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
+        dispatch('initCognitoAuth')
       }
 
       this.cognitoAuth.removeTokens({ lastAuthUser: userId })
@@ -688,7 +687,7 @@ const actions = {
     }
   },
   async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
-    dispatch('initCognitoAuth', { identityProvider: state.identityProvider })
+    dispatch('initCognitoAuth')
 
     const result = await this.$axios.$post('/login/twitter', {
       oauth_token: oauthToken,
