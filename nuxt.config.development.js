@@ -8,8 +8,8 @@ nuxtConfig.axios = {
 
 nuxtConfig.proxy = {
   '/api': {
-    target: process.env.BASE_URL,
-    pathRewrite: { '^/api': '/' }
+    target: process.env.PROXY_TARGET_URL
+    // pathRewrite: { '^/api': '/' }
   }
 }
 

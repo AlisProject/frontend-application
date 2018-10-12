@@ -33,7 +33,7 @@
             :fluid="true"
             @click="publish"
             :class="{ disable: !publishable || isInvalidTag}"
-            :disabled="publishingArticle">
+            :disabled="!publishable">
             公開する
           </rounded-button>
       </div>
@@ -64,8 +64,6 @@ export default {
   },
   data() {
     return {
-      publishingArticle: false,
-      isPopupShown: false,
       topic: null,
       isInvalidTag: false,
       selectedThumbnail: null
@@ -74,94 +72,18 @@ export default {
   async created() {
     await this.getTopics()
   },
-  mounted() {
-    this.listen(window, 'click', (event) => {
-      if (!this.$el.contains(event.target)) {
-        this.closePopup()
-      }
-    })
-  },
   destroyed() {
     this.resetArticleTopic()
-    if (this._eventRemovers) {
-      this._eventRemovers.forEach((eventRemover) => {
-        eventRemover.remove()
-      })
-    }
   },
   methods: {
     handleCloseModal() {
       this.$emit('close')
     },
     async publish() {
-      try {
-        // 「公開する」ボタンを押した瞬間はisInvalidTagの値が更新されないため、
-        // isInvalidTagの状態が更新されるまで待つ
-        await this.$nextTick()
-
-        if (!this.publishable || this.isInvalidTag) return
-        this.publishingArticle = true
-        const { articleId, title, body, topic } = this
-        const overview = body
-          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-          .replace(/\r?\n?\s/g, '')
-          .slice(0, 100)
-        if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
-        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-        if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
-        if (title === '' || overview === '' || topic === null) {
-          this.publishingArticle = false
-          return
-        }
-
-        const article = { title, body, overview }
-
-        if (this.thumbnail !== '') {
-          article.eye_catch_url = this.thumbnail
-        }
-
-        // タグのデータ形式をAPIに適するように整形
-        const tags = this.tags.map((tag) => tag.text)
-
-        if (
-          location.href.includes('/me/articles/draft') ||
-          location.href.includes('/me/articles/new')
-        ) {
-          await this.putDraftArticle({ article, articleId })
-          await this.publishDraftArticle({ articleId, topic, tags })
-        } else if (location.href.includes('/me/articles/public')) {
-          await this.putPublicArticle({ article, articleId })
-          await this.republishPublicArticle({ articleId, topic, tags })
-        }
-        this.$router.push('/me/articles/public')
-        this.sendNotification({ text: '記事を公開しました。' })
-        this.resetArticleTopic()
-      } catch (e) {
-        this.publishingArticle = false
-        this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
-        console.error(e)
-      }
-    },
-    togglePopup() {
-      if (!this.publishable) return
-      this.isPopupShown = !this.isPopupShown
-    },
-    closePopup() {
-      this.isPopupShown = false
+      this.$emit('publish', { ...this.formData })
     },
     selectThumbnail(thumbnail) {
       this.selectedThumbnail = thumbnail.id
-    },
-    listen(target, eventType, callback) {
-      if (!this._eventRemovers) {
-        this._eventRemovers = []
-      }
-      target.addEventListener(eventType, callback)
-      this._eventRemovers.push({
-        remove: function() {
-          target.removeEventListener(eventType, callback)
-        }
-      })
     },
     handleChangeTopicType(name) {
       this.$el.querySelector('.article-type-select').style.color = '#000'
@@ -191,7 +113,7 @@ export default {
   },
   computed: {
     publishable() {
-      return !this.isEdited && !this.isSaving
+      return !this.isEdited && !this.isSaving && this.topicType && this.selectedThumbnail
     },
     ...mapGetters('article', [
       'articleId',
@@ -204,13 +126,6 @@ export default {
       'topicType',
       'tags'
     ])
-  },
-  watch: {
-    topicType() {
-      if (this.topicType === null) return
-      this.$el.querySelector('.article-type-select').style.color = '#000'
-      this.topic = this.topicType
-    }
   }
 }
 </script>
