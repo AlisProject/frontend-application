@@ -491,16 +491,4 @@ export default {
     padding-top: 40px;
   }
 }
-
-@media screen and (max-width: 320px) {
-  .modal-body {
-    .signup-form {
-      margin-top: 30px;
-
-      &-input {
-        margin-bottom: 10px;
-      }
-    }
-  }
-}
 </style>
