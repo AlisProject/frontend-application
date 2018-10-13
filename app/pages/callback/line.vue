@@ -19,10 +19,6 @@ export default {
   },
   async mounted() {
     try {
-      global.showModal = () => {
-        this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
-        this.$store.dispatch('user/setSignUpAuthFlowInputAliasUserIdModal', { isShow: true })
-      }
       const { code } = this.$route.query
 
       history.replaceState(null, null, '/articles/popular?topic=crypto')
