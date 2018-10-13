@@ -31,6 +31,7 @@ export default {
   height: 36px;
   line-height: 36px;
   outline: none;
+  padding: 0;
   position: relative;
   text-align: center;
   text-decoration: none;
