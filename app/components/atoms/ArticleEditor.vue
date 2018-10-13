@@ -20,7 +20,6 @@
 <script>
 /* global $, MediumEditor, iframely */
 import { mapActions, mapGetters } from 'vuex'
-import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
 import {
   getIframelyUrlTemplate,
@@ -182,10 +181,6 @@ export default {
           trimmedLine
         )).data
       } catch (error) {
-        this.sendNotification({
-          text: 'リンク先の情報を取得できませんでした。',
-          type: 'warning'
-        })
         console.error(error)
         return
       }
@@ -413,9 +408,6 @@ export default {
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))
     },
-    ...mapActions({
-      sendNotification: ADD_TOAST_MESSAGE
-    }),
     ...mapActions('article', [
       'updateTitle',
       'updateBody',
