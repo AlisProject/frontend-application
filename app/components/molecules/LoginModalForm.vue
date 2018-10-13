@@ -1,6 +1,7 @@
 <template>
   <div>
-    <img class="logo" src="~assets/images/pc/common/header_logo_original.png">
+    <img class="logo" src="~assets/images/pc/common/header_logo_original.png" v-if="!isSelectedEmailAuth">
+    <h1 class="title" v-else>ログイン</h1>
     <div class="modal-body">
       <div class="email-auth" v-show="isShowEmailAuth" :class="{ isSelectedEmailAuth }">
         <h2 class="email-auth-title" v-show="isShowEmailAuth && isShowSNSAuth">メールアドレスでログインする</h2>
@@ -236,6 +237,15 @@ export default {
 .modal-body {
   margin: 0 auto;
   display: flex;
+}
+
+.title {
+  color: #030303;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  margin: 0 0 20px;
+  text-align: center;
 }
 
 .email-auth-title,
