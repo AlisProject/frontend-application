@@ -48,7 +48,7 @@ export default {
           break
         default:
           this.sendNotification({
-            text: 'エラーが発生しました',
+            text: 'エラーが発生しました。お手数ですが、時間をおいて再度お試しください',
             type: 'warning'
           })
           break
