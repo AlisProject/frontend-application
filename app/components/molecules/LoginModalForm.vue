@@ -4,7 +4,7 @@
     <h1 class="title" v-else>ログイン</h1>
     <div class="modal-body">
       <div class="email-auth" v-show="isShowEmailAuth" :class="{ isSelectedEmailAuth }">
-        <h2 class="email-auth-title" v-show="isShowEmailAuth && isShowSNSAuth">メールアドレスでログインする</h2>
+        <h2 class="email-auth-title" v-show="isShowEmailAuth && isShowExternalProviderAuth">メールアドレスでログインする</h2>
         <form class="signup-form" @keypress.enter="onSubmit">
           <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
             <label class="signup-form-label">ユーザーID または メールアドレス</label>
@@ -46,9 +46,9 @@
           </p>
         </div>
       </div>
-      <div class="divider" v-show="isShowEmailAuth && isShowSNSAuth"/>
-      <div class="sns-auth" v-show="isShowSNSAuth">
-        <h2 class="sns-auth-title" v-show="isShowEmailAuth && isShowSNSAuth">外部サイトでログインする</h2>
+      <div class="divider" v-show="isShowEmailAuth && isShowExternalProviderAuth"/>
+      <div class="external-provider-auth" v-show="isShowExternalProviderAuth">
+        <h2 class="external-provider-auth-title" v-show="isShowEmailAuth && isShowExternalProviderAuth">外部サイトでログインする</h2>
         <a class="line-button" :href="lineAuthorizeURL">
           LINEでログイン
         </a>
@@ -58,7 +58,7 @@
         <p
           class="for-email-signup"
           @click="showEmailAuth"
-          v-show="isShowOnlySNSAuth">
+          v-show="isShowOnlyExternalProviderAuth">
           メールでログイン
         </p>
         <p class="agreement-confirmation text-align-left">
@@ -72,7 +72,7 @@
     <div
       class="for-login-user"
       @click="transitToSignup"
-      v-if="isShowEmailAuth && isShowSNSAuth">
+      v-if="isShowEmailAuth && isShowExternalProviderAuth">
       新規登録の方はこちら
     </div>
     <div class="for-login-user-sp" :class="{ isSelectedEmailAuth }" v-else>
@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       isShowEmailAuth: true,
-      isShowSNSAuth: true,
+      isShowExternalProviderAuth: true,
       errorMessage: '',
       lineAuthorizeURL: null,
       twitterAuthorizeURL: null,
@@ -126,10 +126,10 @@ export default {
       return this.loginModal.formError.password && this.$v.loginModal.formData.password.$error
     },
     isShowOnlyEmailAuth() {
-      return this.isShowEmailAuth && !this.isShowSNSAuth
+      return this.isShowEmailAuth && !this.isShowExternalProviderAuth
     },
-    isShowOnlySNSAuth() {
-      return !this.isShowEmailAuth && this.isShowSNSAuth
+    isShowOnlyExternalProviderAuth() {
+      return !this.isShowEmailAuth && this.isShowExternalProviderAuth
     },
     ...mapGetters('user', ['loginModal', 'showLoginModal'])
   },
@@ -171,11 +171,11 @@ export default {
     switchAuthType() {
       if (this.isSelectedEmailAuth) return
       this.isShowEmailAuth = window.innerWidth > 920
-      this.isShowSNSAuth = true
+      this.isShowExternalProviderAuth = true
     },
     showEmailAuth() {
       this.isShowEmailAuth = true
-      this.isShowSNSAuth = false
+      this.isShowExternalProviderAuth = false
       this.isSelectedEmailAuth = true
     },
     async onSubmit() {
@@ -249,7 +249,7 @@ export default {
 }
 
 .email-auth-title,
-.sns-auth-title {
+.external-provider-auth-title {
   color: #030303;
   font-size: 20px;
   font-weight: 500;
@@ -371,7 +371,7 @@ export default {
   height: 454px;
 }
 
-.sns-auth {
+.external-provider-auth {
   max-width: 520px;
   width: 100%;
   display: flex;
@@ -379,7 +379,7 @@ export default {
   align-items: center;
 }
 
-@mixin sns-button {
+@mixin external-provider-button {
   border-radius: 18px;
   border: none;
   box-sizing: border-box;
@@ -397,13 +397,13 @@ export default {
 .line-button {
   margin-top: 60px;
   background-color: #00c300;
-  @include sns-button();
+  @include external-provider-button();
 }
 
 .twitter-button {
   margin: 30px 0 60px;
   background-color: #1da1f3;
-  @include sns-button();
+  @include external-provider-button();
 }
 
 .for-login-user {
@@ -433,7 +433,7 @@ export default {
 
 @media screen and (max-width: 920px) {
   .email-auth,
-  .sns-auth {
+  .external-provider-auth {
     max-width: 100%;
   }
 

@@ -41,7 +41,7 @@ export default {
       switch (message) {
         case 'EmailExistsException':
           this.sendNotification({
-            text: 'ご利用いただいたSNSに紐づくメールアドレスは既に登録されています'
+            text: 'ご利用いただいた外部サービスに紐づくメールアドレスは既に登録されています'
           })
           this.$store.dispatch('user/setSignUpModal', { showSignUpModal: true })
           break
