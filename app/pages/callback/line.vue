@@ -24,12 +24,12 @@ export default {
       history.replaceState(null, null, '/articles/popular?topic=crypto')
 
       if (!code) return
-      const { hasAliasUserId, status } = await this.$store.dispatch('user/checkAuthByLine', {
+      const { hasUserId, status } = await this.$store.dispatch('user/checkAuthByLine', {
         code
       })
-      if (!hasAliasUserId) {
+      if (!hasUserId) {
         this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
-        this.$store.dispatch('user/setSignUpAuthFlowInputAliasUserIdModal', { isShow: true })
+        this.$store.dispatch('user/setSignUpAuthFlowInputUserIdModal', { isShow: true })
         return
       }
       await this.$store.dispatch('user/getUserSession')

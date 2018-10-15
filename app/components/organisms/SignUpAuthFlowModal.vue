@@ -6,7 +6,7 @@
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
-      <sign-up-auth-flow-input-alias-user-id-form v-if="isInputAliasUserIdModal" />
+      <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
       <sign-up-auth-flow-completed-auth-modal v-if="isCompletedAuthModal" />
     </div>
   </app-modal>
@@ -20,7 +20,7 @@ import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlow
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
 import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
-import SignUpAuthFlowInputAliasUserIdForm from '../molecules/SignUpAuthFlowInputAliasUserIdForm'
+import SignUpAuthFlowInputUserIdForm from '../molecules/SignUpAuthFlowInputUserIdForm'
 import SignUpAuthFlowCompletedAuthModal from '../molecules/SignUpAuthFlowCompletedAuthModal'
 
 export default {
@@ -31,12 +31,12 @@ export default {
     SignUpAuthFlowInputAuthCodeModalForm,
     SignUpAuthFlowCompletedPhoneNumberAuthModal,
     ProfileSettingsModalForm,
-    SignUpAuthFlowInputAliasUserIdForm,
+    SignUpAuthFlowInputUserIdForm,
     SignUpAuthFlowCompletedAuthModal
   },
   computed: {
     title() {
-      if (this.isInputAliasUserIdModal) {
+      if (this.isInputUserIdModal) {
         return 'SNS認証完了'
       } else if (this.isCompletedAuthModal) {
         return ''
@@ -65,8 +65,8 @@ export default {
     isProfileSettingsModal() {
       return this.signUpAuthFlowModal.isProfileSettingsModal
     },
-    isInputAliasUserIdModal() {
-      return this.signUpAuthFlowModal.isInputAliasUserIdModal
+    isInputUserIdModal() {
+      return this.signUpAuthFlowModal.isInputUserIdModal
     },
     isCompletedAuthModal() {
       return this.signUpAuthFlowModal.isCompletedAuthModal

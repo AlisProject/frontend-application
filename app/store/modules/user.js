@@ -32,7 +32,7 @@ const state = () => ({
     isInputAuthCodeModal: false,
     isCompletedPhoneNumberAuthModal: false,
     isProfileSettingsModal: false,
-    isInputAliasUserIdModal: false,
+    isInputUserIdModal: false,
     isCompletedAuthModal: false,
     login: {
       formData: {
@@ -70,12 +70,12 @@ const state = () => ({
         selfIntroduction: false
       }
     },
-    inputAliasUserId: {
+    inputUserId: {
       formData: {
-        aliasUserId: ''
+        userId: ''
       },
       formError: {
-        aliasUserId: false
+        userId: false
       }
     }
   },
@@ -603,31 +603,30 @@ const actions = {
     const result = await this.$axios.$post('/login/line', { code })
     this.cognitoAuth.setTokens(result)
 
-    const hasAliasUserId = result.has_alias_user_id
+    const hasUserId = result.has_user_id
     const status = result.status
 
-    return { hasAliasUserId, status }
+    return { hasUserId, status }
   },
-  setSignUpAuthFlowInputAliasUserIdModal({ commit }, { isShow }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_MODAL, { isShow })
+  setSignUpAuthFlowInputUserIdModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_MODAL, { isShow })
   },
-  setSignUpAuthFlowAliasUserId({ commit }, { aliasUserId }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_ALIAS_USER_ID, { aliasUserId })
+  setSignUpAuthFlowUserId({ commit }, { userId }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_USER_ID, { userId })
   },
-  showSignUpAuthFlowInputAliasUserIdError({ commit }, { type }) {
-    commit(types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR, { type })
+  showSignUpAuthFlowInputUserIdError({ commit }, { type }) {
+    commit(types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR, { type })
   },
-  hideSignUpAuthFlowInputAliasUserIdError({ commit }, { type }) {
-    commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR, { type })
+  hideSignUpAuthFlowInputUserIdError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR, { type })
   },
-  async postAliasUserId({ state, dispatch }, { aliasUserId }) {
+  async postUserId({ state, dispatch }, { userId }) {
     try {
       const userId = localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       )
-      const result = await this.$axios.$post('/me/alias', {
-        user_id: userId,
-        alias_user_id: aliasUserId
+      const result = await this.$axios.$post('/me/external_provider_user', {
+        user_id: userId
       })
 
       if (!this.cognitoAuth) {
@@ -695,10 +694,10 @@ const actions = {
     })
     this.cognitoAuth.setTokens(result)
 
-    const hasAliasUserId = result.has_alias_user_id
+    const hasUserId = result.has_user_id
     const status = result.status
 
-    return { hasAliasUserId, status }
+    return { hasUserId, status }
   }
 }
 
@@ -925,17 +924,17 @@ const mutations = {
     state.notifications = []
     state.notificationsLastEvaluatedKey = {}
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_MODAL](state, { isShow }) {
-    state.signUpAuthFlowModal.isInputAliasUserIdModal = isShow
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isInputUserIdModal = isShow
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_ALIAS_USER_ID](state, { aliasUserId }) {
-    state.signUpAuthFlowModal.inputAliasUserId.formData.aliasUserId = aliasUserId
+  [types.SET_SIGN_UP_AUTH_FLOW_USER_ID](state, { userId }) {
+    state.signUpAuthFlowModal.inputUserId.formData.userId = userId
   },
-  [types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR](state, { type }) {
-    state.signUpAuthFlowModal.inputAliasUserId.formError[type] = true
+  [types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputUserId.formError[type] = true
   },
-  [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_ALIAS_USER_ID_ERROR](state, { type }) {
-    state.signUpAuthFlowModal.inputAliasUserId.formError[type] = false
+  [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputUserId.formError[type] = false
   },
   [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL](state, { isShow }) {
     state.signUpAuthFlowModal.isCompletedAuthModal = isShow

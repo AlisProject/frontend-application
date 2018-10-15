@@ -24,13 +24,13 @@ export default {
       history.replaceState(null, null, '/articles/popular?topic=crypto')
 
       if (!oauthToken || !oauthVerifier) return
-      const { hasAliasUserId, status } = await this.$store.dispatch('user/checkAuthByTwitter', {
+      const { hasUserId, status } = await this.$store.dispatch('user/checkAuthByTwitter', {
         oauthToken,
         oauthVerifier
       })
-      if (!hasAliasUserId) {
+      if (!hasUserId) {
         this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
-        this.$store.dispatch('user/setSignUpAuthFlowInputAliasUserIdModal', { isShow: true })
+        this.$store.dispatch('user/setSignUpAuthFlowInputUserIdModal', { isShow: true })
         return
       }
       await this.$store.dispatch('user/getUserSession')

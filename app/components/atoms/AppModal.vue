@@ -78,10 +78,7 @@ export default {
       }
       if (this.showSignUpAuthFlowModal) {
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
-        if (
-          this.signUpAuthFlowModal.isLoginModal ||
-          this.signUpAuthFlowModal.isInputAliasUserIdModal
-        ) {
+        if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
           await this.logout()
         }
       }
