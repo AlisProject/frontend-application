@@ -2,12 +2,12 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper" @click.self="closeModal">
-        <div class="modal-container">
+        <div class="modal-container" :style="{ maxWidth: `${maxWidth}px` }">
           <div class="modal-header">
             <div class="modal-header-content">
               <slot name="modal-header-content" />
             </div>
-            <span class="modal-header-default-button" @click="closeModal">
+            <span class="modal-header-default-button" @click="closeModal" v-if="isShowCloseModalButton">
               ✕
             </span>
           </div>
@@ -40,6 +40,16 @@ export default {
       type: Boolean,
       default: true,
       required: false
+    },
+    isShowCloseModalButton: {
+      type: Boolean,
+      default: true,
+      required: false
+    },
+    maxWidth: {
+      type: Number,
+      default: 800,
+      required: false
     }
   },
   data() {
@@ -57,7 +67,8 @@ export default {
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
-      'showTipModal'
+      'showTipModal',
+      'requestPhoneNumberVerifyModal'
     ])
   },
   methods: {
@@ -67,11 +78,7 @@ export default {
       }
       if (this.showSignUpAuthFlowModal) {
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
-        if (
-          this.signUpAuthFlowModal.isLoginModal ||
-          this.signUpAuthFlowModal.isInputPhoneNumberModal ||
-          this.signUpAuthFlowModal.isInputAuthCodeModal
-        ) {
+        if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
           await this.logout()
         }
       }
@@ -98,6 +105,9 @@ export default {
         this.setTipModal({ showTipModal: false })
         this.hideTipFlowModalContent()
       }
+      if (this.requestPhoneNumberVerifyModal.isShow) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -115,7 +125,8 @@ export default {
       'logout',
       'setRequestLoginModal',
       'setTipModal',
-      'hideTipFlowModalContent'
+      'hideTipFlowModalContent',
+      'setRequestPhoneNumberVerifyModal'
     ])
   },
   watch: {
@@ -167,10 +178,9 @@ export default {
   &-body {
     .title {
       color: #030303;
-      font-family: 'Times New Roman', Times, serif;
       font-size: 20px;
-      font-weight: bold;
-      letter-spacing: 0.2em;
+      font-weight: 100;
+      letter-spacing: 5px;
       line-height: 24px;
       margin: 50px 20px 0;
       text-align: center;
@@ -216,6 +226,12 @@ export default {
       margin-top: 0;
       max-width: 550px;
       width: calc(100% - 60px);
+    }
+
+    &-body {
+      .title {
+        margin: 60px 20px 0;
+      }
     }
   }
 

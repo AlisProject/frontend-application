@@ -106,6 +106,15 @@ export default {
     },
     showPopupReportModal() {
       if (this.loggedIn) {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleReport' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          if (window.innerWidth > 550) {
+            document.querySelector('html,body').style.overflow = 'hidden'
+          }
+          return
+        }
         this.setReportModal({ showReportModal: true })
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
@@ -117,10 +126,18 @@ export default {
     },
     async like() {
       if (this.loggedIn) {
-        if (!this.isLikedArticle) {
-          await this.postLike({ articleId: this.articleId })
-          await this.getIsLikedArticle({ articleId: this.articleId })
+        if (this.isLikedArticle) return
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleLike' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          if (window.innerWidth > 550) {
+            document.querySelector('html,body').style.overflow = 'hidden'
+          }
+          return
         }
+        await this.postLike({ articleId: this.articleId })
+        await this.getIsLikedArticle({ articleId: this.articleId })
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
         window.scrollTo(0, 0)
@@ -131,6 +148,11 @@ export default {
     },
     async tip() {
       if (this.loggedIn) {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleTip' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          return
+        }
         this.setTipModal({ showTipModal: true })
         this.setTipFlowSelectTipAmountModal({ isShow: true })
         window.scrollTo(0, 0)
@@ -160,7 +182,9 @@ export default {
       'setReportModal',
       'setRequestLoginModal',
       'setTipModal',
-      'setTipFlowSelectTipAmountModal'
+      'setTipFlowSelectTipAmountModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ]),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }

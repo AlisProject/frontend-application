@@ -1,11 +1,23 @@
 <template>
   <nav class="area-nav">
     <h1 class="area-title">記事一覧</h1>
-    <a href="/me/articles/new" class="area-new-article">新規作成</a>
+    <app-button class="area-new-article">
+      <a href="/me/articles/new">新規作成</a>
+    </app-button>
     <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開中</nuxt-link>
     <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
   </nav>
 </template>
+
+<script>
+import AppButton from '../atoms/AppButton'
+
+export default {
+  components: {
+    AppButton
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .area-nav {
@@ -22,6 +34,16 @@
   width: 1080px;
   margin: 0 auto;
   border-bottom: 1px solid rgba(#6e6e6e, 0.1);
+
+  .area-new-article {
+    grid-area: new-article;
+    width: 110px;
+
+    &:before,
+    &:after {
+      border-radius: 4px;
+    }
+  }
 }
 
 .area-title {
@@ -59,19 +81,6 @@
   border-bottom: 2px solid #99a2ff;
 }
 
-.area-new-article {
-  grid-area: new-article;
-  align-items: center;
-  background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
-  border-radius: 4px;
-  color: white;
-  display: flex;
-  font-size: 14px;
-  justify-content: center;
-  text-decoration: none;
-  width: 110px;
-}
-
 @media screen and (max-width: 1080px) {
   .area-nav {
     max-width: calc(100% - 68px);
@@ -80,7 +89,7 @@
 }
 
 @media screen and (max-width: 640px) {
-  .area-new-article {
+  .area-nav .area-new-article {
     display: none;
   }
 }

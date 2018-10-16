@@ -69,7 +69,8 @@ export default {
   components: {
     AppButton
   },
-  created() {
+  async created() {
+    await this.setCurrentUserInfo()
     this.userDisplayName =
       htmlDecode(this.currentUserInfo.user_display_name) || this.currentUser.userId
     this.selfIntroduction = htmlDecode(this.currentUserInfo.self_introduction) || ''
@@ -320,14 +321,9 @@ export default {
 }
 
 @media screen and (max-width: 320px) {
-  .modal-body {
-    .signup-form {
-      margin-top: 30px;
-
-      &-input {
-        margin-bottom: 10px;
-      }
-    }
+  .modal-footer {
+    width: 250px;
+    margin: 40px auto;
   }
 }
 </style>
