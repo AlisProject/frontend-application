@@ -13,7 +13,6 @@
               type="text"
               placeholder="半角英数字3文字以上"
               maxlength="30"
-              autofocus
               ref="userId"
               @input="setUserId"
               @blur="showError('userId')"
