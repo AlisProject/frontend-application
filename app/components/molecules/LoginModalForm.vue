@@ -53,7 +53,7 @@
           LINEでログイン
         </a>
         <a class="twitter-button" :href="twitterAuthorizeURL">
-          twitterではじめる
+          twitterでログイン
         </a>
         <p
           class="for-email-signup"
