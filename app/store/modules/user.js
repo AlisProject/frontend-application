@@ -622,7 +622,7 @@ const actions = {
   },
   async postUserId({ state, dispatch }, { userId }) {
     try {
-      const userId = localStorage.getItem(
+      const externalProviderUserId = localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       )
       const result = await this.$axios.$post('/me/external_provider_user', {
@@ -633,7 +633,7 @@ const actions = {
         dispatch('initCognitoAuth')
       }
 
-      this.cognitoAuth.removeTokens({ lastAuthUser: userId })
+      this.cognitoAuth.removeTokens({ lastAuthUser: externalProviderUserId })
       this.cognitoAuth.setTokens(result)
     } catch (error) {
       return Promise.reject(error)
