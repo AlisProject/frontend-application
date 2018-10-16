@@ -381,9 +381,12 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async logout({ commit, state }) {
+  async logout({ commit }) {
     try {
-      const result = await this.cognito.logoutUser({ userId: state.currentUser.userId })
+      const userId = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+      )
+      const result = await this.cognito.logoutUser({ userId })
       commit(types.SET_LOGGED_IN, { loggedIn: false })
       commit(types.SET_CURRENT_USER, { user: null })
       return result
