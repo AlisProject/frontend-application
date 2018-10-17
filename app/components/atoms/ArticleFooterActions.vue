@@ -1,7 +1,7 @@
 <template>
   <div class="area-footer-actions">
     <div class="action area-like" :class="{ liked: isLikedArticle }" @click="like">
-      <span class="likes-count">{{ formattedLikesCount }}</span>
+      <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
     </div>
     <no-ssr>
       <div class="action area-tip" @click="tip" v-if="!isMyArticle"/>
@@ -106,21 +106,38 @@ export default {
     },
     showPopupReportModal() {
       if (this.loggedIn) {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleReport' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          if (window.innerWidth > 550) {
+            document.querySelector('html,body').style.overflow = 'hidden'
+          }
+          return
+        }
         this.setReportModal({ showReportModal: true })
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
       } else {
-        this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleReport' })
         window.scrollTo(0, 0)
         document.querySelector('html,body').style.overflow = 'hidden'
       }
     },
     async like() {
       if (this.loggedIn) {
-        if (!this.isLikedArticle) {
-          await this.postLike({ articleId: this.articleId })
-          await this.getIsLikedArticle({ articleId: this.articleId })
+        if (this.isLikedArticle) return
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleLike' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          if (window.innerWidth > 550) {
+            document.querySelector('html,body').style.overflow = 'hidden'
+          }
+          return
         }
+        await this.postLike({ articleId: this.articleId })
+        await this.getIsLikedArticle({ articleId: this.articleId })
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
         window.scrollTo(0, 0)
@@ -131,10 +148,17 @@ export default {
     },
     async tip() {
       if (this.loggedIn) {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleTip' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          return
+        }
         this.setTipModal({ showTipModal: true })
         this.setTipFlowSelectTipAmountModal({ isShow: true })
         window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleTip' })
         window.scrollTo(0, 0)
@@ -158,7 +182,9 @@ export default {
       'setReportModal',
       'setRequestLoginModal',
       'setTipModal',
-      'setTipFlowSelectTipAmountModal'
+      'setTipFlowSelectTipAmountModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ]),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
@@ -205,6 +231,7 @@ export default {
       border-radius: 50%;
       border: 1px solid #ff4949;
       color: #ff4949;
+      cursor: auto;
       display: flex;
       font-size: 12px;
       height: 24px;

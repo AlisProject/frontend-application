@@ -5,6 +5,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ArticleDetail from '~/components/pages/ArticleDetail'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -21,15 +22,15 @@ export default {
   async mounted() {
     if (this.loggedIn) {
       const { articleId } = this.$route.params
+      if (this.currentUser.phoneNumberVerified) await this.postPv({ articleId })
       await this.getIsLikedArticle({ articleId })
-      await this.postPv({ articleId })
       await this.updateArticleCommentsByCommentIds({ articleId })
     } else {
       this.setIsLikedArticle({ liked: false })
     }
   },
   computed: {
-    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
   },
   methods: {
@@ -41,8 +42,12 @@ export default {
     ])
   },
   head() {
+    const { article } = this.$store.state.article
+    const decodedArticleTitle = htmlDecode(article.title)
+    const decodedArticleOverview = htmlDecode(article.overview)
+
     return {
-      title: this.$store.state.article.article.title,
+      title: decodedArticleTitle,
       link: [
         {
           rel: 'stylesheet',
@@ -54,12 +59,12 @@ export default {
         {
           hid: `og:title`,
           property: 'og:title',
-          content: `${this.$store.state.article.article.title} | ALIS`
+          content: `${decodedArticleTitle} | ALIS`
         },
         {
           hid: `og:description`,
           property: 'og:description',
-          content: this.$store.state.article.article.overview
+          content: decodedArticleOverview
         },
         {
           hid: `og:type`,
@@ -70,15 +75,13 @@ export default {
           hid: `og:image`,
           property: 'og:image',
           content:
-            this.$store.state.article.article.eye_catch_url ||
-            `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+            article.eye_catch_url || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
         },
         {
           hid: 'twitter:image',
           name: 'twitter:image',
           content:
-            this.$store.state.article.article.eye_catch_url ||
-            `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+            article.eye_catch_url || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
         }
       ]
     }

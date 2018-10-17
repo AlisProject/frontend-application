@@ -56,6 +56,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   data() {
@@ -68,9 +69,11 @@ export default {
   components: {
     AppButton
   },
-  created() {
-    this.userDisplayName = this.currentUserInfo.user_display_name || this.currentUser.userId
-    this.selfIntroduction = this.currentUserInfo.self_introduction || ''
+  async created() {
+    await this.setCurrentUserInfo()
+    this.userDisplayName =
+      htmlDecode(this.currentUserInfo.user_display_name) || this.currentUser.userId
+    this.selfIntroduction = htmlDecode(this.currentUserInfo.self_introduction) || ''
     this.setUserDisplayName(this.userDisplayName)
     this.setSelfIntroduction(this.selfIntroduction)
   },
@@ -318,14 +321,9 @@ export default {
 }
 
 @media screen and (max-width: 320px) {
-  .modal-body {
-    .signup-form {
-      margin-top: 30px;
-
-      &-input {
-        margin-bottom: 10px;
-      }
-    }
+  .modal-footer {
+    width: 250px;
+    margin: 40px auto;
   }
 }
 </style>

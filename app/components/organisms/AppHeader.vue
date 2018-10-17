@@ -1,36 +1,19 @@
 <template>
-  <header class="area-app-header-container" :class="{ 'with-edit-header-nav': showEditHeaderNav }">
+  <header class="area-app-header-container">
     <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
-    <default-header-nav
-      v-if="showDefaultHeaderNav"
-      :showOnlyLogo="showOnlyLogo"
-      :showOnlySessionLinks="showOnlySessionLinks"
-      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
-    <article-type-select-box
-      v-if="showDefaultHeaderNav"
-      :showOnlyLogo="showOnlyLogo"
-      :showOnlySessionLinks="showOnlySessionLinks"
-      :showOnlySessionLinksOnPc="showOnlySessionLinksOnPc"/>
     <no-ssr>
-      <edit-header-nav
-        v-if="showEditHeaderNav"
-        :showPostArticleLink="showPostArticleLink"
-        :showEditArticleLink="showEditArticleLink"/>
+      <header-session-links v-if="!loggedIn"/>
+      <header-user-logged-in-items v-else />
     </no-ssr>
-    <template v-if="!showOnlyLogo">
-      <no-ssr>
-        <header-session-links v-if="!loggedIn"/>
-        <header-user-logged-in-items v-else />
-      </no-ssr>
-    </template>
-    <sign-up-modal v-show="this.showSignUpModal"/>
-    <sign-up-auth-flow-modal v-show="this.showSignUpAuthFlowModal"/>
-    <login-modal v-show="this.showLoginModal"/>
+    <sign-up-modal v-if="showSignUpModal"/>
+    <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
+    <login-modal v-if="showLoginModal"/>
     <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
     <request-login-modal v-if="requestLoginModal.isShow"/>
     <tip-modal v-if="showTipModal"/>
+    <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -38,9 +21,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
-import ArticleTypeSelectBox from '../molecules/ArticleTypeSelectBox'
-import EditHeaderNav from '../molecules/EditHeaderNav'
 import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
 import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
@@ -51,43 +31,11 @@ import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
 import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
 import RequestLoginModal from '../organisms/RequestLoginModal'
 import TipModal from '../organisms/TipModal'
+import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
 
 export default {
-  props: {
-    showDefaultHeaderNav: {
-      type: Boolean,
-      default: false
-    },
-    showEditHeaderNav: {
-      type: Boolean,
-      default: false
-    },
-    showOnlyLogo: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinks: {
-      type: Boolean,
-      default: false
-    },
-    showPostArticleLink: {
-      type: Boolean,
-      default: false
-    },
-    showEditArticleLink: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinksOnPc: {
-      type: Boolean,
-      default: false
-    }
-  },
   components: {
-    DefaultHeaderNav,
-    EditHeaderNav,
     HeaderSessionLinks,
-    ArticleTypeSelectBox,
     HeaderUserLoggedInItems,
     SignUpModal,
     SignUpAuthFlowModal,
@@ -97,7 +45,8 @@ export default {
     ProfileSettingsModal,
     RequestLoginModal,
     TipModal,
-    Toast
+    Toast,
+    RequestPhoneNumberVerifyModal
   },
   computed: {
     ...mapGetters('user', [
@@ -109,7 +58,8 @@ export default {
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
-      'showTipModal'
+      'showTipModal',
+      'requestPhoneNumberVerifyModal'
     ])
   },
   methods: {
@@ -131,69 +81,55 @@ export default {
   display: grid;
   grid-area: app-header;
   grid-template-rows: 100px;
-  grid-template-columns: 170px 1fr 78px calc(50vw - 210px);
+  width: 1080px;
+  grid-template-columns: 150px 1fr auto;
   /* prettier-ignore */
   grid-template-areas:
-    "logo nav article-type-select-box ...";
-  position: relative;
-  z-index: 2;
-
-  &.with-edit-header-nav {
-    grid-template-columns: 170px 1fr 78px 190px;
-  }
+    "logo ... session";
+  z-index: 2002;
+  justify-self: center;
 }
 
 .area-logo {
   grid-area: logo;
   background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
   background-position: center;
-  background-size: 94px 25px;
+  background-size: 150px 40px;
+}
+
+@media screen and (max-width: 1080px) {
+  .area-app-header-container {
+    max-width: calc(100% - 68px);
+  }
 }
 
 @media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
     .area-app-header-container {
+      max-width: calc(100% - 40px);
       background: white;
-      grid-gap: 16px;
-      /* prettier-ignore */
-      grid-template-areas:
-        '... ...  ... ...     ...'
-        '... logo ... session ...'
-        '... ...  ... ...     ...';
-      grid-template-columns: 3px 94px 1fr 145px 3px;
-      grid-template-rows: 6px 26px 20px;
+      grid-template-columns: 94px 1fr auto;
+      grid-template-rows: 66px;
+      padding: 0 22px 0 18px;
+    }
 
-      &.with-edit-header-nav {
-        grid-template-columns: 3px 94px 1fr 145px 3px;
-      }
+    .area-logo {
+      background-size: 94px 25px;
     }
   }
 }
 
 @media screen and (max-width: 550px) {
   .area-app-header-container {
+    max-width: calc(100% - 40px);
     background: white;
-    grid-gap: 16px;
-    /* prettier-ignore */
-    grid-template-areas:
-      '... ...  ... ...     ...                     ...'
-      '... logo ... session session                 ...'
-      '... nav  nav nav     article-type-select-box ...';
-    grid-template-columns: 3px 94px 1fr 60px 61px 3px;
-    grid-template-rows: 6px 26px 20px;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
-
-    &.without-shadow {
-      box-shadow: none;
-    }
-
-    &.with-edit-header-nav {
-      grid-template-columns: 3px 94px 1fr 60px 61px 3px;
-    }
+    grid-template-columns: 94px 1fr auto;
+    grid-template-rows: 66px;
+    padding: 0 22px 0 18px;
   }
 
   .area-logo {
-    margin: 0;
+    background-size: 94px 25px;
   }
 }
 </style>

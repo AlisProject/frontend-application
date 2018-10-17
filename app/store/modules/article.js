@@ -80,7 +80,8 @@ const getters = {
   topicDisplayName: (state) => state.topicDisplayName,
   fetchingArticleTopic: (state) => state.fetchingArticleTopic,
   tags: (state) => state.tags,
-  tagArticles: (state) => state.tagArticles
+  tagArticles: (state) => state.tagArticles,
+  hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey
 }
 
 const actions = {
@@ -470,7 +471,7 @@ const actions = {
   async getSearchArticles({ commit, dispatch, state }, { query }) {
     if (state.searchArticles.isFetching) return
     commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: true })
-    const limit = 10
+    const limit = 9
     const articles = await this.$axios.$get('/search/articles', {
       params: { limit, query, page: state.searchArticles.page }
     })

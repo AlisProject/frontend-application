@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="wrapper">
+    <span class="skip" @click="skip">スキップ</span>
     <div class="modal-body">
       <p class="announce">
         電話番号を入力してください
@@ -146,6 +147,14 @@ export default {
         this.errorMessage = errorMessage
       }
     },
+    skip() {
+      this.setSignUpAuthFlowInputPhoneNumberModal({
+        isSignUpAuthFlowInputPhoneNumberModal: false
+      })
+      this.setSignUpAuthFlowProfileSettingsModal({
+        isSignUpAuthFlowProfileSettingsModal: true
+      })
+    },
     ...mapActions('user', [
       'setSignUpAuthFlowInputPhoneNumberModal',
       'setSignUpAuthFlowInputPhoneNumberPhoneNumber',
@@ -153,13 +162,28 @@ export default {
       'hideSignUpAuthFlowInputPhoneNumberError',
       'setSignUpAuthFlowInputAuthCodeModal',
       'updatePhoneNumber',
-      'sendConfirm'
+      'sendConfirm',
+      'setSignUpAuthFlowProfileSettingsModal'
     ])
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  position: relative;
+}
+
+.skip {
+  color: #858dda;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 0.93px;
+  position: absolute;
+  right: -14px;
+  top: -120px;
+}
+
 .modal-body {
   margin: 0 auto;
 
@@ -236,14 +260,8 @@ export default {
 }
 
 @media screen and (max-width: 320px) {
-  .modal-body {
-    .signup-form {
-      margin-top: 30px;
-
-      &-input {
-        margin-bottom: 10px;
-      }
-    }
+  .modal-footer {
+    width: 250px;
   }
 }
 </style>

@@ -337,6 +337,12 @@
   color: #b3b3b1;
 }
 
+.medium-insert-image-active {
+  outline: none;
+  border: 2px solid #000;
+  box-sizing: border-box;
+}
+
 @media screen and (max-width: 640px) {
   .area-content,
   .medium-editor-element {
@@ -405,5 +411,10 @@
         width: 60px;
       }
     }
+  }
+
+  .iframely-embed {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
   }
 }

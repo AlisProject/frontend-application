@@ -1,5 +1,18 @@
 <template>
   <div class="logged-in">
+    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
+      <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
+    </nuxt-link>
+    <span class="notification-link" @click="moveToNotificationPage">
+      <img
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_notification_mark.png"
+        v-if="unreadNotification">
+      <img
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_notification.png"
+        v-else>
+    </span>
     <img
       class="profile-icon"
       :src="currentUserInfo.icon_image_url"
@@ -10,19 +23,6 @@
       src="~assets/images/pc/common/icon_user_noimg.png"
       @click="toggleMenu"
       v-else>
-    <nuxt-link to="/me/notifications">
-      <img
-        class="notification-icon"
-        src="~assets/images/pc/common/icon_bell_mark.png"
-        v-if="unreadNotification">
-      <img
-        class="notification-icon"
-        src="~assets/images/pc/common/icon_bell.png"
-        v-else>
-    </nuxt-link>
-    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
-      <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
-    </nuxt-link>
     <div class="menu" v-if="isMenuShown">
       <div class="image-box">
         <img
@@ -33,23 +33,30 @@
           src="~assets/images/pc/common/icon_user_noimg.png"
           class="profile-image"
           v-else>
-      </div>
-      <div class="token-amount">
-        <p class="alis-hold-amount">ALIS保有数</p>
-        <p class="alis-token-amount">{{ alisToken }} <span class="token-unit">ALIS</span></p>
+        <p class="alis-token-amount">{{ alisToken }} ALIS</p>
       </div>
       <ul class="menu-links">
         <li class="menu-link">
-          <a href="/me/articles/new">新規記事作成</a>
+          <nuxt-link class="reset-link-style" to="/me/articles/new" event="">
+            <span class="menu-link-inner" @click="moveToNewArticlePage">
+              新規記事作成
+            </span>
+          </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link to="/me/articles/public">記事一覧</nuxt-link>
+          <nuxt-link class="reset-link-style" to="/me/articles/public" event="">
+            <span class="menu-link-inner" @click="moveToPublicArticlesPage">
+              記事一覧
+            </span>
+          </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
+          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
         </li>
         <li class="menu-link" @click="showProfileSettingsModal">
-          ユーザー設定
+          <span class="menu-link-inner">
+            ユーザー設定
+          </span>
         </li>
       </ul>
       <span class="logout" @click="logoutUser">ログアウト</span>
@@ -92,7 +99,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification'])
+    ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification', 'currentUser'])
   },
   methods: {
     resetSearchStates() {
@@ -103,18 +110,14 @@ export default {
       this.resetSearchUsersPage()
       this.resetSearchUsersIsLastPage()
     },
-    async toggleMenu() {
+    toggleMenu() {
       if (!this.isMenuShown) {
-        this.forbidScroll()
-        await this.getUsersAlisToken()
-      } else {
-        this.resetScroll()
+        this.getUsersAlisToken()
       }
       this.isMenuShown = !this.isMenuShown
     },
     closeMenu() {
       this.isMenuShown = false
-      this.resetScroll()
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -138,33 +141,37 @@ export default {
       }
     },
     showProfileSettingsModal() {
-      window.scrollTo(0, 0)
+      this.closeMenu()
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
-      this.forbidScroll()
     },
-    forbidScroll() {
-      if (window.innerWidth <= 550) {
+    moveToNotificationPage() {
+      this.resetNotificationData()
+      this.getNotifications()
+      this.$router.push('/me/notifications')
+    },
+    moveToNewArticlePage() {
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
         window.scrollTo(0, 0)
-      }
-      if (window.innerWidth <= 920) {
-        if (document.querySelector('[class$=-article-list-container]')) {
-          document.querySelector('[class$=-article-list-container]').style.overflowY = 'visible'
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
         }
-        document.querySelector('html,body').style.overflow = 'hidden'
-        window.addEventListener('touchmove', this.scrollOff, false)
+        return
       }
+      location.href = '/me/articles/new'
     },
-    resetScroll() {
-      if (window.innerWidth <= 920) {
-        if (document.querySelector('[class$=-article-list-container]')) {
-          document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
+    moveToPublicArticlesPage() {
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'viewPublicArticles' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        window.scrollTo(0, 0)
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
         }
-        document.querySelector('html,body').style.overflow = ''
-        window.removeEventListener('touchmove', this.scrollOff, false)
+        return
       }
-    },
-    scrollOf(e) {
-      e.preventDefault()
+      this.$router.push('/me/articles/public')
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -177,7 +184,11 @@ export default {
       'getUnreadNotification',
       'resetSearchUsers',
       'resetSearchUsersPage',
-      'resetSearchUsersIsLastPage'
+      'resetSearchUsersIsLastPage',
+      'resetNotificationData',
+      'getNotifications',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ]),
     ...mapActions('article', [
       'resetSearchArticles',
@@ -190,35 +201,26 @@ export default {
 
 <style lang="scss" scoped>
 .logged-in {
-  border-top: 6px solid #858dda;
-  padding-top: 10px;
-  position: fixed;
-  right: -28.5px;
-  top: 150px;
-  transform: rotate(90deg);
-  width: 134px;
+  grid-area: session;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  .notification-link {
+    cursor: pointer;
+  }
+
+  .search-icon,
+  .notification-icon {
+    width: 24px;
+    margin-right: 40px;
+  }
 
   .profile-icon {
     border-radius: 50%;
     cursor: pointer;
-    float: left;
-    height: 60px;
-    transform: rotate(-90deg);
-    width: 60px;
-  }
-
-  .notification-icon {
-    float: left;
-    margin: 20px 10px 0 16px;
-    transform: rotate(-90deg);
-    width: 16px;
-  }
-
-  .search-icon {
-    float: left;
-    margin: 20px 10px 0 5px;
-    transform: rotate(-90deg);
-    width: 16px;
+    height: 40px;
+    width: 40px;
   }
 }
 
@@ -228,86 +230,69 @@ export default {
   box-sizing: border-box;
   color: #000000;
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-  padding: 24px 41px;
+  padding: 24px 0 20px;
   position: absolute;
-  right: -101px;
-  transform: rotate(-90deg);
-  width: 240px;
-
-  &:before {
-    content: '';
-    height: 0;
-    position: absolute;
-    right: 0;
-    width: 0;
-  }
-
-  &:before {
-    border-bottom: 20px solid transparent;
-    border-left: 40px solid white;
-    border-right: 0px solid transparent;
-    border-top: 20px solid transparent;
-    margin: -20px -20px 0 0;
-    top: 150px;
-    z-index: -1;
-  }
+  right: 0;
+  top: 80px;
+  width: 224px;
 
   .image-box {
-    height: 160px;
-    margin: -24px 0 0 -41px;
-    overflow: hidden;
-    width: 240px;
+    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    height: 180px;
+    margin: -24px 0 0 0;
+    text-align: center;
 
     .profile-image {
+      border-radius: 50%;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+      height: 60px;
+      margin-top: 40px;
       object-fit: cover;
-      width: 100%;
-    }
-  }
-
-  .token-amount {
-    color: #040404;
-
-    .alis-hold-amount {
-      background: url('~assets/images/pc/common/icon_alistoken.png') no-repeat;
-      background-size: 18px;
-      font-size: 14px;
-      line-height: 18px;
-      margin: 30px 20px 0;
-      padding-left: 24px;
-      width: 100px;
+      width: 60px;
     }
 
     .alis-token-amount {
-      font-size: 28px;
-      font-weight: bold;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 500;
       margin-top: 10px;
-      text-align: center;
-
-      .token-unit {
-        font-size: 14px;
-      }
     }
   }
 
   .menu-links {
     list-style: none;
+    margin: 20px 0;
     padding: 0;
 
     .menu-link {
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
-      height: 24px;
       letter-spacing: 1px;
-      line-height: 24px;
-      margin-bottom: 12px;
-      padding-left: 0.5em;
-      width: 119px;
+      white-space: nowrap;
 
-      a {
-        display: block;
-        text-decoration: none;
+      &:hover {
+        background-color: rgba(131, 139, 215, 0.2);
+      }
+
+      .reset-link-style {
         color: #000;
+        text-decoration: none;
+
+        &:visited {
+          color: #000;
+        }
+      }
+
+      .menu-link-inner {
+        color: #000;
+        display: block;
+        height: 24px;
+        line-height: 24px;
+        padding: 10px 64px;
+        text-decoration: none;
 
         &:visited {
           color: #000;
@@ -319,150 +304,85 @@ export default {
   .logout {
     color: #000;
     cursor: pointer;
+    display: block;
     font-size: 14px;
-    line-height: 21px;
-    margin-left: 6px;
+    height: 24px;
+    line-height: 24px;
+    padding: 10px 64px;
     text-decoration: none;
 
     &:visited {
       color: #000;
     }
-  }
-}
 
-@media screen and (max-width: 920px) and (min-width: 551px) {
-  .article-container {
-    .logged-in {
-      border: none;
-      grid-area: session;
-      position: static;
-      right: -46px;
-      transform: rotate(0);
-
-      .profile-icon {
-        border-radius: 50%;
-        float: right;
-        height: 32px;
-        transform: rotate(0);
-        width: 32px;
-        margin-top: -8px;
-      }
-
-      .notification-icon {
-        float: right;
-        margin: 2px 20px 0 0;
-        transform: rotate(0);
-      }
-
-      .search-icon {
-        float: right;
-        margin: 4px 22px 0 0;
-        transform: rotate(0);
-      }
-    }
-
-    .menu {
-      right: -16px;
-      top: -26px;
-      width: 280px;
-      transform: rotate(0);
-
-      &:before {
-        display: none;
-      }
-
-      .image-box {
-        height: 160px;
-        width: 280px;
-      }
-
-      .menu-links {
-        list-style: none;
-        padding: 0;
-        margin-bottom: 40px;
-
-        .menu-link {
-          margin-bottom: 20px;
-        }
-      }
+    &:hover {
+      background-color: rgba(131, 139, 215, 0.2);
     }
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 1080px) {
+  .menu {
+    right: 34px;
+  }
+}
+
+@mixin spStyles() {
   .logged-in {
-    border: none;
-    grid-area: session;
-    padding: 0;
-    position: static;
-    right: -46px;
-    transform: rotate(0);
+    .search-icon,
+    .notification-icon {
+      width: 16px;
+      margin-right: 24px;
+    }
 
     .profile-icon {
-      border-radius: 50%;
-      float: right;
       height: 32px;
-      margin-top: -4px;
-      transform: rotate(0);
       width: 32px;
-    }
-
-    .notification-icon {
-      float: right;
-      margin: 5px 20px 0 0;
-      transform: rotate(0);
-    }
-
-    .search-icon {
-      float: right;
-      margin: 5px 22px 0 0;
-      transform: rotate(0);
     }
   }
 
   .menu {
-    right: -16px;
-    top: -26px;
-    width: 280px;
-    transform: rotate(0);
+    border-radius: 0;
+    filter: none;
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    top: 0;
     z-index: 1;
-    height: 101vh;
 
     &:before {
       display: none;
     }
 
     .image-box {
-      height: 160px;
-      width: 280px;
-    }
-
-    .menu-links {
-      list-style: none;
-      padding: 0;
-      margin-bottom: 40px;
-
-      .menu-link {
-        margin-bottom: 20px;
-      }
+      background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+      border-radius: 0;
+      height: 180px;
+      overflow: hidden;
+      text-align: center;
     }
   }
 
   .cover {
     background: black;
-    border-radius: 4px;
     box-sizing: border-box;
     color: #000000;
-    filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-    height: 4000px;
+    height: 100vh;
     opacity: 0.5;
-    position: absolute;
-    right: -16px;
-    top: -26px;
-    transform: rotate(-90deg);
-    transform: rotate(0);
+    position: fixed;
+    right: 0;
+    top: 0;
     width: 100vw;
-    z-index: -1;
   }
+}
+
+@media screen and (max-width: 920px) and (min-width: 551px) {
+  .article-container {
+    @include spStyles();
+  }
+}
+
+@media screen and (max-width: 550px) {
+  @include spStyles();
 }
 </style>

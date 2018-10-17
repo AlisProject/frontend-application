@@ -1,5 +1,6 @@
-/* eslint-disable no-undef */
+/* global iframely */
 import axios from './axios'
+import { XmlEntities } from 'html-entities'
 
 export function createInsertPluginTemplateFromUrl(url) {
   // This method returns DOM string like this.
@@ -172,40 +173,55 @@ export function getIframelyEmbedTemplate({ url, meta, links }) {
 export function showEmbedTweet() {
   document.querySelectorAll('[data-alis-iframely-url]').forEach(async (element) => {
     const { alisIframelyUrl } = element.dataset
-    if (
+
+    const isTwitterResource =
       alisIframelyUrl === 'https://twitter.com' ||
       alisIframelyUrl.startsWith('https://twitter.com/')
+    const isTweet = isTwitterResource && alisIframelyUrl.split('/')[4] === 'status'
+    const isGistResource = alisIframelyUrl.startsWith('https://gist.github.com/')
+    const isYouTubeResource = isYouTubeVideoURL(alisIframelyUrl)
+    const isFacebookResource = isFacebookPostURL(alisIframelyUrl)
+    const isInstagramResource = isInstagramURL(alisIframelyUrl)
+    let result
+
+    try {
+      result = (await getResourceFromIframely(
+        isTwitterResource ? 'oembed' : 'iframely',
+        alisIframelyUrl
+      )).data
+    } catch (error) {
+      console.error(error)
+      return
+    }
+
+    if (
+      isTweet ||
+      isGistResource ||
+      isYouTubeResource ||
+      isFacebookResource ||
+      isInstagramResource
     ) {
-      const isTweet = alisIframelyUrl.split('/')[4] === 'status'
-      if (isTweet) {
-        const anchorElement = document.createElement('a')
-        anchorElement.setAttribute('href', alisIframelyUrl)
-        anchorElement.setAttribute('data-iframely-url', '')
+      const anchorElement = document.createElement('a')
+      anchorElement.setAttribute('href', alisIframelyUrl)
+      anchorElement.setAttribute('data-iframely-url', '')
 
-        const div = document.createElement('div')
-        div.appendChild(anchorElement)
+      const div = document.createElement('div')
+      div.appendChild(anchorElement)
 
-        element.innerHTML = div.innerHTML
-      } else {
-        const { data: profileInfo } = await axios.get(
-          `https://iframe.ly/api/oembed?api_key=${
-            process.env.IFRAMELY_API_KEY
-          }&url=${encodeURIComponent(alisIframelyUrl)}`
-        )
-        const { title, description } = profileInfo
-        const hasTitleOrDescription = title !== undefined || description !== undefined
-        if (!hasTitleOrDescription) return
+      element.innerHTML = div.innerHTML
+      iframely.load()
+      return
+    }
 
-        element.innerHTML = `
-      ${getTwitterProfileTemplate({ ...profileInfo })}
+    if (isTwitterResource) {
+      const { title, description } = result
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
+
+      element.innerHTML = `
+      ${getTwitterProfileTemplate({ ...result })}
       <br>`
-      }
     } else {
-      const { data: result } = await axios.get(
-        `https://iframe.ly/api/iframely?api_key=${
-          process.env.IFRAMELY_API_KEY
-        }&url=${encodeURIComponent(alisIframelyUrl)}`
-      )
       const { title, description } = result.meta
       const hasTitleOrDescription = title !== undefined || description !== undefined
       if (!hasTitleOrDescription) return
@@ -214,7 +230,6 @@ export function showEmbedTweet() {
       ${getIframelyEmbedTemplate({ ...result })}
       <br>`
     }
-    iframely.load()
   })
 }
 
@@ -257,4 +272,55 @@ export function preventDropImageOnOGPContent() {
     preventDragAndDrop(element)
     element.dataset.preventedDragAndDrop = true
   })
+}
+
+export function htmlDecode(text) {
+  const entities = new XmlEntities()
+  return entities.decode(text)
+}
+
+export function isYouTubeVideoURL(url) {
+  // 参考：
+  // https://github.com/itteco/iframely/blob/ef79303fdd8400ca958827a787a3f18bb9044073/plugins/domains/youtube.com/youtube.video.js
+  const regexes = [
+    /^https?:\/\/(?:www\.)?youtube\.com\/(?:tv#\/)?watch\/?\?(?:[^&]+&)*v=([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/youtu.be\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/m\.youtube\.com\/#\/watch\?(?:[^&]+&)*v=([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube\.com\/embed\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube\.com\/v\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube\.com\/user\/[a-zA-Z0-9_-]+\/?\?v=([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/www\.youtube-nocookie\.com\/(?:v|embed)\/([a-zA-Z0-9_-]+)/i
+  ]
+  const isYouTubeVideoURL = regexes.some((regex) => regex.test(url))
+
+  return isYouTubeVideoURL
+}
+
+export function isFacebookPostURL(url) {
+  // 参考：
+  // https://github.com/itteco/iframely/blob/bba8b566dc7158e3ab8a59e4665a0b1d32805030/plugins/domains/facebook.com/facebook.post.js
+  const regexes = [
+    /^https?:\/\/(?:www|m|business)\.facebook\.com\/(permalink|story)\.php\?[^/]+(\d{10,})/i,
+    /^https?:\/\/(?:www|m|business)\.facebook\.com\/photo\.php\?fbid=(\d{10,})/i,
+    /^https?:\/\/(?:www|m|business)\.facebook\.com\/([a-zA-Z0-9.-]+)\/(posts|activity)\/(\d{10,})/i,
+    /^https?:\/\/(?:www|m|business)\.facebook\.com\/([a-zA-Z0-9.-]+)\/photos\/[^/]+\/(\d{10,})/i,
+    /^https?:\/\/(?:www|m|business)\.facebook\.com\/notes\/([a-zA-Z0-9.-]+)\/[^/]+\/(\d{10,})/i,
+    /^https?:\/\/(?:www|m|business)\.facebook\.com\/media\/set\/\?set=[^/]+(\d{10,})/i
+  ]
+  const isFacebookPostURL = regexes.some((regex) => regex.test(url))
+
+  return isFacebookPostURL
+}
+
+export function isInstagramURL(url) {
+  // 参考：
+  // https://github.com/itteco/iframely/blob/245043afd1698d88f1ed05c6b7b075148aca1841/plugins/domains/instagram.com.js
+  const regexes = [
+    /^https?:\/\/(?:www.)?instagram\.com\/(?:[a-zA-Z0-9_-]+\/)?(?:p|tv)\/([a-zA-Z0-9_-]+)\/?/i,
+    /^https?:\/\/instagr\.am\/(?:[a-zA-Z0-9_-]+\/)?p\/([a-zA-Z0-9_-]+)/i,
+    /^https?:\/\/instagram\.com\/(?:[a-zA-Z0-9_-]+\/)?(?:p|tv)\/([a-zA-Z0-9_-]+)$/i
+  ]
+  const isInstagramURL = regexes.some((regex) => regex.test(url))
+
+  return isInstagramURL
 }

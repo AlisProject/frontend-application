@@ -116,8 +116,8 @@ export default {
         this.setSignUpAuthFlowInputAuthCodeModal({
           isSignUpAuthFlowInputAuthCodeModal: false
         })
-        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
-          isSignUpAuthFlowCompletedPhoneNumberAuthModal: true
+        this.setSignUpAuthFlowProfileSettingsModal({
+          isSignUpAuthFlowProfileSettingsModal: true
         })
       } catch (error) {
         let errorMessage = ''
@@ -143,7 +143,7 @@ export default {
       'showSignUpAuthFlowInputAuthCodeError',
       'hideSignUpAuthFlowInputAuthCodeError',
       'setSignUpAuthFlowInputAuthCodeModal',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowProfileSettingsModal',
       'verifySMSCode',
       'refreshUserSession'
     ])
@@ -237,14 +237,8 @@ export default {
 }
 
 @media screen and (max-width: 320px) {
-  .modal-body {
-    .signup-form {
-      margin-top: 30px;
-
-      &-input {
-        margin-bottom: 10px;
-      }
-    }
+  .modal-footer {
+    width: 250px;
   }
 }
 </style>

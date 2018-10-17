@@ -1,16 +1,16 @@
 <template>
   <nav class="area-nav">
-    <template v-if="!showOnlyLogo && !showOnlySessionLinks">
+    <div class="area-nav-links">
       <nuxt-link
         v-for="topic in topics"
         :key="topic.order"
         :data-topic="topic.name"
         :to="to(topic.name)"
-        :class="`nav-link area-topic${topic.order} ${showOnlySessionLinksOnPc ? 'hidden' : ''}`"
+        :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
         @click.native="resetData">
         {{topic.display_name}}
       </nuxt-link>
-    </template>
+    </div>
   </nav>
 </template>
 
@@ -18,20 +18,6 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  props: {
-    showOnlyLogo: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinks: {
-      type: Boolean,
-      default: false
-    },
-    showOnlySessionLinksOnPc: {
-      type: Boolean,
-      default: false
-    }
-  },
   data() {
     return {
       beforeClickedLinkName: this.$route.query.topic
@@ -56,6 +42,9 @@ export default {
       this.setArticleListScrollHeight({ scroll: 0 })
       this.beforeClickedLinkName = event.target.dataset.topic
     },
+    isTopPage(topicOrder) {
+      return this.$route.query.from === 'top' && topicOrder === 1
+    },
     ...mapActions('article', ['getTopics', 'resetArticleData']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }
@@ -63,41 +52,57 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$topicCount: 3;
+$topicCount: 5;
 
 .area-nav {
   grid-area: nav;
   display: grid;
   text-align: center;
-  grid-template-rows: 1fr 22px 1fr;
-  grid-template-columns: 1fr repeat($topicCount, fit-content(100%)) 60px;
-  grid-column-gap: 30px;
+  grid-template-rows: 1fr 32px 1fr;
+  grid-template-columns: 1fr;
+  width: 1080px;
   /* prettier-ignore */
   grid-template-areas:
-    "... ...    ...    ...    ..."
-    "... topic1 topic2 topic3 ..."
-    "... ...    ...    ...    ...";
+    "...      "
+    "nav-links"
+    "...      ";
+  justify-self: center;
+  border-bottom: 1px solid rgba(#6e6e6e, 0.1);
+  margin-bottom: -2px;
+}
+
+.area-nav-links {
+  grid-area: nav-links;
+  display: grid;
+  grid-column-gap: 30px;
+  grid-template-columns: repeat($topicCount, fit-content(100%));
+  /* prettier-ignore */
+  grid-template-areas:
+    "topic1 topic2 topic3 topic4 topic5";
 }
 
 .nav-link {
   font-size: 14px;
   text-decoration: none;
   color: #6e6e6e;
-  padding: 0 10px;
-  line-height: 1.6;
   white-space: nowrap;
+
+  &.nuxt-link-exact-active {
+    display: block;
+    color: #858dda;
+    border-bottom: 2px solid #99a2ff;
+  }
 }
 
 @for $i from 1 through $topicCount {
   .area-topic#{$i} {
     grid-area: topic#{$i};
   }
+}
 
-  .topic#{$i} .area-topic#{$i} {
-    color: white;
-    display: block;
-    background: #858dda;
-    border-radius: 10px;
+@media screen and (max-width: 1080px) {
+  .area-nav {
+    max-width: calc(100% - 68px);
   }
 }
 
@@ -120,25 +125,34 @@ $topicCount: 3;
     grid-gap: 14px;
     /* prettier-ignore */
     grid-template-areas:
-      'topic1 topic2 topic3';
-    grid-template-rows: 20px;
-    grid-template-columns: repeat($topicCount, fit-content(100%));
+      '... nav-links ...';
+    grid-template-rows: 28px;
+    grid-template-columns: 0 1fr 0;
+    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
+    max-width: 100%;
+    margin-bottom: 0;
+  }
+
+  .area-nav-links {
+    grid-column-gap: 20px;
+    overflow: scroll;
+    padding-top: 4px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .nav-link {
     font-size: 10px;
-    padding: 0 9px;
-    line-height: 2;
 
     &.hidden {
       display: none;
     }
-  }
-}
 
-@media screen and (max-width: 320px) {
-  .area-nav {
-    grid-gap: 2px;
+    &.nuxt-link-exact-active {
+      border-bottom: 1px solid #99a2ff;
+    }
   }
 }
 </style>

@@ -5,7 +5,7 @@
         <div class="comment-user" v-if="loggedIn">
           <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
-          <span class="name">{{ currentUserInfo.user_display_name }}</span>
+          <span class="name">{{ decodedUserDisplayName }}</span>
         </div>
       </no-ssr>
       <textarea
@@ -29,6 +29,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   data() {
@@ -68,10 +69,13 @@ export default {
     })
   },
   computed: {
+    decodedUserDisplayName() {
+      return htmlDecode(this.currentUserInfo.user_display_name)
+    },
     isCommentEmpty() {
       return this.comment.length === 0
     },
-    ...mapGetters('user', ['loggedIn', 'currentUserInfo'])
+    ...mapGetters('user', ['loggedIn', 'currentUserInfo', 'currentUser'])
   },
   methods: {
     showModal() {
@@ -90,6 +94,15 @@ export default {
       if (!this.loggedIn) {
         this.showModal()
         return
+      } else {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          document.querySelector('html').style.overflow = 'hidden'
+          document.querySelector('body').style.overflow = 'hidden'
+          return
+        }
       }
       try {
         if (this.postingComment) return
@@ -121,7 +134,11 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('article', ['postArticleComment', 'addArticleComment']),
-    ...mapActions('user', ['setRequestLoginModal'])
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ])
   }
 }
 </script>

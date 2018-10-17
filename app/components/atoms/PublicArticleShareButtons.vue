@@ -105,7 +105,7 @@ export default {
   flex-flow: column nowrap;
   left: calc(50% - 450px);
   position: absolute;
-  top: 160px;
+  top: 180px;
 
   .action {
     cursor: pointer;

@@ -1,6 +1,8 @@
 <template>
   <div class="new-article-list-container" @scroll="infiniteScroll">
-    <app-header showDefaultHeaderNav :class="`topic${topicNumber}`"/>
+    <app-header />
+    <default-header-nav/>
+    <article-type-select-nav />
     <article-card-list :articles="newArticles"/>
     <the-loader :isLoading="!isLastPage"/>
     <app-footer/>
@@ -10,13 +12,18 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
+import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
+import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
     AppHeader,
+    DefaultHeaderNav,
+    ArticleTypeSelectNav,
     ArticleCardList,
     TheLoader,
     AppFooter
@@ -32,7 +39,14 @@ export default {
     }
   },
   mounted() {
-    this.setTopicNumber()
+    // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
+    // 画面の高さに合うまで要素を取得する。
+
+    // 画面の高さに合っているかをスクロールできるかどうかで判定
+    if (!isPageScrollable(this.$el)) {
+      if (this.isLastPage) return
+      this.getNewPagesArticles({ topic: this.$route.query.topic })
+    }
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
@@ -55,23 +69,24 @@ export default {
         this.isFetchingArticles = false
       }
     },
-    setTopicNumber() {
-      this.topics.forEach((topic) => {
-        if (topic.name === this.$route.query.topic) this.topicNumber = topic.order
-      })
-    },
     ...mapActions('article', ['getNewPagesArticles', 'resetArticleData', 'setTopicDisplayName']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
+    async newArticles() {
+      // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
+      // 画面の高さに合うまで要素を取得する。
+
+      // 取得したデータが反映されるまで待つ
+      await this.$nextTick()
+      // 画面の高さに合っているかをスクロールできるかどうかで判定
+      if (isPageScrollable(this.$el) || this.isLastPage) return
+      this.getNewPagesArticles({ topic: this.$route.query.topic })
+    },
     $route(to) {
       this.resetArticleData()
-      this.setTopicNumber()
       this.setTopicDisplayName({ topicName: to.query.topic })
       this.getNewPagesArticles({ topic: to.query.topic })
-    },
-    topics() {
-      this.setTopicNumber()
     }
   }
 }
@@ -82,13 +97,14 @@ export default {
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header        app-header"
-    "...         ...               ...       "
-    "...         article-card-list ...       "
-    "...         loader            ...       "
-    "app-footer  app-footer        app-footer";
+    "app-header              app-header              app-header"
+    "nav                     nav                     nav       "
+    "article-type-select-nav article-type-select-nav article-type-select-nav"
+    "...                     article-card-list       ...       "
+    "...                     loader                  ...       "
+    "app-footer              app-footer              app-footer";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 20px 1fr 75px 75px;
+  grid-template-rows: 100px 30px 84px 1fr 75px 75px;
   height: 100vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
@@ -108,7 +124,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    grid-template-rows: 92px 28px 1fr 75px min-content;
+    grid-template-rows: 66px 28px 60px 1fr 75px min-content;
     grid-template-columns: 1fr 350px 1fr;
   }
 }

@@ -17,7 +17,7 @@
       :alt="imageCaption"
       v-else>
     <span class="user-display-name">
-      {{ article.userInfo.user_display_name }}
+      {{ decodedUserDisplayName }}
     </span>
     <span class="user-id">
       @{{ article.userInfo.user_id }}
@@ -39,7 +39,7 @@
     <span class="error-message">
       {{ errorMessage }}
     </span>
-    <app-button class="to-next-page-button" @click="moveToConfirmationPage">
+    <app-button class="to-confirmation-page-button" @click="moveToConfirmationPage">
       確認画面へ進む
     </app-button>
   </div>
@@ -49,6 +49,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -93,6 +94,9 @@ export default {
     orderedUnitList() {
       return this.unitList.sort((a, b) => a.order > b.order)
     },
+    decodedUserDisplayName() {
+      return htmlDecode(this.article.userInfo.user_display_name)
+    },
     ...mapGetters('user', ['alisToken']),
     ...mapGetters('article', ['article'])
   },
@@ -111,13 +115,13 @@ export default {
         return
       }
 
-      const formattedMaxTokenAmount = new BigNumber('9999.9').multipliedBy(formatNumber)
+      const formattedMaxTokenAmount = new BigNumber('999.9').multipliedBy(formatNumber)
       const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
         formattedMaxTokenAmount.minus(formattedAmount)
       )
 
       if (hasExceededMaxTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 9999.9 ALIS 以下となります'
+        this.errorMessage = '一度に贈れるトークンは 999.9 ALIS 以下となります'
         return
       }
 
@@ -125,7 +129,6 @@ export default {
       this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
     },
     moveToConfirmationPage() {
-      global.a = this.tipTokenAmount
       if (this.tipTokenAmount.isEqualTo(0)) {
         this.errorMessage = '贈るトークン量を選択してください'
         return
@@ -229,11 +232,12 @@ export default {
     .unit-item {
       border-radius: 50%;
       box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.8);
+      box-sizing: border-box;
       color: #858dda;
       cursor: pointer;
       font-size: 10px;
       height: 40px;
-      line-height: 5.8;
+      padding-top: 24px;
       user-select: none;
       width: 40px;
 
@@ -267,7 +271,7 @@ export default {
     min-height: 14px;
   }
 
-  .to-next-page-button {
+  .to-confirmation-page-button {
     margin: 8px 0 40px;
   }
 }
@@ -285,6 +289,22 @@ export default {
       color: #6e6e6e;
       font-size: 12px;
       margin-top: 30px;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .tip-flow-select-tip-amount-modal {
+    .title {
+      margin: 0;
+    }
+
+    .description {
+      margin-top: 12px;
+    }
+
+    .error-message {
+      margin-top: 24px;
     }
   }
 }
