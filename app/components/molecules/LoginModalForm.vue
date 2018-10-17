@@ -12,7 +12,6 @@
               class="signup-form-input"
               type="text"
               placeholder="alis@example.com"
-              autofocus
               ref="userIdOrEmail"
               @input="setUserIdOrEmail"
               @blur="showError('userIdOrEmail')"
