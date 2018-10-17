@@ -45,6 +45,12 @@ export default {
           })
           this.$store.dispatch('user/setSignUpModal', { showSignUpModal: true })
           break
+        case 'NotRegistered':
+          this.sendNotification({
+            text: 'アカウントが登録されていません。新規登録を行ってください',
+            type: 'warning'
+          })
+          break
         default:
           this.sendNotification({
             text: 'エラーが発生しました。お手数ですが、時間をおいて再度お試しください',
