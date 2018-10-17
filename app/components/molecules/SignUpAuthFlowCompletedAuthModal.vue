@@ -24,6 +24,7 @@ export default {
   },
   async mounted() {
     await this.setCurrentUserInfo()
+    await this.refreshUserSession()
   },
   methods: {
     transitToNextStep() {
@@ -42,7 +43,8 @@ export default {
       'setSignUpAuthFlowModal',
       'setSignUpAuthFlowCompletedAuthModal',
       'setCurrentUserInfo',
-      'setSignUpAuthFlowInputPhoneNumberModal'
+      'setSignUpAuthFlowInputPhoneNumberModal',
+      'refreshUserSession'
     ])
   }
 }
