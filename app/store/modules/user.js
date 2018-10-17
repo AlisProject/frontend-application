@@ -669,7 +669,7 @@ const actions = {
   hideRequestPhoneNumberVerifyInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR, { type })
   },
-  async getLineAuthorizeURL() {
+  async getLineLoginAuthorizeURL() {
     try {
       const { callback_url: callbackUrl } = await this.$axios.$get('/login/line/authorization_url')
       return callbackUrl
@@ -677,7 +677,7 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getTwitterAuthorizeURL() {
+  async getTwitterLoginAuthorizeURL() {
     try {
       const { url } = await this.$axios.$get('/login/twitter/authorization_url')
       return url
@@ -698,6 +698,24 @@ const actions = {
     const status = result.status
 
     return { hasUserId, status }
+  },
+  async getLineSignUpAuthorizeURL() {
+    try {
+      const { callback_url: callbackUrl } = await this.$axios.$get(
+        '/sign_up/line/authorization_url'
+      )
+      return callbackUrl
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getTwitterSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/twitter/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 

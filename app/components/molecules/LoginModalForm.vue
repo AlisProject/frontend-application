@@ -49,10 +49,10 @@
       <div class="divider" v-show="isShowEmailAuth && isShowExternalProviderAuth"/>
       <div class="external-provider-auth" v-show="isShowExternalProviderAuth">
         <h2 class="external-provider-auth-title" v-show="isShowEmailAuth && isShowExternalProviderAuth">外部サイトでログインする</h2>
-        <a class="line-button" :href="lineAuthorizeURL">
+        <a class="line-button" :href="lineLoginAuthorizeURL">
           LINEでログイン
         </a>
-        <a class="twitter-button" :href="twitterAuthorizeURL">
+        <a class="twitter-button" :href="twitterLoginAuthorizeURL">
           twitterでログイン
         </a>
         <p
@@ -93,16 +93,16 @@ export default {
       isShowEmailAuth: true,
       isShowExternalProviderAuth: true,
       errorMessage: '',
-      lineAuthorizeURL: null,
-      twitterAuthorizeURL: null,
+      lineLoginAuthorizeURL: null,
+      twitterLoginAuthorizeURL: null,
       isSelectedEmailAuth: false
     }
   },
   async mounted() {
     this.switchAuthType()
     window.addEventListener('resize', this.handleResize)
-    this.lineAuthorizeURL = await this.getLineAuthorizeURL()
-    this.twitterAuthorizeURL = await this.getTwitterAuthorizeURL()
+    this.lineLoginAuthorizeURL = await this.getLineLoginAuthorizeURL()
+    this.twitterLoginAuthorizeURL = await this.getTwitterLoginAuthorizeURL()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
@@ -221,8 +221,8 @@ export default {
       'forgotPassword',
       'setSignUpAuthFlowModal',
       'setSignUpAuthFlowInputPhoneNumberModal',
-      'getLineAuthorizeURL',
-      'getTwitterAuthorizeURL'
+      'getLineLoginAuthorizeURL',
+      'getTwitterLoginAuthorizeURL'
     ])
   }
 }
