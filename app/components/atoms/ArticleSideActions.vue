@@ -64,7 +64,7 @@ export default {
     formattedLikesCount() {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
     },
-    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
   },
   methods: {
@@ -79,10 +79,16 @@ export default {
     },
     async like() {
       if (this.loggedIn) {
-        if (!this.isLikedArticle) {
-          await this.postLike({ articleId: this.articleId })
-          await this.getIsLikedArticle({ articleId: this.articleId })
+        if (this.isLikedArticle) return
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleLike' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          document.querySelector('html,body').style.overflow = 'hidden'
+          return
         }
+        await this.postLike({ articleId: this.articleId })
+        await this.getIsLikedArticle({ articleId: this.articleId })
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
         window.scrollTo(0, 0)
@@ -101,7 +107,11 @@ export default {
       })
     },
     ...mapActions('article', ['postLike', 'getIsLikedArticle']),
-    ...mapActions('user', ['setRequestLoginModal'])
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ])
   }
 }
 </script>

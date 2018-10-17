@@ -1,5 +1,5 @@
 <template>
-  <app-modal title="PROFILE" @close="resetStates">
+  <app-modal title="プロフィール" @close="resetStates">
     <div slot="modal-content">
       <profile-settings-modal-form />
     </div>

@@ -9,6 +9,17 @@ import { mapGetters } from 'vuex'
 
 export default {
   mounted() {
+    const userId =
+      localStorage.getItem(
+        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+      ) || ''
+    const isExternalProviderUserId = userId.startsWith('LINE-') || userId.startsWith('Twitter-')
+
+    if (isExternalProviderUserId) {
+      this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
+      this.$store.dispatch('user/setSignUpAuthFlowInputUserIdModal', { isShow: true })
+    }
+
     if (location.pathname.startsWith('/me/')) {
       if (!this.loggedIn) {
         this.$router.push('/login')

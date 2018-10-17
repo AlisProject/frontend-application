@@ -1,12 +1,11 @@
 <template>
-  <div class="wrapper">
-    <span class="skip" @click="skip">スキップ</span>
+  <div>
     <div class="modal-body">
       <p class="announce">
-        電話番号を入力してください
+        {{ confirmTextPrefix }}<span class="br"/>SMSによるアカウント認証が必要です
       </p>
       <p class="description">
-        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます
+        以下にご入力いただいた電話番号にSMSで認証コードを送らせていただきます
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
@@ -55,44 +54,65 @@ export default {
     AppButton
   },
   computed: {
+    confirmTextPrefix() {
+      switch (this.requestPhoneNumberVerifyModal.requestType) {
+        case 'articleCreate':
+          return '記事の作成を行うには'
+        case 'viewPublicArticles':
+          return '記事一覧をひらくには'
+        case 'articleLike':
+          return '記事へいいねを行うには'
+        case 'articleComment':
+          return '記事へコメントを行うには'
+        case 'articleCommentLike':
+          return 'コメントへいいねを行うには'
+        case 'articleTip':
+          return 'トークンを贈るには'
+        case 'articleReport':
+          return '記事を通報するには'
+        default:
+          return ''
+      }
+    },
     showErrorInvalidPhoneNember() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        (!this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.minLength ||
-          !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.maxLength)
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        (!this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.minLength ||
+          !this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.maxLength)
       )
     },
     showErrorPhoneNumberNumeric() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.numeric
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        !this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.numeric
       )
     },
     showErrorPhoneNumberJapanesePhoneNumber() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        !this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.japanesePhoneNumber
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        !this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber
+          .japanesePhoneNumber
       )
     },
     invalidSubmit() {
-      return this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.$invalid
+      return this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.$invalid
     },
     hasUserIdOrEmailError() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.userIdOrEmail &&
-        this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.userIdOrEmail.$error
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.userIdOrEmail &&
+        this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.userIdOrEmail.$error
       )
     },
     hasPhoneNumberError() {
       return (
-        this.signUpAuthFlowModal.inputPhoneNumber.formError.phoneNumber &&
-        this.$v.signUpAuthFlowModal.inputPhoneNumber.formData.phoneNumber.$error
+        this.requestPhoneNumberVerifyModal.inputPhoneNumber.formError.phoneNumber &&
+        this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber.$error
       )
     },
-    ...mapGetters('user', ['signUpAuthFlowModal'])
+    ...mapGetters('user', ['requestPhoneNumberVerifyModal', 'requestPhoneNumberVerifyModal'])
   },
   validations: {
-    signUpAuthFlowModal: {
+    requestPhoneNumberVerifyModal: {
       inputPhoneNumber: {
         formData: {
           phoneNumber: {
@@ -108,34 +128,26 @@ export default {
   },
   methods: {
     setPhoneNumber(e) {
-      this.setSignUpAuthFlowInputPhoneNumberPhoneNumber({ phoneNumber: e.target.value })
+      this.setRequestPhoneNumberVerifyInputPhoneNumberPhoneNumber({ phoneNumber: e.target.value })
     },
     showError(type) {
-      this.$v.signUpAuthFlowModal.inputPhoneNumber.formData[type].$touch()
-      this.showSignUpAuthFlowInputPhoneNumberError({ type })
+      this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData[type].$touch()
+      this.showRequestPhoneNumberVerifyInputPhoneNumberError({ type })
     },
     resetError(type) {
-      this.$v.signUpAuthFlowModal.inputPhoneNumber.formData[type].$reset()
-      this.hideSignUpAuthFlowInputPhoneNumberError({ type })
+      this.$v.requestPhoneNumberVerifyModal.inputPhoneNumber.formData[type].$reset()
+      this.hideRequestPhoneNumberVerifyInputPhoneNumberError({ type })
     },
     async onSubmit() {
       if (this.invalidSubmit) return
-      const { userIdOrEmail } = this.signUpAuthFlowModal.login.formData
-      const { phoneNumber } = this.signUpAuthFlowModal.inputPhoneNumber.formData
+      const { phoneNumber } = this.requestPhoneNumberVerifyModal.inputPhoneNumber.formData
 
       try {
-        await this.updatePhoneNumber({
-          userId: userIdOrEmail,
-          phoneNumber: `+81${phoneNumber.slice(1)}`
-        })
+        await this.updatePhoneNumber({ phoneNumber: `+81${phoneNumber.slice(1)}` })
         await this.sendConfirm()
 
-        this.setSignUpAuthFlowInputPhoneNumberModal({
-          isSignUpAuthFlowInputPhoneNumberModal: false
-        })
-        this.setSignUpAuthFlowInputAuthCodeModal({
-          isSignUpAuthFlowInputAuthCodeModal: true
-        })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: false })
+        this.setRequestPhoneNumberVerifyInputAuthCodeModal({ isShow: true })
         this.$refs.phoneNumber.value = ''
       } catch (error) {
         let errorMessage = ''
@@ -147,55 +159,34 @@ export default {
         this.errorMessage = errorMessage
       }
     },
-    skip() {
-      this.setSignUpAuthFlowInputPhoneNumberModal({
-        isSignUpAuthFlowInputPhoneNumberModal: false
-      })
-      this.setSignUpAuthFlowProfileSettingsModal({
-        isSignUpAuthFlowProfileSettingsModal: true
-      })
-    },
     ...mapActions('user', [
-      'setSignUpAuthFlowInputPhoneNumberModal',
-      'setSignUpAuthFlowInputPhoneNumberPhoneNumber',
-      'showSignUpAuthFlowInputPhoneNumberError',
-      'hideSignUpAuthFlowInputPhoneNumberError',
-      'setSignUpAuthFlowInputAuthCodeModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberPhoneNumber',
+      'showRequestPhoneNumberVerifyInputPhoneNumberError',
+      'hideRequestPhoneNumberVerifyInputPhoneNumberError',
+      'setRequestPhoneNumberVerifyInputAuthCodeModal',
       'updatePhoneNumber',
-      'sendConfirm',
-      'setSignUpAuthFlowProfileSettingsModal'
+      'sendConfirm'
     ])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.wrapper {
-  position: relative;
-}
-
-.skip {
-  color: #858dda;
-  cursor: pointer;
-  font-size: 14px;
-  letter-spacing: 0.93px;
-  position: absolute;
-  right: -14px;
-  top: -120px;
-}
-
 .modal-body {
   margin: 0 auto;
 
   .announce {
     @include default-text();
     font-size: 14px;
+    letter-spacing: 0.17px;
     margin: 60px 0 0;
     text-align: center;
   }
 
   .description {
     @include default-text();
+    color: #6e6e6e;
     margin: 20px 0 0;
     text-align: center;
   }
@@ -256,6 +247,27 @@ export default {
     color: #f06273;
     font-size: 12px;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+  .modal-body {
+    .announce {
+      color: #030303;
+    }
+
+    .description {
+      letter-spacing: 0.8px;
+      margin: 20px auto;
+      max-width: 256px;
+      text-align: left;
+    }
   }
 }
 

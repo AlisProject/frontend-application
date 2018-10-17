@@ -1,11 +1,13 @@
 <template>
-  <app-modal :title="title" :showModalContent="showSignUpAuthFlowModal">
+  <app-modal :title="title" :showModalContent="showSignUpAuthFlowModal" :isShowCloseModalButton="isShowCloseModalButton">
     <div slot="modal-content">
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
+      <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
+      <sign-up-auth-flow-completed-auth-modal v-if="isCompletedAuthModal" />
     </div>
   </app-modal>
 </template>
@@ -18,6 +20,8 @@ import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlow
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
 import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
+import SignUpAuthFlowInputUserIdForm from '../molecules/SignUpAuthFlowInputUserIdForm'
+import SignUpAuthFlowCompletedAuthModal from '../molecules/SignUpAuthFlowCompletedAuthModal'
 
 export default {
   components: {
@@ -26,16 +30,24 @@ export default {
     SignUpAuthFlowInputPhoneNumberModalForm,
     SignUpAuthFlowInputAuthCodeModalForm,
     SignUpAuthFlowCompletedPhoneNumberAuthModal,
-    ProfileSettingsModalForm
+    ProfileSettingsModalForm,
+    SignUpAuthFlowInputUserIdForm,
+    SignUpAuthFlowCompletedAuthModal
   },
   computed: {
     title() {
-      if (this.isCompletedPhoneNumberAuthModal) {
-        return 'CONGRATULATIONS!!'
+      if (this.isInputUserIdModal) {
+        return '外部サービス認証完了'
+      } else if (this.isCompletedAuthModal) {
+        return ''
+      } else if (this.isInputPhoneNumberModal) {
+        return '電話番号の登録'
+      } else if (this.isInputAuthCodeModal) {
+        return '認証コードの確認'
       } else if (this.isProfileSettingsModal) {
-        return 'PROFILE'
+        return 'プロフィール'
       } else {
-        return 'SIGN UP'
+        return '新規登録'
       }
     },
     isLoginModal() {
@@ -52,6 +64,15 @@ export default {
     },
     isProfileSettingsModal() {
       return this.signUpAuthFlowModal.isProfileSettingsModal
+    },
+    isInputUserIdModal() {
+      return this.signUpAuthFlowModal.isInputUserIdModal
+    },
+    isCompletedAuthModal() {
+      return this.signUpAuthFlowModal.isCompletedAuthModal
+    },
+    isShowCloseModalButton() {
+      return !this.isInputPhoneNumberModal
     },
     ...mapGetters('user', ['signUpAuthFlowModal', 'showSignUpAuthFlowModal'])
   }

@@ -11,6 +11,7 @@
           :class="{ 'invalid-tag': isInvalidTag, 'hide-autocomplete-items': !hasAutocompleteItems }"
           :autocomplete-items="autocompleteItems"
           :autocomplete-always-open="true"
+          :separators="['　']"
           @before-adding-tag="checkTags"
           @tags-changed="handleTagsChanged" />
       </no-ssr>
