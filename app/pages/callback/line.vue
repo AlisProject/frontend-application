@@ -21,7 +21,7 @@ export default {
     try {
       const { code } = this.$route.query
 
-      history.replaceState(null, null, '/articles/popular?topic=crypto')
+      this.$router.replace('/articles/popular?topic=crypto')
 
       if (!code) return
       const { hasUserId, status } = await this.$store.dispatch('user/checkAuthByLine', {
