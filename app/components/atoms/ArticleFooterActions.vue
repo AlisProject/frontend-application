@@ -151,6 +151,7 @@ export default {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleTip' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
           return
         }
         this.setTipModal({ showTipModal: true })
