@@ -124,7 +124,7 @@ export default {
       document.querySelector('body').style.overflow = ''
     },
     replaceUrlToTop() {
-      this.$router.replace('/articles/popular?topic=crypto')
+      this.$router.replace('/')
     },
     ...mapActions('user', [
       'setSignUpModal',
