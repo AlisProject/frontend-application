@@ -75,15 +75,24 @@ export default {
     async closeModal() {
       if (this.showSignUpModal) {
         this.setSignUpModal({ showSignUpModal: false })
+        if (this.$route.path.startsWith('/signup')) {
+          this.replaceUrlToTop()
+        }
       }
       if (this.showSignUpAuthFlowModal) {
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
+        if (this.$route.path.startsWith('/signup-login')) {
+          this.replaceUrlToTop()
+        }
         if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
           await this.logout()
         }
       }
       if (this.showLoginModal) {
         this.setLoginModal({ showLoginModal: false })
+        if (this.$route.path.startsWith('/login')) {
+          this.replaceUrlToTop()
+        }
       }
       if (this.showReportModal) {
         this.setReportModal({ showReportModal: false })
@@ -113,6 +122,9 @@ export default {
       document.body.scrollTop = 0
       document.querySelector('html').style.overflow = ''
       document.querySelector('body').style.overflow = ''
+    },
+    replaceUrlToTop() {
+      this.$router.replace('/')
     },
     ...mapActions('user', [
       'setSignUpModal',
