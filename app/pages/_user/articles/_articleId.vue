@@ -22,15 +22,15 @@ export default {
   async mounted() {
     if (this.loggedIn) {
       const { articleId } = this.$route.params
+      if (this.currentUser.phoneNumberVerified) await this.postPv({ articleId })
       await this.getIsLikedArticle({ articleId })
-      await this.postPv({ articleId })
       await this.updateArticleCommentsByCommentIds({ articleId })
     } else {
       this.setIsLikedArticle({ liked: false })
     }
   },
   computed: {
-    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
   },
   methods: {
