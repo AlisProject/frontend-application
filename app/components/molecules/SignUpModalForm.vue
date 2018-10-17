@@ -60,10 +60,10 @@
       <div class="divider" v-show="isShowEmailAuth && isShowExternalProviderAuth"/>
       <div class="external-provider-auth" v-show="isShowExternalProviderAuth">
         <h2 class="external-provider-auth-title" v-show="isShowEmailAuth && isShowExternalProviderAuth">外部サイトで登録する</h2>
-        <a class="line-button" :href="lineAuthorizeURL">
+        <a class="line-button" :href="lineSignUpAuthorizeURL">
           LINEではじめる
         </a>
-        <a class="twitter-button" :href="twitterAuthorizeURL">
+        <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
           twitterではじめる
         </a>
         <p
@@ -107,16 +107,16 @@ export default {
       isShowEmailAuth: true,
       isShowExternalProviderAuth: true,
       errorMessage: '',
-      lineAuthorizeURL: null,
-      twitterAuthorizeURL: null,
+      lineSignUpAuthorizeURL: null,
+      twitterSignUpAuthorizeURL: null,
       isSelectedEmailAuth: false
     }
   },
   async mounted() {
     this.switchAuthType()
     window.addEventListener('resize', this.handleResize)
-    this.lineAuthorizeURL = await this.getLineAuthorizeURL()
-    this.twitterAuthorizeURL = await this.getTwitterAuthorizeURL()
+    this.lineSignUpAuthorizeURL = await this.getLineSignUpAuthorizeURL()
+    this.twitterSignUpAuthorizeURL = await this.getTwitterSignUpAuthorizeURL()
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.handleResize)
@@ -245,8 +245,8 @@ export default {
       'setSignUpModal',
       'setLoginModal',
       'resetPassword',
-      'getLineAuthorizeURL',
-      'getTwitterAuthorizeURL'
+      'getLineSignUpAuthorizeURL',
+      'getTwitterSignUpAuthorizeURL'
     ])
   }
 }
