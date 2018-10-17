@@ -395,13 +395,19 @@ export default {
 
 .line-button {
   margin-top: 60px;
+  background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
+  background-size: 24px;
+  background-position: 24px 7px;
   @include external-provider-button();
 }
 
 .twitter-button {
   margin: 30px 0 60px;
+  background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
   background-color: #1da1f3;
+  background-size: 20px;
+  background-position: 26px 10px;
   @include external-provider-button();
 }
 
