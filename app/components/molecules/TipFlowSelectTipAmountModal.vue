@@ -23,9 +23,14 @@
       @{{ article.userInfo.user_id }}
     </span>
     <div class="triangle-mark" />
-    <div class="token-amount-box">
-      <span class="token-amount">{{ tipTokenAmountForUser }}</span>
-      <span class="unit">ALIS</span>
+    <div class="token-amount-input-box">
+      <input
+        class="token-amount-input"
+        type="number"
+        :value="tipTokenAmountForUser"
+        @input="onInput"
+        @keydown.up.down.prevent>
+      <span class="token-amount-input-unit">ALIS</span>
     </div>
     <div class="select-unit-box">
       <div
@@ -86,7 +91,7 @@ export default {
   computed: {
     tipTokenAmountForUser() {
       const formatNumber = 10 ** 18
-      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString()
+      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString(10)
     },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
@@ -101,6 +106,55 @@ export default {
     ...mapGetters('article', ['article'])
   },
   methods: {
+    onInput(event) {
+      try {
+        const amount = event.target.value
+        const formatNumber = 10 ** 18
+        const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
+
+        const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
+        const formattedTipTokenAmount = new BigNumber(amount)
+        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+          formattedAlisTokenAmount.minus(formattedAmount)
+        )
+
+        if (!isAddableToken) {
+          this.errorMessage = 'トークンが不足しています'
+          return
+        }
+
+        const formattedMaxTokenAmount = BigNumber('999.9999999999')
+        const hasExceededMaxTipToken = BigNumber(amount).isGreaterThan(formattedMaxTokenAmount)
+
+        if (hasExceededMaxTipToken) {
+          this.errorMessage = '一度に贈れるトークンは 999.9999999999 ALIS 以下となります'
+          return
+        }
+
+        const formattedMinTokenAmount = new BigNumber('0.0000000001')
+        const hasFalledTipToken = BigNumber(amount).isLessThan(formattedMinTokenAmount)
+
+        if (hasFalledTipToken) {
+          this.errorMessage = '一度に贈れるトークンは 0.0000000001 ALIS 以上となります'
+          return
+        }
+
+        if (amount) {
+          if (amount.includes('.')) {
+            const fractionalPartLength = amount.split('.')[1].length
+            if (fractionalPartLength > 10) {
+              this.errorMessage = '入力できる桁数は小数点以下10桁までとなります'
+              return
+            }
+          }
+        }
+
+        this.tipTokenAmount = formattedAmount
+        this.errorMessage = ''
+      } catch (error) {
+        this.errorMessage = '数値を入力してください'
+      }
+    },
     addTipTokenAmount(amount) {
       const formatNumber = 10 ** 18
       const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
@@ -115,13 +169,13 @@ export default {
         return
       }
 
-      const formattedMaxTokenAmount = new BigNumber('999.9').multipliedBy(formatNumber)
+      const formattedMaxTokenAmount = new BigNumber('999.9999999999').multipliedBy(formatNumber)
       const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
         formattedMaxTokenAmount.minus(formattedAmount)
       )
 
       if (hasExceededMaxTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 999.9 ALIS 以下となります'
+        this.errorMessage = '一度に贈れるトークンは 999.9999999999 ALIS 以下となります'
         return
       }
 
@@ -197,28 +251,46 @@ export default {
     width: 0;
   }
 
-  .token-amount-box {
-    align-items: center;
-    background-color: #ffffff;
-    border-radius: 50%;
-    border: 2px solid #858dda;
-    display: flex;
-    flex-flow: column nowrap;
-    height: 80px;
-    margin-top: 20px;
-    width: 80px;
+  .token-amount-input-box {
+    position: relative;
 
-    .token-amount {
+    .token-amount-input {
+      appearance: none;
+      border: 0;
+      padding: 10px 40px 10px 10px;
       color: #858dda;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
-      margin-top: 22px;
+      line-height: 28px;
+      box-shadow: 0 0 8px 0 rgba(133, 141, 218, 0.5);
+      text-align: right;
+      margin-top: 20px;
+      width: 255px;
+      box-sizing: border-box;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &:after {
+        content: 'ALIS';
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: none;
+      }
     }
 
-    .unit {
+    .token-amount-input-unit {
+      position: absolute;
       color: #858dda;
-      font-size: 14px;
-      margin-top: 2px;
+      font-size: 10px;
+      font-weight: bold;
+      top: 39px;
+      right: 10px;
     }
   }
 

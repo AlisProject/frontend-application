@@ -24,9 +24,9 @@
       @{{ article.userInfo.user_id }}
     </span>
     <div class="triangle-mark" />
-    <div class="token-amount-box">
-      <span class="token-amount">{{ tipTokenAmountForUser }}</span>
-      <span class="unit">ALIS</span>
+    <div class="token-amount-input-box">
+      <span class="token-amount-input">{{ tipTokenAmountForUser }}</span>
+      <span class="token-amount-input-unit">ALIS</span>
     </div>
       <span class="error-message">
       {{ errorMessage }}
@@ -55,7 +55,7 @@ export default {
   computed: {
     tipTokenAmountForUser() {
       const formatNumber = 10 ** 18
-      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString()
+      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString(10)
     },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
@@ -150,28 +150,23 @@ export default {
     width: 0;
   }
 
-  .token-amount-box {
-    align-items: center;
-    background-color: #858dda;
-    border-radius: 50%;
-    border: 2px solid #858dda;
-    display: flex;
-    flex-flow: column nowrap;
-    height: 80px;
+  .token-amount-input-box {
     margin-top: 20px;
-    width: 80px;
+    display: flex;
+    align-items: center;
 
-    .token-amount {
-      color: #fff;
-      font-size: 20px;
+    .token-amount-input {
+      color: #858dda;
+      font-size: 24px;
       font-weight: bold;
-      margin-top: 22px;
+      text-align: right;
+      margin-right: 4px;
     }
 
-    .unit {
-      color: #fff;
-      font-size: 14px;
-      margin-top: 2px;
+    .token-amount-input-unit {
+      color: #858dda;
+      font-size: 10px;
+      font-weight: bold;
     }
   }
 
