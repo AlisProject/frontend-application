@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- SPの場合、スクロールによりモーダルの表示が崩れるバグがあるため、スクロールさせないためにロゴを消す -->
     <img class="logo" src="~assets/images/pc/common/header_logo_original.png" v-if="isShowEmailAuth && isShowExternalProviderAuth">
     <h1 class="title" v-if="isSelectedEmailAuth">ログイン</h1>
     <div class="modal-body">
