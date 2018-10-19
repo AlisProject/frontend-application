@@ -35,7 +35,7 @@
     <div class="select-unit-box">
       <div
         v-for="unit in orderedUnitList"
-        @click="raiseTipTokenAmount(unit.amount)"
+        @click="addTipTokenAmount(unit.amount)"
         :data-token-amount="unit.amount"
         :class="`unit-item unit-${unit.name}`">
         {{ unit.amount }}
@@ -83,7 +83,7 @@ export default {
       (event) => {
         const now = window.performance.now()
         if (now - lastTouch <= 500) {
-          this.raiseTipTokenAmount(event.target.dataset.tokenAmount)
+          this.addTipTokenAmount(event.target.dataset.tokenAmount)
           event.preventDefault()
         }
         lastTouch = now
@@ -119,15 +119,15 @@ export default {
         this.errorMessage = '有効な数値を入力してください'
       }
     },
-    raiseTipTokenAmount(amount) {
+    addTipTokenAmount(amount) {
       const formattedAmount = new BigNumber(amount).multipliedBy(FORMAT_NUMBER)
       const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(FORMAT_NUMBER)
       const formattedTipTokenAmount = this.tipTokenAmount
-      const isRaisable = formattedTipTokenAmount.isLessThanOrEqualTo(
+      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
         formattedAlisTokenAmount.minus(formattedAmount)
       )
 
-      if (!isRaisable) {
+      if (!isAddableToken) {
         this.errorMessage = 'トークンが不足しています'
         return
       }
@@ -155,10 +155,10 @@ export default {
 
       const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(FORMAT_NUMBER)
       const formattedTipTokenAmount = this.tipTokenAmount.div(FORMAT_NUMBER)
-      const isRaisable = formattedTipTokenAmount.isLessThanOrEqualTo(
+      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
         formattedAlisTokenAmount.minus(formattedTipTokenAmount)
       )
-      if (!isRaisable) {
+      if (!isAddableToken) {
         this.errorMessage = 'トークンが不足しています'
         return
       }
@@ -172,9 +172,11 @@ export default {
       }
 
       const formattedMinTokenAmount = new BigNumber(MINIMUM_TIPPABLE_TOKEN_AMOUNT)
-      const isNotReducible = BigNumber(formattedTipTokenAmount).isLessThan(formattedMinTokenAmount)
+      const isLessThanMinTipToken = BigNumber(formattedTipTokenAmount).isLessThan(
+        formattedMinTokenAmount
+      )
 
-      if (isNotReducible) {
+      if (isLessThanMinTipToken) {
         this.errorMessage = `一度に贈れるトークンは ${MINIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以上となります`
         return
       }
