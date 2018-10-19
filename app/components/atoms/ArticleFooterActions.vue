@@ -25,6 +25,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -136,8 +137,15 @@ export default {
           }
           return
         }
-        await this.postLike({ articleId: this.articleId })
-        await this.getIsLikedArticle({ articleId: this.articleId })
+        try {
+          await this.postLike({ articleId: this.articleId })
+          await this.getIsLikedArticle({ articleId: this.articleId })
+        } catch (error) {
+          this.sendNotification({
+            text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+            type: 'warning'
+          })
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
         window.scrollTo(0, 0)
@@ -179,6 +187,9 @@ export default {
         }
       })
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', [
       'setReportModal',
       'setRequestLoginModal',

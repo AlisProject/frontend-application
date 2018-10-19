@@ -16,6 +16,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   data() {
@@ -25,7 +26,14 @@ export default {
   },
   async created() {
     if (this.topics.length !== 0) return
-    await this.getTopics()
+    try {
+      await this.getTopics()
+    } catch (error) {
+      this.sendNotification({
+        text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+        type: 'warning'
+      })
+    }
   },
   computed: {
     ...mapGetters('article', ['topics', 'articleType'])
@@ -45,6 +53,9 @@ export default {
     isTopPage(topicOrder) {
       return this.$route.query.from === 'top' && topicOrder === 1
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', ['getTopics', 'resetArticleData']),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   }

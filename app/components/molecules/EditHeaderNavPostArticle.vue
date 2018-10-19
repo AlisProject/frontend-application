@@ -60,7 +60,14 @@ export default {
     }
   },
   async created() {
-    await this.getTopics()
+    try {
+      await this.getTopics()
+    } catch (error) {
+      this.sendNotification({
+        text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+        type: 'warning'
+      })
+    }
   },
   mounted() {
     this.listen(window, 'click', (event) => {
