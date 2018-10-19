@@ -17,6 +17,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   props: {
@@ -64,7 +65,7 @@ export default {
     formattedLikesCount() {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
     },
-    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
   },
   methods: {
@@ -79,9 +80,22 @@ export default {
     },
     async like() {
       if (this.loggedIn) {
-        if (!this.isLikedArticle) {
+        if (this.isLikedArticle) return
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleLike' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          document.querySelector('html,body').style.overflow = 'hidden'
+          return
+        }
+        try {
           await this.postLike({ articleId: this.articleId })
           await this.getIsLikedArticle({ articleId: this.articleId })
+        } catch (error) {
+          this.sendNotification({
+            text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+            type: 'warning'
+          })
         }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
@@ -100,8 +114,15 @@ export default {
         }
       })
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', ['postLike', 'getIsLikedArticle']),
-    ...mapActions('user', ['setRequestLoginModal'])
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ])
   }
 }
 </script>

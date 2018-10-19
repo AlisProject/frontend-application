@@ -154,18 +154,25 @@ export default {
       await this.search()
     },
     async getSearchData(query) {
-      switch (this.searchContentType) {
-        case 'article':
-          await this.getSearchArticles({ query })
-          break
-        case 'user':
-          await this.getSearchUsers({ query })
-          break
-        case 'tag':
-          await this.getSearchTags({ query })
-          break
-        default:
-          break
+      try {
+        switch (this.searchContentType) {
+          case 'article':
+            await this.getSearchArticles({ query })
+            break
+          case 'user':
+            await this.getSearchUsers({ query })
+            break
+          case 'tag':
+            await this.getSearchTags({ query })
+            break
+          default:
+            break
+        }
+      } catch (error) {
+        this.ADD_TOAST_MESSAGE({
+          text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+          type: 'warning'
+        })
       }
     },
     async infiniteScroll(event) {

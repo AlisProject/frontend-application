@@ -131,9 +131,7 @@ export default {
       try {
         await this.signUpLogin({ userId: userIdOrEmail, password })
         this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
-        this.setSignUpAuthFlowInputPhoneNumberModal({
-          isSignUpAuthFlowInputPhoneNumberModal: true
-        })
+        this.setSignUpAuthFlowCompletedAuthModal({ isShow: true })
         this.$refs.userIdOrEmail.value = ''
         this.$refs.password.value = ''
         this.resetPassword()
@@ -156,7 +154,7 @@ export default {
       'setSignUpAuthFlowLoginPassword',
       'showSignUpAuthFlowLoginError',
       'hideSignUpAuthFlowLoginError',
-      'setSignUpAuthFlowInputPhoneNumberModal',
+      'setSignUpAuthFlowCompletedAuthModal',
       'signUpLogin',
       'resetPassword',
       'forgotPassword',

@@ -38,6 +38,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import AppButton from '../atoms/AppButton'
 
@@ -53,36 +54,36 @@ export default {
   computed: {
     showErrorInvalidAuthCode() {
       return (
-        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
-        (!this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.minLength ||
-          !this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.maxLength)
+        this.requestPhoneNumberVerifyModal.inputAuthCode.formError.authCode &&
+        (!this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData.authCode.minLength ||
+          !this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData.authCode.maxLength)
       )
     },
     showErrorAuthCodeNumeric() {
       return (
-        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
-        !this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.numeric
+        this.requestPhoneNumberVerifyModal.inputAuthCode.formError.authCode &&
+        !this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData.authCode.numeric
       )
     },
     invalidSubmit() {
-      return this.$v.signUpAuthFlowModal.inputAuthCode.formData.$invalid
+      return this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData.$invalid
     },
     hasUserIdOrEmailError() {
       return (
-        this.signUpAuthFlowModal.inputAuthCode.formError.userIdOrEmail &&
-        this.$v.signUpAuthFlowModal.inputAuthCode.formData.userIdOrEmail.$error
+        this.requestPhoneNumberVerifyModal.inputAuthCode.formError.userIdOrEmail &&
+        this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData.userIdOrEmail.$error
       )
     },
     hasPhoneNumberError() {
       return (
-        this.signUpAuthFlowModal.inputAuthCode.formError.authCode &&
-        this.$v.signUpAuthFlowModal.inputAuthCode.formData.authCode.$error
+        this.requestPhoneNumberVerifyModal.inputAuthCode.formError.authCode &&
+        this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData.authCode.$error
       )
     },
-    ...mapGetters('user', ['signUpAuthFlowModal'])
+    ...mapGetters('user', ['requestPhoneNumberVerifyModal'])
   },
   validations: {
-    signUpAuthFlowModal: {
+    requestPhoneNumberVerifyModal: {
       inputAuthCode: {
         formData: {
           authCode: {
@@ -97,28 +98,26 @@ export default {
   },
   methods: {
     setAuthCode(e) {
-      this.setSignUpAuthFlowInputAuthCodeAuthCode({ authCode: e.target.value })
+      this.setRequestPhoneNumberVerifyInputAuthCodeAuthCode({ authCode: e.target.value })
     },
     showError(type) {
-      this.$v.signUpAuthFlowModal.inputAuthCode.formData[type].$touch()
-      this.showSignUpAuthFlowInputAuthCodeError({ type })
+      this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData[type].$touch()
+      this.showRequestPhoneNumberVerifyInputAuthCodeError({ type })
     },
     resetError(type) {
-      this.$v.signUpAuthFlowModal.inputAuthCode.formData[type].$reset()
-      this.hideSignUpAuthFlowInputAuthCodeError({ type })
+      this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData[type].$reset()
+      this.hideRequestPhoneNumberVerifyInputAuthCodeError({ type })
     },
     async onSubmit() {
       if (this.invalidSubmit) return
-      const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
+      const { authCode: code } = this.requestPhoneNumberVerifyModal.inputAuthCode.formData
       try {
         await this.verifySMSCode({ code })
         await this.refreshUserSession()
-        this.setSignUpAuthFlowInputAuthCodeModal({
-          isSignUpAuthFlowInputAuthCodeModal: false
-        })
-        this.setSignUpAuthFlowProfileSettingsModal({
-          isSignUpAuthFlowProfileSettingsModal: true
-        })
+        this.setRequestPhoneNumberVerifyModal({ isShow: false })
+        this.setRequestPhoneNumberVerifyInputAuthCodeModal({ isShow: false })
+        await this.setCurrentUserInfo()
+        this.sendNotification({ text: '電話番号の登録が完了しました' })
       } catch (error) {
         let errorMessage = ''
         switch (error.code) {
@@ -130,22 +129,21 @@ export default {
       }
     },
     backToInputPhoneNumber() {
-      this.setSignUpAuthFlowInputPhoneNumberModal({
-        isSignUpAuthFlowInputPhoneNumberModal: true
-      })
-      this.setSignUpAuthFlowInputAuthCodeModal({
-        isSignUpAuthFlowInputAuthCodeModal: false
-      })
+      this.setRequestPhoneNumberVerifyInputAuthCodeModal({ isShow: false })
+      this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', [
-      'setSignUpAuthFlowInputPhoneNumberModal',
-      'setSignUpAuthFlowInputAuthCodeAuthCode',
-      'showSignUpAuthFlowInputAuthCodeError',
-      'hideSignUpAuthFlowInputAuthCodeError',
-      'setSignUpAuthFlowInputAuthCodeModal',
-      'setSignUpAuthFlowProfileSettingsModal',
+      'setRequestPhoneNumberVerifyInputAuthCodeModal',
+      'setRequestPhoneNumberVerifyInputAuthCodeAuthCode',
+      'showRequestPhoneNumberVerifyInputAuthCodeError',
+      'hideRequestPhoneNumberVerifyInputAuthCodeError',
+      'setRequestPhoneNumberVerifyModal',
       'verifySMSCode',
-      'refreshUserSession'
+      'refreshUserSession',
+      'setCurrentUserInfo'
     ])
   }
 }
@@ -237,8 +235,14 @@ export default {
 }
 
 @media screen and (max-width: 320px) {
-  .modal-footer {
-    width: 250px;
+  .modal-body {
+    .signup-form {
+      margin-top: 30px;
+
+      &-input {
+        margin-bottom: 10px;
+      }
+    }
   }
 }
 </style>

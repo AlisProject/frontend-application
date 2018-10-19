@@ -2,6 +2,7 @@ import { uniqBy } from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
+import CognitoAuthSDK from '~/utils/cognito-auth-sdk'
 
 const namespaced = true
 
@@ -31,6 +32,8 @@ const state = () => ({
     isInputAuthCodeModal: false,
     isCompletedPhoneNumberAuthModal: false,
     isProfileSettingsModal: false,
+    isInputUserIdModal: false,
+    isCompletedAuthModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -65,6 +68,14 @@ const state = () => ({
       formError: {
         userDisplayName: false,
         selfIntroduction: false
+      }
+    },
+    inputUserId: {
+      formData: {
+        userId: ''
+      },
+      formError: {
+        userId: false
       }
     }
   },
@@ -114,7 +125,29 @@ const state = () => ({
     isConfirmationModal: false,
     isCompletedModal: false
   },
-  tipTokenAmount: 0
+  tipTokenAmount: 0,
+  requestPhoneNumberVerifyModal: {
+    isShow: false,
+    requestType: '',
+    isInputPhoneNumberModal: false,
+    isInputAuthCodeModal: false,
+    inputPhoneNumber: {
+      formData: {
+        phoneNumber: ''
+      },
+      formError: {
+        phoneNumber: false
+      }
+    },
+    inputAuthCode: {
+      formData: {
+        authCode: ''
+      },
+      formError: {
+        authCode: false
+      }
+    }
+  }
 })
 
 const getters = {
@@ -146,7 +179,8 @@ const getters = {
   searchUsers: (state) => state.searchUsers,
   showTipModal: (state) => state.showTipModal,
   tipFlowModal: (state) => state.tipFlowModal,
-  tipTokenAmount: (state) => state.tipTokenAmount
+  tipTokenAmount: (state) => state.tipTokenAmount,
+  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal
 }
 
 const actions = {
@@ -322,10 +356,8 @@ const actions = {
   async login({ commit }, { userId, password }) {
     try {
       const result = await this.cognito.login({ userId, password })
-      if (!result.phoneNumberVerified) {
-        commit(types.SET_LOGGED_IN, { loggedIn: true })
-        commit(types.SET_CURRENT_USER, { user: result })
-      }
+      commit(types.SET_LOGGED_IN, { loggedIn: true })
+      commit(types.SET_CURRENT_USER, { user: result })
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -349,9 +381,12 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async logout({ commit, state }) {
+  async logout({ commit }) {
     try {
-      const result = await this.cognito.logoutUser({ userId: state.currentUser.userId })
+      const userId = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+      )
+      const result = await this.cognito.logoutUser({ userId })
       commit(types.SET_LOGGED_IN, { loggedIn: false })
       commit(types.SET_CURRENT_USER, { user: null })
       return result
@@ -561,6 +596,129 @@ const actions = {
   },
   resetNotificationData({ commit }) {
     commit(types.RESET_NOTIFICATION_DATA)
+  },
+  initCognitoAuth({ state }) {
+    this.cognitoAuth = new CognitoAuthSDK()
+  },
+  async checkAuthByLine({ commit, dispatch }, { code }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/line', { code })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  setSignUpAuthFlowInputUserIdModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_MODAL, { isShow })
+  },
+  setSignUpAuthFlowUserId({ commit }, { userId }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_USER_ID, { userId })
+  },
+  showSignUpAuthFlowInputUserIdError({ commit }, { type }) {
+    commit(types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR, { type })
+  },
+  hideSignUpAuthFlowInputUserIdError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR, { type })
+  },
+  async postUserId({ state, dispatch }, { userId }) {
+    try {
+      const externalProviderUserId = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+      )
+      const result = await this.$axios.$post('/me/external_provider_user', {
+        user_id: userId
+      })
+
+      if (!this.cognitoAuth) {
+        dispatch('initCognitoAuth')
+      }
+
+      this.cognitoAuth.removeTokens({ lastAuthUser: externalProviderUserId })
+      this.cognitoAuth.setTokens(result)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setSignUpAuthFlowCompletedAuthModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL, { isShow })
+  },
+  setRequestPhoneNumberVerifyModal({ commit }, { isShow, requestType }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL, { isShow, requestType })
+  },
+  setRequestPhoneNumberVerifyInputPhoneNumberModal({ commit }, { isShow }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_MODAL, { isShow })
+  },
+  setRequestPhoneNumberVerifyInputPhoneNumberPhoneNumber({ commit }, { phoneNumber }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_PHONE_NUMBER, { phoneNumber })
+  },
+  showRequestPhoneNumberVerifyInputPhoneNumberError({ commit }, { type }) {
+    commit(types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR, { type })
+  },
+  hideRequestPhoneNumberVerifyInputPhoneNumberError({ commit }, { type }) {
+    commit(types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR, { type })
+  },
+  setRequestPhoneNumberVerifyInputAuthCodeModal({ commit }, { isShow }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_MODAL, { isShow })
+  },
+  setRequestPhoneNumberVerifyInputAuthCodeAuthCode({ commit }, { authCode }) {
+    commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_AUTH_CODE, { authCode })
+  },
+  showRequestPhoneNumberVerifyInputAuthCodeError({ commit }, { type }) {
+    commit(types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR, { type })
+  },
+  hideRequestPhoneNumberVerifyInputAuthCodeError({ commit }, { type }) {
+    commit(types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR, { type })
+  },
+  async getLineLoginAuthorizeURL() {
+    try {
+      const { callback_url: callbackUrl } = await this.$axios.$get('/login/line/authorization_url')
+      return callbackUrl
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getTwitterLoginAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/twitter/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/twitter', {
+      oauth_token: oauthToken,
+      oauth_verifier: oauthVerifier
+    })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async getLineSignUpAuthorizeURL() {
+    try {
+      const { callback_url: callbackUrl } = await this.$axios.$get(
+        '/sign_up/line/authorization_url'
+      )
+      return callbackUrl
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getTwitterSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/twitter/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -786,6 +944,49 @@ const mutations = {
   [types.RESET_NOTIFICATION_DATA](state) {
     state.notifications = []
     state.notificationsLastEvaluatedKey = {}
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isInputUserIdModal = isShow
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_USER_ID](state, { userId }) {
+    state.signUpAuthFlowModal.inputUserId.formData.userId = userId
+  },
+  [types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputUserId.formError[type] = true
+  },
+  [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputUserId.formError[type] = false
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isCompletedAuthModal = isShow
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL](state, { isShow, requestType }) {
+    state.requestPhoneNumberVerifyModal.isShow = isShow
+    state.requestPhoneNumberVerifyModal.requestType = requestType
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_MODAL](state, { isShow }) {
+    state.requestPhoneNumberVerifyModal.isInputPhoneNumberModal = isShow
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_PHONE_NUMBER](state, { phoneNumber }) {
+    state.requestPhoneNumberVerifyModal.inputPhoneNumber.formData.phoneNumber = phoneNumber
+  },
+  [types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputPhoneNumber.formError[type] = true
+  },
+  [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_PHONE_NUMBER_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputPhoneNumber.formError[type] = false
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_MODAL](state, { isShow }) {
+    state.requestPhoneNumberVerifyModal.isInputAuthCodeModal = isShow
+  },
+  [types.SET_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_AUTH_CODE](state, { authCode }) {
+    state.requestPhoneNumberVerifyModal.inputAuthCode.formData.authCode = authCode
+  },
+  [types.SHOW_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = true
+  },
+  [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
+    state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = false
   }
 }
 

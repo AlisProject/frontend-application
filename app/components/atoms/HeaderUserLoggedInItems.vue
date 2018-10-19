@@ -37,10 +37,18 @@
       </div>
       <ul class="menu-links">
         <li class="menu-link">
-          <a class="menu-link-inner" href="/me/articles/new">新規記事作成</a>
+          <nuxt-link class="reset-link-style" to="/me/articles/new" event="">
+            <span class="menu-link-inner" @click="moveToNewArticlePage">
+              新規記事作成
+            </span>
+          </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link class="menu-link-inner" to="/me/articles/public">記事一覧</nuxt-link>
+          <nuxt-link class="reset-link-style" to="/me/articles/public" event="">
+            <span class="menu-link-inner" @click="moveToPublicArticlesPage">
+              記事一覧
+            </span>
+          </nuxt-link>
         </li>
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
@@ -91,7 +99,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification'])
+    ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification', 'currentUser'])
   },
   methods: {
     resetSearchStates() {
@@ -141,6 +149,30 @@ export default {
       this.getNotifications()
       this.$router.push('/me/notifications')
     },
+    moveToNewArticlePage() {
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        window.scrollTo(0, 0)
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
+        return
+      }
+      location.href = '/me/articles/new'
+    },
+    moveToPublicArticlesPage() {
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'viewPublicArticles' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        window.scrollTo(0, 0)
+        if (window.innerWidth > 550) {
+          document.querySelector('html,body').style.overflow = 'hidden'
+        }
+        return
+      }
+      this.$router.push('/me/articles/public')
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -154,7 +186,9 @@ export default {
       'resetSearchUsersPage',
       'resetSearchUsersIsLastPage',
       'resetNotificationData',
-      'getNotifications'
+      'getNotifications',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ]),
     ...mapActions('article', [
       'resetSearchArticles',
@@ -241,6 +275,15 @@ export default {
 
       &:hover {
         background-color: rgba(131, 139, 215, 0.2);
+      }
+
+      .reset-link-style {
+        color: #000;
+        text-decoration: none;
+
+        &:visited {
+          color: #000;
+        }
       }
 
       .menu-link-inner {
