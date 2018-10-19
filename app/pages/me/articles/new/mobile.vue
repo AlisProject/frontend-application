@@ -105,7 +105,8 @@ export default {
     handleCloseModal() {
       this.isOpenModal = false
     },
-    handlePublishEditor() {
+    handlePublishEditor(blocks) {
+      this.blocks = blocks
       this.isOpenModal = true
     }
   }
