@@ -19,7 +19,7 @@ export default {
       await store.dispatch('article/getPopularArticles', { topic })
     } catch (e) {
       store.dispatch('user/setSignUpModal', { showSignUpModal: false })
-      error({ statusCode: 500 })
+      error({ statusCode: 404 })
     }
   },
   mounted() {

@@ -21,7 +21,7 @@ export default {
     } catch (e) {
       store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: false })
       store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: false })
-      error({ statusCode: 500 })
+      error({ statusCode: 404 })
     }
   },
   mounted() {
