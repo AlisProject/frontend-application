@@ -80,7 +80,7 @@ export default {
       // 取得したデータが反映されるまで待つ
       await this.$nextTick()
       // 画面の高さに合っているかをスクロールできるかどうかで判定
-      if (isPageScrollable(this.$el) || this.isLastPage) return
+      if (isPageScrollable(this.$el) || this.isLastPage || this.popularArticles.length === 0) return
       this.getPopularArticles({ topic: this.$route.query.topic })
     },
     $route(to) {
