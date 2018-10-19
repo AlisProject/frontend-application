@@ -82,7 +82,7 @@ export default {
           return
         }
 
-        const tipValue = new BigNumber(this.tipTokenAmount).toNumber()
+        const tipValue = new BigNumber(this.tipTokenAmount).toString()
 
         await this.postTipToken({ tipValue, articleId: this.article.article_id })
       } catch (error) {
