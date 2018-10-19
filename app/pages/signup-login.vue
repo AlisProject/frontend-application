@@ -9,14 +9,20 @@ export default {
   components: {
     PopularArticleList
   },
-  async fetch({ store }) {
-    store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
-    store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: true })
+  async fetch({ store, error }) {
+    try {
+      store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
+      store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: true })
 
-    const topic = 'crypto'
-    await store.dispatch('article/getTopics')
-    store.dispatch('article/resetArticleData')
-    await store.dispatch('article/getPopularArticles', { topic })
+      const topic = 'crypto'
+      await store.dispatch('article/getTopics')
+      store.dispatch('article/resetArticleData')
+      await store.dispatch('article/getPopularArticles', { topic })
+    } catch (e) {
+      store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: false })
+      store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: false })
+      error({ statusCode: 404 })
+    }
   },
   mounted() {
     if (window.innerWidth <= 550) {
