@@ -92,9 +92,6 @@ export default {
     this.getUsersAlisToken()
   },
   computed: {
-    tipTokenAmountForUser() {
-      return new BigNumber(this.tipTokenAmount).div(FORMAT_NUMBER).toString(10)
-    },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
     },
