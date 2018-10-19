@@ -29,14 +29,14 @@
         type="number"
         :value="tipTokenAmountForUser"
         @input="onInput"
-        @keydown.up.prevent="addTipTokenAmount(0.1)"
+        @keydown.up.prevent="raiseTipTokenAmount(0.1)"
         @keydown.down.prevent="reduceTipTokenAmount(0.1)">
       <span class="token-amount-input-unit">ALIS</span>
     </div>
     <div class="select-unit-box">
       <div
         v-for="unit in orderedUnitList"
-        @click="addTipTokenAmount(unit.amount)"
+        @click="raiseTipTokenAmount(unit.amount)"
         :data-token-amount="unit.amount"
         :class="`unit-item unit-${unit.name}`">
         {{ unit.amount }}
@@ -56,6 +56,10 @@ import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
+
+const FORMAT_NUMBER = 10 ** 18
+const MAXIMUM_TIPPABLE_TOKEN_AMOUNT = '999.9999999999'
+const MINIMUM_TIPPABLE_TOKEN_AMOUNT = '0.0000000001'
 
 export default {
   components: {
@@ -80,7 +84,7 @@ export default {
       (event) => {
         const now = window.performance.now()
         if (now - lastTouch <= 500) {
-          this.addTipTokenAmount(event.target.dataset.tokenAmount)
+          this.raiseTipTokenAmount(event.target.dataset.tokenAmount)
           event.preventDefault()
         }
         lastTouch = now
@@ -91,8 +95,7 @@ export default {
   },
   computed: {
     tipTokenAmountForUser() {
-      const formatNumber = 10 ** 18
-      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString(10)
+      return new BigNumber(this.tipTokenAmount).div(FORMAT_NUMBER).toString(10)
     },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
@@ -110,35 +113,35 @@ export default {
     onInput(event) {
       try {
         const amount = parseFloat(event.target.value)
-        const formatNumber = 10 ** 18
-        const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
+        const formattedAmount = new BigNumber(amount).multipliedBy(FORMAT_NUMBER)
         this.tipTokenAmount = formattedAmount
         this.errorMessage = ''
       } catch (error) {
         this.errorMessage = '有効な数値を入力してください'
       }
     },
-    addTipTokenAmount(amount) {
-      const formatNumber = 10 ** 18
-      const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
-      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
+    raiseTipTokenAmount(amount) {
+      const formattedAmount = new BigNumber(amount).multipliedBy(FORMAT_NUMBER)
+      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(FORMAT_NUMBER)
       const formattedTipTokenAmount = this.tipTokenAmount
-      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+      const isRaisable = formattedTipTokenAmount.isLessThanOrEqualTo(
         formattedAlisTokenAmount.minus(formattedAmount)
       )
 
-      if (!isAddableToken) {
+      if (!isRaisable) {
         this.errorMessage = 'トークンが不足しています'
         return
       }
 
-      const formattedMaxTokenAmount = new BigNumber('999.9999999999').multipliedBy(formatNumber)
+      const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT).multipliedBy(
+        FORMAT_NUMBER
+      )
       const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
         formattedMaxTokenAmount.minus(formattedAmount)
       )
 
       if (hasExceededMaxTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 999.9999999999 ALIS 以下となります'
+        this.errorMessage = `一度に贈れるトークンは ${MAXIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以下となります`
         return
       }
 
@@ -146,17 +149,16 @@ export default {
       this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
     },
     reduceTipTokenAmount(amount) {
-      const formatNumber = 10 ** 18
-      const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
+      const formattedAmount = new BigNumber(amount).multipliedBy(FORMAT_NUMBER)
       const formattedTipTokenAmount = this.tipTokenAmount
 
-      const formattedMinTokenAmount = new BigNumber('0.0000000001').multipliedBy(formatNumber)
-      const hasFalledTipToken = BigNumber(formattedTipTokenAmount).isLessThan(
-        formattedMinTokenAmount
+      const formattedMinTokenAmount = new BigNumber(MINIMUM_TIPPABLE_TOKEN_AMOUNT).multipliedBy(
+        FORMAT_NUMBER
       )
+      const isNotReducible = BigNumber(formattedTipTokenAmount).isLessThan(formattedMinTokenAmount)
 
-      if (hasFalledTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 0.0000000001 ALIS 以上となります'
+      if (isNotReducible) {
+        this.errorMessage = `一度に贈れるトークンは ${MINIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以上となります`
         return
       }
 
@@ -164,50 +166,48 @@ export default {
       this.tipTokenAmount = this.tipTokenAmount.minus(formattedAmount)
     },
     moveToConfirmationPage() {
-      const formatNumber = 10 ** 18
-      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
-      const formattedTipTokenAmount = this.tipTokenAmount.div(formatNumber)
-      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-        formattedAlisTokenAmount.minus(formattedTipTokenAmount)
-      )
-
-      if (!isAddableToken) {
-        this.errorMessage = 'トークンが不足しています'
-        return
-      }
-
-      const formattedMaxTokenAmount = BigNumber('999.9999999999')
-      const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(formattedMaxTokenAmount)
-
-      if (hasExceededMaxTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 999.9999999999 ALIS 以下となります'
-        return
-      }
-
-      const formattedMinTokenAmount = new BigNumber('0.0000000001')
-      const hasFalledTipToken = BigNumber(formattedTipTokenAmount).isLessThan(
-        formattedMinTokenAmount
-      )
-
-      if (hasFalledTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 0.0000000001 ALIS 以上となります'
-        return
-      }
-
-      if (this.tipTokenAmountForUser) {
-        if (this.tipTokenAmountForUser.includes('.')) {
-          const fractionalPartLength = this.tipTokenAmountForUser.split('.')[1].length
-          if (fractionalPartLength > 10) {
-            this.errorMessage = '入力できる桁数は小数点以下10桁までとなります'
-            return
-          }
-        }
-      }
-
       if (this.tipTokenAmount.isEqualTo(0)) {
         this.errorMessage = '贈るトークン量を選択してください'
         return
       }
+
+      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(FORMAT_NUMBER)
+      const formattedTipTokenAmount = this.tipTokenAmount.div(FORMAT_NUMBER)
+      const isRaisable = formattedTipTokenAmount.isLessThanOrEqualTo(
+        formattedAlisTokenAmount.minus(formattedTipTokenAmount)
+      )
+      if (!isRaisable) {
+        this.errorMessage = 'トークンが不足しています'
+        return
+      }
+
+      const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT)
+      const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(formattedMaxTokenAmount)
+
+      if (hasExceededMaxTipToken) {
+        this.errorMessage = `一度に贈れるトークンは ${MAXIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以下となります`
+        return
+      }
+
+      const formattedMinTokenAmount = new BigNumber(MINIMUM_TIPPABLE_TOKEN_AMOUNT)
+      const isNotReducible = BigNumber(formattedTipTokenAmount).isLessThan(formattedMinTokenAmount)
+
+      if (isNotReducible) {
+        this.errorMessage = `一度に贈れるトークンは ${MINIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以上となります`
+        return
+      }
+
+      // 小数点以下の桁数が10桁を超えているか確認
+      const isNotInputablePlaceAfterDecimalPoint =
+        this.tipTokenAmountForUser &&
+        this.tipTokenAmountForUser.includes('.') &&
+        this.tipTokenAmountForUser.split('.')[1].length > 10
+
+      if (isNotInputablePlaceAfterDecimalPoint) {
+        this.errorMessage = '入力できる桁数は小数点以下10桁までとなります'
+        return
+      }
+
       this.setTipTokenAmount({ tipTokenAmount: this.tipTokenAmount })
       this.setTipFlowSelectTipAmountModal({ isShow: false })
       this.setTipFlowConfirmationModal({ isShow: true })
