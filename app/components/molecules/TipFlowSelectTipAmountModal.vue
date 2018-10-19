@@ -112,7 +112,7 @@ export default {
   methods: {
     onInput(event) {
       try {
-        const amount = parseFloat(event.target.value)
+        const amount = parseFloat(event.target.value || 0)
         const formattedAmount = new BigNumber(amount).multipliedBy(FORMAT_NUMBER)
         this.tipTokenAmount = formattedAmount
         this.errorMessage = ''
