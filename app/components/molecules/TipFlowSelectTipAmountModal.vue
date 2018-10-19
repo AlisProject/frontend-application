@@ -27,8 +27,7 @@
       <input
         class="token-amount-input"
         type="number"
-        :value="tipTokenAmountForUser"
-        @input="onInput"
+        v-model="tipTokenAmount"
         @keydown.up.down.prevent>
       <span class="token-amount-input-unit">ALIS</span>
     </div>
@@ -66,7 +65,7 @@ export default {
   },
   data() {
     return {
-      tipTokenAmount: new BigNumber(0),
+      tipTokenAmount: 0,
       errorMessage: '',
       unitList: [
         { amount: 10, name: '10', order: 1 },
@@ -109,92 +108,92 @@ export default {
     ...mapGetters('article', ['article'])
   },
   methods: {
-    onInput(event) {
+    addTipTokenAmount(amount) {
       try {
-        const amount = parseFloat(event.target.value || 0)
-        const formattedAmount = new BigNumber(amount).multipliedBy(FORMAT_NUMBER)
-        this.tipTokenAmount = formattedAmount
+        const formattedAmount = new BigNumber(amount)
+        const formattedAlisTokenAmount = new BigNumber(this.alisToken)
+        const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
+        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+          formattedAlisTokenAmount.minus(formattedAmount)
+        )
+
+        if (!isAddableToken) {
+          this.errorMessage = 'トークンが不足しています'
+          return
+        }
+
+        const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT)
+        const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
+          formattedMaxTokenAmount.minus(formattedAmount)
+        )
+
+        if (hasExceededMaxTipToken) {
+          this.errorMessage = `一度に贈れるトークンは ${MAXIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以下となります`
+          return
+        }
+
         this.errorMessage = ''
+        this.tipTokenAmount = formattedTipTokenAmount.plus(formattedAmount)
       } catch (error) {
         this.errorMessage = '有効な数値を入力してください'
       }
     },
-    addTipTokenAmount(amount) {
-      const formattedAmount = new BigNumber(amount).multipliedBy(FORMAT_NUMBER)
-      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(FORMAT_NUMBER)
-      const formattedTipTokenAmount = this.tipTokenAmount
-      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-        formattedAlisTokenAmount.minus(formattedAmount)
-      )
-
-      if (!isAddableToken) {
-        this.errorMessage = 'トークンが不足しています'
-        return
-      }
-
-      const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT).multipliedBy(
-        FORMAT_NUMBER
-      )
-      const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
-        formattedMaxTokenAmount.minus(formattedAmount)
-      )
-
-      if (hasExceededMaxTipToken) {
-        this.errorMessage = `一度に贈れるトークンは ${MAXIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以下となります`
-        return
-      }
-
-      this.errorMessage = ''
-      this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
-    },
     moveToConfirmationPage() {
-      if (this.tipTokenAmount.isEqualTo(0)) {
-        this.errorMessage = '贈るトークン量を選択してください'
-        return
+      try {
+        const formattedAlisTokenAmount = new BigNumber(this.alisToken)
+        const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
+        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+          formattedAlisTokenAmount.minus(formattedTipTokenAmount)
+        )
+        if (!isAddableToken) {
+          this.errorMessage = 'トークンが不足しています'
+          return
+        }
+
+        if (formattedTipTokenAmount.isEqualTo(0)) {
+          this.errorMessage = '贈るトークン量を選択してください'
+          return
+        }
+
+        const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT)
+        const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
+          formattedMaxTokenAmount
+        )
+
+        if (hasExceededMaxTipToken) {
+          this.errorMessage = `一度に贈れるトークンは ${MAXIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以下となります`
+          return
+        }
+
+        const formattedMinTokenAmount = new BigNumber(MINIMUM_TIPPABLE_TOKEN_AMOUNT)
+        const isLessThanMinTipToken = formattedTipTokenAmount.isLessThan(formattedMinTokenAmount)
+
+        if (isLessThanMinTipToken) {
+          this.errorMessage = `一度に贈れるトークンは ${MINIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以上となります`
+          return
+        }
+
+        const tipTokenAmountForUser = formattedTipTokenAmount.toString(10)
+
+        // 小数点以下の桁数が10桁を超えているか確認
+        const isNotInputablePlaceAfterDecimalPoint =
+          tipTokenAmountForUser &&
+          tipTokenAmountForUser.includes('.') &&
+          tipTokenAmountForUser.split('.')[1].length > 10
+
+        if (isNotInputablePlaceAfterDecimalPoint) {
+          this.errorMessage = '入力できる桁数は小数点以下10桁までとなります'
+          return
+        }
+
+        this.setTipTokenAmount({
+          tipTokenAmount: formattedTipTokenAmount.multipliedBy(FORMAT_NUMBER)
+        })
+        this.setTipFlowSelectTipAmountModal({ isShow: false })
+        this.setTipFlowConfirmationModal({ isShow: true })
+      } catch (error) {
+        this.errorMessage = '有効な数値を入力してください'
       }
-
-      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(FORMAT_NUMBER)
-      const formattedTipTokenAmount = this.tipTokenAmount.div(FORMAT_NUMBER)
-      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-        formattedAlisTokenAmount.minus(formattedTipTokenAmount)
-      )
-      if (!isAddableToken) {
-        this.errorMessage = 'トークンが不足しています'
-        return
-      }
-
-      const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT)
-      const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(formattedMaxTokenAmount)
-
-      if (hasExceededMaxTipToken) {
-        this.errorMessage = `一度に贈れるトークンは ${MAXIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以下となります`
-        return
-      }
-
-      const formattedMinTokenAmount = new BigNumber(MINIMUM_TIPPABLE_TOKEN_AMOUNT)
-      const isLessThanMinTipToken = BigNumber(formattedTipTokenAmount).isLessThan(
-        formattedMinTokenAmount
-      )
-
-      if (isLessThanMinTipToken) {
-        this.errorMessage = `一度に贈れるトークンは ${MINIMUM_TIPPABLE_TOKEN_AMOUNT} ALIS 以上となります`
-        return
-      }
-
-      // 小数点以下の桁数が10桁を超えているか確認
-      const isNotInputablePlaceAfterDecimalPoint =
-        this.tipTokenAmountForUser &&
-        this.tipTokenAmountForUser.includes('.') &&
-        this.tipTokenAmountForUser.split('.')[1].length > 10
-
-      if (isNotInputablePlaceAfterDecimalPoint) {
-        this.errorMessage = '入力できる桁数は小数点以下10桁までとなります'
-        return
-      }
-
-      this.setTipTokenAmount({ tipTokenAmount: this.tipTokenAmount })
-      this.setTipFlowSelectTipAmountModal({ isShow: false })
-      this.setTipFlowConfirmationModal({ isShow: true })
     },
     ...mapActions('user', [
       'getUsersAlisToken',
