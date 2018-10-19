@@ -108,51 +108,13 @@ export default {
   methods: {
     onInput(event) {
       try {
-        const amount = event.target.value
+        const amount = parseFloat(event.target.value)
         const formatNumber = 10 ** 18
         const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
-
-        const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
-        const formattedTipTokenAmount = new BigNumber(amount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-          formattedAlisTokenAmount.minus(formattedAmount)
-        )
-
-        if (!isAddableToken) {
-          this.errorMessage = 'トークンが不足しています'
-          return
-        }
-
-        const formattedMaxTokenAmount = BigNumber('999.9999999999')
-        const hasExceededMaxTipToken = BigNumber(amount).isGreaterThan(formattedMaxTokenAmount)
-
-        if (hasExceededMaxTipToken) {
-          this.errorMessage = '一度に贈れるトークンは 999.9999999999 ALIS 以下となります'
-          return
-        }
-
-        const formattedMinTokenAmount = new BigNumber('0.0000000001')
-        const hasFalledTipToken = BigNumber(amount).isLessThan(formattedMinTokenAmount)
-
-        if (hasFalledTipToken) {
-          this.errorMessage = '一度に贈れるトークンは 0.0000000001 ALIS 以上となります'
-          return
-        }
-
-        if (amount) {
-          if (amount.includes('.')) {
-            const fractionalPartLength = amount.split('.')[1].length
-            if (fractionalPartLength > 10) {
-              this.errorMessage = '入力できる桁数は小数点以下10桁までとなります'
-              return
-            }
-          }
-        }
-
         this.tipTokenAmount = formattedAmount
         this.errorMessage = ''
       } catch (error) {
-        this.errorMessage = '数値を入力してください'
+        this.errorMessage = '有効な数値を入力してください'
       }
     },
     addTipTokenAmount(amount) {
@@ -183,6 +145,46 @@ export default {
       this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
     },
     moveToConfirmationPage() {
+      const formatNumber = 10 ** 18
+      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
+      const formattedTipTokenAmount = this.tipTokenAmount.div(formatNumber)
+      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+        formattedAlisTokenAmount.minus(formattedTipTokenAmount)
+      )
+
+      if (!isAddableToken) {
+        this.errorMessage = 'トークンが不足しています'
+        return
+      }
+
+      const formattedMaxTokenAmount = BigNumber('999.9999999999')
+      const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(formattedMaxTokenAmount)
+
+      if (hasExceededMaxTipToken) {
+        this.errorMessage = '一度に贈れるトークンは 999.9999999999 ALIS 以下となります'
+        return
+      }
+
+      const formattedMinTokenAmount = new BigNumber('0.0000000001')
+      const hasFalledTipToken = BigNumber(formattedTipTokenAmount).isLessThan(
+        formattedMinTokenAmount
+      )
+
+      if (hasFalledTipToken) {
+        this.errorMessage = '一度に贈れるトークンは 0.0000000001 ALIS 以上となります'
+        return
+      }
+
+      if (this.tipTokenAmountForUser) {
+        if (this.tipTokenAmountForUser.includes('.')) {
+          const fractionalPartLength = this.tipTokenAmountForUser.split('.')[1].length
+          if (fractionalPartLength > 10) {
+            this.errorMessage = '入力できる桁数は小数点以下10桁までとなります'
+            return
+          }
+        }
+      }
+
       if (this.tipTokenAmount.isEqualTo(0)) {
         this.errorMessage = '贈るトークン量を選択してください'
         return
