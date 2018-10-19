@@ -29,7 +29,8 @@
         type="number"
         :value="tipTokenAmountForUser"
         @input="onInput"
-        @keydown.up.down.prevent>
+        @keydown.up.prevent="addTipTokenAmount(0.1)"
+        @keydown.down.prevent="reduceTipTokenAmount(0.1)">
       <span class="token-amount-input-unit">ALIS</span>
     </div>
     <div class="select-unit-box">
@@ -143,6 +144,24 @@ export default {
 
       this.errorMessage = ''
       this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
+    },
+    reduceTipTokenAmount(amount) {
+      const formatNumber = 10 ** 18
+      const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
+      const formattedTipTokenAmount = this.tipTokenAmount
+
+      const formattedMinTokenAmount = new BigNumber('0.0000000001').multipliedBy(formatNumber)
+      const hasFalledTipToken = BigNumber(formattedTipTokenAmount).isLessThan(
+        formattedMinTokenAmount
+      )
+
+      if (hasFalledTipToken) {
+        this.errorMessage = '一度に贈れるトークンは 0.0000000001 ALIS 以上となります'
+        return
+      }
+
+      this.errorMessage = ''
+      this.tipTokenAmount = this.tipTokenAmount.minus(formattedAmount)
     },
     moveToConfirmationPage() {
       const formatNumber = 10 ** 18
