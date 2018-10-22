@@ -107,6 +107,7 @@ export default {
   methods: {
     addTipTokenAmount(amount) {
       try {
+        if (this.tipTokenAmount === '') this.tipTokenAmount = 0
         const formattedAmount = new BigNumber(amount)
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
