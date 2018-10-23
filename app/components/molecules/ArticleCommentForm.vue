@@ -227,7 +227,7 @@ export default {
 
 @media screen and (max-width: 640px) {
   .area-article-comment-form {
-    padding: 40px 10px 8px;
+    padding: 0 10px 50px;
   }
 }
 </style>

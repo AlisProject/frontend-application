@@ -229,10 +229,6 @@ export default {
 @media screen and (max-width: 530px) {
   .area-article-comment-form {
     width: calc(100vw - 94px);
-
-    .comment-textarea {
-      /* width: calc(100% - 50px - 74px); */
-    }
   }
 }
 </style>
