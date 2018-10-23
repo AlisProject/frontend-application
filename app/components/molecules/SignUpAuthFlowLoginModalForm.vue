@@ -40,9 +40,6 @@
       <app-button class="login-button" :disabled="invalidSubmit" @click="onSubmit">
         ログインする
       </app-button>
-      <p class="for-signup-user">
-        新規登録をされる方は<span class="link" @click="transitToSignup">こちら</span>
-      </p>
       <p class="for-password-forgot-user">
         パスワードを忘れた方は<span class="link" @click="forgotPassword">こちら</span>
       </p>
@@ -121,10 +118,6 @@ export default {
       this.$v.signUpAuthFlowModal.login.formData[type].$reset()
       this.hideSignUpAuthFlowLoginError({ type })
     },
-    transitToSignup() {
-      this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
-      this.setSignUpModal({ showSignUpModal: true })
-    },
     async onSubmit() {
       if (this.invalidSubmit) return
       const { userIdOrEmail, password } = this.signUpAuthFlowModal.login.formData
@@ -157,9 +150,7 @@ export default {
       'setSignUpAuthFlowCompletedAuthModal',
       'signUpLogin',
       'resetPassword',
-      'forgotPassword',
-      'setSignUpAuthFlowModal',
-      'setSignUpModal'
+      'forgotPassword'
     ])
   }
 }
@@ -252,7 +243,6 @@ export default {
     margin: 20px auto 0;
   }
 
-  .for-signup-user,
   .for-password-forgot-user {
     @include default-text();
     text-align: right;
