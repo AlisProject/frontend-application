@@ -82,7 +82,9 @@ export default {
       (event) => {
         const now = window.performance.now()
         if (now - lastTouch <= 500) {
-          this.addTipTokenAmount(event.target.dataset.tokenAmount)
+          // 連続で複数回投げ銭金額を増やすボタンを押した際に、event.target.dataset.tokenAmount の値が
+          // 取得できないことがあるため、初期値として 0 を引数として渡す。
+          this.addTipTokenAmount(event.target.dataset.tokenAmount || 0)
           event.preventDefault()
         }
         lastTouch = now
