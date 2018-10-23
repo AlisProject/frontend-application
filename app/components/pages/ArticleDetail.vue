@@ -17,8 +17,8 @@
       <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
     </div>
-    <article-comment-form/>
     <article-comments :comments="reversedArticleComments"/>
+    <article-comment-form/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
   </div>
@@ -96,8 +96,8 @@ export default {
     'app-header           app-header           app-header      '
     '...                  ...                  ...             '
     '...                  article              ...             '
-    'article-comment-form article-comment-form article-comment-form'
     'article-comments     article-comments     article-comments'
+    'article-comment-form article-comment-form article-comment-form'
     // 'related-articles related-articles related-articles'
     'app-footer           app-footer           app-footer      ';
   background: white;
@@ -148,8 +148,8 @@ export default {
     'app-header           app-header           app-header      '
     '...                  ...                  ...             '
     'article              article              article         '
-    'article-comment-form article-comment-form article-comment-form'
     'article-comments     article-comments     article-comments'
+    'article-comment-form article-comment-form article-comment-form'
     // 'related-articles related-articles related-articles'
     'app-footer           app-footer           app-footer      ';
   }

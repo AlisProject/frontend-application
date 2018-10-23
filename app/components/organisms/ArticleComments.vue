@@ -1,22 +1,20 @@
 <template>
   <div class="area-article-comments">
-    <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
-    <app-button
+    <span
       class="read-more-button"
       @click="showComments"
-      v-if="hasArticleCommentsLastEvaluatedKey">もっと見る</app-button>
+      v-if="hasArticleCommentsLastEvaluatedKey">前のコメントを表示</span>
+    <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ArticleComment from '../atoms/ArticleComment'
-import AppButton from '../atoms/AppButton'
 
 export default {
   components: {
-    ArticleComment,
-    AppButton
+    ArticleComment
   },
   data() {
     return {
@@ -57,11 +55,15 @@ export default {
   display: grid;
   grid-area: article-comments;
   grid-gap: 8px;
-  padding: 0 calc(50% - 324px) 48px;
+  padding: 20px calc(50% - 324px) 8px;
 }
 
 .read-more-button {
-  margin: 40px auto 0;
+  color: #6e6e6e;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 20px 0 20px;
 }
 
 @media screen and (max-width: 640px) {

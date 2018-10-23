@@ -147,7 +147,7 @@ export default {
 .area-article-comment-form {
   grid-area: article-comment-form;
   background-color: rgba(35, 37, 56, 0.05);
-  padding: 40px calc(50% - 324px) 8px;
+  padding: 0 calc(50% - 324px) 50px;
 
   .article-comment-form-box {
     background-color: #fff;
