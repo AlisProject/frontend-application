@@ -77,20 +77,20 @@ export default {
   mounted() {
     let lastTouch = 0
     // スマホでのダブルタップ時に拡大しない
-    this.$el.addEventListener(
-      'touchend',
-      (event) => {
-        const now = window.performance.now()
-        if (now - lastTouch <= 500) {
-          // 連続で複数回投げ銭金額を増やすボタンを押した際に、event.target.dataset.tokenAmount の値が
-          // 取得できないことがあるため、初期値として 0 を引数として渡す。
-          this.addTipTokenAmount(event.target.dataset.tokenAmount || 0)
-          event.preventDefault()
-        }
-        lastTouch = now
-      },
-      true
-    )
+    Array.from(this.$el.querySelectorAll('.unit-item')).forEach((unitItem) => {
+      unitItem.addEventListener(
+        'touchend',
+        (event) => {
+          const now = window.performance.now()
+          if (now - lastTouch <= 500) {
+            this.addTipTokenAmount(event.target.dataset.tokenAmount)
+            event.preventDefault()
+          }
+          lastTouch = now
+        },
+        true
+      )
+    })
     this.getUsersAlisToken()
   },
   computed: {
