@@ -145,12 +145,12 @@ export default {
 
 <style lang="scss" scoped>
 .area-article-comment-form {
-  background-color: rgba(35, 37, 56, 0.05);
-  border-top: 1px solid rgb(240, 240, 240);
+  background-color: #fff;
   grid-area: article-comment-form;
-  padding: 0 calc(50% - 324px);
+  padding: 0 calc(50% - 324px) 0 74px;
 
   .article-comment-form-box {
+    border-top: 1px solid rgb(240, 240, 240);
     background-color: #fff;
     border-radius: 4px;
     padding: 24px 24px 24px 0;

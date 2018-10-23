@@ -29,8 +29,9 @@
         </div>
       </div>
       <article-comment-reply-comments
-        v-if="comment.reply_comments"
-        :replyComments="comment.reply_comments"  />
+        v-if="isShowReplyComments"
+        :replyComments="replyComments" />
+      <article-comment-reply-form v-if="isShowReplyComments" />
     </div>
   </transition>
 </template>
@@ -42,6 +43,7 @@ import { formatDateFromNow } from '~/utils/format'
 import urlRegex from 'url-regex'
 import { htmlDecode } from '~/utils/article'
 import ArticleCommentReplyComments from '../organisms/ArticleCommentReplyComments'
+import ArticleCommentReplyForm from '../organisms/ArticleCommentReplyForm'
 
 export default {
   props: {
@@ -51,13 +53,15 @@ export default {
     }
   },
   components: {
-    ArticleCommentReplyComments
+    ArticleCommentReplyComments,
+    ArticleCommentReplyForm
   },
   data() {
     return {
       isDeleteCommentPopupShown: false,
       isLiked: false,
-      likesCount: 0
+      likesCount: 0,
+      isShowReplyComments: false
     }
   },
   mounted() {
@@ -100,6 +104,9 @@ export default {
         this.comment.user_id === this.currentUserInfo.user_id ||
         this.currentUserInfo.user_id === this.article.user_id
       )
+    },
+    replyComments() {
+      return this.isShowReplyComments ? this.comment.reply_comments || [] : []
     },
     decodedUserDisplayName() {
       return htmlDecode(this.comment.userInfo.user_display_name)
@@ -161,7 +168,9 @@ export default {
         }
       }
     },
-    reply() {},
+    reply() {
+      this.isShowReplyComments = true
+    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
