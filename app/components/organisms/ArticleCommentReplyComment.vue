@@ -2,8 +2,8 @@
   <transition name="fade">
     <div>
       <div class="article-comment">
-        <nuxt-link :to="`/users/${comment.userInfo.user_id}`" class="commented-user">
-          <img class="icon" :src="comment.userInfo.icon_image_url" v-if="hasUserIcon">
+        <nuxt-link :to="`/users/${replyComment.userInfo.user_id}`" class="commented-user">
+          <img class="icon" :src="replyComment.userInfo.icon_image_url" v-if="hasUserIcon">
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
           <ul class="info">
             <li class="info-content">{{ decodedUserDisplayName }}</li>
@@ -28,9 +28,6 @@
           返信
         </div>
       </div>
-      <article-comment-reply-comments
-        v-if="comment.reply_comments"
-        :replyComments="comment.reply_comments"  />
     </div>
   </transition>
 </template>
@@ -45,7 +42,7 @@ import ArticleCommentReplyComments from '../organisms/ArticleCommentReplyComment
 
 export default {
   props: {
-    comment: {
+    replyComment: {
       type: Object,
       required: true
     }
@@ -61,7 +58,7 @@ export default {
     }
   },
   mounted() {
-    this.likesCount = this.comment.likesCount
+    this.likesCount = this.replyComment.likesCount
     this.listen(window, 'click', (event) => {
       if (!this.$el.querySelector('.action-delete')) return
       if (!this.$el.querySelector('.action-delete').contains(event.target)) {
@@ -84,25 +81,25 @@ export default {
   },
   computed: {
     hasUserIcon() {
-      return urlRegex().test(this.comment.userInfo.icon_image_url)
+      return urlRegex().test(this.replyComment.userInfo.icon_image_url)
     },
     isLikedComment() {
-      return this.isLiked || this.comment.isLiked
+      return this.isLiked || this.replyComment.isLiked
     },
     commentText() {
-      return this.comment.text.replace(/\r?\n/g, '<br>')
+      return this.replyComment.text.replace(/\r?\n/g, '<br>')
     },
     createdAt() {
-      return formatDateFromNow(this.comment.created_at)
+      return formatDateFromNow(this.replyComment.created_at)
     },
     showDeleteAction() {
       return (
-        this.comment.user_id === this.currentUserInfo.user_id ||
+        this.replyComment.user_id === this.currentUserInfo.user_id ||
         this.currentUserInfo.user_id === this.article.user_id
       )
     },
     decodedUserDisplayName() {
-      return htmlDecode(this.comment.userInfo.user_display_name)
+      return htmlDecode(this.replyComment.userInfo.user_display_name)
     },
     ...mapGetters('user', ['currentUserInfo', 'loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
@@ -128,7 +125,7 @@ export default {
       if (this.isLikedComment) return
       try {
         this.isLiked = true
-        await this.postCommentLike({ commentId: this.comment.comment_id })
+        await this.postCommentLike({ commentId: this.replyComment.comment_id })
         this.likesCount += 1
       } catch (error) {
         console.error(error)
@@ -149,7 +146,7 @@ export default {
     },
     async deleteComment(event) {
       try {
-        await this.deleteArticleComment({ commentId: this.comment.comment_id })
+        await this.deleteArticleComment({ commentId: this.replyComment.comment_id })
         this.sendNotification({ text: 'コメントを削除しました。' })
       } catch (error) {
         console.error(error)
@@ -200,7 +197,8 @@ export default {
 .article-comment {
   background-color: #fff;
   border-radius: 4px;
-  padding: 24px;
+  border-top: 1px solid rgb(240, 240, 240);
+  padding: 24px 24px 24px 0;
   position: relative;
 
   .commented-user {
@@ -317,11 +315,12 @@ export default {
     .commented-user {
       .info {
         // 10px - padding of .area-article-comments
+        // 74px - padding of .area-article-comment-reply-comments
         // 24px - padding of .article-comment
         // 36px - width   of .article-comment .commented-user .icon
         // 16px - margin  of .article-comment .commented-user .icon
         // 20px - width   of .article-comment .action-delete .icon
-        width: calc(100vw - (10px + 24px + 36px + 16px + 20px + 24px + 10px));
+        width: calc(100vw - (10px + 74px + 36px + 16px + 20px + 24px + 10px));
       }
     }
   }
