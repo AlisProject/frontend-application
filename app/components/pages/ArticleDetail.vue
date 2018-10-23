@@ -18,7 +18,7 @@
       <author-info :user="article.userInfo"/>
     </div>
     <article-comment-form/>
-    <article-comments :comments="article.comments"/>
+    <article-comments :comments="reversedArticleComments"/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
   </div>
@@ -68,6 +68,9 @@ export default {
     this.resetArticleCommentsLastEvaluatedKey()
   },
   computed: {
+    reversedArticleComments() {
+      return this.article.comments.reverse()
+    },
     decodedTitle() {
       return htmlDecode(this.article.title)
     },
