@@ -77,18 +77,20 @@ export default {
   mounted() {
     let lastTouch = 0
     // スマホでのダブルタップ時に拡大しない
-    this.$el.addEventListener(
-      'touchend',
-      (event) => {
-        const now = window.performance.now()
-        if (now - lastTouch <= 500) {
-          this.addTipTokenAmount(event.target.dataset.tokenAmount)
-          event.preventDefault()
-        }
-        lastTouch = now
-      },
-      true
-    )
+    Array.from(this.$el.querySelectorAll('.unit-item')).forEach((unitItem) => {
+      unitItem.addEventListener(
+        'touchend',
+        (event) => {
+          const now = window.performance.now()
+          if (now - lastTouch <= 500) {
+            this.addTipTokenAmount(event.target.dataset.tokenAmount)
+            event.preventDefault()
+          }
+          lastTouch = now
+        },
+        true
+      )
+    })
     this.getUsersAlisToken()
   },
   computed: {
