@@ -31,7 +31,7 @@ export default {
   computed: {
     tipTokenAmountForUser() {
       const formatNumber = 10 ** 18
-      return new BigNumber(this.notification.tip_value).div(formatNumber).toString()
+      return new BigNumber(this.notification.tip_value).div(formatNumber).toString(10)
     },
     decodedArticleTitle() {
       return htmlDecode(this.notification.article_title)

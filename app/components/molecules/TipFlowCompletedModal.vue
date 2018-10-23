@@ -23,6 +23,9 @@ export default {
   computed: {
     ...mapGetters('user', ['tipTokenAmount'])
   },
+  mounted() {
+    window.scrollTo(0, 0)
+  },
   methods: {
     closeModal() {
       this.setTipModal({ showTipModal: false })

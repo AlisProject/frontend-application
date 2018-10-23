@@ -9,13 +9,18 @@ export default {
   components: {
     PopularArticleList
   },
-  async fetch({ store }) {
-    store.dispatch('user/setSignUpModal', { showSignUpModal: true })
+  async fetch({ store, error }) {
+    try {
+      store.dispatch('user/setSignUpModal', { showSignUpModal: true })
 
-    const topic = 'crypto'
-    await store.dispatch('article/getTopics')
-    store.dispatch('article/resetArticleData')
-    await store.dispatch('article/getPopularArticles', { topic })
+      const topic = 'crypto'
+      await store.dispatch('article/getTopics')
+      store.dispatch('article/resetArticleData')
+      await store.dispatch('article/getPopularArticles', { topic })
+    } catch (e) {
+      store.dispatch('user/setSignUpModal', { showSignUpModal: false })
+      error({ statusCode: 404 })
+    }
   },
   mounted() {
     window.scrollTo(0, 0)
