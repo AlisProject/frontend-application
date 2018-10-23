@@ -140,9 +140,7 @@ export default {
       try {
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-          formattedAlisTokenAmount.minus(formattedTipTokenAmount)
-        )
+        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!isAddableToken) {
           this.errorMessage = 'トークンが不足しています'
           return
