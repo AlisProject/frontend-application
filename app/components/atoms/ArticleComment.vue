@@ -9,12 +9,6 @@
           <li class="info-content">{{ createdAt }}</li>
         </ul>
       </nuxt-link>
-      <p class="body" v-html="commentText"/>
-      <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
-        <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
-        <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
-        <span class="likes-count">{{ likesCount }}</span>
-      </div>
       <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
         <img class="icon" src="~assets/images/pc/article/a_icon_menu.png">
         <div class="delete-comment-popup" v-show="isDeleteCommentPopupShown">
@@ -22,6 +16,15 @@
             削除する
           </span>
         </div>
+      </div>
+      <p class="body" v-html="commentText"/>
+      <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
+        <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
+        <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
+        <span class="likes-count">{{ likesCount }}</span>
+      </div>
+      <div class="action-reply" @click="reply">
+        返信
       </div>
     </div>
   </transition>
@@ -149,6 +152,7 @@ export default {
         }
       }
     },
+    reply() {},
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
@@ -225,18 +229,19 @@ export default {
     font-size: 12px;
     font-weight: 500;
     line-height: 1.8;
+    margin-left: 50px;
     padding-bottom: 18px;
     word-break: break-word;
   }
 
   .action-like {
-    bottom: 10px;
+    align-items: center;
+    bottom: 9px;
     cursor: pointer;
-    left: 24px;
+    display: flex;
     padding: 10px 0;
     position: absolute;
-    display: flex;
-    align-items: center;
+    right: 70px;
 
     &.disable {
       cursor: not-allowed;
@@ -254,11 +259,22 @@ export default {
     }
   }
 
-  .action-delete {
-    bottom: 20px;
+  .action-reply {
+    bottom: 10px;
+    color: #858dda;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 10px 0;
     position: absolute;
     right: 24px;
+  }
+
+  .action-delete {
     cursor: pointer;
+    position: absolute;
+    right: 24px;
+    top: 20px;
 
     .icon {
       width: 20px;
@@ -295,7 +311,8 @@ export default {
         // 24px - padding of .article-comment
         // 36px - width   of .article-comment .commented-user .icon
         // 16px - margin  of .article-comment .commented-user .icon
-        width: calc(100vw - (10px + 24px + 36px + 16px + 24px + 10px));
+        // 20px - width   of .article-comment .action-delete .icon
+        width: calc(100vw - (10px + 24px + 36px + 16px + 20px + 24px + 10px));
       }
     }
   }
