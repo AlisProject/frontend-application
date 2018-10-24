@@ -19,6 +19,12 @@
           </div>
         </div>
         <p class="body" v-html="commentText"/>
+        <span
+          class="show-reply-comments"
+          v-if="replyComments.length > 0 && !isShowReplyComments"
+          @click="showReplyComments">
+          コメント{{ replyComments.length }}件
+        </span>
         <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
           <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
           <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
@@ -106,7 +112,7 @@ export default {
       )
     },
     replyComments() {
-      return this.isShowReplyComments ? this.comment.reply_comments || [] : []
+      return this.comment.reply_comments || []
     },
     decodedUserDisplayName() {
       return htmlDecode(this.comment.userInfo.user_display_name)
@@ -190,6 +196,10 @@ export default {
         behavior: 'smooth'
       })
     },
+    showReplyComments() {
+      if (this.isShowReplyComments) return
+      this.isShowReplyComments = true
+    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
@@ -269,6 +279,17 @@ export default {
     margin-left: 50px;
     padding-bottom: 18px;
     word-break: break-word;
+  }
+
+  .show-reply-comments {
+    bottom: 20px;
+    color: #6e6e6e;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    left: 74px;
+    letter-spacing: 0.8px;
+    position: absolute;
   }
 
   .action-like {
