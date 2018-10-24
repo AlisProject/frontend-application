@@ -23,9 +23,13 @@
       @{{ article.userInfo.user_id }}
     </span>
     <div class="triangle-mark" />
-    <div class="token-amount-box">
-      <span class="token-amount">{{ tipTokenAmountForUser }}</span>
-      <span class="unit">ALIS</span>
+    <div class="token-amount-input-box">
+      <input
+        class="token-amount-input"
+        type="number"
+        v-model="tipTokenAmount"
+        @keydown.up.down.prevent>
+      <span class="token-amount-input-unit">ALIS</span>
     </div>
     <div class="select-unit-box">
       <div
@@ -51,13 +55,17 @@ import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
 
+const FORMAT_NUMBER = 10 ** 18
+const MAXIMUM_TIPPABLE_TOKEN_AMOUNT = '999.9999999999'
+const MINIMUM_TIPPABLE_TOKEN_AMOUNT = '0.0000000001'
+
 export default {
   components: {
     AppButton
   },
   data() {
     return {
-      tipTokenAmount: new BigNumber(0),
+      tipTokenAmount: 0,
       errorMessage: '',
       unitList: [
         { amount: 10, name: '10', order: 1 },
@@ -69,25 +77,23 @@ export default {
   mounted() {
     let lastTouch = 0
     // スマホでのダブルタップ時に拡大しない
-    this.$el.addEventListener(
-      'touchend',
-      (event) => {
-        const now = window.performance.now()
-        if (now - lastTouch <= 500) {
-          this.addTipTokenAmount(event.target.dataset.tokenAmount)
-          event.preventDefault()
-        }
-        lastTouch = now
-      },
-      true
-    )
+    Array.from(this.$el.querySelectorAll('.unit-item')).forEach((unitItem) => {
+      unitItem.addEventListener(
+        'touchend',
+        (event) => {
+          const now = window.performance.now()
+          if (now - lastTouch <= 500) {
+            this.addTipTokenAmount(event.target.dataset.tokenAmount)
+            event.preventDefault()
+          }
+          lastTouch = now
+        },
+        true
+      )
+    })
     this.getUsersAlisToken()
   },
   computed: {
-    tipTokenAmountForUser() {
-      const formatNumber = 10 ** 18
-      return new BigNumber(this.tipTokenAmount).div(formatNumber).toString()
-    },
     imageCaption() {
       return `${this.article.userInfo.user_display_name}'s icon'`
     },
@@ -102,40 +108,87 @@ export default {
   },
   methods: {
     addTipTokenAmount(amount) {
-      const formatNumber = 10 ** 18
-      const formattedAmount = new BigNumber(amount).multipliedBy(formatNumber)
-      const formattedAlisTokenAmount = new BigNumber(this.alisToken).multipliedBy(formatNumber)
-      const formattedTipTokenAmount = this.tipTokenAmount
-      const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-        formattedAlisTokenAmount.minus(formattedAmount)
-      )
+      try {
+        if (this.tipTokenAmount === '') this.tipTokenAmount = 0
+        const formattedAmount = new BigNumber(amount)
+        const formattedAlisTokenAmount = new BigNumber(this.alisToken)
+        const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
+        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+          formattedAlisTokenAmount.minus(formattedAmount)
+        )
 
-      if (!isAddableToken) {
-        this.errorMessage = 'トークンが不足しています'
-        return
+        if (!isAddableToken) {
+          this.errorMessage = 'トークンが不足しています'
+          return
+        }
+
+        const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT)
+        const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
+          formattedMaxTokenAmount.minus(formattedAmount)
+        )
+
+        if (hasExceededMaxTipToken) {
+          this.errorMessage = '一度に贈れるトークンは 1000 ALIS 未満となります'
+          return
+        }
+
+        this.errorMessage = ''
+        this.tipTokenAmount = formattedTipTokenAmount.plus(formattedAmount)
+      } catch (error) {
+        this.errorMessage = '数字でご入力ください'
       }
-
-      const formattedMaxTokenAmount = new BigNumber('999.9').multipliedBy(formatNumber)
-      const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
-        formattedMaxTokenAmount.minus(formattedAmount)
-      )
-
-      if (hasExceededMaxTipToken) {
-        this.errorMessage = '一度に贈れるトークンは 999.9 ALIS 以下となります'
-        return
-      }
-
-      this.errorMessage = ''
-      this.tipTokenAmount = this.tipTokenAmount.plus(formattedAmount)
     },
     moveToConfirmationPage() {
-      if (this.tipTokenAmount.isEqualTo(0)) {
-        this.errorMessage = '贈るトークン量を選択してください'
-        return
+      try {
+        const formattedAlisTokenAmount = new BigNumber(this.alisToken)
+        const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
+        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
+        if (!isAddableToken) {
+          this.errorMessage = 'トークンが不足しています'
+          return
+        }
+
+        if (formattedTipTokenAmount.isEqualTo(0)) {
+          this.errorMessage = '贈るトークン量を選択してください'
+          return
+        }
+
+        const formattedMaxTokenAmount = new BigNumber(MAXIMUM_TIPPABLE_TOKEN_AMOUNT)
+        const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
+          formattedMaxTokenAmount
+        )
+
+        if (hasExceededMaxTipToken) {
+          this.errorMessage = '一度に贈れるトークンは 1000 ALIS 未満となります'
+          return
+        }
+
+        const tipTokenAmountForUser = formattedTipTokenAmount.toString(10)
+
+        // 小数点以下の桁数が10桁を超えているか確認
+        const isNotInputablePlaceAfterDecimalPoint =
+          tipTokenAmountForUser &&
+          tipTokenAmountForUser.includes('.') &&
+          tipTokenAmountForUser.split('.')[1].length > 10
+
+        if (isNotInputablePlaceAfterDecimalPoint) {
+          this.errorMessage = '小数点10桁までの範囲でご入力ください'
+          return
+        }
+
+        const formattedMinTokenAmount = new BigNumber(MINIMUM_TIPPABLE_TOKEN_AMOUNT)
+        const isLessThanMinTipToken = formattedTipTokenAmount.isLessThan(formattedMinTokenAmount)
+
+        if (isLessThanMinTipToken) return
+
+        this.setTipTokenAmount({
+          tipTokenAmount: formattedTipTokenAmount.multipliedBy(FORMAT_NUMBER)
+        })
+        this.setTipFlowSelectTipAmountModal({ isShow: false })
+        this.setTipFlowConfirmationModal({ isShow: true })
+      } catch (error) {
+        this.errorMessage = '数字でご入力ください'
       }
-      this.setTipTokenAmount({ tipTokenAmount: this.tipTokenAmount })
-      this.setTipFlowSelectTipAmountModal({ isShow: false })
-      this.setTipFlowConfirmationModal({ isShow: true })
     },
     ...mapActions('user', [
       'getUsersAlisToken',
@@ -197,28 +250,46 @@ export default {
     width: 0;
   }
 
-  .token-amount-box {
-    align-items: center;
-    background-color: #ffffff;
-    border-radius: 50%;
-    border: 2px solid #858dda;
-    display: flex;
-    flex-flow: column nowrap;
-    height: 80px;
-    margin-top: 20px;
-    width: 80px;
+  .token-amount-input-box {
+    position: relative;
 
-    .token-amount {
+    .token-amount-input {
+      appearance: none;
+      border: 0;
+      padding: 10px 40px 10px 10px;
       color: #858dda;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: bold;
-      margin-top: 22px;
+      line-height: 28px;
+      box-shadow: 0 0 8px 0 rgba(133, 141, 218, 0.5);
+      text-align: right;
+      margin-top: 20px;
+      width: 255px;
+      box-sizing: border-box;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &:after {
+        content: 'ALIS';
+      }
+
+      &:focus {
+        outline: 0;
+        box-shadow: none;
+      }
     }
 
-    .unit {
+    .token-amount-input-unit {
+      position: absolute;
       color: #858dda;
-      font-size: 14px;
-      margin-top: 2px;
+      font-size: 10px;
+      font-weight: bold;
+      top: 39px;
+      right: 10px;
     }
   }
 

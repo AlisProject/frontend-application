@@ -33,7 +33,7 @@
           src="~assets/images/pc/common/icon_user_noimg.png"
           class="profile-image"
           v-else>
-        <p class="alis-token-amount">{{ alisToken }} ALIS</p>
+        <p class="alis-token-amount">{{ formattedAlisToken }} ALIS</p>
       </div>
       <ul class="menu-links">
         <li class="menu-link">
@@ -68,6 +68,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { BigNumber } from 'bignumber.js'
 
 export default {
   data() {
@@ -99,6 +100,9 @@ export default {
     }
   },
   computed: {
+    formattedAlisToken() {
+      return new BigNumber(this.alisToken).toFixed(3, 1)
+    },
     ...mapGetters('user', ['currentUserInfo', 'alisToken', 'unreadNotification', 'currentUser'])
   },
   methods: {

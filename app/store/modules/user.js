@@ -522,7 +522,7 @@ const actions = {
     try {
       const { result } = await this.$axios.$get('/me/wallet/balance')
       const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(result, 16).div(formatNumber).toFixed(3, 1)
+      const alisToken = new BigNumber(result, 16).div(formatNumber).toString(10)
       commit(types.SET_USERS_ALIS_TOKEN, { alisToken })
     } catch (error) {
       return Promise.reject(error)
