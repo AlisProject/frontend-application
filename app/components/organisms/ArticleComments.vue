@@ -59,10 +59,7 @@ export default {
       }
     },
     moveToBottom() {
-      if (
-        !document.querySelector('.article-comment-form-box') ||
-        !document.querySelector('.comment-textarea')
-      ) {
+      if (!document.querySelector('.article-comment-form-box')) {
         return
       }
       const articleCommentFormBoxPosition =
@@ -72,7 +69,6 @@ export default {
         top: articleCommentFormBoxPosition,
         behavior: 'smooth'
       })
-      document.querySelector('.comment-textarea').focus()
     },
     ...mapActions('article', ['setArticleComments'])
   }
