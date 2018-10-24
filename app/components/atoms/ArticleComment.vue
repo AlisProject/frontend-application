@@ -168,8 +168,27 @@ export default {
         }
       }
     },
-    reply() {
+    async reply() {
+      if (this.isShowReplyComments) return
       this.isShowReplyComments = true
+
+      await this.$nextTick()
+
+      const areaArticleCommentReplyCommentsElement = this.$el.querySelector(
+        '.area-article-comment-reply-comments'
+      )
+
+      if (!areaArticleCommentReplyCommentsElement) return
+
+      const articleCommentReplyFormBoxPosition =
+        this.$el.getBoundingClientRect().top +
+        areaArticleCommentReplyCommentsElement.clientHeight +
+        window.pageYOffset
+
+      window.scrollTo({
+        top: articleCommentReplyFormBoxPosition,
+        behavior: 'smooth'
+      })
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
