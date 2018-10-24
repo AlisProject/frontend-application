@@ -9,7 +9,7 @@
         </div>
       </no-ssr>
       <textarea
-        class="comment-textarea"
+        class="reply-comment-textarea"
         :class="{ 'no-border': !isCommentEmpty }"
         type="text"
         placeholder="コメントを入力してください"
@@ -39,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    const textarea = this.$el.querySelector('.comment-textarea')
+    const textarea = this.$el.querySelector('.reply-comment-textarea')
     textarea.style.lineHeight = '18px'
     textarea.style.height = '60px'
 
@@ -115,7 +115,7 @@ export default {
         this.addArticleComment({ text: escapedComment, commentId })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''
-        this.$el.querySelector('.comment-textarea').focus()
+        this.$el.querySelector('.reply-comment-textarea').focus()
       } catch (error) {
         console.error(error)
       } finally {
@@ -179,7 +179,7 @@ export default {
     }
   }
 
-  .comment-textarea {
+  .reply-comment-textarea {
     -webkit-appearance: none;
     border-radius: 0;
     border: none;
