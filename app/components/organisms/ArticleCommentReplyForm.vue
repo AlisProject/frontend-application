@@ -1,6 +1,6 @@
 <template>
   <div class="area-article-comment-form">
-    <div class="article-comment-form-box">
+    <div class="article-comment-reply-form-box">
       <no-ssr>
         <div class="comment-user" v-if="loggedIn">
           <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
@@ -149,7 +149,7 @@ export default {
   grid-area: article-comment-form;
   padding: 0 calc(50% - 324px) 0 74px;
 
-  .article-comment-form-box {
+  .article-comment-reply-form-box {
     border-top: 1px solid rgb(240, 240, 240);
     background-color: #fff;
     border-radius: 4px;
