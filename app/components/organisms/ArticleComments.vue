@@ -1,9 +1,12 @@
 <template>
   <div class="area-article-comments">
-    <span
-      class="read-more-button"
-      @click="showComments"
-      v-if="hasArticleCommentsLastEvaluatedKey">前のコメントを表示</span>
+    <div class="header-contents">
+      <span
+        class="read-more-button"
+        @click="showComments"
+        v-if="hasArticleCommentsLastEvaluatedKey">前のコメントを表示</span>
+      <span class="to-comment-button" @click="moveToBottom">コメントする</span>
+    </div>
     <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
   </div>
 </template>
@@ -27,6 +30,17 @@ export default {
       required: true
     }
   },
+  mounted() {
+    const toCommentButtonElement = document.querySelector('.to-comment-button')
+    if (!toCommentButtonElement) return
+    const viewportMeta = document.querySelector('meta[name="viewport"]')
+    toCommentButtonElement.addEventListener('touchstart', (event) => {
+      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
+    })
+    toCommentButtonElement.addEventListener('click', (event) => {
+      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
+    })
+  },
   computed: {
     ...mapGetters('user', ['loggedIn']),
     ...mapGetters('article', ['hasArticleCommentsLastEvaluatedKey'])
@@ -44,6 +58,22 @@ export default {
         this.loadingComments = false
       }
     },
+    moveToBottom() {
+      if (
+        !document.querySelector('.article-comment-form-box') ||
+        !document.querySelector('.comment-textarea')
+      ) {
+        return
+      }
+      const articleCommentFormBoxPosition =
+        document.querySelector('.article-comment-form-box').getBoundingClientRect().top +
+        window.pageYOffset
+      window.scroll({
+        top: articleCommentFormBoxPosition,
+        behavior: 'smooth'
+      })
+      document.querySelector('.comment-textarea').focus()
+    },
     ...mapActions('article', ['setArticleComments'])
   }
 }
@@ -58,12 +88,24 @@ export default {
   padding: 20px calc(50% - 324px) 8px;
 }
 
+.header-contents {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0 20px;
+}
+
 .read-more-button {
   color: #6e6e6e;
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;
-  margin: 20px 0 20px;
+}
+
+.to-comment-button {
+  color: #858dda;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 @media screen and (max-width: 640px) {
