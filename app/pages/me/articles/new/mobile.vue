@@ -39,6 +39,7 @@ export default {
   data() {
     return {
       isOpenModal: false,
+      articleId: '86VoGyyo1o4D',
       blocks: [
         {
           id: uuid(),
@@ -123,6 +124,8 @@ export default {
 #ALISEditor #mobile-editor-wrapper {
   max-width: 424px;
   margin: 0 auto;
+  z-index: 1;
+  position: relative;
 }
 
 #ALISEditor #mobile-editor-wrapper.is-modalopened {
@@ -213,5 +216,6 @@ body {
 #mobile-editor-wrapper {
   width: 880px;
   margin: 0 auto;
+  z-index: 2;
 }
 </style>
