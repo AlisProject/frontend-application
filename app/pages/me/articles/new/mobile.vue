@@ -1,17 +1,19 @@
 <template>
-  <div class="new-editor-container">
+  <div class="new-editor-container"
+      :class="{
+        'is-modalopened': isOpenModal
+      }">
     <app-header class="area-app-header-container" />
     <div
       id="mobile-editor-wrapper"
-      :class="{
-        'is-modalopened': isOpenModal
-      }"
     >
-      <alis-editor
-        style="position: relative;z-index: 1"
-        @export="handlePublishEditor"
-        :initialState="blocks"
-      />
+      <no-ssr>
+        <alis-editor
+          style="position: relative;z-index: 1"
+          @export="handlePublishEditor"
+          :initialState="blocks"
+        />
+      </no-ssr>
       <MobileEditorPublishModal
         v-if="isOpenModal"
         @close="handleCloseModal"
@@ -75,10 +77,42 @@ export default {
         },
         {
           id: uuid(),
+          type: 'Rule'
+        },
+        {
+          id: uuid(),
+          type: 'Quote',
+          children: [
+            {
+              id: uuid(),
+              type: 'Text',
+              payload: {
+                body:
+                  'でもそのうさぎがほんとうに、チョッキのポケットから懐中時計かいちゅうどけいをとりだしてそれをながめ、そしてまたあわててかけだしたとき、アリスもとびあがりました。というのも、チョッキのポケットなんかがあるうさぎはこれまで見たことがないし、そこからとりだす時計をもっているうさぎなんかも見たことないぞ、というのに急に気がついたからです。'
+              }
+            }
+          ]
+        },
+        {
+          id: uuid(),
           type: 'Paragraph',
           payload: {
             body:
               '<p>でもそのうさぎがほんとうに、チョッキのポケットから懐中時計かいちゅうどけいをとりだしてそれをながめ、そしてまたあわててかけだしたとき、アリスもとびあがりました。というのも、チョッキのポケットなんかがあるうさぎはこれまで見たことがないし、そこからとりだす時計をもっているうさぎなんかも見たことないぞ、というのに急に気がついたからです。</p>'
+          }
+        },
+        {
+          id: uuid(),
+          type: 'Embed',
+          payload: {
+            src: 'https://twitter.com/ALIS_media/status/1036753823102947329'
+          }
+        },
+        {
+          id: uuid(),
+          type: 'Embed',
+          payload: {
+            src: 'https://gadget-shot.com/review/43122'
           }
         },
         {
@@ -128,7 +162,7 @@ export default {
   position: relative;
 }
 
-#ALISEditor #mobile-editor-wrapper.is-modalopened {
+.is-modalopened {
   height: 100vh;
   overflow-y: hidden;
 }
