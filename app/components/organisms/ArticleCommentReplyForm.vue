@@ -117,11 +117,17 @@ export default {
         if (this.postingComment) return
         this.postingComment = true
         const escapedComment = this.escapeHTML(this.comment)
-        const commentId = await this.postArticleComment({
+        const commentId = await this.postArticleReplyComment({
           articleId: this.$route.params.articleId,
+          parentCommentId: this.replyInfo.parentCommentId,
+          replyTargetUserId: this.replyInfo.replyTargetUserId,
           text: escapedComment
         })
-        this.addArticleComment({ text: escapedComment, commentId })
+        this.addArticleReplyComment({
+          text: escapedComment,
+          commentId,
+          parentCommentId: this.replyInfo.parentCommentId
+        })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''
         this.$el.querySelector('.reply-comment-textarea').focus()
@@ -142,7 +148,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['postArticleComment', 'addArticleComment']),
+    ...mapActions('article', ['postArticleReplyComment', 'addArticleReplyComment']),
     ...mapActions('user', [
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',

@@ -549,6 +549,34 @@ const actions = {
   },
   resetTagArticlesData({ commit }) {
     commit(types.RESET_TAG_ARTICLES_DATA)
+  },
+  async postArticleReplyComment(
+    { commit },
+    { articleId, text, parentCommentId, replyTargetUserId }
+  ) {
+    try {
+      const { comment_id: commentId } = await this.$axios.$post(
+        `/me/articles/${articleId}/comments`,
+        { text, parent_comment_id: parentCommentId, reply_target_user_id: replyTargetUserId }
+      )
+      return commentId
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  addArticleReplyComment({ commit, rootState }, { text, commentId, parentCommentId }) {
+    const { currentUserInfo } = rootState.user
+    const replyComment = {
+      text,
+      userInfo: currentUserInfo,
+      user_id: currentUserInfo.user_id,
+      created_at: new Date().getTime() / 1000,
+      comment_id: commentId,
+      isLiked: false,
+      likesCount: 0
+    }
+
+    commit(types.ADD_ARTICLE_REPLY_COMMENT, { replyComment, parentCommentId })
   }
 }
 
@@ -728,6 +756,12 @@ const mutations = {
   },
   [types.SET_TAG_ARTICLES_CURRENT_TAG](state, { tag }) {
     state.tagArticles.currentTag = tag
+  },
+  [types.ADD_ARTICLE_REPLY_COMMENT](state, { replyComment, parentCommentId }) {
+    const parentCommentIndex = state.article.comments.findIndex(
+      (comment) => comment.comment_id === parentCommentId
+    )
+    state.article.comments[parentCommentIndex].reply_comments.unshift(replyComment)
   }
 }
 
