@@ -1,11 +1,11 @@
 <template>
   <div class="area-article-comments">
     <div class="header-contents">
+      <span class="to-comment-button" @click="moveToBottom">コメントする</span>
       <span
         class="read-more-button"
         @click="showComments"
         v-if="hasArticleCommentsLastEvaluatedKey">前のコメントを表示</span>
-      <span class="to-comment-button" @click="moveToBottom">コメントする</span>
     </div>
     <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
   </div>
@@ -87,6 +87,7 @@ export default {
 .header-contents {
   display: flex;
   justify-content: space-between;
+  flex-direction: row-reverse;
   padding: 20px 0 20px;
 }
 
