@@ -30,16 +30,14 @@
             @focus="resetError('userDisplayName')">
           <label class="signup-form-label">自己紹介</label>
         </div>
-        <div class="signup-form-group" :class="{ 'error': hasSelfIntroductionError }">
+        <div class="signup-form-group">
           <textarea
             class="signup-form-textarea"
             type="text"
             placeholder="自己紹介を入力してください"
             maxlength="100"
             v-model="selfIntroduction"
-            @input="setSelfIntroduction($event.target.value)"
-            @blur="showError('selfIntroduction')"
-            @focus="resetError('selfIntroduction')"/>
+            @input="setSelfIntroduction($event.target.value)"/>
         </div>
       </form>
     </div>
@@ -87,12 +85,6 @@ export default {
         this.$v.profileSettingsModal.formData.userDisplayName.$error
       )
     },
-    hasSelfIntroductionError() {
-      return (
-        this.profileSettingsModal.formError.selfIntroduction &&
-        this.$v.profileSettingsModal.formData.selfIntroduction.$error
-      )
-    },
     ...mapGetters('user', [
       'currentUser',
       'signUpAuthFlowModal',
@@ -105,9 +97,6 @@ export default {
     profileSettingsModal: {
       formData: {
         userDisplayName: {
-          required
-        },
-        selfIntroduction: {
           required
         }
       }
