@@ -37,11 +37,12 @@ export default {
     EditHeaderNav,
     MobileEditorPublishModal
   },
+  props: ['defaultTitle', 'defaultBlocks'],
   data() {
     return {
       isOpenModal: false,
-      title: '',
-      blocks: [
+      title: this.defaultTitle || '',
+      blocks: this.defaultBlocks || [
         {
           id: uuid(),
           type: 'Paragraph',
