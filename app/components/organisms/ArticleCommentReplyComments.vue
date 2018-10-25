@@ -5,6 +5,7 @@
       :replyComment="replyComment"
       :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
       @handle-reply="handleReply"
+      :replyInfo="replyInfo"
       :key="replyComment.comment_id" />
   </div>
 </template>
@@ -20,6 +21,10 @@ export default {
     },
     articleCommentReplyFormBoxPosition: {
       type: Number,
+      required: true
+    },
+    replyInfo: {
+      type: Object,
       required: true
     }
   },

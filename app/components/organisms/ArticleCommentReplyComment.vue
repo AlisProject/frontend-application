@@ -49,6 +49,10 @@ export default {
     articleCommentReplyFormBoxPosition: {
       type: Number,
       required: true
+    },
+    replyInfo: {
+      type: Object,
+      required: true
     }
   },
   components: {
@@ -150,7 +154,10 @@ export default {
     },
     async deleteComment(event) {
       try {
-        await this.deleteArticleComment({ commentId: this.replyComment.comment_id })
+        await this.deleteArticleReplyComment({
+          commentId: this.replyComment.comment_id,
+          parentCommentId: this.replyInfo.parentCommentId
+        })
         this.sendNotification({ text: 'コメントを削除しました。' })
       } catch (error) {
         console.error(error)
@@ -189,7 +196,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['postCommentLike', 'deleteArticleComment']),
+    ...mapActions('article', ['postCommentLike', 'deleteArticleReplyComment']),
     ...mapActions('user', [
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',

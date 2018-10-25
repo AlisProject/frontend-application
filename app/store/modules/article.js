@@ -393,7 +393,7 @@ const actions = {
           const likesCount = await dispatch('getArticleCommentLikesCount', {
             commentId: comment.comment_id
           })
-          return { ...comment, userInfo, isLiked, likesCount }
+          return { ...comment, userInfo, isLiked, likesCount, reply_comments: [] }
         })
       )
       return commentsWithData
@@ -577,6 +577,14 @@ const actions = {
     }
 
     commit(types.ADD_ARTICLE_REPLY_COMMENT, { replyComment, parentCommentId })
+  },
+  async deleteArticleReplyComment({ commit }, { commentId, parentCommentId }) {
+    try {
+      // await this.$axios.$delete(`/me/comments/${commentId}`)
+      commit(types.DELETE_ARTICLE_REPLY_COMMENT, { commentId, parentCommentId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -762,6 +770,15 @@ const mutations = {
       (comment) => comment.comment_id === parentCommentId
     )
     state.article.comments[parentCommentIndex].reply_comments.unshift(replyComment)
+  },
+  [types.DELETE_ARTICLE_REPLY_COMMENT](state, { commentId, parentCommentId }) {
+    const parentCommentIndex = state.article.comments.findIndex(
+      (comment) => comment.comment_id === parentCommentId
+    )
+    const replyComments = state.article.comments[parentCommentIndex].reply_comments.filter(
+      (comment) => comment.comment_id !== commentId
+    )
+    state.article.comments[parentCommentIndex].reply_comments = replyComments
   }
 }
 

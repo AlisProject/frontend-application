@@ -38,7 +38,8 @@
         v-if="isShowReplyComments"
         @handle-reply="handleReply"
         :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
-        :replyComments="replyComments" />
+        :replyComments="replyComments"
+        :replyInfo="replyInfo" />
       <article-comment-reply-form v-if="isShowReplyComments" :replyInfo="replyInfo"/>
     </div>
   </transition>
