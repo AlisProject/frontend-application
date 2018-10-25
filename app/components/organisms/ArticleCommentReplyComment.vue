@@ -45,6 +45,10 @@ export default {
     replyComment: {
       type: Object,
       required: true
+    },
+    articleCommentReplyFormBoxPosition: {
+      type: Number,
+      required: true
     }
   },
   components: {
@@ -158,7 +162,19 @@ export default {
         }
       }
     },
-    reply() {},
+    reply() {
+      window.scrollTo({
+        top: this.articleCommentReplyFormBoxPosition,
+        behavior: 'smooth'
+      })
+
+      const replyInfo = {
+        replyTargetUserId: this.replyComment.userInfo.user_id,
+        replyTargetUserDisplayName: this.decodedUserDisplayName,
+        parentCommentId: this.replyComment.comment_id
+      }
+      this.$emit('handle-reply', replyInfo)
+    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []

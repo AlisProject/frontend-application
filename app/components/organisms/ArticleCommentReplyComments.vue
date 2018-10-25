@@ -3,6 +3,8 @@
     <article-comment-reply-comment
       v-for="replyComment in replyComments"
       :replyComment="replyComment"
+      :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
+      @handle-reply="handleReply"
       :key="replyComment.comment_id" />
   </div>
 </template>
@@ -15,10 +17,19 @@ export default {
     replyComments: {
       type: Array,
       required: true
+    },
+    articleCommentReplyFormBoxPosition: {
+      type: Number,
+      required: true
     }
   },
   components: {
     ArticleCommentReplyComment
+  },
+  methods: {
+    handleReply(replyInfo) {
+      this.$emit('handle-reply', replyInfo)
+    }
   }
 }
 </script>

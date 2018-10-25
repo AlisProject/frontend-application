@@ -36,8 +36,10 @@
       </div>
       <article-comment-reply-comments
         v-if="isShowReplyComments"
+        @handle-reply="handleReply"
+        :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
         :replyComments="replyComments" />
-      <article-comment-reply-form v-if="isShowReplyComments" />
+      <article-comment-reply-form v-if="isShowReplyComments" :replyInfo="replyInfo"/>
     </div>
   </transition>
 </template>
@@ -67,7 +69,13 @@ export default {
       isDeleteCommentPopupShown: false,
       isLiked: false,
       likesCount: 0,
-      isShowReplyComments: false
+      isShowReplyComments: false,
+      replyInfo: {
+        replyTargetUserId: this.comment.userInfo.user_id,
+        replyTargetUserDisplayName: htmlDecode(this.comment.userInfo.user_display_name),
+        parentCommentId: this.comment.comment_id
+      },
+      articleCommentReplyFormBoxPosition: 0
     }
   },
   mounted() {
@@ -177,27 +185,27 @@ export default {
     async reply() {
       this.isShowReplyComments = true
 
+      // 返信用のコメントフォームが表示されるのを待つ
       await this.$nextTick()
 
-      const areaArticleCommentReplyCommentsElement = this.$el.querySelector(
-        '.area-article-comment-reply-comments'
-      )
-
-      if (!areaArticleCommentReplyCommentsElement) return
-
-      const articleCommentReplyFormBoxPosition =
-        this.$el.getBoundingClientRect().top +
-        areaArticleCommentReplyCommentsElement.clientHeight +
-        window.pageYOffset
+      this.articleCommentReplyFormBoxPosition = this.getArticleCommentReplyFormBoxPosition()
 
       window.scrollTo({
-        top: articleCommentReplyFormBoxPosition,
+        top: this.articleCommentReplyFormBoxPosition,
         behavior: 'smooth'
       })
     },
-    showReplyComments() {
+    async showReplyComments() {
       if (this.isShowReplyComments) return
       this.isShowReplyComments = true
+
+      // 返信用のコメントフォームが表示されるのを待つ
+      await this.$nextTick()
+
+      this.articleCommentReplyFormBoxPosition = this.getArticleCommentReplyFormBoxPosition()
+    },
+    handleReply(replyInfo) {
+      this.replyInfo = replyInfo
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -209,6 +217,19 @@ export default {
           target.removeEventListener(eventType, callback)
         }
       })
+    },
+    getArticleCommentReplyFormBoxPosition() {
+      const areaArticleCommentReplyCommentsElement = this.$el.querySelector(
+        '.area-article-comment-reply-comments'
+      )
+
+      if (!areaArticleCommentReplyCommentsElement) return 0
+
+      return (
+        this.$el.getBoundingClientRect().top +
+        areaArticleCommentReplyCommentsElement.clientHeight +
+        window.pageYOffset
+      )
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE

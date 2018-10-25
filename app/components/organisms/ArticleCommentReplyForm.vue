@@ -5,7 +5,10 @@
         <div class="comment-user" v-if="loggedIn">
           <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
-          <span class="name">{{ decodedUserDisplayName }}</span>
+          <div class="user-info-box">
+            <span class="name">{{ decodedUserDisplayName }}</span>
+            <span class="reply-target-user-name">返信先：{{ replyInfo.replyTargetUserDisplayName }}</span>
+          </div>
         </div>
       </no-ssr>
       <textarea
@@ -32,6 +35,12 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { htmlDecode } from '~/utils/article'
 
 export default {
+  props: {
+    replyInfo: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       comment: '',
@@ -169,12 +178,26 @@ export default {
         width: 36px;
       }
 
-      .name {
-        color: #6e6e6e;
-        font-size: 12px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+      .user-info-box {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.6;
+
+        .name {
+          color: #6e6e6e;
+          font-size: 12px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .reply-target-user-name {
+          color: #858dda;
+          font-size: 10px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
