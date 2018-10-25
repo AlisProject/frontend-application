@@ -12,15 +12,7 @@
     <div
       id="mobile-editor-wrapper"
     >
-      <textarea
-        class="area-title"
-        type="text"
-        placeholder="タイトル"
-        spellcheck="false"
-        maxlength="255"
-        v-model="title"
-        wrap="soft"
-      ></textarea>
+      <ArticleTitleInput />
       <no-ssr>
         <alis-editor
           style="position: relative;z-index: 1"
@@ -40,6 +32,7 @@
 </template>
 
 <script>
+import ArticleTitleInput from '~/components/atoms/ArticleTitleInput.vue'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import MobileEditorPublishModal from '~/components/organisms/MobileEditorPublishModal.vue'
 import AppModal from '~/components/atoms/AppModal.vue'
@@ -53,6 +46,7 @@ export default {
   components: {
     AppModal,
     AppHeader,
+    ArticleTitleInput,
     AlisEditor,
     EditHeaderNav,
     MobileEditorPublishModal
@@ -112,29 +106,6 @@ export default {
 
 <style lang="scss">
 @import '~~/node_modules/alis-editor/dist/AlisEditor.css';
-
-.area-title {
-  color: #040404;
-  font-size: 24px;
-  font-weight: bold;
-  grid-area: title;
-  letter-spacing: 0.1em;
-  line-height: 1.5;
-  border: 0;
-  padding: 8px;
-  margin-top: 16px;
-  font-family: 'YuGothic', 'Yu Gothic';
-  flex: 1;
-  resize: none;
-
-  &:placeholder-shown {
-    color: #898989;
-  }
-
-  &:focus {
-    outline: 0;
-  }
-}
 
 #mobile-editor-wrapper {
   display: flex;
