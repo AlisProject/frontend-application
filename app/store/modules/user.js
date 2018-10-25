@@ -95,8 +95,7 @@ const state = () => ({
       selfIntroduction: ''
     },
     formError: {
-      userDisplayName: false,
-      selfIntroduction: false
+      userDisplayName: false
     }
   },
   showReportModal: false,
