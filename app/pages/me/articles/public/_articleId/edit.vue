@@ -15,10 +15,28 @@ export default {
   },
   async beforeCreate() {
     const { articleId } = this.$route.params
+    let body
+    let isNewVersionArticle = false
+
     try {
       await this.$store.dispatch('article/getEditPublicArticleDetail', { articleId })
-      const { body } = this.$store.state.article
+      body = this.$store.state.article.body
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
+    } catch (error) {
+      this.sendNotification({ text: '記事データの取得に失敗しました。', type: 'warning' })
+      console.error(error)
+    }
+
+    // JSON.parseできれば v2
+    try {
+      JSON.parse(body)
+      isNewVersionArticle = true
+    } catch (e) {}
+
+    try {
+      if (isNewVersionArticle) {
+        return
+      }
       const editorBody = this.$el.querySelector('.area-body')
       editorBody.innerHTML = body
       // Update thumbnails
