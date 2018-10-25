@@ -7,7 +7,8 @@
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
           <ul class="info">
             <li class="info-content">{{ decodedUserDisplayName }}</li>
-            <li class="info-content">{{ createdAt }}</li>
+            <li class="info-created-at">{{ createdAt }}</li>
+            <li class="info-reply-target-user-name">返信先：{{ decodedTargetUserDisplayName }}</li>
           </ul>
         </nuxt-link>
         <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
@@ -108,6 +109,9 @@ export default {
     },
     decodedUserDisplayName() {
       return htmlDecode(this.replyComment.userInfo.user_display_name)
+    },
+    decodedTargetUserDisplayName() {
+      return htmlDecode(this.replyComment.targetUserInfo.user_display_name)
     },
     ...mapGetters('user', ['currentUserInfo', 'loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
@@ -225,7 +229,7 @@ export default {
   position: relative;
 
   .commented-user {
-    align-items: center;
+    align-items: flex-start;
     color: #5b5b5b;
     display: flex;
     font-size: 14px;
@@ -249,6 +253,15 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        line-height: 1.5;
+      }
+
+      .info-created-at,
+      .info-reply-target-user-name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 10px;
         line-height: 1.5;
       }
     }

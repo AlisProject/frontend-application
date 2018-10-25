@@ -564,7 +564,10 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  addArticleReplyComment({ commit, rootState }, { text, commentId, parentCommentId }) {
+  addArticleReplyComment(
+    { commit, rootState },
+    { text, commentId, parentCommentId, replyTargetUserId, targetUserDisplayName }
+  ) {
     const { currentUserInfo } = rootState.user
     const replyComment = {
       text,
@@ -573,7 +576,11 @@ const actions = {
       created_at: new Date().getTime() / 1000,
       comment_id: commentId,
       isLiked: false,
-      likesCount: 0
+      likesCount: 0,
+      target_user_id: replyTargetUserId,
+      targetUserInfo: {
+        user_display_name: targetUserDisplayName
+      }
     }
 
     commit(types.ADD_ARTICLE_REPLY_COMMENT, { replyComment, parentCommentId })

@@ -126,7 +126,9 @@ export default {
         this.addArticleReplyComment({
           text: escapedComment,
           commentId,
-          parentCommentId: this.replyInfo.parentCommentId
+          parentCommentId: this.replyInfo.parentCommentId,
+          replyTargetUserId: this.replyInfo.replyTargetUserId,
+          targetUserDisplayName: this.replyInfo.replyTargetUserDisplayName
         })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''
