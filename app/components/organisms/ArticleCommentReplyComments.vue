@@ -32,8 +32,8 @@ export default {
     ArticleCommentReplyComment
   },
   methods: {
-    handleReply(replyInfo) {
-      this.$emit('handle-reply', replyInfo)
+    handleReply(replyInfo, isShowReplyTarget) {
+      this.$emit('handle-reply', replyInfo, isShowReplyTarget)
     }
   }
 }

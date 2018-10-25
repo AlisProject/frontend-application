@@ -40,7 +40,10 @@
         :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
         :replyComments="replyComments"
         :replyInfo="replyInfo" />
-      <article-comment-reply-form v-if="isShowReplyComments" :replyInfo="replyInfo"/>
+      <article-comment-reply-form
+        v-if="isShowReplyComments"
+        :replyInfo="replyInfo"
+        :isShowReplyTarget="isShowReplyTarget" />
     </div>
   </transition>
 </template>
@@ -76,7 +79,8 @@ export default {
         replyTargetUserDisplayName: htmlDecode(this.comment.userInfo.user_display_name),
         parentCommentId: this.comment.comment_id
       },
-      articleCommentReplyFormBoxPosition: 0
+      articleCommentReplyFormBoxPosition: 0,
+      isShowReplyTarget: false
     }
   },
   mounted() {
@@ -185,6 +189,7 @@ export default {
     },
     async reply() {
       this.isShowReplyComments = true
+      this.isShowReplyTarget = true
 
       // 返信用のコメントフォームが表示されるのを待つ
       await this.$nextTick()
@@ -205,8 +210,9 @@ export default {
 
       this.articleCommentReplyFormBoxPosition = this.getArticleCommentReplyFormBoxPosition()
     },
-    handleReply(replyInfo) {
+    handleReply(replyInfo, isShowReplyTarget) {
       this.replyInfo = replyInfo
+      this.isShowReplyTarget = isShowReplyTarget
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {

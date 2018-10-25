@@ -184,7 +184,7 @@ export default {
         replyTargetUserDisplayName: this.decodedUserDisplayName,
         parentCommentId: this.replyComment.comment_id
       }
-      this.$emit('handle-reply', replyInfo)
+      this.$emit('handle-reply', replyInfo, true)
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {

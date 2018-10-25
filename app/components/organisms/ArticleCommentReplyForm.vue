@@ -7,7 +7,9 @@
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
           <div class="user-info-box">
             <span class="name">{{ decodedUserDisplayName }}</span>
-            <span class="reply-target-user-name">返信先：{{ replyInfo.replyTargetUserDisplayName }}</span>
+            <span class="reply-target-user-name" v-if="isShowReplyTarget">
+              返信先：{{ replyInfo.replyTargetUserDisplayName }}
+            </span>
           </div>
         </div>
       </no-ssr>
@@ -39,6 +41,10 @@ export default {
     replyInfo: {
       type: Object,
       required: true
+    },
+    isShowReplyTarget: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
