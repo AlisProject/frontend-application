@@ -175,7 +175,6 @@ export default {
       }
     },
     async reply() {
-      if (this.isShowReplyComments) return
       this.isShowReplyComments = true
 
       await this.$nextTick()
