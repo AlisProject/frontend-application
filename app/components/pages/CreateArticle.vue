@@ -6,9 +6,21 @@
     }"
   >
     <app-header class="area-app-header-container" />
+    <EditHeaderNav
+      style="width:880px;"
+    />
     <div
       id="mobile-editor-wrapper"
     >
+      <textarea
+        class="area-title"
+        type="text"
+        placeholder="タイトル"
+        spellcheck="false"
+        maxlength="255"
+        v-model="title"
+        wrap="soft"
+      ></textarea>
       <no-ssr>
         <alis-editor
           style="position: relative;z-index: 1"
@@ -28,6 +40,7 @@
 </template>
 
 <script>
+import EditHeaderNav from '../molecules/EditHeaderNav'
 import MobileEditorPublishModal from '~/components/organisms/MobileEditorPublishModal.vue'
 import AppModal from '~/components/atoms/AppModal.vue'
 import AppHeader from '~/components/organisms/AppHeader.vue'
@@ -41,105 +54,26 @@ export default {
     AppModal,
     AppHeader,
     AlisEditor,
+    EditHeaderNav,
     MobileEditorPublishModal
   },
   data() {
     return {
       isOpenModal: false,
+      title: '',
       blocks: [
         {
           id: uuid(),
-          type: 'Heading',
-          payload: {
-            size: 'h2'
-          },
-          children: [
-            {
-              id: uuid(),
-              type: 'Text',
-              payload: {
-                body: '第一章 うさぎの穴をまっさかさま'
-              }
-            }
-          ]
-        },
-        {
-          id: uuid(),
-          type: 'Heading',
-          payload: {
-            size: 'h3'
-          },
-          children: [
-            {
-              id: uuid(),
-              type: 'Text',
-              payload: {
-                body: '第一節 白うさぎ'
-              }
-            }
-          ]
-        },
-        {
-          id: uuid(),
-          type: 'Rule'
-        },
-        {
-          id: uuid(),
-          type: 'Quote',
-          children: [
-            {
-              id: uuid(),
-              type: 'Text',
-              payload: {
-                body:
-                  'でもそのうさぎがほんとうに、チョッキのポケットから懐中時計かいちゅうどけいをとりだしてそれをながめ、そしてまたあわててかけだしたとき、アリスもとびあがりました。というのも、チョッキのポケットなんかがあるうさぎはこれまで見たことがないし、そこからとりだす時計をもっているうさぎなんかも見たことないぞ、というのに急に気がついたからです。'
-              }
-            }
-          ]
-        },
-        {
-          id: uuid(),
           type: 'Paragraph',
           payload: {
-            body:
-              '<p>でもそのうさぎがほんとうに、チョッキのポケットから懐中時計かいちゅうどけいをとりだしてそれをながめ、そしてまたあわててかけだしたとき、アリスもとびあがりました。というのも、チョッキのポケットなんかがあるうさぎはこれまで見たことがないし、そこからとりだす時計をもっているうさぎなんかも見たことないぞ、というのに急に気がついたからです。</p>'
-          }
-        },
-        {
-          id: uuid(),
-          type: 'Embed',
-          payload: {
-            src: 'https://twitter.com/ALIS_media/status/1036753823102947329'
-          }
-        },
-        {
-          id: uuid(),
-          type: 'Embed',
-          payload: {
-            src: 'https://gadget-shot.com/review/43122'
-          }
-        },
-        {
-          id: '9cf0f329-e53b-4340-a96b-e58a9ef8b61e',
-          type: 'Image',
-          payload: {
-            src: 'https://i.imgur.com/c4zRkB7.png'
-          },
-          children: []
-        },
-        {
-          id: 'fewaarfa-123rewgrszb-t42qgvzaeg-awetw',
-          type: 'Paragraph',
-          payload: {
-            body:
-              '<p>そこで、きょうみしんしんになったアリスは、うさぎのあとを追っかけて野原をよこぎって、それがしげみの下の、おっきなうさぎの穴にとびこむのを、ぎりぎりのところで見つけました。</p>'
+            body: ''
           }
         },
         {
           id: uuid(),
           type: 'Paragraph',
           payload: {
-            body: 'http://www.gutenberg.org/ebooks/11'
+            body: ''
           }
         }
       ]
@@ -159,10 +93,12 @@ export default {
       console.log('update block:')
       console.table(blocks)
       const article = {
-        title: '',
+        title: this.title,
         body: JSON.stringify(blocks) // あとで blocks へと変える
       }
-      await this.postNewArticle({ article })
+      if (!this.articleId) {
+        await this.postNewArticle({ article })
+      }
       await this.putDraftArticle({ article, articleId: this.articleId })
     },
     handlePublishEditor(blocks) {
@@ -174,13 +110,35 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import '~~/node_modules/alis-editor/dist/AlisEditor.css';
-#ALISEditor #mobile-editor-wrapper {
-  max-width: 424px;
-  margin: 0 auto;
-  z-index: 1;
-  position: relative;
+
+.area-title {
+  color: #040404;
+  font-size: 24px;
+  font-weight: bold;
+  grid-area: title;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  border: 0;
+  padding: 8px;
+  margin-top: 16px;
+  font-family: 'YuGothic', 'Yu Gothic';
+  flex: 1;
+  resize: none;
+
+  &:placeholder-shown {
+    color: #898989;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+#mobile-editor-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .is-modalopened {
