@@ -96,7 +96,7 @@ export default {
         const { articleId, title, body, topic } = this
         const overview = body
           .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-          .replace(/\r?\n?\s/g, '')
+          .replace(/\r?\n?\s/g, ' ')
           .slice(0, 100)
         if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
         if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
