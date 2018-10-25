@@ -84,8 +84,6 @@ export default {
       this.isOpenModal = false
     },
     async updateEditorState(blocks) {
-      console.log('update block:')
-      console.table(blocks)
       const article = {
         title: this.title,
         body: JSON.stringify(blocks) // あとで blocks へと変える
