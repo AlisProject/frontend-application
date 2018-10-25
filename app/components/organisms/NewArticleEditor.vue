@@ -1,0 +1,125 @@
+<template>
+  <div id="new-editor-wrapper">
+    <ArticleTitleInput v-model="title" />
+    <no-ssr>
+      <alis-editor
+        style="position: relative;z-index: 1"
+        @update="updateEditorState"
+        @export="handlePublishEditor"
+        :initialState="blocks"
+        :iframelyApikey="iframelyApikey"
+      />
+    </no-ssr>
+    <MobileEditorPublishModal
+      v-if="isOpenModal"
+      @close="handleCloseModal"
+      :thumbnails="blocks.filter((block) => block.type === 'Image')"
+    />
+  </div>
+</template>
+
+<script>
+import ArticleTitleInput from '~/components/atoms/ArticleTitleInput.vue'
+import EditHeaderNav from '../molecules/EditHeaderNav'
+import MobileEditorPublishModal from '~/components/organisms/MobileEditorPublishModal.vue'
+import AppModal from '~/components/atoms/AppModal.vue'
+import AppHeader from '~/components/organisms/AppHeader.vue'
+import AlisEditor from 'alis-editor'
+import uuid from 'uuid/v4'
+import { mapActions, mapGetters } from 'vuex'
+
+export default {
+  components: {
+    AppModal,
+    AppHeader,
+    ArticleTitleInput,
+    AlisEditor,
+    EditHeaderNav,
+    MobileEditorPublishModal
+  },
+  data() {
+    return {
+      isOpenModal: false,
+      title: '',
+      blocks: [
+        {
+          id: uuid(),
+          type: 'Paragraph',
+          payload: {
+            body: ''
+          }
+        },
+        {
+          id: uuid(),
+          type: 'Paragraph',
+          payload: {
+            body: ''
+          }
+        }
+      ]
+    }
+  },
+  computed: {
+    iframelyApikey() {
+      return process.env.IFRAMELY_API_KEY
+    },
+    ...mapGetters('article', ['articleId'])
+  },
+  methods: {
+    handleCloseModal() {
+      this.isOpenModal = false
+    },
+    async updateEditorState(blocks) {
+      const article = {
+        title: this.title,
+        body: JSON.stringify(blocks) // あとで blocks へと変える
+      }
+      if (!this.articleId) {
+        await this.postNewArticle({ article })
+      }
+      await this.putDraftArticle({ article, articleId: this.articleId })
+    },
+    handlePublishEditor(blocks) {
+      this.blocks = blocks
+      this.isOpenModal = true
+    },
+    ...mapActions('article', ['postNewArticle', 'putDraftArticle'])
+  }
+}
+</script>
+
+<style lang="scss">
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 14px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  min-height: 100vh;
+  font-family: sans-serif;
+  overflow-x: hidden;
+}
+
+#new-editor-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.is-modalopened {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+#new-editor-wrapper {
+  width: 880px;
+  margin: 0 auto;
+  z-index: 2;
+}
+</style>

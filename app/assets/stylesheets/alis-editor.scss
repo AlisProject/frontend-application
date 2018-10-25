@@ -1,0 +1,55 @@
+#ALISEditor * {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+#ALISEditor body textarea,
+#ALISEditor body .paragraph,
+#ALISEditor h2,
+#ALISEditor h3,
+#ALISEditor h4,
+#ALISEditor h5 {
+  font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial',
+    'Lucida Grande', 'sans-serif', Sans-Serif;
+  line-height: 1.5;
+  letter-spacing: 1.5px;
+}
+
+#ALISEditor p {
+  margin: 0.25em 0;
+}
+
+#app {
+  width: 900px;
+  margin: 0 auto;
+  position: relative;
+}
+
+#ALISEditor a,
+#ALISEditor a:visited {
+  color: #4372e0;
+  display: inline-block;
+  margin: 0 4px;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 8px;
+  }
+  .insert-button {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-insert {
+    display: none !important;
+  }
+}
+
+@media (max-width: 400px) {
+  #app::before {
+    height: 100vw;
+  }
+}
