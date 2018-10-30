@@ -1,5 +1,5 @@
 <template>
-  <div class="area-article-comments">
+  <div class="area-article-comments" id="article-comments">
     <div class="header-contents">
       <span class="to-comment-button" @click="moveToBottom">コメントする</span>
       <span

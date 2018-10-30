@@ -8,7 +8,7 @@
       <notification-card-content :notification="notification"/>
     </nuxt-link>
     <nuxt-link
-      :to="`/${notification.type === 'tip_error' ? notification.article_user_id : notification.user_id}/articles/${notification.article_id}`"
+      :to="articlePath"
       class="notification-card-container"
       v-else>
       <notification-card-image :notification="notification"/>
@@ -30,6 +30,23 @@ export default {
   components: {
     NotificationCardImage,
     NotificationCardContent
+  },
+  computed: {
+    articlePath() {
+      switch (this.notification.type) {
+        case 'tip_error':
+          return `/${this.notification.article_user_id}/articles/${this.notification.article_id}`
+        case 'comment':
+        case 'reply':
+        case 'thread':
+          // 記事のコメント欄に遷移する（#article-comments）
+          return `/${this.notification.user_id}/articles/${
+            this.notification.article_id
+          }/#article-comments`
+        default:
+          return `/${this.notification.user_id}/articles/${this.notification.article_id}`
+      }
+    }
   }
 }
 </script>
