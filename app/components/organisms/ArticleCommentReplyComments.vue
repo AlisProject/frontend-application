@@ -1,7 +1,7 @@
 <template>
   <div class="area-article-comment-reply-comments">
     <article-comment-reply-comment
-      v-for="replyComment in replyComments"
+      v-for="replyComment in replies"
       :replyComment="replyComment"
       :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
       @handle-reply="handleReply"
@@ -15,7 +15,7 @@ import ArticleCommentReplyComment from '../organisms/ArticleCommentReplyComment'
 
 export default {
   props: {
-    replyComments: {
+    replies: {
       type: Array,
       required: true
     },

@@ -21,9 +21,9 @@
         <p class="body" v-html="commentText"/>
         <span
           class="show-reply-comments"
-          v-if="replyComments.length > 0 && !isShowReplyComments"
-          @click="showReplyComments">
-          コメント{{ replyComments.length }}件
+          v-if="replies.length > 0 && !isShowReplies"
+          @click="showReplies">
+          コメント{{ replies.length }}件
         </span>
         <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
           <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
@@ -35,13 +35,13 @@
         </div>
       </div>
       <article-comment-reply-comments
-        v-if="isShowReplyComments"
+        v-if="isShowReplies"
         @handle-reply="handleReply"
         :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
-        :replyComments="replyComments"
+        :replies="replies"
         :replyInfo="replyInfo" />
       <article-comment-reply-form
-        v-if="isShowReplyComments"
+        v-if="isShowReplies"
         :replyInfo="replyInfo"
         :isShowReplyTarget="isShowReplyTarget" />
     </div>
@@ -73,11 +73,11 @@ export default {
       isDeleteCommentPopupShown: false,
       isLiked: false,
       likesCount: 0,
-      isShowReplyComments: false,
+      isShowReplies: false,
       replyInfo: {
-        replyTargetUserId: this.comment.userInfo.user_id,
-        replyTargetUserDisplayName: htmlDecode(this.comment.userInfo.user_display_name),
-        parentCommentId: this.comment.comment_id
+        replyedUserId: this.comment.userInfo.user_id,
+        replyedUserDisplayName: htmlDecode(this.comment.userInfo.user_display_name),
+        parentId: this.comment.comment_id
       },
       articleCommentReplyFormBoxPosition: 0,
       isShowReplyTarget: false
@@ -124,8 +124,8 @@ export default {
         this.currentUserInfo.user_id === this.article.user_id
       )
     },
-    replyComments() {
-      return this.comment.reply_comments || []
+    replies() {
+      return this.comment.replies || []
     },
     decodedUserDisplayName() {
       return htmlDecode(this.comment.userInfo.user_display_name)
@@ -188,7 +188,7 @@ export default {
       }
     },
     async reply() {
-      this.isShowReplyComments = true
+      this.isShowReplies = true
       this.isShowReplyTarget = true
 
       // 返信用のコメントフォームが表示されるのを待つ
@@ -201,9 +201,9 @@ export default {
         behavior: 'smooth'
       })
     },
-    async showReplyComments() {
-      if (this.isShowReplyComments) return
-      this.isShowReplyComments = true
+    async showReplies() {
+      if (this.isShowReplies) return
+      this.isShowReplies = true
 
       // 返信用のコメントフォームが表示されるのを待つ
       await this.$nextTick()

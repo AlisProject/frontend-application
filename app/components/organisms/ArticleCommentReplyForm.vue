@@ -8,7 +8,7 @@
           <div class="user-info-box">
             <span class="name">{{ decodedUserDisplayName }}</span>
             <span class="reply-target-user-name" v-if="isShowReplyTarget">
-              返信先：{{ replyInfo.replyTargetUserDisplayName }}
+              返信先：{{ replyInfo.replyedUserDisplayName }}
             </span>
           </div>
         </div>
@@ -125,16 +125,16 @@ export default {
         const escapedComment = this.escapeHTML(this.comment)
         const commentId = await this.postArticleReplyComment({
           articleId: this.$route.params.articleId,
-          parentCommentId: this.replyInfo.parentCommentId,
-          replyTargetUserId: this.replyInfo.replyTargetUserId,
+          parentId: this.replyInfo.parentId,
+          replyedUserId: this.replyInfo.replyedUserId,
           text: escapedComment
         })
         this.addArticleReplyComment({
           text: escapedComment,
           commentId,
-          parentCommentId: this.replyInfo.parentCommentId,
-          replyTargetUserId: this.replyInfo.replyTargetUserId,
-          targetUserDisplayName: this.replyInfo.replyTargetUserDisplayName
+          parentId: this.replyInfo.parentId,
+          replyedUserId: this.replyInfo.replyedUserId,
+          replyedUserDisplayName: this.replyInfo.replyedUserDisplayName
         })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''

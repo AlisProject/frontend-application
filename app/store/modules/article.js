@@ -393,7 +393,16 @@ const actions = {
           const likesCount = await dispatch('getArticleCommentLikesCount', {
             commentId: comment.comment_id
           })
-          return { ...comment, userInfo, isLiked, likesCount, reply_comments: [] }
+          let replies = []
+          if (comment.replies) {
+            replies = await Promise.all(
+              comment.replies.map(async (replyComment) => {
+                const userInfo = await dispatch('getUserInfo', { userId: replyComment.user_id })
+                return { ...replyComment, userInfo, isLiked, likesCount }
+              })
+            )
+          }
+          return { ...comment, userInfo, isLiked, likesCount, replies }
         })
       )
       return commentsWithData
@@ -550,14 +559,11 @@ const actions = {
   resetTagArticlesData({ commit }) {
     commit(types.RESET_TAG_ARTICLES_DATA)
   },
-  async postArticleReplyComment(
-    { commit },
-    { articleId, text, parentCommentId, replyTargetUserId }
-  ) {
+  async postArticleReplyComment({ commit }, { articleId, text, parentId, replyedUserId }) {
     try {
       const { comment_id: commentId } = await this.$axios.$post(
-        `/me/articles/${articleId}/comments`,
-        { text, parent_comment_id: parentCommentId, reply_target_user_id: replyTargetUserId }
+        `/me/articles/${articleId}/comments/reply`,
+        { text, parent_id: parentId, replyed_user_id: replyedUserId }
       )
       return commentId
     } catch (error) {
@@ -566,7 +572,7 @@ const actions = {
   },
   addArticleReplyComment(
     { commit, rootState },
-    { text, commentId, parentCommentId, replyTargetUserId, targetUserDisplayName }
+    { text, commentId, parentId, replyedUserId, replyedUserDisplayName }
   ) {
     const { currentUserInfo } = rootState.user
     const replyComment = {
@@ -577,18 +583,18 @@ const actions = {
       comment_id: commentId,
       isLiked: false,
       likesCount: 0,
-      target_user_id: replyTargetUserId,
-      targetUserInfo: {
-        user_display_name: targetUserDisplayName
+      replyed_user_id: replyedUserId,
+      replyedUserInfo: {
+        user_display_name: replyedUserDisplayName
       }
     }
 
-    commit(types.ADD_ARTICLE_REPLY_COMMENT, { replyComment, parentCommentId })
+    commit(types.ADD_ARTICLE_REPLY_COMMENT, { replyComment, parentId })
   },
-  async deleteArticleReplyComment({ commit }, { commentId, parentCommentId }) {
+  async deleteArticleReplyComment({ commit }, { commentId, parentId }) {
     try {
-      // await this.$axios.$delete(`/me/comments/${commentId}`)
-      commit(types.DELETE_ARTICLE_REPLY_COMMENT, { commentId, parentCommentId })
+      await this.$axios.$delete(`/me/comments/${commentId}`)
+      commit(types.DELETE_ARTICLE_REPLY_COMMENT, { commentId, parentId })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -772,20 +778,20 @@ const mutations = {
   [types.SET_TAG_ARTICLES_CURRENT_TAG](state, { tag }) {
     state.tagArticles.currentTag = tag
   },
-  [types.ADD_ARTICLE_REPLY_COMMENT](state, { replyComment, parentCommentId }) {
+  [types.ADD_ARTICLE_REPLY_COMMENT](state, { replyComment, parentId }) {
     const parentCommentIndex = state.article.comments.findIndex(
-      (comment) => comment.comment_id === parentCommentId
+      (comment) => comment.comment_id === parentId
     )
-    state.article.comments[parentCommentIndex].reply_comments.unshift(replyComment)
+    state.article.comments[parentCommentIndex].replies.unshift(replyComment)
   },
-  [types.DELETE_ARTICLE_REPLY_COMMENT](state, { commentId, parentCommentId }) {
+  [types.DELETE_ARTICLE_REPLY_COMMENT](state, { commentId, parentId }) {
     const parentCommentIndex = state.article.comments.findIndex(
-      (comment) => comment.comment_id === parentCommentId
+      (comment) => comment.comment_id === parentId
     )
-    const replyComments = state.article.comments[parentCommentIndex].reply_comments.filter(
+    const replies = state.article.comments[parentCommentIndex].replies.filter(
       (comment) => comment.comment_id !== commentId
     )
-    state.article.comments[parentCommentIndex].reply_comments = replyComments
+    state.article.comments[parentCommentIndex].replies = replies
   }
 }
 

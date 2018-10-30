@@ -8,7 +8,7 @@
           <ul class="info">
             <li class="info-content">{{ decodedUserDisplayName }}</li>
             <li class="info-created-at">{{ createdAt }}</li>
-            <li class="info-reply-target-user-name">返信先：{{ decodedTargetUserDisplayName }}</li>
+            <li class="info-reply-target-user-name">返信先：{{ decodedReplyedUserDisplayName }}</li>
           </ul>
         </nuxt-link>
         <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
@@ -110,8 +110,8 @@ export default {
     decodedUserDisplayName() {
       return htmlDecode(this.replyComment.userInfo.user_display_name)
     },
-    decodedTargetUserDisplayName() {
-      return htmlDecode(this.replyComment.targetUserInfo.user_display_name)
+    decodedReplyedUserDisplayName() {
+      return htmlDecode(this.replyComment.userInfo.user_display_name)
     },
     ...mapGetters('user', ['currentUserInfo', 'loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
@@ -160,7 +160,7 @@ export default {
       try {
         await this.deleteArticleReplyComment({
           commentId: this.replyComment.comment_id,
-          parentCommentId: this.replyInfo.parentCommentId
+          parentId: this.replyInfo.parentId
         })
         this.sendNotification({ text: 'コメントを削除しました。' })
       } catch (error) {
@@ -180,9 +180,9 @@ export default {
       })
 
       const replyInfo = {
-        replyTargetUserId: this.replyComment.userInfo.user_id,
-        replyTargetUserDisplayName: this.decodedUserDisplayName,
-        parentCommentId: this.replyComment.comment_id
+        replyedUserId: this.replyComment.userInfo.user_id,
+        replyedUserDisplayName: this.decodedUserDisplayName,
+        parentId: this.replyComment.comment_id
       }
       this.$emit('handle-reply', replyInfo, true)
     },
