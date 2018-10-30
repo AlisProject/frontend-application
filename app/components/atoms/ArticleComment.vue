@@ -19,12 +19,14 @@
           </div>
         </div>
         <p class="body" v-html="commentText"/>
-        <span
-          class="show-reply-comments"
-          v-if="replies.length > 0 && !isShowReplies"
-          @click="showReplies">
-          コメント{{ replies.length }}件
-        </span>
+        <no-ssr>
+          <span
+            class="show-reply-comments"
+            v-if="replies.length > 0 && !isShowReplies"
+            @click="showReplies">
+            コメント{{ replies.length }}件
+          </span>
+        </no-ssr>
         <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
           <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
           <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
