@@ -69,7 +69,8 @@ export default {
   },
   computed: {
     reversedArticleComments() {
-      return this.article.comments.reverse()
+      // コメントの表示順を降順に変更
+      return this.article.comments.sort((a, b) => a.created_at > b.created_at)
     },
     decodedTitle() {
       return htmlDecode(this.article.title)
