@@ -389,7 +389,7 @@ const actions = {
       const commentsWithData = await Promise.all(
         comments.map(async (comment) => {
           const userInfo = await dispatch('getUserInfo', { userId: comment.user_id })
-          let isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
+          const isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
           const likesCount = await dispatch('getArticleCommentLikesCount', {
             commentId: comment.comment_id
           })
@@ -398,6 +398,12 @@ const actions = {
             replies = await Promise.all(
               comment.replies.map(async (replyComment) => {
                 const userInfo = await dispatch('getUserInfo', { userId: replyComment.user_id })
+                const isLiked = state.articleCommentLikedCommentIds.includes(
+                  replyComment.comment_id
+                )
+                const likesCount = await dispatch('getArticleCommentLikesCount', {
+                  commentId: replyComment.comment_id
+                })
                 return { ...replyComment, userInfo, isLiked, likesCount }
               })
             )
