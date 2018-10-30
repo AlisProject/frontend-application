@@ -226,7 +226,7 @@ export default {
       'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
     font-size: 12px;
     height: 4em;
-    margin: 14px 0 8px 50px;
+    margin: 4px 0 8px 46px;
     overflow: hidden;
     padding: 5px;
     resize: none;

@@ -242,7 +242,7 @@ export default {
   background-color: #fff;
   border-radius: 4px;
   border-top: 1px solid rgb(240, 240, 240);
-  padding: 24px 24px 24px 0;
+  padding: 16px 16px 16px 0;
   position: relative;
 
   .commented-user {
@@ -260,13 +260,13 @@ export default {
     }
 
     .info {
-      color: #6e6e6e;
       font-size: 12px;
       list-style: none;
       padding: 0;
       margin: 0;
 
       .info-content {
+        color: #6e6e6e;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -275,6 +275,7 @@ export default {
 
       .info-created-at,
       .info-reply-target-user-name {
+        color: #9a9a9a;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -288,20 +289,20 @@ export default {
     color: #030303;
     font-size: 12px;
     font-weight: 500;
-    line-height: 1.8;
-    margin-left: 50px;
+    line-height: 1.5;
+    margin: 4px 0 12px 50px;
     padding-bottom: 18px;
     word-break: break-word;
   }
 
   .action-like {
     align-items: center;
-    bottom: 9px;
+    bottom: 5px;
     cursor: pointer;
     display: flex;
     padding: 10px 0;
     position: absolute;
-    right: 70px;
+    right: 62px;
 
     &.disable {
       cursor: not-allowed;
@@ -320,21 +321,21 @@ export default {
   }
 
   .action-reply {
-    bottom: 10px;
+    bottom: 6px;
     color: #858dda;
     cursor: pointer;
     font-size: 12px;
     font-weight: 500;
     padding: 10px 0;
     position: absolute;
-    right: 24px;
+    right: 16px;
   }
 
   .action-delete {
     cursor: pointer;
     position: absolute;
-    right: 24px;
-    top: 20px;
+    right: 20px;
+    top: 16px;
 
     .icon {
       width: 20px;
@@ -369,11 +370,11 @@ export default {
       .info {
         // 10px - padding of .area-article-comments
         // 74px - padding of .area-article-comment-reply-comments
-        // 24px - padding of .article-comment
+        // 16px - padding of .article-comment
         // 36px - width   of .article-comment .commented-user .icon
         // 16px - margin  of .article-comment .commented-user .icon
         // 20px - width   of .article-comment .action-delete .icon
-        width: calc(100vw - (10px + 74px + 36px + 16px + 20px + 24px + 10px));
+        width: calc(100vw - (10px + 74px + 36px + 16px + 20px + 16px + 10px));
       }
     }
   }
