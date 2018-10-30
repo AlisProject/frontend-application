@@ -42,7 +42,7 @@ export default {
     })
   },
   computed: {
-    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['hasArticleCommentsLastEvaluatedKey'])
   },
   methods: {
@@ -59,6 +59,23 @@ export default {
       }
     },
     moveToBottom() {
+      if (!this.loggedIn) {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
+        window.scrollTo(0, 0)
+        document.querySelector('html').style.overflow = 'hidden'
+        document.querySelector('body').style.overflow = 'hidden'
+        return
+      } else {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          document.querySelector('html').style.overflow = 'hidden'
+          document.querySelector('body').style.overflow = 'hidden'
+          return
+        }
+      }
+
       if (!document.querySelector('.article-comment-form-box')) {
         return
       }
@@ -70,7 +87,12 @@ export default {
         behavior: 'smooth'
       })
     },
-    ...mapActions('article', ['setArticleComments'])
+    ...mapActions('article', ['setArticleComments']),
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ])
   }
 }
 </script>

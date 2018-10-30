@@ -174,6 +174,23 @@ export default {
       }
     },
     reply() {
+      if (!this.loggedIn) {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
+        window.scrollTo(0, 0)
+        document.querySelector('html').style.overflow = 'hidden'
+        document.querySelector('body').style.overflow = 'hidden'
+        return
+      } else {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          document.querySelector('html').style.overflow = 'hidden'
+          document.querySelector('body').style.overflow = 'hidden'
+          return
+        }
+      }
+
       window.scrollTo({
         top: this.articleCommentReplyFormBoxPosition,
         behavior: 'smooth'
