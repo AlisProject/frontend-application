@@ -30,17 +30,6 @@ export default {
       required: true
     }
   },
-  mounted() {
-    const toCommentButtonElement = document.querySelector('.to-comment-button')
-    if (!toCommentButtonElement) return
-    const viewportMeta = document.querySelector('meta[name="viewport"]')
-    toCommentButtonElement.addEventListener('touchstart', (event) => {
-      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
-    })
-    toCommentButtonElement.addEventListener('click', (event) => {
-      viewportMeta.setAttribute('content', 'width=device-width,initial-scale=1,user-scalable=0')
-    })
-  },
   computed: {
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['hasArticleCommentsLastEvaluatedKey'])
