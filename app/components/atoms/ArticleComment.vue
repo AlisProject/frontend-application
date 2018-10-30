@@ -58,6 +58,7 @@ import urlRegex from 'url-regex'
 import { htmlDecode } from '~/utils/article'
 import ArticleCommentReplyComments from '../organisms/ArticleCommentReplyComments'
 import ArticleCommentReplyForm from '../organisms/ArticleCommentReplyForm'
+import smoothscroll from 'smoothscroll-polyfill'
 
 export default {
   props: {
@@ -86,6 +87,8 @@ export default {
     }
   },
   mounted() {
+    smoothscroll.polyfill()
+
     this.likesCount = this.comment.likesCount
     this.listen(window, 'click', (event) => {
       if (!this.$el.querySelector('.action-delete')) return
