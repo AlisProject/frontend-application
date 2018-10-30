@@ -404,7 +404,10 @@ const actions = {
                 const likesCount = await dispatch('getArticleCommentLikesCount', {
                   commentId: replyComment.comment_id
                 })
-                return { ...replyComment, userInfo, isLiked, likesCount }
+                const replyedUserInfo = await dispatch('getUserInfo', {
+                  userId: replyComment.replyed_user_id
+                })
+                return { ...replyComment, userInfo, isLiked, likesCount, replyedUserInfo }
               })
             )
           }

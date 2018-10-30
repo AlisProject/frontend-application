@@ -111,7 +111,7 @@ export default {
       return htmlDecode(this.replyComment.userInfo.user_display_name)
     },
     decodedReplyedUserDisplayName() {
-      return htmlDecode(this.replyComment.userInfo.user_display_name)
+      return htmlDecode(this.replyComment.replyedUserInfo.user_display_name)
     },
     ...mapGetters('user', ['currentUserInfo', 'loggedIn', 'currentUser']),
     ...mapGetters('article', ['article'])
@@ -199,7 +199,7 @@ export default {
       const replyInfo = {
         replyedUserId: this.replyComment.userInfo.user_id,
         replyedUserDisplayName: this.decodedUserDisplayName,
-        parentId: this.replyComment.comment_id
+        parentId: this.replyInfo.parentId
       }
       this.$emit('handle-reply', replyInfo, true)
     },
