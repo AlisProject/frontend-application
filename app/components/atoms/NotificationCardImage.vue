@@ -4,7 +4,11 @@
       class="profile-icon"
       src="~assets/images/pc/common/icon_like.png"
       v-if="notification.type === 'like'">
-    <template v-if="notification.type === 'comment' || notification.type === 'tip'">
+    <template
+      v-if="notification.type === 'comment' ||
+            notification.type === 'tip' ||
+            notification.type === 'reply' ||
+            notification.type === 'thread'">
       <img
         class="profile-icon"
         :src="notification.userInfo.icon_image_url"
