@@ -42,6 +42,8 @@ export default {
 <style lang="scss" scoped>
 .area-article-comment-reply-comments {
   background: #fff;
+  display: flex;
+  flex-flow: column-reverse nowrap;
   padding: 0 0 0 74px;
 }
 </style>

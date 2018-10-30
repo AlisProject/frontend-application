@@ -17,7 +17,7 @@
       <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
       <author-info :user="article.userInfo"/>
     </div>
-    <article-comments :comments="reversedArticleComments"/>
+    <article-comments :comments="article.comments"/>
     <article-comment-form/>
     <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
@@ -68,10 +68,6 @@ export default {
     this.resetArticleCommentsLastEvaluatedKey()
   },
   computed: {
-    reversedArticleComments() {
-      // コメントの表示順を降順に変更
-      return this.article.comments.sort((a, b) => a.created_at > b.created_at)
-    },
     decodedTitle() {
       return htmlDecode(this.article.title)
     },

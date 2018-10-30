@@ -7,7 +7,9 @@
         @click="showComments"
         v-if="hasArticleCommentsLastEvaluatedKey">前のコメントを表示</span>
     </div>
-    <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
+    <div class="article-comments">
+      <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
+    </div>
   </div>
 </template>
 
@@ -91,7 +93,6 @@ export default {
   background-color: rgba(35, 37, 56, 0.05);
   display: grid;
   grid-area: article-comments;
-  grid-gap: 8px;
   padding: 20px calc(50% - 324px) 8px;
 }
 
@@ -114,6 +115,11 @@ export default {
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;
+}
+
+.article-comments {
+  display: flex;
+  flex-flow: column-reverse nowrap;
 }
 
 @media screen and (max-width: 640px) {

@@ -40,7 +40,7 @@
         v-if="isShowReplies"
         @handle-reply="handleReply"
         :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
-        :replies="reversedReplies"
+        :replies="replies"
         :replyInfo="replyInfo" />
       <article-comment-reply-form
         v-if="isShowReplies"
@@ -131,10 +131,6 @@ export default {
     },
     replies() {
       return this.comment.replies || []
-    },
-    reversedReplies() {
-      // コメントの表示順を降順に変更
-      return this.replies.sort((a, b) => a.created_at > b.created_at)
     },
     decodedUserDisplayName() {
       return htmlDecode(this.comment.userInfo.user_display_name)
@@ -291,6 +287,7 @@ export default {
 .article-comment {
   background-color: #fff;
   border-radius: 4px;
+  margin-top: 8px;
   padding: 16px;
   position: relative;
 
