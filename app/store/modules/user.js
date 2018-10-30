@@ -490,7 +490,12 @@ const actions = {
       const notificationsWithData = await Promise.all(
         notifications.map(async (notification) => {
           let userInfo
-          if (notification.type === 'comment' || notification.type === 'tip') {
+          if (
+            notification.type === 'comment' ||
+            notification.type === 'tip' ||
+            notification.type === 'reply' ||
+            notification.type === 'thread'
+          ) {
             userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
           } else if (notification.type === 'tip_error') {
             userInfo = await this.$axios.$get(`/users/${notification.article_user_id}/info`)

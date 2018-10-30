@@ -15,6 +15,14 @@
     <span class="liked_count">{{ decodedUserDisplayName }}</span>
     にトークンを贈れませんでした。"{{ decodedArticleTitle }}"
   </p>
+  <p class="area-description" v-else-if="notification.type === 'reply'">
+    <span class="liked_count">{{ decodedUserDisplayName }}</span>
+    があなたにコメントしました。"{{ decodedArticleTitle }}"
+  </p>
+  <p class="area-description" v-else-if="notification.type === 'thread'">
+    <span class="liked_count">{{ decodedUserDisplayName }}</span>
+    があなたにコメントしたスレッドにコメントしました。"{{ decodedArticleTitle }}"
+  </p>
 </template>
 
 <script>
