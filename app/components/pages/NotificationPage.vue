@@ -1,5 +1,5 @@
 <template>
-  <div class="notification-list-container" @scroll="infiniteScroll">
+  <div class="notification-list-container">
     <app-header />
     <h1 class="area-title">{{ title }}</h1>
     <notification-card-list :notifications="notifications"/>
@@ -31,18 +31,21 @@ export default {
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
+    window.addEventListener('scroll', this.infiniteScroll)
+
     if (this.notificationListScrollHeight) {
       this.$el.scrollTop = this.notificationListScrollHeight
     }
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.infiniteScroll)
+    this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   data() {
     return {
       canLoadNextNotifications: true,
       isFetchingNotifications: false
     }
-  },
-  beforeDestroy() {
-    this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
     async infiniteScroll(event) {
@@ -51,7 +54,7 @@ export default {
         this.isFetchingNotifications = true
         if (
           !this.canLoadNextNotifications ||
-          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+          window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10
         ) {
           return
         }
@@ -93,9 +96,6 @@ export default {
     "app-footer  app-footer             app-footer";
   grid-template-columns: 1fr 640px 1fr;
   grid-template-rows: 100px 50px 1fr 75px 75px;
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .area-title {

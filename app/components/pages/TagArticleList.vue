@@ -1,5 +1,5 @@
 <template>
-  <div class="tag-article-list" @scroll="infiniteScroll">
+  <div class="tag-article-list">
     <app-header />
     <div class="area-tag">
       {{ this.$route.params.tag }}
@@ -45,6 +45,8 @@ export default {
     ...mapGetters('presentation', ['tagArticlesScrollHeight'])
   },
   mounted() {
+    window.addEventListener('scroll', this.infiniteScroll)
+
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
     // 画面の高さに合うまで要素を取得する。
 
@@ -58,6 +60,7 @@ export default {
     }
   },
   beforeDestroy() {
+    window.removeEventListener('scroll', this.infiniteScroll)
     this.setTagArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
@@ -68,7 +71,7 @@ export default {
 
         const isLastPage = this.tagArticles.isLastPage
         const isScrollBottom =
-          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
+          window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10
         if (isLastPage || !isScrollBottom) return
 
         await this.getTagArticles({ tag: this.$route.params.tag })
@@ -109,9 +112,6 @@ export default {
     "...         tag-articles           ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .area-tag {

@@ -1,5 +1,5 @@
 <template>
-  <div class="public-article-list-container long-article-card" @scroll="infiniteScroll">
+  <div class="public-article-list-container long-article-card">
     <app-header />
     <my-article-list-header-nav class="public-articles" />
     <article-card-list :articles="publicArticles" :linkTo="'public'"/>
@@ -30,6 +30,12 @@ export default {
       isFetchingArticles: false
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.infiniteScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.infiniteScroll)
+  },
   computed: {
     ...mapGetters('article', [
       'publicArticles',
@@ -42,9 +48,7 @@ export default {
       if (this.isFetchingArticles) return
       try {
         this.isFetchingArticles = true
-        if (
-          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
-        ) {
+        if (window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10) {
           return
         }
         await this.getPublicArticles()
@@ -82,9 +86,6 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 @media screen and (max-width: 1296px) {
