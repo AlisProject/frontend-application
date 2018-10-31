@@ -1,7 +1,6 @@
 <template>
   <div class="new-editor-container" v-if="isNewVersionArticle">
-    <app-header />
-    <edit-header-nav class="drafts" />
+    <app-header class="area-app-header-container" />
     <v2-editor :defaultTitle="decodedTitle" :defaultBlocks="JSON.parse(this.body)"/>
   </div>
   <div class="edit-article-container" v-else>
@@ -15,8 +14,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import EditHeaderNav from '../molecules/EditHeaderNav'
-import ArticleEditor from '../atoms/ArticleEditor'
-import NewArticleEditor from '~/components/organisms/NewArticleEditor.vue'
+import ArticleEditor from '~/components/organisms/ArticleEditor/OldArticleEditor.vue'
+import NewArticleEditor from '~/components/organisms/ArticleEditor/NewArticleEditor.vue'
 import { htmlDecode } from '~/utils/article'
 
 export default {
@@ -38,10 +37,10 @@ export default {
         return false
       }
     },
-    ...mapGetters('article', ['title', 'body'])
+    ...mapGetters('article', ['title', 'body', 'gotArticleData'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticle', 'gotArticleData']),
+    ...mapActions('article', ['putDraftArticle']),
     async putArticle() {
       if (!this.gotArticleData) return
       const { title, body, thumbnail } = this
@@ -81,5 +80,24 @@ export default {
   width: 880px;
   margin: 0 auto;
   z-index: 2;
+}
+
+.new-editor-container .new-editor-head-nav {
+  width: 880px;
+  max-width: 100%;
+}
+
+.new-editor-container {
+  width: 1100px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.area-app-header-container {
+  width: 880px;
+  max-width: 100%;
+  margin: 0 auto;
+  z-index: 2;
+  position: relative;
 }
 </style>

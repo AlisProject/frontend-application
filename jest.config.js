@@ -15,5 +15,6 @@ module.exports = {
     '!**/node_modules/**',
     '!**/.nuxt/**'
   ],
-  testURL: 'http://localhost/'
+  testURL: 'http://localhost/',
+  snapshotSerializers: ['jest-serializer-vue']
 }

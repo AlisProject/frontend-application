@@ -1,6 +1,19 @@
 /* global iframely */
 import axios from './axios'
 import { XmlEntities } from 'html-entities'
+import uuid from 'uuid/v4'
+
+export function createInitialBlocks() {
+  return [
+    {
+      id: uuid(),
+      type: 'Paragraph',
+      payload: {
+        body: ''
+      }
+    }
+  ]
+}
 
 export function createInsertPluginTemplateFromUrl(url) {
   // This method returns DOM string like this.

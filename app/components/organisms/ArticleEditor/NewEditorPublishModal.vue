@@ -1,7 +1,6 @@
 <template>
   <app-modal
     title="公開情報の確認"
-    style="z-index: 2"
     class="mobile-editor-publish-modal"
     @close="handleCloseModal"
   >
@@ -47,7 +46,7 @@ import RoundedButton from '~/components/atoms/RoundedButton.vue'
 import AppModal from '~/components/atoms/AppModal.vue'
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import TagsInputForm from '../molecules/TagsInputForm'
+import TagsInputForm from '~/components/molecules/TagsInputForm'
 
 export default {
   components: {
@@ -137,12 +136,17 @@ export default {
   color: #929292;
 }
 
+.mobile-editor-publish-modal {
+  z-index: 100;
+}
+
 .area-post-article {
   background-color: #ffffff;
   border-radius: 4px;
   box-sizing: border-box;
   padding: 20px 10px;
   z-index: 1;
+  flex-direction: column;
 
   .post-article {
     color: #858dda;

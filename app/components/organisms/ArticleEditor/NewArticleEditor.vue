@@ -1,5 +1,13 @@
 <template>
   <div id="new-editor-wrapper">
+    <edit-header-nav class="new-editor-head-nav" :class="{ drafts: draft }">
+      <div slot="right-content" class="area-post-article">
+        <article-editor-publish-button
+          :publishable="!!blocks.length"
+          :onClick="openModal"
+        />
+      </div>
+    </edit-header-nav>
     <ArticleTitleInput v-model="title" />
     <alis-editor
       style="position: relative;z-index: 1"
@@ -8,7 +16,7 @@
       :initialState="blocks"
       :config="config"
     />
-    <MobileEditorPublishModal
+    <NewEditorPublishModal
       v-if="isOpenModal"
       @close="handleCloseModal"
       :thumbnails="blocks.filter((block) => block.type === 'Image')"
@@ -18,12 +26,13 @@
 
 <script>
 import ArticleTitleInput from '~/components/atoms/ArticleTitleInput.vue'
-import EditHeaderNav from '../molecules/EditHeaderNav'
-import MobileEditorPublishModal from '~/components/organisms/MobileEditorPublishModal.vue'
+import EditHeaderNav from '~/components/molecules/EditHeaderNav'
+import NewEditorPublishModal from '~/components/organisms/ArticleEditor/NewEditorPublishModal.vue'
 import AppModal from '~/components/atoms/AppModal.vue'
 import AppHeader from '~/components/organisms/AppHeader.vue'
 import AlisEditor from 'alis-editor'
-import uuid from 'uuid/v4'
+import ArticleEditorPublishButton from '~/components/atoms/ArticleEditor/ArticleEditorPublishButton.vue'
+import { createInitialBlocks } from '~/utils/article'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -31,11 +40,19 @@ export default {
     AppModal,
     AppHeader,
     ArticleTitleInput,
+    ArticleEditorPublishButton,
     AlisEditor,
     EditHeaderNav,
-    MobileEditorPublishModal
+    NewEditorPublishModal
   },
-  props: ['defaultTitle', 'defaultBlocks'],
+  props: {
+    defaultTitle: String,
+    defaultBlocks: Array,
+    draft: {
+      type: Boolean,
+      default: true
+    }
+  },
   data() {
     return {
       isOpenModal: false,
@@ -45,22 +62,7 @@ export default {
           Authorization: ''
         }
       },
-      blocks: this.defaultBlocks || [
-        {
-          id: uuid(),
-          type: 'Paragraph',
-          payload: {
-            body: ''
-          }
-        },
-        {
-          id: uuid(),
-          type: 'Paragraph',
-          payload: {
-            body: ''
-          }
-        }
-      ]
+      blocks: this.defaultBlocks || createInitialBlocks()
     }
   },
   mounted() {
@@ -73,11 +75,19 @@ export default {
         const token = localStorage.getItem(
           `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.${currentUser}.idToken`
         )
+        if (!token) {
+          throw new Error('Unauthorized.')
+        }
         this.axiosConfig.headers['Authorization'] = token
-      } catch (e) {}
+      } catch (e) {
+        this.$router.push('/login')
+      }
     }, 1000)
   },
   computed: {
+    articleStatusString() {
+      return this.draft ? 'draft' : 'public'
+    },
     config() {
       return {
         articleId: this.articleId,
@@ -99,17 +109,29 @@ export default {
     async updateEditorState(blocks) {
       const article = {
         title: this.title,
-        body: JSON.stringify(blocks),
+        body: blocks,
         version: 200
       }
       if (!this.articleId) {
         await this.postNewArticle({ article })
+        history.replaceState(
+          `/me/articles/draft/${this.articleId}/edit`,
+          null,
+          `/me/articles/draft/${this.articleId}/edit`
+        )
+        return
       }
-      await this.putDraftArticle({ article, articleId: this.articleId })
-      history.replaceState(`/me/articles/draft/${this.articleId}/edit`, null, `/me/articles/draft/${this.articleId}/edit`)
+      if (this.articleStatusString === 'draft') {
+        await this.putDraftArticle({ article, articleId: this.articleId })
+      } else if (this.articleStatusString === 'public') {
+        await this.putDraftArticle({ article, articleId: this.articleId })
+      }
     },
     handlePublishEditor(blocks) {
       this.blocks = blocks
+      this.isOpenModal = true
+    },
+    openModal() {
       this.isOpenModal = true
     },
     ...mapActions('article', ['postNewArticle', 'putDraftArticle'])
@@ -117,28 +139,19 @@ export default {
 }
 </script>
 
-<style lang="scss">
-html {
-  font-size: 10px;
-}
-
-body {
-  font-size: 14px;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  min-height: 100vh;
-  font-family: sans-serif;
-  overflow-x: hidden;
-}
-
+<style lang="scss" scoped>
 #new-editor-wrapper {
   display: flex;
   flex-direction: column;
+  width: 880px;
+  max-width: 100%;
+  margin: 0 auto;
+  z-index: 2;
+
+  .new-editor-head-nav {
+    width: 880px;
+    max-width: 100%;
+  }
 }
 
 .is-modalopened {
@@ -146,10 +159,11 @@ body {
   overflow-y: hidden;
 }
 
-#new-editor-wrapper {
-  width: 880px;
-  max-width: 100%;
-  margin: 0 auto;
-  z-index: 2;
+.area-post-article {
+  grid-area: post-article;
+  position: relative;
+  display: flex;
+  align-self: center;
+  justify-content: center;
 }
 </style>

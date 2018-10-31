@@ -1,7 +1,6 @@
 <template>
   <div class="new-editor-container" v-if="isNewVersionArticle">
     <app-header />
-    <edit-header-nav class="drafts" />
     <v2-editor :defaultTitle="decodedTitle" :defaultBlocks="JSON.parse(this.body)"/>
   </div>
   <div class="edit-article-container" v-else>
@@ -15,8 +14,8 @@
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import EditHeaderNav from '../molecules/EditHeaderNav'
-import ArticleEditor from '../atoms/ArticleEditor'
-import NewArticleEditor from '~/components/organisms/NewArticleEditor.vue'
+import ArticleEditor from '~/components/organisms/ArticleEditor/OldArticleEditor.vue'
+import NewArticleEditor from '~/components/organisms/ArticleEditor/NewArticleEditor.vue'
 import { htmlDecode } from '~/utils/article'
 
 export default {
@@ -38,10 +37,10 @@ export default {
         return false
       }
     },
-    ...mapGetters('article', ['title', 'body', 'thumbnail'])
+    ...mapGetters('article', ['title', 'body', 'thumbnail', 'gotArticleData'])
   },
   methods: {
-    ...mapActions('article', ['putPublicArticle', 'gotArticleData']),
+    ...mapActions('article', ['putPublicArticle']),
     async putArticle() {
       if (!this.gotArticleData) return
       const { title, body, thumbnail } = this
