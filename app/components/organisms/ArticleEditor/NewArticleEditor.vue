@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ArticleTitleInput from '~/components/atoms/ArticleTitleInput.vue'
+import ArticleTitleInput from '~/components/atoms/ArticleEditor/ArticleTitleInput.vue'
 import EditHeaderNav from '~/components/molecules/EditHeaderNav'
 import NewEditorPublishModal from '~/components/organisms/ArticleEditor/NewEditorPublishModal.vue'
 import AppModal from '~/components/atoms/AppModal.vue'
