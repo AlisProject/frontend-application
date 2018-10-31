@@ -106,6 +106,7 @@ export default {
     "app-footer              app-footer              app-footer";
   grid-template-columns: 1fr 1080px 1fr;
   grid-template-rows: 100px 30px 84px 1fr 75px 75px;
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 1296px) {

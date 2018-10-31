@@ -85,6 +85,7 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 1296px) {

@@ -295,6 +295,7 @@ export default {
     "...         search-result          ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
+  min-height: 100vh;
 
   &.article {
     grid-template-columns: 1fr 1080px 1fr;

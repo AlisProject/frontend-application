@@ -110,6 +110,7 @@ export default {
     "...         tag-articles           ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
+  min-height: 100vh;
 }
 
 .area-tag {

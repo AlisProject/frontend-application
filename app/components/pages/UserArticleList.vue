@@ -94,6 +94,7 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
+  min-height: 100vh;
 }
 
 .area-user-profile-nav {
