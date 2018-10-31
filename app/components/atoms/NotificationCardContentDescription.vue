@@ -21,7 +21,7 @@
   </p>
   <p class="area-description" v-else-if="notification.type === 'thread'">
     <span class="liked_count">{{ decodedUserDisplayName }}</span>
-    があなたにコメントしたスレッドにコメントしました。"{{ decodedArticleTitle }}"
+    がコメントしました。
   </p>
 </template>
 
