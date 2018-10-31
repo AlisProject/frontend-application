@@ -17,7 +17,7 @@ import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable } from '~/utils/client'
+import { isPageScrollable, isScrollBottom } from '~/utils/client'
 
 export default {
   components: {
@@ -63,9 +63,7 @@ export default {
       try {
         this.isFetchingArticles = true
 
-        const isScrollBottom =
-          window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10
-        if (this.isLastPage || !isScrollBottom) return
+        if (this.isLastPage || !isScrollBottom()) return
 
         await this.getNewPagesArticles({ topic: this.$route.query.topic })
       } finally {

@@ -67,7 +67,7 @@ import SearchUserCardList from '../organisms/SearchUserCardList'
 import ArticleTags from '../molecules/ArticleTags'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable } from '~/utils/client'
+import { isPageScrollable, isScrollBottom } from '~/utils/client'
 
 export default {
   components: {
@@ -194,9 +194,7 @@ export default {
           default:
             break
         }
-        const isScrollBottom =
-          window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10
-        if (isLastPage || !isScrollBottom) return
+        if (isLastPage || !isScrollBottom()) return
 
         await this.getSearchData(this.query)
       } finally {

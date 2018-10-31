@@ -20,7 +20,7 @@ import UserArticleListUserInfo from '../atoms/UserArticleListUserInfo'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable } from '~/utils/client'
+import { isPageScrollable, isScrollBottom } from '~/utils/client'
 
 export default {
   components: {
@@ -58,9 +58,7 @@ export default {
       if (this.isFetchingArticles) return
       try {
         this.isFetchingArticles = true
-        if (window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10) {
-          return
-        }
+        if (!isScrollBottom()) return
 
         await this.getUserArticles({ userId: this.$route.params.userId })
       } finally {

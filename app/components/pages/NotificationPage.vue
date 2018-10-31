@@ -14,7 +14,7 @@ import AppHeader from '../organisms/AppHeader'
 import NotificationCardList from '../organisms/NotificationCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable } from '~/utils/client'
+import { isPageScrollable, isScrollBottom } from '~/utils/client'
 
 export default {
   components: {
@@ -52,12 +52,7 @@ export default {
       if (this.isFetchingNotifications) return
       try {
         this.isFetchingNotifications = true
-        if (
-          !this.canLoadNextNotifications ||
-          window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10
-        ) {
-          return
-        }
+        if (!this.canLoadNextNotifications || !isScrollBottom()) return
 
         await this.getNotifications()
         this.canLoadNextNotifications = this.hasNotificationsLastEvaluatedKey

@@ -26,7 +26,7 @@ import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable } from '~/utils/client'
+import { isPageScrollable, isScrollBottom } from '~/utils/client'
 
 export default {
   components: {
@@ -70,9 +70,7 @@ export default {
         this.isFetchingData = true
 
         const isLastPage = this.tagArticles.isLastPage
-        const isScrollBottom =
-          window.innerHeight + window.pageYOffset < document.body.offsetHeight - 10
-        if (isLastPage || !isScrollBottom) return
+        if (isLastPage || !isScrollBottom()) return
 
         await this.getTagArticles({ tag: this.$route.params.tag })
       } finally {
