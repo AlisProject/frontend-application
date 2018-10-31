@@ -3,7 +3,8 @@
     <span class="liked_count">{{ notification.liked_count }}人</span>があなたの記事にいいねしました。"{{ decodedArticleTitle }}"
   </p>
   <p class="area-description" v-else-if="notification.type === 'comment'">
-    <span class="liked_count">{{ decodedUserDisplayName }}</span>があなたの記事にコメントしました。"{{ decodedArticleTitle }}"
+    <span class="liked_count">{{ decodedUserDisplayName }}</span>
+    があなたの記事にコメントしました。
   </p>
   <p class="area-description" v-else-if="notification.type === 'tip'">
     <span class="liked_count">{{ decodedUserDisplayName }}</span>
