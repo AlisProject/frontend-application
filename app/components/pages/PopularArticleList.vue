@@ -1,5 +1,5 @@
 <template>
-  <div class="popular-article-list-container" @scroll="infiniteScroll">
+  <div class="popular-article-list-container">
     <app-header />
     <default-header-nav/>
     <article-type-select-nav />
@@ -17,7 +17,7 @@ import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable } from '~/utils/client'
+import { isPageScrollable, isScrollBottom } from '~/utils/client'
 
 export default {
   components: {
@@ -39,6 +39,8 @@ export default {
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
+    window.addEventListener('scroll', this.infiniteScroll)
+
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
     // 画面の高さに合うまで要素を取得する。
 
@@ -52,6 +54,7 @@ export default {
     }
   },
   beforeDestroy() {
+    window.removeEventListener('scroll', this.infiniteScroll)
     this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
@@ -60,9 +63,7 @@ export default {
       try {
         this.isFetchingArticles = true
 
-        const isScrollBottom =
-          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
-        if (this.isLastPage || !isScrollBottom) return
+        if (this.isLastPage || !isScrollBottom()) return
 
         await this.getPopularArticles({ topic: this.$route.query.topic || 'crypto' })
       } finally {
@@ -105,9 +106,7 @@ export default {
     "app-footer              app-footer              app-footer";
   grid-template-columns: 1fr 1080px 1fr;
   grid-template-rows: 100px 30px 84px 1fr 75px 75px;
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 1296px) {
