@@ -1,15 +1,13 @@
 <template>
   <div id="new-editor-wrapper">
     <ArticleTitleInput v-model="title" />
-    <no-ssr>
-      <alis-editor
-        style="position: relative;z-index: 1"
-        @update="updateEditorState"
-        @export="handlePublishEditor"
-        :initialState="blocks"
-        :iframelyApikey="iframelyApikey"
-      />
-    </no-ssr>
+    <alis-editor
+      style="position: relative;z-index: 1"
+      @update="updateEditorState"
+      @export="handlePublishEditor"
+      :initialState="blocks"
+      :config="config"
+    />
     <MobileEditorPublishModal
       v-if="isOpenModal"
       @close="handleCloseModal"
@@ -42,6 +40,11 @@ export default {
     return {
       isOpenModal: false,
       title: this.defaultTitle || '',
+      axiosConfig: {
+        headers: {
+          Authorization: ''
+        }
+      },
       blocks: this.defaultBlocks || [
         {
           id: uuid(),
@@ -60,7 +63,30 @@ export default {
       ]
     }
   },
+  mounted() {
+    setTimeout(async () => {
+      try {
+        await this.$store.dispatch('user/getUserSession')
+        const currentUser = localStorage.getItem(
+          `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+        )
+        const token = localStorage.getItem(
+          `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.${currentUser}.idToken`
+        )
+        this.axiosConfig.headers['Authorization'] = token
+      } catch (e) {}
+    }, 1000)
+  },
   computed: {
+    config() {
+      return {
+        articleId: this.articleId,
+        preview: false,
+        iframelyApikey: process.env.IFRAMELY_API_KEY,
+        uploadEndpoint: `/api/me/articles/${this.articleId}/images`,
+        axiosConfig: this.axiosConfig
+      }
+    },
     iframelyApikey() {
       return process.env.IFRAMELY_API_KEY
     },
@@ -73,12 +99,14 @@ export default {
     async updateEditorState(blocks) {
       const article = {
         title: this.title,
-        body: JSON.stringify(blocks) // あとで blocks へと変える
+        body: JSON.stringify(blocks),
+        version: 200
       }
       if (!this.articleId) {
         await this.postNewArticle({ article })
       }
       await this.putDraftArticle({ article, articleId: this.articleId })
+      history.replaceState(`/me/articles/draft/${this.articleId}/edit`, null, `/me/articles/draft/${this.articleId}/edit`)
     },
     handlePublishEditor(blocks) {
       this.blocks = blocks
@@ -120,6 +148,7 @@ body {
 
 #new-editor-wrapper {
   width: 880px;
+  max-width: 100%;
   margin: 0 auto;
   z-index: 2;
 }

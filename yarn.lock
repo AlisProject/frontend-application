@@ -171,9 +171,9 @@ align-text@^0.1.1, align-text@^0.1.3:
     longest "^1.0.1"
     repeat-string "^1.5.2"
 
-alis-editor@^0.2.17:
-  version "0.2.17"
-  resolved "https://registry.yarnpkg.com/alis-editor/-/alis-editor-0.2.17.tgz#b1ef1bd00bb468f2b18f31217fbef4f92c3e4fb3"
+alis-editor@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/alis-editor/-/alis-editor-0.3.2.tgz#52f8bb6f76cc357e9886bd82fb8d1d0386fb1a55"
   dependencies:
     autolinker "^1.7.1"
     axios "^0.18.0"

@@ -24,16 +24,20 @@ export default {
 <style lang="scss" scoped>
 .new-editor-container .new-editor-head-nav {
   width: 880px;
+  max-width: 100%;
 }
 
 .new-editor-container {
   width: 1100px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
 .area-app-header-container {
   width: 880px;
+  max-width: 100%;
   margin: 0 auto;
   z-index: 2;
+  position: relative;
 }
 </style>
