@@ -21,7 +21,9 @@ describe('isV2', () => {
   describe('when body is missing', () => {
     it('throws TypeError', () => {
       const article = {}
-      expect(() => { isV2(article) }).toThrow()
+      expect(() => {
+        isV2(article)
+      }).toThrow()
     })
   })
 })
