@@ -388,12 +388,34 @@ const actions = {
       })
       const commentsWithData = await Promise.all(
         comments.map(async (comment) => {
-          const userInfo = await dispatch('getUserInfo', { userId: comment.user_id })
-          let isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
-          const likesCount = await dispatch('getArticleCommentLikesCount', {
-            commentId: comment.comment_id
-          })
-          return { ...comment, userInfo, isLiked, likesCount }
+          const [userInfo, likesCount] = await Promise.all([
+            dispatch('getUserInfo', { userId: comment.user_id }),
+            dispatch('getArticleCommentLikesCount', {
+              commentId: comment.comment_id
+            })
+          ])
+          const isLiked = state.articleCommentLikedCommentIds.includes(comment.comment_id)
+          let replies = []
+          if (comment.replies) {
+            replies = await Promise.all(
+              comment.replies.map(async (replyComment) => {
+                const [userInfo, likesCount, replyedUserInfo] = await Promise.all([
+                  dispatch('getUserInfo', { userId: replyComment.user_id }),
+                  dispatch('getArticleCommentLikesCount', {
+                    commentId: replyComment.comment_id
+                  }),
+                  dispatch('getUserInfo', {
+                    userId: replyComment.replyed_user_id
+                  })
+                ])
+                const isLiked = state.articleCommentLikedCommentIds.includes(
+                  replyComment.comment_id
+                )
+                return { ...replyComment, userInfo, isLiked, likesCount, replyedUserInfo }
+              })
+            )
+          }
+          return { ...comment, userInfo, isLiked, likesCount, replies }
         })
       )
       return commentsWithData
@@ -433,7 +455,8 @@ const actions = {
       created_at: new Date().getTime() / 1000,
       comment_id: commentId,
       isLiked: false,
-      likesCount: 0
+      likesCount: 0,
+      replies: []
     }
 
     commit(types.ADD_ARTICLE_COMMENT, { comment })
@@ -549,6 +572,46 @@ const actions = {
   },
   resetTagArticlesData({ commit }) {
     commit(types.RESET_TAG_ARTICLES_DATA)
+  },
+  async postArticleReplyComment({ commit }, { articleId, text, parentId, replyedUserId }) {
+    try {
+      const { comment_id: commentId } = await this.$axios.$post(
+        `/me/articles/${articleId}/comments/reply`,
+        { text, parent_id: parentId, replyed_user_id: replyedUserId }
+      )
+      return commentId
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  addArticleReplyComment(
+    { commit, rootState },
+    { text, commentId, parentId, replyedUserId, replyedUserDisplayName }
+  ) {
+    const { currentUserInfo } = rootState.user
+    const replyComment = {
+      text,
+      userInfo: currentUserInfo,
+      user_id: currentUserInfo.user_id,
+      created_at: new Date().getTime() / 1000,
+      comment_id: commentId,
+      isLiked: false,
+      likesCount: 0,
+      replyed_user_id: replyedUserId,
+      replyedUserInfo: {
+        user_display_name: replyedUserDisplayName
+      }
+    }
+
+    commit(types.ADD_ARTICLE_REPLY_COMMENT, { replyComment, parentId })
+  },
+  async deleteArticleReplyComment({ commit }, { commentId, parentId }) {
+    try {
+      await this.$axios.$delete(`/me/comments/${commentId}`)
+      commit(types.DELETE_ARTICLE_REPLY_COMMENT, { commentId, parentId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -728,6 +791,21 @@ const mutations = {
   },
   [types.SET_TAG_ARTICLES_CURRENT_TAG](state, { tag }) {
     state.tagArticles.currentTag = tag
+  },
+  [types.ADD_ARTICLE_REPLY_COMMENT](state, { replyComment, parentId }) {
+    const parentCommentIndex = state.article.comments.findIndex(
+      (comment) => comment.comment_id === parentId
+    )
+    state.article.comments[parentCommentIndex].replies.unshift(replyComment)
+  },
+  [types.DELETE_ARTICLE_REPLY_COMMENT](state, { commentId, parentId }) {
+    const parentCommentIndex = state.article.comments.findIndex(
+      (comment) => comment.comment_id === parentId
+    )
+    const replies = state.article.comments[parentCommentIndex].replies.filter(
+      (comment) => comment.comment_id !== commentId
+    )
+    state.article.comments[parentCommentIndex].replies = replies
   }
 }
 

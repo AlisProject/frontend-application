@@ -33,7 +33,6 @@ export default {
   line-height: 20px;
   margin: 0;
   overflow: hidden;
-  text-align: justify;
   text-overflow: ellipsis;
 
   a {

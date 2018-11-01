@@ -1,19 +1,25 @@
 <template>
   <p class="area-description" v-if="notification.type === 'like'">
-    <span class="liked_count">{{ notification.liked_count }}人</span>があなたの記事にいいねしました。"{{ decodedArticleTitle }}"
+    <span class="gray-darker">{{ notification.liked_count }}人</span>があなたの記事にいいねしました。"{{ decodedArticleTitle }}"
   </p>
   <p class="area-description" v-else-if="notification.type === 'comment'">
-    <span class="liked_count">{{ decodedUserDisplayName }}</span>があなたの記事にコメントしました。"{{ decodedArticleTitle }}"
+    <span class="gray-darker">{{ decodedUserDisplayName }}</span>があなたの記事に<span class="gray-darker">コメント</span>しました。
   </p>
   <p class="area-description" v-else-if="notification.type === 'tip'">
-    <span class="liked_count">{{ decodedUserDisplayName }}</span>
+    <span class="gray-darker">{{ decodedUserDisplayName }}</span>
     から
-    <span class="liked_count">{{ tipTokenAmountForUser }}ALIS</span>
+    <span class="gray-darker">{{ tipTokenAmountForUser }}ALIS</span>
     受け取りました。"{{ decodedArticleTitle }}"
   </p>
   <p class="area-description" v-else-if="notification.type === 'tip_error'">
-    <span class="liked_count">{{ decodedUserDisplayName }}</span>
+    <span class="gray-darker">{{ decodedUserDisplayName }}</span>
     にトークンを贈れませんでした。"{{ decodedArticleTitle }}"
+  </p>
+  <p class="area-description" v-else-if="notification.type === 'reply'">
+    <span class="gray-darker">{{ decodedUserDisplayName }}</span>があなたの<span class="gray-darker">コメントに返信</span>しました。
+  </p>
+  <p class="area-description" v-else-if="notification.type === 'thread'">
+    <span class="gray-darker">{{ decodedUserDisplayName }}</span>が<span class="gray-darker">コメント</span>しました。
   </p>
 </template>
 
@@ -55,7 +61,7 @@ export default {
   overflow: hidden;
 }
 
-.liked_count {
+.gray-darker {
   color: #040404;
 }
 </style>

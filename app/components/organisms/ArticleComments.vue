@@ -1,22 +1,25 @@
 <template>
-  <div class="area-article-comments">
-    <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
-    <app-button
-      class="read-more-button"
-      @click="showComments"
-      v-if="hasArticleCommentsLastEvaluatedKey">もっと見る</app-button>
+  <div class="area-article-comments" id="article-comments">
+    <div class="header-contents">
+      <span class="to-comment-button" @click="moveToBottom">コメントする</span>
+      <span
+        class="read-more-button"
+        @click="showComments"
+        v-if="hasArticleCommentsLastEvaluatedKey">前のコメントを表示</span>
+    </div>
+    <div class="article-comments">
+      <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ArticleComment from '../atoms/ArticleComment'
-import AppButton from '../atoms/AppButton'
 
 export default {
   components: {
-    ArticleComment,
-    AppButton
+    ArticleComment
   },
   data() {
     return {
@@ -30,7 +33,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['loggedIn']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['hasArticleCommentsLastEvaluatedKey'])
   },
   methods: {
@@ -46,7 +49,41 @@ export default {
         this.loadingComments = false
       }
     },
-    ...mapActions('article', ['setArticleComments'])
+    moveToBottom() {
+      if (!this.loggedIn) {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
+        window.scrollTo(0, 0)
+        document.querySelector('html').style.overflow = 'hidden'
+        document.querySelector('body').style.overflow = 'hidden'
+        return
+      } else {
+        if (!this.currentUser.phoneNumberVerified) {
+          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
+          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          window.scrollTo(0, 0)
+          document.querySelector('html').style.overflow = 'hidden'
+          document.querySelector('body').style.overflow = 'hidden'
+          return
+        }
+      }
+
+      if (!document.querySelector('.article-comment-form-box')) {
+        return
+      }
+      const articleCommentFormBoxPosition =
+        document.querySelector('.article-comment-form-box').getBoundingClientRect().top +
+        window.pageYOffset
+      window.scroll({
+        top: articleCommentFormBoxPosition,
+        behavior: 'smooth'
+      })
+    },
+    ...mapActions('article', ['setArticleComments']),
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ])
   }
 }
 </script>
@@ -56,17 +93,38 @@ export default {
   background-color: rgba(35, 37, 56, 0.05);
   display: grid;
   grid-area: article-comments;
-  grid-gap: 8px;
-  padding: 0 calc(50% - 324px) 48px;
+  padding: 20px calc(50% - 324px) 8px;
+}
+
+.header-contents {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  padding: 20px 0 20px;
 }
 
 .read-more-button {
-  margin: 40px auto 0;
+  color: #6e6e6e;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.to-comment-button {
+  color: #858dda;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.article-comments {
+  display: flex;
+  flex-flow: column-reverse nowrap;
 }
 
 @media screen and (max-width: 640px) {
   .area-article-comments {
-    padding: 40px 10px 48px;
+    padding: 20px 10px 8px;
   }
 }
 </style>

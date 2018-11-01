@@ -1,15 +1,20 @@
 <template>
   <div class="area-article-comment-form">
-    <div class="article-comment-form-box">
+    <div class="article-comment-reply-form-box">
       <no-ssr>
         <div class="comment-user" v-if="loggedIn">
           <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
           <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
-          <span class="name">{{ decodedUserDisplayName }}</span>
+          <div class="user-info-box">
+            <span class="name">{{ decodedUserDisplayName }}</span>
+            <span class="reply-target-user-name" v-if="isShowReplyTarget">
+              返信先：{{ replyInfo.replyedUserDisplayName }}
+            </span>
+          </div>
         </div>
       </no-ssr>
       <textarea
-        class="comment-textarea"
+        class="reply-comment-textarea"
         :class="{ 'no-border': !isCommentEmpty }"
         type="text"
         placeholder="コメントを入力してください"
@@ -21,7 +26,7 @@
         :class="{ 'disable': isCommentEmpty }"
         @click="submit"
         @keypress.enter="submit"
-        tabindex="0">コメントする</span>
+        tabindex="0">返信する</span>
     </div>
   </div>
 </template>
@@ -32,6 +37,16 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { htmlDecode } from '~/utils/article'
 
 export default {
+  props: {
+    replyInfo: {
+      type: Object,
+      required: true
+    },
+    isShowReplyTarget: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       comment: '',
@@ -39,7 +54,7 @@ export default {
     }
   },
   mounted() {
-    const textarea = this.$el.querySelector('.comment-textarea')
+    const textarea = this.$el.querySelector('.reply-comment-textarea')
     textarea.style.lineHeight = '18px'
     textarea.style.height = '60px'
 
@@ -108,14 +123,22 @@ export default {
         if (this.postingComment) return
         this.postingComment = true
         const escapedComment = this.escapeHTML(this.comment)
-        const commentId = await this.postArticleComment({
+        const commentId = await this.postArticleReplyComment({
           articleId: this.$route.params.articleId,
+          parentId: this.replyInfo.parentId,
+          replyedUserId: this.replyInfo.replyedUserId,
           text: escapedComment
         })
-        this.addArticleComment({ text: escapedComment, commentId })
+        this.addArticleReplyComment({
+          text: escapedComment,
+          commentId,
+          parentId: this.replyInfo.parentId,
+          replyedUserId: this.replyInfo.replyedUserId,
+          replyedUserDisplayName: this.replyInfo.replyedUserDisplayName
+        })
         this.sendNotification({ text: 'コメントを投稿しました。' })
         this.comment = ''
-        this.$el.querySelector('.comment-textarea').focus()
+        this.$el.querySelector('.reply-comment-textarea').focus()
       } catch (error) {
         console.error(error)
       } finally {
@@ -133,7 +156,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['postArticleComment', 'addArticleComment']),
+    ...mapActions('article', ['postArticleReplyComment', 'addArticleReplyComment']),
     ...mapActions('user', [
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',
@@ -145,14 +168,15 @@ export default {
 
 <style lang="scss" scoped>
 .area-article-comment-form {
+  background-color: #fff;
   grid-area: article-comment-form;
-  background-color: rgba(35, 37, 56, 0.05);
-  padding: 0 calc(50% - 324px) 50px;
+  padding: 0 calc(50% - 324px) 0 74px;
 
-  .article-comment-form-box {
+  .article-comment-reply-form-box {
+    border-top: 1px solid rgb(240, 240, 240);
     background-color: #fff;
     border-radius: 4px;
-    padding: 24px;
+    padding: 24px 24px 24px 0;
 
     .comment-user {
       align-items: center;
@@ -168,17 +192,31 @@ export default {
         width: 36px;
       }
 
-      .name {
-        color: #6e6e6e;
-        font-size: 12px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+      .user-info-box {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.6;
+
+        .name {
+          color: #6e6e6e;
+          font-size: 12px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .reply-target-user-name {
+          color: #858dda;
+          font-size: 10px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
 
-  .comment-textarea {
+  .reply-comment-textarea {
     -webkit-appearance: none;
     border-radius: 0;
     border: none;
@@ -188,11 +226,11 @@ export default {
       'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
     font-size: 12px;
     height: 4em;
-    margin: 14px 0 8px;
+    margin: 4px 0 8px 46px;
     overflow: hidden;
     padding: 5px;
     resize: none;
-    width: 100%;
+    width: calc(100% - 50px);
     box-sizing: border-box;
 
     &.no-border {
@@ -225,9 +263,9 @@ export default {
   }
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 530px) {
   .area-article-comment-form {
-    padding: 0 10px 50px;
+    width: calc(100vw - 94px);
   }
 }
 </style>
