@@ -1,5 +1,5 @@
 <template>
-  <div class="user-article-list-container long-article-card">
+  <div class="user-article-list-container long-article-card" @scroll="infiniteScroll">
     <app-header />
     <user-article-list-user-info :user="userInfo" />
     <nav class="area-user-profile-nav">
@@ -20,7 +20,7 @@ import UserArticleListUserInfo from '../atoms/UserArticleListUserInfo'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable, isScrollBottom } from '~/utils/client'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -36,8 +36,6 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('scroll', this.infiniteScroll)
-
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
     // 画面の高さに合うまで要素を取得する。
 
@@ -47,9 +45,6 @@ export default {
       this.getUserArticles({ userId: this.$route.params.userId })
     }
   },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.infiniteScroll)
-  },
   computed: {
     ...mapGetters('user', ['userInfo', 'userArticles', 'hasUserArticlesLastEvaluatedKey'])
   },
@@ -58,7 +53,11 @@ export default {
       if (this.isFetchingArticles) return
       try {
         this.isFetchingArticles = true
-        if (!isScrollBottom()) return
+        if (
+          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+        ) {
+          return
+        }
 
         await this.getUserArticles({ userId: this.$route.params.userId })
       } finally {
@@ -94,7 +93,9 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .area-user-profile-nav {

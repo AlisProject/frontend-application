@@ -1,5 +1,5 @@
 <template>
-  <div class="search-page-container" :class="searchContentType">
+  <div class="search-page-container" :class="searchContentType" @scroll="infiniteScroll">
     <app-header />
     <h1 class="area-title">{{ title }}</h1>
     <form @submit.prevent="search" class="area-search">
@@ -67,7 +67,7 @@ import SearchUserCardList from '../organisms/SearchUserCardList'
 import ArticleTags from '../molecules/ArticleTags'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable, isScrollBottom } from '~/utils/client'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -97,8 +97,6 @@ export default {
     this.showNav = !!this.query
   },
   async mounted() {
-    window.addEventListener('scroll', this.infiniteScroll)
-
     if (window.innerWidth > 640) this.$refs.searchInput.focus()
     this.inputText = this.$route.query.q
     await this.$nextTick()
@@ -117,8 +115,6 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.infiniteScroll)
-
     switch (this.searchContentType) {
       case 'article':
         this.setSearchArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
@@ -194,7 +190,9 @@ export default {
           default:
             break
         }
-        if (isLastPage || !isScrollBottom()) return
+        const isScrollBottom =
+          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
+        if (isLastPage || !isScrollBottom) return
 
         await this.getSearchData(this.query)
       } finally {
@@ -295,7 +293,9 @@ export default {
     "...         search-result          ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   &.article {
     grid-template-columns: 1fr 1080px 1fr;
