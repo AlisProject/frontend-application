@@ -342,7 +342,7 @@ export default {
 
   .show-reply-comments {
     bottom: 16px;
-    color: #6e6e6e;
+    color: #858dda;
     cursor: pointer;
     font-size: 12px;
     font-weight: 500;
