@@ -96,7 +96,6 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('article', [
-      'updateThumbnail',
       'publishDraftArticle',
       'republishPublicArticle',
       'putDraftArticle',
@@ -104,7 +103,6 @@ export default {
       'updateSuggestedThumbnails',
       'postArticleImage',
       'updateBody',
-      'setIsSaving',
       'getTopics',
       'resetArticleTopic',
       'setArticleTopic'
@@ -118,7 +116,6 @@ export default {
       'articleId',
       'title',
       'body',
-      'suggestedThumbnails',
       'isSaving',
       'isEdited',
       'topics',

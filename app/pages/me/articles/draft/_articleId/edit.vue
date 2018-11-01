@@ -7,7 +7,12 @@ import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import EditDraftArticle from '~/components/pages/EditDraftArticle'
 import head from '~/utils/editor-head'
-import { isV2, showEmbedTweet, getThumbnails, preventDropImageOnOGPContent } from '~/utils/article'
+import {
+  isV2,
+  showEmbedTweet,
+  initializeExistArticleMediumEditor,
+  preventDropImageOnOGPContent
+} from '~/utils/article'
 
 export default {
   components: {
@@ -30,14 +35,7 @@ export default {
         return
       }
       const editorBody = this.$el.querySelector('.area-body')
-      editorBody.innerHTML = article.body
-      // Update thumbnails
-      const images = Array.from(this.$el.querySelectorAll('figure img'))
-      const thumbnails = getThumbnails(images)
-      this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
-      editorBody.dataset.placeholder = ['', '<p><br></p>'].includes(article.body)
-        ? '本文を入力してください'
-        : ''
+      initializeExistArticleMediumEditor({ vm: this, editorBody, article })
       showEmbedTweet()
       preventDropImageOnOGPContent()
     } catch (error) {

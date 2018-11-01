@@ -12,18 +12,10 @@ const state = () => ({
   newArticles: [],
   publicArticles: [],
   draftArticles: [],
-  title: '',
-  body: '',
-  version: 0,
-  suggestedThumbnails: [],
-  thumbnail: '',
-  isSaving: false,
   gotArticleData: false,
   publicArticlesLastEvaluatedKey: {},
   draftArticlesLastEvaluatedKey: {},
   hasPublicArticlesLastEvaluatedKey: false,
-  isEdited: false,
-  saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
   articleCommentLikedCommentIds: [],
   searchArticles: {
@@ -45,7 +37,19 @@ const state = () => ({
     articles: [],
     page: 1,
     isLastPage: false
-  }
+  },
+
+  // For new / old editor state
+  title: '',
+  body: '',
+  version: 0,
+
+  // For old editor state
+  isSaving: false,
+  isEdited: false,
+  thumbnail: '',
+  saveStatus: '',
+  suggestedThumbnails: []
 })
 
 const getters = {

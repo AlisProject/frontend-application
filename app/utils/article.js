@@ -3,6 +3,17 @@ import axios from './axios'
 import { XmlEntities } from 'html-entities'
 import uuid from 'uuid/v4'
 
+export function initializeExistArticleMediumEditor({ vm, article, editorBody }) {
+  editorBody.innerHTML = article.body
+  // Update thumbnails
+  const images = Array.from(vm.$el.querySelectorAll('figure img'))
+  const thumbnails = getThumbnails(images)
+  vm.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
+  editorBody.dataset.placeholder = ['', '<p><br></p>'].includes(article.body)
+    ? '本文を入力してください'
+    : ''
+}
+
 export function isV2(article) {
   console.log(article)
   const version = getArticleVersion(article)
