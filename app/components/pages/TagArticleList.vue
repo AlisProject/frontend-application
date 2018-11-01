@@ -1,5 +1,5 @@
 <template>
-  <div class="tag-article-list">
+  <div class="tag-article-list" @scroll="infiniteScroll">
     <app-header />
     <div class="area-tag">
       {{ this.$route.params.tag }}
@@ -26,7 +26,7 @@ import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable, isScrollBottom } from '~/utils/client'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -45,8 +45,6 @@ export default {
     ...mapGetters('presentation', ['tagArticlesScrollHeight'])
   },
   mounted() {
-    window.addEventListener('scroll', this.infiniteScroll)
-
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
     // 画面の高さに合うまで要素を取得する。
 
@@ -60,7 +58,6 @@ export default {
     }
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.infiniteScroll)
     this.setTagArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
@@ -70,7 +67,9 @@ export default {
         this.isFetchingData = true
 
         const isLastPage = this.tagArticles.isLastPage
-        if (isLastPage || !isScrollBottom()) return
+        const isScrollBottom =
+          event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10
+        if (isLastPage || !isScrollBottom) return
 
         await this.getTagArticles({ tag: this.$route.params.tag })
       } finally {
@@ -110,7 +109,9 @@ export default {
     "...         tag-articles           ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .area-tag {

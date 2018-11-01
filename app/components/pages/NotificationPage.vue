@@ -1,5 +1,5 @@
 <template>
-  <div class="notification-list-container">
+  <div class="notification-list-container" @scroll="infiniteScroll">
     <app-header />
     <h1 class="area-title">{{ title }}</h1>
     <notification-card-list :notifications="notifications"/>
@@ -14,7 +14,7 @@ import AppHeader from '../organisms/AppHeader'
 import NotificationCardList from '../organisms/NotificationCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable, isScrollBottom } from '~/utils/client'
+import { isPageScrollable } from '~/utils/client'
 
 export default {
   components: {
@@ -31,15 +31,9 @@ export default {
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
-    window.addEventListener('scroll', this.infiniteScroll)
-
     if (this.notificationListScrollHeight) {
       this.$el.scrollTop = this.notificationListScrollHeight
     }
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.infiniteScroll)
-    this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   data() {
     return {
@@ -47,12 +41,20 @@ export default {
       isFetchingNotifications: false
     }
   },
+  beforeDestroy() {
+    this.setNotificationListScrollHeight({ scrollHeight: this.$el.scrollTop })
+  },
   methods: {
     async infiniteScroll(event) {
       if (this.isFetchingNotifications) return
       try {
         this.isFetchingNotifications = true
-        if (!this.canLoadNextNotifications || !isScrollBottom()) return
+        if (
+          !this.canLoadNextNotifications ||
+          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
+        ) {
+          return
+        }
 
         await this.getNotifications()
         this.canLoadNextNotifications = this.hasNotificationsLastEvaluatedKey
@@ -91,7 +93,9 @@ export default {
     "app-footer  app-footer             app-footer";
   grid-template-columns: 1fr 640px 1fr;
   grid-template-rows: 100px 50px 1fr 75px 75px;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .area-title {
