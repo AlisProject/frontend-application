@@ -67,6 +67,19 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      initalState: null
+    }
+  },
+  created() {
+    if (!this.isV2) return
+    try {
+      this.initalState = JSON.parse(this.article.body)
+    } catch (e) {
+      this.$root.error({ statusCode: 500 })
+    }
+  },
   mounted() {
     const figcaptions = document.querySelectorAll('figcaption')
     figcaptions.forEach((figcaption) => {
@@ -78,9 +91,6 @@ export default {
     this.resetArticleCommentsLastEvaluatedKey()
   },
   computed: {
-    initalState() {
-      return JSON.parse(this.article.body)
-    },
     isV2() {
       return this.article.version && this.article.version >= 200
     },
