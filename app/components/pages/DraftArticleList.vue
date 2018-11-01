@@ -1,5 +1,5 @@
 <template>
-  <div class="draft-article-list-container long-article-card" @scroll="infiniteScroll">
+  <div class="draft-article-list-container long-article-card">
     <app-header />
     <my-article-list-header-nav class="drafts" />
     <article-card-list :articles="draftArticles" class="draft" :linkTo="'draft'"/>
@@ -15,7 +15,7 @@ import MyArticleListHeaderNav from '../molecules/MyArticleListHeaderNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
-import { isPageScrollable } from '~/utils/client'
+import { isPageScrollable, isScrollBottom } from '~/utils/client'
 
 export default {
   components: {
@@ -30,6 +30,12 @@ export default {
       isFetchingArticles: false
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.infiniteScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.infiniteScroll)
+  },
   computed: {
     ...mapGetters('article', ['draftArticles', 'hasDraftArticlesLastEvaluatedKey'])
   },
@@ -38,11 +44,7 @@ export default {
       if (this.isFetchingArticles) return
       try {
         this.isFetchingArticles = true
-        if (
-          !(event.target.scrollTop + event.target.offsetHeight >= event.target.scrollHeight - 10)
-        ) {
-          return
-        }
+        if (!isScrollBottom()) return
 
         await this.getDraftArticles()
       } finally {
@@ -79,9 +81,7 @@ export default {
     "...         article-card-list ...       "
     "...         loader            ...       "
     "app-footer  app-footer        app-footer";
-  height: 100vh;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  min-height: 100vh;
 }
 
 @media screen and (max-width: 1296px) {
