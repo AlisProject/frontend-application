@@ -1,6 +1,6 @@
 <template>
   <div class="new-editor-container" v-if="isNewVersionArticle">
-    <app-header />
+    <app-header class="area-app-header-container" />
     <v2-editor :defaultTitle="decodedTitle" :defaultBlocks="JSON.parse(this.body)"/>
   </div>
   <div class="edit-article-container" v-else>
