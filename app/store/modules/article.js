@@ -12,17 +12,10 @@ const state = () => ({
   newArticles: [],
   publicArticles: [],
   draftArticles: [],
-  title: '',
-  body: '',
-  suggestedThumbnails: [],
-  thumbnail: '',
-  isSaving: false,
   gotArticleData: false,
   publicArticlesLastEvaluatedKey: {},
   draftArticlesLastEvaluatedKey: {},
   hasPublicArticlesLastEvaluatedKey: false,
-  isEdited: false,
-  saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
   articleCommentLikedCommentIds: [],
   searchArticles: {
@@ -44,7 +37,19 @@ const state = () => ({
     articles: [],
     page: 1,
     isLastPage: false
-  }
+  },
+
+  // For new / old editor state
+  title: '',
+  body: '',
+  version: 0,
+
+  // For old editor state
+  isSaving: false,
+  isEdited: false,
+  thumbnail: '',
+  saveStatus: '',
+  suggestedThumbnails: []
 })
 
 const getters = {
@@ -173,6 +178,7 @@ const actions = {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
       commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE_DETAIL, { article })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
       commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
@@ -631,6 +637,7 @@ const mutations = {
   [types.SET_ARTICLE](state, { article }) {
     state.title = article.title
     state.body = article.body
+    state.version = article.version
   },
   [types.SET_ARTICLE_ID](state, { articleId }) {
     state.articleId = articleId

@@ -106,7 +106,12 @@ module.exports = {
     },
     vendor: ['axios', 'moment', '@johmun/vue-tags-input']
   },
-  css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
+  css: [
+    '~assets/stylesheets/medium-editor.scss',
+    '~assets/stylesheets/alis-editor.scss',
+    '~assets/stylesheets/vuex-toast.scss',
+    'alis-editor/dist/AlisEditor.css'
+  ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
     REGION: process.env.REGION,

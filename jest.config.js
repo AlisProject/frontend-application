@@ -14,5 +14,7 @@ module.exports = {
     '!app/layouts/error.vue',
     '!**/node_modules/**',
     '!**/.nuxt/**'
-  ]
+  ],
+  testURL: 'http://localhost/',
+  snapshotSerializers: ['jest-serializer-vue']
 }
