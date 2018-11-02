@@ -15,7 +15,7 @@
               v-for="thumbnail in thumbnails"
               :src="thumbnail.payload.src"
               :key="thumbnail.id"
-              :class="{ 'selected': thumbnail.id === selectedThumbnail }"
+              :class="{ 'selected': thumbnail.payload.src === selectedThumbnail }"
               @click.prevent="selectThumbnail(thumbnail)"
               class="thumbnail"/>
           </div>
@@ -79,10 +79,14 @@ export default {
       this.$emit('close')
     },
     async publish() {
-      this.$emit('publish', { ...this.formData })
+      this.$emit('publish', {
+        topic: this.topic.name,
+        tags: this.tags.map((tag) => tag.text),
+        thumbnail: this.selectedThumbnail
+      })
     },
     selectThumbnail(thumbnail) {
-      this.selectedThumbnail = thumbnail.id
+      this.selectedThumbnail = thumbnail.payload.src
     },
     handleChangeTopicType(name) {
       this.$el.querySelector('.article-type-select').style.color = '#000'

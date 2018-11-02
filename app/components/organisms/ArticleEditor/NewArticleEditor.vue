@@ -12,13 +12,13 @@
     <alis-editor
       style="position: relative;z-index: 1"
       @update="updateEditorState"
-      @export="handlePublishEditor"
       :initialState="blocks"
       :config="config"
     />
     <NewEditorPublishModal
       v-if="isOpenModal"
       @close="handleCloseModal"
+      @publish="publish"
       :thumbnails="blocks.filter((block) => block.type === 'Image')"
     />
   </div>
@@ -56,6 +56,12 @@ export default {
   data() {
     return {
       isOpenModal: false,
+      isPublishing: false,
+      article: {
+        title: this.defaultTitle || '',
+        body: this.defaultBlocks || [],
+        version: 200
+      },
       title: this.defaultTitle || '',
       axiosConfig: {
         headers: {
@@ -103,17 +109,66 @@ export default {
     ...mapGetters('article', ['articleId'])
   },
   methods: {
+    async publish(formData) {
+      if (this.isPublishing) return
+      this.isPublishing = true
+      console.log({
+        article: {
+          ...this.article,
+          eye_catch_url: formData.thumbnail
+        },
+        articleId: this.articleId
+      })
+      try {
+        if (this.draft) {
+          await this.putDraftArticle({
+            article: {
+              ...this.article,
+              eye_catch_url: formData.thumbnail
+            },
+            articleId: this.articleId
+          })
+          await this.publishDraftArticle({
+            articleId: this.articleId,
+            topic: formData.topic,
+            tags: formData.tags
+          })
+        } else {
+          await this.putPublicArticle({
+            article: {
+              ...this.article,
+              eye_catch_url: formData.thumbnail
+            },
+            articleId: this.articleId
+          })
+          await this.republishPublicArticle({
+            articleId: this.articleId,
+            topic: formData.topic,
+            tags: formData.tags
+          })
+        }
+        this.$router.push('/me/articles/public')
+        this.sendNotification({ text: '記事を公開しました。' })
+      } catch (e) {
+        this.publishingArticle = false
+        this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
+        console.error(e)
+      } finally {
+        this.isPublishing = false
+      }
+    },
     handleCloseModal() {
       this.isOpenModal = false
     },
     async updateEditorState(blocks) {
-      const article = {
+      if (this.isPublishing) return
+      this.article = {
         title: this.title,
         body: blocks,
         version: 200
       }
       if (!this.articleId) {
-        await this.postNewArticle({ article })
+        await this.postNewArticle({ article: this.article })
         history.replaceState(
           `/me/articles/draft/${this.articleId}/edit`,
           null,
@@ -122,19 +177,21 @@ export default {
         return
       }
       if (this.articleStatusString === 'draft') {
-        await this.putDraftArticle({ article, articleId: this.articleId })
+        await this.putDraftArticle({ article: this.article, articleId: this.articleId })
       } else if (this.articleStatusString === 'public') {
-        await this.putDraftArticle({ article, articleId: this.articleId })
+        await this.putPublicArticle({ article: this.article, articleId: this.articleId })
       }
-    },
-    handlePublishEditor(blocks) {
-      this.blocks = blocks
-      this.isOpenModal = true
     },
     openModal() {
       this.isOpenModal = true
     },
-    ...mapActions('article', ['postNewArticle', 'putDraftArticle'])
+    ...mapActions('article', [
+      'postNewArticle',
+      'putDraftArticle',
+      'putPublicArticle',
+      'publishDraftArticle',
+      'republishPublicArticle'
+    ])
   }
 }
 </script>
