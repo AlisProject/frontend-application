@@ -3,7 +3,16 @@
     <app-header />
     <div class="area-article">
       <h1 class="area-title">{{ decodedTitle }}</h1>
-      <div class="area-content" v-html="article.body" />
+      <alis-editor
+        v-if="isV2"
+        class="area-content"
+        :initialState="initalState"
+        :config="{
+          preview: true,
+          iframelyApikey,
+          axiosConfig: {}
+        }" />
+      <div class="area-content" v-html="article.body" v-else/>
       <article-tags :tags="article.tags"/>
       <article-footer-actions
         :articleId="article.article_id"
@@ -25,6 +34,7 @@
 </template>
 
 <script>
+import AlisEditor from 'alis-editor'
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
@@ -41,6 +51,7 @@ import { showEmbedTweet, htmlDecode } from '~/utils/article'
 export default {
   components: {
     AppHeader,
+    AlisEditor,
     ArticleFooterActions,
     ArticleSideActions,
     ArticleSubInfos,
@@ -57,6 +68,19 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      initalState: null
+    }
+  },
+  created() {
+    if (!this.isV2) return
+    try {
+      this.initalState = JSON.parse(this.article.body)
+    } catch (e) {
+      this.$root.error({ statusCode: 500 })
+    }
+  },
   mounted() {
     const figcaptions = document.querySelectorAll('figcaption')
     figcaptions.forEach((figcaption) => {
@@ -68,11 +92,17 @@ export default {
     this.resetArticleCommentsLastEvaluatedKey()
   },
   computed: {
+    isV2() {
+      return this.article.version && this.article.version >= 200
+    },
     decodedTitle() {
       return htmlDecode(this.article.title)
     },
     publishedAt() {
       return this.article.published_at || this.article.created_at
+    },
+    iframelyApikey() {
+      return process.env.IFRAMELY_API_KEY
     },
     ...mapGetters('article', ['likesCount', 'isLikedArticle'])
   },
