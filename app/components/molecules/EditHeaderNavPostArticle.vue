@@ -1,8 +1,9 @@
 <template>
   <div class="area-post-article">
-    <span class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
-      公開する
-    </span>
+    <article-editor-publish-button
+      :publishable="publishable"
+      :onClick="togglePopup"
+    />
     <div v-show="isPopupShown" class="popup">
       <h3 class="headline">1. サムネイルの選択</h3>
       <div class="thumbnails">
@@ -44,11 +45,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import ArticleEditorPublishButton from '~/components/atoms/ArticleEditor/ArticleEditorPublishButton.vue'
 import TagsInputForm from '../molecules/TagsInputForm'
 
 export default {
   components: {
-    TagsInputForm
+    TagsInputForm,
+    ArticleEditorPublishButton
   },
   data() {
     return {
@@ -237,17 +240,6 @@ export default {
   display: flex;
   align-self: center;
   justify-content: center;
-
-  .post-article {
-    color: #858dda;
-    cursor: pointer;
-    user-select: none;
-    display: inline-block;
-
-    &.disable {
-      cursor: not-allowed;
-    }
-  }
 
   .popup {
     background-color: #ffffff;

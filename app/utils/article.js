@@ -1,6 +1,54 @@
 /* global iframely */
 import axios from './axios'
 import { XmlEntities } from 'html-entities'
+import uuid from 'uuid/v4'
+
+export function initializeExistArticleMediumEditor({ vm, article, editorBody }) {
+  editorBody.innerHTML = article.body
+  // Update thumbnails
+  const images = Array.from(vm.$el.querySelectorAll('figure img'))
+  const thumbnails = getThumbnails(images)
+  vm.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
+  editorBody.dataset.placeholder = ['', '<p><br></p>'].includes(article.body)
+    ? '本文を入力してください'
+    : ''
+}
+
+export function isV2(article) {
+  console.log(article)
+  const version = getArticleVersion(article)
+  console.log(version)
+  return version >= 200 && version < 300
+}
+
+export function getArticleVersion(article) {
+  article = article || {}
+  if (!('body' in article)) {
+    throw new TypeError('missing property "body"')
+  }
+  if (article.version >= 200 && article.version < 300) {
+    try {
+      JSON.parse(article.body)
+      return article.version
+    } catch (e) {
+      throw new TypeError('article.version is V2, but "body" property type is not Array')
+    }
+  } else {
+    return 100
+  }
+}
+
+export function createInitialBlocks() {
+  return [
+    {
+      id: uuid(),
+      type: 'Paragraph',
+      payload: {
+        body: ''
+      }
+    }
+  ]
+}
 
 export function createInsertPluginTemplateFromUrl(url) {
   // This method returns DOM string like this.

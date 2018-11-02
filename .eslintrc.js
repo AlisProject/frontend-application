@@ -18,6 +18,7 @@ module.exports = {
     expect: true,
     beforeEach: true,
     afterEach: true,
+    it: true,
     jest: true
   }
 }
