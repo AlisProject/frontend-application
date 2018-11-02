@@ -9,7 +9,8 @@
         :initialState="initalState"
         :config="{
           preview: true,
-          iframelyApikey
+          iframelyApikey,
+          axiosConfig: {}
         }" />
       <div class="area-content" v-html="article.body" v-else/>
       <article-tags :tags="article.tags"/>
