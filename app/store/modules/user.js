@@ -146,6 +146,19 @@ const state = () => ({
         authCode: false
       }
     }
+  },
+  userReportModal: {
+    isShow: false,
+    isSelectReasonModal: false,
+    isInputFreeTextModal: false,
+    selectReason: {
+      formData: {
+        reason: ''
+      },
+      formError: {
+        reason: false
+      }
+    }
   }
 })
 
@@ -179,7 +192,8 @@ const getters = {
   showTipModal: (state) => state.showTipModal,
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
-  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal
+  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
+  userReportModal: (state) => state.userReportModal
 }
 
 const actions = {
@@ -723,6 +737,24 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setUserReportModal({ commit }, { isShow }) {
+    commit(types.SET_USER_REPORT_MODAL, { isShow })
+  },
+  setUserReportSelectReasonModal({ commit }, { isShow }) {
+    commit(types.SET_USER_REPORT_SELECT_REASON_MODAL, { isShow })
+  },
+  setUserReportSelectReasonReason({ commit }, { reason }) {
+    commit(types.SET_USER_REPORT_SELECT_REASON_REASON, { reason })
+  },
+  showUserReportSelectReasonError({ commit }, { type }) {
+    commit(types.SHOW_USER_REPORT_SELECT_REASON_ERROR, { type })
+  },
+  hideUserReportSelectReasonError({ commit }, { type }) {
+    commit(types.HIDE_USER_REPORT_SELECT_REASON_ERROR, { type })
+  },
+  setUserReportInputFreeTextModal({ commit }, { isShow }) {
+    commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_MODAL, { isShow })
   }
 }
 
@@ -991,6 +1023,24 @@ const mutations = {
   },
   [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = false
+  },
+  [types.SET_USER_REPORT_MODAL](state, { isShow }) {
+    state.userReportModal.isShow = isShow
+  },
+  [types.SET_USER_REPORT_SELECT_REASON_MODAL](state, { isShow }) {
+    state.userReportModal.isSelectReasonModal = isShow
+  },
+  [types.SET_USER_REPORT_SELECT_REASON_REASON](state, { reason }) {
+    state.userReportModal.selectReason.formData.reason = reason
+  },
+  [types.SHOW_USER_REPORT_SELECT_REASON_ERROR](state, { type }) {
+    state.userReportModal.selectReason.formError[type] = true
+  },
+  [types.HIDE_USER_REPORT_SELECT_REASON_ERROR](state, { type }) {
+    state.userReportModal.selectReason.formError[type] = false
+  },
+  [types.SET_USER_REPORT_INPUT_FREE_TEXT_MODAL](state, { isShow }) {
+    state.userReportModal.isInputFreeTextModal = isShow
   }
 }
 
