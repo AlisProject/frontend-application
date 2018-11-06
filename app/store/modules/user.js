@@ -158,6 +158,16 @@ const state = () => ({
       formError: {
         reason: false
       }
+    },
+    inputFreeText: {
+      formData: {
+        originalURL: '',
+        freeText: ''
+      },
+      formError: {
+        originalURL: false,
+        freeText: false
+      }
     }
   }
 })
@@ -755,6 +765,18 @@ const actions = {
   },
   setUserReportInputFreeTextModal({ commit }, { isShow }) {
     commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_MODAL, { isShow })
+  },
+  setUserReportInputFreeTextOriginalURL({ commit }, { originalURL }) {
+    commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_ORIGINAL_URL, { originalURL })
+  },
+  setUserReportInputFreeTextFreeText({ commit }, { freeText }) {
+    commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_FREE_TEXT, { freeText })
+  },
+  showUserReportInputFreeTextError({ commit }, { type }) {
+    commit(types.SHOW_USER_REPORT_INPUT_FREE_TEXT_ERROR, { type })
+  },
+  hideUserReportInputFreeTextError({ commit }, { type }) {
+    commit(types.HIDE_USER_REPORT_INPUT_FREE_TEXT_ERROR, { type })
   }
 }
 
@@ -1041,6 +1063,18 @@ const mutations = {
   },
   [types.SET_USER_REPORT_INPUT_FREE_TEXT_MODAL](state, { isShow }) {
     state.userReportModal.isInputFreeTextModal = isShow
+  },
+  [types.SET_USER_REPORT_INPUT_FREE_TEXT_ORIGINAL_URL](state, { originalURL }) {
+    state.userReportModal.inputFreeText.formData.originalURL = originalURL
+  },
+  [types.SET_USER_REPORT_INPUT_FREE_TEXT_FREE_TEXT](state, { freeText }) {
+    state.userReportModal.inputFreeText.formData.freeText = freeText
+  },
+  [types.SHOW_USER_REPORT_INPUT_FREE_TEXT_ERROR](state, { type }) {
+    state.userReportModal.inputFreeText.formError[type] = true
+  },
+  [types.HIDE_USER_REPORT_INPUT_FREE_TEXT_ERROR](state, { type }) {
+    state.userReportModal.inputFreeText.formError[type] = false
   }
 }
 
