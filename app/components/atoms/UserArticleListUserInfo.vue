@@ -194,7 +194,6 @@ export default {
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
-      padding: 12px;
       position: absolute;
       right: 0;
       top: 20px;
@@ -202,6 +201,8 @@ export default {
       z-index: 1;
 
       .report {
+        display: block;
+        padding: 12px;
         color: #6e6e6e;
         cursor: pointer;
         user-select: none;

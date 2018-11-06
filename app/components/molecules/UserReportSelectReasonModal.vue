@@ -151,6 +151,7 @@ export default {
       position: absolute;
 
       & + .reason-input-label {
+        cursor: pointer;
         padding-left: 30px;
         position: relative;
         min-height: 20px;

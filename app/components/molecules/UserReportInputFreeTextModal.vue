@@ -126,7 +126,6 @@ export default {
       padding: 5px 0;
       width: 100%;
       resize: none;
-      overflow: hidden;
 
       &::-webkit-input-placeholder {
         color: #cecece;
@@ -140,6 +139,7 @@ export default {
     }
 
     &-textarea {
+      appearance: none;
       border: 1px dotted #232538;
       height: 8em;
       padding: 5px;
