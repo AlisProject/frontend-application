@@ -15,8 +15,8 @@
         <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
       </no-ssr>
       <no-ssr>
-        <div class="report-user" @click="toggleEtcPopup" v-if="!isCurrentUser && loggedIn">
-          <div class="etc-popup" v-show="isEtcPopupShown">
+        <div class="report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
+          <div class="report-popup" v-show="isReportPopupShown">
             <span class="report" @click="showUserReportModal">
               通報する
             </span>
@@ -55,19 +55,19 @@ export default {
   },
   data() {
     return {
-      isEtcPopupShown: false
+      isReportPopupShown: false
     }
   },
   mounted() {
     const reportUserElement = this.$el.querySelector('.report-user')
     this.listen(window, 'click', (event) => {
       if (reportUserElement && !reportUserElement.contains(event.target)) {
-        this.closeEtcPopup()
+        this.closeReportPopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
       if (reportUserElement && !reportUserElement.contains(event.target)) {
-        this.closeEtcPopup()
+        this.closeReportPopup()
       }
     })
   },
@@ -102,11 +102,11 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    toggleEtcPopup() {
-      this.isEtcPopupShown = !this.isEtcPopupShown
+    toggleReportPopup() {
+      this.isReportPopupShown = !this.isReportPopupShown
     },
-    closeEtcPopup() {
-      this.isEtcPopupShown = false
+    closeReportPopup() {
+      this.isReportPopupShown = false
     },
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
@@ -190,7 +190,7 @@ export default {
     right: 100px;
     width: 22px;
 
-    .etc-popup {
+    .report-popup {
       background-color: #ffffff;
       border-radius: 4px;
       box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
