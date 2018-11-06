@@ -120,6 +120,9 @@ export default {
       }
       if (this.userReportModal.isShow) {
         this.setUserReportModal({ isShow: false })
+        this.setUserReportSelectReasonModal({ isShow: false })
+        this.setUserReportInputFreeTextModal({ isShow: false })
+        this.setUserReportConfirmationModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
@@ -143,7 +146,10 @@ export default {
       'setTipModal',
       'hideTipFlowModalContent',
       'setRequestPhoneNumberVerifyModal',
-      'setUserReportModal'
+      'setUserReportModal',
+      'setUserReportSelectReasonModal',
+      'setUserReportInputFreeTextModal',
+      'setUserReportConfirmationModal'
     ])
   },
   watch: {

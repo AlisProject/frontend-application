@@ -151,6 +151,7 @@ const state = () => ({
     isShow: false,
     isSelectReasonModal: false,
     isInputFreeTextModal: false,
+    isConfirmationModal: false,
     selectReason: {
       formData: {
         reason: ''
@@ -777,6 +778,20 @@ const actions = {
   },
   hideUserReportInputFreeTextError({ commit }, { type }) {
     commit(types.HIDE_USER_REPORT_INPUT_FREE_TEXT_ERROR, { type })
+  },
+  setUserReportConfirmationModal({ commit }, { isShow }) {
+    commit(types.SET_USER_REPORT_CONFIRMATION_MODAL, { isShow })
+  },
+  async postUserFraud({ commit }, { userId, reason, freeText, originalURL }) {
+    try {
+      // await this.$axios.$post(`/me/users/${userId}/fraud`, {
+      //   reason,
+      //   free_text: freeText,
+      //   original_url: originalURL
+      // })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1075,6 +1090,9 @@ const mutations = {
   },
   [types.HIDE_USER_REPORT_INPUT_FREE_TEXT_ERROR](state, { type }) {
     state.userReportModal.inputFreeText.formError[type] = false
+  },
+  [types.SET_USER_REPORT_CONFIRMATION_MODAL](state, { isShow }) {
+    state.userReportModal.isConfirmationModal = isShow
   }
 }
 

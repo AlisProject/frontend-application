@@ -28,7 +28,7 @@
     </div>
     <div class="modal-footer">
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
-        完了する
+        次へ
       </app-button>
     </div>
   </div>
@@ -88,13 +88,15 @@ export default {
     async onSubmit() {
       if (this.invalidSubmit) return
       this.setUserReportInputFreeTextModal({ isShow: false })
+      this.setUserReportConfirmationModal({ isShow: true })
     },
     ...mapActions('user', [
       'setUserReportInputFreeTextOriginalURL',
       'setUserReportInputFreeTextFreeText',
-      'setUserReportInputFreeTextModal',
       'showUserReportInputFreeTextError',
-      'hideUserReportInputFreeTextError'
+      'hideUserReportInputFreeTextError',
+      'setUserReportInputFreeTextModal',
+      'setUserReportConfirmationModal'
     ])
   }
 }

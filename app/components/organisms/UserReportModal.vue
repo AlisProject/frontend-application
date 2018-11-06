@@ -3,6 +3,7 @@
     <div slot="modal-content">
       <user-report-select-reason-modal v-if="isSelectReasonModal" />
       <user-report-input-free-text-modal v-if="isInputFreeTextModal" />
+      <user-report-confirmation-modal v-if="isConfirmationModal" />
     </div>
   </app-modal>
 </template>
@@ -12,12 +13,14 @@ import { mapGetters } from 'vuex'
 import AppModal from '../atoms/AppModal'
 import UserReportSelectReasonModal from '../molecules/UserReportSelectReasonModal'
 import UserReportInputFreeTextModal from '../molecules/UserReportInputFreeTextModal'
+import UserReportConfirmationModal from '../molecules/UserReportConfirmationModal'
 
 export default {
   components: {
     AppModal,
     UserReportSelectReasonModal,
-    UserReportInputFreeTextModal
+    UserReportInputFreeTextModal,
+    UserReportConfirmationModal
   },
   computed: {
     title() {
@@ -25,6 +28,8 @@ export default {
         return '報告理由の選択'
       } else if (this.isInputFreeTextModal) {
         return '報告内容の詳細'
+      } else if (this.isConfirmationModal) {
+        return ''
       }
     },
     isSelectReasonModal() {
@@ -32,6 +37,9 @@ export default {
     },
     isInputFreeTextModal() {
       return this.userReportModal.isInputFreeTextModal
+    },
+    isConfirmationModal() {
+      return this.userReportModal.isConfirmationModal
     },
     ...mapGetters('user', ['userReportModal'])
   }
