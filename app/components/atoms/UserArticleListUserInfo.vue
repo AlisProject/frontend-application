@@ -59,19 +59,14 @@ export default {
     }
   },
   mounted() {
+    const reportUserElement = this.$el.querySelector('.report-user')
     this.listen(window, 'click', (event) => {
-      if (
-        this.$el.querySelector('.report-user') &&
-        !this.$el.querySelector('.report-user').contains(event.target)
-      ) {
+      if (reportUserElement && !reportUserElement.contains(event.target)) {
         this.closeEtcPopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
-      if (
-        this.$el.querySelector('.report-user') &&
-        !this.$el.querySelector('.report-user').contains(event.target)
-      ) {
+      if (reportUserElement && !reportUserElement.contains(event.target)) {
         this.closeEtcPopup()
       }
     })
