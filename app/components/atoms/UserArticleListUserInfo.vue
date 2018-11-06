@@ -59,14 +59,19 @@ export default {
     }
   },
   mounted() {
-    if (!this.$el.querySelector('.report-user')) return
     this.listen(window, 'click', (event) => {
-      if (!this.$el.querySelector('.report-user').contains(event.target)) {
+      if (
+        this.$el.querySelector('.report-user') &&
+        !this.$el.querySelector('.report-user').contains(event.target)
+      ) {
         this.closeEtcPopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
-      if (!this.$el.querySelector('.report-user').contains(event.target)) {
+      if (
+        this.$el.querySelector('.report-user') &&
+        !this.$el.querySelector('.report-user').contains(event.target)
+      ) {
         this.closeEtcPopup()
       }
     })
@@ -193,7 +198,7 @@ export default {
     .etc-popup {
       background-color: #ffffff;
       border-radius: 4px;
-      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
@@ -202,6 +207,20 @@ export default {
       top: 20px;
       width: 90px;
       z-index: 1;
+
+      &::after {
+        border-bottom: 8px solid #fff;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        content: '';
+        height: 0;
+        padding: 0;
+        position: absolute;
+        right: 0;
+        right: 6px;
+        top: -4px;
+        width: 0;
+      }
 
       .report {
         display: block;
