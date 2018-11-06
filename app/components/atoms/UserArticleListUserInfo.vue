@@ -13,6 +13,13 @@
         v-else>
       <no-ssr>
         <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
+        <div class="report-user" @click="toggleEtcPopup" v-else>
+          <div class="etc-popup" v-show="isEtcPopupShown">
+            <span class="report" @click="showUserReportModal">
+              通報する
+            </span>
+          </div>
+        </div>
       </no-ssr>
     </div>
     <div class="area-user-display-name">
@@ -44,6 +51,30 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      isEtcPopupShown: false
+    }
+  },
+  mounted() {
+    this.listen(window, 'click', (event) => {
+      if (!this.$el.querySelector('.report-user').contains(event.target)) {
+        this.closeEtcPopup()
+      }
+    })
+    this.listen(window, 'touchstart', (event) => {
+      if (!this.$el.querySelector('.report-user').contains(event.target)) {
+        this.closeEtcPopup()
+      }
+    })
+  },
+  destroyed() {
+    if (this._eventRemovers) {
+      this._eventRemovers.forEach((eventRemover) => {
+        eventRemover.remove()
+      })
+    }
+  },
   computed: {
     decodedUserDisplayName() {
       return htmlDecode(this.user.user_display_name)
@@ -68,10 +99,33 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
+    toggleEtcPopup() {
+      this.isEtcPopupShown = !this.isEtcPopupShown
+    },
+    closeEtcPopup() {
+      this.isEtcPopupShown = false
+    },
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
       document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
+    },
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove: function() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
+    },
+    showUserReportModal() {
+      this.setProfileSettingsModal({ showProfileSettingsModal: true })
+      document.documentElement.scrollTop = 0
+      document.querySelector('html').style.overflow = 'hidden'
+      document.querySelector('body').style.overflow = 'hidden'
     },
     ...mapActions('user', ['setProfileSettingsModal'])
   }
@@ -115,6 +169,39 @@ export default {
     position: absolute;
     right: 100px;
     width: 22px;
+  }
+
+  .report-user {
+    background-image: url('~/assets/images/pc/article/a_icon_menu.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    height: 22px;
+    position: absolute;
+    right: 100px;
+    width: 22px;
+
+    .etc-popup {
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 12px;
+      position: absolute;
+      right: 0;
+      top: 20px;
+      width: 90px;
+      z-index: 1;
+
+      .report {
+        color: #6e6e6e;
+        cursor: pointer;
+        user-select: none;
+      }
+    }
   }
 }
 
@@ -184,7 +271,8 @@ export default {
       height: 60px;
     }
 
-    .profile-edit {
+    .profile-edit,
+    .report-user {
       bottom: 10px;
       right: -290px;
       cursor: pointer;
@@ -203,7 +291,8 @@ export default {
   }
 
   .area-profile-icon {
-    .profile-edit {
+    .profile-edit,
+    .report-user {
       right: -260px;
     }
   }
@@ -215,7 +304,8 @@ export default {
   }
 
   .area-profile-icon {
-    .profile-edit {
+    .profile-edit,
+    .report-user {
       right: -220px;
     }
   }
