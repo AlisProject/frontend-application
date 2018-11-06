@@ -13,7 +13,9 @@
         v-else>
       <no-ssr>
         <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
-        <div class="report-user" @click="toggleEtcPopup" v-else>
+      </no-ssr>
+      <no-ssr>
+        <div class="report-user" @click="toggleEtcPopup" v-if="!isCurrentUser && loggedIn">
           <div class="etc-popup" v-show="isEtcPopupShown">
             <span class="report" @click="showUserReportModal">
               通報する
@@ -57,6 +59,7 @@ export default {
     }
   },
   mounted() {
+    if (!this.$el.querySelector('.report-user')) return
     this.listen(window, 'click', (event) => {
       if (!this.$el.querySelector('.report-user').contains(event.target)) {
         this.closeEtcPopup()
