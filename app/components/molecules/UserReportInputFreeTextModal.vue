@@ -14,6 +14,7 @@
             @input="setOriginURL($event.target.value)"
             @blur="showError('originURL')"
             @focus="resetError('originURL')">
+          <p class="error-message" v-if="showErrorUrl">URLを正しい形式で入力してください</p>
         </div>
         <div class="signup-form-group">
           <label class="signup-form-label">報告の詳細※任意</label>
@@ -38,6 +39,11 @@
 import { mapActions, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import AppButton from '../atoms/AppButton'
+import urlRegex from 'url-regex'
+
+function url(value) {
+  return urlRegex({ exact: true }).test(value)
+}
 
 export default {
   components: {
@@ -46,6 +52,12 @@ export default {
   computed: {
     isCopyrightViolation() {
       return this.userReportModal.selectReason.formData.reason === 'copyright_violation'
+    },
+    showErrorUrl() {
+      return (
+        this.userReportModal.inputFreeText.formError.originURL &&
+        !this.$v.userReportModal.inputFreeText.formData.originURL.url
+      )
     },
     invalidSubmit() {
       if (!this.isCopyrightViolation) return false
@@ -64,7 +76,8 @@ export default {
       inputFreeText: {
         formData: {
           originURL: {
-            required
+            required,
+            url
           }
         }
       }
@@ -111,6 +124,10 @@ export default {
     max-width: 400px;
     width: 80%;
 
+    &-group {
+      position: relative;
+    }
+
     &-label {
       color: #030303;
       font-size: 14px;
@@ -143,6 +160,14 @@ export default {
       border: 1px dotted #232538;
       height: 8em;
       padding: 5px;
+    }
+
+    .error-message {
+      top: 40px;
+      color: #f06273;
+      font-size: 12px;
+      position: absolute;
+      width: 100%;
     }
 
     .error {
