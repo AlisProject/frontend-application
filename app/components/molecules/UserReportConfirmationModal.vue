@@ -35,10 +35,11 @@ export default {
         await this.postUserFraud({ userId, reason, originURL, freeText })
         this.sendNotification({ text: '通報しました' })
       } catch (error) {
-        this.sendNotification({
-          text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
-          type: 'warning'
-        })
+        let text = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
+        if (error.response.data.message === 'Already exists') {
+          text = 'すでに通報済みです'
+        }
+        this.sendNotification({ text, type: 'warning' })
       }
       this.setUserReportConfirmationModal({ isShow: false })
       this.setUserReportModal({ isShow: false })
