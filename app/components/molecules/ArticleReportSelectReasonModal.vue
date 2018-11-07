@@ -88,7 +88,7 @@ export default {
         this.$v.articleReportModal.selectReason.formData.reason.$error
       )
     },
-    ...mapGetters('user', ['articleReportModal'])
+    ...mapGetters('report', ['articleReportModal'])
   },
   validations: {
     articleReportModal: {
@@ -118,7 +118,7 @@ export default {
       this.setArticleReportSelectReasonModal({ isShow: false })
       this.setArticleReportInputFreeTextModal({ isShow: true })
     },
-    ...mapActions('user', [
+    ...mapActions('report', [
       'setArticleReportSelectReasonReason',
       'showArticleReportSelectReasonError',
       'hideArticleReportSelectReasonError',

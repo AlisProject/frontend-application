@@ -24,7 +24,7 @@ export default {
     AppButton
   },
   computed: {
-    ...mapGetters('user', ['userReportModal'])
+    ...mapGetters('report', ['userReportModal'])
   },
   methods: {
     async report() {
@@ -57,7 +57,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', [
+    ...mapActions('report', [
       'setUserReportModal',
       'postUserFraud',
       'setUserReportConfirmationModal',

@@ -69,7 +69,7 @@ export default {
         this.$v.articleReportModal.inputFreeText.formData.originURL.$error
       )
     },
-    ...mapGetters('user', ['articleReportModal'])
+    ...mapGetters('report', ['articleReportModal'])
   },
   validations: {
     articleReportModal: {
@@ -103,7 +103,7 @@ export default {
       this.setArticleReportInputFreeTextModal({ isShow: false })
       this.setArticleReportConfirmationModal({ isShow: true })
     },
-    ...mapActions('user', [
+    ...mapActions('report', [
       'setArticleReportInputFreeTextOriginURL',
       'setArticleReportInputFreeTextFreeText',
       'showArticleReportInputFreeTextError',

@@ -149,7 +149,9 @@ export default {
       'setRequestLoginModal',
       'setTipModal',
       'hideTipFlowModalContent',
-      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyModal'
+    ]),
+    ...mapActions('report', [
       'setUserReportModal',
       'setUserReportSelectReasonModal',
       'setUserReportInputFreeTextModal',

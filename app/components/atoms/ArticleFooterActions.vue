@@ -197,10 +197,9 @@ export default {
       'setTipModal',
       'setTipFlowSelectTipAmountModal',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
-      'setArticleReportModal',
-      'setArticleReportSelectReasonModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ]),
+    ...mapActions('report', ['setArticleReportModal', 'setArticleReportSelectReasonModal']),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
 }
