@@ -69,7 +69,8 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'userReportModal'
+      'userReportModal',
+      'articleReportModal'
     ])
   },
   methods: {
@@ -125,6 +126,13 @@ export default {
         this.setUserReportConfirmationModal({ isShow: false })
         this.resetUserReportData()
       }
+      if (this.articleReportModal.isShow) {
+        this.setArticleReportModal({ isShow: false })
+        this.setArticleReportSelectReasonModal({ isShow: false })
+        this.setArticleReportInputFreeTextModal({ isShow: false })
+        this.setArticleReportConfirmationModal({ isShow: false })
+        this.resetArticleReportData()
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -151,7 +159,12 @@ export default {
       'setUserReportSelectReasonModal',
       'setUserReportInputFreeTextModal',
       'setUserReportConfirmationModal',
-      'resetUserReportData'
+      'resetUserReportData',
+      'setArticleReportModal',
+      'setArticleReportSelectReasonModal',
+      'setArticleReportInputFreeTextModal',
+      'setArticleReportConfirmationModal',
+      'resetArticleReportData'
     ])
   },
   watch: {

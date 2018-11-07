@@ -116,9 +116,11 @@ export default {
           }
           return
         }
-        this.setReportModal({ showReportModal: true })
+        this.setArticleReportModal({ isShow: true })
+        this.setArticleReportSelectReasonModal({ isShow: true })
         window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
+        document.querySelector('html').style.overflow = 'hidden'
+        document.querySelector('body').style.overflow = 'hidden'
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleReport' })
         window.scrollTo(0, 0)
@@ -196,7 +198,9 @@ export default {
       'setTipModal',
       'setTipFlowSelectTipAmountModal',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'setArticleReportModal',
+      'setArticleReportSelectReasonModal'
     ]),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }

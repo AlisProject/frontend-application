@@ -15,6 +15,7 @@
     <tip-modal v-if="showTipModal"/>
     <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
     <user-report-modal v-if="userReportModal.isShow"/>
+    <article-report-modal v-if="articleReportModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -34,6 +35,7 @@ import RequestLoginModal from '../organisms/RequestLoginModal'
 import TipModal from '../organisms/TipModal'
 import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
 import UserReportModal from '../organisms/UserReportModal'
+import ArticleReportModal from '../organisms/ArticleReportModal'
 
 export default {
   components: {
@@ -49,7 +51,8 @@ export default {
     TipModal,
     Toast,
     RequestPhoneNumberVerifyModal,
-    UserReportModal
+    UserReportModal,
+    ArticleReportModal
   },
   computed: {
     ...mapGetters('user', [
@@ -63,7 +66,8 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'userReportModal'
+      'userReportModal',
+      'articleReportModal'
     ])
   },
   methods: {
