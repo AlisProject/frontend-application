@@ -31,8 +31,8 @@ export default {
       try {
         const { userId } = this.$route.params
         const { reason } = this.userReportModal.selectReason.formData
-        const { originalURL, freeText } = this.userReportModal.inputFreeText.formData
-        await this.postUserFraud({ userId, reason, originalURL, freeText })
+        const { originURL, freeText } = this.userReportModal.inputFreeText.formData
+        await this.postUserFraud({ userId, reason, originURL, freeText })
         this.sendNotification({ text: '通報しました' })
       } catch (error) {
         this.sendNotification({

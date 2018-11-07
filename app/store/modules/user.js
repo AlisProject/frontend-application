@@ -162,11 +162,11 @@ const state = () => ({
     },
     inputFreeText: {
       formData: {
-        originalURL: '',
+        originURL: '',
         freeText: ''
       },
       formError: {
-        originalURL: false,
+        originURL: false,
         freeText: false
       }
     }
@@ -767,8 +767,8 @@ const actions = {
   setUserReportInputFreeTextModal({ commit }, { isShow }) {
     commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_MODAL, { isShow })
   },
-  setUserReportInputFreeTextOriginalURL({ commit }, { originalURL }) {
-    commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_ORIGINAL_URL, { originalURL })
+  setUserReportInputFreeTextOriginURL({ commit }, { originURL }) {
+    commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_ORIGIN_URL, { originURL })
   },
   setUserReportInputFreeTextFreeText({ commit }, { freeText }) {
     commit(types.SET_USER_REPORT_INPUT_FREE_TEXT_FREE_TEXT, { freeText })
@@ -782,13 +782,14 @@ const actions = {
   setUserReportConfirmationModal({ commit }, { isShow }) {
     commit(types.SET_USER_REPORT_CONFIRMATION_MODAL, { isShow })
   },
-  async postUserFraud({ commit }, { userId, reason, freeText, originalURL }) {
+  async postUserFraud({ commit }, { userId, reason, freeText, originURL }) {
     try {
       // await this.$axios.$post(`/me/users/${userId}/fraud`, {
       //   reason,
       //   free_text: freeText,
-      //   original_url: originalURL
+      //   origin_url: originURL
       // })
+      console.log({ userId, reason, freeText, originURL })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -1079,8 +1080,8 @@ const mutations = {
   [types.SET_USER_REPORT_INPUT_FREE_TEXT_MODAL](state, { isShow }) {
     state.userReportModal.isInputFreeTextModal = isShow
   },
-  [types.SET_USER_REPORT_INPUT_FREE_TEXT_ORIGINAL_URL](state, { originalURL }) {
-    state.userReportModal.inputFreeText.formData.originalURL = originalURL
+  [types.SET_USER_REPORT_INPUT_FREE_TEXT_ORIGIN_URL](state, { originURL }) {
+    state.userReportModal.inputFreeText.formData.originURL = originURL
   },
   [types.SET_USER_REPORT_INPUT_FREE_TEXT_FREE_TEXT](state, { freeText }) {
     state.userReportModal.inputFreeText.formData.freeText = freeText

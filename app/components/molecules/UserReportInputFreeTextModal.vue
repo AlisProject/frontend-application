@@ -5,15 +5,15 @@
         <div
           v-if="isCopyrightViolation"
           class="signup-form-group"
-          :class="{ 'error': hasOriginalURLError }">
+          :class="{ 'error': hasOriginURLError }">
           <label class="signup-form-label">元記事のURL</label>
           <input
             class="signup-form-input"
             type="text"
             placeholder="半角英数3文字以上"
-            @input="setOriginalURL($event.target.value)"
-            @blur="showError('originalURL')"
-            @focus="resetError('originalURL')">
+            @input="setOriginURL($event.target.value)"
+            @blur="showError('originURL')"
+            @focus="resetError('originURL')">
         </div>
         <div class="signup-form-group">
           <label class="signup-form-label">報告の詳細※任意</label>
@@ -51,10 +51,10 @@ export default {
       if (!this.isCopyrightViolation) return false
       return this.$v.userReportModal.inputFreeText.formData.$invalid
     },
-    hasOriginalURLError() {
+    hasOriginURLError() {
       return (
-        this.userReportModal.inputFreeText.formError.originalURL &&
-        this.$v.userReportModal.inputFreeText.formData.originalURL.$error
+        this.userReportModal.inputFreeText.formError.originURL &&
+        this.$v.userReportModal.inputFreeText.formData.originURL.$error
       )
     },
     ...mapGetters('user', ['userReportModal'])
@@ -63,7 +63,7 @@ export default {
     userReportModal: {
       inputFreeText: {
         formData: {
-          originalURL: {
+          originURL: {
             required
           }
         }
@@ -71,8 +71,8 @@ export default {
     }
   },
   methods: {
-    setOriginalURL(originalURL) {
-      this.setUserReportInputFreeTextOriginalURL({ originalURL })
+    setOriginURL(originURL) {
+      this.setUserReportInputFreeTextOriginURL({ originURL })
     },
     setFreeText(freeText) {
       this.setUserReportInputFreeTextFreeText({ freeText })
@@ -91,7 +91,7 @@ export default {
       this.setUserReportConfirmationModal({ isShow: true })
     },
     ...mapActions('user', [
-      'setUserReportInputFreeTextOriginalURL',
+      'setUserReportInputFreeTextOriginURL',
       'setUserReportInputFreeTextFreeText',
       'showUserReportInputFreeTextError',
       'hideUserReportInputFreeTextError',
