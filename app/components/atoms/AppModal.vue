@@ -123,6 +123,7 @@ export default {
         this.setUserReportSelectReasonModal({ isShow: false })
         this.setUserReportInputFreeTextModal({ isShow: false })
         this.setUserReportConfirmationModal({ isShow: false })
+        this.resetUserReportData()
       }
       this.$emit('close')
       this.resetPassword()
@@ -149,7 +150,8 @@ export default {
       'setUserReportModal',
       'setUserReportSelectReasonModal',
       'setUserReportInputFreeTextModal',
-      'setUserReportConfirmationModal'
+      'setUserReportConfirmationModal',
+      'resetUserReportData'
     ])
   },
   watch: {

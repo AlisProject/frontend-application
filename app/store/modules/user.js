@@ -793,6 +793,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  resetUserReportData({ commit }) {
+    commit(types.RESET_USER_REPORT_DATA)
   }
 }
 
@@ -1094,6 +1097,14 @@ const mutations = {
   },
   [types.SET_USER_REPORT_CONFIRMATION_MODAL](state, { isShow }) {
     state.userReportModal.isConfirmationModal = isShow
+  },
+  [types.RESET_USER_REPORT_DATA](state) {
+    state.userReportModal.selectReason.formData.reason = ''
+    state.userReportModal.inputFreeText.formData.originURL = null
+    state.userReportModal.inputFreeText.formData.freeText = ''
+    state.userReportModal.selectReason.formError.reason = false
+    state.userReportModal.inputFreeText.formError.originURL = false
+    state.userReportModal.inputFreeText.formError.freeText = false
   }
 }
 
