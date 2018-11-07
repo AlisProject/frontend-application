@@ -51,28 +51,28 @@ export default {
   },
   computed: {
     isCopyrightViolation() {
-      return this.userReportModal.selectReason.formData.reason === 'copyright_violation'
+      return this.articleReportModal.selectReason.formData.reason === 'copyright_violation'
     },
     showErrorUrl() {
       return (
-        this.userReportModal.inputFreeText.formError.originURL &&
-        !this.$v.userReportModal.inputFreeText.formData.originURL.url
+        this.articleReportModal.inputFreeText.formError.originURL &&
+        !this.$v.articleReportModal.inputFreeText.formData.originURL.url
       )
     },
     invalidSubmit() {
       if (!this.isCopyrightViolation) return false
-      return this.$v.userReportModal.inputFreeText.formData.$invalid
+      return this.$v.articleReportModal.inputFreeText.formData.$invalid
     },
     hasOriginURLError() {
       return (
-        this.userReportModal.inputFreeText.formError.originURL &&
-        this.$v.userReportModal.inputFreeText.formData.originURL.$error
+        this.articleReportModal.inputFreeText.formError.originURL &&
+        this.$v.articleReportModal.inputFreeText.formData.originURL.$error
       )
     },
-    ...mapGetters('report', ['userReportModal'])
+    ...mapGetters('report', ['articleReportModal'])
   },
   validations: {
-    userReportModal: {
+    articleReportModal: {
       inputFreeText: {
         formData: {
           originURL: {
@@ -85,31 +85,31 @@ export default {
   },
   methods: {
     setOriginURL(originURL) {
-      this.setUserReportInputFreeTextOriginURL({ originURL })
+      this.setArticleReportInputFreeTextOriginURL({ originURL })
     },
     setFreeText(freeText) {
-      this.setUserReportInputFreeTextFreeText({ freeText })
+      this.setArticleReportInputFreeTextFreeText({ freeText })
     },
     showError(type) {
-      this.$v.userReportModal.inputFreeText.formData[type].$touch()
-      this.showUserReportInputFreeTextError({ type })
+      this.$v.articleReportModal.inputFreeText.formData[type].$touch()
+      this.showArticleReportInputFreeTextError({ type })
     },
     resetError(type) {
-      this.$v.userReportModal.inputFreeText.formData[type].$reset()
-      this.hideUserReportInputFreeTextError({ type })
+      this.$v.articleReportModal.inputFreeText.formData[type].$reset()
+      this.hideArticleReportInputFreeTextError({ type })
     },
     async onSubmit() {
       if (this.invalidSubmit) return
-      this.setUserReportInputFreeTextModal({ isShow: false })
-      this.setUserReportConfirmationModal({ isShow: true })
+      this.setArticleReportInputFreeTextModal({ isShow: false })
+      this.setArticleReportConfirmationModal({ isShow: true })
     },
     ...mapActions('report', [
-      'setUserReportInputFreeTextOriginURL',
-      'setUserReportInputFreeTextFreeText',
-      'showUserReportInputFreeTextError',
-      'hideUserReportInputFreeTextError',
-      'setUserReportInputFreeTextModal',
-      'setUserReportConfirmationModal'
+      'setArticleReportInputFreeTextOriginURL',
+      'setArticleReportInputFreeTextFreeText',
+      'showArticleReportInputFreeTextError',
+      'hideArticleReportInputFreeTextError',
+      'setArticleReportInputFreeTextModal',
+      'setArticleReportConfirmationModal'
     ])
   }
 }

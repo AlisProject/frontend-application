@@ -63,13 +63,13 @@ export default {
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
-      'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'userReportModal'
+      'userReportModal',
+      'articleReportModal'
     ])
   },
   methods: {
@@ -94,9 +94,6 @@ export default {
         if (this.$route.path.startsWith('/login')) {
           this.replaceUrlToTop()
         }
-      }
-      if (this.showReportModal) {
-        this.setReportModal({ showReportModal: false })
       }
       if (this.showProfileSettingsModal) {
         if (document.querySelector('[class$=-article-list-container]')) {
@@ -125,6 +122,13 @@ export default {
         this.setUserReportConfirmationModal({ isShow: false })
         this.resetUserReportData()
       }
+      if (this.articleReportModal.isShow) {
+        this.setArticleReportModal({ isShow: false })
+        this.setArticleReportSelectReasonModal({ isShow: false })
+        this.setArticleReportInputFreeTextModal({ isShow: false })
+        this.setArticleReportConfirmationModal({ isShow: false })
+        this.resetArticleReportData()
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -138,7 +142,6 @@ export default {
       'setSignUpModal',
       'setSignUpAuthFlowModal',
       'setLoginModal',
-      'setReportModal',
       'setProfileSettingsModal',
       'setRestrictEditArticleModal',
       'resetPassword',
@@ -146,12 +149,19 @@ export default {
       'setRequestLoginModal',
       'setTipModal',
       'hideTipFlowModalContent',
-      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyModal'
+    ]),
+    ...mapActions('report', [
       'setUserReportModal',
       'setUserReportSelectReasonModal',
       'setUserReportInputFreeTextModal',
       'setUserReportConfirmationModal',
-      'resetUserReportData'
+      'resetUserReportData',
+      'setArticleReportModal',
+      'setArticleReportSelectReasonModal',
+      'setArticleReportInputFreeTextModal',
+      'setArticleReportConfirmationModal',
+      'resetArticleReportData'
     ])
   },
   watch: {

@@ -8,13 +8,13 @@
     <sign-up-modal v-if="showSignUpModal"/>
     <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
     <login-modal v-if="showLoginModal"/>
-    <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
     <request-login-modal v-if="requestLoginModal.isShow"/>
     <tip-modal v-if="showTipModal"/>
     <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
     <user-report-modal v-if="userReportModal.isShow"/>
+    <article-report-modal v-if="articleReportModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -27,13 +27,13 @@ import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
 import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
-import ReportModal from '../organisms/ReportModal'
 import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
 import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
 import RequestLoginModal from '../organisms/RequestLoginModal'
 import TipModal from '../organisms/TipModal'
 import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
 import UserReportModal from '../organisms/UserReportModal'
+import ArticleReportModal from '../organisms/ArticleReportModal'
 
 export default {
   components: {
@@ -42,14 +42,14 @@ export default {
     SignUpModal,
     SignUpAuthFlowModal,
     LoginModal,
-    ReportModal,
     RestrictEditArticleModal,
     ProfileSettingsModal,
     RequestLoginModal,
     TipModal,
     Toast,
     RequestPhoneNumberVerifyModal,
-    UserReportModal
+    UserReportModal,
+    ArticleReportModal
   },
   computed: {
     ...mapGetters('user', [
@@ -57,14 +57,13 @@ export default {
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
-      'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal',
-      'userReportModal'
-    ])
+      'requestPhoneNumberVerifyModal'
+    ]),
+    ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
   methods: {
     resetData() {

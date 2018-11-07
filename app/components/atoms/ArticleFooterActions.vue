@@ -86,7 +86,7 @@ export default {
       if (!this.currentUser) return false
       return this.articleUserId === this.currentUser.userId
     },
-    ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article']),
     ...mapGetters(['toastMessages'])
   },
@@ -116,9 +116,11 @@ export default {
           }
           return
         }
-        this.setReportModal({ showReportModal: true })
+        this.setArticleReportModal({ isShow: true })
+        this.setArticleReportSelectReasonModal({ isShow: true })
         window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
+        document.querySelector('html').style.overflow = 'hidden'
+        document.querySelector('body').style.overflow = 'hidden'
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleReport' })
         window.scrollTo(0, 0)
@@ -191,13 +193,13 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('user', [
-      'setReportModal',
       'setRequestLoginModal',
       'setTipModal',
       'setTipFlowSelectTipAmountModal',
       'setRequestPhoneNumberVerifyModal',
       'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ]),
+    ...mapActions('report', ['setArticleReportModal', 'setArticleReportSelectReasonModal']),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
   }
 }

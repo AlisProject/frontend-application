@@ -8,7 +8,7 @@
             type="radio"
             :id="reportReason.reason"
             :value="reportReason.reason"
-            :checked="userReportModal.selectReason.formData.reason === reportReason.reason"
+            :checked="articleReportModal.selectReason.formData.reason === reportReason.reason"
             @change="setReason(reportReason.reason)">
             <label class="reason-input-label" :for="reportReason.reason">
               {{ reportReason.reasonName }}
@@ -80,18 +80,18 @@ export default {
       return this.reportReasons.sort((a, b) => a.order > b.order)
     },
     invalidSubmit() {
-      return this.$v.userReportModal.selectReason.formData.$invalid
+      return this.$v.articleReportModal.selectReason.formData.$invalid
     },
     hasReasonError() {
       return (
-        this.userReportModal.selectReason.formError.reason &&
-        this.$v.userReportModal.selectReason.formData.reason.$error
+        this.articleReportModal.selectReason.formError.reason &&
+        this.$v.articleReportModal.selectReason.formData.reason.$error
       )
     },
-    ...mapGetters('report', ['userReportModal'])
+    ...mapGetters('report', ['articleReportModal'])
   },
   validations: {
-    userReportModal: {
+    articleReportModal: {
       selectReason: {
         formData: {
           reason: {
@@ -103,7 +103,7 @@ export default {
   },
   methods: {
     setReason(value) {
-      this.setUserReportSelectReasonReason({ reason: value })
+      this.setArticleReportSelectReasonReason({ reason: value })
     },
     showError(type) {
       this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData[type].$touch()
@@ -115,15 +115,15 @@ export default {
     },
     async onSubmit() {
       if (this.invalidSubmit) return
-      this.setUserReportSelectReasonModal({ isShow: false })
-      this.setUserReportInputFreeTextModal({ isShow: true })
+      this.setArticleReportSelectReasonModal({ isShow: false })
+      this.setArticleReportInputFreeTextModal({ isShow: true })
     },
     ...mapActions('report', [
-      'setUserReportSelectReasonReason',
-      'showUserReportSelectReasonError',
-      'hideUserReportSelectReasonError',
-      'setUserReportSelectReasonModal',
-      'setUserReportInputFreeTextModal'
+      'setArticleReportSelectReasonReason',
+      'showArticleReportSelectReasonError',
+      'hideArticleReportSelectReasonError',
+      'setArticleReportSelectReasonModal',
+      'setArticleReportInputFreeTextModal'
     ])
   }
 }

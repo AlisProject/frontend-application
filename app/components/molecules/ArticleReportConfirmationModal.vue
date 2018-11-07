@@ -18,21 +18,20 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
-
 export default {
   components: {
     AppButton
   },
   computed: {
-    ...mapGetters('report', ['userReportModal'])
+    ...mapGetters('report', ['articleReportModal'])
   },
   methods: {
     async report() {
       try {
-        const { userId } = this.$route.params
-        const { reason } = this.userReportModal.selectReason.formData
-        const { originURL, freeText } = this.userReportModal.inputFreeText.formData
-        await this.postUserFraud({ userId, reason, originURL, freeText })
+        const { articleId } = this.$route.params
+        const { reason } = this.articleReportModal.selectReason.formData
+        const { originURL, freeText } = this.articleReportModal.inputFreeText.formData
+        await this.postArticleFraud({ articleId, reason, originURL, freeText })
         this.sendNotification({ text: '通報しました' })
       } catch (error) {
         let text = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
@@ -41,16 +40,16 @@ export default {
         }
         this.sendNotification({ text, type: 'warning' })
       }
-      this.setUserReportConfirmationModal({ isShow: false })
-      this.setUserReportModal({ isShow: false })
-      this.resetUserReportData()
+      this.setArticleReportConfirmationModal({ isShow: false })
+      this.setArticleReportModal({ isShow: false })
+      this.resetArticleReportData()
       document.querySelector('html').style.overflow = ''
       document.querySelector('body').style.overflow = ''
     },
     closeModal() {
-      this.setUserReportConfirmationModal({ isShow: false })
-      this.setUserReportModal({ isShow: false })
-      this.resetUserReportData()
+      this.setArticleReportConfirmationModal({ isShow: false })
+      this.setArticleReportModal({ isShow: false })
+      this.resetArticleReportData()
       document.querySelector('html').style.overflow = ''
       document.querySelector('body').style.overflow = ''
     },
@@ -58,15 +57,14 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('report', [
-      'setUserReportModal',
-      'postUserFraud',
-      'setUserReportConfirmationModal',
-      'resetUserReportData'
+      'setArticleReportModal',
+      'postArticleFraud',
+      'setArticleReportConfirmationModal',
+      'resetArticleReportData'
     ])
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .confirm-text {
@@ -99,7 +97,6 @@ export default {
   .confirm-text {
     padding: 20vh 0 0;
   }
-
   .close-button {
     margin: 20px auto 30vh;
   }

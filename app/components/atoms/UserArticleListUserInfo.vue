@@ -127,15 +127,12 @@ export default {
     showUserReportModal() {
       this.setUserReportModal({ isShow: true })
       this.setUserReportSelectReasonModal({ isShow: true })
-      document.documentElement.scrollTop = 0
+      window.scrollTo(0, 0)
       document.querySelector('html').style.overflow = 'hidden'
       document.querySelector('body').style.overflow = 'hidden'
     },
-    ...mapActions('user', [
-      'setProfileSettingsModal',
-      'setUserReportModal',
-      'setUserReportSelectReasonModal'
-    ])
+    ...mapActions('user', ['setProfileSettingsModal']),
+    ...mapActions('report', ['setUserReportModal', 'setUserReportSelectReasonModal'])
   }
 }
 </script>

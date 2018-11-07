@@ -41,7 +41,7 @@ export default {
     isConfirmationModal() {
       return this.userReportModal.isConfirmationModal
     },
-    ...mapGetters('user', ['userReportModal'])
+    ...mapGetters('report', ['userReportModal'])
   }
 }
 </script>
