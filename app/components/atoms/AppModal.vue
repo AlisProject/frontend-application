@@ -68,7 +68,8 @@ export default {
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal'
+      'requestPhoneNumberVerifyModal',
+      'userReportModal'
     ])
   },
   methods: {
@@ -117,6 +118,13 @@ export default {
       if (this.requestPhoneNumberVerifyModal.isShow) {
         this.setRequestPhoneNumberVerifyModal({ isShow: false })
       }
+      if (this.userReportModal.isShow) {
+        this.setUserReportModal({ isShow: false })
+        this.setUserReportSelectReasonModal({ isShow: false })
+        this.setUserReportInputFreeTextModal({ isShow: false })
+        this.setUserReportConfirmationModal({ isShow: false })
+        this.resetUserReportData()
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -138,7 +146,12 @@ export default {
       'setRequestLoginModal',
       'setTipModal',
       'hideTipFlowModalContent',
-      'setRequestPhoneNumberVerifyModal'
+      'setRequestPhoneNumberVerifyModal',
+      'setUserReportModal',
+      'setUserReportSelectReasonModal',
+      'setUserReportInputFreeTextModal',
+      'setUserReportConfirmationModal',
+      'resetUserReportData'
     ])
   },
   watch: {

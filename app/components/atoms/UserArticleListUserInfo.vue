@@ -14,6 +14,15 @@
       <no-ssr>
         <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
       </no-ssr>
+      <no-ssr>
+        <div class="report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
+          <div class="report-popup" v-show="isReportPopupShown">
+            <span class="report" @click="showUserReportModal">
+              通報する
+            </span>
+          </div>
+        </div>
+      </no-ssr>
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
@@ -44,6 +53,31 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      isReportPopupShown: false
+    }
+  },
+  mounted() {
+    const reportUserElement = this.$el.querySelector('.report-user')
+    this.listen(window, 'click', (event) => {
+      if (reportUserElement && !reportUserElement.contains(event.target)) {
+        this.closeReportPopup()
+      }
+    })
+    this.listen(window, 'touchstart', (event) => {
+      if (reportUserElement && !reportUserElement.contains(event.target)) {
+        this.closeReportPopup()
+      }
+    })
+  },
+  destroyed() {
+    if (this._eventRemovers) {
+      this._eventRemovers.forEach((eventRemover) => {
+        eventRemover.remove()
+      })
+    }
+  },
   computed: {
     decodedUserDisplayName() {
       return htmlDecode(this.user.user_display_name)
@@ -68,12 +102,40 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
+    toggleReportPopup() {
+      this.isReportPopupShown = !this.isReportPopupShown
+    },
+    closeReportPopup() {
+      this.isReportPopupShown = false
+    },
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
       document.documentElement.scrollTop = 0
       document.querySelector('html,body').style.overflow = 'hidden'
     },
-    ...mapActions('user', ['setProfileSettingsModal'])
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove: function() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
+    },
+    showUserReportModal() {
+      this.setUserReportModal({ isShow: true })
+      this.setUserReportSelectReasonModal({ isShow: true })
+      document.documentElement.scrollTop = 0
+      document.querySelector('html').style.overflow = 'hidden'
+      document.querySelector('body').style.overflow = 'hidden'
+    },
+    ...mapActions('user', [
+      'setProfileSettingsModal',
+      'setUserReportModal',
+      'setUserReportSelectReasonModal'
+    ])
   }
 }
 </script>
@@ -115,6 +177,54 @@ export default {
     position: absolute;
     right: 100px;
     width: 22px;
+  }
+
+  .report-user {
+    background-image: url('~/assets/images/pc/article/a_icon_menu.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    bottom: 20px;
+    cursor: pointer;
+    height: 22px;
+    position: absolute;
+    right: 100px;
+    width: 22px;
+
+    .report-popup {
+      background-color: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      position: absolute;
+      right: 0;
+      top: 20px;
+      width: 90px;
+      z-index: 1;
+
+      &::after {
+        border-bottom: 8px solid #fff;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        content: '';
+        height: 0;
+        padding: 0;
+        position: absolute;
+        right: 0;
+        right: 6px;
+        top: -4px;
+        width: 0;
+      }
+
+      .report {
+        display: block;
+        padding: 12px;
+        color: #6e6e6e;
+        cursor: pointer;
+        user-select: none;
+      }
+    }
   }
 }
 
@@ -184,7 +294,8 @@ export default {
       height: 60px;
     }
 
-    .profile-edit {
+    .profile-edit,
+    .report-user {
       bottom: 10px;
       right: -290px;
       cursor: pointer;
@@ -203,7 +314,8 @@ export default {
   }
 
   .area-profile-icon {
-    .profile-edit {
+    .profile-edit,
+    .report-user {
       right: -260px;
     }
   }
@@ -215,7 +327,8 @@ export default {
   }
 
   .area-profile-icon {
-    .profile-edit {
+    .profile-edit,
+    .report-user {
       right: -220px;
     }
   }
