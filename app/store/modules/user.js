@@ -162,7 +162,7 @@ const state = () => ({
     },
     inputFreeText: {
       formData: {
-        originURL: '',
+        originURL: null,
         freeText: ''
       },
       formError: {
@@ -784,12 +784,12 @@ const actions = {
   },
   async postUserFraud({ commit }, { userId, reason, freeText, originURL }) {
     try {
-      // await this.$axios.$post(`/me/users/${userId}/fraud`, {
-      //   reason,
-      //   free_text: freeText,
-      //   origin_url: originURL
-      // })
-      console.log({ userId, reason, freeText, originURL })
+      const params = {
+        reason,
+        free_text: freeText
+      }
+      if (originURL !== null) params.origin_url = originURL
+      await this.$axios.$post(`/me/users/${userId}/fraud`, params)
     } catch (error) {
       return Promise.reject(error)
     }
