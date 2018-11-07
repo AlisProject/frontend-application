@@ -63,7 +63,6 @@ export default {
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
-      'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
@@ -95,9 +94,6 @@ export default {
         if (this.$route.path.startsWith('/login')) {
           this.replaceUrlToTop()
         }
-      }
-      if (this.showReportModal) {
-        this.setReportModal({ showReportModal: false })
       }
       if (this.showProfileSettingsModal) {
         if (document.querySelector('[class$=-article-list-container]')) {
@@ -146,7 +142,6 @@ export default {
       'setSignUpModal',
       'setSignUpAuthFlowModal',
       'setLoginModal',
-      'setReportModal',
       'setProfileSettingsModal',
       'setRestrictEditArticleModal',
       'resetPassword',

@@ -86,7 +86,7 @@ export default {
       if (!this.currentUser) return false
       return this.articleUserId === this.currentUser.userId
     },
-    ...mapGetters('user', ['loggedIn', 'showReportModal', 'currentUser']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article']),
     ...mapGetters(['toastMessages'])
   },
@@ -193,7 +193,6 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('user', [
-      'setReportModal',
       'setRequestLoginModal',
       'setTipModal',
       'setTipFlowSelectTipAmountModal',

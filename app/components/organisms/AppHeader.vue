@@ -8,7 +8,6 @@
     <sign-up-modal v-if="showSignUpModal"/>
     <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
     <login-modal v-if="showLoginModal"/>
-    <report-modal v-if="showReportModal"/>
     <profile-settings-modal v-if="showProfileSettingsModal"/>
     <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
     <request-login-modal v-if="requestLoginModal.isShow"/>
@@ -28,7 +27,6 @@ import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
 import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
-import ReportModal from '../organisms/ReportModal'
 import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
 import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
 import RequestLoginModal from '../organisms/RequestLoginModal'
@@ -44,7 +42,6 @@ export default {
     SignUpModal,
     SignUpAuthFlowModal,
     LoginModal,
-    ReportModal,
     RestrictEditArticleModal,
     ProfileSettingsModal,
     RequestLoginModal,
@@ -60,7 +57,6 @@ export default {
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
-      'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
