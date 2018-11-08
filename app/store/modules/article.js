@@ -205,6 +205,7 @@ const actions = {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
     commit(types.SET_ARTICLE_DETAIL, { article })
     commit(types.SET_ARTICLE_ID, { articleId })
+    return article
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
