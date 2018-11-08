@@ -67,7 +67,7 @@ export default {
         {
           order: 7,
           reasonName: 'その他',
-          reason: 'other_wise'
+          reason: 'other'
         }
       ]
     }
