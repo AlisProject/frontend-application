@@ -67,10 +67,9 @@ export default {
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal',
-      'userReportModal',
-      'articleReportModal'
-    ])
+      'requestPhoneNumberVerifyModal'
+    ]),
+    ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
   methods: {
     async closeModal() {
