@@ -6,7 +6,7 @@
           v-if="isCopyrightViolation"
           class="signup-form-group"
           :class="{ 'error': hasOriginURLError }">
-          <label class="signup-form-label">元記事のURL</label>
+          <label class="signup-form-label">著作権元と思われる記事のURL</label>
           <input
             class="signup-form-input"
             type="text"
