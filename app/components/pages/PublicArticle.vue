@@ -4,31 +4,59 @@
     <public-article-header-nav class="public-article" />
     <div class="area-article">
       <h1 class="area-title">{{ decodedTitle }}</h1>
-      <div class="area-content" v-html="article.body" />
+      <alis-editor
+        v-if="isV2"
+        class="area-content"
+        :initialState="initalState"
+        :config="{
+          preview: true,
+          iframelyApikey,
+          axiosConfig: {}
+        }" />
+      <div class="area-content" v-html="article.body" v-else/>
     </div>
     <public-article-share-buttons/>
   </div>
 </template>
 
 <script>
+import AlisEditor from 'alis-editor'
 import AppHeader from '../organisms/AppHeader'
 import PublicArticleHeaderNav from '../molecules/PublicArticleHeaderNav'
 import PublicArticleShareButtons from '../atoms/PublicArticleShareButtons'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, showEmbedTweet } from '~/utils/article'
 
 export default {
   components: {
+    AlisEditor,
     AppHeader,
     PublicArticleHeaderNav,
     PublicArticleShareButtons
   },
-  props: {
-    article: {
-      type: Object,
-      required: true
+  data() {
+    return {
+      article: {},
+      initalState: null
+    }
+  },
+  async created() {
+    const { articleId } = this.$route.params
+    this.article = await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
+    showEmbedTweet()
+    if (!this.isV2) return
+    try {
+      this.initalState = JSON.parse(this.article.body)
+    } catch (e) {
+      this.$root.error({ statusCode: 500 })
     }
   },
   computed: {
+    isV2() {
+      return this.article.version && this.article.version >= 200
+    },
+    iframelyApikey() {
+      return process.env.IFRAMELY_API_KEY
+    },
     decodedTitle() {
       return htmlDecode(this.article.title)
     }

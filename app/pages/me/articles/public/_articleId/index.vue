@@ -1,23 +1,14 @@
 <template>
-  <public-article :article="article"/>
+  <public-article />
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import PublicArticle from '~/components/pages/PublicArticle'
-import { showEmbedTweet, htmlDecode } from '~/utils/article'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
     PublicArticle
-  },
-  async beforeCreate() {
-    const { articleId } = this.$route.params
-    await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
-    showEmbedTweet()
-  },
-  computed: {
-    ...mapGetters('article', ['article'])
   },
   head() {
     const { article } = this.$store.state.article
