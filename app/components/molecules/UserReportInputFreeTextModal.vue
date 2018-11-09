@@ -10,7 +10,7 @@
           <input
             class="signup-form-input"
             type="text"
-            placeholder="半角英数3文字以上"
+            placeholder="https://example.com"
             @input="setOriginURL($event.target.value)"
             @blur="showError('originURL')"
             @focus="resetError('originURL')">
