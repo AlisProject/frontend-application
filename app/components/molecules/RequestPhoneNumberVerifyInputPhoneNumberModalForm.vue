@@ -69,7 +69,7 @@ export default {
         case 'articleTip':
           return 'トークンを贈るには'
         case 'articleReport':
-          return '記事を通報するには'
+          return '記事を報告するには'
         default:
           return ''
       }

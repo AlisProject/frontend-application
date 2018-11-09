@@ -16,7 +16,7 @@
     <div class="sub-action area-etc" @click="toggleEtcPopup">
       <div class="etc-popup" v-show="isEtcPopupShown">
         <span class="report" @click="showPopupReportModal">
-          通報する
+          報告する
         </span>
       </div>
     </div>

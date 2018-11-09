@@ -33,11 +33,11 @@ export default {
         const { reason } = this.userReportModal.selectReason.formData
         const { originURL, freeText } = this.userReportModal.inputFreeText.formData
         await this.postUserFraud({ userId, reason, originURL, freeText })
-        this.sendNotification({ text: '通報しました' })
+        this.sendNotification({ text: '報告しました' })
       } catch (error) {
         let text = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
         if (error.response.data.message === 'Already exists') {
-          text = 'すでに通報済みです'
+          text = 'すでに報告済みです'
         }
         this.sendNotification({ text, type: 'warning' })
       }

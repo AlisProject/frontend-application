@@ -18,7 +18,7 @@
         <div class="report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
           <div class="report-popup" v-show="isReportPopupShown">
             <span class="report" @click="showUserReportModal">
-              通報する
+              報告する
             </span>
           </div>
         </div>

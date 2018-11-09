@@ -40,7 +40,7 @@ export default {
         case 'articleTip':
           return `トークンを贈るには${text}`
         case 'articleReport':
-          return `記事を通報するには${text}`
+          return `記事を報告するには${text}`
         default:
           return text
       }
