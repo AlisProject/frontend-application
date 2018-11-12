@@ -14,7 +14,7 @@
             @input="setOriginURL($event.target.value)"
             @blur="showError('originURL')"
             @focus="resetError('originURL')">
-          <p class="error-message" v-if="showErrorUrl">URLを正しい形式で入力してください</p>
+          <p class="error-message" v-if="showErrorUrl">URLを正しい形式でご入力ください</p>
         </div>
         <div class="signup-form-group">
           <label class="signup-form-label">報告の詳細※任意</label>
