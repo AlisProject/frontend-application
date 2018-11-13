@@ -63,13 +63,13 @@ export default {
       'showSignUpModal',
       'showSignUpAuthFlowModal',
       'showLoginModal',
-      'showReportModal',
       'showProfileSettingsModal',
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal'
-    ])
+    ]),
+    ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
   methods: {
     async closeModal() {
@@ -94,9 +94,6 @@ export default {
           this.replaceUrlToTop()
         }
       }
-      if (this.showReportModal) {
-        this.setReportModal({ showReportModal: false })
-      }
       if (this.showProfileSettingsModal) {
         if (document.querySelector('[class$=-article-list-container]')) {
           document.querySelector('[class$=-article-list-container]').style.overflowY = 'auto'
@@ -117,6 +114,20 @@ export default {
       if (this.requestPhoneNumberVerifyModal.isShow) {
         this.setRequestPhoneNumberVerifyModal({ isShow: false })
       }
+      if (this.userReportModal.isShow) {
+        this.setUserReportModal({ isShow: false })
+        this.setUserReportSelectReasonModal({ isShow: false })
+        this.setUserReportInputFreeTextModal({ isShow: false })
+        this.setUserReportConfirmationModal({ isShow: false })
+        this.resetUserReportData()
+      }
+      if (this.articleReportModal.isShow) {
+        this.setArticleReportModal({ isShow: false })
+        this.setArticleReportSelectReasonModal({ isShow: false })
+        this.setArticleReportInputFreeTextModal({ isShow: false })
+        this.setArticleReportConfirmationModal({ isShow: false })
+        this.resetArticleReportData()
+      }
       this.$emit('close')
       this.resetPassword()
       document.body.scrollTop = 0
@@ -130,7 +141,6 @@ export default {
       'setSignUpModal',
       'setSignUpAuthFlowModal',
       'setLoginModal',
-      'setReportModal',
       'setProfileSettingsModal',
       'setRestrictEditArticleModal',
       'resetPassword',
@@ -139,6 +149,18 @@ export default {
       'setTipModal',
       'hideTipFlowModalContent',
       'setRequestPhoneNumberVerifyModal'
+    ]),
+    ...mapActions('report', [
+      'setUserReportModal',
+      'setUserReportSelectReasonModal',
+      'setUserReportInputFreeTextModal',
+      'setUserReportConfirmationModal',
+      'resetUserReportData',
+      'setArticleReportModal',
+      'setArticleReportSelectReasonModal',
+      'setArticleReportInputFreeTextModal',
+      'setArticleReportConfirmationModal',
+      'resetArticleReportData'
     ])
   },
   watch: {

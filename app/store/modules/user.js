@@ -98,7 +98,6 @@ const state = () => ({
       userDisplayName: false
     }
   },
-  showReportModal: false,
   currentUserInfo: {},
   showRestrictEditArticleModal: false,
   userInfo: {},
@@ -159,7 +158,6 @@ const getters = {
   signUpAuthFlowModal: (state) => state.signUpAuthFlowModal,
   showLoginModal: (state) => state.showLoginModal,
   loginModal: (state) => state.loginModal,
-  showReportModal: (state) => state.showReportModal,
   showProfileSettingsModal: (state) => state.showProfileSettingsModal,
   profileSettingsModal: (state) => state.profileSettingsModal,
   currentUserInfo: (state) => state.currentUserInfo,
@@ -298,9 +296,6 @@ const actions = {
   },
   hideProfileSettingsError({ commit }, { type }) {
     commit(types.HIDE_PROFILE_SETTINGS_ERROR, { type })
-  },
-  setReportModal({ commit }, { showReportModal }) {
-    commit(types.SET_REPORT_MODAL, { showReportModal })
   },
   async register({ commit }, { userId, email, password }) {
     try {
@@ -847,9 +842,6 @@ const mutations = {
   },
   [types.HIDE_PROFILE_SETTINGS_ERROR](state, { type }) {
     state.profileSettingsModal.formError[type] = false
-  },
-  [types.SET_REPORT_MODAL](state, { showReportModal }) {
-    state.showReportModal = showReportModal
   },
   [types.SET_CURRENT_USER](state, { user }) {
     state.currentUser = user
