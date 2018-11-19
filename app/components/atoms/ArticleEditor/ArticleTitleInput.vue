@@ -6,7 +6,8 @@
     spellcheck="false"
     maxlength="255"
     :value="value"
-    @input="handleInput"
+    @keyup="handleInput"
+    @keydown.enter.prevent="moveToBody"
     wrap="soft"
   ></textarea>
 </template>
@@ -21,7 +22,14 @@ export default {
   },
   methods: {
     handleInput(event) {
-      this.$emit('input', event.target.value)
+      this.$emit('keyup', event.target.value)
+    },
+    moveToBody(event) {
+      let textarea = document.getElementsByTagName('textarea')[0]
+      let cursorPosition = textarea.selectionStart
+      if (event.target.value.length === cursorPosition) {
+        this.$emit('focus-trigger')
+      }
     }
   }
 }
