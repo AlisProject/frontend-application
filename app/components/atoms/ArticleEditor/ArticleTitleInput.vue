@@ -25,8 +25,7 @@ export default {
       this.$emit('keyup', event.target.value)
     },
     moveToBody(event) {
-      let textarea = document.getElementsByTagName('textarea')[0]
-      let cursorPosition = textarea.selectionStart
+      const cursorPosition = this.$el.selectionStart
       if (event.target.value.length === cursorPosition) {
         this.$emit('focus-trigger')
       }

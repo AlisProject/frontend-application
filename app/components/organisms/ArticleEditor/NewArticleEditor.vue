@@ -8,8 +8,9 @@
         />
       </div>
     </edit-header-nav>
-    <ArticleTitleInput v-model="title" v-on:focus-trigger="handleFocus" />
+    <ArticleTitleInput v-model="title" @focus-trigger="handleFocus" />
     <alis-editor
+      class="alis-editor"
       style="position: relative;z-index: 1"
       @update="updateEditorState"
       :initialState="blocks"
@@ -161,8 +162,8 @@ export default {
       this.isOpenModal = false
     },
     handleFocus() {
-      let alisEditor = document.getElementById('ALISEditor')
-      alisEditor.getElementsByClassName('target')[0].focus()
+      const alisEditor = this.$el.querySelector('.alis-editor')
+      alisEditor.querySelector('.target').focus()
     },
     async updateEditorState(blocks) {
       if (this.isPublishing) return
