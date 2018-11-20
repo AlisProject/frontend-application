@@ -98,9 +98,8 @@ export default {
       this.startPos = this.currentPos
     },
     handleResize() {
-      const spBreackPoint = 550
-      this.fixNavigationHeight =
-        window.innerWidth <= spBreackPoint ? spHeaderHeight : pcHeaderHeight
+      const spBreakPoint = 550
+      this.fixNavigationHeight = window.innerWidth <= spBreakPoint ? spHeaderHeight : pcHeaderHeight
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
