@@ -40,10 +40,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
+const pcHeaderHeight = 100
+const spHeaderHeight = 66
+
 export default {
   data() {
     return {
-      beforeClickedLinkName: this.$route.query.topic
+      beforeClickedLinkName: this.$route.query.topic,
+      fixNavigationHeight: pcHeaderHeight
     }
   },
   async created() {
@@ -60,6 +64,15 @@ export default {
   computed: {
     ...mapGetters('article', ['topics', 'articleType'])
   },
+  mounted() {
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   methods: {
     to(topic) {
       const to = this.articleType === 'popularArticles' ? 'popular' : 'recent'
@@ -74,6 +87,20 @@ export default {
     },
     isTopPage(topicOrder) {
       return this.$route.query.from === 'top' && topicOrder === 1
+    },
+    handleScroll() {
+      const navElement = this.$el
+      if (window.scrollY >= this.fixNavigationHeight) {
+        navElement.classList.add('is-fixed')
+      } else {
+        navElement.classList.remove('is-fixed')
+      }
+      this.startPos = this.currentPos
+    },
+    handleResize() {
+      const spBreackPoint = 550
+      this.fixNavigationHeight =
+        window.innerWidth <= spBreackPoint ? spHeaderHeight : pcHeaderHeight
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -97,6 +124,38 @@ $topicCount: 11;
   grid-template-areas:
     "nav-links";
   justify-self: center;
+  z-index: 2000;
+  background: #fff;
+
+  &.is-fixed {
+    transition: all 400ms ease;
+    width: 100%;
+    padding: 12px 0;
+    position: fixed;
+    box-shadow: 0 0 12px 0 rgba(192, 192, 192, 0.7);
+    /* prettier-ignore */
+    grid-template-areas:
+      '... nav-links ...';
+    grid-template-columns: 1fr auto 1fr;
+
+    .nav-link {
+      height: 28px;
+
+      .topic-display-name {
+        bottom: 7px;
+      }
+
+      &.nuxt-link-exact-active {
+        border-radius: 1px;
+        height: 22px;
+        width: 90px;
+
+        .topic-display-name {
+          bottom: 5px;
+        }
+      }
+    }
+  }
 }
 
 .area-nav-links {
@@ -108,6 +167,7 @@ $topicCount: 11;
   grid-template-areas:
     "topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9 topic10 topic11";
   overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
     display: none;
@@ -123,6 +183,8 @@ $topicCount: 11;
   border-radius: 4px;
   box-sizing: border-box;
   position: relative;
+  height: 50px;
+  width: 96px;
 
   .topic-display-name {
     bottom: 10px;
@@ -159,6 +221,10 @@ $topicCount: 11;
   .area-nav {
     justify-self: flex-start;
     padding-left: 12px;
+
+    &.is-fixed {
+      padding-left: 12px;
+    }
   }
 }
 
@@ -187,6 +253,14 @@ $topicCount: 11;
     max-width: 100%;
     margin-bottom: 0;
     padding: 0 0 12px 0;
+
+    &.is-fixed {
+      padding-left: 0;
+
+      @supports (-webkit-overflow-scrolling: touch) {
+        padding: 16px 0 0 0;
+      }
+    }
   }
 
   .area-nav-links {

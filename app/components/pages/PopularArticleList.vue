@@ -105,7 +105,7 @@ export default {
     "...                     loader                  ...       "
     "app-footer              app-footer              app-footer";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 50px 84px 1fr 75px 75px;
+  grid-template-rows: 100px auto 84px 1fr 75px 75px;
   min-height: 100vh;
 }
 

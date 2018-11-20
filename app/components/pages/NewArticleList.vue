@@ -123,7 +123,8 @@ export default {
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    grid-template-rows: 66px 62px 60px 1fr 75px min-content;
+    grid-template-rows: 66px auto 60px 1fr 75px min-content;
+    /* grid-template-rows: 66px 62px 60px 1fr 75px min-content; */
     grid-template-columns: 1fr 350px 1fr;
   }
 }
