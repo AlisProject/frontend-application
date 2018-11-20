@@ -22,6 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-button {
+  background: #0086cc;
   border-radius: 18px;
   border: none;
   color: #fff;
@@ -35,38 +36,8 @@ export default {
   position: relative;
   text-align: center;
   text-decoration: none;
+  transition: box-shadow 400ms ease;
   width: 256px;
-  z-index: 0;
-
-  &:before {
-    background: #858dda;
-    border-radius: 18px;
-    content: '';
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    transition: all 400ms ease;
-    width: 100%;
-    z-index: -1;
-  }
-
-  &:after {
-    background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    content: '';
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: -2;
-  }
-
-  &:hover:enabled:before,
-  &:focus:before {
-    opacity: 0;
-  }
 
   &:hover,
   &:focus {
@@ -79,13 +50,9 @@ export default {
 
   &[disabled] {
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-    color: #6e6e6e;
+    color: #fff;
     cursor: default;
-
-    &:before,
-    &:after {
-      background: #fff;
-    }
+    opacity: 0.5;
   }
 
   a {

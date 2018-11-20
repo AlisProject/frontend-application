@@ -85,19 +85,20 @@ export default {
   grid-area: app-header;
   grid-template-rows: 100px;
   width: 1080px;
-  grid-template-columns: 150px 1fr auto;
+  grid-template-columns: 256px 134px 256px;
   /* prettier-ignore */
   grid-template-areas:
-    "logo ... session";
+    "... logo session";
   z-index: 2002;
   justify-self: center;
+  justify-content: space-between;
 }
 
 .area-logo {
   grid-area: logo;
   background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
   background-position: center;
-  background-size: 150px 40px;
+  background-size: 134px auto;
 }
 
 @media screen and (max-width: 1080px) {
@@ -106,33 +107,30 @@ export default {
   }
 }
 
-@media screen and (max-width: 920px) and (min-width: 551px) {
-  .article-container {
-    .area-app-header-container {
-      max-width: calc(100% - 40px);
-      background: white;
-      grid-template-columns: 94px 1fr auto;
-      grid-template-rows: 66px;
-      padding: 0 22px 0 18px;
-    }
-
-    .area-logo {
-      background-size: 94px 25px;
-    }
-  }
-}
-
-@media screen and (max-width: 550px) {
+@mixin spStyles() {
   .area-app-header-container {
+    /* prettier-ignore */
+    grid-template-areas:
+      "logo ... session";
     max-width: calc(100% - 40px);
     background: white;
-    grid-template-columns: 94px 1fr auto;
+    grid-template-columns: 67px 1fr auto;
     grid-template-rows: 66px;
     padding: 0 22px 0 18px;
   }
 
   .area-logo {
-    background-size: 94px 25px;
+    background-size: 67px auto;
   }
+}
+
+@media screen and (max-width: 920px) and (min-width: 551px) {
+  .article-container {
+    @include spStyles();
+  }
+}
+
+@media screen and (max-width: 550px) {
+  @include spStyles();
 }
 </style>

@@ -214,7 +214,11 @@ export default {
     cursor: pointer;
   }
 
-  .search-icon,
+  .search-icon {
+    width: 24px;
+    margin: 0 40px 0 88px;
+  }
+
   .notification-icon {
     width: 24px;
     margin-right: 40px;
