@@ -91,11 +91,7 @@ export default {
       line-height: 2.5;
       text-align: center;
       width: 96px;
-
-      &:before,
-      &:after {
-        border-radius: 4px;
-      }
+      border-radius: 4px;
     }
 
     &.sp {
