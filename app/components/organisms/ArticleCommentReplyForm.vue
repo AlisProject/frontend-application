@@ -15,7 +15,6 @@
       </no-ssr>
       <textarea
         class="reply-comment-textarea"
-        :class="{ 'no-border': !isCommentEmpty }"
         type="text"
         placeholder="コメントを入力してください"
         maxlength="400"
@@ -206,7 +205,7 @@ export default {
         }
 
         .reply-target-user-name {
-          color: #858dda;
+          color: #0086cc;
           font-size: 10px;
           overflow: hidden;
           white-space: nowrap;
@@ -220,26 +219,19 @@ export default {
     -webkit-appearance: none;
     border-radius: 0;
     border: none;
-    border: 1px dotted #232538;
-    font-family: YuGothic, 'Helvetica Neue', Helvetica, Arial, 游ゴシック体, '游ゴシック',
-      'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3',
-      'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
+    box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
     font-size: 12px;
     height: 4em;
     margin: 4px 0 8px 46px;
     overflow: hidden;
-    padding: 5px;
+    padding: 8px;
     resize: none;
     width: calc(100% - 50px);
     box-sizing: border-box;
 
-    &.no-border {
-      border: none;
-    }
-
     &::-webkit-input-placeholder {
       color: #cecece;
-      font-size: 14px;
+      font-size: 12px;
       letter-spacing: 0.05em;
     }
 
@@ -250,7 +242,7 @@ export default {
   }
 
   .comment-submit {
-    color: #858dda;
+    color: #0086cc;
     cursor: pointer;
     float: right;
     font-size: 12px;
