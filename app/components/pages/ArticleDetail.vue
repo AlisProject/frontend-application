@@ -2,6 +2,9 @@
   <div class="article-container">
     <app-header />
     <div class="area-article">
+      <span class="area-topic" v-if="topic">
+        {{ topic }}
+      </span>
       <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
       <article-tags :tags="article.tags"/>
@@ -19,7 +22,6 @@
     </div>
     <article-comments :comments="article.comments"/>
     <article-comment-form/>
-    <!-- <related-articles :articles="article.relatedArticles"/> -->
     <app-footer/>
   </div>
 </template>
@@ -34,7 +36,6 @@ import AuthorInfo from '../atoms/AuthorInfo'
 import ArticleTags from '../molecules/ArticleTags'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
-// import RelatedArticles from '../organisms/RelatedArticles'
 import AppFooter from '../organisms/AppFooter'
 import { showEmbedTweet, htmlDecode } from '~/utils/article'
 
@@ -48,13 +49,16 @@ export default {
     ArticleTags,
     ArticleCommentForm,
     ArticleComments,
-    // RelatedArticles,
     AppFooter
   },
   props: {
     article: {
       type: Object,
       required: true
+    },
+    topic: {
+      type: String,
+      required: false
     }
   },
   mounted() {
@@ -85,17 +89,15 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 40px 1fr min-content min-content 75px;
+  grid-template-rows: 100px 1fr min-content min-content 75px;
   // grid-template-rows: 100px 50px 1fr 470px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:
     'app-header           app-header           app-header      '
-    '...                  ...                  ...             '
     '...                  article              ...             '
     'article-comments     article-comments     article-comments'
     'article-comment-form article-comment-form article-comment-form'
-    // 'related-articles related-articles related-articles'
     'app-footer           app-footer           app-footer      ';
   background: white;
 }
@@ -108,12 +110,24 @@ export default {
   grid-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
+    'topic         '
     'title         '
     'content       '
     'tags          '
     'article-sub-infos'
     'footer-actions'
     'author-info   ';
+}
+
+.area-topic {
+  border-bottom: 1px solid #f0f0f0;
+  color: #5e5e5e;
+  font-size: 14px;
+  grid-area: topic;
+  height: 28px;
+  letter-spacing: 0.3px;
+  margin-bottom: -20px;
+  word-break: break-all;
 }
 
 .area-title {
@@ -130,24 +144,20 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px 40px 1fr min-content min-content 75px;
-    // grid-template-rows: 100px 50px 1fr 950px 75px;
+    grid-template-rows: 100px 1fr min-content min-content 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 66px 0 1fr min-content min-content min-content;
-    // grid-template-rows: 70px 0 1fr min-content 75px;
+    grid-template-rows: 66px 1fr min-content min-content min-content;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */
     grid-template-areas:
     'app-header           app-header           app-header      '
-    '...                  ...                  ...             '
     'article              article              article         '
     'article-comments     article-comments     article-comments'
     'article-comment-form article-comment-form article-comment-form'
-    // 'related-articles related-articles related-articles'
     'app-footer           app-footer           app-footer      ';
   }
 
@@ -156,13 +166,17 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
+      '...            topic             ...           '
       '...            title             ...           '
       '...            content           ...           '
       '...            tags              ...           '
       '...            article-sub-infos ...'
       '...            author-info       ...           '
       'footer-actions footer-actions    footer-actions';
-    // '...            article-comments ...           ';
+  }
+
+  .area-topic {
+    margin: 20px 0 0;
   }
 
   .area-title {

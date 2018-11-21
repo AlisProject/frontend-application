@@ -1,5 +1,5 @@
 <template>
-  <article-detail :article="article"/>
+  <article-detail :article="article" :topic="topicDisplayName"/>
 </template>
 
 <script>
@@ -11,10 +11,17 @@ export default {
   components: {
     ArticleDetail
   },
+  data() {
+    return {
+      topic: null
+    }
+  },
   async fetch({ store, params, error }) {
     try {
       const { articleId } = params
-      await store.dispatch('article/getArticleDetail', { articleId })
+      const article = await store.dispatch('article/getArticleDetail', { articleId })
+      await store.dispatch('article/getTopics')
+      store.dispatch('article/setTopicDisplayName', { topicName: article.topic })
     } catch (e) {
       error({ statusCode: 404 })
     }
@@ -31,7 +38,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['loggedIn', 'currentUser']),
-    ...mapGetters('article', ['article'])
+    ...mapGetters('article', ['article', 'topicDisplayName'])
   },
   methods: {
     ...mapActions('article', [
