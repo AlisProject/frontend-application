@@ -26,13 +26,13 @@ export default {
 .area-title {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  color: #3f3f3f;
+  color: #555;
   display: -webkit-box;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 14px;
+  font-weight: bold;
   grid-area: title;
-  letter-spacing: 0.1em;
-  line-height: 1.5;
+  letter-spacing: 0.8px;
+  line-height: 1.714;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -41,31 +41,6 @@ export default {
     color: #3f3f3f;
     display: block;
     text-decoration: none;
-  }
-}
-
-.long-article-card {
-  .area-title {
-    font-weight: bold;
-    line-height: 28px;
-    font-size: 19px;
-  }
-}
-
-@media screen and (max-width: 1296px) {
-  .long-article-card {
-    .area-title {
-      font-weight: 500;
-      font-size: 16px;
-    }
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .long-article-card {
-    .area-title {
-      font-size: 20px;
-    }
   }
 }
 </style>

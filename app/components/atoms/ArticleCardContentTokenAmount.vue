@@ -25,37 +25,23 @@ export default {
 
 <style lang="scss" scoped>
 .token-amount {
+  align-items: center;
   background: url('~assets/images/pc/common/icon_alistoken.png') no-repeat;
-  background-size: 15px;
-  bottom: 20px;
+  background-size: 18px;
+  bottom: 0;
   color: #717171;
+  display: flex;
   font-size: 12px;
-  height: 22px;
+  font-weight: bold;
+  height: 18px;
   margin: 0;
+  letter-spacing: 0.8px;
   padding: 0 0 0 22px;
   position: absolute;
-  right: 24px;
+  right: 0;
 
   &.nonDisplay {
     background: none;
-  }
-}
-
-.long-article-card {
-  .token-amount {
-    bottom: 25px;
-    font-size: 14px;
-    position: absolute;
-    right: 28px;
-  }
-}
-
-@media screen and (max-width: 1296px) {
-  .long-article-card {
-    .token-amount {
-      bottom: 10px;
-      right: 20px;
-    }
   }
 }
 </style>
