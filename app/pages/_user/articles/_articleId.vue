@@ -11,17 +11,14 @@ export default {
   components: {
     ArticleDetail
   },
-  data() {
-    return {
-      topic: null
-    }
-  },
   async fetch({ store, params, error }) {
     try {
       const { articleId } = params
-      const article = await store.dispatch('article/getArticleDetail', { articleId })
+      await store.dispatch('article/getArticleDetail', { articleId })
       await store.dispatch('article/getTopics')
-      store.dispatch('article/setTopicDisplayName', { topicName: article.topic })
+      store.dispatch('article/setTopicDisplayName', {
+        topicName: store.state.article.article.topic
+      })
     } catch (e) {
       error({ statusCode: 404 })
     }

@@ -191,7 +191,6 @@ const actions = {
       ])
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
-      return article
     } catch (error) {
       return Promise.reject(error)
     }
@@ -521,7 +520,6 @@ const actions = {
     try {
       const topics = await this.$axios.$get('/topics')
       commit(types.SET_TOPICS, { topics })
-      return topics
     } catch (error) {
       return Promise.reject(error)
     }
