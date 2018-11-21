@@ -111,7 +111,7 @@ export default {
 }
 
 .to-comment-button {
-  color: #858dda;
+  color: #0086cc;
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;

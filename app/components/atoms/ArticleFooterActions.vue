@@ -273,10 +273,10 @@ export default {
 
   .area-tip {
     grid-area: tip;
-    background: #858dda url('~assets/images/pc/article/icon_chip.png') no-repeat;
+    background: #0086cc url('~assets/images/pc/article/icon_chip.png') no-repeat;
     background-position: 10px;
     background-size: 32px;
-    box-shadow: 0px 2px 15px -1px #858dda;
+    box-shadow: 0px 2px 15px -1px #0086cc;
     cursor: pointer;
     border-radius: 50%;
   }
