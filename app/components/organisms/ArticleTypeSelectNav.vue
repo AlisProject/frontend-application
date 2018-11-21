@@ -70,7 +70,7 @@ export default {
 
   &.selected {
     border-radius: 10px;
-    background-color: #858dda;
+    background-color: #0086cc;
     color: #fff;
   }
 }
