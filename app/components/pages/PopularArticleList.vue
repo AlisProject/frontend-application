@@ -4,6 +4,7 @@
     <default-header-nav/>
     <article-type-select-nav />
     <article-card-list :articles="popularArticles"/>
+    <create-new-article-button class="is-fixed-button" @click="moveToNewArticlePage"/>
     <the-loader :isLoading="!isLastPage"/>
     <app-footer/>
   </div>
@@ -15,6 +16,7 @@ import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
+import CreateNewArticleButton from '../atoms/CreateNewArticleButton'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -25,6 +27,7 @@ export default {
     DefaultHeaderNav,
     ArticleTypeSelectNav,
     ArticleCardList,
+    CreateNewArticleButton,
     TheLoader,
     AppFooter
   },
@@ -36,6 +39,7 @@ export default {
   },
   computed: {
     ...mapGetters('article', ['popularArticles', 'isLastPage', 'topics']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
@@ -70,7 +74,32 @@ export default {
         this.isFetchingArticles = false
       }
     },
+    moveToNewArticlePage() {
+      if (!this.loggedIn) {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleCreate' })
+        window.scrollTo(0, 0)
+        document.querySelector('html').style.overflow = 'hidden'
+        document.querySelector('body').style.overflow = 'hidden'
+        return
+      }
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        window.scrollTo(0, 0)
+        if (window.innerWidth > 550) {
+          document.querySelector('html').style.overflow = 'hidden'
+          document.querySelector('body').style.overflow = 'hidden'
+        }
+        return
+      }
+      location.href = '/me/articles/new'
+    },
     ...mapActions('article', ['getPopularArticles', 'resetArticleData', 'setTopicDisplayName']),
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ]),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
@@ -107,6 +136,12 @@ export default {
   grid-template-columns: 1fr 1080px 1fr;
   grid-template-rows: 100px auto 84px 1fr 75px 75px;
   min-height: 100vh;
+}
+
+.is-fixed-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
 }
 
 @media screen and (max-width: 1296px) {

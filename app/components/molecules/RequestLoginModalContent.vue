@@ -41,6 +41,8 @@ export default {
           return `トークンを贈るには${text}`
         case 'articleReport':
           return `記事を報告するには${text}`
+        case 'articleCreate':
+          return `記事の作成を行うには${text}`
         default:
           return text
       }
