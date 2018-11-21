@@ -219,7 +219,7 @@ export default {
     -webkit-appearance: none;
     border-radius: 0;
     border: none;
-    box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
+    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     font-size: 12px;
     height: 4em;
     margin: 4px 0 8px 46px;
