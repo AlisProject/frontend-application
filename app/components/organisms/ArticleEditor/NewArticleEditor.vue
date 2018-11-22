@@ -15,6 +15,7 @@
       @update="updateEditorState"
       :initialState="blocks"
       :config="config"
+      :isPressedEnterInTitle="isPressedEnterInTitle"
     />
     <NewEditorPublishModal
       v-if="isOpenModal"
@@ -69,7 +70,8 @@ export default {
           Authorization: ''
         }
       },
-      blocks: this.defaultBlocks || createInitialBlocks()
+      blocks: this.defaultBlocks || createInitialBlocks(),
+      isPressedEnterInTitle: false
     }
   },
   mounted() {
@@ -161,8 +163,10 @@ export default {
     handleCloseModal() {
       this.isOpenModal = false
     },
-    handleFocus() {
+    async handleFocus() {
       const alisEditor = this.$el.querySelector('.alis-editor')
+      this.isPressedEnterInTitle = !(this.isPressedEnterInTitle)
+      await this.$nextTick()
       alisEditor.querySelector('.target').focus()
     },
     async updateEditorState(blocks) {
