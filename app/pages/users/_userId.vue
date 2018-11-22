@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import UserArticleList from '~/components/pages/UserArticleList'
 
 export default {
@@ -10,16 +11,28 @@ export default {
     UserArticleList
   },
   async fetch({ store, params, error }) {
+    await store.dispatch('user/setUserInfo', { userId: params.userId })
+  },
+  async mounted() {
     try {
-      await store.dispatch('user/setUserInfo', { userId: params.userId })
-      await store.dispatch('user/getUserArticles', { userId: params.userId })
-    } catch (e) {
-      error({ statusCode: 404 })
+      if (this.isCurrentUser) {
+        await this.$store.dispatch('article/getPublicArticles')
+      } else {
+        await this.$store.dispatch('user/getUserArticles', { userId: this.$route.params.userId })
+      }
+    } catch (error) {
+      this.$root.error({ statusCode: 404 })
     }
   },
   beforeDestroy() {
     this.$store.dispatch('user/resetUserArticles')
     this.$store.dispatch('user/resetUserArticlesLastEvaluatedKey')
+  },
+  computed: {
+    isCurrentUser() {
+      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
+    },
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   head() {
     return {
