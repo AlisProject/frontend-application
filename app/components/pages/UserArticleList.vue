@@ -3,20 +3,7 @@
     <app-header />
     <user-article-list-user-info :user="userInfo" />
     <no-ssr>
-      <nav class="area-user-profile-nav" v-if="isCurrentUser">
-        <ul class="user-profile-nav-ul">
-          <li class="user-profile-nav-item active">
-            <nuxt-link class="link" :to="`/users/${$route.params.userId}`">
-              公開中
-            </nuxt-link>
-          </li>
-          <li class="user-profile-nav-item">
-            <nuxt-link class="link" :to="`/users/${$route.params.userId}/drafts`">
-              下書き
-            </nuxt-link>
-          </li>
-        </ul>
-      </nav>
+      <user-profile-nav v-if="isCurrentUser" />
     </no-ssr>
     <user-article-card-list :articles="isCurrentUser ? publicArticles : userArticles"/>
     <the-loader :isLoading="isCurrentUser ? hasPublicArticlesLastEvaluatedKey : hasUserArticlesLastEvaluatedKey"/>
@@ -28,6 +15,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import UserArticleListUserInfo from '../atoms/UserArticleListUserInfo'
+import UserProfileNav from '../molecules/UserProfileNav'
 import UserArticleCardList from '../organisms/UserArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
@@ -37,6 +25,7 @@ export default {
   components: {
     AppHeader,
     UserArticleListUserInfo,
+    UserProfileNav,
     UserArticleCardList,
     TheLoader,
     AppFooter
@@ -70,11 +59,7 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    ...mapGetters('article', [
-      'publicArticles',
-      'publicArticlesLastEvaluatedKey',
-      'hasPublicArticlesLastEvaluatedKey'
-    ]),
+    ...mapGetters('article', ['publicArticles', 'hasPublicArticlesLastEvaluatedKey']),
     ...mapGetters('user', [
       'userInfo',
       'userArticles',
@@ -151,43 +136,6 @@ export default {
   min-height: 100vh;
 }
 
-.area-user-profile-nav {
-  grid-area: user-profile-nav;
-  display: block;
-  border-bottom: 1px solid #e6e6e6;
-  margin-bottom: 40px;
-
-  .user-profile-nav-ul {
-    margin: 0;
-    padding: 0;
-    display: flex;
-
-    .user-profile-nav-item {
-      list-style: none;
-      height: 20px;
-      width: 40px;
-      color: #99a2ff;
-      font-size: 12px;
-      margin-right: 24px;
-      text-align: center;
-
-      &.active {
-        color: #0086cc;
-        border-bottom: 1px solid #0086cc;
-
-        .link {
-          color: #0086cc;
-        }
-      }
-
-      .link {
-        text-decoration: none;
-        color: #6e6e6e;
-      }
-    }
-  }
-}
-
 @media screen and (max-width: 920px) {
   .user-article-list-container {
     grid-template-columns: 1fr 340px 1fr;
@@ -209,35 +157,11 @@ export default {
     "...              loader            ...       "
     "app-footer       app-footer        app-footer";
   }
-
-  .area-user-profile-nav {
-    border-top: 1px solid #e6e6e6;
-    margin-bottom: 0;
-
-    .user-profile-nav-ul {
-      margin: 0;
-      padding-left: 12px;
-      display: flex;
-
-      .user-profile-nav-item {
-        height: 22px;
-        padding-top: 10px;
-      }
-    }
-  }
 }
 
 @media screen and (max-width: 370px) {
   .user-article-list-container {
     grid-template-columns: 10px 1fr 10px;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .area-user-profile-nav {
-    .user-profile-nav-ul {
-      padding-left: 10px;
-    }
   }
 }
 </style>

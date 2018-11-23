@@ -302,8 +302,8 @@ export default {
       grid-template-areas:
       "profile-icon      user-display-name ...               ..."
       "profile-icon      user-id           ...               ..."
-      "profile-icon      ...      ...      ..."
-      "profile-icon      profile-edit      ...      ..."
+      "profile-icon      ...               ...               ..."
+      "profile-icon      profile-edit      ...               ..."
       "self-introduction self-introduction self-introduction ...";
       padding: 0 12px;
     }

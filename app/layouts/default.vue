@@ -20,7 +20,7 @@ export default {
       this.$store.dispatch('user/setSignUpAuthFlowInputUserIdModal', { isShow: true })
     }
 
-    if (location.pathname.startsWith('/me/')) {
+    if (location.pathname.startsWith('/me/') || this.$route.name === 'users-userId-drafts') {
       if (!this.loggedIn) {
         this.$router.push('/login')
       }
