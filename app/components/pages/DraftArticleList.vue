@@ -2,9 +2,7 @@
   <div class="draft-article-list-container">
     <app-header />
     <user-article-list-user-info :user="userInfo" />
-    <no-ssr>
-      <user-profile-nav v-if="isCurrentUser" />
-    </no-ssr>
+    <user-profile-nav />
     <user-article-card-list :articles="draftArticles"/>
     <the-loader :isLoading="hasDraftArticlesLastEvaluatedKey"/>
     <app-footer/>
@@ -51,11 +49,8 @@ export default {
     window.removeEventListener('scroll', this.infiniteScroll)
   },
   computed: {
-    isCurrentUser() {
-      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
-    },
     ...mapGetters('article', ['draftArticles', 'hasDraftArticlesLastEvaluatedKey']),
-    ...mapGetters('user', ['userInfo', 'loggedIn', 'currentUser'])
+    ...mapGetters('user', ['userInfo'])
   },
   methods: {
     async infiniteScroll(event) {
