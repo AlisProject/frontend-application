@@ -115,6 +115,10 @@ export default {
         return
       }
       this.getPublicArticles()
+    },
+    isCurrentUser(newState) {
+      // ログインユーザーのプロフィールページでログインしたとき、公開済み記事データを取得
+      if (newState) this.getPublicArticles()
     }
   }
 }
