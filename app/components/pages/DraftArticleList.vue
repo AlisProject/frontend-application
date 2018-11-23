@@ -1,8 +1,9 @@
 <template>
-  <div class="draft-article-list-container long-article-card">
+  <div class="draft-article-list-container">
     <app-header />
-    <my-article-list-header-nav class="drafts" />
-    <article-card-list :articles="draftArticles" class="draft" :linkTo="'draft'"/>
+    <user-article-list-user-info :user="userInfo" />
+    <user-profile-nav />
+    <user-article-card-list :articles="draftArticles"/>
     <the-loader :isLoading="hasDraftArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
@@ -11,8 +12,9 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
-import MyArticleListHeaderNav from '../molecules/MyArticleListHeaderNav'
-import ArticleCardList from '../organisms/ArticleCardList'
+import UserArticleListUserInfo from '../atoms/UserArticleListUserInfo'
+import UserProfileNav from '../molecules/UserProfileNav'
+import UserArticleCardList from '../organisms/UserArticleCardList'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -20,8 +22,9 @@ import { isPageScrollable, isScrollBottom } from '~/utils/client'
 export default {
   components: {
     AppHeader,
-    MyArticleListHeaderNav,
-    ArticleCardList,
+    UserArticleListUserInfo,
+    UserProfileNav,
+    UserArticleCardList,
     TheLoader,
     AppFooter
   },
@@ -32,12 +35,22 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.infiniteScroll)
+
+    // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
+    // 画面の高さに合うまで要素を取得する。
+
+    // 画面の高さに合っているかをスクロールできるかどうかで判定
+    if (!isPageScrollable(this.$el)) {
+      if (!this.hasDraftArticlesLastEvaluatedKey || this.draftArticles.length === 0) return
+      this.getDraftArticles()
+    }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.infiniteScroll)
   },
   computed: {
-    ...mapGetters('article', ['draftArticles', 'hasDraftArticlesLastEvaluatedKey'])
+    ...mapGetters('article', ['draftArticles', 'hasDraftArticlesLastEvaluatedKey']),
+    ...mapGetters('user', ['userInfo'])
   },
   methods: {
     async infiniteScroll(event) {
@@ -61,7 +74,13 @@ export default {
       // 取得したデータが反映されるまで待つ
       await this.$nextTick()
       // 画面の高さに合っているかをスクロールできるかどうかで判定
-      if (isPageScrollable(this.$el) || !this.hasDraftArticlesLastEvaluatedKey) return
+      if (
+        isPageScrollable(this.$el) ||
+        !this.hasDraftArticlesLastEvaluatedKey ||
+        this.draftArticles.length === 0
+      ) {
+        return
+      }
       this.getDraftArticles()
     }
   }
@@ -71,23 +90,17 @@ export default {
 <style lang="scss" scoped>
 .draft-article-list-container {
   display: grid;
-  grid-template-rows: 100px auto 40px 1fr 75px 75px;
-  grid-template-columns: 1fr 1080px 1fr;
+  grid-template-rows: 100px auto auto 1fr 75px 75px;
+  grid-template-columns: 1fr 710px 1fr;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header        app-header"
-    "nav         nav               nav       "
-    "...         ...               ...       "
-    "...         article-card-list ...       "
-    "...         loader            ...       "
-    "app-footer  app-footer        app-footer";
+    "app-header app-header        app-header"
+    "...        user-info         ...       "
+    "...        user-profile-nav  ...       "
+    "...        article-card-list ...       "
+    "...        loader            ...       "
+    "app-footer app-footer        app-footer";
   min-height: 100vh;
-}
-
-@media screen and (max-width: 1296px) {
-  .draft-article-list-container {
-    grid-template-columns: 1fr 710px 1fr;
-  }
 }
 
 @media screen and (max-width: 920px) {
@@ -98,8 +111,18 @@ export default {
 
 @media screen and (max-width: 550px) {
   .draft-article-list-container {
-    grid-template-rows: 66px auto 24px 1fr 75px min-content;
+    background: #fff;
     grid-template-columns: 1fr 350px 1fr;
+    grid-template-rows: 66px min-content auto 1fr 75px min-content;
+    grid-row-gap: 20px;
+    /* prettier-ignore */
+    grid-template-areas:
+    "app-header       app-header        app-header"
+    "user-info        user-info         user-info "
+    "user-profile-nav user-profile-nav  user-profile-nav"
+    "...              article-card-list ...       "
+    "...              loader            ...       "
+    "app-footer       app-footer        app-footer";
   }
 }
 

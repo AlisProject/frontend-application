@@ -1,5 +1,7 @@
 <template>
-  <div class="area-user-info-container" :class="{ 'with-bottom-space': !hasSelfIntroduction }">
+  <div
+    class="area-user-info-container"
+    :class="{ 'is-current-user': isCurrentUser }">
     <div class="area-profile-icon">
       <img
         class="profile-icon"
@@ -18,10 +20,15 @@
       </p>
     </div>
     <no-ssr>
-      <div class="area-sub-icon profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
+      <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
     </no-ssr>
     <no-ssr>
-      <div class="area-sub-icon report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
+      <div class="sp-profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser">
+        プロフィールを編集
+      </div>
+    </no-ssr>
+    <no-ssr>
+      <div class="report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
         <div class="report-popup" v-show="isReportPopupShown">
           <span class="report" @click="showUserReportModal">
             報告する
@@ -147,8 +154,8 @@ export default {
   grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
-    "profile-icon ... user-display-name sub-icon          ..."
-    "profile-icon ... user-id           user-id           ..."
+    "profile-icon ... user-display-name user-display-name sub-icon         "
+    "profile-icon ... user-id           user-id           ...              "
     "...          ... self-introduction self-introduction self-introduction";
   padding-bottom: 60px;
 }
@@ -175,7 +182,7 @@ export default {
     font-size: 28px;
     letter-spacing: 1.6px;
     margin: 0;
-    max-width: 510px;
+    max-width: 530px;
     overflow: hidden;
     position: relative;
     text-overflow: ellipsis;
@@ -183,12 +190,8 @@ export default {
   }
 }
 
-.area-sub-icon {
-  grid-area: sub-icon;
-}
-
 .profile-edit {
-  grid-area: profile-edit;
+  grid-area: sub-icon;
   background-image: url('~/assets/images/sp/common/icon_editprofile.png');
   background-position: 10px;
   background-repeat: no-repeat;
@@ -196,8 +199,12 @@ export default {
   cursor: pointer;
 }
 
+.sp-profile-edit {
+  display: none;
+}
+
 .report-user {
-  grid-area: report-user;
+  grid-area: sub-icon;
   background-image: url('~/assets/images/pc/common/icon_draftcassette_active.png');
   background-position: 10px;
   background-repeat: no-repeat;
@@ -213,7 +220,7 @@ export default {
     box-sizing: border-box;
     font-size: 14px;
     position: absolute;
-    right: 8px;
+    left: -58px;
     top: 40px;
     width: 90px;
     z-index: 1;
@@ -268,7 +275,7 @@ export default {
 @media screen and (max-width: 920px) {
   .area-user-display-name {
     .user-display-name {
-      max-width: 170px;
+      max-width: 160px;
     }
   }
 }
@@ -286,6 +293,49 @@ export default {
       "profile-icon      ...               ...        "
       "self-introduction self-introduction self-introduction";
     padding: 0 12px;
+
+    &.is-current-user {
+      grid-column-gap: 20px;
+      grid-template-rows: 20px 20px 16px 24px auto;
+      grid-template-columns: 80px auto 40px;
+      /* prettier-ignore */
+      grid-template-areas:
+        "profile-icon      user-display-name ...              "
+        "profile-icon      user-id           ...              "
+        "profile-icon      ...               ...              "
+        "profile-icon      profile-edit      profile-edit     "
+        "self-introduction self-introduction self-introduction";
+      padding: 0 12px;
+    }
+  }
+
+  .area-user-id {
+    .user-id {
+      padding-top: 2px;
+    }
+  }
+
+  .sp-profile-edit {
+    grid-area: profile-edit;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px solid #cecece;
+    color: #6e6e6e;
+    cursor: pointer;
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    // 12px - padding of .area-user-info-container
+    // 80px - width   of .profile-icon
+    // 20px - gap     of .area-user-info-container
+    width: calc(100vw - 12px - 80px - 20px - 12px);
+  }
+
+  .report-user {
+    grid-area: report-user;
   }
 
   .area-user-display-name {
@@ -293,7 +343,11 @@ export default {
       font-size: 14px;
       color: #030303;
       letter-spacing: 0.8px;
-      max-width: calc(100vw - 160px);
+      // 12px - padding of .area-user-info-container
+      // 80px - width   of .profile-icon
+      // 20px - gap     of .area-user-info-container
+      // 40px - width   of .report-user
+      max-width: calc(100vw - 12px - 80px - 20px - 40px - 20px - 12px);
     }
   }
 
