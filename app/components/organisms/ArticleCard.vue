@@ -54,7 +54,7 @@ a {
 
 .article-card-container {
   display: grid;
-  box-shadow: 0 0 12px 0 rgba(192, 192, 192, 0.7);
+  box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
   grid-template-rows: 148px 136px;
   grid-template-columns: 296px;
   /* prettier-ignore */
@@ -67,10 +67,10 @@ a {
   grid-gap: 12px;
 
   &:hover {
-    box-shadow: 0 0 8px 0 rgba(0, 134, 204, 0.5);
+    box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
 
     &:active {
-      box-shadow: 0 0 12px 0 rgba(192, 192, 192, 0.7);
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
     }
   }
 }
