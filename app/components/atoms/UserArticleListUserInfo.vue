@@ -154,8 +154,8 @@ export default {
   grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
-    "profile-icon ... user-display-name sub-icon          ..."
-    "profile-icon ... user-id           user-id           ..."
+    "profile-icon ... user-display-name user-display-name sub-icon         "
+    "profile-icon ... user-id           user-id           ...              "
     "...          ... self-introduction self-introduction self-introduction";
   padding-bottom: 60px;
 }
@@ -182,7 +182,7 @@ export default {
     font-size: 28px;
     letter-spacing: 1.6px;
     margin: 0;
-    max-width: 510px;
+    max-width: 530px;
     overflow: hidden;
     position: relative;
     text-overflow: ellipsis;
@@ -220,7 +220,7 @@ export default {
     box-sizing: border-box;
     font-size: 14px;
     position: absolute;
-    right: 8px;
+    left: -58px;
     top: 40px;
     width: 90px;
     z-index: 1;
@@ -275,7 +275,7 @@ export default {
 @media screen and (max-width: 920px) {
   .area-user-display-name {
     .user-display-name {
-      max-width: 170px;
+      max-width: 160px;
     }
   }
 }
@@ -297,14 +297,14 @@ export default {
     &.is-current-user {
       grid-column-gap: 20px;
       grid-template-rows: 20px 20px 16px 24px auto;
-      grid-template-columns: 80px auto 20px 20px;
+      grid-template-columns: 80px auto 40px;
       /* prettier-ignore */
       grid-template-areas:
-      "profile-icon      user-display-name ...               ..."
-      "profile-icon      user-id           ...               ..."
-      "profile-icon      ...               ...               ..."
-      "profile-icon      profile-edit      ...               ..."
-      "self-introduction self-introduction self-introduction ...";
+        "profile-icon      user-display-name ...              "
+        "profile-icon      user-id           ...              "
+        "profile-icon      ...               ...              "
+        "profile-icon      profile-edit      profile-edit     "
+        "self-introduction self-introduction self-introduction";
       padding: 0 12px;
     }
   }
@@ -328,6 +328,10 @@ export default {
     height: 22px;
     line-height: 22px;
     text-align: center;
+    // 12px - padding of .area-user-info-container
+    // 80px - width   of .profile-icon
+    // 20px - gap     of .area-user-info-container
+    width: calc(100vw - 12px - 80px - 20px - 12px);
   }
 
   .report-user {
@@ -339,7 +343,11 @@ export default {
       font-size: 14px;
       color: #030303;
       letter-spacing: 0.8px;
-      max-width: calc(100vw - 160px);
+      // 12px - padding of .area-user-info-container
+      // 80px - width   of .profile-icon
+      // 20px - gap     of .area-user-info-container
+      // 40px - width   of .report-user
+      max-width: calc(100vw - 12px - 80px - 20px - 40px - 20px - 12px);
     }
   }
 
