@@ -23,15 +23,10 @@ export default {
   computed: {
     ...mapGetters('user', ['tipTokenAmount'])
   },
-  mounted() {
-    window.scrollTo(0, 0)
-  },
   methods: {
     closeModal() {
       this.setTipModal({ showTipModal: false })
       this.setTipFlowCompletedModal({ isShow: false })
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     ...mapActions('user', ['setTipModal', 'setTipFlowCompletedModal'])
   }

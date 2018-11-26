@@ -43,15 +43,11 @@ export default {
       this.setArticleReportConfirmationModal({ isShow: false })
       this.setArticleReportModal({ isShow: false })
       this.resetArticleReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     closeModal() {
       this.setArticleReportConfirmationModal({ isShow: false })
       this.setArticleReportModal({ isShow: false })
       this.resetArticleReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE

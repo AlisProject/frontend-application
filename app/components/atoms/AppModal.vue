@@ -130,9 +130,6 @@ export default {
       }
       this.$emit('close')
       this.resetPassword()
-      document.body.scrollTop = 0
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     replaceUrlToTop() {
       this.$router.replace('/')

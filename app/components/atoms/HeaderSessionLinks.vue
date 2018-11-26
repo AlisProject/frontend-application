@@ -4,12 +4,8 @@
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
     <span class="login" @click="showLoginModal">ログイン</span>
-    <app-button class="sign-up pc" @click="showSignUpModal">
-      新規登録
-    </app-button>
-    <span class="sign-up sp" @click="showSignUpModal">
-      新規登録
-    </span>
+    <app-button class="sign-up pc" @click="showSignUpModal">新規登録</app-button>
+    <span class="sign-up sp" @click="showSignUpModal">新規登録</span>
   </div>
 </template>
 
@@ -32,17 +28,9 @@ export default {
     },
     showSignUpModal() {
       this.setSignUpModal({ showSignUpModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     showLoginModal() {
       this.setLoginModal({ showLoginModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     ...mapActions('user', [
       'setSignUpModal',

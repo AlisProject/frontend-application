@@ -84,8 +84,6 @@ export default {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleLike' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
-          document.querySelector('html,body').style.overflow = 'hidden'
           return
         }
         try {
@@ -99,8 +97,6 @@ export default {
         }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
-        window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
       }
     },
     listen(target, eventType, callback) {

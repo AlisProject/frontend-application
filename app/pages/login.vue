@@ -22,10 +22,6 @@ export default {
       error({ statusCode: 404 })
     }
   },
-  mounted() {
-    window.scrollTo(0, 0)
-    document.querySelector('html,body').style.overflow = 'hidden'
-  },
   head: {
     title: 'ログイン',
     meta: [

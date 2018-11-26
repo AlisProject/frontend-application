@@ -157,10 +157,6 @@ export default {
       if (!this.currentUser.phoneNumberVerified) {
         this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html,body').style.overflow = 'hidden'
-        }
         return
       }
       location.href = '/me/articles/new'
@@ -169,10 +165,6 @@ export default {
       if (!this.currentUser.phoneNumberVerified) {
         this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'viewPublicArticles' })
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html,body').style.overflow = 'hidden'
-        }
         return
       }
       this.$router.push('/me/articles/public')

@@ -53,18 +53,10 @@ export default {
     showSignUpModal() {
       this.setRequestLoginModal({ isShow: false })
       this.setSignUpModal({ showSignUpModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     showLoginModal() {
       this.setRequestLoginModal({ isShow: false })
       this.setLoginModal({ showLoginModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     ...mapActions('user', ['setSignUpModal', 'setLoginModal', 'setRequestLoginModal'])
   }
