@@ -186,7 +186,7 @@ export default {
     display: table;
     height: 100vh;
     left: 0;
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     transition: opacity 0.3s ease;
