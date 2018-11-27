@@ -1,32 +1,24 @@
 <template>
-  <nuxt-link :to="`/users/${user.user_id}`" tag="div" class="search-user-card-container">
-    <div class="area-author-icon">
+  <nuxt-link :to="`/users/${user.user_id}`" class="search-user-card-container">
+    <div class="search-user">
       <img
-        class="author-icon"
+        class="search-user-icon"
+        :alt="imageCaption"
         :src="user.icon_image_url"
-        :alt="imageCaption"
-        v-if="user.icon_image_url !== undefined">
+        v-if="user.icon_image_url !== undefined"
+      >
       <img
-        class="author-icon"
-        src="~assets/images/pc/common/icon_user_noimg.png"
+        class="search-user-icon"
         :alt="imageCaption"
-        v-else>
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        v-else
+      >
+      <ul class="info">
+        <li class="user-display-name">{{ decodedUserDisplayName }}</li>
+        <li class="user-id">@{{ user.user_id }}</li>
+      </ul>
     </div>
-    <div class="area-user-display-name">
-      <p class="user-display-name">
-        {{ decodedUserDisplayName }}
-      </p>
-    </div>
-    <div class="area-user-id">
-      <p class="user-id">
-        @{{ user.user_id }}
-      </p>
-    </div>
-    <div class="area-self-introduction">
-      <p class="self-introduction" :class="{ 'add-bottom-space': !hasSelfIntroduction }">
-        {{ decodedSelfIntroduction }}
-      </p>
-    </div>
+    <span class="body" v-if="hasSelfIntroduction">{{ decodedSelfIntroduction }}</span>
   </nuxt-link>
 </template>
 
@@ -42,8 +34,13 @@ export default {
   },
   computed: {
     hasSelfIntroduction() {
-      if (this.user.self_introduction === undefined) return false
-      if (this.user.self_introduction.trim() === '') return false
+      const { self_introduction: selfIntroduction } = this.user
+
+      if (selfIntroduction === undefined || selfIntroduction === null) {
+        return false
+      }
+      if (selfIntroduction.trim() === '') return false
+
       return true
     },
     imageCaption() {
@@ -61,122 +58,89 @@ export default {
 
 <style lang="scss" scoped>
 .search-user-card-container {
-  border-radius: 6px;
-  box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
-  cursor: pointer;
-  display: grid;
-  grid-column-gap: 20px;
-  grid-row-gap: 10px;
-  grid-template-columns: 60px 1fr;
-  grid-template-rows: 16px 14px 1fr;
-  padding: 40px;
-  /* prettier-ignore */
-  grid-template-areas:
-    "author-icon user-display-name"
-    "author-icon user-id          "
-    "...         self-introduction";
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  position: relative;
+  text-decoration: none;
   transition: all 400ms ease;
 
   &:hover {
-    box-shadow: 0 0 8px 0 rgba(133, 141, 218, 0.5);
+    box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
 
     &:active {
-      box-shadow: 0 0 4px 0 rgba(133, 141, 218, 0.5);
+      box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.15);
     }
   }
 }
 
-.area-author-icon {
-  grid-area: author-icon;
+.search-user {
+  align-items: center;
+  color: #5b5b5b;
+  display: flex;
+  font-size: 14px;
 
-  .author-icon {
+  .search-user-icon {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    height: 60px;
-    width: 60px;
+    margin-right: 14px;
   }
-}
 
-.area-user-display-name {
-  grid-area: user-display-name;
-  overflow: hidden;
-
-  .user-display-name {
+  .info {
+    list-style: none;
+    padding: 0;
     margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-weight: bold;
-    font-size: 14px;
-  }
-}
 
-.area-user-id {
-  grid-area: user-id;
-
-  .user-id {
-    color: #6e6e6e;
-    font-size: 12px;
-    margin: 0;
-  }
-}
-
-.area-self-introduction {
-  grid-area: self-introduction;
-
-  .self-introduction {
-    color: #030303;
-    font-size: 12px;
-    line-height: 1.5;
-    margin: 0;
-    word-break: break-word;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    display: -webkit-box;
-    overflow: hidden;
-    text-align: left;
-    text-overflow: ellipsis;
-
-    &.add-bottom-space {
-      padding-bottom: 4px;
-    }
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .search-user-card-container {
-    grid-template-columns: 40px 1fr;
-    grid-column-gap: 10px;
-    /* prettier-ignore */
-    grid-template-areas:
-    "author-icon       user-display-name"
-    "author-icon       user-id          "
-    "self-introduction self-introduction";
-    padding: 16px;
-  }
-
-  .area-author-icon {
-    .author-icon {
-      height: 40px;
-      width: 40px;
-    }
-  }
-
-  .area-user-display-name {
-    .user-display-name {
-      font-weight: normal;
-      line-height: 1.4;
-    }
-  }
-
-  .area-user-id {
+    .user-display-name,
     .user-id {
-      line-height: 0.9;
+      letter-spacing: 0.8px;
+      line-height: 1.5;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .user-display-name {
+      color: #030303;
+      font-size: 14px;
+    }
+
+    .user-id {
+      color: #6e6e6e;
+      font-size: 12px;
     }
   }
+}
 
-  .area-self-introduction {
-    .self-introduction {
-      color: #6e6e6e;
+.body {
+  color: #6e6e6e;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  line-height: 1.5;
+  margin-top: 10px;
+  word-break: break-word;
+  display: block;
+}
+
+@media screen and (max-width: 920px) {
+  .search-user-card-container {
+    .search-user .info {
+      width: 240px;
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .search-user-card-container {
+    &:hover {
+      box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.15);
+
+      &:active {
+        box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.15);
+      }
     }
   }
 }
