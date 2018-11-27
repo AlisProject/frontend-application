@@ -23,7 +23,7 @@ const actions = {
       const tags = await this.$axios.$get('/search/tags', {
         params: { limit, query, page: state.searchTags.page }
       })
-      commit(types.SET_SEARCH_TAGS, { tags: tags.map((tag) => tag.name) })
+      commit(types.SET_SEARCH_TAGS, { tags })
     } catch (error) {
       return Promise.reject(error)
     } finally {

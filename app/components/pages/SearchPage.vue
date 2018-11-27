@@ -49,7 +49,7 @@
             class="no-result-message"
             v-if="searchTags.tags.length === 0"
           >{{ searchTags.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}</p>
-          <article-tags :tags="searchTags.tags" v-else/>
+          <search-tags :tags="searchTags.tags" v-else/>
         </div>
         <div v-else-if="searchContentType === 'user'">
           <p
@@ -78,7 +78,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import SearchUserCardList from '../organisms/SearchUserCardList'
-import ArticleTags from '../molecules/ArticleTags'
+import SearchTags from '../molecules/SearchTags'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -88,7 +88,7 @@ export default {
     AppHeader,
     SearchArticleCardList,
     SearchUserCardList,
-    ArticleTags,
+    SearchTags,
     TheLoader,
     AppFooter
   },
