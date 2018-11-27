@@ -166,7 +166,7 @@ export default {
           left: 0;
           width: 20px;
           height: 20px;
-          border: 1px solid #858dda;
+          border: 1px solid #0086cc;
           border-radius: 50%;
           box-sizing: border-box;
         }
@@ -181,7 +181,7 @@ export default {
           left: 4px;
           width: 12px;
           height: 12px;
-          background: #858dda;
+          background: #0086cc;
           border-radius: 50%;
         }
       }

@@ -122,7 +122,7 @@ export default {
   .signup-form {
     margin: 30px auto 0;
     max-width: 400px;
-    width: 80%;
+    width: 100%;
 
     &-group {
       position: relative;
@@ -131,18 +131,19 @@ export default {
     &-label {
       color: #030303;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 3;
     }
 
     &-input,
     &-textarea {
-      border: none;
       border-radius: 0;
-      border-bottom: 1px dotted #232538;
+      border: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+      box-sizing: border-box;
       margin-bottom: 30px;
-      padding: 5px 0;
-      width: 100%;
+      padding: 12px;
       resize: none;
+      width: 100%;
 
       &::-webkit-input-placeholder {
         color: #cecece;
@@ -157,27 +158,22 @@ export default {
 
     &-textarea {
       appearance: none;
-      border: 1px dotted #232538;
       height: 8em;
-      padding: 5px;
     }
 
     .error-message {
-      top: 40px;
       color: #f06273;
       font-size: 12px;
       position: absolute;
-      width: 100%;
+      right: 0;
+      top: 80px;
     }
 
     .error {
       .signup-form {
-        &-label {
-          color: #f06273;
-        }
-
-        &-input {
-          border-bottom: 1px dotted #f06273;
+        &-input,
+        &-textarea {
+          box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
         }
       }
     }
