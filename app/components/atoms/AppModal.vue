@@ -5,21 +5,21 @@
         <div class="modal-container" :style="{ maxWidth: `${maxWidth}px` }">
           <div class="modal-header">
             <div class="modal-header-content">
-              <slot name="modal-header-content" />
+              <slot name="modal-header-content"/>
             </div>
-            <span class="modal-header-default-button" @click="closeModal" v-if="isShowCloseModalButton">
-              ✕
-            </span>
+            <span
+              class="modal-header-default-button"
+              @click="closeModal"
+              v-if="isShowCloseModalButton"
+            >✕</span>
           </div>
           <div class="modal-body">
             <slot name="modal-title">
-              <h2 class="title">
-                {{title}}
-              </h2>
+              <h2 class="title">{{title}}</h2>
             </slot>
           </div>
           <div class="modal-content">
-            <slot v-if="showModalContentLately" name="modal-content" />
+            <slot v-if="showModalContentLately" name="modal-content"/>
           </div>
         </div>
       </div>
@@ -204,6 +204,7 @@ export default {
     padding: 20px 30px;
     transition: all 0.3s ease;
     width: 80%;
+    overflow-y: scroll;
   }
 
   &-body {
@@ -249,7 +250,6 @@ export default {
   .modal {
     &-wrapper {
       width: 100%;
-      padding-bottom: 4000px;
     }
 
     &-container {
@@ -257,18 +257,13 @@ export default {
       margin-top: 0;
       max-width: 550px;
       width: calc(100% - 60px);
+      height: 100vh;
     }
 
     &-body {
       .title {
         margin: 60px 20px 0;
       }
-    }
-  }
-
-  .cover-screen {
-    .modal-container {
-      height: 100vh;
     }
   }
 }
