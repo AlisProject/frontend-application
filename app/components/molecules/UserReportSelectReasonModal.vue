@@ -104,6 +104,10 @@ export default {
   methods: {
     setReason(value) {
       this.setUserReportSelectReasonReason({ reason: value })
+      document.querySelector('.modal-container').scrollTo({
+        top: document.querySelector('.modal-container').clientHeight,
+        behavior: 'smooth'
+      })
     },
     showError(type) {
       this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData[type].$touch()
@@ -202,6 +206,14 @@ export default {
   .modal-body {
     .select-reason-box {
       width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .modal-footer {
+    .to-next-step-button {
+      margin: 20px auto 100px;
     }
   }
 }
