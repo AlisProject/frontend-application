@@ -80,13 +80,13 @@ export default {
 .close-button {
   background-color: #fff;
   border-radius: 30px;
-  border: 1px solid #858dda;
-  color: #858dda;
+  border: 1px solid #0086cc;
+  color: #0086cc;
   cursor: pointer;
   display: block;
   height: 37px;
   margin: 20px auto 100px;
-  width: 265px;
+  width: 256px;
 }
 
 @media screen and (max-width: 550px) {
