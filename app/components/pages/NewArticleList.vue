@@ -77,19 +77,11 @@ export default {
     moveToNewArticlePage() {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleCreate' })
-        window.scrollTo(0, 0)
-        document.querySelector('html').style.overflow = 'hidden'
-        document.querySelector('body').style.overflow = 'hidden'
         return
       }
       if (!this.currentUser.phoneNumberVerified) {
         this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html').style.overflow = 'hidden'
-          document.querySelector('body').style.overflow = 'hidden'
-        }
         return
       }
       location.href = '/me/articles/new'

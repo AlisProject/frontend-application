@@ -61,9 +61,6 @@ export default {
   components: {
     AppButton
   },
-  created() {
-    if (process.browser) document.querySelector('html,body').style.overflow = 'hidden'
-  },
   computed: {
     showErrorInvalidPassword() {
       return (

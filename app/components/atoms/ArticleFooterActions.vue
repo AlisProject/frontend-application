@@ -110,21 +110,12 @@ export default {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleReport' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
-          if (window.innerWidth > 550) {
-            document.querySelector('html,body').style.overflow = 'hidden'
-          }
           return
         }
         this.setArticleReportModal({ isShow: true })
         this.setArticleReportSelectReasonModal({ isShow: true })
-        window.scrollTo(0, 0)
-        document.querySelector('html').style.overflow = 'hidden'
-        document.querySelector('body').style.overflow = 'hidden'
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleReport' })
-        window.scrollTo(0, 0)
-        document.querySelector('html,body').style.overflow = 'hidden'
       }
     },
     async like() {
@@ -133,10 +124,6 @@ export default {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleLike' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
-          if (window.innerWidth > 550) {
-            document.querySelector('html,body').style.overflow = 'hidden'
-          }
           return
         }
         try {
@@ -150,10 +137,6 @@ export default {
         }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html,body').style.overflow = 'hidden'
-        }
       }
     },
     async tip() {
@@ -161,21 +144,12 @@ export default {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleTip' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
           return
         }
         this.setTipModal({ showTipModal: true })
         this.setTipFlowSelectTipAmountModal({ isShow: true })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html,body').style.overflow = 'hidden'
-        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleTip' })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html,body').style.overflow = 'hidden'
-        }
       }
     },
     listen(target, eventType, callback) {

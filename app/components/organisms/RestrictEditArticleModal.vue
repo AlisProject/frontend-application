@@ -1,7 +1,7 @@
 <template>
-  <app-modal title="" class="cover-screen">
+  <app-modal title>
     <div slot="modal-content">
-      <restrict-edit-article-modal-content />
+      <restrict-edit-article-modal-content/>
     </div>
   </app-modal>
 </template>

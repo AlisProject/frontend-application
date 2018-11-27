@@ -118,8 +118,6 @@ export default {
     },
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
-      document.documentElement.scrollTop = 0
-      document.querySelector('html,body').style.overflow = 'hidden'
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -135,9 +133,6 @@ export default {
     showUserReportModal() {
       this.setUserReportModal({ isShow: true })
       this.setUserReportSelectReasonModal({ isShow: true })
-      window.scrollTo(0, 0)
-      document.querySelector('html').style.overflow = 'hidden'
-      document.querySelector('body').style.overflow = 'hidden'
     },
     ...mapActions('user', ['setProfileSettingsModal']),
     ...mapActions('report', ['setUserReportModal', 'setUserReportSelectReasonModal'])

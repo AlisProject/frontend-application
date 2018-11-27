@@ -52,9 +52,6 @@ export default {
       errorMessage: ''
     }
   },
-  mounted() {
-    window.scrollTo(0, 0)
-  },
   computed: {
     tipTokenAmountForUser() {
       const formatNumber = 10 ** 18

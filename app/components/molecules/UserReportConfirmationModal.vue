@@ -44,15 +44,11 @@ export default {
       this.setUserReportConfirmationModal({ isShow: false })
       this.setUserReportModal({ isShow: false })
       this.resetUserReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     closeModal() {
       this.setUserReportConfirmationModal({ isShow: false })
       this.setUserReportModal({ isShow: false })
       this.resetUserReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
