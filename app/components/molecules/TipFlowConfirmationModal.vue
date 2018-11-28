@@ -107,17 +107,21 @@ export default {
 
   .title {
     color: #030303;
-    font-size: 20px;
-    letter-spacing: 4px;
-    margin: 10px 0 0;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    text-align: center;
+    margin: 30px 0 0;
   }
 
   .description {
-    color: #030303;
-    font-size: 14px;
-    margin-top: 60px;
-    max-width: 400px;
+    color: #6e6e6e;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
     line-height: 1.5;
+    margin-top: 22px;
+    width: 254px;
   }
 
   .author-icon {
@@ -142,7 +146,7 @@ export default {
   }
 
   .triangle-mark {
-    border-color: transparent transparent rgb(218, 220, 243) transparent;
+    border-color: transparent transparent rgb(178, 218, 239) transparent;
     border-style: solid;
     border-width: 0 16px 20px 16px;
     height: 0;
@@ -156,7 +160,7 @@ export default {
     align-items: center;
 
     .token-amount-input {
-      color: #858dda;
+      color: #0086cc;
       font-size: 24px;
       font-weight: bold;
       text-align: right;
@@ -164,7 +168,7 @@ export default {
     }
 
     .token-amount-input-unit {
-      color: #858dda;
+      color: #0086cc;
       font-size: 10px;
       font-weight: bold;
     }
@@ -186,7 +190,6 @@ export default {
   .tip-flow-confirmation-modal {
     .title {
       font-size: 14px;
-      font-weight: normal;
       letter-spacing: 4px;
       margin: 20px 0 0;
     }
