@@ -64,8 +64,12 @@
             ユーザー設定
           </span>
         </li>
+        <li class="menu-link" @click="logoutUser">
+          <span class="menu-link-inner">
+            ログアウト
+          </span>
+        </li>
       </ul>
-      <span class="logout" @click="logoutUser">ログアウト</span>
     </div>
     <div class="cover" v-show="isMenuShown" @click="closeMenu"></div>
   </div>
@@ -236,7 +240,6 @@ export default {
   box-sizing: border-box;
   color: #000;
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-  padding: 0 0 30px;
   position: absolute;
   right: 0;
   top: 80px;
@@ -299,6 +302,10 @@ export default {
         background-color: rgba(0, 135, 240, 0.2);
       }
 
+      &:last-child {
+        margin-top: 40px;
+      }
+
       .reset-link-style {
         color: #000;
         text-decoration: none;
@@ -320,25 +327,6 @@ export default {
           color: #000;
         }
       }
-    }
-  }
-
-  .logout {
-    color: #000;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
-    height: 24px;
-    line-height: 24px;
-    padding: 10px 64px;
-    text-decoration: none;
-
-    &:visited {
-      color: #000;
-    }
-
-    &:hover {
-      background-color: rgba(0, 135, 240, 0.2);
     }
   }
 }
