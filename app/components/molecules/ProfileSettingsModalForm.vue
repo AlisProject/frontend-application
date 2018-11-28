@@ -13,17 +13,18 @@
             :src="uploadedImage" />
           <div class="upload-img-dammy" v-else />
           <label class="upload-btn">
-            <img class="btn-pic" src="~/assets/images/pc/common/btn_pic.png" alt="upload">
+            <img class="btn-pic" src="~/assets/images/pc/common/icon_profile_img.png" alt="upload">
             <input class="upload-img-input" type="file" accept="image/*" @change="onFileChange">
           </label>
         </div>
         <div class="signup-form-group" :class="{ 'error': hasUserDisplayNameError }">
-          <label class="signup-form-label">表示名</label>
+          <label class="signup-form-label">ユーザー名</label>
           <input
             class="signup-form-input"
             type="text"
             minlength="1"
             maxlength="30"
+            placeholder="田中太郎"
             v-model="userDisplayName"
             @input="setUserDisplayName($event.target.value)"
             @blur="showError('userDisplayName')"
@@ -34,7 +35,7 @@
           <textarea
             class="signup-form-textarea"
             type="text"
-            placeholder="自己紹介を入力してください"
+            placeholder="100文字以内でご入力ください"
             maxlength="100"
             v-model="selfIntroduction"
             @input="setSelfIntroduction($event.target.value)"/>
@@ -42,7 +43,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button class="submit-button" :disabled="invalidSubmit" @click="onSubmit">
         完了する
       </app-button>
     </div>
@@ -211,7 +212,7 @@ export default {
   .signup-form {
     margin: 30px auto 0;
     max-width: 400px;
-    width: 80%;
+    width: 100%;
 
     .upload-img-section {
       position: relative;
@@ -233,13 +234,19 @@ export default {
       }
 
       .upload-btn {
+        background: #fff;
+        border-radius: 50%;
+        bottom: 0;
+        box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
         cursor: pointer;
+        height: 40px;
         position: absolute;
-        bottom: -20px;
-        right: -20px;
+        right: 0;
+        width: 40px;
 
         .btn-pic {
-          width: 65px;
+          padding: 8px;
+          width: 24px;
         }
       }
 
@@ -251,19 +258,21 @@ export default {
     &-label {
       color: #030303;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 2.4;
     }
 
     &-input,
     &-textarea {
-      border: none;
+      appearance: none;
       border-radius: 0;
-      border-bottom: 1px dotted #232538;
+      border: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+      box-sizing: border-box;
       margin-bottom: 30px;
-      padding: 5px 0;
-      width: 100%;
-      resize: none;
       overflow: hidden;
+      padding: 12px;
+      resize: none;
+      width: 100%;
 
       &::-webkit-input-placeholder {
         color: #cecece;
@@ -277,17 +286,13 @@ export default {
     }
 
     &-textarea {
-      height: 4em;
+      height: 6em;
     }
 
     .error {
       .signup-form {
-        &-label {
-          color: #f06273;
-        }
-
         &-input {
-          border-bottom: 1px dotted #f06273;
+          box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
         }
       }
     }
@@ -296,9 +301,9 @@ export default {
 
 .modal-footer {
   width: 270px;
-  margin: 90px auto 40px;
+  margin: 30px auto 40px;
 
-  .to-next-step-button {
+  .submit-button {
     margin: 20px auto 0;
   }
 
@@ -309,10 +314,26 @@ export default {
   }
 }
 
+@media screen and (max-width: 550px) {
+  .modal-body {
+    .signup-form {
+      max-width: 256px;
+
+      &-textarea {
+        height: 8em;
+      }
+    }
+  }
+
+  .modal-footer {
+    margin: 20px auto 60px;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .modal-footer {
     width: 250px;
-    margin: 40px auto;
+    margin: 0;
   }
 }
 </style>
