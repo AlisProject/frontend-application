@@ -2,7 +2,7 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper" @click.self="closeModal">
-        <div class="modal-container" :style="{ maxWidth: `${maxWidth}px` }">
+        <div class="modal-container">
           <div class="modal-header">
             <div class="modal-header-content">
               <slot name="modal-header-content"/>
@@ -44,11 +44,6 @@ export default {
     isShowCloseModalButton: {
       type: Boolean,
       default: true,
-      required: false
-    },
-    maxWidth: {
-      type: Number,
-      default: 800,
       required: false
     }
   },
@@ -205,6 +200,7 @@ export default {
     transition: all 0.3s ease;
     width: 80%;
     overflow-y: scroll;
+    box-sizing: border-box;
   }
 
   &-body {
@@ -229,6 +225,7 @@ export default {
       cursor: pointer;
       float: right;
       font-size: 26px;
+      position: relative;
     }
   }
 
@@ -256,7 +253,7 @@ export default {
       height: 100%;
       margin-top: 0;
       max-width: 550px;
-      width: calc(100% - 60px);
+      width: 100vw;
       height: 100vh;
     }
 
