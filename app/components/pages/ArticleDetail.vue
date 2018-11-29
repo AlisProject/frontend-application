@@ -9,12 +9,17 @@
             <span class="article-status">(公開中)</span>
             <div class="etc-button" @click="toggleEtcPopup">
               <div class="etc-popup" v-show="isEtcPopupShown">
-                <span class="etc-popup-content">記事を下書きに戻す</span>
-                <span class="etc-popup-content">twitterでシェアする</span>
-                <span class="etc-popup-content">シェア用のURLをコピーする</span>
+                <span class="etc-popup-content" @click="unpublish">記事を下書きに戻す</span>
+                <a
+                  class="etc-popup-content"
+                  :href="twitterShareUrl"
+                  target="_blank">twitterでシェアする</a>
+                <span class="etc-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
               </div>
             </div>
-            <div class="edit-article">編集する</div>
+            <a class="edit-article" :href="`/me/articles/public/${this.$route.params.articleId}/edit`">
+              編集する
+            </a>
           </template>
         </div>
       </no-ssr>
@@ -41,6 +46,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
@@ -115,6 +121,16 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.user === this.currentUser.userId
     },
+    shareUrl() {
+      return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
+        this.article.article_id
+      }`
+    },
+    twitterShareUrl() {
+      return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        this.shareUrl
+      )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
+    },
     ...mapGetters('article', ['likesCount', 'isLikedArticle']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
@@ -124,6 +140,37 @@ export default {
     },
     closeEtcPopup() {
       this.isEtcPopupShown = false
+    },
+    async unpublish() {
+      const { articleId } = this.$route.params
+      try {
+        await this.unpublishPublicArticle({ articleId })
+        this.$router.push(`/users/${this.$route.params.user}`)
+        this.sendNotification({ text: '記事を下書きに戻しました。' })
+      } catch (e) {
+        this.sendNotification({ text: '記事を下書きに戻せませんでした。', type: 'warning' })
+        console.error(e)
+      }
+    },
+    execCopyUrl() {
+      const copied = this.execCopy(this.shareUrl)
+      if (copied) {
+        this.sendNotification({ text: 'URLをコピーしました' })
+      } else {
+        this.sendNotification({ text: 'コピーができませんでした', type: 'warning' })
+      }
+    },
+    execCopy(string) {
+      const temp = document.createElement('div')
+      temp.appendChild(document.createElement('pre')).textContent = string
+      const s = temp.style
+      s.position = 'fixed'
+      s.left = '-100%'
+      document.body.appendChild(temp)
+      document.getSelection().selectAllChildren(temp)
+      const result = document.execCommand('copy')
+      document.body.removeChild(temp)
+      return result
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -136,7 +183,10 @@ export default {
         }
       })
     },
-    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey'])
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'unpublishPublicArticle'])
   }
 }
 </script>
@@ -243,6 +293,7 @@ export default {
         font-size: 14px;
         font-weight: 500;
         line-height: 2;
+        text-decoration: none;
         user-select: none;
         white-space: nowrap;
         width: 100%;
@@ -253,12 +304,13 @@ export default {
   .edit-article {
     background: url('~/assets/images/sp/common/icon_editprofile.png') no-repeat;
     background-size: 20px;
-    padding-left: 24px;
     color: #0086cc;
-    line-height: 1.8;
+    cursor: pointer;
     font-size: 12px;
     font-weight: 500;
-    cursor: pointer;
+    line-height: 1.8;
+    padding-left: 24px;
+    text-decoration: none;
   }
 }
 
