@@ -3,25 +3,7 @@
     <app-header />
     <div class="area-article">
       <no-ssr>
-        <div class="area-header" :class="{ 'is-sticky': isCurrentUser }" v-if="topic">
-          <span class="topic">{{ topic }}</span>
-          <template v-if="isCurrentUser">
-            <span class="article-status">(公開中)</span>
-            <div class="etc-button" @click="toggleEtcPopup">
-              <div class="etc-popup" v-show="isEtcPopupShown">
-                <span class="etc-popup-content" @click="unpublish">記事を下書きに戻す</span>
-                <a
-                  class="etc-popup-content"
-                  :href="twitterShareUrl"
-                  target="_blank">twitterでシェアする</a>
-                <span class="etc-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
-              </div>
-            </div>
-            <a class="edit-article" :href="`/me/articles/public/${this.$route.params.articleId}/edit`">
-              編集する
-            </a>
-          </template>
-        </div>
+        <article-header :article="article" :topic="topic" :isCurrentUser="isCurrentUser" />
       </no-ssr>
       <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
@@ -46,8 +28,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
+import ArticleHeader from '../organisms/ArticleHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
@@ -61,6 +43,7 @@ import { showEmbedTweet, htmlDecode } from '~/utils/article'
 export default {
   components: {
     AppHeader,
+    ArticleHeader,
     ArticleFooterActions,
     ArticleSideActions,
     ArticleSubInfos,
@@ -69,11 +52,6 @@ export default {
     ArticleCommentForm,
     ArticleComments,
     AppFooter
-  },
-  data() {
-    return {
-      isEtcPopupShown: false
-    }
   },
   props: {
     article: {
@@ -86,22 +64,6 @@ export default {
     }
   },
   mounted() {
-    this.listen(window, 'click', (event) => {
-      if (
-        this.$el.querySelector('.etc-button') &&
-        !this.$el.querySelector('.etc-button').contains(event.target)
-      ) {
-        this.closeEtcPopup()
-      }
-    })
-    this.listen(window, 'touchstart', (event) => {
-      if (
-        this.$el.querySelector('.etc-button') &&
-        !this.$el.querySelector('.etc-button').contains(event.target)
-      ) {
-        this.closeEtcPopup()
-      }
-    })
     const figcaptions = document.querySelectorAll('figcaption')
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
@@ -121,72 +83,11 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.user === this.currentUser.userId
     },
-    shareUrl() {
-      return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
-        this.article.article_id
-      }`
-    },
-    twitterShareUrl() {
-      return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        this.shareUrl
-      )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
-    },
     ...mapGetters('article', ['likesCount', 'isLikedArticle']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    toggleEtcPopup() {
-      this.isEtcPopupShown = !this.isEtcPopupShown
-    },
-    closeEtcPopup() {
-      this.isEtcPopupShown = false
-    },
-    async unpublish() {
-      const { articleId } = this.$route.params
-      try {
-        await this.unpublishPublicArticle({ articleId })
-        this.$router.push(`/users/${this.$route.params.user}`)
-        this.sendNotification({ text: '記事を下書きに戻しました。' })
-      } catch (e) {
-        this.sendNotification({ text: '記事を下書きに戻せませんでした。', type: 'warning' })
-        console.error(e)
-      }
-    },
-    execCopyUrl() {
-      const copied = this.execCopy(this.shareUrl)
-      if (copied) {
-        this.sendNotification({ text: 'URLをコピーしました' })
-      } else {
-        this.sendNotification({ text: 'コピーができませんでした', type: 'warning' })
-      }
-    },
-    execCopy(string) {
-      const temp = document.createElement('div')
-      temp.appendChild(document.createElement('pre')).textContent = string
-      const s = temp.style
-      s.position = 'fixed'
-      s.left = '-100%'
-      document.body.appendChild(temp)
-      document.getSelection().selectAllChildren(temp)
-      const result = document.execCommand('copy')
-      document.body.removeChild(temp)
-      return result
-    },
-    listen(target, eventType, callback) {
-      if (!this._eventRemovers) {
-        this._eventRemovers = []
-      }
-      target.addEventListener(eventType, callback)
-      this._eventRemovers.push({
-        remove: function() {
-          target.removeEventListener(eventType, callback)
-        }
-      })
-    },
-    ...mapActions({
-      sendNotification: ADD_TOAST_MESSAGE
-    }),
-    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'unpublishPublicArticle'])
+    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey'])
   }
 }
 </script>
@@ -223,95 +124,6 @@ export default {
     'article-sub-infos'
     'footer-actions'
     'author-info   ';
-}
-
-.area-header {
-  grid-area: header;
-  height: 31px;
-  display: flex;
-  margin-bottom: -20px;
-  border-bottom: 1px solid #f0f0f0;
-  background: #fff;
-  z-index: 2;
-  align-items: center;
-
-  .topic {
-    color: #5e5e5e;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    margin-right: 8px;
-    word-break: break-all;
-  }
-
-  .article-status {
-    color: #6e6e6e;
-    font-size: 12px;
-    font-weight: bold;
-    margin-right: auto;
-  }
-
-  .etc-button {
-    background: #fff url('~assets/images/pc/article/icon_etc.png') no-repeat;
-    background-size: 24px;
-    cursor: pointer;
-    position: relative;
-    width: 24px;
-    height: 26px;
-    margin-right: 20px;
-
-    .etc-popup {
-      background-color: #ffffff;
-      border-radius: 4px;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
-      cursor: default;
-      box-sizing: border-box;
-      font-size: 14px;
-      padding: 8px 16px;
-      position: absolute;
-      left: -98px;
-      top: 24px;
-      z-index: 1;
-
-      &::after {
-        border-bottom: 8px solid #fff;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        content: '';
-        height: 0;
-        padding: 0;
-        position: absolute;
-        right: 0;
-        right: 98px;
-        top: -6px;
-        width: 0;
-      }
-
-      .etc-popup-content {
-        color: #6e6e6e;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 2;
-        text-decoration: none;
-        user-select: none;
-        white-space: nowrap;
-        width: 100%;
-      }
-    }
-  }
-
-  .edit-article {
-    background: url('~/assets/images/sp/common/icon_editprofile.png') no-repeat;
-    background-size: 20px;
-    color: #0086cc;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.8;
-    padding-left: 24px;
-    text-decoration: none;
-  }
 }
 
 .area-title {
@@ -361,27 +173,6 @@ export default {
       '...            article-sub-infos ...'
       '...            author-info       ...           '
       'footer-actions footer-actions    footer-actions';
-  }
-
-  .area-header {
-    border-bottom: none;
-    padding: 0 16px;
-    position: relative;
-
-    &.is-sticky {
-      position: sticky;
-      top: 0;
-    }
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 16px;
-      bottom: 0;
-      height: 1px;
-      width: calc(100% - 16px * 2);
-      border-bottom: 1px solid #f0f0f0;
-    }
   }
 
   .area-title {
