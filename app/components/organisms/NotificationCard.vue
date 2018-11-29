@@ -57,8 +57,8 @@ a {
 }
 
 .notification-card-container {
-  box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
   display: grid;
+  box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
   /* prettier-ignore */
   grid-template-areas:
     "notification-card-image notification-card-content";
@@ -67,10 +67,10 @@ a {
   transition: all 400ms ease;
 
   &:hover {
-    box-shadow: 0 0 8px 0 rgba(133, 141, 218, 0.5);
+    box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
 
     &:active {
-      box-shadow: 0 0 4px 0 rgba(133, 141, 218, 0.5);
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
     }
   }
 }
