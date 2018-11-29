@@ -3,7 +3,7 @@
     <app-header />
     <user-article-list-user-info :user="userInfo" />
     <user-profile-nav />
-    <user-article-card-list :articles="draftArticles"/>
+    <user-article-card-list :articles="draftArticles" :linkTo="'draft'"/>
     <the-loader :isLoading="hasDraftArticlesLastEvaluatedKey"/>
     <app-footer/>
   </div>
