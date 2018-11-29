@@ -2,9 +2,22 @@
   <div class="article-container">
     <app-header />
     <div class="area-article">
-      <span class="area-topic" v-if="topic">
-        {{ topic }}
-      </span>
+      <no-ssr>
+        <div class="area-header" :class="{ 'is-sticky': isCurrentUser }" v-if="topic">
+          <span class="topic">{{ topic }}</span>
+          <template v-if="isCurrentUser">
+            <span class="article-status">(公開中)</span>
+            <div class="etc-button" @click="toggleEtcPopup">
+              <div class="etc-popup" v-show="isEtcPopupShown">
+                <span class="etc-popup-content">記事を下書きに戻す</span>
+                <span class="etc-popup-content">twitterでシェアする</span>
+                <span class="etc-popup-content">シェア用のURLをコピーする</span>
+              </div>
+            </div>
+            <div class="edit-article">編集する</div>
+          </template>
+        </div>
+      </no-ssr>
       <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
       <article-tags :tags="article.tags"/>
@@ -51,6 +64,11 @@ export default {
     ArticleComments,
     AppFooter
   },
+  data() {
+    return {
+      isEtcPopupShown: false
+    }
+  },
   props: {
     article: {
       type: Object,
@@ -62,6 +80,22 @@ export default {
     }
   },
   mounted() {
+    this.listen(window, 'click', (event) => {
+      if (
+        this.$el.querySelector('.etc-button') &&
+        !this.$el.querySelector('.etc-button').contains(event.target)
+      ) {
+        this.closeEtcPopup()
+      }
+    })
+    this.listen(window, 'touchstart', (event) => {
+      if (
+        this.$el.querySelector('.etc-button') &&
+        !this.$el.querySelector('.etc-button').contains(event.target)
+      ) {
+        this.closeEtcPopup()
+      }
+    })
     const figcaptions = document.querySelectorAll('figcaption')
     figcaptions.forEach((figcaption) => {
       figcaption.removeAttribute('contenteditable')
@@ -78,9 +112,30 @@ export default {
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle'])
+    isCurrentUser() {
+      return this.loggedIn && this.$route.params.user === this.currentUser.userId
+    },
+    ...mapGetters('article', ['likesCount', 'isLikedArticle']),
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
+    toggleEtcPopup() {
+      this.isEtcPopupShown = !this.isEtcPopupShown
+    },
+    closeEtcPopup() {
+      this.isEtcPopupShown = false
+    },
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove: function() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
+    },
     ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey'])
   }
 }
@@ -100,17 +155,18 @@ export default {
     'article-comment-form article-comment-form article-comment-form'
     'app-footer           app-footer           app-footer      ';
   background: white;
+  position: relative;
 }
 
 .area-article {
   display: grid;
   grid-area: article;
-  grid-template-rows: auto;
+  grid-template-rows: 32px auto;
   grid-template-columns: auto;
   grid-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    'topic         '
+    'header        '
     'title         '
     'content       '
     'tags          '
@@ -119,15 +175,91 @@ export default {
     'author-info   ';
 }
 
-.area-topic {
-  border-bottom: 1px solid #f0f0f0;
-  color: #5e5e5e;
-  font-size: 14px;
-  grid-area: topic;
-  height: 28px;
-  letter-spacing: 0.3px;
+.area-header {
+  grid-area: header;
+  height: 31px;
+  display: flex;
   margin-bottom: -20px;
-  word-break: break-all;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fff;
+  z-index: 2;
+  align-items: center;
+
+  .topic {
+    color: #5e5e5e;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    margin-right: 8px;
+    word-break: break-all;
+  }
+
+  .article-status {
+    color: #6e6e6e;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: auto;
+  }
+
+  .etc-button {
+    background: #fff url('~assets/images/pc/article/icon_etc.png') no-repeat;
+    background-size: 24px;
+    cursor: pointer;
+    position: relative;
+    width: 24px;
+    height: 26px;
+    margin-right: 20px;
+
+    .etc-popup {
+      background-color: #ffffff;
+      border-radius: 4px;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+      cursor: default;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 8px 16px;
+      position: absolute;
+      left: -98px;
+      top: 24px;
+      z-index: 1;
+
+      &::after {
+        border-bottom: 8px solid #fff;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        content: '';
+        height: 0;
+        padding: 0;
+        position: absolute;
+        right: 0;
+        right: 98px;
+        top: -6px;
+        width: 0;
+      }
+
+      .etc-popup-content {
+        color: #6e6e6e;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 2;
+        user-select: none;
+        white-space: nowrap;
+        width: 100%;
+      }
+    }
+  }
+
+  .edit-article {
+    background: url('~/assets/images/sp/common/icon_editprofile.png') no-repeat;
+    background-size: 20px;
+    padding-left: 24px;
+    color: #0086cc;
+    line-height: 1.8;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+  }
 }
 
 .area-title {
@@ -140,6 +272,10 @@ export default {
 
 .area-content {
   grid-area: content;
+}
+
+.sp-footer {
+  display: none;
 }
 
 @media screen and (max-width: 1080px) {
@@ -166,7 +302,7 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      '...            topic             ...           '
+      'header         header            header        '
       '...            title             ...           '
       '...            content           ...           '
       '...            tags              ...           '
@@ -175,8 +311,25 @@ export default {
       'footer-actions footer-actions    footer-actions';
   }
 
-  .area-topic {
-    margin: 20px 0 0;
+  .area-header {
+    border-bottom: none;
+    padding: 0 16px;
+    position: relative;
+
+    &.is-sticky {
+      position: sticky;
+      top: 0;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      bottom: 0;
+      height: 1px;
+      width: calc(100% - 16px * 2);
+      border-bottom: 1px solid #f0f0f0;
+    }
   }
 
   .area-title {
