@@ -50,13 +50,6 @@
           </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link class="reset-link-style" to="/me/articles/public" event="">
-            <span class="menu-link-inner" @click="moveToPublicArticlesPage">
-              記事一覧
-            </span>
-          </nuxt-link>
-        </li>
-        <li class="menu-link">
           <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
         </li>
         <li class="menu-link" @click="showProfileSettingsModal">
@@ -170,14 +163,6 @@ export default {
         return
       }
       location.href = '/me/articles/new'
-    },
-    moveToPublicArticlesPage() {
-      if (!this.currentUser.phoneNumberVerified) {
-        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'viewPublicArticles' })
-        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-        return
-      }
-      this.$router.push('/me/articles/public')
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
