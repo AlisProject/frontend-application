@@ -15,7 +15,7 @@ export default {
     try {
       const { articleId } = params
       const isCurrentUser =
-        store.state.user.loggedIn && params.user === store.state.user.currentUser.userId
+        store.state.user.loggedIn && params.userId === store.state.user.currentUser.userId
       const getArticleType = isCurrentUser ? 'getPublicArticleDetail' : 'getArticleDetail'
 
       await store.dispatch(`article/${getArticleType}`, { articleId })
@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     isCurrentUser() {
-      return this.loggedIn && this.$route.params.user === this.currentUser.userId
+      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article', 'topicDisplayName'])

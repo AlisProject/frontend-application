@@ -81,7 +81,7 @@ export default {
       return this.article.published_at || this.article.created_at
     },
     isCurrentUser() {
-      return this.loggedIn && this.$route.params.user === this.currentUser.userId
+      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
     ...mapGetters('article', ['likesCount', 'isLikedArticle']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
