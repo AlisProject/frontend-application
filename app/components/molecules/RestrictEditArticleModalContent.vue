@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppButton from '../atoms/AppButton'
 
 export default {
@@ -27,10 +27,12 @@ export default {
   methods: {
     closeModal() {
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
-      document.querySelector('html,body').style.overflow = ''
-      this.$router.push('/me/articles/public')
+      this.$router.push(`/users/${this.currentUserInfo.user_id}`)
     },
     ...mapActions('user', ['setRestrictEditArticleModal'])
+  },
+  computed: {
+    ...mapGetters('user', ['currentUserInfo'])
   }
 }
 </script>

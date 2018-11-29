@@ -1,21 +1,24 @@
 <template>
   <nav class="area-nav">
-    <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開中</nuxt-link>
-    <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
+    <nuxt-link :to="`/users/${currentUserInfo.user_id}`" class="nav-link area-public-articles">公開中</nuxt-link>
+    <nuxt-link :to="`/users/${currentUserInfo.user_id}/drafts`" class="nav-link area-drafts">下書き</nuxt-link>
     <edit-header-nav-edit-article />
   </nav>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import EditHeaderNavEditArticle from '../molecules/EditHeaderNavEditArticle'
 
 export default {
   components: {
     EditHeaderNavEditArticle
+  },
+  computed: {
+    ...mapGetters('user', ['currentUserInfo'])
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .area-nav {
