@@ -3,14 +3,14 @@
     <span class="topic">{{ topic }}</span>
     <template v-if="isCurrentUser">
       <span class="article-status">(公開中)</span>
-      <div class="etc-button" @click="toggleEtcPopup">
-        <div class="etc-popup" v-show="isEtcPopupShown">
-          <span class="etc-popup-content" @click="unpublish">記事を下書きに戻す</span>
+      <div class="article-button" @click="toggleArticlePopup">
+        <div class="article-popup" v-show="isArticlePopupShown">
+          <span class="article-popup-content" @click="unpublish">記事を下書きに戻す</span>
           <a
-            class="etc-popup-content"
+            class="article-popup-content"
             :href="twitterShareUrl"
             target="_blank">twitterでシェアする</a>
-          <span class="etc-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
+          <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
         </div>
       </div>
       <a class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`">
@@ -27,7 +27,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 export default {
   data() {
     return {
-      isEtcPopupShown: false
+      isArticlePopupShown: false
     }
   },
   props: {
@@ -47,16 +47,16 @@ export default {
   mounted() {
     this.listen(window, 'click', (event) => {
       if (
-        this.$el.querySelector('.etc-button') &&
-        !this.$el.querySelector('.etc-button').contains(event.target)
+        this.$el.querySelector('.article-button') &&
+        !this.$el.querySelector('.article-button').contains(event.target)
       ) {
         this.closeEtcPopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
       if (
-        this.$el.querySelector('.etc-button') &&
-        !this.$el.querySelector('.etc-button').contains(event.target)
+        this.$el.querySelector('.article-button') &&
+        !this.$el.querySelector('.article-button').contains(event.target)
       ) {
         this.closeEtcPopup()
       }
@@ -75,11 +75,11 @@ export default {
     }
   },
   methods: {
-    toggleEtcPopup() {
-      this.isEtcPopupShown = !this.isEtcPopupShown
+    toggleArticlePopup() {
+      this.isArticlePopupShown = !this.isArticlePopupShown
     },
     closeEtcPopup() {
-      this.isEtcPopupShown = false
+      this.isArticlePopupShown = false
     },
     async unpublish() {
       const articleId = this.article.article_id
@@ -156,7 +156,7 @@ export default {
     margin-right: auto;
   }
 
-  .etc-button {
+  .article-button {
     background: #fff url('~assets/images/pc/article/icon_etc.png') no-repeat;
     background-size: 24px;
     cursor: pointer;
@@ -165,7 +165,7 @@ export default {
     height: 26px;
     margin-right: 20px;
 
-    .etc-popup {
+    .article-popup {
       background-color: #ffffff;
       border-radius: 4px;
       filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
@@ -192,7 +192,7 @@ export default {
         width: 0;
       }
 
-      .etc-popup-content {
+      .article-popup-content {
         color: #6e6e6e;
         cursor: pointer;
         display: inline-block;
