@@ -28,7 +28,7 @@ export default {
   display: grid;
   grid-area: article-card-list;
   grid-gap: 30px;
-  grid-template-columns: repeat(2, 340px);
+  grid-template-columns: repeat(auto-fill, 340px);
   grid-template-rows: repeat(auto-fill, 320px);
 }
 

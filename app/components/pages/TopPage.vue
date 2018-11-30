@@ -11,7 +11,7 @@
     <recommended-article-card-list
       :articles="recommendedArticles.articles"
       class="recommended-article-card-list"/>
-    <how-to-use-image />
+    <how-to-use-image class="how-to-use-image" />
     <sub-footer class="sub-footer" />
     <create-new-article-button class="is-fixed-button" @click="moveToNewArticlePage"/>
     <the-loader :isLoading="!recommendedArticles.isLastPage"/>
@@ -56,6 +56,8 @@ export default {
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   mounted() {
+    if (!this.loggedIn) this.$el.classList.add('is-show-guide')
+
     window.addEventListener('scroll', this.infiniteScroll)
 
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
@@ -83,6 +85,7 @@ export default {
         if (this.recommendedArticles.isLastPage || !isScrollBottom()) return
 
         await this.getRecommendedArticles()
+        if (!this.loggedIn) this.$el.classList.add('is-show-guide')
       } finally {
         this.isFetchingArticles = false
       }
@@ -123,6 +126,10 @@ export default {
         return
       }
       this.getRecommendedArticles()
+    },
+    loggedIn(newState) {
+      // ログインしたときにALISの使い方を非表示にする
+      if (newState) this.$el.classList.remove('is-show-guide')
     }
   }
 }
@@ -137,20 +144,43 @@ export default {
     "app-header app-header                 app-header                 app-header"
     "nav        nav                        nav                        nav       "
     "...        eyecatch-article-card-list eyecatch-article-card-list ...       "
-    "...        article-card-list          how-to-use-image           ...       "
-    "...        article-card-list          sub-footer                 ...       "
-    "...        loader                     loader                     ...       ";
+    "...        article-card-list          article-card-list          ...       "
+    "...        article-card-list          article-card-list          ...       "
+    "...        loader                     loader                     ...       "
+    "app-footer app-footer                 app-footer                 app-footer";
+
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px auto auto auto 1fr 75px;
+  grid-template-rows: 100px auto auto auto 1fr 75px 75px;
   min-height: 100vh;
+
+  &.is-show-guide {
+    /* prettier-ignore */
+    grid-template-areas:
+      "app-header app-header                 app-header                 app-header"
+      "nav        nav                        nav                        nav       "
+      "...        eyecatch-article-card-list eyecatch-article-card-list ...       "
+      "...        article-card-list          how-to-use-image           ...       "
+      "...        article-card-list          sub-footer                 ...       "
+      "...        loader                     loader                     ...       ";
+
+    .how-to-use-image,
+    .sub-footer {
+      display: block;
+    }
+
+    .app-footer {
+      display: none;
+    }
+  }
+
+  .how-to-use-image,
+  .sub-footer {
+    display: none;
+  }
 
   .eyecatch-article-card-list-sp {
     display: none;
     grid-area: eyecatch-article-card-list-sp;
-  }
-
-  .app-footer {
-    display: none;
   }
 }
 
@@ -163,19 +193,35 @@ export default {
 @media screen and (max-width: 1296px) {
   .top-page {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px auto auto auto 1fr 75px 75px;
+    grid-template-rows: 100px auto auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header"
       "nav        nav                        nav       "
       "...        eyecatch-article-card-list ...       "
-      "...        how-to-use-image           ...       "
       "...        article-card-list          ...       "
       "...        loader                     ...       "
       "app-footer app-footer                 app-footer";
 
-    .sub-footer {
-      display: none;
+    &.is-show-guide {
+      grid-template-rows: 100px auto auto auto 1fr 75px 75px;
+      /* prettier-ignore */
+      grid-template-areas:
+        "app-header app-header                 app-header"
+        "nav        nav                        nav       "
+        "...        eyecatch-article-card-list ...       "
+        "...        how-to-use-image           ...       "
+        "...        article-card-list          ...       "
+        "...        loader                     ...       "
+        "app-footer app-footer                 app-footer";
+
+      .sub-footer {
+        display: none;
+      }
+
+      .app-footer {
+        display: flex;
+      }
     }
 
     .app-footer {
@@ -187,15 +233,27 @@ export default {
 @media screen and (max-width: 920px) {
   .top-page {
     grid-template-columns: 1fr 340px 1fr;
+    grid-template-rows: 66px 62px auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
       "nav        nav                           nav       "
-      "...        how-to-use-image              ...       "
       "...        eyecatch-article-card-list-sp ...       "
       "...        article-card-list             ...       "
       "...        loader                        ...       "
       "app-footer app-footer                    app-footer";
+
+    &.is-show-guide {
+      /* prettier-ignore */
+      grid-template-areas:
+        "app-header app-header                    app-header"
+        "nav        nav                           nav       "
+        "...        how-to-use-image              ...       "
+        "...        eyecatch-article-card-list-sp ...       "
+        "...        article-card-list             ...       "
+        "...        loader                        ...       "
+        "app-footer app-footer                    app-footer";
+    }
 
     .eyecatch-article-card-list-sp {
       display: grid;
@@ -210,17 +268,29 @@ export default {
 
 @media screen and (max-width: 550px) {
   .top-page {
-    grid-template-rows: 66px 62px 60px auto 1fr 75px min-content;
+    grid-template-rows: 66px 62px auto 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header       app-header                    app-header"
       "nav              nav                           nav       "
-      "how-to-use-image how-to-use-image              how-to-use-image"
       "...              eyecatch-article-card-list-sp ...       "
       "...              article-card-list             ...       "
       "...              loader                        ...       "
       "app-footer       app-footer                    app-footer";
     grid-gap: 0;
+
+    &.is-show-guide {
+      grid-template-rows: 66px auto auto auto 1fr 75px min-content;
+      /* prettier-ignore */
+      grid-template-areas:
+        "app-header       app-header                    app-header"
+        "nav              nav                           nav       "
+        "how-to-use-image how-to-use-image              how-to-use-image"
+        "...              eyecatch-article-card-list-sp ...       "
+        "...              article-card-list             ...       "
+        "...              loader                        ...       "
+        "app-footer       app-footer                    app-footer";
+    }
 
     .eyecatch-article-card-list-sp,
     .recommended-article-card-list {
