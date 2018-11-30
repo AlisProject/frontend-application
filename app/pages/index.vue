@@ -1,17 +1,24 @@
 <template>
-  <popular-article-list/>
+  <top-page />
 </template>
 
 <script>
-import PopularArticleList from '~/components/pages/PopularArticleList'
+import TopPage from '~/components/pages/TopPage'
 
 export default {
   components: {
-    PopularArticleList
+    TopPage
   },
-  fetch({ redirect }) {
-    // &from=top のパラメータは、遷移先でTOPページからのリダイレクトで遷移されたかの判定に使用
-    redirect('/articles/popular?topic=crypto&from=top')
+  async fetch({ store, query, error }) {
+    try {
+      await store.dispatch('article/getTopics')
+      await Promise.all([
+        store.dispatch('article/getEyecatchArticles'),
+        store.dispatch('article/getRecommendedArticles')
+      ])
+    } catch (e) {
+      error({ statusCode: 404 })
+    }
   },
   head() {
     return {

@@ -21,7 +21,7 @@ export default {
     try {
       const { oauth_token: oauthToken, oauth_verifier: oauthVerifier } = this.$route.query
 
-      this.$router.replace('/articles/popular?topic=crypto')
+      this.$router.replace('/')
 
       if (!oauthToken || !oauthVerifier) return
       const { hasUserId, status } = await this.$store.dispatch('user/checkAuthByTwitter', {
