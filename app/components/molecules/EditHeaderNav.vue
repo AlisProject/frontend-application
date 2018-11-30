@@ -1,7 +1,7 @@
 <template>
   <nav class="area-nav" :class="{ 'is-fixed': isFixed }">
-    <nuxt-link to="/me/articles/public" class="nav-link area-public-articles">公開中</nuxt-link>
-    <nuxt-link to="/me/articles/draft" class="nav-link area-drafts">下書き</nuxt-link>
+    <nuxt-link :to="`/users/${currentUserInfo.user_id}`" class="nav-link area-public-articles">公開中</nuxt-link>
+    <nuxt-link :to="`/users/${currentUserInfo.user_id}/drafts`" class="nav-link area-drafts">下書き</nuxt-link>
     <span class="area-save-status">{{ saveStatus }}</span>
     <edit-header-nav-post-article />
   </nav>
@@ -27,7 +27,8 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   computed: {
-    ...mapGetters('article', ['saveStatus'])
+    ...mapGetters('article', ['saveStatus']),
+    ...mapGetters('user', ['currentUserInfo'])
   },
   methods: {
     handleScroll() {

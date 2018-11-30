@@ -44,7 +44,8 @@ const state = () => ({
     articles: [],
     page: 1,
     isLastPage: false
-  }
+  },
+  isFetchedPublicArticle: false
 })
 
 const getters = {
@@ -81,7 +82,8 @@ const getters = {
   fetchingArticleTopic: (state) => state.fetchingArticleTopic,
   tags: (state) => state.tags,
   tagArticles: (state) => state.tagArticles,
-  hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey
+  hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
+  isFetchedPublicArticle: (state) => state.isFetchedPublicArticle
 }
 
 const actions = {
@@ -195,10 +197,18 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getPublicArticleDetail({ commit }, { articleId }) {
+  async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
-    commit(types.SET_ARTICLE_DETAIL, { article })
+    const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+      dispatch('getUserInfo', { userId: article.user_id }),
+      dispatch('getAlisToken', { articleId }),
+      dispatch('getLikesCount', { articleId }),
+      dispatch('getArticleComments', { articleId })
+    ])
+    commit(types.SET_LIKES_COUNT, { likesCount })
+    commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     commit(types.SET_ARTICLE_ID, { articleId })
+    commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
@@ -605,6 +615,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setIsFetchedPublicArticle({ commit }, { isFetched }) {
+    commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   }
 }
 
@@ -799,6 +812,9 @@ const mutations = {
       (comment) => comment.comment_id !== commentId
     )
     state.article.comments[parentCommentIndex].replies = replies
+  },
+  [types.SET_IS_FETCHED_PUBLIC_ARTICLE](state, { isFetched }) {
+    state.isFetchedPublicArticle = isFetched
   }
 }
 

@@ -14,7 +14,11 @@ export default {
   async fetch({ store, params, error }) {
     try {
       const { articleId } = params
-      await store.dispatch('article/getArticleDetail', { articleId })
+      const isCurrentUser =
+        store.state.user.loggedIn && params.userId === store.state.user.currentUser.userId
+      const getArticleType = isCurrentUser ? 'getPublicArticleDetail' : 'getArticleDetail'
+
+      await store.dispatch(`article/${getArticleType}`, { articleId })
       await store.dispatch('article/getTopics')
       store.dispatch('article/setTopicDisplayName', {
         topicName: store.state.article.article.topic
@@ -29,11 +33,19 @@ export default {
       if (this.currentUser.phoneNumberVerified) await this.postPv({ articleId })
       await this.getIsLikedArticle({ articleId })
       await this.updateArticleCommentsByCommentIds({ articleId })
+
+      if (this.isCurrentUser && !this.$store.state.article.isFetchedPublicArticle) {
+        await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
+        this.$store.dispatch('article/setIsFetchedPublicArticle', { isFetched: true })
+      }
     } else {
       this.setIsLikedArticle({ liked: false })
     }
   },
   computed: {
+    isCurrentUser() {
+      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
+    },
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article', 'topicDisplayName'])
   },

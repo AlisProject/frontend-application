@@ -2,9 +2,9 @@
   <div class="article-container">
     <app-header />
     <div class="area-article">
-      <span class="area-topic" v-if="topic">
-        {{ topic }}
-      </span>
+      <no-ssr>
+        <article-header :article="article" :topic="topic" :isCurrentUser="isCurrentUser" />
+      </no-ssr>
       <h1 class="area-title">{{ decodedTitle }}</h1>
       <div class="area-content" v-html="article.body" />
       <article-tags :tags="article.tags"/>
@@ -29,6 +29,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
+import ArticleHeader from '../organisms/ArticleHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
@@ -42,6 +43,7 @@ import { showEmbedTweet, htmlDecode } from '~/utils/article'
 export default {
   components: {
     AppHeader,
+    ArticleHeader,
     ArticleFooterActions,
     ArticleSideActions,
     ArticleSubInfos,
@@ -78,7 +80,11 @@ export default {
     publishedAt() {
       return this.article.published_at || this.article.created_at
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle'])
+    isCurrentUser() {
+      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
+    },
+    ...mapGetters('article', ['likesCount', 'isLikedArticle']),
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
     ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey'])
@@ -100,34 +106,24 @@ export default {
     'article-comment-form article-comment-form article-comment-form'
     'app-footer           app-footer           app-footer      ';
   background: white;
+  position: relative;
 }
 
 .area-article {
   display: grid;
   grid-area: article;
-  grid-template-rows: auto;
+  grid-template-rows: 32px auto;
   grid-template-columns: auto;
   grid-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    'topic         '
+    'header        '
     'title         '
     'content       '
     'tags          '
     'article-sub-infos'
     'footer-actions'
     'author-info   ';
-}
-
-.area-topic {
-  border-bottom: 1px solid #f0f0f0;
-  color: #5e5e5e;
-  font-size: 14px;
-  grid-area: topic;
-  height: 28px;
-  letter-spacing: 0.3px;
-  margin-bottom: -20px;
-  word-break: break-all;
 }
 
 .area-title {
@@ -140,6 +136,10 @@ export default {
 
 .area-content {
   grid-area: content;
+}
+
+.sp-footer {
+  display: none;
 }
 
 @media screen and (max-width: 1080px) {
@@ -166,17 +166,13 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      '...            topic             ...           '
+      'header         header            header        '
       '...            title             ...           '
       '...            content           ...           '
       '...            tags              ...           '
       '...            article-sub-infos ...'
       '...            author-info       ...           '
       'footer-actions footer-actions    footer-actions';
-  }
-
-  .area-topic {
-    margin: 20px 0 0;
   }
 
   .area-title {

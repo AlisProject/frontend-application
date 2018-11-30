@@ -58,8 +58,6 @@ export default {
       switch (this.requestPhoneNumberVerifyModal.requestType) {
         case 'articleCreate':
           return '記事の作成を行うには'
-        case 'viewPublicArticles':
-          return '記事一覧をひらくには'
         case 'articleLike':
           return '記事へいいねを行うには'
         case 'articleComment':
