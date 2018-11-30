@@ -62,6 +62,13 @@ export default {
       }
     })
   },
+  destroyed() {
+    if (this._eventRemovers) {
+      this._eventRemovers.forEach((eventRemover) => {
+        eventRemover.remove()
+      })
+    }
+  },
   computed: {
     shareUrl() {
       return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
