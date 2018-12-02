@@ -40,10 +40,8 @@ export default {
         return '外部サービス認証完了'
       } else if (this.isCompletedAuthModal) {
         return ''
-      } else if (this.isInputPhoneNumberModal) {
+      } else if (this.isInputPhoneNumberModal || this.isInputAuthCodeModal) {
         return 'アカウント認証'
-      } else if (this.isInputAuthCodeModal) {
-        return '認証コードの確認'
       } else if (this.isProfileSettingsModal) {
         return 'プロフィール'
       } else {
