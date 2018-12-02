@@ -37,7 +37,7 @@ export default {
   computed: {
     title() {
       if (this.isInputUserIdModal) {
-        return '外部サービス認証完了'
+        return 'SNS認証完了'
       } else if (this.isCompletedAuthModal) {
         return ''
       } else if (this.isInputPhoneNumberModal || this.isInputAuthCodeModal) {
