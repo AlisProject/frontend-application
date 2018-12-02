@@ -1,6 +1,6 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
+    <nuxt-link to="/" class="area-logo" @click.native="resetData"/>
     <no-ssr>
       <header-session-links v-if="!loggedIn"/>
       <header-user-logged-in-items v-else />
@@ -68,7 +68,7 @@ export default {
   methods: {
     resetData() {
       // 同一のページの場合は記事情報をリセットしない
-      if (this.$route.fullPath === '/articles/popular?topic=crypto') return
+      if (this.$route.fullPath === '/') return
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },

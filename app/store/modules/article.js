@@ -45,7 +45,13 @@ const state = () => ({
     page: 1,
     isLastPage: false
   },
-  isFetchedPublicArticle: false
+  isFetchedPublicArticle: false,
+  eyecatchArticles: [],
+  recommendedArticles: {
+    articles: [],
+    page: 1,
+    isLastPage: false
+  }
 })
 
 const getters = {
@@ -83,7 +89,9 @@ const getters = {
   tags: (state) => state.tags,
   tagArticles: (state) => state.tagArticles,
   hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
-  isFetchedPublicArticle: (state) => state.isFetchedPublicArticle
+  isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
+  eyecatchArticles: (state) => state.eyecatchArticles,
+  recommendedArticles: (state) => state.recommendedArticles
 }
 
 const actions = {
@@ -618,6 +626,48 @@ const actions = {
   },
   setIsFetchedPublicArticle({ commit }, { isFetched }) {
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
+  },
+  async getEyecatchArticles({ commit, dispatch }) {
+    try {
+      const { Items: articles } = await this.$axios.$get('/articles/eyecatch')
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          if (article === null) return null
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_EYECATCH_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getRecommendedArticles({ commit, state, dispatch }) {
+    try {
+      const limit = 10
+      const { Items: articles } = await this.$axios.$get('/articles/recommended', {
+        params: { limit, page: state.recommendedArticles.page }
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_RECOMMENDED_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: state.recommendedArticles.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_RECOMMENDED_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -748,6 +798,12 @@ const mutations = {
     state.isFetching = false
     state.page = 1
     state.isLastPage = false
+    state.eyecatchArticles = []
+    state.recommendedArticles = {
+      articles: [],
+      page: 1,
+      isLastPage: false
+    }
   },
   [types.SET_ARTICLE_TYPE](state, { articleType }) {
     state.articleType = articleType
@@ -815,6 +871,18 @@ const mutations = {
   },
   [types.SET_IS_FETCHED_PUBLIC_ARTICLE](state, { isFetched }) {
     state.isFetchedPublicArticle = isFetched
+  },
+  [types.SET_EYECATCH_ARTICLES](state, { articles }) {
+    state.eyecatchArticles = articles
+  },
+  [types.SET_RECOMMENDED_ARTICLES](state, { articles }) {
+    state.recommendedArticles.articles.push(...articles)
+  },
+  [types.SET_RECOMMENDED_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.recommendedArticles.isLastPage = isLastPage
+  },
+  [types.SET_RECOMMENDED_ARTICLES_PAGE](state, { page }) {
+    state.recommendedArticles.page = page
   }
 }
 

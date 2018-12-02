@@ -1,5 +1,5 @@
 <template>
-  <footer class="area-app-footer-container">
+  <footer class="area-sub-footer-container">
     <nuxt-link to="/users/ALIS-official" class="link">公式アナウンス</nuxt-link>
     <a href="https://intercom.help/alismedia" class="link" target="_blank" rel="noopener noreferrer nofollow">
       よくある質問・問い合わせ
@@ -13,39 +13,19 @@
   </footer>
 </template>
 
-<style lang="scss" scoped>
-.area-app-footer-container {
-  align-items: center;
-  background: #05051e;
-  display: flex;
-  grid-area: app-footer;
-  justify-content: center;
-}
-
-.link {
-  color: #fff;
-  font-size: 12px;
-  line-height: 16px;
-  margin: 0 1.4em;
-  text-decoration: none;
-}
-
-@media screen and (max-width: 640px) {
-  .area-app-footer-container {
-    align-items: flex-start;
-    flex-flow: column nowrap;
-    justify-content: flex-start;
-    padding: 1.3em 0 1em;
-  }
+<style lang="scss">
+.area-sub-footer-container {
+  grid-area: sub-footer;
+  padding: 0 28px 0 46px;
 
   .link {
+    color: #6e6e6e;
     font-size: 12px;
-    margin: 0 2em 1em;
+    font-weight: bold;
     text-decoration: none;
-
-    &:last-child {
-      margin-bottom: 24px;
-    }
+    margin: 0 18px 14px 0;
+    white-space: nowrap;
+    display: inline-block;
   }
 }
 </style>

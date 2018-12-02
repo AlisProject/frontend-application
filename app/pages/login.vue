@@ -1,22 +1,24 @@
 <template>
-  <popular-article-list/>
+  <top-page />
 </template>
 
 <script>
-import PopularArticleList from '~/components/pages/PopularArticleList'
+import TopPage from '~/components/pages/TopPage'
 
 export default {
   components: {
-    PopularArticleList
+    TopPage
   },
   async fetch({ store, error }) {
     try {
       store.dispatch('user/setLoginModal', { showLoginModal: true })
 
-      const topic = 'crypto'
       await store.dispatch('article/getTopics')
       store.dispatch('article/resetArticleData')
-      await store.dispatch('article/getPopularArticles', { topic })
+      await Promise.all([
+        store.dispatch('article/getEyecatchArticles'),
+        store.dispatch('article/getRecommendedArticles')
+      ])
     } catch (e) {
       store.dispatch('user/setLoginModal', { showLoginModal: false })
       error({ statusCode: 404 })

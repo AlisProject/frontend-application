@@ -1,27 +1,29 @@
 <template>
-  <popular-article-list/>
+  <top-page />
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import PopularArticleList from '~/components/pages/PopularArticleList'
+import TopPage from '~/components/pages/TopPage'
 
 export default {
   components: {
-    PopularArticleList
+    TopPage
   },
   async fetch({ store }) {
-    const topic = 'crypto'
     await store.dispatch('article/getTopics')
     store.dispatch('article/resetArticleData')
-    await store.dispatch('article/getPopularArticles', { topic })
+    await Promise.all([
+      store.dispatch('article/getEyecatchArticles'),
+      store.dispatch('article/getRecommendedArticles')
+    ])
   },
   async mounted() {
     try {
       const { oauth_token: oauthToken, oauth_verifier: oauthVerifier } = this.$route.query
 
-      this.$router.replace('/articles/popular?topic=crypto')
+      this.$router.replace('/')
 
       if (!oauthToken || !oauthVerifier) return
       const { hasUserId, status } = await this.$store.dispatch('user/checkAuthByTwitter', {
