@@ -7,7 +7,6 @@
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
       <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
-      <sign-up-auth-flow-completed-auth-modal v-if="isCompletedAuthModal" />
     </div>
   </app-modal>
 </template>
@@ -18,10 +17,8 @@ import AppModal from '../atoms/AppModal'
 import SignUpAuthFlowLoginModalForm from '../molecules/SignUpAuthFlowLoginModalForm'
 import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlowInputPhoneNumberModalForm'
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
-import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
 import SignUpAuthFlowInputUserIdForm from '../molecules/SignUpAuthFlowInputUserIdForm'
-import SignUpAuthFlowCompletedAuthModal from '../molecules/SignUpAuthFlowCompletedAuthModal'
 
 export default {
   components: {
@@ -29,17 +26,13 @@ export default {
     SignUpAuthFlowLoginModalForm,
     SignUpAuthFlowInputPhoneNumberModalForm,
     SignUpAuthFlowInputAuthCodeModalForm,
-    SignUpAuthFlowCompletedPhoneNumberAuthModal,
     ProfileSettingsModalForm,
-    SignUpAuthFlowInputUserIdForm,
-    SignUpAuthFlowCompletedAuthModal
+    SignUpAuthFlowInputUserIdForm
   },
   computed: {
     title() {
       if (this.isInputUserIdModal) {
         return 'SNS認証完了'
-      } else if (this.isCompletedAuthModal) {
-        return ''
       } else if (this.isInputPhoneNumberModal || this.isInputAuthCodeModal) {
         return 'アカウント認証'
       } else if (this.isProfileSettingsModal) {
@@ -65,9 +58,6 @@ export default {
     },
     isInputUserIdModal() {
       return this.signUpAuthFlowModal.isInputUserIdModal
-    },
-    isCompletedAuthModal() {
-      return this.signUpAuthFlowModal.isCompletedAuthModal
     },
     isShowCloseModalButton() {
       return !this.isInputPhoneNumberModal

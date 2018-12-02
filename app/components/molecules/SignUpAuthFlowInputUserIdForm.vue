@@ -106,7 +106,7 @@ export default {
         await this.postUserId({ userId })
         await this.getUserSession()
         this.setSignUpAuthFlowInputUserIdModal({ isShow: false })
-        this.setSignUpAuthFlowCompletedAuthModal({ isShow: true })
+        this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
       } catch (error) {
         const { message } = error.response.data
         let errorMessage = ''
@@ -127,7 +127,7 @@ export default {
       'hideSignUpAuthFlowInputUserIdError',
       'postUserId',
       'setSignUpAuthFlowInputUserIdModal',
-      'setSignUpAuthFlowCompletedAuthModal',
+      'setSignUpAuthFlowInputPhoneNumberModal',
       'getUserSession'
     ])
   }
