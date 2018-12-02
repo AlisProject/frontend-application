@@ -55,7 +55,7 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
-  mounted() {
+  async mounted() {
     if (!this.loggedIn) this.$el.classList.add('is-show-guide')
 
     window.addEventListener('scroll', this.infiniteScroll)
@@ -65,8 +65,11 @@ export default {
 
     // 画面の高さに合っているかをスクロールできるかどうかで判定
     if (!isPageScrollable(this.$el)) {
-      if (this.isLastPage) return
-      this.getPopularArticles({ topic: this.$route.query.topic })
+      if (this.recommendedArticles.isLastPage || this.recommendedArticles.articles.length === 0) {
+        return
+      }
+      await this.getRecommendedArticles()
+      if (!this.loggedIn) this.$el.classList.add('is-show-guide')
     }
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
@@ -125,7 +128,8 @@ export default {
       ) {
         return
       }
-      this.getRecommendedArticles()
+      await this.getRecommendedArticles()
+      if (!this.loggedIn) this.$el.classList.add('is-show-guide')
     },
     loggedIn(newState) {
       // ログインしたときにALISの使い方を非表示にする
