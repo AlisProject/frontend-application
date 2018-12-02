@@ -46,8 +46,7 @@ export default {
   },
   data() {
     return {
-      isFetchingArticles: false,
-      topicNumber: 1
+      isFetchingArticles: false
     }
   },
   computed: {
