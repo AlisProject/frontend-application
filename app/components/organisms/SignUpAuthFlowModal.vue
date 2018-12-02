@@ -41,7 +41,7 @@ export default {
       } else if (this.isCompletedAuthModal) {
         return ''
       } else if (this.isInputPhoneNumberModal) {
-        return '電話番号の登録'
+        return 'アカウント認証'
       } else if (this.isInputAuthCodeModal) {
         return '認証コードの確認'
       } else if (this.isProfileSettingsModal) {
