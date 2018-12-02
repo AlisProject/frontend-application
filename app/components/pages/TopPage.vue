@@ -1,5 +1,5 @@
 <template>
-  <div class="top-page">
+  <div class="top-page" :class="{ 'is-show-guide': isShowGuide }">
     <app-header />
     <default-header-nav/>
     <eyecatch-article-card-list
@@ -46,7 +46,8 @@ export default {
   },
   data() {
     return {
-      isFetchingArticles: false
+      isFetchingArticles: false,
+      isShowGuide: false
     }
   },
   computed: {
@@ -55,7 +56,7 @@ export default {
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   async mounted() {
-    if (!this.loggedIn) this.$el.classList.add('is-show-guide')
+    if (!this.loggedIn) this.isShowGuide = true
 
     window.addEventListener('scroll', this.infiniteScroll)
 
@@ -68,7 +69,6 @@ export default {
         return
       }
       await this.getRecommendedArticles()
-      if (!this.loggedIn) this.$el.classList.add('is-show-guide')
     }
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
@@ -87,7 +87,6 @@ export default {
         if (this.recommendedArticles.isLastPage || !isScrollBottom()) return
 
         await this.getRecommendedArticles()
-        if (!this.loggedIn) this.$el.classList.add('is-show-guide')
       } finally {
         this.isFetchingArticles = false
       }
@@ -128,11 +127,10 @@ export default {
         return
       }
       await this.getRecommendedArticles()
-      if (!this.loggedIn) this.$el.classList.add('is-show-guide')
     },
     loggedIn(newState) {
       // ログインしたときにALISの使い方を非表示にする
-      if (newState) this.$el.classList.remove('is-show-guide')
+      if (newState) this.isShowGuide = false
     }
   }
 }
