@@ -798,6 +798,12 @@ const mutations = {
     state.isFetching = false
     state.page = 1
     state.isLastPage = false
+    state.eyecatchArticles = []
+    state.recommendedArticles = {
+      articles: [],
+      page: 1,
+      isLastPage: false
+    }
   },
   [types.SET_ARTICLE_TYPE](state, { articleType }) {
     state.articleType = articleType
