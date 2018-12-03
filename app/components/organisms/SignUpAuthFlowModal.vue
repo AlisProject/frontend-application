@@ -4,9 +4,9 @@
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
-      <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
       <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
+      <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
     </div>
   </app-modal>
 </template>
@@ -19,6 +19,7 @@ import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlow
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
 import SignUpAuthFlowInputUserIdForm from '../molecules/SignUpAuthFlowInputUserIdForm'
+import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
 
 export default {
   components: {
@@ -27,7 +28,8 @@ export default {
     SignUpAuthFlowInputPhoneNumberModalForm,
     SignUpAuthFlowInputAuthCodeModalForm,
     ProfileSettingsModalForm,
-    SignUpAuthFlowInputUserIdForm
+    SignUpAuthFlowInputUserIdForm,
+    SignUpAuthFlowCompletedPhoneNumberAuthModal
   },
   computed: {
     title() {
@@ -37,6 +39,8 @@ export default {
         return 'アカウント認証'
       } else if (this.isProfileSettingsModal) {
         return 'プロフィール'
+      } else if (this.isCompletedPhoneNumberAuthModal) {
+        return ''
       } else {
         return '新規登録'
       }
@@ -50,14 +54,14 @@ export default {
     isInputAuthCodeModal() {
       return this.signUpAuthFlowModal.isInputAuthCodeModal
     },
-    isCompletedPhoneNumberAuthModal() {
-      return this.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal
-    },
     isProfileSettingsModal() {
       return this.signUpAuthFlowModal.isProfileSettingsModal
     },
     isInputUserIdModal() {
       return this.signUpAuthFlowModal.isInputUserIdModal
+    },
+    isCompletedPhoneNumberAuthModal() {
+      return this.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal
     },
     isShowCloseModalButton() {
       return !this.isInputPhoneNumberModal

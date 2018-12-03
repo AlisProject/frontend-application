@@ -62,7 +62,8 @@ export default {
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal'
+      'requestPhoneNumberVerifyModal',
+      'currentUser'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -75,6 +76,15 @@ export default {
         }
       }
       if (this.showSignUpAuthFlowModal) {
+        if (this.signUpAuthFlowModal.isProfileSettingsModal) {
+          if (this.currentUser.phoneNumberVerified) {
+            this.setSignUpAuthFlowProfileSettingsModal({
+              isSignUpAuthFlowProfileSettingsModal: false
+            })
+            this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
+            return
+          }
+        }
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
         if (this.$route.path.startsWith('/signup-login')) {
           this.replaceUrlToTop()
@@ -140,7 +150,9 @@ export default {
       'setRequestLoginModal',
       'setTipModal',
       'hideTipFlowModalContent',
-      'setRequestPhoneNumberVerifyModal'
+      'setRequestPhoneNumberVerifyModal',
+      'setSignUpAuthFlowProfileSettingsModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
