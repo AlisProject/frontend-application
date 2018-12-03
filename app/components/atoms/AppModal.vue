@@ -76,14 +76,26 @@ export default {
         }
       }
       if (this.showSignUpAuthFlowModal) {
-        if (this.signUpAuthFlowModal.isProfileSettingsModal) {
+        if (
+          this.signUpAuthFlowModal.isInputPhoneNumberModal ||
+          this.signUpAuthFlowModal.isInputAuthCodeModal ||
+          this.signUpAuthFlowModal.isProfileSettingsModal
+        ) {
+          this.setSignUpAuthFlowInputPhoneNumberModal({
+            isSignUpAuthFlowInputPhoneNumberModal: false
+          })
+          this.setSignUpAuthFlowInputAuthCodeModal({
+            isSignUpAuthFlowInputAuthCodeModal: false
+          })
+          this.setSignUpAuthFlowProfileSettingsModal({
+            isSignUpAuthFlowProfileSettingsModal: false
+          })
           if (this.currentUser.phoneNumberVerified) {
-            this.setSignUpAuthFlowProfileSettingsModal({
-              isSignUpAuthFlowProfileSettingsModal: false
-            })
             this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
-            return
+          } else {
+            this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: true })
           }
+          return
         }
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
         if (this.$route.path.startsWith('/signup-login')) {
@@ -152,7 +164,10 @@ export default {
       'hideTipFlowModalContent',
       'setRequestPhoneNumberVerifyModal',
       'setSignUpAuthFlowProfileSettingsModal',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowInputPhoneNumberModal',
+      'setSignUpAuthFlowInputAuthCodeModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

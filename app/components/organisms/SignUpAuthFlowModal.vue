@@ -7,6 +7,7 @@
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
       <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
+      <sign-up-auth-flow-not-completed-phone-number-auth-modal v-if="isNotCompletedPhoneNumberAuthModal" />
     </div>
   </app-modal>
 </template>
@@ -20,6 +21,7 @@ import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInp
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
 import SignUpAuthFlowInputUserIdForm from '../molecules/SignUpAuthFlowInputUserIdForm'
 import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
+import SignUpAuthFlowNotCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowNotCompletedPhoneNumberAuthModal'
 
 export default {
   components: {
@@ -29,7 +31,8 @@ export default {
     SignUpAuthFlowInputAuthCodeModalForm,
     ProfileSettingsModalForm,
     SignUpAuthFlowInputUserIdForm,
-    SignUpAuthFlowCompletedPhoneNumberAuthModal
+    SignUpAuthFlowCompletedPhoneNumberAuthModal,
+    SignUpAuthFlowNotCompletedPhoneNumberAuthModal
   },
   computed: {
     title() {
@@ -39,7 +42,7 @@ export default {
         return 'アカウント認証'
       } else if (this.isProfileSettingsModal) {
         return 'プロフィール'
-      } else if (this.isCompletedPhoneNumberAuthModal) {
+      } else if (this.isCompletedPhoneNumberAuthModal || this.isNotCompletedPhoneNumberAuthModal) {
         return ''
       } else {
         return '新規登録'
@@ -62,6 +65,9 @@ export default {
     },
     isCompletedPhoneNumberAuthModal() {
       return this.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal
+    },
+    isNotCompletedPhoneNumberAuthModal() {
+      return this.signUpAuthFlowModal.isNotCompletedPhoneNumberAuthModal
     },
     isShowCloseModalButton() {
       return !this.isInputPhoneNumberModal

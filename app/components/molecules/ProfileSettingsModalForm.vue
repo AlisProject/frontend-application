@@ -174,6 +174,8 @@ export default {
           })
           if (this.currentUser.phoneNumberVerified) {
             this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
+          } else {
+            this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: true })
           }
         } else {
           this.setProfileSettingsModal({
@@ -199,7 +201,8 @@ export default {
       'putUserInfo',
       'postUserIcon',
       'setCurrentUserInfo',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
     ])
   }
 }
