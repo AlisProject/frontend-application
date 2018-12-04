@@ -98,6 +98,8 @@ export default {
           return
         }
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
+        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
+        this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
         if (this.$route.path.startsWith('/signup-login')) {
           this.replaceUrlToTop()
         }
@@ -167,6 +169,8 @@ export default {
       'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
       'setSignUpAuthFlowInputPhoneNumberModal',
       'setSignUpAuthFlowInputAuthCodeModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
       'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
     ]),
     ...mapActions('report', [
