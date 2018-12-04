@@ -76,6 +76,9 @@ export default {
         }
       }
       if (this.showSignUpAuthFlowModal) {
+        if (this.$route.path.startsWith('/signup-login')) {
+          this.replaceUrlToTop()
+        }
         if (
           this.signUpAuthFlowModal.isInputPhoneNumberModal ||
           this.signUpAuthFlowModal.isInputAuthCodeModal ||
@@ -100,9 +103,6 @@ export default {
         this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
         this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
         this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
-        if (this.$route.path.startsWith('/signup-login')) {
-          this.replaceUrlToTop()
-        }
         if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
           await this.logout()
         }
