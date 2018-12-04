@@ -17,8 +17,8 @@
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')">
-          <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">ユーザーIDは半角英数字と-（ハイフン）のみご利用下さい</p>
-          <p class="error-message" v-if="showErrorUserIdMinLength && showErrorUserId">ユーザーIDは3文字以上の英数字で入力してください</p>
+          <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">半角英数字と-（ハイフン）のみご利用下さい</p>
+          <p class="error-message" v-if="showErrorUserIdMinLength && showErrorUserId">3文字以上の英数字で入力してください</p>
         </div>
       </form>
     </div>
@@ -106,7 +106,7 @@ export default {
         await this.postUserId({ userId })
         await this.getUserSession()
         this.setSignUpAuthFlowInputUserIdModal({ isShow: false })
-        this.setSignUpAuthFlowCompletedAuthModal({ isShow: true })
+        this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
       } catch (error) {
         const { message } = error.response.data
         let errorMessage = ''
@@ -127,7 +127,7 @@ export default {
       'hideSignUpAuthFlowInputUserIdError',
       'postUserId',
       'setSignUpAuthFlowInputUserIdModal',
-      'setSignUpAuthFlowCompletedAuthModal',
+      'setSignUpAuthFlowInputPhoneNumberModal',
       'getUserSession'
     ])
   }
@@ -141,7 +141,7 @@ export default {
   .announce {
     @include default-text();
     font-size: 14px;
-    margin: 60px 0 0;
+    margin: 40px 0 0;
     text-align: center;
   }
 
@@ -152,7 +152,7 @@ export default {
   }
 
   .signup-form {
-    margin: 60px auto 0;
+    margin: 40px auto 0;
     max-width: 400px;
     width: 80%;
 
@@ -163,15 +163,17 @@ export default {
     &-label {
       color: #030303;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 2.4;
     }
 
     &-input {
+      appearance: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
       border: none;
       border-radius: 0;
-      border-bottom: 1px dotted #232538;
-      margin-bottom: 30px;
-      padding: 5px 0;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+      padding: 12px;
       width: 100%;
 
       &::-webkit-input-placeholder {
@@ -186,21 +188,19 @@ export default {
     }
 
     .error-message {
-      top: 40px;
+      bottom: 20px;
+      margin: 0;
       color: #f06273;
       font-size: 12px;
       position: absolute;
       width: 100%;
+      text-align: right;
     }
 
     .error {
       .signup-form {
-        &-label {
-          color: #f06273;
-        }
-
         &-input {
-          border-bottom: 1px dotted #f06273;
+          box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
         }
       }
     }
@@ -209,7 +209,7 @@ export default {
 
 .modal-footer {
   width: 278px;
-  margin: 90px auto 40px;
+  margin: 40px auto 40px;
 
   .to-next-step-button {
     margin: 20px auto 0;
@@ -231,8 +231,14 @@ export default {
     }
   }
 
+  .modal-body {
+    .signup-form {
+      width: 256px;
+    }
+  }
+
   .modal-footer {
-    margin: 100px auto 50px;
+    margin: 60px auto 50px;
   }
 }
 

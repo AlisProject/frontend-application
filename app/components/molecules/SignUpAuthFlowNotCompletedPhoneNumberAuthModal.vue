@@ -2,16 +2,16 @@
   <div class="modal-body">
     <div class="wrapper">
       <h2 class="title">
-        はじめる準備が完了しました！
+        ご登録お疲れ様でした！
       </h2>
       <p class="about">
-        まずはじめに
+        アカウント認証について
       </p>
       <p class="description">
         ALISトークンを報酬として受け取ることができるようになりました。記事の作成・いいねを行うことでトークンを獲得できます。まずは記事の作成を行ってみましょう！
       </p>
       <app-button class="submit" @click="submit">
-        記事を作成する
+        認証する
       </app-button>
       <app-button class="close" @click="close">
         閉じる
@@ -29,16 +29,14 @@ export default {
     AppButton
   },
   methods: {
-    submit() {
-      location.href = '/me/articles/new'
-    },
+    submit() {},
     close() {
       this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
-      this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
+      this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
     },
     ...mapActions('user', [
       'setSignUpAuthFlowModal',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
     ])
   }
 }
@@ -55,7 +53,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  background: url('~assets/images/pc/bg/completed-phone-number-auth.png') no-repeat;
+  background: url('~assets/images/pc/bg/not-completed-phone-number-auth.png') no-repeat;
   background-size: auto 240px;
   background-position-x: center;
   margin: -50px -30px 0;
@@ -100,11 +98,5 @@ export default {
   border: 1px solid #0086cc;
   color: #0086cc;
   font-weight: bold;
-}
-
-@media screen and (max-width: 550px) {
-  .wrapper {
-    margin: -60px -30px 0;
-  }
 }
 </style>

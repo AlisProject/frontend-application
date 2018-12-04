@@ -3,10 +3,10 @@
     <span class="skip" @click="skip">スキップ</span>
     <div class="modal-body">
       <p class="announce">
-        電話番号を入力してください
+        電話番号を入力してアカウント認証を完了してください
       </p>
       <p class="description">
-        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます
+        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます※アカウントの不正利用を防ぐため、電話番号での認証を行ってください
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
@@ -21,14 +21,14 @@
             @input="setPhoneNumber"
             @blur="showError('phoneNumber')"
             @focus="resetError('phoneNumber')">
+          <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
+          <p class="error-message" v-else-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
+          <p class="error-message" v-else-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
       <p class="error-message">{{errorMessage}}</p>
-      <p class="error-message" v-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
-      <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
-      <p class="error-message" v-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         次へ
       </app-button>
@@ -175,9 +175,10 @@ export default {
 }
 
 .skip {
-  color: #858dda;
+  color: #0086cc;
   cursor: pointer;
   font-size: 14px;
+  font-weight: bold;
   letter-spacing: 0.93px;
   position: absolute;
   right: -14px;
@@ -189,34 +190,45 @@ export default {
 
   .announce {
     @include default-text();
+    color: #030303;
+    font-weight: bold;
     font-size: 14px;
-    margin: 60px 0 0;
+    margin: 60px auto 0;
     text-align: center;
   }
 
   .description {
     @include default-text();
-    margin: 20px 0 0;
-    text-align: center;
+    color: #6e6e6e;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    margin: 20px auto 0;
+    max-width: 400px;
   }
 
   .signup-form {
-    margin: 60px auto 0;
+    margin: 30px auto 0;
     max-width: 400px;
-    width: 80%;
+    width: 100%;
+
+    &-group {
+      position: relative;
+    }
 
     &-label {
       color: #030303;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 2.4;
     }
 
     &-input {
+      appearance: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
       border: none;
       border-radius: 0;
-      border-bottom: 1px dotted #232538;
-      margin-bottom: 30px;
-      padding: 5px 0;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+      padding: 12px;
       width: 100%;
 
       &::-webkit-input-placeholder {
@@ -230,14 +242,20 @@ export default {
       }
     }
 
+    .error-message {
+      bottom: 20px;
+      margin: 0;
+      color: #f06273;
+      font-size: 12px;
+      position: absolute;
+      width: 100%;
+      text-align: right;
+    }
+
     .error {
       .signup-form {
-        &-label {
-          color: #f06273;
-        }
-
         &-input {
-          border-bottom: 1px dotted #f06273;
+          box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
         }
       }
     }
@@ -246,7 +264,7 @@ export default {
 
 .modal-footer {
   width: 270px;
-  margin: 90px auto 40px;
+  margin: 30px auto 40px;
 
   .to-next-step-button {
     margin: 20px auto 0;
@@ -256,6 +274,19 @@ export default {
     color: #f06273;
     font-size: 12px;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .modal-body {
+    .announce,
+    .description {
+      width: 256px;
+    }
+
+    .signup-form {
+      width: 256px;
+    }
   }
 }
 

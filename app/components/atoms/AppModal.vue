@@ -62,7 +62,8 @@ export default {
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal'
+      'requestPhoneNumberVerifyModal',
+      'currentUser'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -75,10 +76,33 @@ export default {
         }
       }
       if (this.showSignUpAuthFlowModal) {
-        this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
         if (this.$route.path.startsWith('/signup-login')) {
           this.replaceUrlToTop()
         }
+        if (
+          this.signUpAuthFlowModal.isInputPhoneNumberModal ||
+          this.signUpAuthFlowModal.isInputAuthCodeModal ||
+          this.signUpAuthFlowModal.isProfileSettingsModal
+        ) {
+          this.setSignUpAuthFlowInputPhoneNumberModal({
+            isSignUpAuthFlowInputPhoneNumberModal: false
+          })
+          this.setSignUpAuthFlowInputAuthCodeModal({
+            isSignUpAuthFlowInputAuthCodeModal: false
+          })
+          this.setSignUpAuthFlowProfileSettingsModal({
+            isSignUpAuthFlowProfileSettingsModal: false
+          })
+          if (this.currentUser.phoneNumberVerified) {
+            this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
+          } else {
+            this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: true })
+          }
+          return
+        }
+        this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
+        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
+        this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
         if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
           await this.logout()
         }
@@ -140,7 +164,14 @@ export default {
       'setRequestLoginModal',
       'setTipModal',
       'hideTipFlowModalContent',
-      'setRequestPhoneNumberVerifyModal'
+      'setRequestPhoneNumberVerifyModal',
+      'setSignUpAuthFlowProfileSettingsModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowInputPhoneNumberModal',
+      'setSignUpAuthFlowInputAuthCodeModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
