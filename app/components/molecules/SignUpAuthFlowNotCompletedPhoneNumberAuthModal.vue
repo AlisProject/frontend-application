@@ -32,11 +32,11 @@ export default {
     submit() {},
     close() {
       this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
-      this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
+      this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
     },
     ...mapActions('user', [
       'setSignUpAuthFlowModal',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
     ])
   }
 }
