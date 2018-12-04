@@ -37,7 +37,9 @@ export default {
       await this.$store.dispatch('user/getUserSession')
       if (status === 'login') return
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
-      this.$store.dispatch('user/setSignUpAuthFlowCompletedAuthModal', { isShow: true })
+      this.$store.dispatch('user/setSignUpAuthFlowInputPhoneNumberModal', {
+        isSignUpAuthFlowInputPhoneNumberModal: true
+      })
     } catch (error) {
       const { message } = error.response.data
       switch (message) {

@@ -30,10 +30,10 @@ const state = () => ({
     isLoginModal: false,
     isInputPhoneNumberModal: false,
     isInputAuthCodeModal: false,
-    isCompletedPhoneNumberAuthModal: false,
     isProfileSettingsModal: false,
     isInputUserIdModal: false,
-    isCompletedAuthModal: false,
+    isCompletedPhoneNumberAuthModal: false,
+    isNotCompletedPhoneNumberAuthModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -260,14 +260,6 @@ const actions = {
   },
   hideSignUpAuthFlowInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR, { type })
-  },
-  setSignUpAuthFlowCompletedPhoneNumberAuthModal(
-    { commit },
-    { isSignUpAuthFlowCompletedPhoneNumberAuthModal }
-  ) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, {
-      isSignUpAuthFlowCompletedPhoneNumberAuthModal
-    })
   },
   setLoginModal({ commit }, { showLoginModal }) {
     commit(types.SET_LOGIN_MODAL, { showLoginModal })
@@ -648,9 +640,6 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  setSignUpAuthFlowCompletedAuthModal({ commit }, { isShow }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL, { isShow })
-  },
   setRequestPhoneNumberVerifyModal({ commit }, { isShow, requestType }) {
     commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL, { isShow, requestType })
   },
@@ -725,6 +714,12 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })
+  },
+  setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })
   },
   async getDistributedTokens({ commit }) {
     try {
@@ -821,12 +816,6 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputAuthCode.formError[type] = false
-  },
-  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](
-    state,
-    { isSignUpAuthFlowCompletedPhoneNumberAuthModal }
-  ) {
-    state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isSignUpAuthFlowCompletedPhoneNumberAuthModal
   },
   [types.SET_LOGIN_MODAL](state, { showLoginModal }) {
     state.showLoginModal = showLoginModal
@@ -976,9 +965,6 @@ const mutations = {
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputUserId.formError[type] = false
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL](state, { isShow }) {
-    state.signUpAuthFlowModal.isCompletedAuthModal = isShow
-  },
   [types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL](state, { isShow, requestType }) {
     state.requestPhoneNumberVerifyModal.isShow = isShow
     state.requestPhoneNumberVerifyModal.requestType = requestType
@@ -1006,6 +992,12 @@ const mutations = {
   },
   [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = false
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isShow
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isNotCompletedPhoneNumberAuthModal = isShow
   },
   [types.SET_DISTRIBUTED_TOKENS](state, { distributedTokens }) {
     state.distributedTokens = distributedTokens

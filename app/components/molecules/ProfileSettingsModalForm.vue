@@ -169,12 +169,14 @@ export default {
 
         document.querySelector('html,body').style.overflow = ''
         if (this.showSignUpAuthFlowModal) {
-          this.setSignUpAuthFlowModal({
-            showSignUpAuthFlowModal: false
-          })
           this.setSignUpAuthFlowProfileSettingsModal({
             isSignUpAuthFlowProfileSettingsModal: false
           })
+          if (this.currentUser.phoneNumberVerified) {
+            this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
+          } else {
+            this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: true })
+          }
         } else {
           this.setProfileSettingsModal({
             showProfileSettingsModal: false
@@ -195,11 +197,12 @@ export default {
       'setProfileSettingsSelfIntroduction',
       'showProfileSettingsError',
       'hideProfileSettingsError',
-      'setSignUpAuthFlowModal',
       'setProfileSettingsModal',
       'putUserInfo',
       'postUserIcon',
-      'setCurrentUserInfo'
+      'setCurrentUserInfo',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
     ])
   }
 }

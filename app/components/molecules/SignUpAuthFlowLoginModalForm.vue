@@ -2,7 +2,7 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        メール認証が完了しました。以下からログインしてください
+        登録を完了させるため、<span class="br"/>以下からログインしてください
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
@@ -18,11 +18,11 @@
             @focus="resetError('userIdOrEmail')">
         </div>
         <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
-          <label class="signup-form-label">パスワード</label>
+          <label class="signup-form-label">パスワード※半角英数字8文字以上</label>
           <input
             class="signup-form-input"
             type="password"
-            placeholder="半角英数字8文字以上"
+            placeholder="●●●●●●●●"
             ref="password"
             @input="setPassword"
             @blur="showError('password')"
@@ -121,7 +121,7 @@ export default {
       try {
         await this.signUpLogin({ userId: userIdOrEmail, password })
         this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
-        this.setSignUpAuthFlowCompletedAuthModal({ isShow: true })
+        this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
         this.$refs.userIdOrEmail.value = ''
         this.$refs.password.value = ''
         this.resetPassword()
@@ -144,7 +144,7 @@ export default {
       'setSignUpAuthFlowLoginPassword',
       'showSignUpAuthFlowLoginError',
       'hideSignUpAuthFlowLoginError',
-      'setSignUpAuthFlowCompletedAuthModal',
+      'setSignUpAuthFlowInputPhoneNumberModal',
       'signUpLogin',
       'resetPassword',
       'forgotPassword'
@@ -160,14 +160,14 @@ export default {
   .announce {
     @include default-text();
     font-size: 14px;
-    margin: 60px 0 0;
+    margin: 40px 0 0;
     text-align: center;
   }
 
   .signup-form {
-    margin: 60px auto 0;
+    margin: 40px auto 0;
     max-width: 400px;
-    width: 80%;
+    width: 100%;
 
     &-group {
       position: relative;
@@ -176,15 +176,17 @@ export default {
     &-label {
       color: #030303;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 2.4;
     }
 
     &-input {
+      appearance: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
       border: none;
       border-radius: 0;
-      border-bottom: 1px dotted #232538;
+      box-sizing: border-box;
       margin-bottom: 40px;
-      padding: 5px 0;
+      padding: 12px;
       width: 100%;
 
       &::-webkit-input-placeholder {
@@ -199,21 +201,19 @@ export default {
     }
 
     .error-message {
-      bottom: 0;
+      bottom: 20px;
+      margin: 0;
       color: #f06273;
       font-size: 12px;
       position: absolute;
       width: 100%;
+      text-align: right;
     }
 
     .error {
       .signup-form {
-        &-label {
-          color: #f06273;
-        }
-
         &-input {
-          border-bottom: 1px dotted #f06273;
+          box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
         }
       }
     }
@@ -222,10 +222,11 @@ export default {
 
 .modal-footer {
   width: 270px;
-  margin: 90px auto 40px;
+  margin: 20px auto 40px;
 
   .agreement-confirmation {
     @include default-text();
+    color: #6e6e6e;
     text-align: center;
   }
 
@@ -242,6 +243,7 @@ export default {
 
   .for-password-forgot-user {
     @include default-text();
+    color: #6e6e6e;
     text-align: right;
   }
 
@@ -250,14 +252,17 @@ export default {
   }
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+
   .modal-body {
     .signup-form {
-      margin-top: 30px;
-
-      &-input {
-        margin-bottom: 10px;
-      }
+      width: 256px;
     }
   }
 }
