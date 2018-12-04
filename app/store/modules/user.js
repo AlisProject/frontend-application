@@ -145,6 +145,12 @@ const state = () => ({
         authCode: false
       }
     }
+  },
+  distributedTokens: {
+    article: '0.000',
+    like: '0.000',
+    tip: '0.000',
+    bonus: '0.000'
   }
 })
 
@@ -177,7 +183,8 @@ const getters = {
   showTipModal: (state) => state.showTipModal,
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
-  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal
+  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
+  distributedTokens: (state) => state.distributedTokens
 }
 
 const actions = {
@@ -718,6 +725,22 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getDistributedTokens({ commit }) {
+    try {
+      let distributedTokens = {}
+      const result = await this.$axios.$get('/me/wallet/distributed_tokens')
+      const formatNumber = 10 ** 18
+      Object.keys(result).forEach((key) => {
+        distributedTokens[key] = new BigNumber(result[key], 10)
+          .div(formatNumber)
+          .toFixed(3, 1)
+          .toString(10)
+      })
+      commit(types.SET_DISTRIBUTED_TOKENS, { distributedTokens })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -983,6 +1006,9 @@ const mutations = {
   },
   [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = false
+  },
+  [types.SET_DISTRIBUTED_TOKENS](state, { distributedTokens }) {
+    state.distributedTokens = distributedTokens
   }
 }
 

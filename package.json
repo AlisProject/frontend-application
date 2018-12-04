@@ -25,6 +25,7 @@
     "aws-serverless-express": "^3.0.2",
     "axios": "^0.17.1",
     "bignumber.js": "^6.0.0",
+    "chart.js": "^2.7.3",
     "express": "^4.16.2",
     "lodash": "^4.17.5",
     "medium-editor": "^5.23.3",
@@ -34,6 +35,7 @@
     "nuxt-sass-resources-loader": "^2.0.1",
     "smoothscroll-polyfill": "^0.4.3",
     "url-regex": "^4.1.1",
+    "vue-chartjs": "^3.4.0",
     "vuelidate": "^0.6.2",
     "vuex-toast": "^0.1.3"
   },
