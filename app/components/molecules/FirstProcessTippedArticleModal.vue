@@ -69,7 +69,7 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  background: url('~assets/images/pc/bg/first-process-liked-article.png') no-repeat;
+  background: url('~assets/images/pc/bg/first-process-tipped-article.png') no-repeat;
   background-size: auto 240px;
   background-position-x: center;
   margin: -50px -30px 0;
