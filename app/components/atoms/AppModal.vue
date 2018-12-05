@@ -63,7 +63,10 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'currentUser'
+      'currentUser',
+      'firstProcessModal',
+      'tipFlowModal',
+      'currentUserInfo'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -128,7 +131,15 @@ export default {
       }
       if (this.showTipModal) {
         this.setTipModal({ showTipModal: false })
+
+        if (this.tipFlowModal.isCompletedModal) {
+          if (!this.currentUserInfo.is_tipped_article) {
+            this.setFirstProcessModal({ isShow: true })
+            this.setFirstProcessTippedArticleModal({ isShow: true })
+          }
+        }
         this.hideTipFlowModalContent()
+        return
       }
       if (this.requestPhoneNumberVerifyModal.isShow) {
         this.setRequestPhoneNumberVerifyModal({ isShow: false })
@@ -146,6 +157,13 @@ export default {
         this.setArticleReportInputFreeTextModal({ isShow: false })
         this.setArticleReportConfirmationModal({ isShow: false })
         this.resetArticleReportData()
+      }
+      if (this.firstProcessModal.isShow) {
+        this.setFirstProcessModal({ isShow: false })
+        this.setFirstProcessLikedArticleModal({ isShow: false })
+        this.setFirstProcessTippedArticleModal({ isShow: false })
+        this.setFirstProcessGotTokeneModal({ isShow: false })
+        this.setFirstProcessCreatedArticleModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
@@ -171,7 +189,12 @@ export default {
       'setSignUpAuthFlowInputAuthCodeModal',
       'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
       'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
-      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
+      'setFirstProcessModal',
+      'setFirstProcessLikedArticleModal',
+      'setFirstProcessTippedArticleModal',
+      'setFirstProcessGotTokeneModal',
+      'setFirstProcessCreatedArticleModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

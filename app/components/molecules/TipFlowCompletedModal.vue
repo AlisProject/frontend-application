@@ -21,14 +21,23 @@ export default {
     AppButton
   },
   computed: {
-    ...mapGetters('user', ['tipTokenAmount'])
+    ...mapGetters('user', ['tipTokenAmount', 'currentUserInfo'])
   },
   methods: {
     closeModal() {
       this.setTipModal({ showTipModal: false })
       this.setTipFlowCompletedModal({ isShow: false })
+      if (!this.currentUserInfo.is_tipped_article) {
+        this.setFirstProcessModal({ isShow: true })
+        this.setFirstProcessTippedArticleModal({ isShow: true })
+      }
     },
-    ...mapActions('user', ['setTipModal', 'setTipFlowCompletedModal'])
+    ...mapActions('user', [
+      'setTipModal',
+      'setTipFlowCompletedModal',
+      'setFirstProcessModal',
+      'setFirstProcessTippedArticleModal'
+    ])
   }
 }
 </script>

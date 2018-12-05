@@ -151,6 +151,13 @@ const state = () => ({
     like: '0.000',
     tip: '0.000',
     bonus: '0.000'
+  },
+  firstProcessModal: {
+    isShow: false,
+    isLikedArticleModal: false,
+    isTippedArticleModal: false,
+    isGotTokenModal: false,
+    isCreatedArticleModal: false
   }
 })
 
@@ -184,7 +191,8 @@ const getters = {
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
-  distributedTokens: (state) => state.distributedTokens
+  distributedTokens: (state) => state.distributedTokens,
+  firstProcessModal: (state) => state.firstProcessModal
 }
 
 const actions = {
@@ -736,6 +744,57 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setFirstProcessModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_MODAL, { isShow })
+  },
+  setFirstProcessLikedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_LIKED_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessLikedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_liked_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_liked_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setFirstProcessTippedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessTippedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_tipped_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_tipped_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setFirstProcessGotTokeneModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_GOT_TOKEN_MODAL, { isShow })
+  },
+  async putFirstProcessGotToken({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_got_token: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_got_token: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setFirstProcessCreatedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_CREATED_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessCreatedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_created_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_created_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1001,6 +1060,21 @@ const mutations = {
   },
   [types.SET_DISTRIBUTED_TOKENS](state, { distributedTokens }) {
     state.distributedTokens = distributedTokens
+  },
+  [types.SET_FIRST_PROCESS_MODAL](state, { isShow }) {
+    state.firstProcessModal.isShow = isShow
+  },
+  [types.SET_FIRST_PROCESS_LIKED_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isLikedArticleModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isTippedArticleModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_GOT_TOKEN_MODAL](state, { isShow }) {
+    state.firstProcessModal.isGotTokenModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_CREATED_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isCreatedArticleModal = isShow
   }
 }
 

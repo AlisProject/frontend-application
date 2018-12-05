@@ -15,6 +15,7 @@
     <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
     <user-report-modal v-if="userReportModal.isShow"/>
     <article-report-modal v-if="articleReportModal.isShow"/>
+    <first-process-modal v-if="firstProcessModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -34,6 +35,7 @@ import TipModal from '../organisms/TipModal'
 import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
 import UserReportModal from '../organisms/UserReportModal'
 import ArticleReportModal from '../organisms/ArticleReportModal'
+import FirstProcessModal from '../organisms/FirstProcessModal'
 
 export default {
   components: {
@@ -49,7 +51,8 @@ export default {
     Toast,
     RequestPhoneNumberVerifyModal,
     UserReportModal,
-    ArticleReportModal
+    ArticleReportModal,
+    FirstProcessModal
   },
   computed: {
     ...mapGetters('user', [
@@ -61,7 +64,8 @@ export default {
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal'
+      'requestPhoneNumberVerifyModal',
+      'firstProcessModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
