@@ -65,7 +65,7 @@ export default {
     formattedLikesCount() {
       return this.likesCount > 999 ? (this.likesCount / 1000).toFixed(1) + 'k' : this.likesCount
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser']),
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'currentUserInfo']),
     ...mapGetters('article', ['article'])
   },
   methods: {
@@ -95,6 +95,10 @@ export default {
             type: 'warning'
           })
         }
+        if (!this.currentUserInfo.is_liked_article) {
+          this.setFirstProcessModal({ isShow: true })
+          this.setFirstProcessLikedArticleModal({ isShow: true })
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
       }
@@ -117,7 +121,9 @@ export default {
     ...mapActions('user', [
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'setFirstProcessModal',
+      'setFirstProcessLikedArticleModal'
     ])
   }
 }

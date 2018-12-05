@@ -128,6 +128,11 @@ export default {
         this.$router.push(`/users/${this.currentUserInfo.user_id}`)
         this.sendNotification({ text: '記事を公開しました。' })
         this.resetArticleTopic()
+
+        if (!this.currentUserInfo.is_created_article) {
+          this.setFirstProcessModal({ isShow: true })
+          this.setFirstProcessCreatedArticleModal({ isShow: true })
+        }
       } catch (e) {
         this.publishingArticle = false
         this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
@@ -180,7 +185,8 @@ export default {
       'getTopics',
       'resetArticleTopic',
       'setArticleTopic'
-    ])
+    ]),
+    ...mapActions('user', ['setFirstProcessModal', 'setFirstProcessCreatedArticleModal'])
   },
   computed: {
     publishable() {
