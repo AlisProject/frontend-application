@@ -137,8 +137,12 @@ export default {
   },
   methods: {
     addDigitSeparator(str) {
-      var num = String(str).replace(/,/g, '')
-      while (num !== (num = num.replace(/^(-?\d+)(\d{3})/, '$1,$2')));
+      let num = String(str).replace(/,/g, '')
+      let tmpNum = ''
+      while (num !== tmpNum) {
+        tmpNum = num
+        num = num.replace(/^(-?\d+)(\d{3})/, '$1,$2')
+      }
       return num
     },
     getRate(num, totalAmount) {
