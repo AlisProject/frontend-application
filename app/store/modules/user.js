@@ -149,7 +149,8 @@ const state = () => ({
   firstProcessModal: {
     isShow: false,
     isLikedArticleModal: false,
-    isTippedArticleModal: false
+    isTippedArticleModal: false,
+    isGotTokenModal: false
   }
 })
 
@@ -750,6 +751,18 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setFirstProcessGotTokeneModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_GOT_TOKEN_MODAL, { isShow })
+  },
+  async putFirstProcessGotToken({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_got_token: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_got_token: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1021,6 +1034,9 @@ const mutations = {
   },
   [types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL](state, { isShow }) {
     state.firstProcessModal.isTippedArticleModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_GOT_TOKEN_MODAL](state, { isShow }) {
+    state.firstProcessModal.isGotTokenModal = isShow
   }
 }
 

@@ -27,7 +27,7 @@ export default {
     title() {
       return 'お知らせ'
     },
-    ...mapGetters('user', ['notifications', 'hasNotificationsLastEvaluatedKey']),
+    ...mapGetters('user', ['notifications', 'hasNotificationsLastEvaluatedKey', 'currentUserInfo']),
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
@@ -35,6 +35,11 @@ export default {
 
     if (this.notificationListScrollHeight) {
       this.$el.scrollTop = this.notificationListScrollHeight
+    }
+
+    if (!this.currentUserInfo.is_got_token) {
+      this.setFirstProcessModal({ isShow: true })
+      this.setFirstProcessGotTokeneModal({ isShow: true })
     }
   },
   beforeDestroy() {
@@ -60,7 +65,11 @@ export default {
         this.isFetchingNotifications = false
       }
     },
-    ...mapActions('user', ['getNotifications']),
+    ...mapActions('user', [
+      'getNotifications',
+      'setFirstProcessModal',
+      'setFirstProcessGotTokeneModal'
+    ]),
     ...mapActions('presentation', ['setNotificationListScrollHeight'])
   },
   watch: {

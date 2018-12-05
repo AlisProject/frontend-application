@@ -162,6 +162,7 @@ export default {
         this.setFirstProcessModal({ isShow: false })
         this.setFirstProcessLikedArticleModal({ isShow: false })
         this.setFirstProcessTippedArticleModal({ isShow: false })
+        this.setFirstProcessGotTokeneModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
@@ -190,7 +191,8 @@ export default {
       'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
       'setFirstProcessModal',
       'setFirstProcessLikedArticleModal',
-      'setFirstProcessTippedArticleModal'
+      'setFirstProcessTippedArticleModal',
+      'setFirstProcessGotTokeneModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
