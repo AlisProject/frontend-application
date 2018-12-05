@@ -427,10 +427,6 @@ const actions = {
   async setCurrentUserInfo({ commit }) {
     try {
       const result = await this.$axios.$get('/me/info')
-      result.is_liked_article = false
-      result.is_tipped_article = false
-      result.is_got_token = false
-      result.is_created_article = false
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo: result })
     } catch (error) {
       Promise.reject(error)
