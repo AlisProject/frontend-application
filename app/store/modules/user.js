@@ -148,7 +148,8 @@ const state = () => ({
   },
   firstProcessModal: {
     isShow: false,
-    isLikedArticleModal: false
+    isLikedArticleModal: false,
+    isTippedArticleModal: false
   }
 })
 
@@ -737,6 +738,18 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setFirstProcessTippedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessTippedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_tipped_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_tipped_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1005,6 +1018,9 @@ const mutations = {
   },
   [types.SET_FIRST_PROCESS_LIKES_ARTICLE_MODAL](state, { isShow }) {
     state.firstProcessModal.isLikedArticleModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isTippedArticleModal = isShow
   }
 }
 

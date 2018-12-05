@@ -64,7 +64,9 @@ export default {
       'showTipModal',
       'requestPhoneNumberVerifyModal',
       'currentUser',
-      'firstProcessModal'
+      'firstProcessModal',
+      'tipFlowModal',
+      'currentUserInfo'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -129,7 +131,15 @@ export default {
       }
       if (this.showTipModal) {
         this.setTipModal({ showTipModal: false })
+
+        if (this.tipFlowModal.isCompletedModal) {
+          if (!this.currentUserInfo.is_tipped_article) {
+            this.setFirstProcessModal({ isShow: true })
+            this.setFirstProcessTippedArticleModal({ isShow: true })
+          }
+        }
         this.hideTipFlowModalContent()
+        return
       }
       if (this.requestPhoneNumberVerifyModal.isShow) {
         this.setRequestPhoneNumberVerifyModal({ isShow: false })
@@ -151,6 +161,7 @@ export default {
       if (this.firstProcessModal.isShow) {
         this.setFirstProcessModal({ isShow: false })
         this.setFirstProcessLikedArticleModal({ isShow: false })
+        this.setFirstProcessTippedArticleModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
@@ -178,7 +189,8 @@ export default {
       'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
       'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
       'setFirstProcessModal',
-      'setFirstProcessLikedArticleModal'
+      'setFirstProcessLikedArticleModal',
+      'setFirstProcessTippedArticleModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
