@@ -86,7 +86,7 @@ export default {
       if (!this.currentUser) return false
       return this.articleUserId === this.currentUser.userId
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser']),
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'currentUserInfo']),
     ...mapGetters('article', ['article']),
     ...mapGetters(['toastMessages'])
   },
@@ -135,6 +135,10 @@ export default {
             type: 'warning'
           })
         }
+        if (!this.currentUserInfo.is_liked_article) {
+          this.setFirstProcessModal({ isShow: true })
+          this.setFirstProcessLikedArticleModal({ isShow: true })
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
       }
@@ -171,7 +175,9 @@ export default {
       'setTipModal',
       'setTipFlowSelectTipAmountModal',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'setFirstProcessModal',
+      'setFirstProcessLikedArticleModal'
     ]),
     ...mapActions('report', ['setArticleReportModal', 'setArticleReportSelectReasonModal']),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])

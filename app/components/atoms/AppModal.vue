@@ -63,7 +63,8 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'currentUser'
+      'currentUser',
+      'firstProcessModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -147,6 +148,10 @@ export default {
         this.setArticleReportConfirmationModal({ isShow: false })
         this.resetArticleReportData()
       }
+      if (this.firstProcessModal.isShow) {
+        this.setFirstProcessModal({ isShow: false })
+        this.setFirstProcessLikedArticleModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -171,7 +176,9 @@ export default {
       'setSignUpAuthFlowInputAuthCodeModal',
       'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
       'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
-      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal'
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
+      'setFirstProcessModal',
+      'setFirstProcessLikedArticleModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

@@ -145,6 +145,10 @@ const state = () => ({
         authCode: false
       }
     }
+  },
+  firstProcessModal: {
+    isShow: false,
+    isLikedArticleModal: false
   }
 })
 
@@ -177,7 +181,8 @@ const getters = {
   showTipModal: (state) => state.showTipModal,
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
-  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal
+  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
+  firstProcessModal: (state) => state.firstProcessModal
 }
 
 const actions = {
@@ -419,6 +424,10 @@ const actions = {
   async setCurrentUserInfo({ commit }) {
     try {
       const result = await this.$axios.$get('/me/info')
+      result.is_liked_article = false
+      result.is_tipped_article = false
+      result.is_got_token = false
+      result.is_created_article = false
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo: result })
     } catch (error) {
       Promise.reject(error)
@@ -713,6 +722,21 @@ const actions = {
   },
   setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })
+  },
+  setFirstProcessModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_MODAL, { isShow })
+  },
+  setFirstProcessLikedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_LIKES_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessLikedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_liked_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_liked_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -975,6 +999,12 @@ const mutations = {
   },
   [types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isShow }) {
     state.signUpAuthFlowModal.isNotCompletedPhoneNumberAuthModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_MODAL](state, { isShow }) {
+    state.firstProcessModal.isShow = isShow
+  },
+  [types.SET_FIRST_PROCESS_LIKES_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isLikedArticleModal = isShow
   }
 }
 
