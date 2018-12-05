@@ -163,6 +163,7 @@ export default {
         this.setFirstProcessLikedArticleModal({ isShow: false })
         this.setFirstProcessTippedArticleModal({ isShow: false })
         this.setFirstProcessGotTokeneModal({ isShow: false })
+        this.setFirstProcessCreatedArticleModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
@@ -192,7 +193,8 @@ export default {
       'setFirstProcessModal',
       'setFirstProcessLikedArticleModal',
       'setFirstProcessTippedArticleModal',
-      'setFirstProcessGotTokeneModal'
+      'setFirstProcessGotTokeneModal',
+      'setFirstProcessCreatedArticleModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
