@@ -730,7 +730,7 @@ const actions = {
     commit(types.SET_FIRST_PROCESS_MODAL, { isShow })
   },
   setFirstProcessLikedArticleModal({ commit }, { isShow }) {
-    commit(types.SET_FIRST_PROCESS_LIKES_ARTICLE_MODAL, { isShow })
+    commit(types.SET_FIRST_PROCESS_LIKED_ARTICLE_MODAL, { isShow })
   },
   async putFirstProcessLikedArticle({ commit, state }) {
     try {
@@ -1042,7 +1042,7 @@ const mutations = {
   [types.SET_FIRST_PROCESS_MODAL](state, { isShow }) {
     state.firstProcessModal.isShow = isShow
   },
-  [types.SET_FIRST_PROCESS_LIKES_ARTICLE_MODAL](state, { isShow }) {
+  [types.SET_FIRST_PROCESS_LIKED_ARTICLE_MODAL](state, { isShow }) {
     state.firstProcessModal.isLikedArticleModal = isShow
   },
   [types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL](state, { isShow }) {
