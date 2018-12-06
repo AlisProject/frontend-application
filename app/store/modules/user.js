@@ -459,7 +459,7 @@ const actions = {
       const { userInfo } = state
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
         `/users/${userInfo.user_id}/articles/public`,
-        { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+        { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
       )
       commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, {
         lastEvaluatedKey: LastEvaluatedKey || null
