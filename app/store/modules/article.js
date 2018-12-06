@@ -98,7 +98,7 @@ const actions = {
   async getPopularArticles({ commit, dispatch, state }, { topic }) {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
-      const limit = 10
+      const limit = 9
       const { Items: articles } = await this.$axios.$get('/articles/popular', {
         params: { topic, limit, page: state.page }
       })
@@ -128,7 +128,7 @@ const actions = {
   async getNewPagesArticles({ commit, dispatch, state }, { topic }) {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
-      const limit = 10
+      const limit = 9
       const { Items: articles } = await this.$axios.$get('/articles/recent', {
         params: { topic, limit, page: state.page }
       })
@@ -647,7 +647,7 @@ const actions = {
   },
   async getRecommendedArticles({ commit, state, dispatch }) {
     try {
-      const limit = 10
+      const limit = 12
       const { Items: articles } = await this.$axios.$get('/articles/recommended', {
         params: { limit, page: state.recommendedArticles.page }
       })
