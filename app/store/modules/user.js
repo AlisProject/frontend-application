@@ -146,6 +146,12 @@ const state = () => ({
       }
     }
   },
+  distributedTokens: {
+    article: '0.000',
+    like: '0.000',
+    tip: '0.000',
+    bonus: '0.000'
+  },
   firstProcessModal: {
     isShow: false,
     isLikedArticleModal: false,
@@ -185,6 +191,7 @@ const getters = {
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
+  distributedTokens: (state) => state.distributedTokens,
   firstProcessModal: (state) => state.firstProcessModal
 }
 
@@ -722,6 +729,22 @@ const actions = {
   setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })
   },
+  async getDistributedTokens({ commit }) {
+    try {
+      let distributedTokens = {}
+      const result = await this.$axios.$get('/me/wallet/distributed_tokens')
+      const formatNumber = 10 ** 18
+      Object.keys(result).forEach((key) => {
+        distributedTokens[key] = new BigNumber(result[key], 10)
+          .div(formatNumber)
+          .toFixed(3, 1)
+          .toString(10)
+      })
+      commit(types.SET_DISTRIBUTED_TOKENS, { distributedTokens })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   setFirstProcessModal({ commit }, { isShow }) {
     commit(types.SET_FIRST_PROCESS_MODAL, { isShow })
   },
@@ -1034,6 +1057,9 @@ const mutations = {
   },
   [types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isShow }) {
     state.signUpAuthFlowModal.isNotCompletedPhoneNumberAuthModal = isShow
+  },
+  [types.SET_DISTRIBUTED_TOKENS](state, { distributedTokens }) {
+    state.distributedTokens = distributedTokens
   },
   [types.SET_FIRST_PROCESS_MODAL](state, { isShow }) {
     state.firstProcessModal.isShow = isShow
