@@ -91,6 +91,12 @@ export default {
     border: 1px solid #0086cc;
     color: #0086cc;
     font-weight: bold;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      background: #fff;
+    }
   }
 }
 
