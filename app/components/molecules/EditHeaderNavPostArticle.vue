@@ -1,8 +1,8 @@
 <template>
   <div class="area-post-article">
-    <span class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
+    <app-button class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
       公開する
-    </span>
+    </app-button>
     <div v-show="isPopupShown" class="popup">
       <h3 class="headline">1. サムネイルの選択</h3>
       <div class="thumbnails">
@@ -250,10 +250,22 @@ export default {
   justify-content: center;
 
   .post-article {
-    color: #858dda;
+    border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: none;
+    color: #fff;
     cursor: pointer;
-    user-select: none;
-    display: inline-block;
+    font-size: 14px;
+    font-weight: 100;
+    height: 34px;
+    line-height: 2.5;
+    text-align: center;
+    width: 96px;
+
+    &:hover,
+    &:focus {
+      background: #0086cc;
+    }
 
     &.disable {
       cursor: not-allowed;
@@ -267,7 +279,7 @@ export default {
     box-sizing: border-box;
     padding: 40px;
     position: absolute;
-    top: 30px;
+    top: 50px;
     width: 340px;
     z-index: 1;
 
