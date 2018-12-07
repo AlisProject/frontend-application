@@ -12,10 +12,7 @@
         v-for="topic in topics"
         :key="topic.order"
         :data-topic="topic.name"
-        :style="NODE_ENV === 'development' ?
-          `background-image: url(topic/topic_${topic.name}.png)` :
-          `background-image: url(https://${DOMAIN}/d/nuxt/dist/topic/topic_${topic.name}.png)`
-        "
+        :style="`background-image: url(https://${DOMAIN}/d/nuxt/dist/topic/topic_${topic.name}.png)`"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
         @click.native="resetData">
@@ -39,7 +36,6 @@ export default {
     return {
       beforeClickedLinkName: this.$route.query.topic,
       fixNavigationHeight: pcHeaderHeight,
-      NODE_ENV: process.env.NODE_ENV,
       DOMAIN: process.env.DOMAIN
     }
   },
