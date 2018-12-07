@@ -92,6 +92,7 @@ export default {
   .article-container {
     .session {
       .search-icon {
+        display: block;
         width: 16px;
         margin-right: 20px;
       }
@@ -126,9 +127,18 @@ export default {
   }
 }
 
+@media screen and (max-width: 690px) {
+  .session {
+    .search-icon {
+      display: none;
+    }
+  }
+}
+
 @media screen and (max-width: 550px) {
   .session {
     .search-icon {
+      display: block;
       width: 16px;
       margin-right: 20px;
     }
