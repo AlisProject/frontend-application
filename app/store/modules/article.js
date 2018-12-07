@@ -98,7 +98,7 @@ const actions = {
   async getPopularArticles({ commit, dispatch, state }, { topic }) {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
-      const limit = 10
+      const limit = 12
       const { Items: articles } = await this.$axios.$get('/articles/popular', {
         params: { topic, limit, page: state.page }
       })
@@ -128,7 +128,7 @@ const actions = {
   async getNewPagesArticles({ commit, dispatch, state }, { topic }) {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
-      const limit = 10
+      const limit = 12
       const { Items: articles } = await this.$axios.$get('/articles/recent', {
         params: { topic, limit, page: state.page }
       })
@@ -253,7 +253,7 @@ const actions = {
         const { article_id: articleId, sort_key: sortKey } = state.publicArticlesLastEvaluatedKey
         const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
           '/me/articles/public',
-          { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+          { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
         )
         commit(types.SET_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
         const userInfo = await this.$axios.$get('/me/info')
@@ -276,7 +276,7 @@ const actions = {
     try {
       const { article_id: articleId, sort_key: sortKey } = getters.draftArticlesLastEvaluatedKey
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/drafts', {
-        params: { limit: 10, article_id: articleId, sort_key: sortKey }
+        params: { limit: 12, article_id: articleId, sort_key: sortKey }
       })
       commit(types.SET_DRAFT_ARTICLES_LAST_EVALUATED_KEY, {
         lastEvaluatedKey: LastEvaluatedKey || null
@@ -505,7 +505,7 @@ const actions = {
   async getSearchArticles({ commit, dispatch, state }, { query }) {
     if (state.searchArticles.isFetching) return
     commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: true })
-    const limit = 9
+    const limit = 12
     const articles = await this.$axios.$get('/search/articles', {
       params: { limit, query, page: state.searchArticles.page }
     })
@@ -562,7 +562,7 @@ const actions = {
   },
   async getTagArticles({ commit, dispatch, state }, { tag }) {
     commit(types.SET_TAG_ARTICLES_CURRENT_TAG, { tag })
-    const limit = 9
+    const limit = 12
     const articles = await this.$axios.$get('/search/articles', {
       params: { limit, tag, page: state.tagArticles.page }
     })
@@ -647,7 +647,7 @@ const actions = {
   },
   async getRecommendedArticles({ commit, state, dispatch }) {
     try {
-      const limit = 10
+      const limit = 12
       const { Items: articles } = await this.$axios.$get('/articles/recommended', {
         params: { limit, page: state.recommendedArticles.page }
       })
