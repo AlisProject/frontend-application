@@ -2,7 +2,7 @@
 .medium-editor-element {
   * {
     &::selection {
-      background: #99a2ff;
+      background-color: rgba(0, 134, 204, 0.2);
     }
   }
 
@@ -306,7 +306,7 @@
 }
 
 .medium-editor-toolbar li .medium-editor-button-active {
-  background-color: #858dda;
+  background-color: #0086cc;
 }
 
 .medium-editor-toolbar-form {
