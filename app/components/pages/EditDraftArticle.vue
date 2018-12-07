@@ -1,7 +1,7 @@
 <template>
   <div class="edit-article-container">
     <app-header />
-    <edit-header-nav class="drafts" />
+    <edit-header-nav type="draft-article" />
     <article-editor :title="decodedTitle" :putArticle="putArticle"/>
   </div>
 </template>
@@ -42,7 +42,7 @@ export default {
 <style lang="scss" scoped>
 .edit-article-container {
   display: grid;
-  grid-template-rows: 100px 40px 50px 650px 75px;
+  grid-template-rows: 100px 74px 50px 650px 75px;
   grid-template-columns: 1fr 640px 1fr;
   /* prettier-ignore */
   grid-template-areas:

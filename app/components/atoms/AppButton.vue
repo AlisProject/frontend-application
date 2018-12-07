@@ -22,6 +22,7 @@ export default {
 
 <style lang="scss" scoped>
 .app-button {
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
   background: #0086cc;
   border-radius: 18px;
   border: none;
@@ -36,12 +37,16 @@ export default {
   position: relative;
   text-align: center;
   text-decoration: none;
-  transition: box-shadow 400ms ease;
+  transition: all 400ms ease;
   width: 256px;
 
   &:hover,
   &:focus {
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
+    background: #006ca4;
+  }
+
+  &:active {
+    box-shadow: none;
   }
 
   &:target {
@@ -53,6 +58,11 @@ export default {
     color: #fff;
     cursor: default;
     opacity: 0.5;
+
+    &:hover,
+    &:focus {
+      background: #0086cc;
+    }
   }
 
   a {

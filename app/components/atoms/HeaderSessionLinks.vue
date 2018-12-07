@@ -80,6 +80,12 @@ export default {
       text-align: center;
       width: 96px;
       border-radius: 4px;
+      box-shadow: none;
+
+      &:hover,
+      &:focus {
+        background: #0086cc;
+      }
     }
 
     &.sp {

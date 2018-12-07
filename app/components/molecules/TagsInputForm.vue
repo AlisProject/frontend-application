@@ -176,7 +176,7 @@ export default {
 
 <style lang="scss" scoped>
 .tags-input-form {
-  border: 1px dotted #232538;
+  box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
   min-height: 92px;
   margin-bottom: 4px;
   cursor: text;
@@ -230,7 +230,7 @@ export default {
 
         &.selected-item {
           background-color: transparent;
-          color: #858dda;
+          color: #0086cc;
         }
       }
     }
@@ -260,19 +260,19 @@ export default {
       word-break: break-word;
 
       .content {
-        color: #858dda;
+        color: #0086cc;
       }
 
       &.valid {
-        background-color: rgba(133, 141, 218, 0.05);
+        background-color: rgba(0, 134, 204, 0.05);
       }
 
       &.tag.deletion-mark {
-        background-color: rgba(133, 141, 218, 0.25);
+        background-color: rgba(0, 134, 204, 0.2);
       }
 
       .icon-close {
-        color: rgb(76, 92, 163);
+        color: #0086cc;
       }
     }
   }

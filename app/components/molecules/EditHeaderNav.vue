@@ -1,9 +1,17 @@
 <template>
   <nav class="area-nav" :class="{ 'is-fixed': isFixed }">
-    <nuxt-link :to="`/users/${currentUserInfo.user_id}`" class="nav-link area-public-articles">公開中</nuxt-link>
-    <nuxt-link :to="`/users/${currentUserInfo.user_id}/drafts`" class="nav-link area-drafts">下書き</nuxt-link>
-    <span class="area-save-status">{{ saveStatus }}</span>
-    <edit-header-nav-post-article />
+    <div class="area-nav-inner">
+      <nuxt-link
+        :to="`/users/${currentUserInfo.user_id}`"
+        class="area-articles-link"
+        v-if="type === 'public-article'">公開中</nuxt-link>
+      <nuxt-link
+        :to="`/users/${currentUserInfo.user_id}/drafts`"
+        class="area-articles-link"
+        v-if="type === 'draft-article'">下書き</nuxt-link>
+      <span class="area-save-status">{{ saveStatus }}</span>
+      <edit-header-nav-post-article />
+    </div>
   </nav>
 </template>
 
@@ -14,6 +22,12 @@ import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
 export default {
   components: {
     EditHeaderNavPostArticle
+  },
+  props: {
+    type: {
+      type: String,
+      default: 'public-article'
+    }
   },
   data() {
     return {
@@ -40,77 +54,60 @@ export default {
 
 <style lang="scss" scoped>
 .area-nav {
-  grid-area: nav;
+  background: #fff;
   display: grid;
+  grid-area: nav;
+  height: 74px;
   text-align: center;
-  grid-template-columns: 70px 70px 1fr 90px auto;
+  transition: box-shadow 400ms ease;
+  width: 100%;
+  z-index: 2001;
   /* prettier-ignore */
   grid-template-areas:
-    "public-articles drafts ... save-status post-article";
-  background: #fff;
-  border-bottom: 1px solid rgba(#6e6e6e, 0.1);
-  height: 40px;
-  margin: auto;
-  width: 640px;
-  z-index: 2001;
+    "nav-inner";
+
+  .area-nav-inner {
+    display: grid;
+    grid-area: nav-inner;
+    grid-template-columns: 70px 1fr 90px min-content;
+    margin: auto;
+    width: 640px;
+    /* prettier-ignore */
+    grid-template-areas:
+      "articles-link ... save-status post-article";
+  }
 
   &.is-fixed {
+    box-shadow: 0 12px 12px -12px rgba(192, 192, 192, 0.7);
     left: 0;
     position: fixed;
     right: 0;
   }
 }
 
+.area-articles-link {
+  grid-area: articles-link;
+  align-items: center;
+  color: #6e6e6e;
+  display: flex;
+  font-size: 16px;
+  font-weight: bold;
+  justify-content: flex-start;
+  letter-spacing: 1.6px;
+  line-height: 24px;
+  text-decoration: none;
+}
+
 .area-save-status {
   grid-area: save-status;
-  color: #6e6e6e;
-  font-size: 14px;
   display: flex;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-}
-
-.nav-link {
-  font-size: 14px;
-  text-decoration: none;
-  color: #929292;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.area-public-articles {
-  grid-area: public-articles;
-}
-
-.public-article .area-public-articles,
-.public-articles .area-public-articles {
-  color: #99a2ff;
-  border-bottom: 2px solid #99a2ff;
-  margin-top: 2px;
-}
-
-.area-drafts {
-  grid-area: drafts;
-}
-
-.drafts .area-drafts {
-  color: #99a2ff;
-  border-bottom: 2px solid #99a2ff;
-  margin-top: 2px;
-}
-
-.area-new-article {
-  align-items: center;
-  background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
-  border-radius: 4px;
-  color: white;
-  display: flex;
-  font-size: 14px;
-  grid-area: new-article;
-  justify-content: center;
-  text-decoration: none;
+  color: #0086cc;
+  font-size: 16px;
+  letter-spacing: 1.6px;
+  font-weight: bold;
 }
 
 @media screen and (max-width: 640px) {
@@ -129,24 +126,6 @@ export default {
     grid-template-columns: 48px 48px;
     grid-template-rows: 36px;
     text-align: left;
-  }
-
-  .public-article .nav-link {
-    display: none;
-  }
-
-  .nav-link {
-    font-size: 12px;
-    line-height: 30px;
-    text-align: center;
-  }
-
-  .public-articles .area-public-articles {
-    border-bottom: 1px solid #99a2ff;
-  }
-
-  .drafts .area-drafts {
-    border-bottom: 1px solid #99a2ff;
   }
 }
 
