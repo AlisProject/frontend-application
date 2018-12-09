@@ -75,4 +75,10 @@ a {
 .draft .article-card-container {
   opacity: 0.7;
 }
+
+@media screen and (max-width: 320px) {
+  .article-card-container {
+    grid-template-columns: 256px;
+  }
+}
 </style>
