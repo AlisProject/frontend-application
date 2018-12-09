@@ -117,13 +117,11 @@ export default {
 
 .title {
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
   color: #fff;
   display: -webkit-box;
   font-size: 20px;
   font-weight: bold;
   grid-area: title;
-  left: 20px;
   letter-spacing: 1px;
   line-height: 1.5;
   margin: 0;
@@ -132,8 +130,25 @@ export default {
   text-decoration: none;
   text-overflow: ellipsis;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
-  top: 20px;
-  width: 300px;
+}
+
+.eyecatch1 {
+  .title {
+    -webkit-line-clamp: 2;
+    bottom: 80px;
+    left: 20px;
+    width: 492px;
+  }
+}
+
+.eyecatch2,
+.eyecatch3 {
+  .title {
+    -webkit-line-clamp: 3;
+    left: 20px;
+    top: 20px;
+    width: 300px;
+  }
 }
 
 .profile-icon {
