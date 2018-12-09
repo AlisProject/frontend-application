@@ -75,7 +75,11 @@ export default {
         this.isFetchingArticles = true
         if (!isScrollBottom()) return
 
-        await this.getUserArticles({ userId: this.$route.params.userId })
+        if (this.isCurrentUser) {
+          await this.getPublicArticles()
+        } else {
+          await this.getUserArticles({ userId: this.$route.params.userId })
+        }
       } finally {
         this.isFetchingArticles = false
       }
