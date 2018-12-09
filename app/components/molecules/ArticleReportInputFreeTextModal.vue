@@ -136,6 +136,7 @@ export default {
 
     &-input,
     &-textarea {
+      appearance: none;
       border-radius: 0;
       border: none;
       box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
@@ -149,6 +150,7 @@ export default {
         color: #cecece;
         font-size: 14px;
         letter-spacing: 0.05em;
+        line-height: 1.5;
       }
 
       &:focus {
