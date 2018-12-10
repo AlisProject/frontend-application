@@ -1,7 +1,7 @@
 <template>
   <div class="top-page" :class="{ 'is-show-guide': isShowGuide }">
     <app-header />
-    <default-header-nav/>
+    <default-header-nav class="default-header-nav"/>
     <eyecatch-article-card-list
       :articles="eyecatchArticles"
       class="eyecatch-article-card-list"/>
@@ -152,7 +152,7 @@ export default {
 <style lang="scss" scoped>
 .top-page {
   display: grid;
-  grid-gap: 30px;
+  grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
     "app-header app-header                 app-header                 app-header"
@@ -183,6 +183,8 @@ export default {
     }
 
     .how-to-use-image {
+      margin-bottom: 30px;
+
       &.is-fixed {
         position: fixed;
         top: 78px;
@@ -204,9 +206,17 @@ export default {
     }
   }
 
+  .default-header-nav {
+    margin-bottom: 30px;
+  }
+
   .how-to-use-image,
   .sub-footer {
     display: none;
+  }
+
+  .eyecatch-article-card-list {
+    margin-bottom: 30px;
   }
 
   .eyecatch-article-card-list-sp {
@@ -272,7 +282,7 @@ export default {
 @media screen and (max-width: 920px) {
   .top-page {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 66px 62px auto 1fr 75px 75px;
+    grid-template-rows: 100px 80px auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
@@ -297,6 +307,7 @@ export default {
     .eyecatch-article-card-list-sp {
       display: grid;
       grid-area: eyecatch-article-card-list-sp;
+      margin-bottom: 30px;
     }
 
     .eyecatch-article-card-list {
@@ -329,11 +340,23 @@ export default {
         "...              article-card-list             ...       "
         "...              loader                        ...       "
         "app-footer       app-footer                    app-footer";
+
+      .how-to-use-image {
+        margin-bottom: 0;
+      }
+    }
+
+    .default-header-nav {
+      margin-bottom: 0;
     }
 
     .eyecatch-article-card-list-sp,
     .recommended-article-card-list {
       margin-top: 30px;
+    }
+
+    .eyecatch-article-card-list-sp {
+      margin-bottom: 0;
     }
   }
 }

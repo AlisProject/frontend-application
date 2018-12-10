@@ -1,9 +1,13 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/" class="area-logo" @click.native="resetData"/>
+    <nuxt-link to="/" class="logo-link" @click.native="resetData">
+      <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
+    </nuxt-link>
     <no-ssr>
-      <header-session-links v-if="!loggedIn"/>
-      <header-user-logged-in-items v-else />
+      <div class="session-items">
+        <header-session-links v-if="!loggedIn"/>
+        <header-user-logged-in-items v-else />
+      </div>
     </no-ssr>
     <sign-up-modal v-if="showSignUpModal"/>
     <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
@@ -85,24 +89,27 @@ export default {
 
 <style lang="scss" scoped>
 .area-app-header-container {
-  display: grid;
   grid-area: app-header;
-  grid-template-rows: 100px;
-  width: 1080px;
-  grid-template-columns: 256px 134px 256px;
-  /* prettier-ignore */
-  grid-template-areas:
-    "... logo session";
   z-index: 2002;
-  justify-self: center;
-  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 1080px;
+  margin: 0 auto;
 }
 
-.area-logo {
-  grid-area: logo;
-  background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
-  background-position: center;
-  background-size: 134px auto;
+.logo-link {
+  margin: 0 auto;
+
+  .logo {
+    width: 102px;
+    height: auto;
+  }
+}
+
+.session-items {
+  position: absolute;
+  right: 0;
 }
 
 @media screen and (max-width: 1080px) {
@@ -113,18 +120,23 @@ export default {
 
 @mixin spStyles() {
   .area-app-header-container {
-    /* prettier-ignore */
-    grid-template-areas:
-      "logo ... session";
     max-width: calc(100% - 40px);
-    background: white;
-    grid-template-columns: 67px 1fr auto;
-    grid-template-rows: 66px;
-    padding: 0 22px 0 18px;
+    background: #fff;
   }
 
-  .area-logo {
-    background-size: 67px auto;
+  .logo-link {
+    position: absolute;
+    left: 0;
+
+    .logo {
+      width: auto;
+      height: 26px;
+    }
+  }
+
+  .session-items {
+    position: absolute;
+    right: 0;
   }
 }
 
