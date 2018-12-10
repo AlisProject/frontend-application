@@ -159,7 +159,7 @@ export default {
         console.error(error)
         if (error.response.data.message === 'Record Not Found') {
           this.sendNotification({
-            text: 'このコメントはすでに削除されているため、いいねできませんでした。',
+            text: 'このコメントはすでに削除されているため、いいねできませんでした',
             type: 'warning'
           })
         }
@@ -175,12 +175,12 @@ export default {
     async deleteComment(event) {
       try {
         await this.deleteArticleComment({ commentId: this.comment.comment_id })
-        this.sendNotification({ text: 'コメントを削除しました。' })
+        this.sendNotification({ text: 'コメントを削除しました' })
       } catch (error) {
         console.error(error)
         if (error.response.data.message === 'Record Not Found') {
           this.sendNotification({
-            text: 'コメントはすでに削除されています。削除が反映されるまで今しばらくお待ち下さい。',
+            text: 'コメントはすでに削除されています。削除が反映されるまでしばらくお待ち下さい',
             type: 'warning'
           })
         }

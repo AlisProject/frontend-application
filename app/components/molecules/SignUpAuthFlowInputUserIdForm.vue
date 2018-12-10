@@ -17,7 +17,7 @@
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')">
-          <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">半角英数字と-（ハイフン）のみご利用下さい</p>
+          <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">半角英数字と-（ハイフン）のみ利用できます</p>
           <p class="error-message" v-if="showErrorUserIdMinLength && showErrorUserId">3文字以上の英数字で入力してください</p>
         </div>
       </form>
@@ -112,10 +112,10 @@ export default {
         let errorMessage = ''
         switch (message) {
           case 'Invalid parameter: This id is already in use.':
-            errorMessage = 'ユーザーIDはすでに存在します'
+            errorMessage = '入力いただいたユーザーIDはすでに存在しています'
             break
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage = 'エラーが発生しました。入力内容を確認してください'
             break
         }
         this.errorMessage = errorMessage

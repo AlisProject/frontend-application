@@ -93,9 +93,9 @@ export default {
       try {
         await this.unpublishPublicArticle({ articleId })
         this.$router.push(`/users/${this.article.user_id}`)
-        this.sendNotification({ text: '記事を下書きに戻しました。' })
+        this.sendNotification({ text: '記事を下書きに戻しました' })
       } catch (e) {
-        this.sendNotification({ text: '記事を下書きに戻せませんでした。', type: 'warning' })
+        this.sendNotification({ text: '記事を下書きに戻せませんでした', type: 'warning' })
       }
     },
     execCopyUrl() {

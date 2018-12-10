@@ -19,8 +19,8 @@
             @input="setAuthCode"
             @blur="showError('authCode')"
             @focus="resetError('authCode')">
-          <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字でご入力ください</p>
-          <p class="error-message" v-else-if="showErrorInvalidAuthCode">認証コードは6文字でご入力ください</p>
+          <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字で入力してください</p>
+          <p class="error-message" v-else-if="showErrorInvalidAuthCode">認証コードは6文字で入力してください</p>
         </div>
       </form>
     </div>
@@ -122,7 +122,7 @@ export default {
         let errorMessage = ''
         switch (error.code) {
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage = 'エラーが発生しました。入力内容を確認してください'
             break
         }
         this.errorMessage = errorMessage

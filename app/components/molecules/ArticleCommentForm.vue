@@ -106,7 +106,7 @@ export default {
           text: escapedComment
         })
         this.addArticleComment({ text: escapedComment, commentId })
-        this.sendNotification({ text: 'コメントを投稿しました。' })
+        this.sendNotification({ text: 'コメントを投稿しました' })
         this.comment = ''
         this.$el.querySelector('.comment-textarea').focus()
       } catch (error) {

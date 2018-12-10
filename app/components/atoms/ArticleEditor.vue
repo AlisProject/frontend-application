@@ -269,7 +269,7 @@ export default {
         await this.postNewArticle({ article })
       } catch (error) {
         this.sendNotification({
-          text: '記事の作成に失敗しました。',
+          text: '記事の作成に失敗しました',
           type: 'warning'
         })
         throw new Error('Post article failed.')
@@ -293,7 +293,7 @@ export default {
       try {
         await this.putArticle()
       } catch (error) {
-        this.sendNotification({ text: '記事の更新に失敗しました。', type: 'warning' })
+        this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
         throw new Error('Update article failed.')
       }
     },
@@ -319,7 +319,7 @@ export default {
             })
             img.src = imageUrl
           } catch (error) {
-            this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+            this.sendNotification({ text: '画像のアップロードに失敗しました', type: 'warning' })
             throw new Error('Image upload failed.')
           }
         })
@@ -391,7 +391,7 @@ export default {
       const [target] = files
       const MAX_UPLOAD = 4.5 * 1024 * 1024 // 4.5 MB
       if (target.size > MAX_UPLOAD) {
-        this.sendNotification({ text: '画像は4.5MBまでアップロード可能です。', type: 'warning' })
+        this.sendNotification({ text: '画像は4.5MBまでアップロード可能です', type: 'warning' })
         return
       }
       if (!this.isImageContent(files[0].type)) return

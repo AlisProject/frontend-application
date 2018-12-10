@@ -75,7 +75,7 @@ export default {
         const formattedAlisToken = new BigNumber(this.alisToken)
 
         if (formattedAlisToken.isLessThan(formattedTipTokenAmount)) {
-          this.errorMessage = 'トークンが不足しています'
+          this.errorMessage = 'ALISが不足しています'
           return
         }
 
@@ -83,7 +83,7 @@ export default {
 
         await this.postTipToken({ tipValue, articleId: this.article.article_id })
       } catch (error) {
-        this.errorMessage = 'エラーが発生しました。時間を置いて再度お試しください'
+        this.errorMessage = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
         return
       }
       this.setTipFlowConfirmationModal({ isShow: false })

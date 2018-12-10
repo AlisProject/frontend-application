@@ -102,9 +102,9 @@ export default {
           .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
           .replace(/\r?\n?\s/g, ' ')
           .slice(0, 100)
-        if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
-        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-        if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
+        if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
+        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
+        if (topic === null) this.sendNotification({ text: 'カテゴリを選択してください' })
         if (title === '' || overview === '' || topic === null) {
           this.publishingArticle = false
           return
@@ -130,7 +130,7 @@ export default {
           await this.republishPublicArticle({ articleId, topic, tags })
         }
         this.$router.push(`/users/${this.currentUserInfo.user_id}`)
-        this.sendNotification({ text: '記事を公開しました。' })
+        this.sendNotification({ text: '記事を公開しました' })
         this.resetArticleTopic()
 
         if (!this.currentUserInfo.is_created_article) {
@@ -139,7 +139,7 @@ export default {
         }
       } catch (e) {
         this.publishingArticle = false
-        this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
+        this.sendNotification({ text: '記事の公開に失敗しました', type: 'warning' })
         console.error(e)
       }
     },
