@@ -66,7 +66,7 @@ export default {
     margin: 20px auto 0;
 
     a {
-      color: #858dda;
+      color: #0086cc;
       text-decoration: none;
     }
   }

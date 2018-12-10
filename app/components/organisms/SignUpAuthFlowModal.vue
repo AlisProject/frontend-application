@@ -79,7 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 .modal-header-warning {
-  background: #858dda;
+  background: #0086cc;
   color: #fff;
   font-size: 14px;
   line-height: 21px;

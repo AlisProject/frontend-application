@@ -310,7 +310,7 @@ export default {
 
   .action-reply {
     bottom: 6px;
-    color: #858dda;
+    color: #0086cc;
     cursor: pointer;
     font-size: 12px;
     font-weight: 500;

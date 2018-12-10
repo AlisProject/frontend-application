@@ -39,7 +39,7 @@ export default {
 .nav-link {
   font-size: 14px;
   text-decoration: none;
-  color: #858dda;
+  color: #0086cc;
 }
 
 .area-post-article {
