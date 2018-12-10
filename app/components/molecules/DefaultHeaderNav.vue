@@ -12,21 +12,9 @@
         v-for="topic in topics"
         :key="topic.order"
         :data-topic="topic.name"
-        :style="`background-image: url(topic/topic_${topic.name}.png)`"
+        :style="`background-image: url(https://${DOMAIN}/d/nuxt/dist/topic/topic_${topic.name}.png)`"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
-        @click.native="resetData">
-        <span class="topic-display-name">
-          {{topic.display_name}}
-        </span>
-      </nuxt-link>
-      <nuxt-link
-        v-for="topic in topics"
-        :key="topic.order + 5"
-        :data-topic="topic.name"
-        :style="`background-image: url(topic/topic_${topic.name}.png)`"
-        :to="to(topic.name)"
-        :class="`nav-link area-topic${topic.order + 5} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
         @click.native="resetData">
         <span class="topic-display-name">
           {{topic.display_name}}
@@ -47,7 +35,8 @@ export default {
   data() {
     return {
       beforeClickedLinkName: this.$route.query.topic,
-      fixNavigationHeight: pcHeaderHeight
+      fixNavigationHeight: pcHeaderHeight,
+      DOMAIN: process.env.DOMAIN
     }
   },
   async created() {
@@ -111,7 +100,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$topicCount: 11;
+$topicCount: 10;
 
 .area-nav {
   grid-area: nav;
@@ -140,6 +129,12 @@ $topicCount: 11;
     .nav-link {
       height: 28px;
 
+      &.area-topic0 {
+        &:before {
+          background: none;
+        }
+      }
+
       .topic-display-name {
         bottom: 7px;
       }
@@ -160,11 +155,11 @@ $topicCount: 11;
 .area-nav-links {
   grid-area: nav-links;
   display: grid;
-  grid-column-gap: 12px;
+  grid-column-gap: 13px;
   grid-template-columns: repeat($topicCount, 96px);
   /* prettier-ignore */
   grid-template-areas:
-    "topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9 topic10 topic11";
+    "topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9";
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 
@@ -174,19 +169,45 @@ $topicCount: 11;
 }
 
 .nav-link {
-  font-size: 12px;
-  text-decoration: none;
-  color: #fff;
-  white-space: nowrap;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 4px;
   box-sizing: border-box;
-  position: relative;
+  color: #fff;
+  font-size: 12px;
   height: 50px;
+  position: relative;
+  text-decoration: none;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
   width: 96px;
 
+  &.area-topic0 {
+    background-color: #0086cc;
+
+    &:before {
+      background-image: none;
+      background: url('~assets/images/pc/topic/icon_category_recomend.png') no-repeat;
+      background-size: 48px;
+      background-position-x: 20px;
+      background-position-y: 5px;
+    }
+  }
+
+  &:before {
+    content: '';
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+  }
+
   .topic-display-name {
-    bottom: 10px;
+    bottom: 6px;
     left: 0;
     position: absolute;
     right: 0;
@@ -201,13 +222,9 @@ $topicCount: 11;
     width: 90px;
 
     .topic-display-name {
-      bottom: 7px;
+      bottom: 5px;
     }
   }
-}
-
-.area-topic0 {
-  background-image: url('~assets/images/pc/topic/recommended_topic.png');
 }
 
 @for $i from 1 through $topicCount {
@@ -216,7 +233,7 @@ $topicCount: 11;
   }
 }
 
-@media screen and (max-width: 1180px) {
+@media screen and (max-width: 1080px) {
   .area-nav {
     justify-self: flex-start;
     padding-left: 12px;
@@ -264,6 +281,7 @@ $topicCount: 11;
 
   .area-nav-links {
     padding: 0;
+    grid-gap: 6px;
   }
 }
 </style>
