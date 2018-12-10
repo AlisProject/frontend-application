@@ -263,7 +263,7 @@ export default {
     font-size: 12px;
     line-height: 1.75;
     margin: 0;
-    word-wrap: break-word;
+    word-break: break-word;
   }
 }
 
