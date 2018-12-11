@@ -12,7 +12,7 @@
         v-for="topic in topics"
         :key="topic.order"
         :data-topic="topic.name"
-        :style="`background-image: url(https://${DOMAIN}/d/nuxt/dist/topic/topic_${topic.name}.png)`"
+        :style="`background-image: url(${topicImages[topic.name]})`"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
         @click.native="resetData">
@@ -35,8 +35,7 @@ export default {
   data() {
     return {
       beforeClickedLinkName: this.$route.query.topic,
-      fixNavigationHeight: pcHeaderHeight,
-      DOMAIN: process.env.DOMAIN
+      fixNavigationHeight: pcHeaderHeight
     }
   },
   async created() {
@@ -51,6 +50,13 @@ export default {
     }
   },
   computed: {
+    topicImages() {
+      const images = {}
+      this.topics.forEach((topic) => {
+        images[topic.name] = require(`~/assets/images/pc/topic/topic_${topic.name}.png`)
+      })
+      return images
+    },
     ...mapGetters('article', ['topics', 'articleType'])
   },
   mounted() {
