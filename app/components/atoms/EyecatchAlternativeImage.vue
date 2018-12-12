@@ -1,6 +1,6 @@
 <template>
-  <nuxt-link
-    :to="articlePath"
+  <a
+    :href="articlePath"
     class="eyecatch-alternative-image-container"
     :class="order"/>
 </template>
@@ -19,9 +19,9 @@ export default {
         case 'eyecatch1':
           return '#1'
         case 'eyecatch2':
-          return '#2'
+          return '/users/ALIS-official'
         case 'eyecatch3':
-          return '#3'
+          return 'https://intercom.help/alismedia'
         default:
           break
       }
