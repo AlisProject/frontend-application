@@ -41,7 +41,7 @@
               @input="setPassword"
               @blur="showError('password')"
               @focus="resetError('password')">
-            <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上です</p>
+            <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上で入力してください</p>
           </div>
         </form>
         <div class="modal-footer">
@@ -206,7 +206,7 @@ export default {
             errorMessage = 'ユーザーIDはすでに存在します'
             break
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage = 'エラーが発生しました。入力内容を確認してください'
             break
         }
         this.errorMessage = errorMessage

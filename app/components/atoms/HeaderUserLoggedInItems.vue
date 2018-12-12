@@ -146,9 +146,9 @@ export default {
       try {
         this.logout()
         location.href = '/'
-        this.sendNotification({ text: 'ログアウトしました。' })
+        this.sendNotification({ text: 'ログアウトしました' })
       } catch (error) {
-        this.sendNotification({ text: 'ログアウトに失敗しました。', type: 'warning' })
+        this.sendNotification({ text: 'ログアウトに失敗しました', type: 'warning' })
         console.error(error)
       }
     },

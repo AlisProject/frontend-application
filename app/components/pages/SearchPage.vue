@@ -158,7 +158,7 @@ export default {
         this.isSearchFirstly = false
         await this.getSearchData(this.query)
       } catch (error) {
-        this.ADD_TOAST_MESSAGE({ text: '検索結果の取得に失敗しました。', type: 'warning' })
+        this.ADD_TOAST_MESSAGE({ text: '検索結果の取得に失敗しました', type: 'warning' })
         console.error(error)
       } finally {
         this.isFetchingData = false

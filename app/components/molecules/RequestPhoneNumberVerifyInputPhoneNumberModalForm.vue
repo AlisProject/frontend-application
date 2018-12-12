@@ -20,9 +20,9 @@
             @input="setPhoneNumber"
             @blur="showError('phoneNumber')"
             @focus="resetError('phoneNumber')">
-          <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
-          <p class="error-message" v-else-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
-          <p class="error-message" v-else-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
+          <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字で入力してください</p>
+          <p class="error-message" v-else-if="showErrorInvalidPhoneNember">電話番号は11文字で入力してください</p>
+          <p class="error-message" v-else-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみ利用可能です</p>
         </div>
       </form>
     </div>
@@ -151,7 +151,7 @@ export default {
         let errorMessage = ''
         switch (error.code) {
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage = 'エラーが発生しました。入力内容を確認してください'
             break
         }
         this.errorMessage = errorMessage

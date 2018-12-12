@@ -118,7 +118,7 @@ export default {
         )
 
         if (!isAddableToken) {
-          this.errorMessage = 'トークンが不足しています'
+          this.errorMessage = 'ALISが不足しています'
           return
         }
 
@@ -128,14 +128,14 @@ export default {
         )
 
         if (hasExceededMaxTipToken) {
-          this.errorMessage = '一度に贈れるトークンは 1000 ALIS 未満となります'
+          this.errorMessage = '一度に贈れるALISは1000 ALIS未満となります'
           return
         }
 
         this.errorMessage = ''
         this.tipTokenAmount = formattedTipTokenAmount.plus(formattedAmount)
       } catch (error) {
-        this.errorMessage = '数字でご入力ください'
+        this.errorMessage = '数字で入力してください'
       }
     },
     moveToConfirmationPage() {
@@ -144,12 +144,12 @@ export default {
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
         const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!isAddableToken) {
-          this.errorMessage = 'トークンが不足しています'
+          this.errorMessage = 'ALISが不足しています'
           return
         }
 
         if (formattedTipTokenAmount.isEqualTo(0)) {
-          this.errorMessage = '贈るトークン量を選択してください'
+          this.errorMessage = '贈るALISを選択してください'
           return
         }
 
@@ -159,7 +159,7 @@ export default {
         )
 
         if (hasExceededMaxTipToken) {
-          this.errorMessage = '一度に贈れるトークンは 1000 ALIS 未満となります'
+          this.errorMessage = '一度に贈れるALISは1000 ALIS未満となります'
           return
         }
 
@@ -172,7 +172,7 @@ export default {
           tipTokenAmountForUser.split('.')[1].length > 10
 
         if (isNotInputablePlaceAfterDecimalPoint) {
-          this.errorMessage = '小数点10桁までの範囲でご入力ください'
+          this.errorMessage = '小数点10桁までの範囲で入力してください'
           return
         }
 
@@ -187,7 +187,7 @@ export default {
         this.setTipFlowSelectTipAmountModal({ isShow: false })
         this.setTipFlowConfirmationModal({ isShow: true })
       } catch (error) {
-        this.errorMessage = '数字でご入力ください'
+        this.errorMessage = '数字で入力してください'
       }
     },
     ...mapActions('user', [

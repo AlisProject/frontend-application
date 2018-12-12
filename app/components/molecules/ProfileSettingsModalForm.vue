@@ -110,7 +110,7 @@ export default {
     },
     createImage(file) {
       if (file.size > 4.5 * 1024 * 1024) {
-        alert('アイコン画像は4.5MBまでアップロード可能です')
+        alert('画像は4.5MBまでアップロード可能です')
         return
       }
       const reader = new FileReader()
@@ -134,7 +134,7 @@ export default {
           const originalToastZIndex = toastMessage.style.zIndex
           toastMessage.style.zIndex = modalMaskZIndex + 1
           this.sendNotification({
-            text: 'アイコン画像をアップロードできませんでした。',
+            text: '画像のアップロードに失敗しました',
             type: 'warning'
           })
           setTimeout(() => {
@@ -184,7 +184,7 @@ export default {
         }
         this.sendNotification({ text: 'プロフィールを変更しました' })
       } catch (error) {
-        this.sendNotification({ text: 'プロフィールを変更できませんでした。', type: 'warning' })
+        this.sendNotification({ text: 'プロフィールを変更できませんでした', type: 'warning' })
         console.error(error)
       }
     },

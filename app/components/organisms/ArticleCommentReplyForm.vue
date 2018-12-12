@@ -129,7 +129,7 @@ export default {
           replyedUserId: this.replyInfo.replyedUserId,
           replyedUserDisplayName: this.replyInfo.replyedUserDisplayName
         })
-        this.sendNotification({ text: 'コメントを投稿しました。' })
+        this.sendNotification({ text: 'コメントを投稿しました' })
         this.comment = ''
         this.$el.querySelector('.reply-comment-textarea').focus()
       } catch (error) {

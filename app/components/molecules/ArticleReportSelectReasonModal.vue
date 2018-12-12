@@ -32,7 +32,6 @@ import AppButton from '../atoms/AppButton'
 export default {
   data() {
     return {
-      errorMessage: '',
       reportReasons: [
         {
           order: 1,
