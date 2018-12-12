@@ -87,7 +87,14 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey'])
+    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'postPv'])
+  },
+  watch: {
+    loggedIn(newState) {
+      if (newState && this.currentUser.phoneNumberVerified) {
+        this.postPv({ articleId: this.$route.params.articleId })
+      }
+    }
   }
 }
 </script>
