@@ -1,6 +1,6 @@
 <template>
   <div>
-    <app-header class="center"/>
+    <app-header class="app-header"/>
     <div class="logo-mobile"></div>
     <div v-if="error.statusCode === 404">
       <div class="page-404-container">
@@ -57,8 +57,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.center {
+.app-header {
   margin: 0 auto;
+  height: 100px;
 }
 
 .page-500-container,
@@ -99,6 +100,10 @@ export default {
 }
 
 @media screen and (max-width: 550px) {
+  .app-header {
+    height: 66px;
+  }
+
   .page-404-container {
     background: url('~/assets/images/sp/common/image_bg404.jpg') no-repeat;
     background-position: center bottom;
