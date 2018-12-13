@@ -58,7 +58,7 @@ a {
   grid-template-areas:
     "article-card-image"
     "article-card-content";
-  transition: all 400ms ease;
+  transition: box-shadow 400ms ease;
   padding: 22px;
   border-radius: 4px;
   grid-gap: 12px;
@@ -67,7 +67,7 @@ a {
     box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
 
     &:active {
-      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
+      box-shadow: 0 0 2px 0 rgba(0, 134, 204, 0.5);
     }
   }
 }

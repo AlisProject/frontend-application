@@ -85,16 +85,17 @@ export default {
 .recommended-article-card {
   border-radius: 4px;
   box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
-  text-decoration: none;
-  position: relative;
-  width: 340px;
   height: 320px;
+  position: relative;
+  text-decoration: none;
+  transition: box-shadow 400ms ease;
+  width: 340px;
 
   &:hover {
     box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
 
     &:active {
-      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
+      box-shadow: 0 0 2px 0 rgba(0, 134, 204, 0.5);
     }
   }
 }

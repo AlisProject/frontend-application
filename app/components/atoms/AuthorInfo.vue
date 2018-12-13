@@ -73,7 +73,7 @@ export default {
     box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
 
     &:active {
-      box-shadow: 0 0 16px 0 rgba(0, 0, 0, 0.15);
+      box-shadow: 0 0 2px 0 rgba(0, 134, 204, 0.5);
     }
   }
 
