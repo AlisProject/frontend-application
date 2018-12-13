@@ -33,6 +33,7 @@
     "normalize.css": "^7.0.0",
     "nuxt": "^1.4.2",
     "nuxt-sass-resources-loader": "^2.0.1",
+    "sanitize-html": "^1.19.3",
     "smoothscroll-polyfill": "^0.4.3",
     "url-regex": "^4.1.1",
     "vue-chartjs": "^3.4.0",

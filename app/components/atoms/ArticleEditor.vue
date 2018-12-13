@@ -34,6 +34,7 @@ import {
   isFacebookPostURL,
   isInstagramURL
 } from '~/utils/article'
+import { sanitizeCommonTags } from '~/utils/sanitizer'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
 export default {
@@ -131,7 +132,45 @@ export default {
         placeholder: {
           text: ''
         },
-        spellcheck: false
+        spellcheck: false,
+        paste: {
+          forcePlainText: false,
+          cleanPastedHTML: true,
+          cleanTags: ['meta'],
+          cleanAttrs: ['class', 'style', 'dir'],
+          pasteHTML: function(html, options) {
+            options = MediumEditor.util.defaults({}, options, {
+              cleanAttrs: this.cleanAttrs,
+              cleanTags: this.cleanTags
+            })
+
+            const pasteBlock = this.document.createDocumentFragment()
+
+            pasteBlock.appendChild(this.document.createElement('body'))
+
+            const fragmentBody = pasteBlock.querySelector('body')
+
+            fragmentBody.innerHTML = html
+            this.cleanupSpans(fragmentBody)
+
+            const elList = fragmentBody.querySelectorAll('*')
+
+            Array.from(elList, (el) => {
+              const workEl = el
+
+              if (workEl.nodeName === 'A' && this.getEditorOption('targetBlank')) {
+                MediumEditor.util.setTargetBlank(workEl)
+              }
+              MediumEditor.util.cleanupAttrs(workEl, options.cleanAttrs)
+              MediumEditor.util.cleanupTags(workEl, options.cleanTags)
+            })
+
+            MediumEditor.util.insertHTMLCommand(
+              this.document,
+              sanitizeCommonTags(fragmentBody.innerHTML.replace(/&nbsp;/g, ' '))
+            )
+          }
+        }
       })
       this.editorElement.subscribe('editableInput', (event, editable) => {
         this.setIsEdited({ isEdited: true })
