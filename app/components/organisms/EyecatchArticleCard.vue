@@ -70,19 +70,10 @@ export default {
 
 <style lang="scss" scoped>
 .eyecatch-article-card {
+  @include cassette-shadow();
   border-radius: 4px;
-  box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
   position: relative;
   text-decoration: none;
-  transition: box-shadow 400ms ease;
-
-  &:hover {
-    box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
-
-    &:active {
-      box-shadow: 0 0 2px 0 rgba(0, 134, 204, 0.5);
-    }
-  }
 
   &:before {
     content: '';
