@@ -1,4 +1,4 @@
-const sanitize = require('sanitize-html/src/index.js')
+const sanitize = require('sanitize-html/src/')
 
 export function sanitizeCommonTags(html) {
   return sanitize(html, {
