@@ -9,7 +9,7 @@
     <div class="area-distributed-tokens">
       <div class="doughnut-chart-box">
         <doughnut-chart :data="doughnutChartData" :options="doughnutChartOptions" class="doughnut-chart"/>
-        <span class="amount">{{ totalAmount }}</span>
+        <span class="amount">{{ addDigitSeparator(totalAmount) }}</span>
         <span class="unit">ALIS</span>
         <span class="aggregation-date">※2019/1/1より集計</span>
       </div>
