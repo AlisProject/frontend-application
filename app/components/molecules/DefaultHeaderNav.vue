@@ -265,7 +265,6 @@ $topicCount: 10;
     grid-template-areas:
       '... nav-links ...';
     grid-template-columns: 0 auto 0;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.15);
     max-width: 100%;
     margin-bottom: 0;
     padding: 0 0 12px 0;

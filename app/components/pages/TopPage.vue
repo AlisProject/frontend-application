@@ -189,6 +189,11 @@ export default {
         position: fixed;
         top: 78px;
         right: calc(50% - 540px);
+
+        /* for Safari */
+        &:not(:root:root) {
+          left: calc(50vw + 200px);
+        }
       }
     }
 
@@ -198,6 +203,11 @@ export default {
         top: 778px;
         width: 266px;
         right: calc(50% - 540px);
+
+        /* for Safari */
+        &:not(:root:root) {
+          left: calc(50vw + 200px);
+        }
       }
     }
 
@@ -261,6 +271,11 @@ export default {
           position: relative;
           top: 0;
           right: 0;
+
+          /* for Safari */
+          &:not(:root:root) {
+            left: 0;
+          }
         }
       }
 
