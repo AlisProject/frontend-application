@@ -50,26 +50,17 @@ a {
 }
 
 .article-card-container {
+  @include cassette-shadow();
   display: grid;
-  box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
   grid-template-rows: 148px 136px;
   grid-template-columns: 296px;
   /* prettier-ignore */
   grid-template-areas:
     "article-card-image"
     "article-card-content";
-  transition: all 400ms ease;
   padding: 22px;
   border-radius: 4px;
   grid-gap: 12px;
-
-  &:hover {
-    box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
-
-    &:active {
-      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
-    }
-  }
 }
 
 .draft .article-card-container {

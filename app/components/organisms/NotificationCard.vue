@@ -57,21 +57,12 @@ a {
 }
 
 .notification-card-container {
+  @include cassette-shadow();
   display: grid;
-  box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
   /* prettier-ignore */
   grid-template-areas:
     "notification-card-image notification-card-content";
   grid-template-columns: auto 5fr;
   grid-template-rows: auto;
-  transition: all 400ms ease;
-
-  &:hover {
-    box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
-
-    &:active {
-      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
-    }
-  }
 }
 </style>

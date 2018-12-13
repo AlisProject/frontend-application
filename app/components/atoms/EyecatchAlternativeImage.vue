@@ -32,6 +32,7 @@ export default {
 
 <style lang="scss" scoped>
 .eyecatch-alternative-image-container {
+  @include cassette-shadow();
   border-radius: 4px;
 
   &.eyecatch1 {
