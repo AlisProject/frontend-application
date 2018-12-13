@@ -5,7 +5,7 @@
         {{ confirmTextPrefix }}<span class="br"/>SMSによるアカウント認証が必要です
       </p>
       <p class="description">
-        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます※記事作成並びに評価による、ALISトークン獲得のためにはアカウントの認証を必須とさせていただいております
+        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます※記事作成並びに評価による、ALIS獲得のためにはアカウントの認証を必須とさせていただいております
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
@@ -65,7 +65,7 @@ export default {
         case 'articleCommentLike':
           return 'コメントへいいねを行うには'
         case 'articleTip':
-          return 'トークンを贈るには'
+          return 'ALISを贈るには'
         case 'articleReport':
           return '記事を報告するには'
         default:

@@ -3,7 +3,7 @@
     <app-header />
     <nav class="area-nav">
       <div class="nav-content">
-        獲得トークン
+        獲得ALIS
       </div>
     </nav>
     <div class="area-distributed-tokens">

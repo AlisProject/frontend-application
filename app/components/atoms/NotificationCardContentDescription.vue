@@ -13,7 +13,7 @@
   </p>
   <p class="area-description" v-else-if="notification.type === 'tip_error'">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>
-    にトークンを贈れませんでした。"{{ decodedArticleTitle }}"
+    にALISを贈れませんでした。"{{ decodedArticleTitle }}"
   </p>
   <p class="area-description" v-else-if="notification.type === 'reply'">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>があなたの<span class="gray-darker">コメントに返信</span>しました。

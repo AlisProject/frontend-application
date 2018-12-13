@@ -2,10 +2,10 @@
   <div class="modal-body">
     <div class="wrapper">
       <h2 class="title">
-        はじめてのトークンを獲得しました！
+        はじめてALISを獲得しました！
       </h2>
       <p class="description">
-        ALISトークンを報酬として受け取ることができるようになりました。記事の作成・いいねを行うことでトークンを獲得できます。まずは記事の作成を行ってみましょう！
+        ALISを報酬として受け取ることができるようになりました。記事の作成・いいねを行うことでALISを獲得できます。まずは記事の作成を行ってみましょう！
       </p>
       <app-button class="submit" @click="submit">
         記事を作成する

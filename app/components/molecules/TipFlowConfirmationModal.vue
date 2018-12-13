@@ -4,7 +4,7 @@
       贈る量の確認
     </h1>
     <span class="description">
-      以下の内容をご確認の上、トークンを贈るボタンを押してください
+      以下の内容をご確認の上、ALISを贈るボタンを押してください
       ※操作の取り消しはできませんのでご注意ください
     </span>
     <img
@@ -32,7 +32,7 @@
       {{ errorMessage }}
     </span>
     <app-button class="send-token-button" @click="moveToCompletedPage">
-      トークンを贈る
+      ALISを贈る
     </app-button>
   </div>
 </template>

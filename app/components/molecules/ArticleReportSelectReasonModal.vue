@@ -55,7 +55,7 @@ export default {
         },
         {
           order: 5,
-          reasonName: 'トークンの不正獲得',
+          reasonName: 'ALISの不正獲得',
           reason: 'illegal_token_usage'
         },
         {
