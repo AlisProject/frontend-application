@@ -1,7 +1,7 @@
 <template>
   <div class="tip-flow-select-tip-amount-modal">
     <h1 class="title">
-      トークンを贈る
+      ALISを贈る
     </h1>
     <span class="description">
       お贈り先をご確認の上、贈る量を決めて確認画面へお進みください

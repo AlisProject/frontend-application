@@ -38,7 +38,7 @@ export default {
         case 'articleCommentLike':
           return `コメントへいいねを行うには${text}`
         case 'articleTip':
-          return `トークンを贈るには${text}`
+          return `ALISを贈るには${text}`
         case 'articleReport':
           return `記事を報告するには${text}`
         case 'articleCreate':

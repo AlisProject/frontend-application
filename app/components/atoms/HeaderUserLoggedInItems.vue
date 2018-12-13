@@ -54,7 +54,7 @@
         </li>
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
-            獲得トークン詳細
+            獲得ALIS詳細
           </nuxt-link>
         </li>
         <li class="menu-link" @click="showProfileSettingsModal">
