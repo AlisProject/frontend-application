@@ -179,6 +179,10 @@ export default {
 .username {
   bottom: 40px;
   left: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 190px;
 }
 
 .published-at {
@@ -211,6 +215,10 @@ export default {
 
   .title {
     width: 256px;
+  }
+
+  .username {
+    width: 150px;
   }
 }
 </style>

@@ -64,4 +64,10 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 550px) {
+  .area-data {
+    grid-template-columns: 50px 150px;
+  }
+}
 </style>
