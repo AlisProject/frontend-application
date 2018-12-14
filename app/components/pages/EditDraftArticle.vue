@@ -2,7 +2,7 @@
   <div class="edit-article-container">
     <app-header />
     <edit-header-nav type="draft-article" />
-    <article-editor :title="decodedTitle" :putArticle="putArticle"/>
+    <article-editor :title="decodedTitle" :putArticle="putArticle" :body="articleBody"/>
   </div>
 </template>
 
@@ -18,6 +18,12 @@ export default {
     AppHeader,
     EditHeaderNav,
     ArticleEditor
+  },
+  props: {
+    articleBody: String
+  },
+  mounted() {
+    console.log('articleBody', this.articleBody)
   },
   computed: {
     decodedTitle() {

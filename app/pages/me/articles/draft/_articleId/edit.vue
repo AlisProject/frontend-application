@@ -1,5 +1,5 @@
 <template>
-  <edit-draft-article/>
+  <edit-draft-article :articleBody="body" />
 </template>
 
 <script>
@@ -13,20 +13,21 @@ export default {
   components: {
     EditDraftArticle
   },
+  data() {
+    return {
+      body: ''
+    }
+  },
   async beforeCreate() {
     const { articleId } = this.$route.params
     try {
       await this.$store.dispatch('article/getEditDraftArticle', { articleId })
       const { body } = this.$store.state.article
+      this.body = body
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
-      const editorBody = this.$el.querySelector('.area-body')
-      editorBody.innerHTML = body
-      // Update thumbnails
       const images = Array.from(this.$el.querySelectorAll('figure img'))
       const thumbnails = getThumbnails(images)
       this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
-      editorBody.dataset.placeholder =
-        body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet()
       preventDropImageOnOGPContent()
     } catch (error) {

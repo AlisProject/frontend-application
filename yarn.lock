@@ -18,6 +18,11 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
+"@ckeditor/ckeditor5-build-balloon@^11.2.0":
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-balloon/-/ckeditor5-build-balloon-11.2.0.tgz#33a4ba61eadb17d9311f1e152fd4e5975bc498bd"
+  integrity sha512-vBtWiyMlQUzD5sLnEoyFD2kxgH1+vsY18xXyjJgj6gG89hTwisK/3HXPy85M2zTnxYGEle5ffADV2YKPjoNCEQ==
+
 "@johmun/vue-tags-input@^1.5.5":
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/@johmun/vue-tags-input/-/vue-tags-input-1.5.5.tgz#b7270a04cb4ff2b9fc6da681281a5760559d3260"

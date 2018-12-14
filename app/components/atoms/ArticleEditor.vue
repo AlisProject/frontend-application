@@ -36,9 +36,12 @@ import {
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
+const BalloonEditor = process.client ? require('@ckeditor/ckeditor5-build-balloon') : ''
+
 export default {
   props: {
     title: String,
+    body: String,
     putArticle: {
       type: Function,
       required: true
@@ -55,24 +58,10 @@ export default {
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
-  mounted() {
-    this.initMediumEditor()
-    window.addEventListener('resize', this.handleResize)
-    if (window.innerWidth <= 640) {
-      this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
-    }
-    preventDragAndDrop(window)
-    const preventDragAndDropInterval = setInterval(() => {
-      if (!this.$el.querySelector('.medium-insert-buttons')) return
-      preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
-      clearInterval(preventDragAndDropInterval)
-    }, 100)
-    $('.area-body').keydown((e) => {
-      const enterKeyCode = 13
-      const pressedEnterkey = e.keyCode === enterKeyCode
-      if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
-        e.preventDefault()
-      }
+  async mounted() {
+    BalloonEditor.create(document.querySelector('.area-body')).then((editor) => {
+      this.editorElement = editor
+      this.handleStatusChanges(editor)
     })
     // Start update article interval
     this.updateArticle()
@@ -133,10 +122,6 @@ export default {
         },
         spellcheck: false
       })
-      this.editorElement.subscribe('editableInput', (event, editable) => {
-        this.setIsEdited({ isEdited: true })
-        this.$el.onkeydown = (event) => this.handleEditorInput(event)
-      })
       $(() => {
         $('.area-body').mediumInsert({
           editor: this.editorElement,
@@ -151,6 +136,12 @@ export default {
             }
           }
         })
+      })
+    },
+    handleStatusChanges(editor) {
+      editor.model.document.on('change:data', () => {
+        this.setIsEdited({ isEdited: true })
+        // this.$el.onkeydown = (event) => this.handleEditorInput(event)
       })
     },
     async handleEditorInput(event) {
@@ -282,11 +273,6 @@ export default {
       // Update title
       this.updateTitle({ title: $('.area-title').val() })
 
-      // Update body
-      $('.area-body')
-        .find('span[style]')
-        .contents()
-        .unwrap()
       const body = this.removeUselessDOMFromArticleBody()
       this.updateBody({ body })
 
@@ -338,9 +324,7 @@ export default {
       })
     },
     removeUselessDOMFromArticleBody() {
-      const serializedContents = this.editorElement.serialize()
-      const serializedBody = serializedContents['element-0'].value
-      const $bodyTmp = $(`<div>${serializedBody}</div>`)
+      const $bodyTmp = $(`<div>${this.editorElement.sourceElement.innerHTML}</div>`)
       $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
         element.src = ''
       })
@@ -419,6 +403,11 @@ export default {
       'updateThumbnail'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
+  },
+  watch: {
+    body(newState) {
+      this.editorElement.setData(newState)
+    }
   }
 }
 </script>
