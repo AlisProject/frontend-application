@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^11.2.0",
+    "@ckeditor/ckeditor5-heading": "^10.1.1",
     "@johmun/vue-tags-input": "^1.5.5",
     "@nuxtjs/axios": "^5.3.1",
     "@nuxtjs/markdownit": "^1.2.0",

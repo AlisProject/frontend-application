@@ -36,7 +36,11 @@ import {
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
+// import BalloonEditor from '@ckeditor/ckeditor5-build-balloon'
+// import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials'
+
 const BalloonEditor = process.client ? require('@ckeditor/ckeditor5-build-balloon') : ''
+const Heading = process.client ? require('@ckeditor/ckeditor5-heading/src/heading') : ''
 
 export default {
   props: {
@@ -59,7 +63,9 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   async mounted() {
-    BalloonEditor.create(document.querySelector('.area-body')).then((editor) => {
+    BalloonEditor.create(document.querySelector('.area-body'), {
+      plugins: [Heading]
+    }).then((editor) => {
       this.editorElement = editor
       this.handleStatusChanges(editor)
     })
