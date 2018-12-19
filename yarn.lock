@@ -906,10 +906,10 @@
     loader-utils "^1.1.0"
     markdown-it "^8.3.1"
 
-"@nuxtjs/markdownit@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/markdownit/-/markdownit-1.2.0.tgz#4779117333486419b5aaa58ed66a4034aa087268"
-  integrity sha512-kLxbMxpv/pVbsSvdXjYd5HL+VtHMWCqYm1sCYTSHyJwqXojQpSzndWsV2N9UvDhAJPQXLsKg9nVPq4Lo2Jn+Nw==
+"@nuxtjs/markdownit@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/markdownit/-/markdownit-1.2.2.tgz#95faf7f0ee1677b4dc49941e8a47f864ccac1fa8"
+  integrity sha512-QdL0+L+NJD0Sr2UeMO+gFY7w4l4h1xYaYUaDx8H3ob/Zha2TapeXaYgD+PGhjUhWfnLFGc5cqcdsNI9+9Tt1oQ==
   dependencies:
     "@nuxtjs/markdownit-loader" "^1.1.1"
     raw-loader "^0.5.1"

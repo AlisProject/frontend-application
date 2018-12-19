@@ -20,7 +20,7 @@
   "dependencies": {
     "@johmun/vue-tags-input": "^1.5.5",
     "@nuxtjs/axios": "^5.3.1",
-    "@nuxtjs/markdownit": "^1.2.0",
+    "@nuxtjs/markdownit": "^1.2.2",
     "amazon-cognito-identity-js": "^2.0.2",
     "aws-sdk": "^2.215.1",
     "aws-serverless-express": "^3.0.2",
