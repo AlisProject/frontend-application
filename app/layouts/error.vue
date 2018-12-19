@@ -64,7 +64,7 @@ export default {
 
 .page-500-container,
 .page-404-container {
-  background: url('~/assets/images/pc/common/image_bg404.jpg') no-repeat;
+  background: url('~assets/images/pc/common/image_bg404.jpg') no-repeat;
   background-position: center bottom;
   background-size: 600px;
   height: calc(100vh - 100px);
@@ -105,7 +105,7 @@ export default {
   }
 
   .page-404-container {
-    background: url('~/assets/images/sp/common/image_bg404.jpg') no-repeat;
+    background: url('~assets/images/sp/common/image_bg404.jpg') no-repeat;
     background-position: center bottom;
     background-size: 100%;
     height: calc(100vh - 106px);

@@ -66,7 +66,7 @@ module.exports = {
   ** Build configuration
   */
   modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', 'nuxt-sass-resources-loader'],
-  sassResources: ['~/assets/stylesheets/mixins/**.scss'],
+  sassResources: ['~assets/stylesheets/mixins/**.scss'],
   markdownit: {
     injected: true,
     preset: 'default',
@@ -94,8 +94,8 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-    extend(config, { isDev, isClient }) {
-      if (isDev && isClient) {
+    extend(config) {
+      if (process.server && process.browser) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -103,8 +103,7 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    },
-    vendor: ['axios', 'moment', '@johmun/vue-tags-input']
+    }
   },
   css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
   env: {
