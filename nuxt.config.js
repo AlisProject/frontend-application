@@ -87,7 +87,13 @@ module.exports = {
     base: '/'
   },
   render: {
-    gzip: false
+    /**
+     * compression を通すと API Gateway がレスポンスを返せないので
+     * なにもしないミドルウェアを定義しておく
+     */
+    compressor: (req, res, next) => {
+      next()
+    }
   },
   build: {
     publicPath: `https://${process.env.DOMAIN}/d/nuxt/dist/`,

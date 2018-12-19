@@ -1,26 +1,18 @@
-const { Nuxt } = require('nuxt')
 const express = require('express')
-const config = require('./../nuxt.config.js')
-config.dev = false
+
+const { nuxt } = require('./core/nuxt')
+const { setHeadersMiddleware } = require('./middlewares/header-middleware')
+const { loggerMiddleware } = require('./middlewares/logger-middleware')
 
 const app = express()
 
-const setHeaders = (req, res, next) => {
-  res.removeHeader('x-powered-by')
-  res.header('no-cache', 'Set-Cookie')
-  res.header('x-xss-protection', '1; mode=block')
-  res.header('x-frame-options', 'DENY')
-  res.header('x-content-type-options', 'nosniff')
-  res.header('Cache-Control', 'max-age=120')
-  next()
+/** middleware */
+app.use(setHeadersMiddleware)
+
+if (process.env.NODE_ENV !== 'development') {
+  app.use(loggerMiddleware)
 }
 
-app.use(setHeaders)
-const nuxt = new Nuxt(config)
-
-app.use((req, res, next) => {
-  console.log('Request URL: ', req.url)
-  nuxt.render(req, res, next)
-})
+app.use(nuxt.render)
 
 module.exports.app = app
