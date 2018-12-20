@@ -8,10 +8,7 @@ const app = express()
 
 /** middleware */
 app.use(setHeadersMiddleware)
-
-if (process.env.NODE_ENV !== 'development') {
-  app.use(loggerMiddleware)
-}
+app.use(loggerMiddleware)
 
 app.use(nuxt.render)
 
