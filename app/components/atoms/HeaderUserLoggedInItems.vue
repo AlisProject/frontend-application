@@ -247,7 +247,7 @@ export default {
     .background-user-image {
       filter: blur(10px);
       height: auto;
-      margin: -10px -10px -10px -20px;
+      margin: -40px -10px 0 -10px;
       width: 270px;
     }
   }
