@@ -166,7 +166,12 @@ export default {
 .username {
   bottom: 40px;
   left: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 190px;
 }
+
 .published-at {
   bottom: 22px;
   left: 72px;
