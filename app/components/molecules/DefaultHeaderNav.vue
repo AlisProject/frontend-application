@@ -122,7 +122,6 @@ $topicCount: 10;
   background: #fff;
 
   &.is-fixed {
-    transition: all 400ms ease;
     width: 100%;
     padding: 12px 0;
     position: fixed;
@@ -182,6 +181,7 @@ $topicCount: 10;
   box-sizing: border-box;
   color: #fff;
   font-size: 12px;
+  font-weight: bold;
   height: 50px;
   position: relative;
   text-decoration: none;
