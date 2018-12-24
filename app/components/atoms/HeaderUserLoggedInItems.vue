@@ -332,12 +332,12 @@ export default {
     .search-icon,
     .notification-icon {
       width: 16px;
-      margin-right: 24px;
+      margin: 2px 24px 0 0;
     }
 
     .profile-icon {
-      height: 32px;
-      width: 32px;
+      height: 24px;
+      width: 24px;
     }
   }
 
