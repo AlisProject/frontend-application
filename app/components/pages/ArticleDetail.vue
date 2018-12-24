@@ -134,9 +134,10 @@ export default {
 }
 
 .area-title {
-  font-size: 24px;
   grid-area: title;
-  letter-spacing: 0.1em;
+  color: #333;
+  font-size: 24px;
+  letter-spacing: 0.02em;
   line-height: 1.5;
   word-break: break-all;
 }

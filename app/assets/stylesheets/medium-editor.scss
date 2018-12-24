@@ -6,60 +6,69 @@
     }
   }
 
-  p {
-    color: #040404;
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    line-height: 1.8;
-    word-break: break-word;
-  }
-
   h2 {
+    color: #333;
     font-size: 20px;
-    letter-spacing: 0.1em;
-    line-height: 1.5;
+    letter-spacing: 0.03em;
+    line-height: 1.6;
+    margin: 24px 0 16px;
     word-break: break-word;
   }
 
   h3 {
+    color: #333;
     font-size: 16px;
-    letter-spacing: 0.1em;
-    line-height: 1.5;
+    font-weight: normal;
+    letter-spacing: 0.03em;
+    line-height: 1.8;
+    margin: 16px 0;
     word-break: break-word;
   }
 
-  hr {
-    border: none;
-    border-top: dotted 3px #e3e3e3;
-    height: 2px;
-  }
-
-  img {
-    max-width: 100%;
+  p {
+    color: #333;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    line-height: 1.8;
+    margin: 16px 0;
+    word-break: break-word;
   }
 
   blockquote {
     background: #f6f6f6;
+    color: #333;
     font-size: 16px;
-    letter-spacing: 0.1em;
-    line-height: 1.5;
-    margin: 1em 0;
+    letter-spacing: 0;
+    line-height: 1.8;
+    margin: 16px 0;
     padding: 20px;
     word-break: break-word;
   }
 
   figure {
     figcaption {
-      color: #ccc;
+      color: #666;
       display: block;
-      font-size: 0.8em;
-      font-style: italic;
-      margin: 10px 0;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1.5;
+      margin: 8px 0;
       outline: 0 solid transparent;
       text-align: center;
       word-break: break-all;
     }
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  hr {
+    border: none;
+    border-top: dotted 3px #e3e3e3;
+    height: 2px;
   }
 
   ol,
@@ -72,6 +81,7 @@
 
   [data-alis-iframely-url] {
     user-select: none;
+    margin: 24px 0;
   }
 
   .twitter-profile-card {
@@ -336,6 +346,10 @@
   color: #b3b3b1;
 }
 
+.medium-insert-images {
+  margin: 24px 0;
+}
+
 .medium-insert-image-active {
   outline: none;
   border: 2px solid #000;
@@ -345,21 +359,33 @@
 @media screen and (max-width: 640px) {
   .area-content,
   .medium-editor-element {
-    p {
-      color: #030303;
-      font-size: 14px;
-    }
-
     h2 {
-      font-size: 18px;
+      font-size: 20px;
+      letter-spacing: 0;
+      line-height: 1.6;
+      margin: 24px 0 12px;
     }
 
     h3 {
       font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: 1.7;
+      margin: 18px 0 12px;
+    }
+
+    p {
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 1.8;
+      margin: 12px 0;
     }
 
     blockquote {
-      font-size: 14px;
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 1.8;
+      margin: 12px 0;
     }
 
     ol,
