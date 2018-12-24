@@ -139,6 +139,7 @@ export default {
   font-size: 24px;
   letter-spacing: 0.02em;
   line-height: 1.5;
+  margin: 2px 0 -24px;
   word-break: break-all;
 }
 

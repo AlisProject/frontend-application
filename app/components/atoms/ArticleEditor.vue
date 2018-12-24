@@ -429,7 +429,7 @@ export default {
   grid-area: editor;
   grid-template-rows: 32px min-content;
   // grid-template-rows: 32px 500px 70px;
-  grid-gap: 40px;
+  grid-gap: 8px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
