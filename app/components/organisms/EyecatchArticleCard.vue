@@ -3,7 +3,7 @@
     class="eyecatch-article-card"
     :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
-    :style="{ 'background': `url(${article.eye_catch_url}) no-repeat`, 'background-size': 'cover' }" >
+    :style="{ 'background': `url(${eyeCatchImagePath}) no-repeat`, 'background-size': 'cover' }" >
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
@@ -55,6 +55,11 @@ export default {
     },
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
+    },
+    eyeCatchImagePath() {
+      return this.article.eye_catch_url !== null
+        ? this.article.eye_catch_url
+        : require('~/assets/images/pc/common/thumbnail_noimg.png')
     },
     formattedTokenAmount() {
       const tokenAmount = this.article.alisToken
