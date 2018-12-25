@@ -253,7 +253,7 @@ export default {
     padding: 20px 30px;
     transition: all 0.3s ease;
     width: 80%;
-    overflow-y: scroll;
+    overflow-y: auto;
     box-sizing: border-box;
   }
 
@@ -305,10 +305,11 @@ export default {
 
     &-container {
       height: 100%;
+      height: 100vh;
       margin-top: 0;
       max-width: 550px;
+      overflow-y: scroll;
       width: 100vw;
-      height: 100vh;
     }
 
     &-body {
