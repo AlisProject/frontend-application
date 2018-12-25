@@ -57,10 +57,10 @@
             獲得ALIS詳細
           </nuxt-link>
         </li>
-        <li class="menu-link" @click="showProfileSettingsModal">
-          <span class="menu-link-inner">
-            ユーザー設定
-          </span>
+        <li class="menu-link">
+          <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="menu-link-inner">
+            ALISの使い方
+          </nuxt-link>
         </li>
         <li class="menu-link" @click="logoutUser">
           <span class="menu-link-inner">
@@ -152,10 +152,6 @@ export default {
         console.error(error)
       }
     },
-    showProfileSettingsModal() {
-      this.closeMenu()
-      this.setProfileSettingsModal({ showProfileSettingsModal: true })
-    },
     moveToNotificationPage() {
       this.resetNotificationData()
       this.getNotifications()
@@ -174,7 +170,6 @@ export default {
     }),
     ...mapActions('user', [
       'logout',
-      'setProfileSettingsModal',
       'setCurrentUserInfo',
       'getUsersAlisToken',
       'getUnreadNotification',
