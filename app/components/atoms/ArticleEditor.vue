@@ -33,7 +33,8 @@ import {
   preventDropImageOnOGPContent,
   isYouTubeVideoURL,
   isFacebookPostURL,
-  isInstagramURL
+  isInstagramURL,
+  resizeTextarea
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -57,25 +58,10 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
-    const textarea = this.$el.querySelector('.area-title')
-    textarea.style.lineHeight = '1.5'
-    textarea.style.height = '40px'
-
-    textarea.addEventListener('input', (event) => {
-      if (event.target.scrollHeight > event.target.offsetHeight) {
-        event.target.style.height = `${event.target.scrollHeight}px`
-        return
-      }
-      let height, lineHeight
-      while (true) {
-        height = Number(event.target.style.height.split('px')[0])
-        lineHeight = Number(event.target.style.lineHeight.split('px')[0])
-        event.target.style.height = `${height - lineHeight}px`
-        if (event.target.scrollHeight > event.target.offsetHeight) {
-          event.target.style.height = `${event.target.scrollHeight}px`
-          break
-        }
-      }
+    resizeTextarea({
+      targetElement: this.$el.querySelector('.area-title'),
+      height: '40px',
+      lineHeight: '1.5'
     })
 
     this.initMediumEditor()
