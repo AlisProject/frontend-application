@@ -1,7 +1,8 @@
 <template>
   <div class="report-modal-content">
     <p class="confirm-text">
-      {{ confirmText }}
+      {{ confirmText }}<br>
+      新規登録・ログインが必要です
     </p>
     <p class="description">
       以下のボタンよりログイン画面または新規登録画面へお進みください
@@ -29,22 +30,21 @@ export default {
   },
   computed: {
     confirmText() {
-      const text = '新規登録・ログインが必要です'
       switch (this.requestLoginModal.requestType) {
         case 'articleLike':
-          return `記事へいいねを行うには${text}`
+          return '記事へいいねを行うには'
         case 'articleComment':
-          return `記事へのコメントを行うには${text}`
+          return '記事へのコメントを行うには'
         case 'articleCommentLike':
-          return `コメントへいいねを行うには${text}`
+          return 'コメントへいいねを行うには'
         case 'articleTip':
-          return `ALISを贈るには${text}`
+          return 'ALISを贈るには'
         case 'articleReport':
-          return `記事を報告するには${text}`
+          return '記事を報告するには'
         case 'articleCreate':
-          return `記事の作成を行うには${text}`
+          return '記事の作成を行うには'
         default:
-          return text
+          return ''
       }
     },
     ...mapGetters('user', ['requestLoginModal'])
@@ -76,18 +76,21 @@ export default {
   color: #030303;
   font-size: 14px;
   letter-spacing: 0.8px;
-  text-align: center;
+  line-height: 1.5;
   padding: 30px 0 0;
+  text-align: center;
 }
 
 .description {
   @include default-text();
-  max-width: 394px;
+  color: #6e6e6e;
+  letter-spacing: 0.8px;
   margin: 20px auto 0;
+  max-width: 256px;
 }
 
 .login-button {
-  margin: 60px auto 0;
+  margin: 50px auto 0;
 }
 
 .signup-button {
@@ -96,23 +99,11 @@ export default {
 
 @media screen and (max-width: 550px) {
   .confirm-text {
-    padding: calc(50vh - 160px) 0 0;
-  }
-
-  .description {
-    max-width: 300px;
+    padding: calc(50vh - 180px) 0 0;
   }
 
   .login-button {
     margin: 40px auto 0;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .login-button,
-  .signup-button {
-    width: 220px;
-    margin: 12px auto;
   }
 }
 </style>
