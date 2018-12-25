@@ -1,13 +1,14 @@
 <template>
   <div class="area-editor-container">
-    <input
+    <textarea
       class="area-title"
       type="text"
       placeholder="タイトル"
       spellcheck="false"
       maxlength="255"
       @input="onInputTitle"
-      :value="title">
+      @keydown.enter.prevent
+      :value="title"/>
     <div
       class="area-body"
       ref="editable"
@@ -56,6 +57,27 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
+    const textarea = this.$el.querySelector('.area-title')
+    textarea.style.lineHeight = '1.5'
+    textarea.style.height = '40px'
+
+    textarea.addEventListener('input', (event) => {
+      if (event.target.scrollHeight > event.target.offsetHeight) {
+        event.target.style.height = `${event.target.scrollHeight}px`
+        return
+      }
+      let height, lineHeight
+      while (true) {
+        height = Number(event.target.style.height.split('px')[0])
+        lineHeight = Number(event.target.style.lineHeight.split('px')[0])
+        event.target.style.height = `${height - lineHeight}px`
+        if (event.target.scrollHeight > event.target.offsetHeight) {
+          event.target.style.height = `${event.target.scrollHeight}px`
+          break
+        }
+      }
+    })
+
     this.initMediumEditor()
     window.addEventListener('resize', this.handleResize)
     if (window.innerWidth <= 640) {
@@ -427,9 +449,8 @@ export default {
 .area-editor-container {
   display: grid;
   grid-area: editor;
-  grid-template-rows: 32px min-content;
-  // grid-template-rows: 32px 500px 70px;
-  grid-gap: 40px;
+  grid-template-rows: min-content min-content;
+  grid-gap: 20px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
@@ -438,14 +459,14 @@ export default {
 }
 
 .area-title {
+  border: 0;
   color: #040404;
   font-size: 24px;
   font-weight: bold;
   grid-area: title;
-  height: 32px;
   letter-spacing: 0.1em;
   line-height: 1.5;
-  border: 0;
+  resize: none;
 
   &:placeholder-shown {
     color: #898989;
