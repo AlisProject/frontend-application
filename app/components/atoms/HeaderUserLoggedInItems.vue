@@ -52,11 +52,11 @@
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
         </li>
-        <li class="menu-link">
+        <!-- <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
             獲得ALIS詳細
           </nuxt-link>
-        </li>
+        </li> -->
         <li class="menu-link" @click="showProfileSettingsModal">
           <span class="menu-link-inner">
             ユーザー設定
