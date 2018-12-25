@@ -42,6 +42,7 @@ export default {
   margin-right: 8px;
   text-decoration: none;
   transition: color 400ms ease;
+  white-space: nowrap;
 
   &:hover {
     color: #0086cc;
