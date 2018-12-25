@@ -429,7 +429,7 @@ export default {
   grid-area: editor;
   grid-template-rows: 32px min-content;
   // grid-template-rows: 32px 500px 70px;
-  grid-gap: 40px;
+  grid-gap: 8px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
@@ -438,14 +438,14 @@ export default {
 }
 
 .area-title {
-  color: #040404;
+  grid-area: title;
+  border: 0;
+  color: #333;
   font-size: 24px;
   font-weight: bold;
-  grid-area: title;
-  height: 32px;
-  letter-spacing: 0.1em;
+  height: 1.5;
+  letter-spacing: 0.02em;
   line-height: 1.5;
-  border: 0;
 
   &:placeholder-shown {
     color: #898989;
@@ -475,6 +475,10 @@ export default {
   .area-editor-container {
     grid-template-columns: 1fr;
     display: none;
+  }
+
+  .area-title {
+    letter-spacing: 0.01em;
   }
 }
 </style>
