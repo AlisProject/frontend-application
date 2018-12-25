@@ -95,10 +95,10 @@ export default {
             type: 'warning'
           })
         }
-        if (!this.currentUserInfo.is_liked_article) {
-          this.setFirstProcessModal({ isShow: true })
-          this.setFirstProcessLikedArticleModal({ isShow: true })
-        }
+        // if (!this.currentUserInfo.is_liked_article) {
+        //   this.setFirstProcessModal({ isShow: true })
+        //   this.setFirstProcessLikedArticleModal({ isShow: true })
+        // }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
       }
