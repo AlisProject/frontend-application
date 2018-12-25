@@ -88,13 +88,16 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
   }
 
   &.eyecatch1 {
     grid-area: eyecatch1;
     width: 710px;
     height: 412px;
+
+    &:before {
+      background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+    }
   }
 
   &.eyecatch2 {
@@ -109,6 +112,10 @@ export default {
   &.eyecatch3 {
     width: 340px;
     height: 196px;
+
+    &:before {
+      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+    }
   }
 }
 
