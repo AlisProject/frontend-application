@@ -185,20 +185,6 @@ export default {
       top: 24px;
       z-index: 1;
 
-      &::after {
-        border-bottom: 8px solid #fff;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        content: '';
-        height: 0;
-        padding: 0;
-        position: absolute;
-        right: 0;
-        right: 98px;
-        top: -6px;
-        width: 0;
-      }
-
       .article-popup-content {
         color: #6e6e6e;
         cursor: pointer;
