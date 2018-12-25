@@ -320,3 +320,26 @@ export function isInstagramURL(url) {
 
   return isInstagramURL
 }
+
+export function resizeTextarea({ targetElement, height, lineHeight }) {
+  const textarea = targetElement
+  textarea.style.height = height
+  textarea.style.lineHeight = lineHeight
+
+  textarea.addEventListener('input', (event) => {
+    if (event.target.scrollHeight > event.target.offsetHeight) {
+      event.target.style.height = `${event.target.scrollHeight}px`
+      return
+    }
+    let height, lineHeight
+    while (true) {
+      height = Number(event.target.style.height.split('px')[0])
+      lineHeight = Number(event.target.style.lineHeight.split('px')[0])
+      event.target.style.height = `${height - lineHeight}px`
+      if (event.target.scrollHeight > event.target.offsetHeight) {
+        event.target.style.height = `${event.target.scrollHeight}px`
+        break
+      }
+    }
+  })
+}

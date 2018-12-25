@@ -1,13 +1,14 @@
 <template>
   <div class="area-editor-container">
-    <input
+    <textarea
       class="area-title"
       type="text"
       placeholder="タイトル"
       spellcheck="false"
       maxlength="255"
       @input="onInputTitle"
-      :value="title">
+      @keydown.enter.prevent
+      :value="title"/>
     <div
       class="area-body"
       ref="editable"
@@ -32,7 +33,8 @@ import {
   preventDropImageOnOGPContent,
   isYouTubeVideoURL,
   isFacebookPostURL,
-  isInstagramURL
+  isInstagramURL,
+  resizeTextarea
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -56,6 +58,12 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
+    resizeTextarea({
+      targetElement: this.$el.querySelector('.area-title'),
+      height: '40px',
+      lineHeight: '1.5'
+    })
+
     this.initMediumEditor()
     window.addEventListener('resize', this.handleResize)
     if (window.innerWidth <= 640) {
@@ -427,9 +435,8 @@ export default {
 .area-editor-container {
   display: grid;
   grid-area: editor;
-  grid-template-rows: 32px min-content;
-  // grid-template-rows: 32px 500px 70px;
-  grid-gap: 8px;
+  grid-template-rows: min-content min-content;
+  grid-gap: 20px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
@@ -443,9 +450,9 @@ export default {
   color: #333;
   font-size: 24px;
   font-weight: bold;
-  height: 1.5;
   letter-spacing: 0.02em;
   line-height: 1.5;
+  resize: none;
 
   &:placeholder-shown {
     color: #898989;
