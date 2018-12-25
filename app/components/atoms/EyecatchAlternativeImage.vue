@@ -17,7 +17,7 @@ export default {
     articlePath() {
       switch (this.order) {
         case 'eyecatch1':
-          return '#1'
+          return '/ALIS-official/articles/3reY5BgBEZ8B'
         case 'eyecatch2':
           return '/users/ALIS-official'
         case 'eyecatch3':
