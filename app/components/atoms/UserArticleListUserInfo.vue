@@ -220,20 +220,6 @@ export default {
     width: 90px;
     z-index: 1;
 
-    &::after {
-      border-bottom: 8px solid #fff;
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      content: '';
-      height: 0;
-      padding: 0;
-      position: absolute;
-      right: 0;
-      right: 6px;
-      top: -4px;
-      width: 0;
-    }
-
     .report {
       display: block;
       padding: 12px;

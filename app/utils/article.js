@@ -218,17 +218,13 @@ export function showEmbedTweet() {
       const hasTitleOrDescription = title !== undefined || description !== undefined
       if (!hasTitleOrDescription) return
 
-      element.innerHTML = `
-      ${getTwitterProfileTemplate({ ...result })}
-      <br>`
+      element.innerHTML = getTwitterProfileTemplate({ ...result })
     } else {
       const { title, description } = result.meta
       const hasTitleOrDescription = title !== undefined || description !== undefined
       if (!hasTitleOrDescription) return
 
-      element.innerHTML = `
-      ${getIframelyEmbedTemplate({ ...result })}
-      <br>`
+      element.innerHTML = getIframelyEmbedTemplate({ ...result })
     }
   })
 }

@@ -445,12 +445,12 @@ export default {
 }
 
 .area-title {
+  grid-area: title;
   border: 0;
-  color: #040404;
+  color: #333;
   font-size: 24px;
   font-weight: bold;
-  grid-area: title;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
   line-height: 1.5;
   resize: none;
 
@@ -482,6 +482,10 @@ export default {
   .area-editor-container {
     grid-template-columns: 1fr;
     display: none;
+  }
+
+  .area-title {
+    letter-spacing: 0.01em;
   }
 }
 </style>
