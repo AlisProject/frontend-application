@@ -192,6 +192,7 @@ export default {
   background-repeat: no-repeat;
   background-size: 20px;
   cursor: pointer;
+  width: 40px;
 }
 
 .sp-profile-edit {
@@ -206,6 +207,7 @@ export default {
   background-size: 20px;
   cursor: pointer;
   position: relative;
+  width: 40px;
 
   .report-popup {
     background-color: #ffffff;
