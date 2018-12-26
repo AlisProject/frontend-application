@@ -120,7 +120,7 @@ export default {
 
 @mixin spStyles() {
   .area-app-header-container {
-    max-width: calc(100% - 40px);
+    max-width: calc(100% - 24px);
     background: #fff;
   }
 
