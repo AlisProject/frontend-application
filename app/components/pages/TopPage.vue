@@ -96,6 +96,8 @@ export default {
     handleScroll() {
       const howToUseImageElement = this.$el.querySelector('.how-to-use-image')
       const subFooterElement = this.$el.querySelector('.sub-footer')
+      const isShakingWindowHeight = document.body.scrollHeight < 1500
+      if (isShakingWindowHeight) return
       if (window.scrollY >= 460) {
         howToUseImageElement.classList.add('is-fixed')
         subFooterElement.classList.add('is-fixed')
