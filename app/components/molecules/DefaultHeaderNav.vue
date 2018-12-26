@@ -128,6 +128,8 @@ export default {
 $topicCount: 10;
 
 .area-nav {
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
   grid-area: nav;
   display: grid;
   text-align: center;
