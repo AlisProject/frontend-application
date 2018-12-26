@@ -186,6 +186,7 @@ export default {
 
   .area-title {
     font-size: 20px;
+    margin: 6px 0 -6px;
   }
 }
 </style>
