@@ -89,7 +89,8 @@ export default {
       const navElement = this.$el
       if (window.scrollY >= this.fixNavigationHeight) {
         navElement.classList.add('is-fixed')
-      } else {
+      }
+      if (window.scrollY < this.fixNavigationHeight - 22) {
         navElement.classList.remove('is-fixed')
       }
       this.startPos = this.currentPos

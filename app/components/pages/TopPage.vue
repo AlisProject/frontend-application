@@ -96,7 +96,7 @@ export default {
     handleScroll() {
       const howToUseImageElement = this.$el.querySelector('.how-to-use-image')
       const subFooterElement = this.$el.querySelector('.sub-footer')
-      if (window.scrollY >= 460) {
+      if (window.scrollY >= 518) {
         howToUseImageElement.classList.add('is-fixed')
         subFooterElement.classList.add('is-fixed')
       } else {
@@ -164,10 +164,11 @@ export default {
     "app-footer app-footer                 app-footer                 app-footer";
 
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px auto auto auto 1fr 75px 75px;
+  grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
   min-height: 100vh;
 
   &.is-show-guide {
+    grid-template-rows: 100px minmax(50px, min-content) auto 700px 100px 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header                 app-header"
@@ -183,8 +184,6 @@ export default {
     }
 
     .how-to-use-image {
-      margin-bottom: 30px;
-
       &.is-fixed {
         position: fixed;
         top: 78px;
@@ -244,7 +243,7 @@ export default {
 @media screen and (max-width: 1296px) {
   .top-page {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px auto auto 1fr 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header"
