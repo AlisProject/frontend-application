@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <div class="area-nav-links">
+    <div class="area-nav-links" @scroll="handleHorizontalScroll">
       <nuxt-link
         to="/"
         class="nav-link area-topic0">
@@ -57,9 +57,11 @@ export default {
       })
       return images
     },
-    ...mapGetters('article', ['topics', 'articleType'])
+    ...mapGetters('article', ['topics', 'articleType']),
+    ...mapGetters('presentation', ['defaultHeaderNavHorizontalScrollPosition'])
   },
   mounted() {
+    this.holdHorizontalScrollPosition()
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
     window.addEventListener('scroll', this.handleScroll)
@@ -92,15 +94,32 @@ export default {
       }
       this.startPos = this.currentPos
     },
+    handleHorizontalScroll(event) {
+      this.setDefaultHeaderNavHorizontalScrollPosition({ scrollPosition: event.target.scrollLeft })
+    },
     handleResize() {
       const spBreakPoint = 550
       this.fixNavigationHeight = window.innerWidth <= spBreakPoint ? spHeaderHeight : pcHeaderHeight
+    },
+    holdHorizontalScrollPosition() {
+      this.$el.querySelector(
+        '.area-nav-links'
+      ).scrollLeft = this.defaultHeaderNavHorizontalScrollPosition
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('article', ['getTopics', 'resetArticleData']),
-    ...mapActions('presentation', ['setArticleListScrollHeight'])
+    ...mapActions('presentation', [
+      'setArticleListScrollHeight',
+      'setDefaultHeaderNavHorizontalScrollPosition'
+    ])
+  },
+  watch: {
+    async $route() {
+      await this.$nextTick()
+      this.holdHorizontalScrollPosition()
+    }
   }
 }
 </script>
