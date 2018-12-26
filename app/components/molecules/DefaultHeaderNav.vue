@@ -87,11 +87,10 @@ export default {
     },
     handleScroll() {
       const navElement = this.$el
-      const isShakingWindowHeight = document.body.scrollHeight < 1100
-      if (isShakingWindowHeight) return
       if (window.scrollY >= this.fixNavigationHeight) {
         navElement.classList.add('is-fixed')
-      } else {
+      }
+      if (window.scrollY < this.fixNavigationHeight - 22) {
         navElement.classList.remove('is-fixed')
       }
       this.startPos = this.currentPos
