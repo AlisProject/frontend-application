@@ -255,7 +255,7 @@ export default {
       "app-footer app-footer                 app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px auto auto auto 1fr 75px 75px;
+      grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
       /* prettier-ignore */
       grid-template-areas:
         "app-header app-header                 app-header"
@@ -333,7 +333,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .top-page {
-    grid-template-rows: 66px 62px auto 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) auto 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header       app-header                    app-header"
@@ -345,7 +345,7 @@ export default {
     grid-gap: 0;
 
     &.is-show-guide {
-      grid-template-rows: 66px auto auto auto 1fr 75px min-content;
+      grid-template-rows: 66px minmax(50px, min-content) auto auto 1fr 75px min-content;
       /* prettier-ignore */
       grid-template-areas:
         "app-header       app-header                    app-header"
@@ -357,7 +357,7 @@ export default {
         "app-footer       app-footer                    app-footer";
 
       .how-to-use-image {
-        margin-bottom: 0;
+        margin: 12px 0 0;
       }
     }
 
