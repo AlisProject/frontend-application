@@ -6,6 +6,10 @@
     }
   }
 
+  a {
+    color: #0086cc;
+  }
+
   h2 {
     color: #333;
     font-size: 20px;
@@ -117,6 +121,10 @@
       font-weight: 500;
       letter-spacing: 0.6px;
     }
+  }
+
+  .medium-insert-images {
+    margin: 24px 0;
   }
 }
 
@@ -344,10 +352,6 @@
 
 .medium-editor-placeholder:after {
   color: #b3b3b1;
-}
-
-.medium-insert-images {
-  margin: 24px 0;
 }
 
 .medium-insert-image-active {

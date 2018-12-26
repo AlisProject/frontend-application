@@ -64,6 +64,7 @@ export default {
     color: #6e6e6e;
     cursor: pointer;
     font-size: 14px;
+    font-weight: bold;
     margin-right: 40px;
   }
 
@@ -71,7 +72,7 @@ export default {
     border-radius: 4px;
     box-shadow: none;
     font-size: 14px;
-    font-weight: 100;
+    font-weight: bold;
     height: 34px;
     line-height: 34px;
     width: 96px;

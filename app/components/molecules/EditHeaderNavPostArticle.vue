@@ -129,7 +129,7 @@ export default {
           await this.putPublicArticle({ article, articleId })
           await this.republishPublicArticle({ articleId, topic, tags })
         }
-        this.$router.push(`/users/${this.currentUserInfo.user_id}`)
+        this.$router.push(`/${this.currentUserInfo.user_id}/articles/${articleId}`)
         this.sendNotification({ text: '記事を公開しました' })
         this.resetArticleTopic()
 
