@@ -292,7 +292,7 @@ $topicCount: 10;
     grid-template-columns: 0 auto 0;
     max-width: 100%;
     margin-bottom: 0;
-    padding: 0 0 12px 0;
+    padding: 0;
 
     &.is-fixed {
       padding-left: 0;
