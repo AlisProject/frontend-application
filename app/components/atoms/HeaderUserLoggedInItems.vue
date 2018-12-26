@@ -227,7 +227,7 @@ export default {
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
   position: absolute;
   right: 0;
-  top: 80px;
+  top: 48px;
   width: 250px;
 
   .background-user-image-box {

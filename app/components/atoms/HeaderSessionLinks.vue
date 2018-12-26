@@ -65,6 +65,7 @@ export default {
     color: #6e6e6e;
     cursor: pointer;
     font-size: 14px;
+    font-weight: bold;
     margin-right: 40px;
   }
 
@@ -74,7 +75,7 @@ export default {
       color: #fff;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 100;
+      font-weight: bold;
       height: 34px;
       line-height: 2.5;
       text-align: center;
@@ -171,6 +172,7 @@ export default {
         cursor: pointer;
         display: initial;
         font-size: 12px;
+        font-weight: bold;
         height: auto;
         width: auto;
       }

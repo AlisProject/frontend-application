@@ -14,6 +14,8 @@
 
 <style lang="scss" scoped>
 .area-app-footer-container {
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
   align-items: center;
   background: #05051e;
   display: flex;
