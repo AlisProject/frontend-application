@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link to="/" class="how-to-use-image" />
+  <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="how-to-use-image" />
 </template>
 
 <style lang="scss" scoped>
