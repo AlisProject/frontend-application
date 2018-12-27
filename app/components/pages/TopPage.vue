@@ -184,6 +184,8 @@ export default {
     }
 
     .how-to-use-image {
+      margin-bottom: 30px;
+
       &.is-fixed {
         position: fixed;
         top: 78px;
