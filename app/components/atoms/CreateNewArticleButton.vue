@@ -34,4 +34,10 @@ export default {
   padding-top: 28px;
   width: 64px;
 }
+
+@media screen and (max-width: 640px) {
+  .create-new-article-button {
+    display: none;
+  }
+}
 </style>
