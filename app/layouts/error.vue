@@ -4,7 +4,7 @@
     <div class="logo-mobile"></div>
     <div v-if="error.statusCode === 404">
       <div class="page-404-container">
-        <h1 class="title">お探しのページは見つかりませんでした</h1>
+        <h1 class="title">お探しのページは<span class="br"/>見つかりませんでした</h1>
         <p class="description">
           アクセスしようとしたページは削除、変更されたか、<br>
           現在利用できない可能性があります。
@@ -64,30 +64,30 @@ export default {
 
 .page-500-container,
 .page-404-container {
-  background: url('~/assets/images/pc/common/image_bg404.jpg') no-repeat;
+  background: url('~/assets/images/pc/common/image_bg404.png') no-repeat;
   background-position: center bottom;
   background-size: 600px;
-  height: calc(100vh - 100px);
   text-align: center;
   width: 100%;
+  height: 100%;
 
   .title {
     color: #030303;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 24px;
-    margin: 0 30px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+    margin: 40px 0 0;
   }
 
   .description {
     color: #6e6e6e;
     font-size: 12px;
     line-height: 18px;
-    margin: 38px 0 0;
+    margin: 20px 0 0;
   }
 
   .to-top-button {
-    margin: 50vh auto 60px;
+    margin: 40vh auto 150px;
   }
 }
 
@@ -100,18 +100,26 @@ export default {
 }
 
 @media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+
   .app-header {
     height: 66px;
   }
 
   .page-404-container {
-    background: url('~/assets/images/sp/common/image_bg404.jpg') no-repeat;
-    background-position: center bottom;
-    background-size: 100%;
-    height: calc(100vh - 106px);
+    background-size: 400px;
 
     .title {
       margin-top: 30px;
+    }
+
+    .to-top-button {
+      margin: 36vh auto 80px;
     }
   }
 }

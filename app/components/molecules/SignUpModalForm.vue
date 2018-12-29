@@ -436,7 +436,12 @@ export default {
   }
 
   .external-provider-auth {
+    background-size: auto 450px;
     margin: -60px -30px 0;
+  }
+
+  .line-button {
+    margin-top: 370px;
   }
 
   .for-login-user {
