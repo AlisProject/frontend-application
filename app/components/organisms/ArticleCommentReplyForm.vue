@@ -57,8 +57,9 @@ export default {
 
     resizeTextarea({
       targetElement: textarea,
-      height: '60px',
-      lineHeight: '18px'
+      height: '52px',
+      lineHeight: '18px',
+      defaultHeight: 52
     })
 
     const viewportMeta = document.querySelector('meta[name="viewport"]')
