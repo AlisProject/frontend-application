@@ -321,7 +321,7 @@ export function isInstagramURL(url) {
   return isInstagramURL
 }
 
-export function resizeTextarea({ targetElement, height, lineHeight }) {
+export function resizeTextarea({ targetElement, height, lineHeight, defaultHeight = 0 }) {
   const textarea = targetElement
   textarea.style.height = height
   textarea.style.lineHeight = lineHeight
@@ -333,6 +333,7 @@ export function resizeTextarea({ targetElement, height, lineHeight }) {
     }
     let height, lineHeight
     while (true) {
+      if (defaultHeight >= event.target.scrollHeight) return
       height = Number(event.target.style.height.split('px')[0])
       lineHeight = Number(event.target.style.lineHeight.split('px')[0])
       event.target.style.height = `${height - lineHeight}px`

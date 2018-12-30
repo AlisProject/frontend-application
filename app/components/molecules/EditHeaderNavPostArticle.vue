@@ -355,6 +355,7 @@ export default {
           color: #fff;
           content: '選択中';
           font-size: 14px;
+          font-weight: bold;
           left: 0;
           letter-spacing: 0.8px;
           position: absolute;

@@ -4,7 +4,9 @@
     <no-ssr>
       <article-card-content-tags :tags="article.tags"/>
     </no-ssr>
-    <article-card-content-data :article="article"/>
+    <no-ssr>
+      <article-card-content-data :article="article"/>
+    </no-ssr>
     <article-card-content-token-amount :tokenAmount="article.alisToken"/>
   </div>
 </template>

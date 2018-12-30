@@ -7,17 +7,23 @@
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
-    <img
-      class="profile-icon"
-      :src="article.userInfo.icon_image_url"
-      v-if="article.userInfo.icon_image_url !== undefined">
-    <img
-      class="profile-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
-      v-else>
-    <span class="username">
-      {{ decodedUsername }}
-    </span>
+    <no-ssr>
+      <nuxt-link :to="`/users/${article.user_id}`" class="profile-icon-box">
+        <img
+          class="profile-icon"
+          :src="article.userInfo.icon_image_url"
+          v-if="article.userInfo.icon_image_url !== undefined">
+        <img
+          class="profile-icon"
+          src="~assets/images/pc/common/icon_user_noimg.png"
+          v-else>
+      </nuxt-link>
+    </no-ssr>
+    <no-ssr>
+      <nuxt-link :to="`/users/${article.user_id}`" class="username">
+        {{ decodedUsername }}
+      </nuxt-link>
+    </no-ssr>
     <span class="published-at">
       {{ formattedPublishedAt }}
     </span>
@@ -155,13 +161,17 @@ export default {
   }
 }
 
-.profile-icon {
-  border-radius: 50%;
+.profile-icon-box {
   bottom: 20px;
   height: 36px;
   left: 20px;
   position: absolute;
-  width: 36px;
+
+  .profile-icon {
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+  }
 }
 
 .username,
@@ -182,6 +192,7 @@ export default {
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 190px;
+  text-decoration: none;
 }
 
 .published-at {

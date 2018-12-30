@@ -50,7 +50,8 @@ export default {
     return {
       targetDOM: null,
       editorElement: null,
-      updateArticleInterval: null
+      updateArticleInterval: null,
+      isInitTitleHeight: false
     }
   },
   computed: {
@@ -82,6 +83,7 @@ export default {
         e.preventDefault()
       }
     })
+
     // Start update article interval
     this.updateArticle()
   },
@@ -427,6 +429,17 @@ export default {
       'updateThumbnail'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
+  },
+  watch: {
+    async title(value) {
+      if (this.isInitTitleHeight) return
+      await this.$nextTick()
+      const textarea = this.$el.querySelector('.area-title')
+      if (textarea.scrollHeight > textarea.offsetHeight) {
+        textarea.style.height = `${textarea.scrollHeight}px`
+      }
+      this.isInitTitleHeight = true
+    }
   }
 }
 </script>
