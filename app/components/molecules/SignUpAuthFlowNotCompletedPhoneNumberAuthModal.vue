@@ -1,17 +1,14 @@
 <template>
   <div class="modal-body">
     <div class="wrapper">
-      <h2 class="title">
-        ご登録お疲れ様でした！
-      </h2>
-      <p class="about">
-        アカウント認証について
-      </p>
       <p class="description">
-        ALISを報酬として受け取ることができるようになりました。記事の作成・いいねを行うことでALISを獲得できます。まずは記事の作成を行ってみましょう！
+        アカウント登録が<span class="br"/>完了しました。<br>
+        ALISのはじめ方を<span class="br"/>確認しましょう。
       </p>
       <app-button class="submit" @click="submit">
-        認証する
+        <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B">
+          はじめ方をみる
+        </nuxt-link>
       </app-button>
       <app-button class="close" @click="close">
         閉じる
@@ -60,32 +57,13 @@ export default {
   height: 100%;
 }
 
-.title {
-  color: #030303;
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 5px;
-  margin: 280px 0 0;
-  text-align: center;
-}
-
-.about {
-  color: #030303;
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 0.8px;
-  margin: 30px 0 0;
-  text-align: center;
-}
-
 .description {
-  color: #6e6e6e;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.8px;
+  color: #030303;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1.37px;
   line-height: 1.5;
-  margin: 20px 0 0;
-  width: 256px;
+  margin: 260px 0 0;
 }
 
 .submit {
@@ -103,6 +81,40 @@ export default {
   &:hover,
   &:focus {
     background: #fff;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+
+  .wrapper {
+    background-size: auto 320px;
+  }
+
+  .description {
+    margin: 340px 0 0;
+    width: 328px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .wrapper {
+    background-size: auto 274px;
+  }
+
+  .description {
+    margin: 290px 0 0;
+    width: 288px;
+    font-size: 20px;
+  }
+
+  .submit {
+    margin: 30px 0 0;
   }
 }
 </style>

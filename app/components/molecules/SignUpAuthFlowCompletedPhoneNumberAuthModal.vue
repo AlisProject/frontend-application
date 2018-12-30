@@ -1,14 +1,9 @@
 <template>
   <div class="modal-body">
     <div class="wrapper">
-      <h2 class="title">
-        はじめる準備が完了しました！
-      </h2>
-      <p class="about">
-        まずはじめに
-      </p>
       <p class="description">
-        ALISを報酬として受け取ることができるようになりました。記事の作成・いいねを行うことでALISを獲得できます。まずは記事の作成を行ってみましょう！
+        アカウント登録が<span class="br"/>完了しました。<br>
+        記事を書いたりいいねをして<span class="br"/>ALISを獲得しましょう。
       </p>
       <app-button class="submit" @click="submit">
         記事を作成する
@@ -62,32 +57,13 @@ export default {
   height: 100%;
 }
 
-.title {
-  color: #030303;
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 5px;
-  margin: 280px 0 0;
-  text-align: center;
-}
-
-.about {
-  color: #030303;
-  font-size: 14px;
-  font-weight: bold;
-  letter-spacing: 0.8px;
-  margin: 30px 0 0;
-  text-align: center;
-}
-
 .description {
-  color: #6e6e6e;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.8px;
+  color: #030303;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1.37px;
   line-height: 1.5;
-  margin: 20px 0 0;
-  width: 256px;
+  margin: 260px 0 0;
 }
 
 .submit {
@@ -109,8 +85,36 @@ export default {
 }
 
 @media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+
   .wrapper {
-    margin: -60px -30px 0;
+    background-size: auto 320px;
+  }
+
+  .description {
+    margin: 340px 0 0;
+    width: 328px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .wrapper {
+    background-size: auto 274px;
+  }
+
+  .description {
+    margin: 290px 0 0;
+    width: 288px;
+    font-size: 20px;
+  }
+
+  .submit {
+    margin: 30px 0 0;
   }
 }
 </style>
