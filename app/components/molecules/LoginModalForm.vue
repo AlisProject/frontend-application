@@ -84,7 +84,8 @@ export default {
       errorMessage: '',
       lineLoginAuthorizeURL: null,
       twitterLoginAuthorizeURL: null,
-      isSelectedEmailAuth: false
+      isSelectedEmailAuth: false,
+      isProcessing: false
     }
   },
   async mounted() {
@@ -153,9 +154,10 @@ export default {
       this.isSelectedEmailAuth = true
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
+      if (this.invalidSubmit || this.isProcessing) return
       const { userIdOrEmail, password } = this.loginModal.formData
       try {
+        this.isProcessing = true
         await this.login({ userId: userIdOrEmail, password })
         await this.setCurrentUserInfo()
         this.setLoginModal({ showLoginModal: false })
@@ -177,6 +179,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions({
