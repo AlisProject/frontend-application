@@ -64,5 +64,6 @@ a {
     "notification-card-image notification-card-content";
   grid-template-columns: auto 5fr;
   grid-template-rows: auto;
+  border-radius: 4px;
 }
 </style>

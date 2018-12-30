@@ -39,11 +39,12 @@ export default {
 <style lang="scss" scoped>
 .area-notification-card-image {
   grid-area: notification-card-image;
+  align-items: flex-start;
   background: #fff;
-  overflow: hidden;
+  border-radius: 4px;
   display: flex;
   justify-content: flex-end;
-  align-items: flex-start;
+  overflow: hidden;
   padding: 12px;
   position: relative;
 
