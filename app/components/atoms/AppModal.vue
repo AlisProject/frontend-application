@@ -279,6 +279,7 @@ export default {
       cursor: pointer;
       float: right;
       font-size: 26px;
+      margin-right: -10px;
       position: relative;
     }
   }
