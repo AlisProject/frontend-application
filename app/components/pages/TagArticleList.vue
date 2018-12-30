@@ -88,7 +88,14 @@ export default {
       // 取得したデータが反映されるまで待つ
       await this.$nextTick()
       // 画面の高さに合っているかをスクロールできるかどうかで判定
-      if (isPageScrollable(this.$el) || this.tagArticles.isLastPage) return
+      if (
+        isPageScrollable(this.$el) ||
+        this.tagArticles.isLastPage ||
+        // 表示されている記事のカセットからタグに関連する記事一覧に遷移する場合は記事データを取得しない
+        this.tagArticles.currentTag !== this.$route.params.tag
+      ) {
+        return
+      }
       this.getTagArticles({ tag: this.$route.params.tag })
     }
   }
