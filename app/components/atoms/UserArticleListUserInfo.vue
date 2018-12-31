@@ -20,10 +20,7 @@
       </p>
     </div>
     <no-ssr>
-      <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
-    </no-ssr>
-    <no-ssr>
-      <div class="sp-profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser">
+      <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser">
         プロフィールを編集
       </div>
     </no-ssr>
@@ -144,14 +141,15 @@ export default {
 .area-user-info-container {
   display: grid;
   grid-area: user-info;
-  grid-template-rows: 40px 40px auto;
+  grid-template-rows: 40px 30px auto auto;
   grid-template-columns: 80px 0 min-content 40px auto;
   grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
     "profile-icon ... user-display-name user-display-name sub-icon         "
     "profile-icon ... user-id           user-id           ...              "
-    "...          ... self-introduction self-introduction self-introduction";
+    "...          ... self-introduction self-introduction self-introduction"
+    "...          ... profile-edit      profile-edit      ...              ";
   padding-bottom: 60px;
 }
 
@@ -186,17 +184,20 @@ export default {
 }
 
 .profile-edit {
-  grid-area: sub-icon;
-  background-image: url('~/assets/images/sp/common/icon_editprofile.png');
-  background-position: 10px;
-  background-repeat: no-repeat;
-  background-size: 20px;
+  grid-area: profile-edit;
+  background-color: #fff;
+  border-radius: 2px;
+  border: 1px solid #cecece;
+  color: #6e6e6e;
   cursor: pointer;
-  width: 40px;
-}
-
-.sp-profile-edit {
-  display: none;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  height: 22px;
+  line-height: 22px;
+  margin-top: 10px;
+  text-align: center;
+  width: 200px;
 }
 
 .report-user {
@@ -298,19 +299,8 @@ export default {
     }
   }
 
-  .sp-profile-edit {
-    grid-area: profile-edit;
-    background-color: #fff;
-    border-radius: 2px;
-    border: 1px solid #cecece;
-    color: #6e6e6e;
-    cursor: pointer;
-    display: block;
-    font-size: 12px;
-    font-weight: bold;
-    height: 22px;
-    line-height: 22px;
-    text-align: center;
+  .profile-edit {
+    margin-top: 0;
     // 12px - padding of .area-user-info-container
     // 80px - width   of .profile-icon
     // 20px - gap     of .area-user-info-container
