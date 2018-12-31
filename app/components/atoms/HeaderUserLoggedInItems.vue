@@ -350,7 +350,6 @@ export default {
     }
 
     .background-user-image-box {
-      background: linear-gradient(134.72deg, #232538 0%, #0086cc 100%);
       border-radius: 0;
       height: 180px;
       overflow: hidden;
