@@ -34,9 +34,8 @@ export default {
   display: grid;
   grid-area: eyecatch-article-card-list;
   grid-template-columns: 710px 340px;
-  grid-template-rows: 196px 196px;
-  grid-column-gap: 30px;
-  grid-row-gap: 20px;
+  grid-template-rows: 191px 191px;
+  grid-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
     "eyecatch1 eyecatch2"
@@ -46,9 +45,8 @@ export default {
 @media screen and (max-width: 1296px) {
   .area-eyecatch-article-card-list {
     grid-template-columns: 340px 340px;
-    grid-template-rows: 412px 196px;
-    grid-column-gap: 30px;
-    grid-row-gap: 30px;
+    grid-template-rows: 412px 191px;
+    grid-gap: 30px;
     /* prettier-ignore */
     grid-template-areas:
       "eyecatch1 eyecatch1"

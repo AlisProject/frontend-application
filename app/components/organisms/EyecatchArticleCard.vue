@@ -117,7 +117,7 @@ export default {
   &.eyecatch2,
   &.eyecatch3 {
     width: 340px;
-    height: 196px;
+    height: 191px;
 
     &:before {
       background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
