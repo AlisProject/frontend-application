@@ -111,29 +111,8 @@ export default {
 }
 
 @media screen and (max-width: 640px) {
-  .area-save-status,
-  .area-new-article {
+  .area-nav {
     display: none;
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .area-nav {
-    grid-gap: 20px;
-    /* prettier-ignore */
-    grid-template-areas:
-      'public-articles drafts';
-    grid-template-columns: 48px 48px;
-    grid-template-rows: 36px;
-    text-align: left;
-  }
-}
-
-@media screen and (max-height: 414px) {
-  .area-nav {
-    &.is-fixed {
-      position: initial;
-    }
   }
 }
 </style>
