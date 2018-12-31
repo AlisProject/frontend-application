@@ -124,7 +124,7 @@ export default {
       }
       if (this.showRestrictEditArticleModal) {
         this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
-        this.$router.push('/me/articles/public')
+        this.$router.push(`/users/${this.currentUserInfo.user_id}`)
       }
       if (this.requestLoginModal.isShow) {
         this.setRequestLoginModal({ isShow: false })
