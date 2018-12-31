@@ -119,6 +119,8 @@ export default {
         })
         this.sendNotification({ text: 'コメントを投稿しました' })
         this.comment = ''
+        const textarea = this.$el.querySelector('.reply-comment-textarea')
+        textarea.style.height = '52px'
         this.$el.querySelector('.reply-comment-textarea').focus()
       } catch (error) {
         console.error(error)

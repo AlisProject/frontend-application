@@ -96,6 +96,8 @@ export default {
         this.addArticleComment({ text: escapedComment, commentId })
         this.sendNotification({ text: 'コメントを投稿しました' })
         this.comment = ''
+        const textarea = this.$el.querySelector('.comment-textarea')
+        textarea.style.height = '52px'
         this.$el.querySelector('.comment-textarea').focus()
       } catch (error) {
         console.error(error)
