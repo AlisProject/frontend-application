@@ -247,14 +247,15 @@ export default {
 
   &-container {
     background: #fff;
+    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    box-sizing: border-box;
     margin: 10px auto;
     max-width: 800px;
+    overflow-y: auto;
     padding: 20px 30px;
     transition: all 0.3s ease;
     width: 80%;
-    overflow-y: auto;
-    box-sizing: border-box;
   }
 
   &-body {
@@ -305,7 +306,7 @@ export default {
     }
 
     &-container {
-      height: 100%;
+      border-radius: 0;
       height: 100vh;
       margin-top: 0;
       max-width: 550px;
