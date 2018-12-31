@@ -317,7 +317,7 @@ export default {
 
     .eyecatch-article-card-list-sp,
     .recommended-article-card-list {
-      margin-top: 30px;
+      margin-top: 24px;
     }
 
     .eyecatch-article-card-list-sp {
