@@ -211,18 +211,6 @@ $topicCount: 10;
   white-space: nowrap;
   width: 96px;
 
-  &.area-topic0 {
-    background-color: #0086cc;
-
-    &:before {
-      background-image: none;
-      background: url('~assets/images/pc/topic/icon_category_recomend.png') no-repeat;
-      background-size: 48px;
-      background-position-x: 20px;
-      background-position-y: 5px;
-    }
-  }
-
   &:before {
     content: '';
     border-radius: 4px;
@@ -251,6 +239,22 @@ $topicCount: 10;
 
     .topic-display-name {
       bottom: 5px;
+    }
+
+    &:before {
+      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
+    }
+  }
+
+  &.area-topic0 {
+    background-color: #0086cc;
+
+    &:before {
+      background-image: none;
+      background: url('~assets/images/pc/topic/icon_category_recomend.png') no-repeat;
+      background-size: 48px;
+      background-position-x: 20px;
+      background-position-y: 5px;
     }
   }
 }
