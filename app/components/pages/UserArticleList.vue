@@ -1,7 +1,7 @@
 <template>
   <div class="user-article-list-container long-article-card">
     <app-header />
-    <user-article-list-user-info :user="userInfo" />
+    <user-article-list-user-info :user="loggedIn ? currentUserInfo : userInfo" />
     <no-ssr>
       <user-profile-nav v-if="isCurrentUser" />
     </no-ssr>
@@ -65,7 +65,8 @@ export default {
       'userArticles',
       'hasUserArticlesLastEvaluatedKey',
       'loggedIn',
-      'currentUser'
+      'currentUser',
+      'currentUserInfo'
     ])
   },
   methods: {
