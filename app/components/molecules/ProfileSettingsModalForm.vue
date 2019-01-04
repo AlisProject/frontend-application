@@ -181,8 +181,8 @@ export default {
           this.setProfileSettingsModal({
             showProfileSettingsModal: false
           })
+          this.sendNotification({ text: 'プロフィールを変更しました' })
         }
-        this.sendNotification({ text: 'プロフィールを変更しました' })
       } catch (error) {
         this.sendNotification({ text: 'プロフィールを変更できませんでした', type: 'warning' })
         console.error(error)
