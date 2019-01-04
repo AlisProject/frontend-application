@@ -3,7 +3,7 @@
     class="eyecatch-article-card"
     :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
-    :style="{ 'background': `url(${eyeCatchImagePath}) no-repeat`, 'background-size': 'cover' }" >
+    :style="{ 'background': `url(${eyeCatchImagePath}) center center / cover no-repeat` }" >
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
