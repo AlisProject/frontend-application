@@ -26,6 +26,7 @@
     "axios": "^0.17.1",
     "bignumber.js": "^6.0.0",
     "chart.js": "^2.7.3",
+    "editor-research-v1": "^0.1.1",
     "express": "^4.16.2",
     "lodash": "^4.17.5",
     "medium-editor": "^5.23.3",

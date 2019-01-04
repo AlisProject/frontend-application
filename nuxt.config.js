@@ -76,7 +76,8 @@ module.exports = {
     '~/plugins/axios',
     '~/plugins/vuelidate',
     { src: '~plugins/gtm.js', ssr: false },
-    { src: '~/plugins/vue-tags-input', ssr: false }
+    { src: '~/plugins/vue-tags-input', ssr: false },
+    { src: '~/plugins/editor', ssr: false }
   ],
   axios: {
     baseURL: process.env.BASE_URL,
@@ -102,11 +103,16 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+        config.resolve.alias['vue'] = 'vue/dist/vue.esm.js'
       }
     },
-    vendor: ['axios', 'moment', '@johmun/vue-tags-input']
+    vendor: ['axios', 'moment', '@johmun/vue-tags-input', 'editor-research-v1']
   },
-  css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
+  css: [
+    '~assets/stylesheets/medium-editor.scss',
+    '~assets/stylesheets/vuex-toast.scss',
+    'editor-research-v1/dist/AlisEditor.css'
+  ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
     REGION: process.env.REGION,

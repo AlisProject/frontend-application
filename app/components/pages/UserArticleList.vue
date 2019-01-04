@@ -1,7 +1,7 @@
 <template>
   <div class="user-article-list-container long-article-card">
     <app-header />
-    <user-article-list-user-info :user="loggedIn ? currentUserInfo : userInfo" />
+    <user-article-list-user-info :user="isCurrentUser ? currentUserInfo : userInfo" />
     <no-ssr>
       <user-profile-nav v-if="isCurrentUser" />
     </no-ssr>

@@ -9,12 +9,16 @@
       @input="onInputTitle"
       @keydown.enter.prevent
       :value="title"/>
-    <div
-      class="area-body"
-      ref="editable"
-      @dragover="preventDragoverImage"
-      @drop="preventDropImage"
-    />
+    <no-ssr>
+      <alis-editor />
+    </no-ssr>
+    <!--<div-->
+      <!--class="area-body"-->
+      <!--ref="editable"-->
+      <!--@dragover="preventDragoverImage"-->
+      <!--@drop="preventDropImage"-->
+    <!--/>-->
+
   </div>
 </template>
 
@@ -76,13 +80,13 @@ export default {
       preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
       clearInterval(preventDragAndDropInterval)
     }, 100)
-    $('.area-body').keydown((e) => {
-      const enterKeyCode = 13
-      const pressedEnterkey = e.keyCode === enterKeyCode
-      if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
-        e.preventDefault()
-      }
-    })
+    // $('.area-body').keydown((e) => {
+    //   const enterKeyCode = 13
+    //   const pressedEnterkey = e.keyCode === enterKeyCode
+    //   if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
+    //     e.preventDefault()
+    //   }
+    // })
 
     // Start update article interval
     this.updateArticle()
@@ -147,21 +151,21 @@ export default {
         this.setIsEdited({ isEdited: true })
         this.$el.onkeydown = (event) => this.handleEditorInput(event)
       })
-      $(() => {
-        $('.area-body').mediumInsert({
-          editor: this.editorElement,
-          addons: {
-            Part: true,
-            embeds: false,
-            images: {
-              fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
-              messages: {
-                maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
-              }
-            }
-          }
-        })
-      })
+      // $(() => {
+      //   $('.area-body').mediumInsert({
+      //     editor: this.editorElement,
+      //     addons: {
+      //       Part: true,
+      //       embeds: false,
+      //       images: {
+      //         fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
+      //         messages: {
+      //           maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
+      //         }
+      //       }
+      //     }
+      //   })
+      // })
     },
     async handleEditorInput(event) {
       const line = MediumEditor.util.getTopBlockContainer(
@@ -293,10 +297,10 @@ export default {
       this.updateTitle({ title: $('.area-title').val() })
 
       // Update body
-      $('.area-body')
-        .find('span[style]')
-        .contents()
-        .unwrap()
+      // $('.area-body')
+      //   .find('span[style]')
+      //   .contents()
+      //   .unwrap()
       const body = this.removeUselessDOMFromArticleBody()
       this.updateBody({ body })
 
