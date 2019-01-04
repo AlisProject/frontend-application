@@ -132,12 +132,12 @@ export default {
       if (this.showTipModal) {
         this.setTipModal({ showTipModal: false })
 
-        if (this.tipFlowModal.isCompletedModal) {
-          if (!this.currentUserInfo.is_tipped_article) {
-            this.setFirstProcessModal({ isShow: true })
-            this.setFirstProcessTippedArticleModal({ isShow: true })
-          }
-        }
+        // if (this.tipFlowModal.isCompletedModal) {
+        //   if (!this.currentUserInfo.is_tipped_article) {
+        //     this.setFirstProcessModal({ isShow: true })
+        //     this.setFirstProcessTippedArticleModal({ isShow: true })
+        //   }
+        // }
         this.hideTipFlowModalContent()
         return
       }
