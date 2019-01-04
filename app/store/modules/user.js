@@ -102,6 +102,7 @@ const state = () => ({
   showRestrictEditArticleModal: false,
   userInfo: {},
   userArticles: [],
+  isFetchingUserArticles: false,
   userArticlesLastEvaluatedKey: {},
   requestLoginModal: {
     isShow: false,
@@ -452,8 +453,9 @@ const actions = {
     }
   },
   async getUserArticles({ commit, dispatch, state, getters }, { userId }) {
-    if (!getters.hasUserArticlesLastEvaluatedKey) return
+    if (!getters.hasUserArticlesLastEvaluatedKey || state.isFetchingUserArticles) return
     try {
+      commit(types.SET_IS_FETCHING_USER_ARTICLES, { isFetching: true })
       const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
       await dispatch('setUserInfo', { userId })
       const { userInfo } = state
@@ -475,6 +477,8 @@ const actions = {
       commit(types.SET_USER_ARTICLES, { articles: articlesWithData })
     } catch (error) {
       Promise.reject(error)
+    } finally {
+      commit(types.SET_IS_FETCHING_USER_ARTICLES, { isFetching: false })
     }
   },
   async getNotifications({ commit, dispatch, state }) {
@@ -1075,6 +1079,9 @@ const mutations = {
   },
   [types.SET_FIRST_PROCESS_CREATED_ARTICLE_MODAL](state, { isShow }) {
     state.firstProcessModal.isCreatedArticleModal = isShow
+  },
+  [types.SET_IS_FETCHING_USER_ARTICLES](state, { isFetching }) {
+    state.isFetchingUserArticles = isFetching
   }
 }
 

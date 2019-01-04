@@ -30,11 +30,6 @@ export default {
     TheLoader,
     AppFooter
   },
-  data() {
-    return {
-      isFetchingArticles: false
-    }
-  },
   mounted() {
     window.addEventListener('scroll', this.infiniteScroll)
 
@@ -71,18 +66,12 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      if (this.isFetchingArticles) return
-      try {
-        this.isFetchingArticles = true
-        if (!isScrollBottom()) return
+      if (!isScrollBottom()) return
 
-        if (this.isCurrentUser) {
-          await this.getPublicArticles()
-        } else {
-          await this.getUserArticles({ userId: this.$route.params.userId })
-        }
-      } finally {
-        this.isFetchingArticles = false
+      if (this.isCurrentUser) {
+        await this.getPublicArticles()
+      } else {
+        await this.getUserArticles({ userId: this.$route.params.userId })
       }
     },
     ...mapActions('user', ['getUserArticles']),
