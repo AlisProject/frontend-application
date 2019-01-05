@@ -70,6 +70,11 @@ export default {
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
+  mounted() {
+    this.$root.$on('closeModal', async () => {
+      await this.closeModal()
+    })
+  },
   methods: {
     async closeModal() {
       if (this.showSignUpModal) {

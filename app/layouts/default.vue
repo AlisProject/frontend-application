@@ -29,6 +29,11 @@ export default {
   computed: {
     ...mapGetters('user', ['loggedIn'])
   },
+  watch: {
+    $route() {
+      this.$root.$emit('closeModal')
+    }
+  },
   head() {
     return {
       meta: [
