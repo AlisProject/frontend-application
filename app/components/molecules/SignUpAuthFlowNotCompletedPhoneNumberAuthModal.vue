@@ -55,32 +55,32 @@ export default {
   background-position-x: center;
   margin: -50px -30px 0;
   height: 100%;
-}
 
-.description {
-  color: #030303;
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 1.37px;
-  line-height: 1.5;
-  margin: 260px 0 0;
-}
+  .description {
+    color: #030303;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1.37px;
+    line-height: 1.5;
+    margin: 260px 0 0;
+  }
 
-.submit {
-  margin: 40px 0 0;
-}
+  .submit {
+    margin: 40px 0 0;
+  }
 
-.close {
-  margin: 20px 0 60px;
-  background: #fff;
-  border: 1px solid #0086cc;
-  color: #0086cc;
-  font-weight: bold;
-  box-shadow: none;
-
-  &:hover,
-  &:focus {
+  .close {
+    margin: 20px 0 60px;
     background: #fff;
+    border: 1px solid #0086cc;
+    color: #0086cc;
+    font-weight: bold;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      background: #fff;
+    }
   }
 }
 
@@ -94,27 +94,27 @@ export default {
 
   .wrapper {
     background-size: auto 320px;
-  }
 
-  .description {
-    margin: 340px 0 0;
-    width: 328px;
+    .description {
+      margin: 340px 0 0;
+      width: 328px;
+    }
   }
 }
 
 @media screen and (max-width: 320px) {
   .wrapper {
     background-size: auto 274px;
-  }
 
-  .description {
-    margin: 290px 0 0;
-    width: 288px;
-    font-size: 20px;
-  }
+    .description {
+      margin: 290px 0 0;
+      width: 288px;
+      font-size: 20px;
+    }
 
-  .submit {
-    margin: 30px 0 0;
+    .submit {
+      margin: 30px 0 0;
+    }
   }
 }
 </style>
