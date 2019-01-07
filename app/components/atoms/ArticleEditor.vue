@@ -23,21 +23,22 @@
 </template>
 
 <script>
-/* global $, MediumEditor, iframely */
+// /* global $, iframely */
+/* global $ */
 import { mapActions, mapGetters } from 'vuex'
-import urlRegex from 'url-regex'
+// import urlRegex from 'url-regex'
 import {
-  getIframelyUrlTemplate,
-  getTwitterProfileTemplate,
-  getIframelyEmbedTemplate,
+  // getIframelyUrlTemplate,
+  // getTwitterProfileTemplate,
+  // getIframelyEmbedTemplate,
   getThumbnails,
   createInsertPluginTemplateFromUrl,
-  getResourceFromIframely,
+  // getResourceFromIframely,
   preventDragAndDrop,
-  preventDropImageOnOGPContent,
-  isYouTubeVideoURL,
-  isFacebookPostURL,
-  isInstagramURL,
+  // preventDropImageOnOGPContent,
+  // isYouTubeVideoURL,
+  // isFacebookPostURL,
+  // isInstagramURL,
   resizeTextarea
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
@@ -69,7 +70,7 @@ export default {
       lineHeight: '1.5'
     })
 
-    this.initMediumEditor()
+    // this.initMediumEditor()
     window.addEventListener('resize', this.handleResize)
     if (window.innerWidth <= 640) {
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
@@ -97,154 +98,6 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    initMediumEditor() {
-      this.editorElement = new MediumEditor('.area-body', {
-        imageDragging: false,
-        toolbar: {
-          buttons: [
-            {
-              name: 'h2',
-              action: 'append-h2',
-              tagNames: ['h2'],
-              contentDefault: '',
-              classList: ['custom-class-h2']
-            },
-            {
-              name: 'h3',
-              action: 'append-h3',
-              tagNames: ['h3'],
-              contentDefault: '',
-              classList: ['custom-class-h3']
-            },
-            {
-              name: 'quote',
-              action: 'append-blockquote',
-              tagNames: ['quote'],
-              contentDefault: '',
-              classList: ['custom-class-quote']
-            },
-            'quote',
-            {
-              name: 'bold',
-              action: 'bold',
-              tagNames: ['b', 'strong'],
-              contentDefault: '',
-              classList: ['custom-class-bold']
-            },
-            {
-              name: 'italic',
-              action: 'italic',
-              tagNames: ['i'],
-              contentDefault: '',
-              classList: ['custom-class-italic']
-            },
-            'anchor'
-          ],
-          diffTop: -20
-        },
-        placeholder: {
-          text: ''
-        },
-        spellcheck: false
-      })
-      this.editorElement.subscribe('editableInput', (event, editable) => {
-        this.setIsEdited({ isEdited: true })
-        this.$el.onkeydown = (event) => this.handleEditorInput(event)
-      })
-      // $(() => {
-      //   $('.area-body').mediumInsert({
-      //     editor: this.editorElement,
-      //     addons: {
-      //       Part: true,
-      //       embeds: false,
-      //       images: {
-      //         fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
-      //         messages: {
-      //           maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
-      //         }
-      //       }
-      //     }
-      //   })
-      // })
-    },
-    async handleEditorInput(event) {
-      const line = MediumEditor.util.getTopBlockContainer(
-        this.editorElement.getSelectedParentElement()
-      ).textContent
-      const trimmedLine = line.trim()
-      if (event.key !== 'Enter' || !urlRegex({ exact: true }).test(trimmedLine)) {
-        // Enter もしくは URL 構造でない場合は行う処理がない
-        return
-      }
-      const selectedParentElement = MediumEditor.util.getTopBlockContainer(
-        this.editorElement.getSelectedParentElement()
-      )
-      const isTwitterResource =
-        trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
-      const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
-      const isGistResource = trimmedLine.startsWith('https://gist.github.com/')
-      const isYouTubeResource = isYouTubeVideoURL(trimmedLine)
-      const isFacebookResource = isFacebookPostURL(trimmedLine)
-      const isInstagramResource = isInstagramURL(trimmedLine)
-      let result, cleanAttrs, embedHTML
-
-      try {
-        result = (await getResourceFromIframely(
-          isTwitterResource ? 'oembed' : 'iframely',
-          trimmedLine
-        )).data
-      } catch (error) {
-        console.error(error)
-        return
-      }
-
-      selectedParentElement.innerHTML = ''
-
-      if (
-        isTweet ||
-        isGistResource ||
-        isYouTubeResource ||
-        isFacebookResource ||
-        isInstagramResource
-      ) {
-        this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
-        iframely.load()
-        return
-      }
-
-      if (!isTwitterResource) {
-        const { title, description } = result.meta
-        const hasTitleOrDescription = title !== undefined || description !== undefined
-        if (!hasTitleOrDescription) return
-        embedHTML = getIframelyEmbedTemplate({ ...result })
-        cleanAttrs = [
-          'iframely-embed-card',
-          'title',
-          'description',
-          'site',
-          'thumbnail',
-          'without-space'
-        ]
-      } else {
-        const { title, description } = result
-        const hasTitleOrDescription = title !== undefined || description !== undefined
-        if (!hasTitleOrDescription) return
-        embedHTML = getTwitterProfileTemplate({ ...result })
-        cleanAttrs = ['twitter-profile-card', 'title', 'description', 'site']
-      }
-
-      this.editorElement.pasteHTML(
-        `<br>
-          ${embedHTML}
-          <br>`,
-        {
-          cleanAttrs
-        }
-      )
-
-      // Prevent drop image on OGP content
-      preventDropImageOnOGPContent()
-    },
     async updateArticle() {
       try {
         // Do nothing if user don't edit article
@@ -352,16 +205,16 @@ export default {
       })
     },
     removeUselessDOMFromArticleBody() {
-      const serializedContents = this.editorElement.serialize()
-      const serializedBody = serializedContents['element-0'].value
-      const $bodyTmp = $(`<div>${serializedBody}</div>`)
-      $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
-        element.src = ''
-      })
-      $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
-        element.innerHTML = ''
-      })
-      return $bodyTmp.html()
+      // const serializedContents = this.editorElement.serialize()
+      // const serializedBody = serializedContents['element-0'].value
+      // const $bodyTmp = $(`<div>${serializedBody}</div>`)
+      // $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
+      //   element.src = ''
+      // })
+      // $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
+      //   element.innerHTML = ''
+      // })
+      // return $bodyTmp.html()
     },
     matchAll(str, regexp) {
       const matches = []
