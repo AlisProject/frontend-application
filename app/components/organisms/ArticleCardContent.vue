@@ -45,7 +45,7 @@ export default {
     "...   ... "
     "data  ...  ";
   grid-template-columns: 248px auto;
-  grid-template-rows: 48px 42px auto;
+  grid-template-rows: 48px 40px 0 auto;
   position: relative;
   grid-gap: 4px;
 }
