@@ -5,7 +5,7 @@
         アカウント登録が<span class="br"/>完了しました。<br>
         ALISのはじめ方を<span class="br"/>確認しましょう。
       </p>
-      <app-button class="submit" @click="submit">
+      <app-button class="submit" @click="close">
         <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B">
           はじめ方をみる
         </nuxt-link>
@@ -26,7 +26,6 @@ export default {
     AppButton
   },
   methods: {
-    submit() {},
     close() {
       this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
       this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
