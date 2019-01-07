@@ -296,16 +296,25 @@ export default {
       overflow-x: scroll;
       overflow-y: hidden;
       white-space: nowrap;
-      margin-bottom: 40px;
+      margin-bottom: 10px;
       user-select: none;
-      height: 90px;
+      height: 120px;
 
       &::-webkit-scrollbar {
-        height: 2px;
+        height: 40px;
       }
 
       &::-webkit-scrollbar-thumb {
-        background: #0086cc;
+        /* スクロールバーをドラッグしやすくするため、スクロールバー領域を広めにとる */
+        background: linear-gradient(
+          0deg,
+          transparent 0%,
+          transparent 75%,
+          #0086cc 75%,
+          #0086cc 80%,
+          transparent 80%,
+          transparent 100%
+        );
       }
 
       .no-thumbnail-message {
