@@ -5,7 +5,9 @@
       <span class="article-status">(公開中)</span>
       <div class="article-button" @click="toggleArticlePopup">
         <div class="article-popup" v-show="isArticlePopupShown">
-          <span class="article-popup-content" @click="unpublish">記事を下書きに戻す</span>
+          <span class="article-popup-content unpblish-button" @click="unpublish">
+            記事を下書きに戻す
+          </span>
           <a
             class="article-popup-content"
             :href="twitterShareUrl"
@@ -170,7 +172,6 @@ export default {
     position: relative;
     width: 24px;
     height: 26px;
-    margin-right: 20px;
 
     .article-popup {
       background-color: #ffffff;
@@ -184,20 +185,6 @@ export default {
       left: -98px;
       top: 24px;
       z-index: 1;
-
-      &::after {
-        border-bottom: 8px solid #fff;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        content: '';
-        height: 0;
-        padding: 0;
-        position: absolute;
-        right: 0;
-        right: 98px;
-        top: -6px;
-        width: 0;
-      }
 
       .article-popup-content {
         color: #6e6e6e;
@@ -224,6 +211,7 @@ export default {
     line-height: 1.8;
     padding-left: 24px;
     text-decoration: none;
+    margin-left: 20px;
   }
 }
 
@@ -246,6 +234,20 @@ export default {
       height: 1px;
       width: calc(100% - 16px * 2);
       border-bottom: 1px solid #f0f0f0;
+    }
+
+    .article-button {
+      .article-popup {
+        left: -190px;
+
+        .article-popup-content.unpblish-button {
+          display: none;
+        }
+      }
+    }
+
+    .edit-article {
+      display: none;
     }
   }
 }

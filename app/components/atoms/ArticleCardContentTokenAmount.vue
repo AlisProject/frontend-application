@@ -26,7 +26,7 @@ export default {
 <style lang="scss" scoped>
 .token-amount {
   align-items: center;
-  background: url('~assets/images/pc/common/icon_alistoken.png') no-repeat;
+  background: url('~assets/images/pc/common/icon_token_cassette.png') no-repeat;
   background-size: 18px;
   bottom: 0;
   color: #717171;

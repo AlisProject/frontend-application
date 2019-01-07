@@ -129,14 +129,14 @@ export default {
           await this.putPublicArticle({ article, articleId })
           await this.republishPublicArticle({ articleId, topic, tags })
         }
-        this.$router.push(`/users/${this.currentUserInfo.user_id}`)
+        this.$router.push(`/${this.currentUserInfo.user_id}/articles/${articleId}`)
         this.sendNotification({ text: '記事を公開しました' })
         this.resetArticleTopic()
 
-        if (!this.currentUserInfo.is_created_article) {
-          this.setFirstProcessModal({ isShow: true })
-          this.setFirstProcessCreatedArticleModal({ isShow: true })
-        }
+        // if (!this.currentUserInfo.is_created_article) {
+        //   this.setFirstProcessModal({ isShow: true })
+        //   this.setFirstProcessCreatedArticleModal({ isShow: true })
+        // }
       } catch (e) {
         this.publishingArticle = false
         this.sendNotification({ text: '記事の公開に失敗しました', type: 'warning' })
@@ -166,7 +166,6 @@ export default {
       })
     },
     handleChangeTopicType(event) {
-      this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = event.target.value
       this.setArticleTopic({ topicType: this.topic })
     },
@@ -228,7 +227,6 @@ export default {
     },
     topicType() {
       if (this.topicType === null) return
-      this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = this.topicType
     }
   }
@@ -296,16 +294,25 @@ export default {
       overflow-x: scroll;
       overflow-y: hidden;
       white-space: nowrap;
-      margin-bottom: 40px;
+      margin-bottom: 10px;
       user-select: none;
-      height: 90px;
+      height: 120px;
 
       &::-webkit-scrollbar {
-        height: 2px;
+        height: 40px;
       }
 
       &::-webkit-scrollbar-thumb {
-        background: #0086cc;
+        /* スクロールバーをドラッグしやすくするため、スクロールバー領域を広めにとる */
+        background: linear-gradient(
+          0deg,
+          transparent 0%,
+          transparent 75%,
+          #0086cc 75%,
+          #0086cc 80%,
+          transparent 80%,
+          transparent 100%
+        );
       }
 
       .no-thumbnail-message {
@@ -355,6 +362,7 @@ export default {
           color: #fff;
           content: '選択中';
           font-size: 14px;
+          font-weight: bold;
           left: 0;
           letter-spacing: 0.8px;
           position: absolute;
@@ -398,7 +406,7 @@ export default {
         background: transparent;
         border: none;
         box-shadow: none;
-        color: #cecece;
+        color: #000;
         cursor: pointer;
         font-size: 14px;
         outline: none;

@@ -3,21 +3,27 @@
     class="eyecatch-article-card"
     :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
-    :style="{ 'background': `url(${article.eye_catch_url}) no-repeat`, 'background-size': 'cover' }" >
+    :style="{ 'background': `url(${eyeCatchImagePath}) center center / cover no-repeat` }" >
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
-    <img
-      class="profile-icon"
-      :src="article.userInfo.icon_image_url"
-      v-if="article.userInfo.icon_image_url !== undefined">
-    <img
-      class="profile-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
-      v-else>
-    <span class="username">
-      {{ decodedUsername }}
-    </span>
+    <no-ssr>
+      <nuxt-link :to="`/users/${article.user_id}`" class="profile-icon-box">
+        <img
+          class="profile-icon"
+          :src="article.userInfo.icon_image_url"
+          v-if="article.userInfo.icon_image_url !== undefined">
+        <img
+          class="profile-icon"
+          src="~assets/images/pc/common/icon_user_noimg.png"
+          v-else>
+      </nuxt-link>
+    </no-ssr>
+    <no-ssr>
+      <nuxt-link :to="`/users/${article.user_id}`" class="username">
+        {{ decodedUsername }}
+      </nuxt-link>
+    </no-ssr>
     <span class="published-at">
       {{ formattedPublishedAt }}
     </span>
@@ -56,6 +62,11 @@ export default {
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
     },
+    eyeCatchImagePath() {
+      return this.article.eye_catch_url !== null
+        ? this.article.eye_catch_url
+        : require('~/assets/images/pc/common/thumbnail_noimg.png')
+    },
     formattedTokenAmount() {
       const tokenAmount = this.article.alisToken
       if (tokenAmount === undefined) return
@@ -83,13 +94,16 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
   }
 
   &.eyecatch1 {
     grid-area: eyecatch1;
     width: 710px;
     height: 412px;
+
+    &:before {
+      background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+    }
   }
 
   &.eyecatch2 {
@@ -103,7 +117,11 @@ export default {
   &.eyecatch2,
   &.eyecatch3 {
     width: 340px;
-    height: 196px;
+    height: 191px;
+
+    &:before {
+      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+    }
   }
 }
 
@@ -143,13 +161,17 @@ export default {
   }
 }
 
-.profile-icon {
-  border-radius: 50%;
+.profile-icon-box {
   bottom: 20px;
   height: 36px;
   left: 20px;
   position: absolute;
-  width: 36px;
+
+  .profile-icon {
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+  }
 }
 
 .username,
@@ -166,7 +188,13 @@ export default {
 .username {
   bottom: 40px;
   left: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 190px;
+  text-decoration: none;
 }
+
 .published-at {
   bottom: 22px;
   left: 72px;

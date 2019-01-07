@@ -1,6 +1,6 @@
 <template>
   <nav class="area-nav">
-    <div class="area-nav-links">
+    <div class="area-nav-links" @scroll="handleHorizontalScroll">
       <nuxt-link
         to="/"
         class="nav-link area-topic0">
@@ -12,7 +12,7 @@
         v-for="topic in topics"
         :key="topic.order"
         :data-topic="topic.name"
-        :style="`background-image: url(https://${DOMAIN}/d/nuxt/dist/topic/topic_${topic.name}.png)`"
+        :style="`background-image: url(${topicImages[topic.name]})`"
         :to="to(topic.name)"
         :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
         @click.native="resetData">
@@ -35,8 +35,7 @@ export default {
   data() {
     return {
       beforeClickedLinkName: this.$route.query.topic,
-      fixNavigationHeight: pcHeaderHeight,
-      DOMAIN: process.env.DOMAIN
+      fixNavigationHeight: pcHeaderHeight
     }
   },
   async created() {
@@ -51,9 +50,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['topics', 'articleType'])
+    topicImages() {
+      const images = {}
+      this.topics.forEach((topic) => {
+        images[topic.name] = require(`~/assets/images/pc/topic/topic_${topic.name}.png`)
+      })
+      return images
+    },
+    ...mapGetters('article', ['topics', 'articleType']),
+    ...mapGetters('presentation', ['defaultHeaderNavHorizontalScrollPosition'])
   },
   mounted() {
+    this.holdHorizontalScrollPosition()
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
     window.addEventListener('scroll', this.handleScroll)
@@ -81,20 +89,38 @@ export default {
       const navElement = this.$el
       if (window.scrollY >= this.fixNavigationHeight) {
         navElement.classList.add('is-fixed')
-      } else {
+      }
+      if (window.scrollY < this.fixNavigationHeight - 22) {
         navElement.classList.remove('is-fixed')
       }
       this.startPos = this.currentPos
+    },
+    handleHorizontalScroll(event) {
+      this.setDefaultHeaderNavHorizontalScrollPosition({ scrollPosition: event.target.scrollLeft })
     },
     handleResize() {
       const spBreakPoint = 550
       this.fixNavigationHeight = window.innerWidth <= spBreakPoint ? spHeaderHeight : pcHeaderHeight
     },
+    holdHorizontalScrollPosition() {
+      this.$el.querySelector(
+        '.area-nav-links'
+      ).scrollLeft = this.defaultHeaderNavHorizontalScrollPosition
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('article', ['getTopics', 'resetArticleData']),
-    ...mapActions('presentation', ['setArticleListScrollHeight'])
+    ...mapActions('presentation', [
+      'setArticleListScrollHeight',
+      'setDefaultHeaderNavHorizontalScrollPosition'
+    ])
+  },
+  watch: {
+    async $route() {
+      await this.$nextTick()
+      this.holdHorizontalScrollPosition()
+    }
   }
 }
 </script>
@@ -103,6 +129,8 @@ export default {
 $topicCount: 10;
 
 .area-nav {
+  -moz-osx-font-smoothing: auto;
+  -webkit-font-smoothing: auto;
   grid-area: nav;
   display: grid;
   text-align: center;
@@ -116,7 +144,6 @@ $topicCount: 10;
   background: #fff;
 
   &.is-fixed {
-    transition: all 400ms ease;
     width: 100%;
     padding: 12px 0;
     position: fixed;
@@ -176,24 +203,13 @@ $topicCount: 10;
   box-sizing: border-box;
   color: #fff;
   font-size: 12px;
+  font-weight: bold;
   height: 50px;
   position: relative;
   text-decoration: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
   white-space: nowrap;
   width: 96px;
-
-  &.area-topic0 {
-    background-color: #0086cc;
-
-    &:before {
-      background-image: none;
-      background: url('~assets/images/pc/topic/icon_category_recomend.png') no-repeat;
-      background-size: 48px;
-      background-position-x: 20px;
-      background-position-y: 5px;
-    }
-  }
 
   &:before {
     content: '';
@@ -223,6 +239,22 @@ $topicCount: 10;
 
     .topic-display-name {
       bottom: 5px;
+    }
+
+    &:before {
+      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
+    }
+  }
+
+  &.area-topic0 {
+    background-color: #0086cc;
+
+    &:before {
+      background-image: none;
+      background: url('~assets/images/pc/topic/icon_category_recomend.png') no-repeat;
+      background-size: 48px;
+      background-position-x: 20px;
+      background-position-y: 5px;
     }
   }
 }
@@ -267,7 +299,7 @@ $topicCount: 10;
     grid-template-columns: 0 auto 0;
     max-width: 100%;
     margin-bottom: 0;
-    padding: 0 0 12px 0;
+    padding: 0;
 
     &.is-fixed {
       padding-left: 0;

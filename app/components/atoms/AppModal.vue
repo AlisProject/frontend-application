@@ -124,7 +124,7 @@ export default {
       }
       if (this.showRestrictEditArticleModal) {
         this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
-        this.$router.push('/me/articles/public')
+        this.$router.push(`/users/${this.currentUserInfo.user_id}`)
       }
       if (this.requestLoginModal.isShow) {
         this.setRequestLoginModal({ isShow: false })
@@ -132,12 +132,12 @@ export default {
       if (this.showTipModal) {
         this.setTipModal({ showTipModal: false })
 
-        if (this.tipFlowModal.isCompletedModal) {
-          if (!this.currentUserInfo.is_tipped_article) {
-            this.setFirstProcessModal({ isShow: true })
-            this.setFirstProcessTippedArticleModal({ isShow: true })
-          }
-        }
+        // if (this.tipFlowModal.isCompletedModal) {
+        //   if (!this.currentUserInfo.is_tipped_article) {
+        //     this.setFirstProcessModal({ isShow: true })
+        //     this.setFirstProcessTippedArticleModal({ isShow: true })
+        //   }
+        // }
         this.hideTipFlowModalContent()
         return
       }
@@ -247,14 +247,15 @@ export default {
 
   &-container {
     background: #fff;
+    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    box-sizing: border-box;
     margin: 10px auto;
     max-width: 800px;
+    overflow-y: auto;
     padding: 20px 30px;
     transition: all 0.3s ease;
     width: 80%;
-    overflow-y: scroll;
-    box-sizing: border-box;
   }
 
   &-body {
@@ -279,6 +280,7 @@ export default {
       cursor: pointer;
       float: right;
       font-size: 26px;
+      margin-right: -10px;
       position: relative;
     }
   }
@@ -304,11 +306,12 @@ export default {
     }
 
     &-container {
-      height: 100%;
+      border-radius: 0;
+      height: 100vh;
       margin-top: 0;
       max-width: 550px;
+      overflow-y: scroll;
       width: 100vw;
-      height: 100vh;
     }
 
     &-body {

@@ -9,7 +9,7 @@
     <div class="area-distributed-tokens">
       <div class="doughnut-chart-box">
         <doughnut-chart :data="doughnutChartData" :options="doughnutChartOptions" class="doughnut-chart"/>
-        <span class="amount">{{ totalAmount }}</span>
+        <span class="amount">{{ addDigitSeparator(totalAmount) }}</span>
         <span class="unit">ALIS</span>
         <span class="aggregation-date">※2019/1/1より集計</span>
       </div>
@@ -44,6 +44,7 @@
             <span class="rate">({{ rate.bonus }}%)</span>
           </li>
         </ul>
+        <span class="minimum-description">※0.001ALIS未満は表示されません</span>
       </div>
     </div>
     <app-footer />
@@ -304,6 +305,16 @@ export default {
     text-align: right;
     width: 44px;
   }
+
+  .minimum-description {
+    color: #6e6e6e;
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    width: 100%;
+    text-align: right;
+  }
 }
 
 @media screen and (max-width: 640px) {
@@ -322,8 +333,8 @@ export default {
   }
 
   .distributed-token-detail-box {
-    margin: 20px auto;
-    width: 260px;
+    margin: 40px auto;
+    width: 290px;
   }
 }
 
@@ -347,15 +358,15 @@ export default {
   .area-distributed-tokens {
     padding: 40px 0 0;
   }
-
-  .distributed-token-detail-box {
-    margin: 20px auto 60px;
-  }
 }
 
 @media screen and (max-width: 320px) {
   .distributed-tokens {
     grid-template-columns: 1fr 280px 1fr;
+  }
+
+  .distributed-token-detail-box {
+    width: 260px;
   }
 }
 </style>

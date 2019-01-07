@@ -52,15 +52,15 @@
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
         </li>
-        <li class="menu-link">
+        <!-- <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
             獲得ALIS詳細
           </nuxt-link>
-        </li>
-        <li class="menu-link" @click="showProfileSettingsModal">
-          <span class="menu-link-inner">
-            ユーザー設定
-          </span>
+        </li> -->
+        <li class="menu-link">
+          <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="menu-link-inner">
+            ALISの使い方
+          </nuxt-link>
         </li>
         <li class="menu-link" @click="logoutUser">
           <span class="menu-link-inner">
@@ -152,10 +152,6 @@ export default {
         console.error(error)
       }
     },
-    showProfileSettingsModal() {
-      this.closeMenu()
-      this.setProfileSettingsModal({ showProfileSettingsModal: true })
-    },
     moveToNotificationPage() {
       this.resetNotificationData()
       this.getNotifications()
@@ -174,7 +170,6 @@ export default {
     }),
     ...mapActions('user', [
       'logout',
-      'setProfileSettingsModal',
       'setCurrentUserInfo',
       'getUsersAlisToken',
       'getUnreadNotification',
@@ -232,7 +227,7 @@ export default {
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
   position: absolute;
   right: 0;
-  top: 80px;
+  top: 48px;
   width: 250px;
 
   .background-user-image-box {
@@ -247,7 +242,7 @@ export default {
     .background-user-image {
       filter: blur(10px);
       height: auto;
-      margin: -10px -10px -10px -20px;
+      margin: -40px -10px 0 -10px;
       width: 270px;
     }
   }
@@ -332,12 +327,12 @@ export default {
     .search-icon,
     .notification-icon {
       width: 16px;
-      margin-right: 24px;
+      margin: 2px 24px 0 0;
     }
 
     .profile-icon {
-      height: 32px;
-      width: 32px;
+      height: 24px;
+      width: 24px;
     }
   }
 
@@ -355,7 +350,6 @@ export default {
     }
 
     .background-user-image-box {
-      background: linear-gradient(134.72deg, #232538 0%, #0086cc 100%);
       border-radius: 0;
       height: 180px;
       overflow: hidden;

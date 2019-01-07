@@ -37,11 +37,12 @@ export default {
 .tag {
   color: #6e6e6e;
   display: inline-block;
-  font-size: 10px;
-  line-height: 1.5;
+  font-size: 11px;
+  line-height: 15px;
   margin-right: 8px;
   text-decoration: none;
   transition: color 400ms ease;
+  white-space: nowrap;
 
   &:hover {
     color: #0086cc;

@@ -1,7 +1,7 @@
 <template>
   <div class="user-article-list-container long-article-card">
     <app-header />
-    <user-article-list-user-info :user="userInfo" />
+    <user-article-list-user-info :user="isCurrentUser ? currentUserInfo : userInfo" />
     <no-ssr>
       <user-profile-nav v-if="isCurrentUser" />
     </no-ssr>
@@ -29,11 +29,6 @@ export default {
     UserArticleCardList,
     TheLoader,
     AppFooter
-  },
-  data() {
-    return {
-      isFetchingArticles: false
-    }
   },
   mounted() {
     window.addEventListener('scroll', this.infiniteScroll)
@@ -65,23 +60,18 @@ export default {
       'userArticles',
       'hasUserArticlesLastEvaluatedKey',
       'loggedIn',
-      'currentUser'
+      'currentUser',
+      'currentUserInfo'
     ])
   },
   methods: {
     async infiniteScroll(event) {
-      if (this.isFetchingArticles) return
-      try {
-        this.isFetchingArticles = true
-        if (!isScrollBottom()) return
+      if (!isScrollBottom()) return
 
-        if (this.isCurrentUser) {
-          await this.getPublicArticles()
-        } else {
-          await this.getUserArticles({ userId: this.$route.params.userId })
-        }
-      } finally {
-        this.isFetchingArticles = false
+      if (this.isCurrentUser) {
+        await this.getPublicArticles()
+      } else {
+        await this.getUserArticles({ userId: this.$route.params.userId })
       }
     },
     ...mapActions('user', ['getUserArticles']),

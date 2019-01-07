@@ -33,7 +33,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, resizeTextarea } from '~/utils/article'
 
 export default {
   props: {
@@ -54,24 +54,12 @@ export default {
   },
   mounted() {
     const textarea = this.$el.querySelector('.reply-comment-textarea')
-    textarea.style.lineHeight = '18px'
-    textarea.style.height = '60px'
 
-    textarea.addEventListener('input', (event) => {
-      if (event.target.scrollHeight > event.target.offsetHeight) {
-        event.target.style.height = `${event.target.scrollHeight}px`
-        return
-      }
-      let height, lineHeight
-      while (true) {
-        height = Number(event.target.style.height.split('px')[0])
-        lineHeight = Number(event.target.style.lineHeight.split('px')[0])
-        event.target.style.height = `${height - lineHeight}px`
-        if (event.target.scrollHeight > event.target.offsetHeight) {
-          event.target.style.height = `${event.target.scrollHeight}px`
-          break
-        }
-      }
+    resizeTextarea({
+      targetElement: textarea,
+      height: '52px',
+      lineHeight: '18px',
+      defaultHeight: 52
     })
 
     const viewportMeta = document.querySelector('meta[name="viewport"]')
@@ -131,6 +119,8 @@ export default {
         })
         this.sendNotification({ text: 'コメントを投稿しました' })
         this.comment = ''
+        const textarea = this.$el.querySelector('.reply-comment-textarea')
+        textarea.style.height = '52px'
         this.$el.querySelector('.reply-comment-textarea').focus()
       } catch (error) {
         console.error(error)

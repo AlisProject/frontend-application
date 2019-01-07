@@ -59,7 +59,6 @@ export default {
     if (!this.loggedIn) this.isShowGuide = true
 
     window.addEventListener('scroll', this.infiniteScroll)
-    window.addEventListener('scroll', this.handleScroll)
 
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
     // 画面の高さに合うまで要素を取得する。
@@ -77,7 +76,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.infiniteScroll)
-    window.removeEventListener('scroll', this.handleScroll)
     this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
@@ -91,17 +89,6 @@ export default {
         await this.getRecommendedArticles()
       } finally {
         this.isFetchingArticles = false
-      }
-    },
-    handleScroll() {
-      const howToUseImageElement = this.$el.querySelector('.how-to-use-image')
-      const subFooterElement = this.$el.querySelector('.sub-footer')
-      if (window.scrollY >= 520) {
-        howToUseImageElement.classList.add('is-fixed')
-        subFooterElement.classList.add('is-fixed')
-      } else {
-        howToUseImageElement.classList.remove('is-fixed')
-        subFooterElement.classList.remove('is-fixed')
       }
     },
     moveToNewArticlePage() {
@@ -164,10 +151,11 @@ export default {
     "app-footer app-footer                 app-footer                 app-footer";
 
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px auto auto auto 1fr 75px 75px;
+  grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
   min-height: 100vh;
 
   &.is-show-guide {
+    grid-template-rows: 100px minmax(50px, min-content) auto 700px minmax(100px, 1fr) 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header                 app-header"
@@ -184,31 +172,6 @@ export default {
 
     .how-to-use-image {
       margin-bottom: 30px;
-
-      &.is-fixed {
-        position: fixed;
-        top: 78px;
-        right: calc(50% - 540px);
-
-        /* for Safari */
-        &:not(:root:root) {
-          left: calc(50vw + 200px);
-        }
-      }
-    }
-
-    .sub-footer {
-      &.is-fixed {
-        position: fixed;
-        top: 778px;
-        width: 266px;
-        right: calc(50% - 540px);
-
-        /* for Safari */
-        &:not(:root:root) {
-          left: calc(50vw + 200px);
-        }
-      }
     }
 
     .app-footer {
@@ -244,7 +207,7 @@ export default {
 @media screen and (max-width: 1296px) {
   .top-page {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px auto auto 1fr 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header"
@@ -255,7 +218,7 @@ export default {
       "app-footer app-footer                 app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px auto auto auto 1fr 75px 75px;
+      grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
       /* prettier-ignore */
       grid-template-areas:
         "app-header app-header                 app-header"
@@ -265,19 +228,6 @@ export default {
         "...        article-card-list          ...       "
         "...        loader                     ...       "
         "app-footer app-footer                 app-footer";
-
-      .how-to-use-image {
-        &.is-fixed {
-          position: relative;
-          top: 0;
-          right: 0;
-
-          /* for Safari */
-          &:not(:root:root) {
-            left: 0;
-          }
-        }
-      }
 
       .sub-footer {
         display: none;
@@ -333,7 +283,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .top-page {
-    grid-template-rows: 66px 62px auto 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) auto 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header       app-header                    app-header"
@@ -345,7 +295,7 @@ export default {
     grid-gap: 0;
 
     &.is-show-guide {
-      grid-template-rows: 66px auto auto auto 1fr 75px min-content;
+      grid-template-rows: 66px minmax(50px, min-content) auto auto 1fr 75px min-content;
       /* prettier-ignore */
       grid-template-areas:
         "app-header       app-header                    app-header"
@@ -357,7 +307,7 @@ export default {
         "app-footer       app-footer                    app-footer";
 
       .how-to-use-image {
-        margin-bottom: 0;
+        margin: 12px 0 0;
       }
     }
 
@@ -367,7 +317,7 @@ export default {
 
     .eyecatch-article-card-list-sp,
     .recommended-article-card-list {
-      margin-top: 30px;
+      margin-top: 24px;
     }
 
     .eyecatch-article-card-list-sp {

@@ -392,6 +392,7 @@ export default {
 
 .agreement-confirmation {
   @include default-text();
+  color: #6e6e6e;
   max-width: 320px;
   text-align: center;
   margin: 20px 0 0;
@@ -422,8 +423,13 @@ export default {
   color: #6e6e6e;
   font-size: 12px;
   margin: 20px auto 30px;
-  max-width: 320px;
+  max-width: 256px;
   text-align: right;
+
+  .for-login-user-link {
+    color: #0086cc;
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 550px) {
@@ -436,7 +442,12 @@ export default {
   }
 
   .external-provider-auth {
+    background-size: auto 450px;
     margin: -60px -30px 0;
+  }
+
+  .line-button {
+    margin-top: 370px;
   }
 
   .for-login-user {

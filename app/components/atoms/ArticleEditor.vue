@@ -1,13 +1,14 @@
 <template>
   <div class="area-editor-container">
-    <input
+    <textarea
       class="area-title"
       type="text"
       placeholder="タイトル"
       spellcheck="false"
       maxlength="255"
       @input="onInputTitle"
-      :value="title">
+      @keydown.enter.prevent
+      :value="title"/>
     <div
       class="area-body"
       ref="editable"
@@ -32,7 +33,8 @@ import {
   preventDropImageOnOGPContent,
   isYouTubeVideoURL,
   isFacebookPostURL,
-  isInstagramURL
+  isInstagramURL,
+  resizeTextarea
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -48,7 +50,8 @@ export default {
     return {
       targetDOM: null,
       editorElement: null,
-      updateArticleInterval: null
+      updateArticleInterval: null,
+      isInitTitleHeight: false
     }
   },
   computed: {
@@ -56,6 +59,12 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
+    resizeTextarea({
+      targetElement: this.$el.querySelector('.area-title'),
+      height: '40px',
+      lineHeight: '1.5'
+    })
+
     this.initMediumEditor()
     window.addEventListener('resize', this.handleResize)
     if (window.innerWidth <= 640) {
@@ -74,6 +83,7 @@ export default {
         e.preventDefault()
       }
     })
+
     // Start update article interval
     this.updateArticle()
   },
@@ -419,6 +429,17 @@ export default {
       'updateThumbnail'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
+  },
+  watch: {
+    async title(value) {
+      if (this.isInitTitleHeight) return
+      await this.$nextTick()
+      const textarea = this.$el.querySelector('.area-title')
+      if (textarea.scrollHeight > textarea.offsetHeight) {
+        textarea.style.height = `${textarea.scrollHeight}px`
+      }
+      this.isInitTitleHeight = true
+    }
   }
 }
 </script>
@@ -427,9 +448,8 @@ export default {
 .area-editor-container {
   display: grid;
   grid-area: editor;
-  grid-template-rows: 32px min-content;
-  // grid-template-rows: 32px 500px 70px;
-  grid-gap: 40px;
+  grid-template-rows: min-content min-content;
+  grid-gap: 20px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
@@ -438,14 +458,14 @@ export default {
 }
 
 .area-title {
-  color: #040404;
+  grid-area: title;
+  border: 0;
+  color: #333;
   font-size: 24px;
   font-weight: bold;
-  grid-area: title;
-  height: 32px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
   line-height: 1.5;
-  border: 0;
+  resize: none;
 
   &:placeholder-shown {
     color: #898989;
@@ -475,6 +495,10 @@ export default {
   .area-editor-container {
     grid-template-columns: 1fr;
     display: none;
+  }
+
+  .area-title {
+    letter-spacing: 0.01em;
   }
 }
 </style>

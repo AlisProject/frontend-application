@@ -30,11 +30,12 @@ export default {
 
 <style lang="scss" scoped>
 .area-notification-card-content {
-  background: white;
-  display: grid;
   grid-area: notification-card-content;
-  grid-template-rows: auto auto;
+  background: white;
+  border-radius: 4px;
+  display: grid;
   grid-gap: 6px;
+  grid-template-rows: auto auto;
   padding: 12px 12px 12px 0;
 }
 </style>
