@@ -166,7 +166,6 @@ export default {
       })
     },
     handleChangeTopicType(event) {
-      this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = event.target.value
       this.setArticleTopic({ topicType: this.topic })
     },
@@ -228,7 +227,6 @@ export default {
     },
     topicType() {
       if (this.topicType === null) return
-      this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = this.topicType
     }
   }
@@ -399,7 +397,7 @@ export default {
         background: transparent;
         border: none;
         box-shadow: none;
-        color: #cecece;
+        color: #000;
         cursor: pointer;
         font-size: 14px;
         outline: none;
