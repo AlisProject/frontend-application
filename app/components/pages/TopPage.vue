@@ -13,7 +13,6 @@
       class="recommended-article-card-list"/>
     <how-to-use-image class="how-to-use-image" />
     <sub-footer class="sub-footer" />
-    <create-new-article-button class="is-fixed-button" @click="moveToNewArticlePage"/>
     <the-loader :isLoading="!recommendedArticles.isLastPage"/>
     <app-footer class="app-footer"/>
   </div>
@@ -27,7 +26,6 @@ import EyecatchArticleCardList from '../organisms/EyecatchArticleCardList'
 import RecommendedArticleCardList from '../organisms/RecommendedArticleCardList'
 import HowToUseImage from '../organisms/HowToUseImage'
 import SubFooter from '../organisms/SubFooter'
-import CreateNewArticleButton from '../atoms/CreateNewArticleButton'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -40,7 +38,6 @@ export default {
     RecommendedArticleCardList,
     HowToUseImage,
     SubFooter,
-    CreateNewArticleButton,
     TheLoader,
     AppFooter
   },
