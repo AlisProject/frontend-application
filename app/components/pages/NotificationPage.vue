@@ -119,7 +119,7 @@ export default {
 @media screen and (max-width: 640px) {
   .notification-list-container {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 40px 1fr 75px min-content;
+    grid-template-rows: 66px 40px 1fr 75px min-content;
   }
 
   .area-title {
