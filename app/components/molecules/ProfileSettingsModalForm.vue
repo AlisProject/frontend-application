@@ -334,8 +334,22 @@ export default {
     .signup-form {
       max-width: 256px;
 
+      .upload-img-section {
+        width: 100px;
+        margin: 0 auto 20px;
+
+        .upload-img {
+          width: 100px;
+          height: 100px;
+        }
+      }
+
+      &-input {
+        margin-bottom: 20px;
+      }
+
       &-textarea {
-        height: 8em;
+        margin-bottom: 20px;
       }
     }
   }
