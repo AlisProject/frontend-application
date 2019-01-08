@@ -3,7 +3,7 @@
     <div class="wrapper">
       <p class="description">
         {{ confirmText }}<br>
-        新規登録・ログインを<span class="br"/>行いましょう
+        新規登録・ログインを<span class="br"/>しましょう
       </p>
       <app-button
         @click="showSignUpModal"
@@ -31,17 +31,17 @@ export default {
     confirmText() {
       switch (this.requestLoginModal.requestType) {
         case 'articleCreate':
-          return '記事の作成を行うため、'
+          return '記事の作成を行うため'
         case 'articleLike':
-          return '記事へいいねを行うため、'
+          return '記事へいいねを行うため'
         case 'articleComment':
-          return '記事へのコメントを行うため、'
+          return '記事へのコメントを行うため'
         case 'articleCommentLike':
-          return 'コメントへいいねを行うため、'
+          return 'コメントへいいねを行うため'
         case 'articleTip':
-          return 'ALISを贈るため、'
+          return 'ALISを贈るため'
         case 'articleReport':
-          return '記事を報告するため、'
+          return '記事を報告するため'
         default:
           return ''
       }
@@ -110,24 +110,24 @@ export default {
   }
 
   .description {
+    font-size: 20px;
     margin: 340px 0 0;
-    width: 328px;
+  }
+
+  .signup-button {
+    margin: 30px auto 0;
   }
 }
 
 @media screen and (max-width: 320px) {
   .wrapper {
-    background-size: auto 274px;
+    background-size: auto 240px;
   }
 
   .description {
-    margin: 290px 0 0;
-    width: 288px;
+    font-size: 18px;
+    margin: 260px 0 0;
     font-size: 20px;
-  }
-
-  .signup-button {
-    margin: 30px auto 0;
   }
 }
 </style>

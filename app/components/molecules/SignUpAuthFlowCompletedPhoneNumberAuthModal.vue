@@ -96,24 +96,27 @@ export default {
     background-size: auto 320px;
 
     .description {
+      font-size: 20px;
       margin: 340px 0 20px;
-      width: 328px;
     }
 
     .submit {
       display: none;
+    }
+
+    .close {
+      margin: 10px 0 60px;
     }
   }
 }
 
 @media screen and (max-width: 320px) {
   .wrapper {
-    background-size: auto 274px;
+    background-size: auto 240px;
 
     .description {
-      margin: 290px 0 20px;
-      width: 288px;
-      font-size: 20px;
+      margin: 260px 0 20px;
+      font-size: 18px;
     }
 
     .submit {
