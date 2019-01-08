@@ -25,6 +25,7 @@
     "aws-serverless-express": "^3.0.2",
     "axios": "^0.17.1",
     "bignumber.js": "^6.0.0",
+    "blueimp-load-image": "^2.20.1",
     "chart.js": "^2.7.3",
     "express": "^4.16.2",
     "lodash": "^4.17.5",

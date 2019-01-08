@@ -56,6 +56,7 @@ import { required } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
+import loadImage from 'blueimp-load-image'
 
 export default {
   data() {
@@ -113,37 +114,48 @@ export default {
         alert('画像は4.5MBまでアップロード可能です')
         return
       }
-      const reader = new FileReader()
-      reader.onload = async (e) => {
-        try {
-          const base64Image = e.target.result
-          const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-          const imageContentType = base64Image.substring(
-            base64Image.match(':').index + 1,
-            base64Image.match(';').index
-          )
-          await this.postUserIcon({ iconImage: base64Hash, imageContentType })
-          await this.setCurrentUserInfo()
-          this.uploadedImage = base64Image
-        } catch (error) {
-          const toastMessage = document.querySelector('.toast')
-          const modalMask = document.querySelector('.modal-mask')
-          const modalMaskZIndex = Number(
-            window.getComputedStyle(modalMask).getPropertyValue('z-index')
-          )
-          const originalToastZIndex = toastMessage.style.zIndex
-          toastMessage.style.zIndex = modalMaskZIndex + 1
-          this.sendNotification({
-            text: '画像のアップロードに失敗しました',
-            type: 'warning'
-          })
-          setTimeout(() => {
-            toastMessage.style.zIndex = originalToastZIndex
-          }, 2500)
-          console.error(error)
+
+      loadImage.parseMetaData(file, (data) => {
+        const options = {
+          canvas: true
         }
-      }
-      reader.readAsDataURL(file)
+        if (data.exif) {
+          options.orientation = data.exif.get('Orientation')
+        }
+        loadImage(
+          file,
+          async (canvas) => {
+            try {
+              const base64Image = canvas.toDataURL(file.type)
+              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+              const imageContentType = base64Image.substring(
+                base64Image.match(':').index + 1,
+                base64Image.match(';').index
+              )
+              await this.postUserIcon({ iconImage: base64Hash, imageContentType })
+              await this.setCurrentUserInfo()
+              this.uploadedImage = base64Image
+            } catch (error) {
+              const toastMessage = document.querySelector('.toast')
+              const modalMask = document.querySelector('.modal-mask')
+              const modalMaskZIndex = Number(
+                window.getComputedStyle(modalMask).getPropertyValue('z-index')
+              )
+              const originalToastZIndex = toastMessage.style.zIndex
+              toastMessage.style.zIndex = modalMaskZIndex + 1
+              this.sendNotification({
+                text: '画像のアップロードに失敗しました',
+                type: 'warning'
+              })
+              setTimeout(() => {
+                toastMessage.style.zIndex = originalToastZIndex
+              }, 2500)
+              console.error(error)
+            }
+          },
+          options
+        )
+      })
     },
     setUserDisplayName(userDisplayName) {
       this.setProfileSettingsUserDisplayName({ userDisplayName })
