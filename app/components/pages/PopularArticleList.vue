@@ -4,7 +4,6 @@
     <default-header-nav/>
     <article-type-select-nav />
     <article-card-list :articles="popularArticles"/>
-    <create-new-article-button class="is-fixed-button" @click="moveToNewArticlePage"/>
     <the-loader :isLoading="!isLastPage"/>
     <app-footer/>
   </div>
@@ -16,7 +15,6 @@ import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
-import CreateNewArticleButton from '../atoms/CreateNewArticleButton'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -27,7 +25,6 @@ export default {
     DefaultHeaderNav,
     ArticleTypeSelectNav,
     ArticleCardList,
-    CreateNewArticleButton,
     TheLoader,
     AppFooter
   },
