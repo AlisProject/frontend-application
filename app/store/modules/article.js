@@ -43,7 +43,8 @@ const state = () => ({
     currentTag: '',
     articles: [],
     page: 1,
-    isLastPage: false
+    isLastPage: false,
+    isFetching: false
   },
   isFetchedPublicArticle: false,
   eyecatchArticles: [],
@@ -561,24 +562,32 @@ const actions = {
     commit(types.UPDATE_TAGS, { tags })
   },
   async getTagArticles({ commit, dispatch, state }, { tag }) {
-    commit(types.SET_TAG_ARTICLES_CURRENT_TAG, { tag })
-    const limit = 12
-    const articles = await this.$axios.$get('/search/articles', {
-      params: { limit, tag, page: state.tagArticles.page }
-    })
-    const articlesWithData = await Promise.all(
-      articles.map(async (article) => {
-        const [userInfo, alisToken] = await Promise.all([
-          dispatch('getUserInfo', { userId: article.user_id }),
-          dispatch('getAlisToken', { articleId: article.article_id })
-        ])
-        return { ...article, userInfo, alisToken }
+    if (state.tagArticles.isFetching) return
+    try {
+      commit(types.SET_TAG_ARTICLES_CURRENT_TAG, { tag })
+      commit(types.SET_IS_FETCHING_TAG_ARTICLES, { isFetching: true })
+      const limit = 12
+      const articles = await this.$axios.$get('/search/articles', {
+        params: { limit, tag, page: state.tagArticles.page }
       })
-    )
-    commit(types.SET_TAG_ARTICLES, { articles: articlesWithData })
-    commit(types.SET_TAG_ARTICLES_PAGE, { page: state.tagArticles.page + 1 })
-    if (articles.length < limit) {
-      commit(types.SET_TAG_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TAG_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_TAG_ARTICLES_PAGE, { page: state.tagArticles.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_TAG_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    } finally {
+      commit(types.SET_IS_FETCHING_TAG_ARTICLES, { isFetching: false })
     }
   },
   resetTagArticlesData({ commit }) {
@@ -883,6 +892,9 @@ const mutations = {
   },
   [types.SET_RECOMMENDED_ARTICLES_PAGE](state, { page }) {
     state.recommendedArticles.page = page
+  },
+  [types.SET_IS_FETCHING_TAG_ARTICLES](state, { isFetching }) {
+    state.tagArticles.isFetching = isFetching
   }
 }
 

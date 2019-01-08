@@ -35,11 +35,6 @@ export default {
     TheLoader,
     AppFooter
   },
-  data() {
-    return {
-      isFetchingData: false
-    }
-  },
   computed: {
     ...mapGetters('article', ['tagArticles']),
     ...mapGetters('presentation', ['tagArticlesScrollHeight'])
@@ -65,17 +60,10 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      if (this.isFetchingData) return
-      try {
-        this.isFetchingData = true
+      const isLastPage = this.tagArticles.isLastPage
+      if (isLastPage || !isScrollBottom()) return
 
-        const isLastPage = this.tagArticles.isLastPage
-        if (isLastPage || !isScrollBottom()) return
-
-        await this.getTagArticles({ tag: this.$route.params.tag })
-      } finally {
-        this.isFetchingData = false
-      }
+      await this.getTagArticles({ tag: this.$route.params.tag })
     },
     ...mapActions('article', ['getTagArticles']),
     ...mapActions('presentation', ['setTagArticlesScrollHeight'])
