@@ -244,6 +244,13 @@ $topicCount: 10;
     &:before {
       background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
     }
+
+    &.area-topic0 {
+      &:before {
+        background-position-x: 20px;
+        background-position-y: 5px;
+      }
+    }
   }
 
   &.area-topic0 {
@@ -253,8 +260,8 @@ $topicCount: 10;
       background-image: none;
       background: url('~assets/images/pc/topic/icon_category_recomend.png') no-repeat;
       background-size: 48px;
-      background-position-x: 20px;
-      background-position-y: 5px;
+      background-position-x: 22px;
+      background-position-y: 7px;
     }
   }
 }
