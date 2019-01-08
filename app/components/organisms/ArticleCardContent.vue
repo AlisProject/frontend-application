@@ -41,11 +41,13 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "title title"
+    "...   ... "
     "tags  tags "
+    "...   ... "
     "...   ... "
     "data  ...  ";
   grid-template-columns: 248px auto;
-  grid-template-rows: 48px 40px 0 auto;
+  grid-template-rows: 48px 0 40px 0 0 auto;
   position: relative;
   grid-gap: 4px;
 }

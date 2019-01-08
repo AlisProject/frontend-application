@@ -5,7 +5,7 @@
       :to="`/tag/${tag}`"
       :key="tag"
       class="tag">
-      #{{ tag }}
+      {{ tag }}
     </nuxt-link>
   </span>
 </template>
@@ -25,27 +25,24 @@ export default {
 .area-tags {
   grid-area: tags;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   color: #7f7f7f;
   display: -webkit-box;
   font-size: 12px;
-  line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .tag {
+  background-color: rgba(110, 110, 110, 0.08);
+  border-radius: 2px;
   color: #6e6e6e;
   display: inline-block;
   font-size: 11px;
   line-height: 15px;
-  margin-right: 8px;
+  margin: 0 6px 6px 0;
+  padding: 1px 4px;
   text-decoration: none;
   transition: color 400ms ease;
   white-space: nowrap;
-
-  &:hover {
-    color: #0086cc;
-  }
 }
 </style>

@@ -32,7 +32,7 @@ export default {
   font-weight: bold;
   grid-area: title;
   letter-spacing: 0.8px;
-  line-height: 1.714;
+  line-height: 24px;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;

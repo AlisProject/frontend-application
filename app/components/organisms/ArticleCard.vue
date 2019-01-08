@@ -52,15 +52,15 @@ a {
 .article-card-container {
   @include cassette-shadow();
   display: grid;
-  grid-template-rows: 148px 136px;
+  grid-template-rows: 148px 144px;
   grid-template-columns: 296px;
   /* prettier-ignore */
   grid-template-areas:
     "article-card-image"
     "article-card-content";
-  padding: 22px;
+  padding: 20px 22px;
   border-radius: 4px;
-  grid-gap: 12px;
+  grid-gap: 8px;
 }
 
 .draft .article-card-container {
