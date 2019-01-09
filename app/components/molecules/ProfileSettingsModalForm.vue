@@ -342,6 +342,11 @@ export default {
           width: 100px;
           height: 100px;
         }
+
+        .upload-img-dammy {
+          width: 100px;
+          height: 100px;
+        }
       }
 
       &-input {
