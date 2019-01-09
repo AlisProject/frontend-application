@@ -1,21 +1,21 @@
 <template>
-  <div class="report-modal-content">
-    <p class="confirm-text">
-      {{ confirmText }}
-    </p>
-    <p class="description">
-      以下のボタンよりログイン画面または新規登録画面へお進みください
-    </p>
-    <app-button
-      @click="showLoginModal"
-      class="login-button">
-      ログインする
-    </app-button>
-    <app-button
-      @click="showSignUpModal"
-      class="signup-button">
-      新規登録する
-    </app-button>
+  <div class="modal-body">
+    <div class="wrapper">
+      <p class="description">
+        {{ confirmText }}<br>
+        新規登録・ログイン<span class="br"/>しましょう
+      </p>
+      <app-button
+        @click="showSignUpModal"
+        class="signup-button">
+        新規登録する
+      </app-button>
+      <app-button
+        @click="showLoginModal"
+        class="login-button">
+        ログインする
+      </app-button>
+    </div>
   </div>
 </template>
 
@@ -29,20 +29,21 @@ export default {
   },
   computed: {
     confirmText() {
-      const text = '新規登録・ログインが必要です'
       switch (this.requestLoginModal.requestType) {
+        case 'articleCreate':
+          return '記事の作成を行うために'
         case 'articleLike':
-          return `記事へいいねを行うには${text}`
+          return '記事へいいねを行うために'
         case 'articleComment':
-          return `記事へのコメントを行うには${text}`
+          return '記事へのコメントを行うために'
         case 'articleCommentLike':
-          return `コメントへいいねを行うには${text}`
+          return 'コメントへいいねを行うために'
         case 'articleTip':
-          return `トークンを贈るには${text}`
+          return 'ALISを贈るために'
         case 'articleReport':
-          return `記事を報告するには${text}`
+          return '記事を報告するために'
         default:
-          return text
+          return ''
       }
     },
     ...mapGetters('user', ['requestLoginModal'])
@@ -51,18 +52,10 @@ export default {
     showSignUpModal() {
       this.setRequestLoginModal({ isShow: false })
       this.setSignUpModal({ showSignUpModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     showLoginModal() {
       this.setRequestLoginModal({ isShow: false })
       this.setLoginModal({ showLoginModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     ...mapActions('user', ['setSignUpModal', 'setLoginModal', 'setRequestLoginModal'])
   }
@@ -70,55 +63,71 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.report-modal-content {
-  &::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
+.modal-body {
+  margin: 0 auto;
+  display: flex;
 }
 
-.confirm-text {
-  color: #030303;
-  font-size: 14px;
-  letter-spacing: 0.8px;
-  text-align: center;
-  padding: 30px 0 0;
+.wrapper {
+  width: 100vw;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  background: url('~assets/images/pc/bg/request-login.png') no-repeat;
+  background-size: auto 280px;
+  background-position-x: center;
+  margin: -50px -30px 0;
+  height: 100%;
 }
 
 .description {
-  @include default-text();
-  max-width: 394px;
-  margin: 20px auto 0;
-}
-
-.login-button {
-  margin: 60px auto 0;
+  color: #030303;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1.37px;
+  line-height: 1.5;
+  margin: 310px 0 0;
 }
 
 .signup-button {
+  margin: 40px auto 0;
+}
+
+.login-button {
   margin: 20px auto 60px;
 }
 
 @media screen and (max-width: 550px) {
-  .confirm-text {
-    padding: calc(50vh - 160px) 0 0;
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+
+  .wrapper {
+    background-size: auto 320px;
   }
 
   .description {
-    max-width: 300px;
+    font-size: 20px;
+    margin: 340px 0 0;
   }
 
-  .login-button {
-    margin: 40px auto 0;
+  .signup-button {
+    margin: 30px auto 0;
   }
 }
 
 @media screen and (max-width: 320px) {
-  .login-button,
-  .signup-button {
-    width: 220px;
-    margin: 12px auto;
+  .wrapper {
+    background-size: auto 240px;
+  }
+
+  .description {
+    font-size: 18px;
+    margin: 260px 0 0;
+    font-size: 20px;
   }
 }
 </style>

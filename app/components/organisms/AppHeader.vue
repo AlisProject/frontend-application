@@ -1,9 +1,13 @@
 <template>
   <header class="area-app-header-container">
-    <nuxt-link to="/articles/popular?topic=crypto" class="area-logo" @click.native="resetData"/>
+    <nuxt-link to="/" class="logo-link" @click.native="resetData">
+      <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
+    </nuxt-link>
     <no-ssr>
-      <header-session-links v-if="!loggedIn"/>
-      <header-user-logged-in-items v-else />
+      <div class="session-items">
+        <header-session-links v-if="!loggedIn"/>
+        <header-user-logged-in-items v-else />
+      </div>
     </no-ssr>
     <sign-up-modal v-if="showSignUpModal"/>
     <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
@@ -15,6 +19,7 @@
     <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
     <user-report-modal v-if="userReportModal.isShow"/>
     <article-report-modal v-if="articleReportModal.isShow"/>
+    <first-process-modal v-if="firstProcessModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -34,6 +39,7 @@ import TipModal from '../organisms/TipModal'
 import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
 import UserReportModal from '../organisms/UserReportModal'
 import ArticleReportModal from '../organisms/ArticleReportModal'
+import FirstProcessModal from '../organisms/FirstProcessModal'
 
 export default {
   components: {
@@ -49,7 +55,8 @@ export default {
     Toast,
     RequestPhoneNumberVerifyModal,
     UserReportModal,
-    ArticleReportModal
+    ArticleReportModal,
+    FirstProcessModal
   },
   computed: {
     ...mapGetters('user', [
@@ -61,14 +68,15 @@ export default {
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal'
+      'requestPhoneNumberVerifyModal',
+      'firstProcessModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
   methods: {
     resetData() {
       // 同一のページの場合は記事情報をリセットしない
-      if (this.$route.fullPath === '/articles/popular?topic=crypto') return
+      if (this.$route.fullPath === '/') return
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },
@@ -81,23 +89,27 @@ export default {
 
 <style lang="scss" scoped>
 .area-app-header-container {
-  display: grid;
   grid-area: app-header;
-  grid-template-rows: 100px;
-  width: 1080px;
-  grid-template-columns: 150px 1fr auto;
-  /* prettier-ignore */
-  grid-template-areas:
-    "logo ... session";
   z-index: 2002;
-  justify-self: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 1080px;
+  margin: 0 auto;
 }
 
-.area-logo {
-  grid-area: logo;
-  background: url('~assets/images/pc/common/header_logo_original.png') no-repeat;
-  background-position: center;
-  background-size: 150px 40px;
+.logo-link {
+  margin: 0 auto;
+
+  .logo {
+    width: 102px;
+    height: auto;
+  }
+}
+
+.session-items {
+  position: absolute;
+  right: 0;
 }
 
 @media screen and (max-width: 1080px) {
@@ -106,33 +118,35 @@ export default {
   }
 }
 
+@mixin spStyles() {
+  .area-app-header-container {
+    max-width: calc(100% - 24px);
+    background: #fff;
+  }
+
+  .logo-link {
+    position: absolute;
+    left: 0;
+
+    .logo {
+      width: auto;
+      height: 26px;
+    }
+  }
+
+  .session-items {
+    position: absolute;
+    right: 0;
+  }
+}
+
 @media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
-    .area-app-header-container {
-      max-width: calc(100% - 40px);
-      background: white;
-      grid-template-columns: 94px 1fr auto;
-      grid-template-rows: 66px;
-      padding: 0 22px 0 18px;
-    }
-
-    .area-logo {
-      background-size: 94px 25px;
-    }
+    @include spStyles();
   }
 }
 
 @media screen and (max-width: 550px) {
-  .area-app-header-container {
-    max-width: calc(100% - 40px);
-    background: white;
-    grid-template-columns: 94px 1fr auto;
-    grid-template-rows: 66px;
-    padding: 0 22px 0 18px;
-  }
-
-  .area-logo {
-    background-size: 94px 25px;
-  }
+  @include spStyles();
 }
 </style>

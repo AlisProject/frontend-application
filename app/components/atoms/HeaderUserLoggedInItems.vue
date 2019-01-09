@@ -24,17 +24,23 @@
       @click="toggleMenu"
       v-else>
     <div class="menu" v-if="isMenuShown">
-      <div class="image-box">
+      <template v-if="currentUserInfo.icon_image_url !== undefined">
+        <div class="background-user-image-box">
+          <img class="background-user-image" :src="currentUserInfo.icon_image_url">
+        </div>
         <img
           :src="currentUserInfo.icon_image_url"
-          class="profile-image"
-          v-if="currentUserInfo.icon_image_url !== undefined">
+          class="profile-image">
+      </template>
+      <template v-else>
+        <div class="background-user-image-box">
+          <img class="background-user-image" src="~assets/images/pc/common/icon_user_noimg.png">
+        </div>
         <img
           src="~assets/images/pc/common/icon_user_noimg.png"
-          class="profile-image"
-          v-else>
-        <p class="alis-token-amount">{{ formattedAlisToken }} ALIS</p>
-      </div>
+          class="profile-image">
+      </template>
+      <p class="alis-token-amount">{{ formattedAlisToken }} ALIS</p>
       <ul class="menu-links">
         <li class="menu-link">
           <nuxt-link class="reset-link-style" to="/me/articles/new" event="">
@@ -44,22 +50,24 @@
           </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link class="reset-link-style" to="/me/articles/public" event="">
-            <span class="menu-link-inner" @click="moveToPublicArticlesPage">
-              記事一覧
-            </span>
-          </nuxt-link>
-        </li>
-        <li class="menu-link">
           <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
         </li>
-        <li class="menu-link" @click="showProfileSettingsModal">
+        <!-- <li class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
+            獲得ALIS詳細
+          </nuxt-link>
+        </li> -->
+        <li class="menu-link">
+          <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="menu-link-inner">
+            ALISの使い方
+          </nuxt-link>
+        </li>
+        <li class="menu-link" @click="logoutUser">
           <span class="menu-link-inner">
-            ユーザー設定
+            ログアウト
           </span>
         </li>
       </ul>
-      <span class="logout" @click="logoutUser">ログアウト</span>
     </div>
     <div class="cover" v-show="isMenuShown" @click="closeMenu"></div>
   </div>
@@ -138,15 +146,11 @@ export default {
       try {
         this.logout()
         location.href = '/'
-        this.sendNotification({ text: 'ログアウトしました。' })
+        this.sendNotification({ text: 'ログアウトしました' })
       } catch (error) {
-        this.sendNotification({ text: 'ログアウトに失敗しました。', type: 'warning' })
+        this.sendNotification({ text: 'ログアウトに失敗しました', type: 'warning' })
         console.error(error)
       }
-    },
-    showProfileSettingsModal() {
-      this.closeMenu()
-      this.setProfileSettingsModal({ showProfileSettingsModal: true })
     },
     moveToNotificationPage() {
       this.resetNotificationData()
@@ -157,32 +161,15 @@ export default {
       if (!this.currentUser.phoneNumberVerified) {
         this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html,body').style.overflow = 'hidden'
-        }
         return
       }
       location.href = '/me/articles/new'
-    },
-    moveToPublicArticlesPage() {
-      if (!this.currentUser.phoneNumberVerified) {
-        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'viewPublicArticles' })
-        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-        window.scrollTo(0, 0)
-        if (window.innerWidth > 550) {
-          document.querySelector('html,body').style.overflow = 'hidden'
-        }
-        return
-      }
-      this.$router.push('/me/articles/public')
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('user', [
       'logout',
-      'setProfileSettingsModal',
       'setCurrentUserInfo',
       'getUsersAlisToken',
       'getUnreadNotification',
@@ -214,7 +201,11 @@ export default {
     cursor: pointer;
   }
 
-  .search-icon,
+  .search-icon {
+    width: 24px;
+    margin: 0 40px 0 88px;
+  }
+
   .notification-icon {
     width: 24px;
     margin-right: 40px;
@@ -232,42 +223,57 @@ export default {
   background: white;
   border-radius: 4px;
   box-sizing: border-box;
-  color: #000000;
+  color: #000;
   filter: drop-shadow(0 2px 4px rgba(192, 192, 192, 0.5));
-  padding: 24px 0 20px;
   position: absolute;
   right: 0;
-  top: 80px;
-  width: 224px;
+  top: 48px;
+  width: 250px;
 
-  .image-box {
-    background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+  .background-user-image-box {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     height: 180px;
-    margin: -24px 0 0 0;
+    overflow: hidden;
+    position: relative;
     text-align: center;
+    width: 250px;
 
-    .profile-image {
-      border-radius: 50%;
-      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
-      height: 60px;
-      margin-top: 40px;
-      object-fit: cover;
-      width: 60px;
+    .background-user-image {
+      filter: blur(10px);
+      height: auto;
+      margin: -40px -10px 0 -10px;
+      width: 270px;
     }
+  }
 
-    .alis-token-amount {
-      color: #fff;
-      font-size: 20px;
-      font-weight: 500;
-      margin-top: 10px;
-    }
+  .profile-image {
+    border-radius: 50%;
+    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+    height: 80px;
+    object-fit: cover;
+    position: absolute;
+    right: 85px;
+    top: 40px;
+    width: 80px;
+  }
+
+  .alis-token-amount {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 500;
+    left: 0;
+    margin-top: 10px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+    top: 130px;
   }
 
   .menu-links {
     list-style: none;
-    margin: 20px 0;
+    margin: 30px 0;
     padding: 0;
 
     .menu-link {
@@ -278,7 +284,11 @@ export default {
       white-space: nowrap;
 
       &:hover {
-        background-color: rgba(131, 139, 215, 0.2);
+        background-color: rgba(0, 135, 240, 0.2);
+      }
+
+      &:last-child {
+        margin-top: 40px;
       }
 
       .reset-link-style {
@@ -304,25 +314,6 @@ export default {
       }
     }
   }
-
-  .logout {
-    color: #000;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
-    height: 24px;
-    line-height: 24px;
-    padding: 10px 64px;
-    text-decoration: none;
-
-    &:visited {
-      color: #000;
-    }
-
-    &:hover {
-      background-color: rgba(131, 139, 215, 0.2);
-    }
-  }
 }
 
 @media screen and (max-width: 1080px) {
@@ -336,12 +327,12 @@ export default {
     .search-icon,
     .notification-icon {
       width: 16px;
-      margin-right: 24px;
+      margin: 2px 24px 0 0;
     }
 
     .profile-icon {
-      height: 32px;
-      width: 32px;
+      height: 24px;
+      width: 24px;
     }
   }
 
@@ -358,8 +349,7 @@ export default {
       display: none;
     }
 
-    .image-box {
-      background: linear-gradient(134.72deg, #232538 0%, #858dda 100%);
+    .background-user-image-box {
       border-radius: 0;
       height: 180px;
       overflow: hidden;

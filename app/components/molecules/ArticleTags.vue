@@ -40,9 +40,9 @@ export default {
 }
 
 .tag {
-  background-color: rgba(133, 141, 218, 0.05);
+  background-color: rgba(0, 134, 204, 0.05);
   border-radius: 4px;
-  color: #858dda;
+  color: #0086cc;
   cursor: pointer;
   display: inline-block;
   font-size: 12px;

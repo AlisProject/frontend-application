@@ -42,7 +42,8 @@ module.exports = {
         hid: 'twitter:image',
         name: 'twitter:image',
         content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
-      }
+      },
+      { hid: 'fb:app_id', property: 'fb:app_id', content: '2157199921164241' }
     ],
     link: [
       {
@@ -61,7 +62,7 @@ module.exports = {
   /*
   ** Customize the progress bar color
   */
-  loading: { color: '#858DDA' },
+  loading: { color: '#0086cc' },
   /*
   ** Build configuration
   */

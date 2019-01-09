@@ -1,7 +1,7 @@
 <template>
   <div class="tip-flow-select-tip-amount-modal">
     <h1 class="title">
-      トークンを贈る
+      ALISを贈る
     </h1>
     <span class="description">
       お贈り先をご確認の上、贈る量を決めて確認画面へお進みください
@@ -118,7 +118,7 @@ export default {
         )
 
         if (!isAddableToken) {
-          this.errorMessage = 'トークンが不足しています'
+          this.errorMessage = 'ALISが不足しています'
           return
         }
 
@@ -128,14 +128,14 @@ export default {
         )
 
         if (hasExceededMaxTipToken) {
-          this.errorMessage = '一度に贈れるトークンは 1000 ALIS 未満となります'
+          this.errorMessage = '一度に贈れるALISは1000 ALIS未満となります'
           return
         }
 
         this.errorMessage = ''
         this.tipTokenAmount = formattedTipTokenAmount.plus(formattedAmount)
       } catch (error) {
-        this.errorMessage = '数字でご入力ください'
+        this.errorMessage = '数字で入力してください'
       }
     },
     moveToConfirmationPage() {
@@ -144,12 +144,12 @@ export default {
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
         const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!isAddableToken) {
-          this.errorMessage = 'トークンが不足しています'
+          this.errorMessage = 'ALISが不足しています'
           return
         }
 
         if (formattedTipTokenAmount.isEqualTo(0)) {
-          this.errorMessage = '贈るトークン量を選択してください'
+          this.errorMessage = '贈るALISを選択してください'
           return
         }
 
@@ -159,7 +159,7 @@ export default {
         )
 
         if (hasExceededMaxTipToken) {
-          this.errorMessage = '一度に贈れるトークンは 1000 ALIS 未満となります'
+          this.errorMessage = '一度に贈れるALISは1000 ALIS未満となります'
           return
         }
 
@@ -172,7 +172,7 @@ export default {
           tipTokenAmountForUser.split('.')[1].length > 10
 
         if (isNotInputablePlaceAfterDecimalPoint) {
-          this.errorMessage = '小数点10桁までの範囲でご入力ください'
+          this.errorMessage = '小数点10桁までの範囲で入力してください'
           return
         }
 
@@ -187,7 +187,7 @@ export default {
         this.setTipFlowSelectTipAmountModal({ isShow: false })
         this.setTipFlowConfirmationModal({ isShow: true })
       } catch (error) {
-        this.errorMessage = '数字でご入力ください'
+        this.errorMessage = '数字で入力してください'
       }
     },
     ...mapActions('user', [
@@ -209,15 +209,21 @@ export default {
 
   .title {
     color: #030303;
-    font-size: 20px;
-    letter-spacing: 4px;
-    margin: 10px 0 0;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    text-align: center;
+    margin: 30px 0 0;
   }
 
   .description {
-    color: #030303;
-    font-size: 14px;
-    margin-top: 60px;
+    color: #6e6e6e;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    line-height: 1.5;
+    margin-top: 22px;
+    width: 256px;
   }
 
   .author-icon {
@@ -242,7 +248,7 @@ export default {
   }
 
   .triangle-mark {
-    border-color: transparent transparent rgb(218, 220, 243) transparent;
+    border-color: transparent transparent rgb(178, 218, 239) transparent;
     border-style: solid;
     border-width: 0 16px 20px 16px;
     height: 0;
@@ -256,16 +262,16 @@ export default {
     .token-amount-input {
       appearance: none;
       border: 0;
-      padding: 10px 40px 10px 10px;
-      color: #858dda;
+      box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
+      box-sizing: border-box;
+      color: #0086cc;
       font-size: 24px;
       font-weight: bold;
       line-height: 28px;
-      box-shadow: 0 0 8px 0 rgba(133, 141, 218, 0.5);
-      text-align: right;
       margin-top: 20px;
-      width: 255px;
-      box-sizing: border-box;
+      padding: 10px 40px;
+      text-align: center;
+      width: 400px;
 
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
@@ -285,7 +291,7 @@ export default {
 
     .token-amount-input-unit {
       position: absolute;
-      color: #858dda;
+      color: #0086cc;
       font-size: 10px;
       font-weight: bold;
       top: 39px;
@@ -302,9 +308,9 @@ export default {
 
     .unit-item {
       border-radius: 50%;
-      box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.8);
+      box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
       box-sizing: border-box;
-      color: #858dda;
+      color: #0086cc;
       cursor: pointer;
       font-size: 10px;
       height: 40px;
@@ -351,7 +357,6 @@ export default {
   .tip-flow-select-tip-amount-modal {
     .title {
       font-size: 14px;
-      font-weight: normal;
       letter-spacing: 4px;
       margin: 20px 0 0;
     }
@@ -360,6 +365,12 @@ export default {
       color: #6e6e6e;
       font-size: 12px;
       margin-top: 30px;
+    }
+
+    .token-amount-input-box {
+      .token-amount-input {
+        width: 255px;
+      }
     }
   }
 }

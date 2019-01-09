@@ -32,7 +32,6 @@ import AppButton from '../atoms/AppButton'
 export default {
   data() {
     return {
-      errorMessage: '',
       reportReasons: [
         {
           order: 1,
@@ -56,7 +55,7 @@ export default {
         },
         {
           order: 5,
-          reasonName: 'トークンの不正獲得',
+          reasonName: 'ALISの不正獲得',
           reason: 'illegal_token_usage'
         },
         {
@@ -104,6 +103,10 @@ export default {
   methods: {
     setReason(value) {
       this.setUserReportSelectReasonReason({ reason: value })
+      document.querySelector('.modal-container').scrollTo({
+        top: document.querySelector('.modal-container').clientHeight,
+        behavior: 'smooth'
+      })
     },
     showError(type) {
       this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData[type].$touch()
@@ -166,7 +169,7 @@ export default {
           left: 0;
           width: 20px;
           height: 20px;
-          border: 1px solid #858dda;
+          border: 1px solid #0086cc;
           border-radius: 50%;
           box-sizing: border-box;
         }
@@ -181,7 +184,7 @@ export default {
           left: 4px;
           width: 12px;
           height: 12px;
-          background: #858dda;
+          background: #0086cc;
           border-radius: 50%;
         }
       }
@@ -202,6 +205,14 @@ export default {
   .modal-body {
     .select-reason-box {
       width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .modal-footer {
+    .to-next-step-button {
+      margin: 20px auto 100px;
     }
   }
 }

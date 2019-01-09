@@ -19,13 +19,13 @@
             @input="setAuthCode"
             @blur="showError('authCode')"
             @focus="resetError('authCode')">
+          <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字で入力してください</p>
+          <p class="error-message" v-else-if="showErrorInvalidAuthCode">認証コードは6文字で入力してください</p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
       <p class="error-message">{{errorMessage}}</p>
-      <p class="error-message" v-if="showErrorInvalidAuthCode">認証コードは6文字でご入力ください</p>
-      <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字でご入力ください</p>
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         認証コードを送信する
       </app-button>
@@ -123,7 +123,7 @@ export default {
         let errorMessage = ''
         switch (error.code) {
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage = 'エラーが発生しました。入力内容を確認してください'
             break
         }
         this.errorMessage = errorMessage
@@ -157,34 +157,46 @@ export default {
 
   .announce {
     @include default-text();
+    color: #030303;
+    font-weight: bold;
     font-size: 14px;
-    margin: 60px 0 0;
+    margin: 60px auto 0;
     text-align: center;
   }
 
   .description {
     @include default-text();
-    margin: 20px 0 0;
+    color: #6e6e6e;
+    font-size: 12px;
+    letter-spacing: 0.8px;
+    margin: 20px auto 0;
+    max-width: 400px;
     text-align: center;
   }
 
   .signup-form {
-    margin: 60px auto 0;
+    margin: 30px auto 0;
     max-width: 400px;
-    width: 80%;
+    width: 100%;
 
     &-label {
       color: #030303;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 2.4;
+    }
+
+    &-group {
+      position: relative;
     }
 
     &-input {
+      appearance: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
       border: none;
-      border-bottom: 1px dotted #232538;
       border-radius: 0;
-      margin-bottom: 30px;
-      padding: 5px 0;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+      padding: 12px;
       width: 100%;
 
       &::-webkit-input-placeholder {
@@ -198,14 +210,20 @@ export default {
       }
     }
 
+    .error-message {
+      bottom: 20px;
+      margin: 0;
+      color: #f06273;
+      font-size: 12px;
+      position: absolute;
+      width: 100%;
+      text-align: right;
+    }
+
     .error {
       .signup-form {
-        &-label {
-          color: #f06273;
-        }
-
         &-input {
-          border-bottom: 1px dotted #f06273;
+          box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
         }
       }
     }
@@ -214,7 +232,7 @@ export default {
 
 .modal-footer {
   width: 270px;
-  margin: 90px auto 40px;
+  margin: 30px auto 40px;
 
   .to-next-step-button {
     margin: 20px auto 0;
@@ -222,6 +240,7 @@ export default {
 
   .back-to-input-phone-number {
     @include default-text();
+    color: #6e6e6e;
     text-align: right;
 
     .link {
@@ -233,6 +252,23 @@ export default {
     color: #f06273;
     font-size: 12px;
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .modal-body {
+    .announce,
+    .description {
+      width: 256px;
+    }
+
+    .description {
+      text-align: left;
+    }
+
+    .signup-form {
+      width: 256px;
+    }
   }
 }
 

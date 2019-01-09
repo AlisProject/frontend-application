@@ -22,6 +22,8 @@ export default {
 
 <style lang="scss" scoped>
 .app-button {
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
+  background: #0086cc;
   border-radius: 18px;
   border: none;
   color: #fff;
@@ -35,42 +37,16 @@ export default {
   position: relative;
   text-align: center;
   text-decoration: none;
+  transition: all 400ms ease;
   width: 256px;
-  z-index: 0;
-
-  &:before {
-    background: #858dda;
-    border-radius: 18px;
-    content: '';
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    transition: all 400ms ease;
-    width: 100%;
-    z-index: -1;
-  }
-
-  &:after {
-    background: linear-gradient(314.72deg, #232538 0%, #858dda 100%);
-    border-radius: 18px;
-    content: '';
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: -2;
-  }
-
-  &:hover:enabled:before,
-  &:focus:before {
-    opacity: 0;
-  }
 
   &:hover,
   &:focus {
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
+    background: #006ca4;
+  }
+
+  &:active {
+    box-shadow: none;
   }
 
   &:target {
@@ -79,12 +55,13 @@ export default {
 
   &[disabled] {
     box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.1);
-    color: #6e6e6e;
+    color: #fff;
     cursor: default;
+    opacity: 0.5;
 
-    &:before,
-    &:after {
-      background: #fff;
+    &:hover,
+    &:focus {
+      background: #0086cc;
     }
   }
 

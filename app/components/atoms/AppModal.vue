@@ -2,24 +2,24 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper" @click.self="closeModal">
-        <div class="modal-container" :style="{ maxWidth: `${maxWidth}px` }">
+        <div class="modal-container">
           <div class="modal-header">
             <div class="modal-header-content">
-              <slot name="modal-header-content" />
+              <slot name="modal-header-content"/>
             </div>
-            <span class="modal-header-default-button" @click="closeModal" v-if="isShowCloseModalButton">
-              ✕
-            </span>
+            <span
+              class="modal-header-default-button"
+              @click="closeModal"
+              v-if="isShowCloseModalButton"
+            >✕</span>
           </div>
           <div class="modal-body">
             <slot name="modal-title">
-              <h2 class="title">
-                {{title}}
-              </h2>
+              <h2 class="title">{{title}}</h2>
             </slot>
           </div>
           <div class="modal-content">
-            <slot v-if="showModalContentLately" name="modal-content" />
+            <slot v-if="showModalContentLately" name="modal-content"/>
           </div>
         </div>
       </div>
@@ -45,11 +45,6 @@ export default {
       type: Boolean,
       default: true,
       required: false
-    },
-    maxWidth: {
-      type: Number,
-      default: 800,
-      required: false
     }
   },
   data() {
@@ -67,7 +62,11 @@ export default {
       'showRestrictEditArticleModal',
       'requestLoginModal',
       'showTipModal',
-      'requestPhoneNumberVerifyModal'
+      'requestPhoneNumberVerifyModal',
+      'currentUser',
+      'firstProcessModal',
+      'tipFlowModal',
+      'currentUserInfo'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -80,10 +79,33 @@ export default {
         }
       }
       if (this.showSignUpAuthFlowModal) {
-        this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
         if (this.$route.path.startsWith('/signup-login')) {
           this.replaceUrlToTop()
         }
+        if (
+          this.signUpAuthFlowModal.isInputPhoneNumberModal ||
+          this.signUpAuthFlowModal.isInputAuthCodeModal ||
+          this.signUpAuthFlowModal.isProfileSettingsModal
+        ) {
+          this.setSignUpAuthFlowInputPhoneNumberModal({
+            isSignUpAuthFlowInputPhoneNumberModal: false
+          })
+          this.setSignUpAuthFlowInputAuthCodeModal({
+            isSignUpAuthFlowInputAuthCodeModal: false
+          })
+          this.setSignUpAuthFlowProfileSettingsModal({
+            isSignUpAuthFlowProfileSettingsModal: false
+          })
+          if (this.currentUser.phoneNumberVerified) {
+            this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
+          } else {
+            this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: true })
+          }
+          return
+        }
+        this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
+        this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
+        this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
         if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
           await this.logout()
         }
@@ -102,14 +124,22 @@ export default {
       }
       if (this.showRestrictEditArticleModal) {
         this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
-        this.$router.push('/me/articles/public')
+        this.$router.push(`/users/${this.currentUserInfo.user_id}`)
       }
       if (this.requestLoginModal.isShow) {
         this.setRequestLoginModal({ isShow: false })
       }
       if (this.showTipModal) {
         this.setTipModal({ showTipModal: false })
+
+        // if (this.tipFlowModal.isCompletedModal) {
+        //   if (!this.currentUserInfo.is_tipped_article) {
+        //     this.setFirstProcessModal({ isShow: true })
+        //     this.setFirstProcessTippedArticleModal({ isShow: true })
+        //   }
+        // }
         this.hideTipFlowModalContent()
+        return
       }
       if (this.requestPhoneNumberVerifyModal.isShow) {
         this.setRequestPhoneNumberVerifyModal({ isShow: false })
@@ -128,11 +158,15 @@ export default {
         this.setArticleReportConfirmationModal({ isShow: false })
         this.resetArticleReportData()
       }
+      if (this.firstProcessModal.isShow) {
+        this.setFirstProcessModal({ isShow: false })
+        this.setFirstProcessLikedArticleModal({ isShow: false })
+        this.setFirstProcessTippedArticleModal({ isShow: false })
+        this.setFirstProcessGotTokeneModal({ isShow: false })
+        this.setFirstProcessCreatedArticleModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
-      document.body.scrollTop = 0
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     replaceUrlToTop() {
       this.$router.replace('/')
@@ -148,7 +182,19 @@ export default {
       'setRequestLoginModal',
       'setTipModal',
       'hideTipFlowModalContent',
-      'setRequestPhoneNumberVerifyModal'
+      'setRequestPhoneNumberVerifyModal',
+      'setSignUpAuthFlowProfileSettingsModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowInputPhoneNumberModal',
+      'setSignUpAuthFlowInputAuthCodeModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
+      'setSignUpAuthFlowNotCompletedPhoneNumberAuthModal',
+      'setFirstProcessModal',
+      'setFirstProcessLikedArticleModal',
+      'setFirstProcessTippedArticleModal',
+      'setFirstProcessGotTokeneModal',
+      'setFirstProcessCreatedArticleModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
@@ -186,7 +232,7 @@ export default {
     display: table;
     height: 100vh;
     left: 0;
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     transition: opacity 0.3s ease;
@@ -201,9 +247,12 @@ export default {
 
   &-container {
     background: #fff;
+    border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    box-sizing: border-box;
     margin: 10px auto;
     max-width: 800px;
+    overflow-y: auto;
     padding: 20px 30px;
     transition: all 0.3s ease;
     width: 80%;
@@ -231,6 +280,8 @@ export default {
       cursor: pointer;
       float: right;
       font-size: 26px;
+      margin-right: -10px;
+      position: relative;
     }
   }
 
@@ -252,26 +303,21 @@ export default {
   .modal {
     &-wrapper {
       width: 100%;
-      padding-bottom: 4000px;
     }
 
     &-container {
-      height: 100%;
+      border-radius: 0;
+      height: 100vh;
       margin-top: 0;
       max-width: 550px;
-      width: calc(100% - 60px);
+      overflow-y: scroll;
+      width: 100vw;
     }
 
     &-body {
       .title {
         margin: 60px 20px 0;
       }
-    }
-  }
-
-  .cover-screen {
-    .modal-container {
-      height: 100vh;
     }
   }
 }

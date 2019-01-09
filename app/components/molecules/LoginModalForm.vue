@@ -1,11 +1,8 @@
 <template>
   <div>
-    <!-- SPの場合、スクロールによりモーダルの表示が崩れるバグがあるため、スクロールさせないためにロゴを消す -->
-    <img class="logo" src="~assets/images/pc/common/header_logo_original.png" v-if="isShowEmailAuth && isShowExternalProviderAuth">
     <h1 class="title" v-if="isSelectedEmailAuth">ログイン</h1>
     <div class="modal-body">
-      <div class="email-auth" v-show="isShowEmailAuth" :class="{ isSelectedEmailAuth }">
-        <h2 class="email-auth-title" v-show="isShowEmailAuth && isShowExternalProviderAuth">メールアドレスでログインする</h2>
+      <div class="email-auth" v-show="isSelectedEmailAuth" :class="{ isSelectedEmailAuth }">
         <form class="signup-form" @keypress.enter="onSubmit">
           <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
             <label class="signup-form-label">ユーザーID または メールアドレス</label>
@@ -19,22 +16,22 @@
               @focus="resetError('userIdOrEmail')">
           </div>
           <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
-            <label class="signup-form-label">パスワード</label>
+            <label class="signup-form-label">パスワード※半角英数字8文字以上</label>
             <input
               class="signup-form-input"
               type="password"
               ref="password"
-              placeholder="半角英数字8文字以上"
+              placeholder="●●●●●●●●"
               @input="setPassword"
               @blur="showError('password')"
               @focus="resetError('password')">
-            <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上でご入力ください</p>
+            <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上で入力してください</p>
           </div>
         </form>
         <div class="modal-footer">
           <p class="error-message">{{ errorMessage }}</p>
 
-          <p class="agreement-confirmation">
+          <p class="agreement-confirmation" :class="{ isSelectedEmailAuth }">
             <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>、
             <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意して
           </p>
@@ -46,9 +43,7 @@
           </p>
         </div>
       </div>
-      <div class="divider" v-show="isShowEmailAuth && isShowExternalProviderAuth"/>
-      <div class="external-provider-auth" v-show="isShowExternalProviderAuth">
-        <h2 class="external-provider-auth-title" v-show="isShowEmailAuth && isShowExternalProviderAuth">外部サイトでログインする</h2>
+      <div class="external-provider-auth" v-show="!isSelectedEmailAuth">
         <a class="line-button" :href="lineLoginAuthorizeURL">
           LINEでログイン
         </a>
@@ -56,27 +51,23 @@
           twitterでログイン
         </a>
         <p
-          class="for-email-signup"
-          @click="showEmailAuth"
-          v-show="isShowOnlyExternalProviderAuth">
+          class="for-email-login"
+          @click="showEmailAuth">
           メールでログイン
         </p>
-        <p class="agreement-confirmation text-align-left">
-          上記を押した場合、
-          <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・
-          <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に
-          同意したものとみなします
+        <p class="agreement-confirmation">
+          上記を押した場合、<nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・<nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意したものとみなします
         </p>
       </div>
     </div>
     <div
-      class="for-login-user"
+      class="for-signup-user"
       @click="transitToSignup"
-      v-if="isShowEmailAuth && isShowExternalProviderAuth">
-      新規登録の方はこちら
+      v-if="!isSelectedEmailAuth">
+      新規登録をされる方は<span class="link-sp">こちら</span>
     </div>
-    <div class="for-login-user-sp" :class="{ isSelectedEmailAuth }" v-else>
-      新規登録の方は<span class="for-login-user-link" @click="transitToSignup">こちら</span>
+    <div class="for-signup-user-sp" v-else>
+      新規登録をされる方は<span class="for-signup-user-link" @click="transitToSignup">こちら</span>
     </div>
   </div>
 </template>
@@ -90,22 +81,16 @@ import AppButton from '../atoms/AppButton'
 export default {
   data() {
     return {
-      isShowEmailAuth: true,
-      isShowExternalProviderAuth: true,
       errorMessage: '',
       lineLoginAuthorizeURL: null,
       twitterLoginAuthorizeURL: null,
-      isSelectedEmailAuth: false
+      isSelectedEmailAuth: false,
+      isProcessing: false
     }
   },
   async mounted() {
-    this.switchAuthType()
-    window.addEventListener('resize', this.handleResize)
     this.lineLoginAuthorizeURL = await this.getLineLoginAuthorizeURL()
     this.twitterLoginAuthorizeURL = await this.getTwitterLoginAuthorizeURL()
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize)
   },
   components: {
     AppButton
@@ -165,23 +150,14 @@ export default {
       this.setLoginModal({ showLoginModal: false })
       this.setSignUpModal({ showSignUpModal: true })
     },
-    handleResize() {
-      this.switchAuthType()
-    },
-    switchAuthType() {
-      if (this.isSelectedEmailAuth) return
-      this.isShowEmailAuth = window.innerWidth > 920
-      this.isShowExternalProviderAuth = true
-    },
     showEmailAuth() {
-      this.isShowEmailAuth = true
-      this.isShowExternalProviderAuth = false
       this.isSelectedEmailAuth = true
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
+      if (this.invalidSubmit || this.isProcessing) return
       const { userIdOrEmail, password } = this.loginModal.formData
       try {
+        this.isProcessing = true
         await this.login({ userId: userIdOrEmail, password })
         await this.setCurrentUserInfo()
         this.setLoginModal({ showLoginModal: false })
@@ -196,13 +172,15 @@ export default {
         let errorMessage = ''
         switch (error.code) {
           case 'NotAuthorizedException':
-            errorMessage = 'ユーザーIDまたはメールアドレス、パスワードを間違えています'
+            errorMessage = 'ユーザーID・メールアドレスまたはパスワードが正しくありません'
             break
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage = 'エラーが発生しました。入力内容を確認してください'
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions({
@@ -246,15 +224,7 @@ export default {
   letter-spacing: 5px;
   margin: 0 0 20px;
   text-align: center;
-}
-
-.email-auth-title,
-.external-provider-auth-title {
-  color: #030303;
-  font-size: 20px;
-  font-weight: 500;
-  text-align: center;
-  margin: 0;
+  padding-top: 20px;
 }
 
 .email-auth {
@@ -265,7 +235,7 @@ export default {
     max-width: 100%;
 
     .signup-form {
-      margin: 30px auto 0;
+      margin: 20px auto 0;
       max-width: 400px;
     }
   }
@@ -273,7 +243,6 @@ export default {
 
 .signup-form {
   margin: 60px auto 0;
-  max-width: 250px;
   width: 100%;
 
   &-group {
@@ -283,18 +252,21 @@ export default {
   &-label {
     color: #030303;
     font-size: 14px;
-    line-height: 20px;
+    line-height: 2.4;
   }
 
   &-input {
+    appearance: none;
+    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     border: none;
     border-radius: 0;
-    border-bottom: 1px dotted #232538;
+    box-sizing: border-box;
     margin-bottom: 40px;
-    padding: 5px 0;
+    padding: 12px;
     width: 100%;
 
     &::-webkit-input-placeholder {
+      padding: 3px;
       color: #cecece;
       font-size: 14px;
       letter-spacing: 0.05em;
@@ -306,21 +278,19 @@ export default {
   }
 
   .error-message {
-    bottom: 0;
+    bottom: 20px;
+    margin: 0;
     color: #f06273;
     font-size: 12px;
     position: absolute;
     width: 100%;
+    text-align: right;
   }
 
   .error {
     .signup-form {
-      &-label {
-        color: #f06273;
-      }
-
       &-input {
-        border-bottom: 1px dotted #f06273;
+        box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
       }
     }
   }
@@ -328,12 +298,8 @@ export default {
 
 .modal-footer {
   width: 270px;
-  margin: 90px auto 40px;
-
-  .agreement-confirmation {
-    @include default-text();
-    text-align: center;
-  }
+  margin: 20px auto 0;
+  position: relative;
 
   .login-button {
     margin: 20px auto 0;
@@ -361,27 +327,21 @@ export default {
   text-align: center;
 }
 
-.text-align-left {
-  text-align: left;
-}
-
-.divider {
-  background-color: #858dda;
-  width: 2px;
-  height: 454px;
-}
-
 .external-provider-auth {
-  max-width: 520px;
-  width: 100%;
+  width: 100vw;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
+  background: url('~assets/images/pc/bg/login.png') no-repeat;
+  background-size: auto 370px;
+  background-position-x: center;
+  margin: -50px -30px 0;
 }
 
 @mixin external-provider-button {
   border-radius: 18px;
   border: none;
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
@@ -395,7 +355,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 60px;
+  margin-top: 270px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;
@@ -404,7 +364,7 @@ export default {
 }
 
 .twitter-button {
-  margin: 30px 0 60px;
+  margin: 20px 0 0;
   background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
   background-color: #1da1f3;
   background-size: 20px;
@@ -412,71 +372,94 @@ export default {
   @include external-provider-button();
 }
 
-.for-login-user {
+.for-email-login {
+  margin: 24px 0 0;
+  color: #4e4e4e;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.agreement-confirmation {
+  @include default-text();
+  text-align: center;
+  margin: 20px 0 60px;
+
+  &.isSelectedEmailAuth {
+    margin: 20px 0 0;
+  }
+}
+
+.for-signup-user {
   display: flex;
-  background-color: #05051e;
-  color: #fff;
+  color: #333;
   font-size: 12px;
   text-align: center;
   cursor: pointer;
-  height: 34px;
+  height: 36px;
   align-items: center;
   justify-content: center;
   margin: 0 -30px -20px;
+  box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
 }
 
-.for-login-user-sp {
-  color: #6e6e6e;
+.for-signup-user-sp {
   font-size: 12px;
-  margin: 30px auto 0;
-  max-width: 320px;
+  margin: 0 auto 30px;
   text-align: right;
+  width: 270px;
 
-  &.isSelectedEmailAuth {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 920px) {
-  .email-auth,
-  .external-provider-auth {
-    max-width: 100%;
-  }
-
-  .signup-form {
-    margin: 30px auto 0;
-    max-width: 400px;
-    width: 100%;
-  }
-
-  .line-button {
-    margin-top: 10px;
-  }
-
-  .twitter-button {
-    margin: 30px 0;
-  }
-
-  .for-email-signup {
-    margin: 10px 0 30px 0;
-    color: #4e4e4e;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  .for-login-user-link {
-    color: #858dda;
-    cursor: pointer;
+  .for-signup-user-link {
+    @include default-link();
   }
 }
 
 @media screen and (max-width: 550px) {
-  .logo {
-    margin: 0 auto 80px;
+  .email-auth {
+    &.isSelectedEmailAuth {
+      .signup-form {
+        max-width: 256px;
+      }
+    }
+  }
+
+  .external-provider-auth {
+    background-size: auto 400px;
+    margin: -60px -30px 0;
+  }
+
+  .line-button {
+    margin-top: 370px;
+  }
+
+  .for-signup-user {
+    color: #6e6e6e;
+    font-size: 12px;
+    margin: 10px auto 20px;
+    max-width: 320px;
+    text-align: right;
+    box-shadow: none;
     display: block;
-    padding-top: 40px;
+
+    .link-sp {
+      color: #0086cc;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .title {
+    padding-top: 0;
+  }
+
+  .agreement-confirmation {
+    margin: 10px 0 0;
+    padding: 0 10px;
+  }
+
+  .external-provider-confirmation {
+    margin: 10px 0;
+    padding: 0 10px;
   }
 }
 </style>

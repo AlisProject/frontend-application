@@ -8,7 +8,8 @@ const state = () => ({
   searchArticlesScrollHeight: 0,
   searchUsersScrollHeight: 0,
   searchTagsScrollHeight: 0,
-  tagArticlesScrollHeight: 0
+  tagArticlesScrollHeight: 0,
+  defaultHeaderNavHorizontalScrollPosition: 0
 })
 
 const getters = {
@@ -17,7 +18,9 @@ const getters = {
   searchArticlesScrollHeight: (state) => state.searchArticlesScrollHeight,
   searchUsersScrollHeight: (state) => state.searchUsersScrollHeight,
   searchTagsScrollHeight: (state) => state.searchTagsScrollHeight,
-  tagArticlesScrollHeight: (state) => state.tagArticlesScrollHeight
+  tagArticlesScrollHeight: (state) => state.tagArticlesScrollHeight,
+  defaultHeaderNavHorizontalScrollPosition: (state) =>
+    state.defaultHeaderNavHorizontalScrollPosition
 }
 
 const actions = {
@@ -38,6 +41,9 @@ const actions = {
   },
   setTagArticlesScrollHeight({ commit }, { scrollHeight }) {
     commit(types.SET_TAG_ARTICLES_SCROLL_HEIGHT, { scrollHeight })
+  },
+  setDefaultHeaderNavHorizontalScrollPosition({ commit }, { scrollPosition }) {
+    commit(types.SET_DEFAULT_HEADER_NAV_HORIZONTAL_SCROLL_POSITION, { scrollPosition })
   }
 }
 
@@ -59,6 +65,9 @@ const mutations = {
   },
   [types.SET_TAG_ARTICLES_SCROLL_HEIGHT](state, { scrollHeight }) {
     state.tagArticlesScrollHeight = scrollHeight
+  },
+  [types.SET_DEFAULT_HEADER_NAV_HORIZONTAL_SCROLL_POSITION](state, { scrollPosition }) {
+    state.defaultHeaderNavHorizontalScrollPosition = scrollPosition
   }
 }
 

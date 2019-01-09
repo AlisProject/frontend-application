@@ -1,23 +1,26 @@
 <template>
   <div class="area-post-article">
-    <span class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
+    <app-button class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
       公開する
-    </span>
+    </app-button>
     <div v-show="isPopupShown" class="popup">
       <h3 class="headline">1. サムネイルの選択</h3>
       <div class="thumbnails">
         <span class="no-thumbnail-message" v-if="suggestedThumbnails.length === 0">
           画像がありません
         </span>
-        <img
+        <div
           v-for="img in suggestedThumbnails"
-          :src="img"
           :key="img"
+          class="thumbnail-box"
           :class="{ 'selected': img === thumbnail }"
-          @click.prevent="selectThumbnail"
-          class="thumbnail"/>
+          @click.prevent="selectThumbnail">
+          <img
+            :src="img"
+            class="thumbnail"/>
+        </div>
       </div>
-      <h3 class="headline">2. トピックの設定</h3>
+      <h3 class="headline">2. カテゴリの設定</h3>
       <div class="article-type-select-box">
         <no-ssr>
           <select required class="article-type-select" :value="topicType" @change="handleChangeTopicType">
@@ -30,13 +33,12 @@
       </div>
       <h3 class="headline">3. タグの設定</h3>
       <tags-input-form @change-tag-validation-state="onChangeTagValidationState"/>
-      <button
+      <app-button
         class="submit"
         @click="publish"
-        :class="{ disable: !publishable || isInvalidTag}"
-        :disabled="publishingArticle">
+        :disabled="!publishable || isInvalidTag || publishingArticle">
         公開する
-      </button>
+      </app-button>
     </div>
   </div>
 </template>
@@ -44,10 +46,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
 
 export default {
   components: {
+    AppButton,
     TagsInputForm
   },
   data() {
@@ -98,9 +102,9 @@ export default {
           .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
           .replace(/\r?\n?\s/g, ' ')
           .slice(0, 100)
-        if (title === '') this.sendNotification({ text: 'タイトルを入力してください。' })
-        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください。' })
-        if (topic === null) this.sendNotification({ text: 'トピックを選択してください。' })
+        if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
+        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
+        if (topic === null) this.sendNotification({ text: 'カテゴリを選択してください' })
         if (title === '' || overview === '' || topic === null) {
           this.publishingArticle = false
           return
@@ -125,12 +129,17 @@ export default {
           await this.putPublicArticle({ article, articleId })
           await this.republishPublicArticle({ articleId, topic, tags })
         }
-        this.$router.push('/me/articles/public')
-        this.sendNotification({ text: '記事を公開しました。' })
+        this.$router.push(`/${this.currentUserInfo.user_id}/articles/${articleId}`)
+        this.sendNotification({ text: '記事を公開しました' })
         this.resetArticleTopic()
+
+        // if (!this.currentUserInfo.is_created_article) {
+        //   this.setFirstProcessModal({ isShow: true })
+        //   this.setFirstProcessCreatedArticleModal({ isShow: true })
+        // }
       } catch (e) {
         this.publishingArticle = false
-        this.sendNotification({ text: '記事の公開に失敗しました。', type: 'warning' })
+        this.sendNotification({ text: '記事の公開に失敗しました', type: 'warning' })
         console.error(e)
       }
     },
@@ -157,7 +166,6 @@ export default {
       })
     },
     handleChangeTopicType(event) {
-      this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = event.target.value
       this.setArticleTopic({ topicType: this.topic })
     },
@@ -180,7 +188,8 @@ export default {
       'getTopics',
       'resetArticleTopic',
       'setArticleTopic'
-    ])
+    ]),
+    ...mapActions('user', ['setFirstProcessModal', 'setFirstProcessCreatedArticleModal'])
   },
   computed: {
     publishable() {
@@ -197,7 +206,8 @@ export default {
       'topics',
       'topicType',
       'tags'
-    ])
+    ]),
+    ...mapGetters('user', ['currentUserInfo'])
   },
   watch: {
     suggestedThumbnails() {
@@ -217,7 +227,6 @@ export default {
     },
     topicType() {
       if (this.topicType === null) return
-      this.$el.querySelector('.article-type-select').style.color = '#000'
       this.topic = this.topicType
     }
   }
@@ -239,10 +248,22 @@ export default {
   justify-content: center;
 
   .post-article {
-    color: #858dda;
+    border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: none;
+    color: #fff;
     cursor: pointer;
-    user-select: none;
-    display: inline-block;
+    font-size: 14px;
+    font-weight: 100;
+    height: 34px;
+    line-height: 2.5;
+    text-align: center;
+    width: 96px;
+
+    &:hover,
+    &:focus {
+      background: #0086cc;
+    }
 
     &.disable {
       cursor: not-allowed;
@@ -254,18 +275,18 @@ export default {
     border-radius: 4px;
     box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     box-sizing: border-box;
-    padding: 40px 20px;
+    padding: 40px;
     position: absolute;
-    top: 30px;
-    width: 350px;
+    top: 50px;
+    width: 340px;
     z-index: 1;
 
     .headline {
       color: #000000;
       font-size: 14px;
       font-weight: 500;
-      line-height: 1.5;
-      margin-top: 0;
+      letter-spacing: 0.8px;
+      margin: 0 0 10px;
       text-align: left;
     }
 
@@ -273,39 +294,93 @@ export default {
       overflow-x: scroll;
       overflow-y: hidden;
       white-space: nowrap;
-      margin-bottom: 40px;
+      margin-bottom: 10px;
+      user-select: none;
+      height: 120px;
+
+      &::-webkit-scrollbar {
+        height: 40px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        /* スクロールバーをドラッグしやすくするため、スクロールバー領域を広めにとる */
+        background: linear-gradient(
+          0deg,
+          transparent 0%,
+          transparent 75%,
+          #0086cc 75%,
+          #0086cc 80%,
+          transparent 80%,
+          transparent 100%
+        );
+      }
 
       .no-thumbnail-message {
         font-size: 14px;
-        margin-top: 20px;
+        margin-top: 40px;
         display: block;
       }
 
-      .thumbnail {
-        box-sizing: border-box;
-        cursor: pointer;
+      .thumbnail-box {
         display: inline-block;
-        height: 80px;
-        margin-right: 20px;
-        overflow: hidden;
+        box-sizing: border-box;
         width: 80px;
+        margin-right: 20px;
+        height: 80px;
+
+        .thumbnail {
+          box-sizing: border-box;
+          cursor: pointer;
+          height: 80px;
+          width: 80px;
+          object-fit: cover;
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
       }
 
       .selected {
-        border: 2px solid #99a2ff;
+        position: relative;
+
+        &:before {
+          background-color: rgba(2, 134, 204, 0.5);
+          content: ' ';
+          cursor: pointer;
+          display: block;
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 80px;
+          z-index: 0;
+        }
+
+        &:after {
+          bottom: 8px;
+          color: #fff;
+          content: '選択中';
+          font-size: 14px;
+          font-weight: bold;
+          left: 0;
+          letter-spacing: 0.8px;
+          position: absolute;
+          right: 0;
+        }
       }
     }
 
     .article-type-select-box {
-      border-bottom: 1px dotted #232538;
+      box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
       margin-bottom: 40px;
-      padding: 6px 1px;
+      padding: 6px 8px;
       position: relative;
 
       &::after,
       &::before {
         position: absolute;
-        right: 0;
+        right: 8px;
         width: 0;
         height: 0;
         padding: 0;
@@ -317,12 +392,12 @@ export default {
 
       &::after {
         top: 7px;
-        border-bottom: 8px solid rgb(80, 81, 96);
+        border-bottom: 8px solid #0086cc;
       }
 
       &::before {
         top: 17px;
-        border-top: 8px solid rgb(80, 81, 96);
+        border-top: 8px solid #0086cc;
       }
 
       .article-type-select {
@@ -331,7 +406,7 @@ export default {
         background: transparent;
         border: none;
         box-shadow: none;
-        color: #cecece;
+        color: #000;
         cursor: pointer;
         font-size: 14px;
         outline: none;
@@ -351,25 +426,7 @@ export default {
     }
 
     .submit {
-      background: white;
-      border-radius: 4px;
-      border: 1.5px solid #99a2ff;
-      color: #99a2ff;
-      cursor: pointer;
-      height: 37px;
-      justify-content: center;
-      width: 160px;
-
-      &:hover {
-        background: #99a2ff;
-        color: #fff;
-
-        &.disable {
-          background: #fff;
-          color: #99a2ff;
-          cursor: not-allowed;
-        }
-      }
+      margin: 0 auto;
     }
   }
 }

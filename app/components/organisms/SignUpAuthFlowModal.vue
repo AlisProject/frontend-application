@@ -4,10 +4,10 @@
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
-      <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
       <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
-      <sign-up-auth-flow-completed-auth-modal v-if="isCompletedAuthModal" />
+      <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
+      <sign-up-auth-flow-not-completed-phone-number-auth-modal v-if="isNotCompletedPhoneNumberAuthModal" />
     </div>
   </app-modal>
 </template>
@@ -18,10 +18,10 @@ import AppModal from '../atoms/AppModal'
 import SignUpAuthFlowLoginModalForm from '../molecules/SignUpAuthFlowLoginModalForm'
 import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlowInputPhoneNumberModalForm'
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
-import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
 import SignUpAuthFlowInputUserIdForm from '../molecules/SignUpAuthFlowInputUserIdForm'
-import SignUpAuthFlowCompletedAuthModal from '../molecules/SignUpAuthFlowCompletedAuthModal'
+import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
+import SignUpAuthFlowNotCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowNotCompletedPhoneNumberAuthModal'
 
 export default {
   components: {
@@ -29,23 +29,21 @@ export default {
     SignUpAuthFlowLoginModalForm,
     SignUpAuthFlowInputPhoneNumberModalForm,
     SignUpAuthFlowInputAuthCodeModalForm,
-    SignUpAuthFlowCompletedPhoneNumberAuthModal,
     ProfileSettingsModalForm,
     SignUpAuthFlowInputUserIdForm,
-    SignUpAuthFlowCompletedAuthModal
+    SignUpAuthFlowCompletedPhoneNumberAuthModal,
+    SignUpAuthFlowNotCompletedPhoneNumberAuthModal
   },
   computed: {
     title() {
       if (this.isInputUserIdModal) {
-        return '外部サービス認証完了'
-      } else if (this.isCompletedAuthModal) {
-        return ''
-      } else if (this.isInputPhoneNumberModal) {
-        return '電話番号の登録'
-      } else if (this.isInputAuthCodeModal) {
-        return '認証コードの確認'
+        return 'SNS認証完了'
+      } else if (this.isInputPhoneNumberModal || this.isInputAuthCodeModal) {
+        return 'アカウント認証'
       } else if (this.isProfileSettingsModal) {
         return 'プロフィール'
+      } else if (this.isCompletedPhoneNumberAuthModal || this.isNotCompletedPhoneNumberAuthModal) {
+        return ''
       } else {
         return '新規登録'
       }
@@ -59,17 +57,17 @@ export default {
     isInputAuthCodeModal() {
       return this.signUpAuthFlowModal.isInputAuthCodeModal
     },
-    isCompletedPhoneNumberAuthModal() {
-      return this.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal
-    },
     isProfileSettingsModal() {
       return this.signUpAuthFlowModal.isProfileSettingsModal
     },
     isInputUserIdModal() {
       return this.signUpAuthFlowModal.isInputUserIdModal
     },
-    isCompletedAuthModal() {
-      return this.signUpAuthFlowModal.isCompletedAuthModal
+    isCompletedPhoneNumberAuthModal() {
+      return this.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal
+    },
+    isNotCompletedPhoneNumberAuthModal() {
+      return this.signUpAuthFlowModal.isNotCompletedPhoneNumberAuthModal
     },
     isShowCloseModalButton() {
       return !this.isInputPhoneNumberModal
@@ -81,7 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 .modal-header-warning {
-  background: #858dda;
+  background: #0086cc;
   color: #fff;
   font-size: 14px;
   line-height: 21px;

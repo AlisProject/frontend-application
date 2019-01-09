@@ -27,5 +27,10 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: #6e6e6e;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  line-height: 1.5;
 }
 </style>

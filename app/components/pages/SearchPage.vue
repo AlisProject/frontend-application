@@ -1,59 +1,73 @@
 <template>
-  <div class="search-page-container" :class="searchContentType">
-    <app-header />
-    <h1 class="area-title">{{ title }}</h1>
+  <div class="search-page-container">
+    <app-header/>
     <form @submit.prevent="search" class="area-search">
       <input
         type="text"
         class="form-input"
         required
+        placeholder="ALIS内で検索する"
         maxlength="150"
         v-model.trim="inputText"
-        ref="searchInput">
+        ref="searchInput"
+      >
       <img
         @click="onClickSearch"
         class="search-icon"
         :class="{ 'disabled': inputText === '' }"
-        src="~assets/images/pc/common/icon_search.png">
+        src="~assets/images/pc/common/icon_search.png"
+      >
     </form>
     <nav class="area-nav" v-if="showNav">
       <nuxt-link
-        :to="{ path: '/search', query: { context: 'article', q: this.query }}"
-        class="area-article nav-link"
-        :class="{ 'selected': searchContentType === 'article' }">記事</nuxt-link>
+        :to="{ path: '/search', query: { context: 'article', q: query }}"
+        class="nav-link"
+        :class="{ 'selected': searchContentType === 'article' }"
+      >記事</nuxt-link>
       <nuxt-link
-        :to="{ path: '/search', query: { context: 'user', q: this.query }}"
-        class="area-user nav-link"
-        :class="{ 'selected': searchContentType === 'user' }">ユーザー</nuxt-link>
+        :to="{ path: '/search', query: { context: 'tag', q: query }}"
+        class="nav-link"
+        :class="{ 'selected': searchContentType === 'tag' }"
+      >タグ</nuxt-link>
       <nuxt-link
-        :to="{ path: '/search', query: { context: 'tag', q: this.query }}"
-        class="area-tag nav-link"
-        :class="{ 'selected': searchContentType === 'tag' }">タグ</nuxt-link>
+        :to="{ path: '/search', query: { context: 'user', q: query }}"
+        class="nav-link"
+        :class="{ 'selected': searchContentType === 'user' }"
+      >ユーザー</nuxt-link>
     </nav>
     <div class="area-search-result">
       <no-ssr>
         <div v-if="searchContentType === 'article'">
-          <p class="no-result-message" v-if="searchArticles.articles.length === 0">
-           {{  searchArticles.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
-          </p>
+          <p
+            class="no-result-message"
+            v-if="searchArticles.articles.length === 0"
+          >{{ searchArticles.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}</p>
           <search-article-card-list :articles="searchArticles.articles" v-else/>
         </div>
-        <div v-else-if="searchContentType === 'user'">
-          <p class="no-result-message" v-if="searchUsers.users.length === 0">
-           {{ searchUsers.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
-          </p>
-          <search-user-card-list :users="searchUsers.users" v-else/>
-        </div>
         <div v-else-if="searchContentType === 'tag'">
-          <p class="no-result-message" v-if="searchTags.tags.length === 0">
-           {{ searchTags.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}
-          </p>
-          <article-tags :tags="searchTags.tags" v-else/>
+          <p
+            class="no-result-message"
+            v-if="searchTags.tags.length === 0"
+          >{{ searchTags.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}</p>
+          <search-tags :tags="searchTags.tags" v-else/>
+        </div>
+        <div v-else-if="searchContentType === 'user'">
+          <p
+            class="no-result-message"
+            v-if="searchUsers.users.length === 0"
+          >{{ searchUsers.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}</p>
+          <search-user-card-list :users="searchUsers.users" v-else/>
         </div>
       </no-ssr>
     </div>
-    <the-loader :isLoading="showNav && !searchArticles.isLastPage" v-if="searchContentType === 'article'"/>
-    <the-loader :isLoading="showNav && !searchUsers.isLastPage" v-else-if="searchContentType === 'user'"/>
+    <the-loader
+      :isLoading="showNav && !searchArticles.isLastPage"
+      v-if="searchContentType === 'article'"
+    />
+    <the-loader
+      :isLoading="showNav && !searchUsers.isLastPage"
+      v-else-if="searchContentType === 'user'"
+    />
     <app-footer/>
   </div>
 </template>
@@ -64,7 +78,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import SearchUserCardList from '../organisms/SearchUserCardList'
-import ArticleTags from '../molecules/ArticleTags'
+import SearchTags from '../molecules/SearchTags'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -74,14 +88,11 @@ export default {
     AppHeader,
     SearchArticleCardList,
     SearchUserCardList,
-    ArticleTags,
+    SearchTags,
     TheLoader,
     AppFooter
   },
   computed: {
-    title() {
-      return 'SEARCH'
-    },
     ...mapGetters('article', ['searchArticles']),
     ...mapGetters('user', ['searchUsers']),
     ...mapGetters('presentation', [
@@ -103,8 +114,8 @@ export default {
     this.inputText = this.$route.query.q
     await this.$nextTick()
     if (this.searchArticlesScrollHeight) this.$el.scrollTop = this.searchArticlesScrollHeight
-    if (this.searchUsersScrollHeight) this.$el.scrollTop = this.searchUsersScrollHeight
     if (this.searchTagsScrollHeight) this.$el.scrollTop = this.searchTagsScrollHeight
+    if (this.searchUsersScrollHeight) this.$el.scrollTop = this.searchUsersScrollHeight
   },
   data() {
     return {
@@ -123,11 +134,11 @@ export default {
       case 'article':
         this.setSearchArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
         break
-      case 'user':
-        this.setSearchUsersScrollHeight({ scrollHeight: this.$el.scrollTop })
-        break
       case 'tag':
         this.setTagArticlesScrollHeight({ scrollHeight: this.$el.scrollTop })
+        break
+      case 'user':
+        this.setSearchUsersScrollHeight({ scrollHeight: this.$el.scrollTop })
         break
       default:
         break
@@ -147,7 +158,7 @@ export default {
         this.isSearchFirstly = false
         await this.getSearchData(this.query)
       } catch (error) {
-        this.ADD_TOAST_MESSAGE({ text: '検索結果の取得に失敗しました。', type: 'warning' })
+        this.ADD_TOAST_MESSAGE({ text: '検索結果の取得に失敗しました', type: 'warning' })
         console.error(error)
       } finally {
         this.isFetchingData = false
@@ -163,11 +174,11 @@ export default {
           case 'article':
             await this.getSearchArticles({ query })
             break
-          case 'user':
-            await this.getSearchUsers({ query })
-            break
           case 'tag':
             await this.getSearchTags({ query })
+            break
+          case 'user':
+            await this.getSearchUsers({ query })
             break
           default:
             break
@@ -282,38 +293,19 @@ export default {
 
 <style lang="scss" scoped>
 .search-page-container {
-  background-size: contain;
   display: grid;
-  grid-row-gap: 20px;
-  grid-template-rows: 100px 60px 20px 80px 1fr 75px 75px;
+  grid-row-gap: 40px;
+  grid-template-rows: 100px auto auto 1fr 75px 75px;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header             app-header"
-    "...         title                  ...       "
     "...         search                 ...       "
     "...         nav                    ...       "
     "...         search-result          ...       "
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
   min-height: 100vh;
-
-  &.article {
-    grid-template-columns: 1fr 1080px 1fr;
-  }
-
-  &.user,
-  &.tag {
-    grid-template-columns: 1fr 640px 1fr;
-  }
-}
-
-.area-title {
-  font-family: 'Times New Roman', Times, serif;
-  text-align: center;
-  font-size: 20px;
-  margin: 0;
-  grid-area: title;
-  letter-spacing: 0.2em;
+  grid-template-columns: 1fr 710px 1fr;
 }
 
 .area-search {
@@ -322,12 +314,18 @@ export default {
   position: relative;
 
   .form-input {
-    -webkit-appearance: none;
-    border: none;
+    appearance: none;
     border-radius: 0;
-    border-bottom: 1px dotted #232538;
-    padding: 5px 24px 5px 0;
+    border: none;
+    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
+    box-sizing: border-box;
+    padding: 12px 24px 12px 12px;
     width: 400px;
+
+    &::-webkit-input-placeholder {
+      color: #cecece;
+      font-size: 14px;
+    }
 
     &:focus {
       outline: 0;
@@ -335,11 +333,11 @@ export default {
   }
 
   .search-icon {
-    position: absolute;
-    right: 0;
-    top: 6px;
-    width: 16px;
     cursor: pointer;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 16px;
 
     &.disabled {
       cursor: not-allowed;
@@ -349,39 +347,22 @@ export default {
 
 .area-nav {
   grid-area: nav;
-  display: grid;
-  text-align: center;
-  grid-template-rows: 1fr 30px 1fr;
-  grid-template-columns: 1fr repeat(3, 70px) 1fr;
-  grid-column-gap: 10px;
-  /* prettier-ignore */
-  grid-template-areas:
-    "... ...     ...  ... ..."
-    "... article user tag ..."
-    "... ...     ...  ... ...";
+  display: flex;
+  border-bottom: 1px solid #e6e6e6;
 
   .nav-link {
-    font-size: 14px;
+    color: #6e6e6e;
+    font-size: 12px;
+    height: 20px;
+    list-style: none;
+    margin-right: 24px;
+    text-align: center;
     text-decoration: none;
-    color: #525256;
-    cursor: pointer;
 
-    &.selected {
-      color: #99a2ff;
-      border-bottom: 2px solid #99a2ff;
+    &.nuxt-link-exact-active {
+      color: #0086cc;
+      border-bottom: 1px solid #0086cc;
     }
-  }
-
-  .area-article {
-    grid-area: article;
-  }
-
-  .area-user {
-    grid-area: user;
-  }
-
-  .area-tag {
-    grid-area: tag;
   }
 }
 
@@ -393,84 +374,36 @@ export default {
   text-align: center;
 }
 
-@media screen and (max-width: 1296px) {
-  .search-page-container {
-    &.article {
-      grid-template-columns: 1fr 710px 1fr;
-    }
-  }
-}
-
 @media screen and (max-width: 920px) {
   .search-page-container {
-    &.article {
-      grid-template-columns: 1fr 340px 1fr;
-    }
-
-    &.user,
-    &.tag {
-      grid-template-columns: 1fr 70vw 1fr;
-
-      .area-search {
-        width: 340px;
-      }
-    }
+    grid-template-columns: 1fr 340px 1fr;
   }
 
   .area-search {
-    width: 100%;
+    max-width: 100%;
 
     .form-input {
-      width: calc(100% - 24px);
+      width: 340px;
     }
   }
 }
 
 @media screen and (max-width: 640px) {
   .search-page-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 40px 20px 80px 1fr 75px min-content;
-  }
-
-  .area-title {
-    font-size: 16px;
+    grid-template-rows: 100px auto auto 1fr 75px min-content;
   }
 }
 
 @media screen and (max-width: 550px) {
   .search-page-container {
-    grid-template-rows: 60px 20px 20px 50px 1fr 75px;
-    /* prettier-ignore */
-    grid-template-areas:
-    "app-header  app-header             app-header"
-    "...         title                  ...       "
-    "...         search                 ...       "
-    "nav         nav                    nav       "
-    "...         search-result          ...       "
-    "...         loader                 ...       "
-    "app-footer  app-footer             app-footer";
-
-    &.user,
-    &.tag {
-      grid-template-columns: 10px 1fr 10px;
-    }
+    grid-template-rows: 66px auto auto 1fr 75px min-content;
+    grid-row-gap: 30px;
   }
 }
 
 @media screen and (max-width: 370px) {
   .search-page-container {
     grid-template-columns: 10px 1fr 10px;
-
-    &.article {
-      grid-template-columns: 10px 1fr 10px;
-    }
-
-    &.user,
-    &.tag {
-      .area-search {
-        width: 100%;
-      }
-    }
   }
 }
 </style>

@@ -32,7 +32,7 @@ export default {
         const { reason } = this.articleReportModal.selectReason.formData
         const { originURL, freeText } = this.articleReportModal.inputFreeText.formData
         await this.postArticleFraud({ articleId, reason, originURL, freeText })
-        this.sendNotification({ text: '報告しました' })
+        this.sendNotification({ text: '記事を報告しました' })
       } catch (error) {
         let text = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
         if (error.response.data.message === 'Already exists') {
@@ -43,15 +43,11 @@ export default {
       this.setArticleReportConfirmationModal({ isShow: false })
       this.setArticleReportModal({ isShow: false })
       this.resetArticleReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     closeModal() {
       this.setArticleReportConfirmationModal({ isShow: false })
       this.setArticleReportModal({ isShow: false })
       this.resetArticleReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -84,13 +80,13 @@ export default {
 .close-button {
   background-color: #fff;
   border-radius: 30px;
-  border: 1px solid #858dda;
-  color: #858dda;
+  border: 1px solid #0086cc;
+  color: #0086cc;
   cursor: pointer;
   display: block;
   height: 37px;
   margin: 20px auto 100px;
-  width: 265px;
+  width: 256px;
 }
 
 @media screen and (max-width: 550px) {

@@ -30,10 +30,10 @@ const state = () => ({
     isLoginModal: false,
     isInputPhoneNumberModal: false,
     isInputAuthCodeModal: false,
-    isCompletedPhoneNumberAuthModal: false,
     isProfileSettingsModal: false,
     isInputUserIdModal: false,
-    isCompletedAuthModal: false,
+    isCompletedPhoneNumberAuthModal: false,
+    isNotCompletedPhoneNumberAuthModal: false,
     login: {
       formData: {
         userIdOrEmail: '',
@@ -102,6 +102,7 @@ const state = () => ({
   showRestrictEditArticleModal: false,
   userInfo: {},
   userArticles: [],
+  isFetchingUserArticles: false,
   userArticlesLastEvaluatedKey: {},
   requestLoginModal: {
     isShow: false,
@@ -145,6 +146,19 @@ const state = () => ({
         authCode: false
       }
     }
+  },
+  distributedTokens: {
+    article: '0.000',
+    like: '0.000',
+    tip: '0.000',
+    bonus: '0.000'
+  },
+  firstProcessModal: {
+    isShow: false,
+    isLikedArticleModal: false,
+    isTippedArticleModal: false,
+    isGotTokenModal: false,
+    isCreatedArticleModal: false
   }
 })
 
@@ -177,7 +191,9 @@ const getters = {
   showTipModal: (state) => state.showTipModal,
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
-  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal
+  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
+  distributedTokens: (state) => state.distributedTokens,
+  firstProcessModal: (state) => state.firstProcessModal
 }
 
 const actions = {
@@ -253,14 +269,6 @@ const actions = {
   },
   hideSignUpAuthFlowInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR, { type })
-  },
-  setSignUpAuthFlowCompletedPhoneNumberAuthModal(
-    { commit },
-    { isSignUpAuthFlowCompletedPhoneNumberAuthModal }
-  ) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, {
-      isSignUpAuthFlowCompletedPhoneNumberAuthModal
-    })
   },
   setLoginModal({ commit }, { showLoginModal }) {
     commit(types.SET_LOGIN_MODAL, { showLoginModal })
@@ -445,14 +453,15 @@ const actions = {
     }
   },
   async getUserArticles({ commit, dispatch, state, getters }, { userId }) {
-    if (!getters.hasUserArticlesLastEvaluatedKey) return
+    if (!getters.hasUserArticlesLastEvaluatedKey || state.isFetchingUserArticles) return
     try {
+      commit(types.SET_IS_FETCHING_USER_ARTICLES, { isFetching: true })
       const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
       await dispatch('setUserInfo', { userId })
       const { userInfo } = state
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
         `/users/${userInfo.user_id}/articles/public`,
-        { params: { limit: 10, article_id: articleId, sort_key: sortKey } }
+        { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
       )
       commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, {
         lastEvaluatedKey: LastEvaluatedKey || null
@@ -468,6 +477,8 @@ const actions = {
       commit(types.SET_USER_ARTICLES, { articles: articlesWithData })
     } catch (error) {
       Promise.reject(error)
+    } finally {
+      commit(types.SET_IS_FETCHING_USER_ARTICLES, { isFetching: false })
     }
   },
   async getNotifications({ commit, dispatch, state }) {
@@ -641,9 +652,6 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  setSignUpAuthFlowCompletedAuthModal({ commit }, { isShow }) {
-    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL, { isShow })
-  },
   setRequestPhoneNumberVerifyModal({ commit }, { isShow, requestType }) {
     commit(types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL, { isShow, requestType })
   },
@@ -715,6 +723,79 @@ const actions = {
     try {
       const { url } = await this.$axios.$get('/login/twitter/authorization_url')
       return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })
+  },
+  setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })
+  },
+  async getDistributedTokens({ commit }) {
+    try {
+      let distributedTokens = {}
+      const result = await this.$axios.$get('/me/wallet/distributed_tokens')
+      const formatNumber = 10 ** 18
+      Object.keys(result).forEach((key) => {
+        distributedTokens[key] = new BigNumber(result[key], 10)
+          .div(formatNumber)
+          .toFixed(3, 1)
+          .toString(10)
+      })
+      commit(types.SET_DISTRIBUTED_TOKENS, { distributedTokens })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setFirstProcessModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_MODAL, { isShow })
+  },
+  setFirstProcessLikedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_LIKED_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessLikedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_liked_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_liked_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setFirstProcessTippedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessTippedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_tipped_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_tipped_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setFirstProcessGotTokeneModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_GOT_TOKEN_MODAL, { isShow })
+  },
+  async putFirstProcessGotToken({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_got_token: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_got_token: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setFirstProcessCreatedArticleModal({ commit }, { isShow }) {
+    commit(types.SET_FIRST_PROCESS_CREATED_ARTICLE_MODAL, { isShow })
+  },
+  async putFirstProcessCreatedArticle({ commit, state }) {
+    try {
+      // await this.$axios.$put('/me/info/first_process', { is_created_article: true })
+      const currentUserInfo = { ...state.currentUserInfo, is_created_article: true }
+      commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -798,12 +879,6 @@ const mutations = {
   },
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputAuthCode.formError[type] = false
-  },
-  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](
-    state,
-    { isSignUpAuthFlowCompletedPhoneNumberAuthModal }
-  ) {
-    state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isSignUpAuthFlowCompletedPhoneNumberAuthModal
   },
   [types.SET_LOGIN_MODAL](state, { showLoginModal }) {
     state.showLoginModal = showLoginModal
@@ -953,9 +1028,6 @@ const mutations = {
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputUserId.formError[type] = false
   },
-  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_AUTH_MODAL](state, { isShow }) {
-    state.signUpAuthFlowModal.isCompletedAuthModal = isShow
-  },
   [types.SET_REQUEST_PHONE_NUMBER_VERIFY_MODAL](state, { isShow, requestType }) {
     state.requestPhoneNumberVerifyModal.isShow = isShow
     state.requestPhoneNumberVerifyModal.requestType = requestType
@@ -983,6 +1055,33 @@ const mutations = {
   },
   [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = false
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isShow
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_NOT_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isShow }) {
+    state.signUpAuthFlowModal.isNotCompletedPhoneNumberAuthModal = isShow
+  },
+  [types.SET_DISTRIBUTED_TOKENS](state, { distributedTokens }) {
+    state.distributedTokens = distributedTokens
+  },
+  [types.SET_FIRST_PROCESS_MODAL](state, { isShow }) {
+    state.firstProcessModal.isShow = isShow
+  },
+  [types.SET_FIRST_PROCESS_LIKED_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isLikedArticleModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_TIPPED_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isTippedArticleModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_GOT_TOKEN_MODAL](state, { isShow }) {
+    state.firstProcessModal.isGotTokenModal = isShow
+  },
+  [types.SET_FIRST_PROCESS_CREATED_ARTICLE_MODAL](state, { isShow }) {
+    state.firstProcessModal.isCreatedArticleModal = isShow
+  },
+  [types.SET_IS_FETCHING_USER_ARTICLES](state, { isFetching }) {
+    state.isFetchingUserArticles = isFetching
   }
 }
 

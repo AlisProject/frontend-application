@@ -30,6 +30,7 @@ export default {
   },
   computed: {
     ...mapGetters('article', ['newArticles', 'isLastPage', 'topics']),
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   data() {
@@ -70,7 +71,24 @@ export default {
         this.isFetchingArticles = false
       }
     },
+    moveToNewArticlePage() {
+      if (!this.loggedIn) {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleCreate' })
+        return
+      }
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
+      }
+      location.href = '/me/articles/new'
+    },
     ...mapActions('article', ['getNewPagesArticles', 'resetArticleData', 'setTopicDisplayName']),
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ]),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },
   watch: {
@@ -105,8 +123,14 @@ export default {
     "...                     loader                  ...       "
     "app-footer              app-footer              app-footer";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px 30px 84px 1fr 75px 75px;
+  grid-template-rows: 100px 50px 84px 1fr 75px 75px;
   min-height: 100vh;
+}
+
+.is-fixed-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
 }
 
 @media screen and (max-width: 1296px) {
@@ -123,8 +147,8 @@ export default {
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    grid-template-rows: 66px 28px 60px 1fr 75px min-content;
-    grid-template-columns: 1fr 350px 1fr;
+    grid-template-rows: 66px minmax(62px, min-content) 60px 1fr 75px min-content;
+    grid-template-columns: 1fr 340px 1fr;
   }
 }
 

@@ -1,5 +1,7 @@
 <template>
-  <div class="area-user-info-container" :class="{ 'with-bottom-space': !hasSelfIntroduction }">
+  <div
+    class="area-user-info-container"
+    :class="{ 'is-current-user': isCurrentUser }">
     <div class="area-profile-icon">
       <img
         class="profile-icon"
@@ -11,24 +13,26 @@
         alt="profile-icon"
         src="~assets/images/pc/common/icon_user_noimg.png"
         v-else>
-      <no-ssr>
-        <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser"/>
-      </no-ssr>
-      <no-ssr>
-        <div class="report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
-          <div class="report-popup" v-show="isReportPopupShown">
-            <span class="report" @click="showUserReportModal">
-              報告する
-            </span>
-          </div>
-        </div>
-      </no-ssr>
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
         {{ decodedUserDisplayName }}
       </p>
     </div>
+    <no-ssr>
+      <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser">
+        プロフィールを編集
+      </div>
+    </no-ssr>
+    <no-ssr>
+      <div class="report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
+        <div class="report-popup" v-show="isReportPopupShown">
+          <span class="report" @click="showUserReportModal">
+            報告する
+          </span>
+        </div>
+      </div>
+    </no-ssr>
     <div class="area-user-id">
       <p class="user-id">
         @{{ user.user_id }}
@@ -58,7 +62,8 @@ export default {
       isReportPopupShown: false
     }
   },
-  mounted() {
+  async mounted() {
+    await this.$nextTick()
     const reportUserElement = this.$el.querySelector('.report-user')
     this.listen(window, 'click', (event) => {
       if (reportUserElement && !reportUserElement.contains(event.target)) {
@@ -110,8 +115,6 @@ export default {
     },
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
-      document.documentElement.scrollTop = 0
-      document.querySelector('html,body').style.overflow = 'hidden'
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
@@ -127,9 +130,6 @@ export default {
     showUserReportModal() {
       this.setUserReportModal({ isShow: true })
       this.setUserReportSelectReasonModal({ isShow: true })
-      window.scrollTo(0, 0)
-      document.querySelector('html').style.overflow = 'hidden'
-      document.querySelector('body').style.overflow = 'hidden'
     },
     ...mapActions('user', ['setProfileSettingsModal']),
     ...mapActions('report', ['setUserReportModal', 'setUserReportSelectReasonModal'])
@@ -141,16 +141,15 @@ export default {
 .area-user-info-container {
   display: grid;
   grid-area: user-info;
-  grid-template-rows: 100px auto auto 1fr;
-  grid-template-columns: 1fr 400px 1fr;
-  grid-gap: 8px;
+  grid-template-rows: 40px 30px auto auto;
+  grid-template-columns: 80px 0 min-content 40px auto;
+  grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
-    "... profile-icon      ..."
-    "... user-display-name ..."
-    "... user-id           ..."
-    "... self-introduction ...";
-  text-align: center;
+    "profile-icon ... user-display-name user-display-name sub-icon         "
+    "profile-icon ... user-id           user-id           ...              "
+    "...          ... self-introduction self-introduction self-introduction"
+    "...          ... profile-edit      profile-edit      ...              ";
   padding-bottom: 60px;
 }
 
@@ -163,81 +162,80 @@ export default {
     height: 80px;
     border-radius: 50%;
   }
-
-  .profile-edit {
-    background-image: url('~/assets/images/sp/common/icon_editprofile.png');
-    background-repeat: no-repeat;
-    background-size: 20px;
-    bottom: 20px;
-    cursor: pointer;
-    height: 22px;
-    position: absolute;
-    right: 100px;
-    width: 22px;
-  }
-
-  .report-user {
-    background-image: url('~/assets/images/pc/article/a_icon_menu.png');
-    background-repeat: no-repeat;
-    background-size: 20px;
-    bottom: 20px;
-    cursor: pointer;
-    height: 22px;
-    position: absolute;
-    right: 100px;
-    width: 22px;
-
-    .report-popup {
-      background-color: #ffffff;
-      border-radius: 4px;
-      box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
-      cursor: default;
-      box-sizing: border-box;
-      font-size: 14px;
-      position: absolute;
-      right: 0;
-      top: 20px;
-      width: 90px;
-      z-index: 1;
-
-      &::after {
-        border-bottom: 8px solid #fff;
-        border-left: 6px solid transparent;
-        border-right: 6px solid transparent;
-        content: '';
-        height: 0;
-        padding: 0;
-        position: absolute;
-        right: 0;
-        right: 6px;
-        top: -4px;
-        width: 0;
-      }
-
-      .report {
-        display: block;
-        padding: 12px;
-        color: #6e6e6e;
-        cursor: pointer;
-        user-select: none;
-      }
-    }
-  }
 }
 
 .area-user-display-name {
   grid-area: user-display-name;
+  display: flex;
+  padding-top: 4px;
 
   .user-display-name {
+    color: #333;
+    display: block;
+    font-size: 28px;
+    letter-spacing: 1.6px;
     margin: 0;
+    max-width: 530px;
     overflow: hidden;
+    position: relative;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 }
 
+.profile-edit {
+  grid-area: profile-edit;
+  background-color: #fff;
+  border-radius: 2px;
+  border: 1px solid #cecece;
+  color: #6e6e6e;
+  cursor: pointer;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  height: 22px;
+  line-height: 22px;
+  margin-top: 10px;
+  text-align: center;
+  width: 200px;
+}
+
+.report-user {
+  grid-area: sub-icon;
+  background-image: url('~/assets/images/pc/common/icon_draftcassette_active.png');
+  background-position: 10px;
+  background-repeat: no-repeat;
+  background-size: 20px;
+  cursor: pointer;
+  position: relative;
+  width: 40px;
+
+  .report-popup {
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
+    cursor: default;
+    box-sizing: border-box;
+    font-size: 14px;
+    position: absolute;
+    left: -58px;
+    top: 40px;
+    width: 90px;
+    z-index: 1;
+
+    .report {
+      display: block;
+      padding: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+}
+
 .area-user-id {
   grid-area: user-id;
+  padding-top: 4px;
 
   .user-id {
     color: #6e6e6e;
@@ -250,84 +248,84 @@ export default {
   grid-area: self-introduction;
 
   .self-introduction {
-    color: #030303;
-    font-size: 14px;
-    line-height: 22px;
+    color: #6e6e6e;
+    font-size: 12px;
+    line-height: 1.75;
     margin: 0;
-    text-align: left;
-    word-wrap: break-word;
+    word-break: break-word;
   }
 }
 
 @media screen and (max-width: 920px) {
-  .area-user-info-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-column-gap: 0px;
+  .area-user-display-name {
+    .user-display-name {
+      max-width: 160px;
+    }
   }
 }
 
 @media screen and (max-width: 550px) {
   .area-user-info-container {
     grid-column-gap: 20px;
-    grid-row-gap: 8px;
-    grid-template-columns: 1fr 60px 240px 10px 1fr;
-    grid-template-rows: 16px 12px 1fr;
+    grid-template-rows: 20px 20px 20px 20px auto;
+    grid-template-columns: 80px auto 40px;
     /* prettier-ignore */
     grid-template-areas:
-      "... profile-icon user-display-name ...               ..."
-      "... profile-icon user-id           user-id           ..."
-      "... ...          self-introduction self-introduction ...";
-    text-align: left;
-    padding: 5px 0;
+      "profile-icon      ...               ...        "
+      "profile-icon      user-display-name report-user"
+      "profile-icon      user-id           report-user"
+      "profile-icon      ...               ...        "
+      "self-introduction self-introduction self-introduction";
+    padding: 0 12px;
 
-    &.with-bottom-space {
-      padding-bottom: 16px;
+    &.is-current-user {
+      grid-column-gap: 20px;
+      grid-template-rows: 20px 20px 16px 24px auto;
+      grid-template-columns: 80px auto 40px;
+      /* prettier-ignore */
+      grid-template-areas:
+        "profile-icon      user-display-name ...              "
+        "profile-icon      user-id           ...              "
+        "profile-icon      ...               ...              "
+        "profile-icon      profile-edit      profile-edit     "
+        "self-introduction self-introduction self-introduction";
+      padding: 0 12px;
     }
   }
 
-  .area-profile-icon {
-    .profile-icon {
-      width: 60px;
-      height: 60px;
+  .area-user-id {
+    .user-id {
+      padding-top: 2px;
     }
+  }
 
-    .profile-edit,
-    .report-user {
-      bottom: 10px;
-      right: -290px;
-      cursor: pointer;
+  .profile-edit {
+    margin-top: 0;
+    // 12px - padding of .area-user-info-container
+    // 80px - width   of .profile-icon
+    // 20px - gap     of .area-user-info-container
+    width: calc(100vw - 12px - 80px - 20px - 12px);
+  }
+
+  .report-user {
+    grid-area: report-user;
+  }
+
+  .area-user-display-name {
+    .user-display-name {
+      font-size: 14px;
+      color: #030303;
+      letter-spacing: 0.8px;
+      // 12px - padding of .area-user-info-container
+      // 80px - width   of .profile-icon
+      // 20px - gap     of .area-user-info-container
+      // 40px - width   of .report-user
+      max-width: calc(100vw - 12px - 80px - 20px - 40px - 20px - 12px);
     }
   }
 
   .area-self-introduction {
-    grid-area: self-introduction;
-    text-align: left;
-  }
-}
-
-@media screen and (max-width: 375px) {
-  .area-user-info-container {
-    grid-template-columns: 1fr 60px 210px 20px 1fr;
-  }
-
-  .area-profile-icon {
-    .profile-edit,
-    .report-user {
-      right: -260px;
-    }
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .area-user-info-container {
-    grid-template-columns: 1fr 60px 170px 10px 1fr;
-  }
-
-  .area-profile-icon {
-    .profile-edit,
-    .report-user {
-      right: -220px;
-    }
+    margin: 20px 0 0;
   }
 }
 </style>

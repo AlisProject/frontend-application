@@ -52,17 +52,11 @@ export default {
     moveToBottom() {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
-        window.scrollTo(0, 0)
-        document.querySelector('html').style.overflow = 'hidden'
-        document.querySelector('body').style.overflow = 'hidden'
         return
       } else {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
-          document.querySelector('html').style.overflow = 'hidden'
-          document.querySelector('body').style.overflow = 'hidden'
           return
         }
       }
@@ -111,7 +105,7 @@ export default {
 }
 
 .to-comment-button {
-  color: #858dda;
+  color: #0086cc;
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;

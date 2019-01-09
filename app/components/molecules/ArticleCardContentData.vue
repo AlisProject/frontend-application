@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/users/${article.userInfo.user_id}`" tag="div" class="area-data">
+  <nuxt-link :to="`/users/${article.userInfo.user_id}`" class="area-data">
     <article-card-content-data-profile-icon :user="article.userInfo"/>
     <article-card-content-data-username :username="article.userInfo.user_display_name"/>
     <article-card-content-data-published-at :publishedAt="publishedAt"/>
@@ -41,9 +41,8 @@ export default {
   grid-template-areas:
     "profile-icon  name"
     "profile-icon  date";
-  grid-template-columns: 40px 190px;
-  grid-template-rows: 20px 20px;
-  line-height: 18px;
+  grid-template-columns: 50px 190px;
+  grid-template-rows: 18px 18px;
   text-decoration: none;
 
   > * {
@@ -63,6 +62,12 @@ export default {
       bottom: 12px;
       left: 14px;
     }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .area-data {
+    grid-template-columns: 50px 150px;
   }
 }
 </style>

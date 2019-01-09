@@ -23,5 +23,9 @@ export default {
 <style lang="scss" scoped>
 .area-date {
   grid-area: date;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  line-height: 1.5;
 }
 </style>

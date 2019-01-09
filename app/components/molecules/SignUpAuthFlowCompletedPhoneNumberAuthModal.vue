@@ -1,57 +1,39 @@
 <template>
-  <div>
-    <div class="modal-body">
-      <p class="announce">
-        ALISへようこそ
-      </p>
+  <div class="modal-body">
+    <div class="wrapper">
       <p class="description">
-        ALISトークンを報酬として受け取ることができるようになりました。ALIS
-        で多くの人や信頼できる人から支持される記事を書くか、信頼できる記事
-        をいち早くみつけるほど多くのALISトークンが配布されます。
+        アカウント登録が<span class="br"/>完了しました。<br>
+        記事を書いたりいいねをして<span class="br"/>ALISを獲得しましょう。
       </p>
-      <img
-        class="completed-auth-img"
-        src="~/assets/images/pc/common/image_certification.jpg"
-        alt="completed-auth-image">
-    </div>
-    <div class="modal-footer">
-      <!-- <app-button class="to-next-step-button" @click="transitToProfileSettings">
-        プロフィールを作成する
-      </app-button> -->
-      <button class="to-top-button" @click="transitToTop">
-        TOPに戻る
-      </button>
+      <app-button class="submit" @click="submit">
+        記事を作成する
+      </app-button>
+      <app-button class="close" @click="close">
+        閉じる
+      </app-button>
     </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-// import AppButton from '../atoms/AppButton'
+import AppButton from '../atoms/AppButton'
 
 export default {
   components: {
-    // AppButton
+    AppButton
   },
   methods: {
-    transitToProfileSettings() {
-      this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({
-        isSignUpAuthFlowCompletedPhoneNumberAuthModal: false
-      })
-      this.setSignUpAuthFlowProfileSettingsModal({
-        isSignUpAuthFlowProfileSettingsModal: true
-      })
+    submit() {
+      location.href = '/me/articles/new'
     },
-    transitToTop() {
-      document.querySelector('html,body').style.overflow = ''
-      this.setSignUpAuthFlowModal({
-        showSignUpAuthFlowModal: false
-      })
+    close() {
+      this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
+      this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
     },
     ...mapActions('user', [
       'setSignUpAuthFlowModal',
-      'setSignUpAuthFlowCompletedPhoneNumberAuthModal',
-      'setSignUpAuthFlowProfileSettingsModal'
+      'setSignUpAuthFlowCompletedPhoneNumberAuthModal'
     ])
   }
 }
@@ -60,56 +42,85 @@ export default {
 <style lang="scss" scoped>
 .modal-body {
   margin: 0 auto;
+  display: flex;
+}
 
-  .announce {
-    @include default-text();
-    font-size: 14px;
-    margin: 60px 0 0;
-    text-align: center;
-  }
+.wrapper {
+  width: 100vw;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  background: url('~assets/images/pc/bg/completed-phone-number-auth.png') no-repeat;
+  background-size: auto 240px;
+  background-position-x: center;
+  margin: -50px -30px 0;
+  height: 100%;
 
   .description {
-    @include default-text();
-    margin: 20px auto 0;
-    max-width: 400px;
+    color: #030303;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1.37px;
+    line-height: 1.5;
+    margin: 260px 0 20px;
   }
 
-  .completed-auth-img {
-    width: 280px;
-    margin: 24px auto 0;
-    display: block;
+  .submit {
+    margin: 20px 0 0;
+  }
+
+  .close {
+    margin: 20px 0 60px;
+    background: #fff;
+    border: 1px solid #0086cc;
+    color: #0086cc;
+    font-weight: bold;
+    box-shadow: none;
+
+    &:hover,
+    &:focus {
+      background: #fff;
+    }
   }
 }
 
-.modal-footer {
-  width: 270px;
-  margin: 40px auto 40px;
-
-  .to-next-step-button {
-    margin: 20px auto 0;
+@media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
   }
 
-  .to-top-button {
-    background: #fff;
-    border-radius: 18px;
-    border: 1px solid #858dda;
-    color: #858dda;
-    cursor: pointer;
-    display: block;
-    font-size: 14px;
-    margin: 20px auto 0;
-    outline: none;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    width: 265px;
+  .wrapper {
+    background-size: auto 320px;
 
-    &:focus {
-      opacity: 0.8;
+    .description {
+      font-size: 20px;
+      margin: 340px 0 20px;
     }
 
-    &:target {
-      display: block;
+    .submit {
+      display: none;
+    }
+
+    .close {
+      margin: 10px 0 60px;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .wrapper {
+    background-size: auto 240px;
+
+    .description {
+      margin: 260px 0 20px;
+      font-size: 18px;
+    }
+
+    .submit {
+      margin: 30px 0 0;
     }
   }
 }

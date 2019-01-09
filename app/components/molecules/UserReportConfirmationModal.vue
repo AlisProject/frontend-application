@@ -33,7 +33,7 @@ export default {
         const { reason } = this.userReportModal.selectReason.formData
         const { originURL, freeText } = this.userReportModal.inputFreeText.formData
         await this.postUserFraud({ userId, reason, originURL, freeText })
-        this.sendNotification({ text: '報告しました' })
+        this.sendNotification({ text: 'ユーザーを報告しました' })
       } catch (error) {
         let text = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
         if (error.response.data.message === 'Already exists') {
@@ -44,15 +44,11 @@ export default {
       this.setUserReportConfirmationModal({ isShow: false })
       this.setUserReportModal({ isShow: false })
       this.resetUserReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     closeModal() {
       this.setUserReportConfirmationModal({ isShow: false })
       this.setUserReportModal({ isShow: false })
       this.resetUserReportData()
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -86,13 +82,13 @@ export default {
 .close-button {
   background-color: #fff;
   border-radius: 30px;
-  border: 1px solid #858dda;
-  color: #858dda;
+  border: 1px solid #0086cc;
+  color: #0086cc;
   cursor: pointer;
   display: block;
   height: 37px;
   margin: 20px auto 100px;
-  width: 265px;
+  width: 256px;
 }
 
 @media screen and (max-width: 550px) {

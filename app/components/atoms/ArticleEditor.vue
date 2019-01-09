@@ -1,13 +1,14 @@
 <template>
   <div class="area-editor-container">
-    <input
+    <textarea
       class="area-title"
       type="text"
       placeholder="タイトル"
       spellcheck="false"
       maxlength="255"
       @input="onInputTitle"
-      :value="title">
+      @keydown.enter.prevent
+      :value="title"/>
     <div
       class="area-body"
       ref="editable"
@@ -32,7 +33,8 @@ import {
   preventDropImageOnOGPContent,
   isYouTubeVideoURL,
   isFacebookPostURL,
-  isInstagramURL
+  isInstagramURL,
+  resizeTextarea
 } from '~/utils/article'
 import 'medium-editor/dist/css/medium-editor.min.css'
 
@@ -48,7 +50,8 @@ export default {
     return {
       targetDOM: null,
       editorElement: null,
-      updateArticleInterval: null
+      updateArticleInterval: null,
+      isInitTitleHeight: false
     }
   },
   computed: {
@@ -56,10 +59,15 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
+    resizeTextarea({
+      targetElement: this.$el.querySelector('.area-title'),
+      height: '40px',
+      lineHeight: '1.5'
+    })
+
     this.initMediumEditor()
     window.addEventListener('resize', this.handleResize)
     if (window.innerWidth <= 640) {
-      document.querySelector('html,body').style.overflow = 'hidden'
       this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     }
     preventDragAndDrop(window)
@@ -75,6 +83,7 @@ export default {
         e.preventDefault()
       }
     })
+
     // Start update article interval
     this.updateArticle()
   },
@@ -270,7 +279,7 @@ export default {
         await this.postNewArticle({ article })
       } catch (error) {
         this.sendNotification({
-          text: '記事の作成に失敗しました。',
+          text: '記事の作成に失敗しました',
           type: 'warning'
         })
         throw new Error('Post article failed.')
@@ -294,7 +303,7 @@ export default {
       try {
         await this.putArticle()
       } catch (error) {
-        this.sendNotification({ text: '記事の更新に失敗しました。', type: 'warning' })
+        this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
         throw new Error('Update article failed.')
       }
     },
@@ -320,7 +329,7 @@ export default {
             })
             img.src = imageUrl
           } catch (error) {
-            this.sendNotification({ text: '画像のアップロードに失敗しました。', type: 'warning' })
+            this.sendNotification({ text: '画像のアップロードに失敗しました', type: 'warning' })
             throw new Error('Image upload failed.')
           }
         })
@@ -364,7 +373,6 @@ export default {
     handleResize() {
       if (window.innerWidth <= 640) {
         if (!this.showRestrictEditArticleModal) {
-          document.querySelector('html,body').style.overflow = 'hidden'
           this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
         }
       } else {
@@ -393,7 +401,7 @@ export default {
       const [target] = files
       const MAX_UPLOAD = 4.5 * 1024 * 1024 // 4.5 MB
       if (target.size > MAX_UPLOAD) {
-        this.sendNotification({ text: '画像は4.5MBまでアップロード可能です。', type: 'warning' })
+        this.sendNotification({ text: '画像は4.5MBまでアップロード可能です', type: 'warning' })
         return
       }
       if (!this.isImageContent(files[0].type)) return
@@ -421,6 +429,17 @@ export default {
       'updateThumbnail'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
+  },
+  watch: {
+    async title(value) {
+      if (this.isInitTitleHeight) return
+      await this.$nextTick()
+      const textarea = this.$el.querySelector('.area-title')
+      if (textarea.scrollHeight > textarea.offsetHeight) {
+        textarea.style.height = `${textarea.scrollHeight}px`
+      }
+      this.isInitTitleHeight = true
+    }
   }
 }
 </script>
@@ -429,9 +448,8 @@ export default {
 .area-editor-container {
   display: grid;
   grid-area: editor;
-  grid-template-rows: 32px min-content;
-  // grid-template-rows: 32px 500px 70px;
-  grid-gap: 40px;
+  grid-template-rows: min-content min-content;
+  grid-gap: 20px;
   grid-template-columns: 640px;
   /* prettier-ignore */
   grid-template-areas:
@@ -440,14 +458,14 @@ export default {
 }
 
 .area-title {
-  color: #040404;
+  grid-area: title;
+  border: 0;
+  color: #333;
   font-size: 24px;
   font-weight: bold;
-  grid-area: title;
-  height: 32px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
   line-height: 1.5;
-  border: 0;
+  resize: none;
 
   &:placeholder-shown {
     color: #898989;
@@ -477,6 +495,10 @@ export default {
   .area-editor-container {
     grid-template-columns: 1fr;
     display: none;
+  }
+
+  .area-title {
+    letter-spacing: 0.01em;
   }
 }
 </style>

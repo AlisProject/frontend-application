@@ -30,7 +30,7 @@ export default {
       showEmbedTweet()
       preventDropImageOnOGPContent()
     } catch (error) {
-      this.sendNotification({ text: '記事データの取得に失敗しました。', type: 'warning' })
+      this.sendNotification({ text: '記事データの取得に失敗しました', type: 'warning' })
       console.error(error)
     }
   },

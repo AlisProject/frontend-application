@@ -4,12 +4,7 @@
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
     <span class="login" @click="showLoginModal">ログイン</span>
-    <app-button class="sign-up pc" @click="showSignUpModal">
-      新規登録
-    </app-button>
-    <span class="sign-up sp" @click="showSignUpModal">
-      新規登録
-    </span>
+    <app-button class="sign-up" @click="showSignUpModal">新規登録</app-button>
   </div>
 </template>
 
@@ -32,17 +27,9 @@ export default {
     },
     showSignUpModal() {
       this.setSignUpModal({ showSignUpModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     showLoginModal() {
       this.setLoginModal({ showLoginModal: true })
-      document.documentElement.scrollTop = 0
-      if (window.innerWidth > 550) {
-        document.querySelector('html,body').style.overflow = 'hidden'
-      }
     },
     ...mapActions('user', [
       'setSignUpModal',
@@ -77,104 +64,63 @@ export default {
     color: #6e6e6e;
     cursor: pointer;
     font-size: 14px;
+    font-weight: bold;
     margin-right: 40px;
   }
 
   .sign-up {
-    &.pc {
-      border-radius: 4px;
-      color: #fff;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 100;
-      height: 34px;
-      line-height: 2.5;
-      text-align: center;
-      width: 96px;
+    border-radius: 4px;
+    box-shadow: none;
+    font-size: 14px;
+    font-weight: bold;
+    height: 34px;
+    line-height: 34px;
+    width: 96px;
 
-      &:before,
-      &:after {
-        border-radius: 4px;
-      }
+    &:hover,
+    &:focus {
+      background: #0086cc;
+    }
+  }
+}
+
+@mixin spStyles() {
+  .session {
+    .search-icon {
+      display: block;
+      margin-right: 20px;
+      width: 16px;
     }
 
-    &.sp {
-      display: none;
+    .login {
+      font-size: 12px;
+      margin-right: 16px;
+    }
+
+    .sign-up {
+      font-size: 12px;
+      height: 32px;
+      line-height: 32px;
+      width: 72px;
     }
   }
 }
 
 @media screen and (max-width: 920px) and (min-width: 551px) {
   .article-container {
-    .session {
-      .search-icon {
-        width: 16px;
-        margin-right: 20px;
-      }
+    @include spStyles();
+  }
+}
 
-      .login {
-        font-size: 12px;
-        margin-right: 16px;
-
-        &::after {
-          content: '/';
-          padding-left: 12px;
-        }
-      }
-
-      .sign-up {
-        &.pc {
-          display: none;
-        }
-
-        &.sp {
-          background: none;
-          box-shadow: none;
-          color: #6e6e6e;
-          cursor: pointer;
-          display: initial;
-          font-size: 12px;
-          height: auto;
-          width: auto;
-        }
-      }
+@media screen and (max-width: 690px) {
+  .session {
+    .search-icon {
+      display: none;
     }
   }
 }
 
 @media screen and (max-width: 550px) {
-  .session {
-    .search-icon {
-      width: 16px;
-      margin-right: 20px;
-    }
-
-    .login {
-      font-size: 12px;
-      margin-right: 16px;
-
-      &::after {
-        content: '/';
-        padding-left: 12px;
-      }
-    }
-
-    .sign-up {
-      &.pc {
-        display: none;
-      }
-
-      &.sp {
-        background: none;
-        box-shadow: none;
-        color: #6e6e6e;
-        cursor: pointer;
-        display: initial;
-        font-size: 12px;
-        height: auto;
-        width: auto;
-      }
-    }
-  }
+  @include spStyles();
 }
 </style>

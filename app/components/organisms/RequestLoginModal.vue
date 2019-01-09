@@ -1,7 +1,7 @@
 <template>
-  <app-modal title="" class="cover-screen">
+  <app-modal title>
     <div slot="modal-content">
-      <request-login-modal-content />
+      <request-login-modal-content/>
     </div>
   </app-modal>
 </template>

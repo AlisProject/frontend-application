@@ -2,8 +2,7 @@
   <app-modal
     :title="title"
     @close="resetStates"
-    :showModalContent="showSignUpModal"
-    :maxWidth="beforeSendMail ? 1034 : 800">
+    :showModalContent="showSignUpModal">
     <div slot="modal-content">
       <sign-up-modal-form v-if="beforeSendMail" />
       <sign-up-modal-sent-mail v-else />
@@ -50,7 +49,7 @@ export default {
 
 <style lang="scss" scoped>
 .modal-header-warning {
-  background: #858dda;
+  background: #0086cc;
   color: #fff;
   font-size: 14px;
   line-height: 21px;

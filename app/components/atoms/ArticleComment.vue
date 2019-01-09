@@ -142,17 +142,11 @@ export default {
     async like() {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleCommentLike' })
-        window.scrollTo(0, 0)
-        document.querySelector('html').style.overflow = 'hidden'
-        document.querySelector('body').style.overflow = 'hidden'
         return
       } else {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCommentLike' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
-          document.querySelector('html').style.overflow = 'hidden'
-          document.querySelector('body').style.overflow = 'hidden'
           return
         }
       }
@@ -165,7 +159,7 @@ export default {
         console.error(error)
         if (error.response.data.message === 'Record Not Found') {
           this.sendNotification({
-            text: 'このコメントはすでに削除されているため、いいねできませんでした。',
+            text: 'このコメントはすでに削除されているため、いいねできませんでした',
             type: 'warning'
           })
         }
@@ -181,12 +175,12 @@ export default {
     async deleteComment(event) {
       try {
         await this.deleteArticleComment({ commentId: this.comment.comment_id })
-        this.sendNotification({ text: 'コメントを削除しました。' })
+        this.sendNotification({ text: 'コメントを削除しました' })
       } catch (error) {
         console.error(error)
         if (error.response.data.message === 'Record Not Found') {
           this.sendNotification({
-            text: 'コメントはすでに削除されています。削除が反映されるまで今しばらくお待ち下さい。',
+            text: 'コメントはすでに削除されています。削除が反映されるまでしばらくお待ち下さい',
             type: 'warning'
           })
         }
@@ -195,17 +189,11 @@ export default {
     async reply() {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
-        window.scrollTo(0, 0)
-        document.querySelector('html').style.overflow = 'hidden'
-        document.querySelector('body').style.overflow = 'hidden'
         return
       } else {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
-          document.querySelector('html').style.overflow = 'hidden'
-          document.querySelector('body').style.overflow = 'hidden'
           return
         }
       }
@@ -342,7 +330,7 @@ export default {
 
   .show-reply-comments {
     bottom: 16px;
-    color: #858dda;
+    color: #0086cc;
     cursor: pointer;
     font-size: 12px;
     font-weight: 500;
@@ -378,7 +366,7 @@ export default {
 
   .action-reply {
     bottom: 6px;
-    color: #858dda;
+    color: #0086cc;
     cursor: pointer;
     font-size: 12px;
     font-weight: 500;

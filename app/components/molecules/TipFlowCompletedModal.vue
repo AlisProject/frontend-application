@@ -4,7 +4,7 @@
       贈り物を受け付けました
     </span>
     <span class="description">
-      受付を完了しました。贈り先へ届くまでしばらくお待ち下さい
+      贈り先へ届くまでしばらくお待ち下さい
     </span>
     <app-button class="close-button" @click="closeModal">
       閉じる
@@ -21,19 +21,23 @@ export default {
     AppButton
   },
   computed: {
-    ...mapGetters('user', ['tipTokenAmount'])
-  },
-  mounted() {
-    window.scrollTo(0, 0)
+    ...mapGetters('user', ['tipTokenAmount', 'currentUserInfo'])
   },
   methods: {
     closeModal() {
       this.setTipModal({ showTipModal: false })
       this.setTipFlowCompletedModal({ isShow: false })
-      document.querySelector('html').style.overflow = ''
-      document.querySelector('body').style.overflow = ''
+      // if (!this.currentUserInfo.is_tipped_article) {
+      //   this.setFirstProcessModal({ isShow: true })
+      //   this.setFirstProcessTippedArticleModal({ isShow: true })
+      // }
     },
-    ...mapActions('user', ['setTipModal', 'setTipFlowCompletedModal'])
+    ...mapActions('user', [
+      'setTipModal',
+      'setTipFlowCompletedModal',
+      'setFirstProcessModal',
+      'setFirstProcessTippedArticleModal'
+    ])
   }
 }
 </script>
@@ -43,6 +47,8 @@ export default {
   color: #030303;
   display: block;
   font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
   margin-top: 100px;
   text-align: center;
 }

@@ -1,17 +1,19 @@
 <template>
   <div class="area-article-card-content">
     <article-card-content-title :title="article.title" />
-    <article-card-content-overview :overview="article.overview"/>
-    <!-- <article-card-content-bookmark/> -->
-    <article-card-content-data :article="article"/>
+    <no-ssr>
+      <article-card-content-tags :tags="article.tags"/>
+    </no-ssr>
+    <no-ssr>
+      <article-card-content-data :article="article"/>
+    </no-ssr>
     <article-card-content-token-amount :tokenAmount="article.alisToken"/>
   </div>
 </template>
 
 <script>
 import ArticleCardContentTitle from '../atoms/ArticleCardContentTitle'
-// import ArticleCardContentBookmark from '../atoms/ArticleCardContentBookmark'
-import ArticleCardContentOverview from '../atoms/ArticleCardContentOverview'
+import ArticleCardContentTags from '../molecules/ArticleCardContentTags'
 import ArticleCardContentData from '../molecules/ArticleCardContentData'
 import ArticleCardContentTokenAmount from '../atoms/ArticleCardContentTokenAmount'
 
@@ -24,8 +26,7 @@ export default {
   },
   components: {
     ArticleCardContentTitle,
-    ArticleCardContentOverview,
-    // ArticleCardContentBookmark,
+    ArticleCardContentTags,
     ArticleCardContentData,
     ArticleCardContentTokenAmount
   }
@@ -37,82 +38,17 @@ export default {
   background: white;
   display: grid;
   grid-area: article-card-content;
-  grid-gap: 6px;
   /* prettier-ignore */
   grid-template-areas:
-    "title     ...     "
-    "overview  overview"
-    "data      ...     ";
-  grid-template-columns: 248px 44px;
-  grid-template-rows: 48px 44px 40px;
-  padding: 18px 24px;
+    "title title"
+    "...   ... "
+    "tags  tags "
+    "...   ... "
+    "...   ... "
+    "data  ...  ";
+  grid-template-columns: 248px auto;
+  grid-template-rows: 48px 0 40px 0 0 auto;
   position: relative;
-}
-
-.long-article-card {
-  .area-article-card-content {
-    grid-template-rows: 52px 76px;
-    grid-template-columns: 420px 60px;
-    grid-area: long-article-card-content;
-    grid-gap: 12px;
-    padding: 28px;
-  }
-}
-
-@media screen and (max-width: 1296px) {
-  .long-article-card {
-    .area-article-card-content {
-      grid-template-rows: 50px 44px;
-      grid-template-columns: 1fr 1fr;
-      /* prettier-ignore */
-      grid-template-areas:
-        "title    title   "
-        "overview overview"
-        "data     ...     ";
-      padding: 12px 20px;
-    }
-  }
-}
-
-@media screen and (max-width: 920px) {
-  .long-article-card {
-    .area-article-card-content {
-      grid-area: article-card-content;
-      grid-gap: 6px;
-      /* prettier-ignore */
-      grid-template-areas:
-        "title    title   "
-        "overview overview"
-        "data     ...     ";
-      grid-template-rows: 48px 44px 40px;
-      padding: 18px 24px;
-    }
-  }
-}
-
-@media screen and (max-width: 550px) {
-  .long-article-card {
-    .area-article-card-content {
-      border-bottom-left-radius: 6px;
-      border-bottom-right-radius: 6px;
-      grid-template-rows: 50px 38px 40px;
-      grid-gap: 13px;
-      padding: 18px 12px;
-    }
-  }
-
-  .area-article-card-content {
-    border-bottom-left-radius: 6px;
-    border-bottom-right-radius: 6px;
-    grid-template-rows: 50px 38px 40px;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 13px;
-    /* prettier-ignore */
-    grid-template-areas:
-        "title    title   "
-        "overview overview"
-        "data     ...     ";
-    padding: 18px 12px;
-  }
+  grid-gap: 4px;
 }
 </style>

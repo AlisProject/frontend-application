@@ -10,7 +10,6 @@
       </no-ssr>
       <textarea
         class="comment-textarea"
-        :class="{ 'no-border': !isCommentEmpty }"
         type="text"
         placeholder="コメントを入力してください"
         maxlength="400"
@@ -29,7 +28,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, resizeTextarea } from '~/utils/article'
 
 export default {
   data() {
@@ -40,24 +39,12 @@ export default {
   },
   mounted() {
     const textarea = this.$el.querySelector('.comment-textarea')
-    textarea.style.lineHeight = '18px'
-    textarea.style.height = '60px'
 
-    textarea.addEventListener('input', (event) => {
-      if (event.target.scrollHeight > event.target.offsetHeight) {
-        event.target.style.height = `${event.target.scrollHeight}px`
-        return
-      }
-      let height, lineHeight
-      while (true) {
-        height = Number(event.target.style.height.split('px')[0])
-        lineHeight = Number(event.target.style.lineHeight.split('px')[0])
-        event.target.style.height = `${height - lineHeight}px`
-        if (event.target.scrollHeight > event.target.offsetHeight) {
-          event.target.style.height = `${event.target.scrollHeight}px`
-          break
-        }
-      }
+    resizeTextarea({
+      targetElement: textarea,
+      height: '52px',
+      lineHeight: '18px',
+      defaultHeight: 52
     })
 
     const viewportMeta = document.querySelector('meta[name="viewport"]')
@@ -80,9 +67,6 @@ export default {
   methods: {
     showModal() {
       this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
-      window.scrollTo(0, 0)
-      document.querySelector('html').style.overflow = 'hidden'
-      document.querySelector('body').style.overflow = 'hidden'
     },
     checkLogin() {
       if (this.loggedIn) return
@@ -98,9 +82,6 @@ export default {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          window.scrollTo(0, 0)
-          document.querySelector('html').style.overflow = 'hidden'
-          document.querySelector('body').style.overflow = 'hidden'
           return
         }
       }
@@ -113,8 +94,10 @@ export default {
           text: escapedComment
         })
         this.addArticleComment({ text: escapedComment, commentId })
-        this.sendNotification({ text: 'コメントを投稿しました。' })
+        this.sendNotification({ text: 'コメントを投稿しました' })
         this.comment = ''
+        const textarea = this.$el.querySelector('.comment-textarea')
+        textarea.style.height = '52px'
         this.$el.querySelector('.comment-textarea').focus()
       } catch (error) {
         console.error(error)
@@ -182,26 +165,19 @@ export default {
     -webkit-appearance: none;
     border-radius: 0;
     border: none;
-    border: 1px dotted #232538;
-    font-family: YuGothic, 'Helvetica Neue', Helvetica, Arial, 游ゴシック体, '游ゴシック',
-      'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3',
-      'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
+    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
     font-size: 12px;
     height: 4em;
     margin: 14px 0 8px;
     overflow: hidden;
-    padding: 5px;
+    padding: 8px;
     resize: none;
     width: 100%;
     box-sizing: border-box;
 
-    &.no-border {
-      border: none;
-    }
-
     &::-webkit-input-placeholder {
       color: #cecece;
-      font-size: 14px;
+      font-size: 12px;
       letter-spacing: 0.05em;
     }
 
@@ -212,7 +188,7 @@ export default {
   }
 
   .comment-submit {
-    color: #858dda;
+    color: #0086cc;
     cursor: pointer;
     float: right;
     font-size: 12px;

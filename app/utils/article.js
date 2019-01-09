@@ -218,17 +218,13 @@ export function showEmbedTweet() {
       const hasTitleOrDescription = title !== undefined || description !== undefined
       if (!hasTitleOrDescription) return
 
-      element.innerHTML = `
-      ${getTwitterProfileTemplate({ ...result })}
-      <br>`
+      element.innerHTML = getTwitterProfileTemplate({ ...result })
     } else {
       const { title, description } = result.meta
       const hasTitleOrDescription = title !== undefined || description !== undefined
       if (!hasTitleOrDescription) return
 
-      element.innerHTML = `
-      ${getIframelyEmbedTemplate({ ...result })}
-      <br>`
+      element.innerHTML = getIframelyEmbedTemplate({ ...result })
     }
   })
 }
@@ -323,4 +319,28 @@ export function isInstagramURL(url) {
   const isInstagramURL = regexes.some((regex) => regex.test(url))
 
   return isInstagramURL
+}
+
+export function resizeTextarea({ targetElement, height, lineHeight, defaultHeight = 0 }) {
+  const textarea = targetElement
+  textarea.style.height = height
+  textarea.style.lineHeight = lineHeight
+
+  textarea.addEventListener('input', (event) => {
+    if (event.target.scrollHeight > event.target.offsetHeight) {
+      event.target.style.height = `${event.target.scrollHeight}px`
+      return
+    }
+    let height, lineHeight
+    while (true) {
+      if (defaultHeight >= event.target.scrollHeight) return
+      height = Number(event.target.style.height.split('px')[0])
+      lineHeight = Number(event.target.style.lineHeight.split('px')[0])
+      event.target.style.height = `${height - lineHeight}px`
+      if (event.target.scrollHeight > event.target.offsetHeight) {
+        event.target.style.height = `${event.target.scrollHeight}px`
+        break
+      }
+    }
+  })
 }

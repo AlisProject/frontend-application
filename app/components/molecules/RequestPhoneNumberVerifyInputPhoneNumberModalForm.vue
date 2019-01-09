@@ -5,7 +5,7 @@
         {{ confirmTextPrefix }}<span class="br"/>SMSによるアカウント認証が必要です
       </p>
       <p class="description">
-        以下にご入力いただいた電話番号にSMSで認証コードを送らせていただきます
+        ご入力いただいた電話番号にSMSで認証コードを送らせていただきます※記事作成並びに評価による、ALIS獲得のためにはアカウントの認証を必須とさせていただいております
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
@@ -20,14 +20,14 @@
             @input="setPhoneNumber"
             @blur="showError('phoneNumber')"
             @focus="resetError('phoneNumber')">
+          <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字で入力してください</p>
+          <p class="error-message" v-else-if="showErrorInvalidPhoneNember">電話番号は11文字で入力してください</p>
+          <p class="error-message" v-else-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみ利用可能です</p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
       <p class="error-message">{{errorMessage}}</p>
-      <p class="error-message" v-if="showErrorInvalidPhoneNember">電話番号は11文字でご入力ください</p>
-      <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字でご入力ください</p>
-      <p class="error-message" v-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみご利用可能です</p>
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         次へ
       </app-button>
@@ -58,8 +58,6 @@ export default {
       switch (this.requestPhoneNumberVerifyModal.requestType) {
         case 'articleCreate':
           return '記事の作成を行うには'
-        case 'viewPublicArticles':
-          return '記事一覧をひらくには'
         case 'articleLike':
           return '記事へいいねを行うには'
         case 'articleComment':
@@ -67,7 +65,7 @@ export default {
         case 'articleCommentLike':
           return 'コメントへいいねを行うには'
         case 'articleTip':
-          return 'トークンを贈るには'
+          return 'ALISを贈るには'
         case 'articleReport':
           return '記事を報告するには'
         default:
@@ -153,7 +151,7 @@ export default {
         let errorMessage = ''
         switch (error.code) {
           default:
-            errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+            errorMessage = 'エラーが発生しました。入力内容を確認してください'
             break
         }
         this.errorMessage = errorMessage
@@ -173,41 +171,58 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.br {
+  &:before {
+    content: '\A';
+    white-space: pre;
+  }
+}
+
 .modal-body {
   margin: 0 auto;
 
   .announce {
     @include default-text();
+    color: #030303;
     font-size: 14px;
-    letter-spacing: 0.17px;
-    margin: 60px 0 0;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    line-height: 1.5;
+    margin: 60px auto 0;
     text-align: center;
   }
 
   .description {
     @include default-text();
     color: #6e6e6e;
-    margin: 20px 0 0;
-    text-align: center;
+    letter-spacing: 0.8px;
+    margin: 20px auto 0;
+    max-width: 400px;
   }
 
   .signup-form {
     margin: 60px auto 0;
     max-width: 400px;
-    width: 80%;
+    width: 100%;
+
+    &-group {
+      position: relative;
+    }
 
     &-label {
       color: #030303;
       font-size: 14px;
-      line-height: 20px;
+      line-height: 2.4;
     }
 
     &-input {
+      appearance: none;
+      box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
       border: none;
       border-radius: 0;
-      border-bottom: 1px dotted #232538;
-      margin-bottom: 30px;
-      padding: 5px 0;
+      box-sizing: border-box;
+      margin-bottom: 40px;
+      padding: 12px;
       width: 100%;
 
       &::-webkit-input-placeholder {
@@ -221,14 +236,20 @@ export default {
       }
     }
 
+    .error-message {
+      bottom: 20px;
+      margin: 0;
+      color: #f06273;
+      font-size: 12px;
+      position: absolute;
+      width: 100%;
+      text-align: right;
+    }
+
     .error {
       .signup-form {
-        &-label {
-          color: #f06273;
-        }
-
         &-input {
-          border-bottom: 1px dotted #f06273;
+          box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
         }
       }
     }
@@ -237,11 +258,7 @@ export default {
 
 .modal-footer {
   width: 270px;
-  margin: 90px auto 40px;
-
-  .to-next-step-button {
-    margin: 20px auto 0;
-  }
+  margin: 30px auto 40px;
 
   .error-message {
     color: #f06273;
@@ -251,22 +268,19 @@ export default {
 }
 
 @media screen and (max-width: 550px) {
-  .br {
-    &:before {
-      content: '\A';
-      white-space: pre;
-    }
-  }
   .modal-body {
-    .announce {
-      color: #030303;
+    .announce,
+    .description {
+      width: 256px;
     }
 
-    .description {
-      letter-spacing: 0.8px;
-      margin: 20px auto;
-      max-width: 256px;
-      text-align: left;
+    .announce {
+      letter-spacing: 0;
+      margin: 40px auto 0;
+    }
+
+    .signup-form {
+      width: 256px;
     }
   }
 }

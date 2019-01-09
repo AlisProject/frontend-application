@@ -59,23 +59,14 @@ export default {
 
 <style lang="scss" scoped>
 .area-author-info {
+  @include cassette-shadow();
   grid-area: author-info;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
   margin-bottom: 40px;
   padding: 20px;
   position: relative;
   text-decoration: none;
-  transition: all 400ms ease;
-
-  &:hover {
-    box-shadow: 0 0 16px 0 rgba(133, 141, 218, 0.5);
-
-    &:active {
-      box-shadow: 0 0 4px 0 rgba(133, 141, 218, 0.5);
-    }
-  }
 
   .author {
     align-items: center;

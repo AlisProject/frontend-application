@@ -20,9 +20,9 @@ export default {
       try {
         await this.unpublishPublicArticle({ articleId })
         this.$router.push('/me/articles/public')
-        this.sendNotification({ text: '記事を下書きに戻しました。' })
+        this.sendNotification({ text: '記事を下書きに戻しました' })
       } catch (e) {
-        this.sendNotification({ text: '記事を下書きに戻せませんでした。', type: 'warning' })
+        this.sendNotification({ text: '記事を下書きに戻せませんでした', type: 'warning' })
         console.error(e)
       }
     },
@@ -39,7 +39,7 @@ export default {
 .nav-link {
   font-size: 14px;
   text-decoration: none;
-  color: #858dda;
+  color: #0086cc;
 }
 
 .area-post-article {

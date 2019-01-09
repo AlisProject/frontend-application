@@ -4,7 +4,7 @@
       公開日：<span class="published-at">{{ formattedPublishedAt }}</span>
     </div>
     <div class="article-sub-info">
-      獲得トークン：<span class="token-amount">{{ formattedTokenAmount }}</span>
+      獲得ALIS：<span class="token-amount">{{ formattedTokenAmount }}</span>
     </div>
   </div>
 </template>
