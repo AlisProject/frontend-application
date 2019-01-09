@@ -177,7 +177,7 @@ export default {
   .area-share-facebook {
     background-size: 24px;
     border-radius: 50%;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
     position: relative;
     cursor: pointer;
   }
