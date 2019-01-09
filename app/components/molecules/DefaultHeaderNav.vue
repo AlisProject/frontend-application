@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$topicCount: 5;
+$topicCount: 9;
 
 .area-nav {
   grid-area: nav;
@@ -89,7 +89,7 @@ $topicCount: 5;
   grid-template-columns: repeat($topicCount, fit-content(100%));
   /* prettier-ignore */
   grid-template-areas:
-    "topic1 topic2 topic3 topic4 topic5";
+    "topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9";
 }
 
 .nav-link {
