@@ -12,6 +12,10 @@
             class="article-popup-content"
             :href="twitterShareUrl"
             target="_blank">twitterでシェアする</a>
+          <a
+            class="article-popup-content"
+            :href="facebookShareUrl"
+            target="_blank">facebookでシェアする</a>
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
         </div>
       </div>
@@ -81,6 +85,9 @@ export default {
       return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
         this.shareUrl
       )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
+    },
+    facebookShareUrl() {
+      return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.shareUrl)}`
     }
   },
   methods: {

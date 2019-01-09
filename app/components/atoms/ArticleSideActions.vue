@@ -4,13 +4,8 @@
       <div class="action like" :class="{ liked: isLikedArticle }" @click="like">
         <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
       </div>
-      <div class="sub-action share" @click="toggleSharePopup">
-        <div class="share-popup" v-show="isSharePopupShown">
-          <a class="share-twitter" target="_blank">
-            Twitterでシェアする
-          </a>
-        </div>
-      </div>
+      <a class="sub-action area-share-twitter" target="_blank" />
+      <a class="sub-action area-share-facebook" target="_blank" />
     </div>
   </transition>
 </template>
@@ -42,24 +37,15 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
-    this.listen(window, 'click', (event) => {
-      if (!this.$el.contains(event.target)) {
-        this.closeSharePopup()
-      }
-    })
     this.$el.querySelector(
-      '.share-twitter'
+      '.area-share-twitter'
     ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       location.href
     )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll)
-    if (this._eventRemovers) {
-      this._eventRemovers.forEach((eventRemover) => {
-        eventRemover.remove()
-      })
-    }
+
+    this.$el.querySelector(
+      '.area-share-facebook'
+    ).href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`
   },
   computed: {
     formattedLikesCount() {
@@ -71,12 +57,6 @@ export default {
   methods: {
     handleScroll() {
       this.scrollY = window.scrollY
-    },
-    toggleSharePopup() {
-      this.isSharePopupShown = !this.isSharePopupShown
-    },
-    closeSharePopup() {
-      this.isSharePopupShown = false
     },
     async like() {
       if (this.loggedIn) {
@@ -102,17 +82,6 @@ export default {
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
       }
-    },
-    listen(target, eventType, callback) {
-      if (!this._eventRemovers) {
-        this._eventRemovers = []
-      }
-      target.addEventListener(eventType, callback)
-      this._eventRemovers.push({
-        remove: function() {
-          target.removeEventListener(eventType, callback)
-        }
-      })
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -191,41 +160,26 @@ export default {
     }
   }
 
-  .share {
-    grid-area: share;
-    background: #fff url('~assets/images/pc/article/icon_share.png') no-repeat;
+  .area-share-twitter {
+    grid-area: share-twitter;
+    background: #fff url('~assets/images/pc/article/icon_share_twitter.png') no-repeat;
+    background-position: 9px;
+    margin-bottom: 20px;
+  }
+
+  .area-share-facebook {
+    grid-area: share-facebook;
+    background: #fff url('~assets/images/pc/article/icon_share_facebook.png') no-repeat;
     background-position: 8px;
+  }
+
+  .area-share-twitter,
+  .area-share-facebook {
     background-size: 24px;
     border-radius: 50%;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
     position: relative;
     cursor: pointer;
-
-    .share-popup {
-      background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
-      background-color: #ffffff;
-      background-size: 22px;
-      background-position-x: 16px;
-      background-position-y: 12px;
-      border-radius: 4px;
-      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
-      cursor: default;
-      box-sizing: border-box;
-      font-size: 14px;
-      padding: 12px 12px 12px 48px;
-      position: absolute;
-      right: 0;
-      top: 48px;
-      width: 200px;
-      z-index: 1;
-
-      .share-twitter {
-        cursor: pointer;
-        color: #585858;
-        text-decoration: none;
-        user-select: none;
-      }
-    }
   }
 }
 
