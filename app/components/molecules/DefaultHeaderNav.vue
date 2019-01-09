@@ -312,7 +312,7 @@ $topicCount: 10;
       padding-left: 0;
 
       @supports (-webkit-overflow-scrolling: touch) {
-        padding: 16px 0 0 0;
+        padding: 10px 0;
       }
     }
   }
