@@ -163,7 +163,8 @@ export default {
   .area-share-twitter {
     grid-area: share-twitter;
     background: #fff url('~assets/images/pc/article/icon_share_twitter.png') no-repeat;
-    background-position: 9px;
+    background-position-x: 9px;
+    background-position-y: 9px;
     margin-bottom: 20px;
   }
 
