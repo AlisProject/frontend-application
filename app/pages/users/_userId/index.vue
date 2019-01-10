@@ -13,7 +13,10 @@ export default {
   async fetch({ store, params, from = {}, error }) {
     // ユーザー記事の初期化
     // 記事から遷移してきた場合は、スクロール位置を保持させたいので初期化はしない。
-    if (from.name !== 'userId-articles-articleId') {
+    if (
+      from.name !== 'userId-articles-articleId' ||
+      store.state.user.userArticlesCurrentUserId !== params.userId
+    ) {
       store.dispatch('user/resetUserArticles')
       store.dispatch('user/resetUserArticlesLastEvaluatedKey')
     }

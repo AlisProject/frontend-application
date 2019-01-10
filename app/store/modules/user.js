@@ -102,6 +102,7 @@ const state = () => ({
   showRestrictEditArticleModal: false,
   userInfo: {},
   userArticles: [],
+  userArticlesCurrentUserId: false,
   isFetchingUserArticles: false,
   userArticlesLastEvaluatedKey: {},
   requestLoginModal: {
@@ -455,6 +456,7 @@ const actions = {
   async getUserArticles({ commit, dispatch, state, getters }, { userId }) {
     if (!getters.hasUserArticlesLastEvaluatedKey || state.isFetchingUserArticles) return
     try {
+      commit(types.SET_USER_ARTICLES_CURRENT_USER_ID, { userId })
       commit(types.SET_IS_FETCHING_USER_ARTICLES, { isFetching: true })
       const { article_id: articleId, sort_key: sortKey } = state.userArticlesLastEvaluatedKey
       await dispatch('setUserInfo', { userId })
@@ -1082,6 +1084,9 @@ const mutations = {
   },
   [types.SET_IS_FETCHING_USER_ARTICLES](state, { isFetching }) {
     state.isFetchingUserArticles = isFetching
+  },
+  [types.SET_USER_ARTICLES_CURRENT_USER_ID](state, { userId }) {
+    state.userArticlesCurrentUserId = userId
   }
 }
 
