@@ -37,10 +37,14 @@ export default {
         case 'tip_error':
           return `/${this.notification.article_user_id}/articles/${this.notification.article_id}`
         case 'comment':
+          // 記事のコメント欄に遷移する（#article-comments）
+          return `/${this.notification.user_id}/articles/${
+            this.notification.article_id
+          }/#article-comments`
         case 'reply':
         case 'thread':
           // 記事のコメント欄に遷移する（#article-comments）
-          return `/${this.notification.user_id}/articles/${
+          return `/${this.notification.article_user_id}/articles/${
             this.notification.article_id
           }/#article-comments`
         default:
