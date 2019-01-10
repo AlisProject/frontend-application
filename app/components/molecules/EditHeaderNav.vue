@@ -110,6 +110,14 @@ export default {
   font-weight: bold;
 }
 
+@media screen and (max-height: 414px) {
+  .area-nav {
+    &.is-fixed {
+      position: static;
+    }
+  }
+}
+
 @media screen and (max-width: 640px) {
   .area-nav {
     display: none;
