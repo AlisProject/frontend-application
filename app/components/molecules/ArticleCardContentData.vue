@@ -41,9 +41,10 @@ export default {
   grid-template-areas:
     "profile-icon  name"
     "profile-icon  date";
-  grid-template-columns: 50px 190px;
+  grid-template-columns: 50px 168px;
   grid-template-rows: 18px 18px;
   text-decoration: none;
+  padding: 4px 0;
 
   > * {
     margin: 0;

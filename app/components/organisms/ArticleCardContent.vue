@@ -44,10 +44,9 @@ export default {
     "...   ... "
     "tags  tags "
     "...   ... "
-    "...   ... "
     "data  ...  ";
-  grid-template-columns: 248px auto;
-  grid-template-rows: 48px 0 40px 0 0 auto;
+  grid-template-columns: 220px auto;
+  grid-template-rows: 48px 0 40px 0 44px;
   position: relative;
   grid-gap: 4px;
 }

@@ -19,7 +19,7 @@
         v-else>
     </div>
     <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="profile-icon-box">
+      <nuxt-link :to="`/users/${article.user_id}`" class="article-data-box">
         <img
           class="profile-icon"
           :src="article.userInfo.icon_image_url"
@@ -28,16 +28,14 @@
           class="profile-icon"
           src="~assets/images/pc/common/icon_user_noimg.png"
           v-else>
+        <span class="username">
+          {{ decodedUsername }}
+        </span>
+        <span class="published-at">
+          {{ formattedPublishedAt }}
+        </span>
       </nuxt-link>
     </no-ssr>
-    <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="username">
-        {{ decodedUsername }}
-      </nuxt-link>
-    </no-ssr>
-    <span class="published-at">
-      {{ formattedPublishedAt }}
-    </span>
     <span class="token-amount">
       {{ formattedTokenAmount }}
     </span>
@@ -100,7 +98,8 @@ export default {
 .topic,
 .eye-catch-image-box,
 .title,
-.profile-icon-box,
+.article-data-box,
+.profile-icon,
 .username,
 .published-at,
 .token-amount {
@@ -158,16 +157,19 @@ export default {
   width: 296px;
 }
 
-.profile-icon-box {
-  height: 36px;
-  bottom: 20px;
+.article-data-box {
+  width: 220px;
+  height: 46px;
+  bottom: 14px;
   left: 20px;
+}
 
-  .profile-icon {
-    border-radius: 50%;
-    height: 36px;
-    width: 36px;
-  }
+.profile-icon {
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  top: 5px;
+  left: 0;
 }
 
 .username,
@@ -180,18 +182,18 @@ export default {
 }
 
 .username {
-  bottom: 40px;
-  left: 72px;
+  left: 52px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 190px;
   text-decoration: none;
+  text-overflow: ellipsis;
+  top: 8px;
+  white-space: nowrap;
+  width: 168px;
 }
 
 .published-at {
-  bottom: 22px;
-  left: 72px;
+  bottom: 8px;
+  left: 52px;
 }
 
 .token-amount {
