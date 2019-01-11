@@ -125,8 +125,9 @@ export default {
   }
 
   .logo-link {
-    position: absolute;
     left: 0;
+    padding: 12px 0;
+    position: absolute;
 
     .logo {
       width: auto;
