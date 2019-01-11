@@ -109,7 +109,7 @@ const state = () => ({
     isShow: false,
     requestType: ''
   },
-  alisToken: 0,
+  alisToken: '0',
   notifications: [],
   notificationsLastEvaluatedKey: {},
   unreadNotification: false,
