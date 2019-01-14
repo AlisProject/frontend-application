@@ -1,9 +1,12 @@
 <template>
   <div class="logged-in">
-    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
+    <nuxt-link
+      class="search-icon-box"
+      to="/search?context=article"
+      @click.native="resetSearchStates">
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     </nuxt-link>
-    <span class="notification-link" @click="moveToNotificationPage">
+    <span class="notification-icon-box" @click="moveToNotificationPage">
       <img
         class="notification-icon"
         src="~assets/images/pc/common/icon_notification_mark.png"
@@ -13,16 +16,18 @@
         src="~assets/images/pc/common/icon_notification.png"
         v-else>
     </span>
-    <img
-      class="profile-icon"
-      :src="currentUserInfo.icon_image_url"
+    <div
+      class="profile-icon-box"
       @click="toggleMenu"
       v-if="currentUserInfo.icon_image_url !== undefined">
-    <img
-      class="profile-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
+      <img class="profile-icon" :src="currentUserInfo.icon_image_url">
+    </div>
+    <div
+      class="profile-icon-box"
       @click="toggleMenu"
       v-else>
+      <img class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
+    </div>
     <div class="menu" v-if="isMenuShown">
       <template v-if="currentUserInfo.icon_image_url !== undefined">
         <div class="background-user-image-box">
@@ -197,23 +202,35 @@ export default {
   align-items: center;
   position: relative;
 
-  .notification-link {
+  .search-icon-box,
+  .notification-icon-box,
+  .profile-icon-box {
+    align-items: center;
     cursor: pointer;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
   }
 
-  .search-icon {
-    width: 24px;
-    margin: 0 40px 0 88px;
+  .search-icon-box {
+    margin-right: 22px;
+
+    .search-icon {
+      width: 24px;
+    }
   }
 
-  .notification-icon {
-    width: 24px;
-    margin-right: 40px;
+  .notification-icon-box {
+    margin-right: 32px;
+
+    .notification-icon {
+      width: 24px;
+    }
   }
 
-  .profile-icon {
+  .profile-icon-box .profile-icon {
     border-radius: 50%;
-    cursor: pointer;
     height: 40px;
     width: 40px;
   }
@@ -324,13 +341,23 @@ export default {
 
 @mixin spStyles() {
   .logged-in {
-    .search-icon,
-    .notification-icon {
-      width: 16px;
-      margin: 2px 24px 0 0;
+    .search-icon-box {
+      margin-right: 0;
+
+      .search-icon {
+        width: 16px;
+      }
     }
 
-    .profile-icon {
+    .notification-icon-box {
+      margin-right: 0;
+
+      .notification-icon {
+        width: 16px;
+      }
+    }
+
+    .profile-icon-box .profile-icon {
       height: 24px;
       width: 24px;
     }
