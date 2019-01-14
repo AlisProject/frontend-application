@@ -49,19 +49,21 @@
     word-break: break-word;
   }
 
-  figure {
-    figcaption {
-      color: #666;
-      display: block;
-      font-size: 12px;
-      font-style: normal;
-      font-weight: normal;
-      letter-spacing: 0.03em;
-      line-height: 1.5;
-      margin: 8px 0;
-      outline: 0 solid transparent;
-      text-align: center;
-      word-break: break-all;
+  .medium-insert-images {
+    figure {
+      figcaption {
+        color: #666;
+        display: block;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: normal;
+        letter-spacing: 0.03em;
+        line-height: 1.5;
+        margin: 8px 0;
+        outline: 0 solid transparent;
+        text-align: center;
+        word-break: break-all;
+      }
     }
   }
 
