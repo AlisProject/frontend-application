@@ -106,10 +106,6 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    handlePaste() {
-      console.log('hoge')
-      this.twiTitle = 'ALIS'
-    },
     async updateArticle() {
       try {
         // Do nothing if user don't edit article
