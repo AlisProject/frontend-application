@@ -86,6 +86,7 @@ export default {
     height: 40px;
     border-radius: 50%;
     margin-right: 14px;
+    object-fit: cover;
   }
 
   .info {

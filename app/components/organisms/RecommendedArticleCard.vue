@@ -170,6 +170,7 @@ export default {
   width: 36px;
   top: 5px;
   left: 0;
+  object-fit: cover;
 }
 
 .username,
