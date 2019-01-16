@@ -1,11 +1,9 @@
 <template>
   <div class="modal-body">
     <div class="wrapper">
-      <h2 class="title">
-        はじめて贈り物を受け付けました！
-      </h2>
       <p class="description">
-        ALISを報酬として受け取ることができるようになりました。記事の作成・いいねを行うことでALISを獲得できます。まずは記事の作成を行ってみましょう！
+        はじめてALISを贈りました！<br>
+        よければ応援した人にコメントも<span class="br"/>残してつながってみませんか？
       </p>
       <app-button class="submit" @click="submit">
         コメントする
@@ -70,28 +68,19 @@ export default {
   flex-flow: column nowrap;
   align-items: center;
   background: url('~assets/images/pc/bg/first-process-tipped-article.png') no-repeat;
-  background-size: auto 240px;
+  background-size: auto 280px;
   background-position-x: center;
   margin: -50px -30px 0;
   height: 100%;
 
-  .title {
-    color: #030303;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 0.8px;
-    margin: 280px 0 0;
-    text-align: center;
-  }
-
   .description {
-    color: #6e6e6e;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.8px;
+    color: #030303;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1.37px;
     line-height: 1.5;
-    margin: 20px 0 0;
-    width: 256px;
+    margin: 310px 0 0;
+    padding: 0 40px;
   }
 
   .submit {
@@ -114,8 +103,36 @@ export default {
 }
 
 @media screen and (max-width: 550px) {
+  .br {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+
   .wrapper {
-    margin: -60px -30px 0;
+    background-size: auto 320px;
+
+    .description {
+      font-size: 20px;
+      margin: 340px 0 0;
+      padding: 0;
+    }
+
+    .submit {
+      margin: 30px auto 0;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .wrapper {
+    background-size: auto 240px;
+
+    .description {
+      font-size: 18px;
+      margin: 260px 0 0;
+    }
   }
 }
 </style>
