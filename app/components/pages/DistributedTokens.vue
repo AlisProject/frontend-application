@@ -303,7 +303,7 @@ export default {
     font-weight: 500;
     letter-spacing: 1px;
     text-align: right;
-    width: 44px;
+    width: 52px;
   }
 
   .minimum-description {
