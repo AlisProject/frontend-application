@@ -109,7 +109,7 @@ const state = () => ({
     isShow: false,
     requestType: ''
   },
-  alisToken: 0,
+  alisToken: '0',
   notifications: [],
   notificationsLastEvaluatedKey: {},
   unreadNotification: false,
@@ -759,7 +759,9 @@ const actions = {
   },
   async putFirstProcessLikedArticle({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_liked_article: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_liked_article'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_liked_article: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
@@ -771,7 +773,9 @@ const actions = {
   },
   async putFirstProcessTippedArticle({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_tipped_article: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_tipped_article'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_tipped_article: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
@@ -783,7 +787,9 @@ const actions = {
   },
   async putFirstProcessGotToken({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_got_token: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_got_token'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_got_token: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
@@ -795,7 +801,9 @@ const actions = {
   },
   async putFirstProcessCreatedArticle({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_created_article: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_created_article'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_created_article: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
