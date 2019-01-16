@@ -11,7 +11,7 @@ export default {
   components: {
     ArticleDetail
   },
-  async fetch({ store, params, error }) {
+  async fetch({ store, params, error, redirect }) {
     try {
       const { articleId } = params
       const isCurrentUser =
@@ -19,6 +19,13 @@ export default {
       const getArticleType = isCurrentUser ? 'getPublicArticleDetail' : 'getArticleDetail'
 
       await store.dispatch(`article/${getArticleType}`, { articleId })
+      if (params.userId !== store.state.article.article.user_id) {
+        redirect(
+          `/${store.state.article.article.user_id}/articles/${
+            store.state.article.article.article_id
+          }`
+        )
+      }
       await store.dispatch('article/getTopics')
       store.dispatch('article/setTopicDisplayName', {
         topicName: store.state.article.article.topic
