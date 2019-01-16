@@ -89,6 +89,17 @@ export default {
             })
           }
         })
+      },
+      beforeDatasetsDraw(chartInstance) {
+        const x = chartInstance.chart.canvas.clientWidth / 2
+        const y = chartInstance.chart.canvas.clientHeight / 2
+        const ctx = chartInstance.chart.ctx
+
+        ctx.beginPath()
+        ctx.arc(x, y, chartInstance.outerRadius - chartInstance.radiusLength / 2, 0, 2 * Math.PI)
+        ctx.lineWidth = chartInstance.radiusLength
+        ctx.strokeStyle = '#e4f4ff'
+        ctx.stroke()
       }
     })
   },
