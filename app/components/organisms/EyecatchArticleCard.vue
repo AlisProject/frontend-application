@@ -171,6 +171,7 @@ export default {
   border-radius: 50%;
   height: 36px;
   width: 36px;
+  object-fit: cover;
 }
 
 .username,

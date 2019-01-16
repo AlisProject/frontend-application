@@ -173,6 +173,7 @@ export default {
         height: 36px;
         margin-right: 16px;
         width: 36px;
+        object-fit: cover;
       }
 
       .user-info-box {

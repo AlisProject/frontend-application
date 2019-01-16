@@ -245,6 +245,7 @@ export default {
       height: 36px;
       border-radius: 50%;
       margin-right: 16px;
+      object-fit: cover;
     }
 
     .info {

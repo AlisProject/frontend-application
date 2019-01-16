@@ -129,6 +129,7 @@ export default {
     height: 80px;
     margin-top: 40px;
     width: 80px;
+    object-fit: cover;
   }
 
   .user-display-name {

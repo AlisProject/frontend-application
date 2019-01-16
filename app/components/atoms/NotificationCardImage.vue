@@ -53,6 +53,7 @@ export default {
     cursor: pointer;
     height: 40px;
     width: 40px;
+    object-fit: cover;
   }
 
   .sub-icon {
