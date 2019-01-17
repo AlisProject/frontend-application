@@ -5,6 +5,10 @@
         あなたのいいねが<span class="br"/>みんなのやる気を支えます。<br>
         次はあなたが記事を投稿し、<span class="br"/>いいねを獲得してみませんか？
       </p>
+      <p class="description-sp">
+        スマートフォンでの記事作成機能は<span class="br-small"/>近日リリースいたします<br>
+        パソコンで記事を作成してください
+      </p>
       <app-button class="submit" @click="submit">
         記事を作成する
       </app-button>
@@ -70,6 +74,10 @@ export default {
     padding: 0 30px;
   }
 
+  .description-sp {
+    display: none;
+  }
+
   .submit {
     margin: 40px 0 0;
   }
@@ -106,13 +114,29 @@ export default {
       padding: 0;
     }
 
+    .description-sp {
+      color: #6e6e6e;
+      display: block;
+      font-size: 12px;
+      line-height: 1.5;
+      margin: 30px 0 0;
+      text-align: center;
+    }
+
     .submit {
-      margin: 30px auto 0;
+      display: none;
     }
   }
 }
 
 @media screen and (max-width: 320px) {
+  .br-small {
+    &:before {
+      content: '\A';
+      white-space: pre;
+    }
+  }
+
   .wrapper {
     background-size: auto 240px;
 

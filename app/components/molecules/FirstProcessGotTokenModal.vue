@@ -107,7 +107,11 @@ export default {
     }
 
     .submit {
-      margin: 30px auto 0;
+      display: none;
+    }
+
+    .close {
+      margin: 30px 0 0;
     }
   }
 }
