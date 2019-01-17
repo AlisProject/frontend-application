@@ -3,7 +3,7 @@
     <div class="wrapper">
       <p class="description">
         はじめてALISを贈りました！<br>
-        よければ応援した人にコメントも<span class="br"/>残してつながってみませんか？
+        よければコメントも残して<span class="br"/>応援した人と<span class="br"/>つながってみませんか？
       </p>
       <app-button class="submit" @click="submit">
         コメントする
@@ -80,7 +80,7 @@ export default {
     letter-spacing: 1.37px;
     line-height: 1.5;
     margin: 310px 0 0;
-    padding: 0 40px;
+    padding: 0 30px;
   }
 
   .submit {

@@ -67,7 +67,7 @@ export default {
     letter-spacing: 1.37px;
     line-height: 1.5;
     margin: 310px 0 0;
-    padding: 0 40px;
+    padding: 0 30px;
   }
 
   .submit {

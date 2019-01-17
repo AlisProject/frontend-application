@@ -3,11 +3,11 @@
     <div class="wrapper">
       <p class="description">
         はじめての記事投稿<span class="br"/>お疲れ様でした！<br>
-        記事にいいねがつきALISを<span class="br"/>獲得するのを待ちましょう。
+        記事にいいねがつき、<span class="br"/>ALISを獲得するのを<span class="br"/>待ちましょう。
       </p>
       <app-button class="submit" @click="submit">
         <nuxt-link to="/">
-          記事を探す
+          トップに戻る
         </nuxt-link>
       </app-button>
       <app-button class="close" @click="close">
@@ -69,7 +69,7 @@ export default {
     letter-spacing: 1.37px;
     line-height: 1.5;
     margin: 310px 0 0;
-    padding: 0 40px;
+    padding: 0 30px;
   }
 
   .submit {
