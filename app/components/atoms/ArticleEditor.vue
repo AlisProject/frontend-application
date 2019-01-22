@@ -10,7 +10,7 @@
       @keydown.enter.prevent
       :value="title"/>
     <no-ssr>
-      <alis-editor :token="token" :title="twiTitle" @paste="handlePaste" />
+      <alis-editor :token="token" />
     </no-ssr>
     <!--<div-->
       <!--class="area-body"-->
@@ -57,8 +57,7 @@ export default {
       editorElement: null,
       updateArticleInterval: null,
       isInitTitleHeight: false,
-      token: null,
-      twiTitle: null
+      token: null
     }
   },
   computed: {
