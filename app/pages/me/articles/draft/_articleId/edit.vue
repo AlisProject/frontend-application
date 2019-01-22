@@ -19,7 +19,7 @@ export default {
       await this.$store.dispatch('article/getEditDraftArticle', { articleId })
       const { body } = this.$store.state.article
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
-      const editorBody = this.$el.querySelector('.area-body')
+      const editorBody = this.$el.querySelector('#editor')
       editorBody.innerHTML = body
       // Update thumbnails
       const images = Array.from(this.$el.querySelectorAll('figure img'))
