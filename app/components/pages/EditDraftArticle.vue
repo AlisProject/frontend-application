@@ -23,14 +23,13 @@ export default {
     decodedTitle() {
       return htmlDecode(this.title)
     },
-    ...mapGetters('article', ['title', 'body'])
+    ...mapGetters('article', ['title', 'body', 'articleId'])
   },
   methods: {
     ...mapActions('article', ['putDraftArticle', 'gotArticleData']),
     async putArticle() {
       if (!this.gotArticleData) return
-      const { title, body, thumbnail } = this
-      const { articleId } = this.$route.params
+      const { title, body, thumbnail, articleId } = this
       const article = { title, body }
       if (thumbnail !== '') article.eye_catch_url = thumbnail
       await this.putDraftArticle({ article, articleId })

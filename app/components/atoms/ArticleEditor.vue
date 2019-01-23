@@ -10,7 +10,7 @@
       @keydown.enter.prevent
       :value="title"/>
     <no-ssr>
-      <alis-editor-pc v-if="isPc" />
+      <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" />
     </no-ssr>
     <no-ssr>
       <alis-editor-sp v-if="isMobile" />
@@ -60,7 +60,8 @@ export default {
       targetDOM: null,
       editorElement: null,
       updateArticleInterval: null,
-      isInitTitleHeight: false
+      isInitTitleHeight: false,
+      clientId: process.env.CLIENT_ID
     }
   },
   computed: {
@@ -78,8 +79,8 @@ export default {
     if (window.innerWidth <= 640) {
       this.isPc = false
       this.isMobile = true
-    // TODO: 表示分岐追加
-    //   this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
+      // TODO: 表示分岐追加
+      //   this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
     } else {
       this.isPc = true
       this.isMobile = false
