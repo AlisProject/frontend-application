@@ -9,12 +9,16 @@
       @input="onInputTitle"
       @keydown.enter.prevent
       :value="title"/>
-    <div
-      class="area-body"
-      ref="editable"
-      @dragover="preventDragoverImage"
-      @drop="preventDropImage"
-    />
+    <no-ssr>
+      <alis-editor-pc></alis-editor-pc>
+    </no-ssr>
+    <!-- TODO: 分岐を追加 -->
+    <!--<div-->
+      <!--class="area-body"-->
+      <!--ref="editable"-->
+      <!--@dragover="preventDragoverImage"-->
+      <!--@drop="preventDropImage"-->
+    <!--/>  -->
   </div>
 </template>
 
@@ -64,25 +68,27 @@ export default {
       height: '40px',
       lineHeight: '1.5'
     })
-
     this.initMediumEditor()
-    window.addEventListener('resize', this.handleResize)
-    if (window.innerWidth <= 640) {
-      this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
-    }
+    // TODO: 表示分岐追加
+    // window.addEventListener('resize', this.handleResize)
+    // if (window.innerWidth <= 640) {
+    //   this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
+    // }
+
     preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
       if (!this.$el.querySelector('.medium-insert-buttons')) return
       preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
       clearInterval(preventDragAndDropInterval)
     }, 100)
-    $('.area-body').keydown((e) => {
-      const enterKeyCode = 13
-      const pressedEnterkey = e.keyCode === enterKeyCode
-      if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
-        e.preventDefault()
-      }
-    })
+    // TODO: editorの表示分岐を追加
+    // $('.area-body').keydown((e) => {
+    //   const enterKeyCode = 13
+    //   const pressedEnterkey = e.keyCode === enterKeyCode
+    //   if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
+    //     e.preventDefault()
+    //   }
+    // })
 
     // Start update article interval
     this.updateArticle()
@@ -147,21 +153,22 @@ export default {
         this.setIsEdited({ isEdited: true })
         this.$el.onkeydown = (event) => this.handleEditorInput(event)
       })
-      $(() => {
-        $('.area-body').mediumInsert({
-          editor: this.editorElement,
-          addons: {
-            Part: true,
-            embeds: false,
-            images: {
-              fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
-              messages: {
-                maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
-              }
-            }
-          }
-        })
-      })
+      // TODO: 表示分岐を追加
+      // $(() => {
+      //   $('.area-body').mediumInsert({
+      //     editor: this.editorElement,
+      //     addons: {
+      //       Part: true,
+      //       embeds: false,
+      //       images: {
+      //         fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
+      //         messages: {
+      //           maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
+      //         }
+      //       }
+      //     }
+      //   })
+      // })
     },
     async handleEditorInput(event) {
       const line = MediumEditor.util.getTopBlockContainer(
@@ -183,7 +190,6 @@ export default {
       const isFacebookResource = isFacebookPostURL(trimmedLine)
       const isInstagramResource = isInstagramURL(trimmedLine)
       let result, cleanAttrs, embedHTML
-
       try {
         result = (await getResourceFromIframely(
           isTwitterResource ? 'oembed' : 'iframely',
@@ -193,9 +199,7 @@ export default {
         console.error(error)
         return
       }
-
       selectedParentElement.innerHTML = ''
-
       if (
         isTweet ||
         isGistResource ||
@@ -207,7 +211,6 @@ export default {
         iframely.load()
         return
       }
-
       if (!isTwitterResource) {
         const { title, description } = result.meta
         const hasTitleOrDescription = title !== undefined || description !== undefined
@@ -228,7 +231,6 @@ export default {
         embedHTML = getTwitterProfileTemplate({ ...result })
         cleanAttrs = ['twitter-profile-card', 'title', 'description', 'site']
       }
-
       this.editorElement.pasteHTML(
         `<br>
           ${embedHTML}
@@ -237,7 +239,6 @@ export default {
           cleanAttrs
         }
       )
-
       // Prevent drop image on OGP content
       preventDropImageOnOGPContent()
     },
@@ -293,11 +294,13 @@ export default {
       this.updateTitle({ title: $('.area-title').val() })
 
       // Update body
-      $('.area-body')
-        .find('span[style]')
-        .contents()
-        .unwrap()
-      const body = this.removeUselessDOMFromArticleBody()
+      // TODO: 表示分岐を追加
+      // $('.area-body')
+      //   .find('span[style]')
+      //   .contents()
+      //   .unwrap()
+      // const body = this.removeUselessDOMFromArticleBody()
+      const body = this.$el.querySelector('#editor').innerHTML
       this.updateBody({ body })
 
       try {
@@ -494,7 +497,8 @@ export default {
 @media screen and (max-width: 640px) {
   .area-editor-container {
     grid-template-columns: 1fr;
-    display: none;
+    /* TODO: 表示分岐追加 */
+    /*display: none;*/
   }
 
   .area-title {

@@ -77,7 +77,8 @@ module.exports = {
     '~/plugins/axios',
     '~/plugins/vuelidate',
     { src: '~plugins/gtm.js', ssr: false },
-    { src: '~/plugins/vue-tags-input', ssr: false }
+    { src: '~/plugins/vue-tags-input', ssr: false },
+    { src: '~/plugins/editor', ssr: false }
   ],
   axios: {
     baseURL: process.env.BASE_URL,
@@ -105,9 +106,13 @@ module.exports = {
         })
       }
     },
-    vendor: ['axios', 'moment', '@johmun/vue-tags-input']
+    vendor: ['axios', 'moment', '@johmun/vue-tags-input', '@alisproject/alis-editor']
   },
-  css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
+  css: [
+    '~assets/stylesheets/medium-editor.scss',
+    '~assets/stylesheets/vuex-toast.scss',
+    '@alisproject/alis-editor/dist/AlisEditor.css'
+  ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
     REGION: process.env.REGION,
