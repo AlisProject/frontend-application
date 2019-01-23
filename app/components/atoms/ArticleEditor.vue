@@ -76,6 +76,7 @@ export default {
       lineHeight: '1.5'
     })
     this.initMediumEditor()
+    // window.addEventListener('resize', this.handleResize)
     if (window.innerWidth <= 640) {
       this.isPc = false
       this.isMobile = true
@@ -85,7 +86,6 @@ export default {
       this.isPc = true
       this.isMobile = false
     }
-    // window.addEventListener('resize', this.handleResize)
 
     preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
