@@ -10,7 +10,10 @@
       @keydown.enter.prevent
       :value="title"/>
     <no-ssr>
-      <alis-editor-pc></alis-editor-pc>
+      <alis-editor-pc v-if="isPc" />
+    </no-ssr>
+    <no-ssr>
+      <alis-editor-sp v-if="isMobile" />
     </no-ssr>
     <!-- TODO: 分岐を追加 -->
     <!--<div-->
@@ -52,6 +55,8 @@ export default {
   },
   data() {
     return {
+      isPc: false,
+      isMobile: false,
       targetDOM: null,
       editorElement: null,
       updateArticleInterval: null,
@@ -69,11 +74,16 @@ export default {
       lineHeight: '1.5'
     })
     this.initMediumEditor()
-    // TODO: 表示分岐追加
     // window.addEventListener('resize', this.handleResize)
-    // if (window.innerWidth <= 640) {
+    if (window.innerWidth <= 640) {
+      this.isPc = false
+      this.isMobile = true
+    // TODO: 表示分岐追加
     //   this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
-    // }
+    } else {
+      this.isPc = true
+      this.isMobile = false
+    }
 
     preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
