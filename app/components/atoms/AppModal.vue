@@ -122,6 +122,10 @@ export default {
         }
         this.setProfileSettingsModal({ showProfileSettingsModal: false })
       }
+      if (this.showRestrictEditArticleModal) {
+        this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
+        this.$router.push(`/users/${this.currentUserInfo.user_id}`)
+      }
       if (this.requestLoginModal.isShow) {
         this.setRequestLoginModal({ isShow: false })
       }
