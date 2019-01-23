@@ -67,8 +67,6 @@ export default {
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
-  beforeMount() {
-  },
   mounted() {
     resizeTextarea({
       targetElement: this.$el.querySelector('.area-title'),
