@@ -10,10 +10,10 @@
       @keydown.enter.prevent
       :value="title"/>
     <no-ssr>
-      <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" />
+      <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" :getUserSession="getUserSession" />
     </no-ssr>
     <no-ssr>
-      <alis-editor-sp v-if="isMobile" />
+      <alis-editor-sp v-if="isMobile" :articleId="articleId" :clientId="clientId" :getUserSession="getUserSession" />
     </no-ssr>
     <!-- TODO: 分岐を追加 -->
     <!--<div-->
@@ -442,7 +442,7 @@ export default {
       'setSaveStatus',
       'updateThumbnail'
     ]),
-    ...mapActions('user', ['setRestrictEditArticleModal'])
+    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession'])
   },
   watch: {
     async title(value) {
