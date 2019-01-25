@@ -5,8 +5,9 @@
 <script>
 import BlankPage from '~/components/pages/BlankPage'
 import CreateArticle from '~/components/pages/CreateArticle'
-import EditDraftArticle from '~/components/pages/EditDraftArticle'
-
+import EditDraftArticleV1 from '~/components/pages/EditDraftArticleV1'
+import EditDraftArticleV2 from '~/components/pages/EditDraftArticleV2'
+import { isV2 } from '~/utils/article'
 import head from '~/utils/editor-head'
 
 export default {
@@ -18,7 +19,8 @@ export default {
   components: {
     BlankPage,
     CreateArticle,
-    EditDraftArticle
+    EditDraftArticleV1,
+    EditDraftArticleV2
   },
   async created() {
     const { Items: articles } = await this.$axios.$get('/me/articles/drafts', {
@@ -28,11 +30,12 @@ export default {
     const latestDraftArticle = await this.$axios.$get(`/me/articles/${latestDraftArticleId}/drafts`)
     const isLatestDraftArticleEmpty =
       latestDraftArticle.title === null && latestDraftArticle.body === null
+    const isV2Article = isV2(latestDraftArticle)
 
     if (isLatestDraftArticleEmpty) {
       await this.$store.dispatch('article/getEditDraftArticle', { articleId: latestDraftArticleId })
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
-      this.componentName = 'EditDraftArticle'
+      this.componentName = isV2Article ? 'EditDraftArticleV2' : 'EditDraftArticleV1'
     } else {
       const article = { title: '', body: '' }
       await this.$store.dispatch('article/postNewArticle', { article })

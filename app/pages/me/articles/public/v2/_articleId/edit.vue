@@ -1,22 +1,22 @@
 <template>
-  <edit-draft-article-v1 />
+  <edit-public-article-v2 />
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import EditDraftArticleV1 from '~/components/pages/EditDraftArticleV1'
+import EditPublicArticleV2 from '~/components/pages/EditPublicArticleV2'
 import head from '~/utils/editor-head'
 import { showEmbedTweet, getThumbnails, preventDropImageOnOGPContent } from '~/utils/article'
 
 export default {
   components: {
-    EditDraftArticleV1
+    EditPublicArticleV2
   },
   async beforeCreate() {
     const { articleId } = this.$route.params
     try {
-      await this.$store.dispatch('article/getEditDraftArticle', { articleId })
+      await this.$store.dispatch('article/getEditPublicArticleDetail', { articleId })
       const { body } = this.$store.state.article
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       const editorBody = this.$el.querySelector('.area-body')
