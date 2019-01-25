@@ -10,8 +10,18 @@
       @keydown.enter.prevent
       :value="title"/>
     <no-ssr>
-      <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" :body="body" />
-      <alis-editor-sp v-else :articleId="articleId" :clientId="clientId" :body="body" />
+      <alis-editor-pc
+        v-if="isPc"
+        :articleId="articleId"
+        :clientId="clientId"
+        :getUserSession="getUserSession"
+        :body="body" />
+      <alis-editor-sp
+        v-else
+        :articleId="articleId"
+        :clientId="clientId"
+        :getUserSession="getUserSession"
+        :body="body" />
     </no-ssr>
   </div>
 </template>
@@ -155,7 +165,7 @@ export default {
       'setSaveStatus',
       'updateThumbnail'
     ]),
-    ...mapActions('user', ['setRestrictEditArticleModal'])
+    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession'])
   },
   watch: {
     async title(value) {
