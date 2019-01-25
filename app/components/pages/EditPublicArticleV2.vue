@@ -1,8 +1,8 @@
 <template>
   <div class="edit-article-container">
     <app-header />
-    <edit-header-nav type="draft-article" />
-    <article-editor :title="decodedTitle" :putArticle="putArticle"/>
+    <edit-header-nav type="public-article" />
+    <article-editor-v2 :title="decodedTitle" :putArticle="putArticle"/>
   </div>
 </template>
 
@@ -10,29 +10,30 @@
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import EditHeaderNav from '../molecules/EditHeaderNav'
-import ArticleEditor from '../atoms/ArticleEditor'
+import ArticleEditorV2 from '../organisms/ArticleEditorV2'
 import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
     AppHeader,
     EditHeaderNav,
-    ArticleEditor
+    ArticleEditorV2
   },
   computed: {
     decodedTitle() {
       return htmlDecode(this.title)
     },
-    ...mapGetters('article', ['title', 'body', 'articleId'])
+    ...mapGetters('article', ['title', 'body', 'thumbnail'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticle', 'gotArticleData']),
+    ...mapActions('article', ['putPublicArticle', 'gotArticleData']),
     async putArticle() {
       if (!this.gotArticleData) return
-      const { title, body, thumbnail, articleId } = this
+      const { title, body, thumbnail } = this
+      const { articleId } = this.$route.params
       const article = { title, body }
       if (thumbnail !== '') article.eye_catch_url = thumbnail
-      await this.putDraftArticle({ article, articleId })
+      await this.putPublicArticle({ article, articleId })
     }
   }
 }

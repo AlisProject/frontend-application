@@ -1,32 +1,39 @@
 <template>
-  <edit-draft-article-v1 />
+  <component :is="componentName" />
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import EditDraftArticleV1 from '~/components/pages/EditDraftArticleV1'
-import head from '~/utils/editor-head'
+import BlankPage from '~/components/pages/BlankPage'
+import EditDraftArticleV2 from '~/components/pages/EditDraftArticleV2'
 import { showEmbedTweet, getThumbnails, preventDropImageOnOGPContent } from '~/utils/article'
 
 export default {
   components: {
-    EditDraftArticleV1
+    BlankPage,
+    EditDraftArticleV2
+  },
+  data() {
+    return {
+      componentName: 'BlankPage'
+    }
   },
   async beforeCreate() {
     const { articleId } = this.$route.params
     try {
       await this.$store.dispatch('article/getEditDraftArticle', { articleId })
-      const { body } = this.$store.state.article
+      // const { body } = this.$store.state.article
+      this.componentName = 'EditDraftArticleV2'
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
-      const editorBody = this.$el.querySelector('.area-body')
-      editorBody.innerHTML = body
+      // const editorBody = this.$el.querySelector('.area-body')
+      // editorBody.innerHTML = body
       // Update thumbnails
       const images = Array.from(this.$el.querySelectorAll('figure img'))
       const thumbnails = getThumbnails(images)
       this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
-      editorBody.dataset.placeholder =
-        body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
+      // editorBody.dataset.placeholder =
+      //   body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet()
       preventDropImageOnOGPContent()
     } catch (error) {
@@ -39,6 +46,6 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     })
   },
-  head: { ...head, title: '記事編集' }
+  head: { title: '記事編集' }
 }
 </script>

@@ -19,7 +19,13 @@
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
         </div>
       </div>
-      <a class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`">
+      <nuxt-link
+        class="edit-article"
+        :to="`/me/articles/public/v2/${article.article_id}/edit`"
+        v-if="isV2Article">
+        編集する
+      </nuxt-link>
+      <a class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`" v-else>
         編集する
       </a>
     </template>
@@ -29,6 +35,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { isV2 } from '~/utils/article'
 
 export default {
   data() {
@@ -88,6 +95,9 @@ export default {
     },
     facebookShareUrl() {
       return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.shareUrl)}`
+    },
+    isV2Article() {
+      return isV2(this.article)
     }
   },
   methods: {

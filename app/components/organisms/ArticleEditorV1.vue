@@ -9,19 +9,12 @@
       @input="onInputTitle"
       @keydown.enter.prevent
       :value="title"/>
-    <no-ssr>
-      <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" :getUserSession="getUserSession" />
-    </no-ssr>
-    <no-ssr>
-      <alis-editor-sp v-if="isMobile" :articleId="articleId" :clientId="clientId" :getUserSession="getUserSession" />
-    </no-ssr>
-    <!-- TODO: 分岐を追加 -->
-    <!--<div-->
-      <!--class="area-body"-->
-      <!--ref="editable"-->
-      <!--@dragover="preventDragoverImage"-->
-      <!--@drop="preventDropImage"-->
-    <!--/>  -->
+    <div
+      class="area-body"
+      ref="editable"
+      @dragover="preventDragoverImage"
+      @drop="preventDropImage"
+    />
   </div>
 </template>
 
@@ -55,13 +48,10 @@ export default {
   },
   data() {
     return {
-      isPc: false,
-      isMobile: false,
       targetDOM: null,
       editorElement: null,
       updateArticleInterval: null,
-      isInitTitleHeight: false,
-      clientId: process.env.CLIENT_ID
+      isInitTitleHeight: false
     }
   },
   computed: {
@@ -74,32 +64,25 @@ export default {
       height: '40px',
       lineHeight: '1.5'
     })
-    this.initMediumEditor()
-    // window.addEventListener('resize', this.handleResize)
-    if (window.innerWidth <= 640) {
-      this.isPc = false
-      this.isMobile = true
-      // TODO: 表示分岐追加
-      //   this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
-    } else {
-      this.isPc = true
-      this.isMobile = false
-    }
 
+    this.initMediumEditor()
+    window.addEventListener('resize', this.handleResize)
+    if (window.innerWidth <= 640) {
+      this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
+    }
     preventDragAndDrop(window)
     const preventDragAndDropInterval = setInterval(() => {
       if (!this.$el.querySelector('.medium-insert-buttons')) return
       preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
       clearInterval(preventDragAndDropInterval)
     }, 100)
-    // TODO: editorの表示分岐を追加
-    // $('.area-body').keydown((e) => {
-    //   const enterKeyCode = 13
-    //   const pressedEnterkey = e.keyCode === enterKeyCode
-    //   if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
-    //     e.preventDefault()
-    //   }
-    // })
+    $('.area-body').keydown((e) => {
+      const enterKeyCode = 13
+      const pressedEnterkey = e.keyCode === enterKeyCode
+      if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
+        e.preventDefault()
+      }
+    })
 
     // Start update article interval
     this.updateArticle()
@@ -164,22 +147,21 @@ export default {
         this.setIsEdited({ isEdited: true })
         this.$el.onkeydown = (event) => this.handleEditorInput(event)
       })
-      // TODO: 表示分岐を追加
-      // $(() => {
-      //   $('.area-body').mediumInsert({
-      //     editor: this.editorElement,
-      //     addons: {
-      //       Part: true,
-      //       embeds: false,
-      //       images: {
-      //         fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
-      //         messages: {
-      //           maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
-      //         }
-      //       }
-      //     }
-      //   })
-      // })
+      $(() => {
+        $('.area-body').mediumInsert({
+          editor: this.editorElement,
+          addons: {
+            Part: true,
+            embeds: false,
+            images: {
+              fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
+              messages: {
+                maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
+              }
+            }
+          }
+        })
+      })
     },
     async handleEditorInput(event) {
       const line = MediumEditor.util.getTopBlockContainer(
@@ -201,6 +183,7 @@ export default {
       const isFacebookResource = isFacebookPostURL(trimmedLine)
       const isInstagramResource = isInstagramURL(trimmedLine)
       let result, cleanAttrs, embedHTML
+
       try {
         result = (await getResourceFromIframely(
           isTwitterResource ? 'oembed' : 'iframely',
@@ -210,7 +193,9 @@ export default {
         console.error(error)
         return
       }
+
       selectedParentElement.innerHTML = ''
+
       if (
         isTweet ||
         isGistResource ||
@@ -222,6 +207,7 @@ export default {
         iframely.load()
         return
       }
+
       if (!isTwitterResource) {
         const { title, description } = result.meta
         const hasTitleOrDescription = title !== undefined || description !== undefined
@@ -242,6 +228,7 @@ export default {
         embedHTML = getTwitterProfileTemplate({ ...result })
         cleanAttrs = ['twitter-profile-card', 'title', 'description', 'site']
       }
+
       this.editorElement.pasteHTML(
         `<br>
           ${embedHTML}
@@ -250,6 +237,7 @@ export default {
           cleanAttrs
         }
       )
+
       // Prevent drop image on OGP content
       preventDropImageOnOGPContent()
     },
@@ -305,13 +293,11 @@ export default {
       this.updateTitle({ title: $('.area-title').val() })
 
       // Update body
-      // TODO: 表示分岐を追加
-      // $('.area-body')
-      //   .find('span[style]')
-      //   .contents()
-      //   .unwrap()
-      // const body = this.removeUselessDOMFromArticleBody()
-      const body = this.$el.querySelector('#editor').innerHTML
+      $('.area-body')
+        .find('span[style]')
+        .contents()
+        .unwrap()
+      const body = this.removeUselessDOMFromArticleBody()
       this.updateBody({ body })
 
       try {
@@ -442,7 +428,7 @@ export default {
       'setSaveStatus',
       'updateThumbnail'
     ]),
-    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession'])
+    ...mapActions('user', ['setRestrictEditArticleModal'])
   },
   watch: {
     async title(value) {
@@ -508,8 +494,7 @@ export default {
 @media screen and (max-width: 640px) {
   .area-editor-container {
     grid-template-columns: 1fr;
-    /* TODO: 表示分岐追加 */
-    /*display: none;*/
+    display: none;
   }
 
   .area-title {

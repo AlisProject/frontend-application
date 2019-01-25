@@ -344,3 +344,9 @@ export function resizeTextarea({ targetElement, height, lineHeight, defaultHeigh
     }
   })
 }
+
+export function isV2(article = {}) {
+  if (article.version === undefined) return false
+  const isV2 = article.version >= 200 && article.version < 300
+  return isV2
+}
