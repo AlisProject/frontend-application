@@ -11,39 +11,14 @@
       :value="title"/>
     <no-ssr>
       <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" :body="body" />
+      <alis-editor-sp v-else :articleId="articleId" :clientId="clientId" :body="body" />
     </no-ssr>
-    <no-ssr>
-      <alis-editor-sp v-if="isMobile" :articleId="articleId" :clientId="clientId" :body="body" />
-    </no-ssr>
-    <!-- TODO: 分岐を追加 -->
-    <!--<div-->
-      <!--class="area-body"-->
-      <!--ref="editable"-->
-      <!--@dragover="preventDragoverImage"-->
-      <!--@drop="preventDropImage"-->
-    <!--/>  -->
   </div>
 </template>
 
 <script>
-/* global $, MediumEditor, iframely */
 import { mapActions, mapGetters } from 'vuex'
-import urlRegex from 'url-regex'
-import {
-  getIframelyUrlTemplate,
-  getTwitterProfileTemplate,
-  getIframelyEmbedTemplate,
-  getThumbnails,
-  createInsertPluginTemplateFromUrl,
-  getResourceFromIframely,
-  preventDragAndDrop,
-  preventDropImageOnOGPContent,
-  isYouTubeVideoURL,
-  isFacebookPostURL,
-  isInstagramURL,
-  resizeTextarea
-} from '~/utils/article'
-import 'medium-editor/dist/css/medium-editor.min.css'
+import { getThumbnails, resizeTextarea } from '~/utils/article'
 
 export default {
   props: {
@@ -55,10 +30,7 @@ export default {
   },
   data() {
     return {
-      isPc: false,
-      isMobile: false,
-      targetDOM: null,
-      editorElement: null,
+      isPc: true,
       updateArticleInterval: null,
       isInitTitleHeight: false,
       clientId: process.env.CLIENT_ID
@@ -74,31 +46,7 @@ export default {
       height: '40px',
       lineHeight: '1.5'
     })
-    // window.addEventListener('resize', this.handleResize)
-    if (window.innerWidth <= 640) {
-      this.isPc = false
-      this.isMobile = true
-      // TODO: 表示分岐追加
-      //   this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
-    } else {
-      this.isPc = true
-      this.isMobile = false
-    }
-
-    preventDragAndDrop(window)
-    const preventDragAndDropInterval = setInterval(() => {
-      if (!this.$el.querySelector('.medium-insert-buttons')) return
-      preventDragAndDrop(this.$el.querySelector('.medium-insert-buttons'))
-      clearInterval(preventDragAndDropInterval)
-    }, 100)
-    // TODO: editorの表示分岐を追加
-    // $('.area-body').keydown((e) => {
-    //   const enterKeyCode = 13
-    //   const pressedEnterkey = e.keyCode === enterKeyCode
-    //   if (pressedEnterkey && e.target.tagName === 'FIGCAPTION') {
-    //     e.preventDefault()
-    //   }
-    // })
+    this.isPc = window.innerWidth > 640
 
     // Start update article interval
     this.updateArticle()
@@ -106,81 +54,8 @@ export default {
   beforeDestroy() {
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
-    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    async handleEditorInput(event) {
-      const line = MediumEditor.util.getTopBlockContainer(
-        this.editorElement.getSelectedParentElement()
-      ).textContent
-      const trimmedLine = line.trim()
-      if (event.key !== 'Enter' || !urlRegex({ exact: true }).test(trimmedLine)) {
-        // Enter もしくは URL 構造でない場合は行う処理がない
-        return
-      }
-      const selectedParentElement = MediumEditor.util.getTopBlockContainer(
-        this.editorElement.getSelectedParentElement()
-      )
-      const isTwitterResource =
-        trimmedLine === 'https://twitter.com' || trimmedLine.startsWith('https://twitter.com/')
-      const isTweet = isTwitterResource && trimmedLine.split('/')[4] === 'status'
-      const isGistResource = trimmedLine.startsWith('https://gist.github.com/')
-      const isYouTubeResource = isYouTubeVideoURL(trimmedLine)
-      const isFacebookResource = isFacebookPostURL(trimmedLine)
-      const isInstagramResource = isInstagramURL(trimmedLine)
-      let result, cleanAttrs, embedHTML
-      try {
-        result = (await getResourceFromIframely(
-          isTwitterResource ? 'oembed' : 'iframely',
-          trimmedLine
-        )).data
-      } catch (error) {
-        console.error(error)
-        return
-      }
-      selectedParentElement.innerHTML = ''
-      if (
-        isTweet ||
-        isGistResource ||
-        isYouTubeResource ||
-        isFacebookResource ||
-        isInstagramResource
-      ) {
-        this.editorElement.pasteHTML(getIframelyUrlTemplate(trimmedLine))
-        iframely.load()
-        return
-      }
-      if (!isTwitterResource) {
-        const { title, description } = result.meta
-        const hasTitleOrDescription = title !== undefined || description !== undefined
-        if (!hasTitleOrDescription) return
-        embedHTML = getIframelyEmbedTemplate({ ...result })
-        cleanAttrs = [
-          'iframely-embed-card',
-          'title',
-          'description',
-          'site',
-          'thumbnail',
-          'without-space'
-        ]
-      } else {
-        const { title, description } = result
-        const hasTitleOrDescription = title !== undefined || description !== undefined
-        if (!hasTitleOrDescription) return
-        embedHTML = getTwitterProfileTemplate({ ...result })
-        cleanAttrs = ['twitter-profile-card', 'title', 'description', 'site']
-      }
-      this.editorElement.pasteHTML(
-        `<br>
-          ${embedHTML}
-          <br>`,
-        {
-          cleanAttrs
-        }
-      )
-      // Prevent drop image on OGP content
-      preventDropImageOnOGPContent()
-    },
     async updateArticle() {
       try {
         // Do nothing if user don't edit article
@@ -193,7 +68,6 @@ export default {
         this.setIsSaving({ isSaving: true })
         this.setIsEdited({ isEdited: false })
         this.setSaveStatus({ saveStatus: '保存中' })
-        if (this.articleId === '') await this.setArticleId()
 
         // Upload images
         try {
@@ -213,32 +87,13 @@ export default {
         this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
       }
     },
-    async setArticleId() {
-      try {
-        const article = { title: '', body: '' }
-        await this.postNewArticle({ article })
-      } catch (error) {
-        this.sendNotification({
-          text: '記事の作成に失敗しました',
-          type: 'warning'
-        })
-        throw new Error('Post article failed.')
-      }
-    },
     onInputTitle() {
       this.setIsEdited({ isEdited: true })
     },
     async uploadArticle() {
       // Update title
-      this.updateTitle({ title: $('.area-title').val() })
+      this.updateTitle({ title: document.querySelector('.area-title').value })
 
-      // Update body
-      // TODO: 表示分岐を追加
-      // $('.area-body')
-      //   .find('span[style]')
-      //   .contents()
-      //   .unwrap()
-      // const body = this.removeUselessDOMFromArticleBody()
       const body = this.$el.querySelector('#editor').innerHTML
       this.updateBody({ body })
 
@@ -285,78 +140,8 @@ export default {
       // Prevent drag & drop on image
       Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
         if (element.dataset.preventedDragAndDrop === 'true') return
-        preventDragAndDrop(element)
         element.dataset.preventedDragAndDrop = true
       })
-    },
-    removeUselessDOMFromArticleBody() {
-      const serializedContents = this.editorElement.serialize()
-      const serializedBody = serializedContents['element-0'].value
-      const $bodyTmp = $(`<div>${serializedBody}</div>`)
-      $bodyTmp.find('[src^="data:image/"]').each((_i, element) => {
-        element.src = ''
-      })
-      $bodyTmp.find('[data-alis-iframely-url]').each((_i, element) => {
-        element.innerHTML = ''
-      })
-      return $bodyTmp.html()
-    },
-    matchAll(str, regexp) {
-      const matches = []
-      str.replace(regexp, function() {
-        const arr = [].slice.call(arguments, 0)
-        const extras = arr.splice(-2)
-        arr.index = extras[0]
-        arr.input = extras[1]
-        matches.push(arr)
-      })
-      return matches.length ? matches : null
-    },
-    handleResize() {
-      if (window.innerWidth <= 640) {
-        if (!this.showRestrictEditArticleModal) {
-          this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
-        }
-      } else {
-        if (this.showRestrictEditArticleModal) {
-          document.querySelector('html,body').style.overflow = ''
-          this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
-        }
-      }
-    },
-    preventDragoverImage(event) {
-      event.preventDefault()
-      event.stopPropagation()
-      setTimeout(() => {
-        this.targetDOM = $('.medium-editor-dragover')
-      }, 10)
-      return false
-    },
-    preventDropImage(event) {
-      event.preventDefault()
-      event.stopPropagation()
-      this.insertDragImage(event.dataTransfer.files)
-      return false
-    },
-    insertDragImage(files) {
-      if (this.targetDOM[0].classList.value.includes('area-body')) return
-      const [target] = files
-      const MAX_UPLOAD = 4.5 * 1024 * 1024 // 4.5 MB
-      if (target.size > MAX_UPLOAD) {
-        this.sendNotification({ text: '画像は4.5MBまでアップロード可能です', type: 'warning' })
-        return
-      }
-      if (!this.isImageContent(files[0].type)) return
-      const reader = new FileReader()
-      reader.onload = ({ currentTarget: { result } }) => {
-        this.targetDOM.after($(createInsertPluginTemplateFromUrl(result)))
-        this.targetDOM = null
-        this.setIsEdited({ isEdited: true })
-      }
-      reader.readAsDataURL(target)
-    },
-    isImageContent(fileType) {
-      return Boolean(fileType.match(/image.*/))
     },
     ...mapActions('article', [
       'updateTitle',
@@ -427,17 +212,9 @@ export default {
   }
 }
 
-.medium-editor-placeholder-relative:after,
-.medium-editor-placeholder:after {
-  color: #898989;
-  font-style: normal;
-}
-
 @media screen and (max-width: 640px) {
   .area-editor-container {
     grid-template-columns: 1fr;
-    /* TODO: 表示分岐追加 */
-    /*display: none;*/
   }
 
   .area-title {
