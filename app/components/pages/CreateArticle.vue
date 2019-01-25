@@ -2,7 +2,7 @@
   <div class="create-article-container">
     <app-header />
     <edit-header-nav type="draft-article" />
-    <article-editor :putArticle="putArticle"/>
+    <article-editor-v1 :putArticle="putArticle"/>
   </div>
 </template>
 
@@ -10,13 +10,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import EditHeaderNav from '../molecules/EditHeaderNav'
-import ArticleEditor from '../atoms/ArticleEditor'
+import ArticleEditorV1 from '../organisms/ArticleEditorV1'
 
 export default {
   components: {
     AppHeader,
     EditHeaderNav,
-    ArticleEditor
+    ArticleEditorV1
   },
   computed: {
     ...mapGetters('article', ['articleId', 'title', 'body'])
