@@ -10,10 +10,10 @@
       @keydown.enter.prevent
       :value="title"/>
     <no-ssr>
-      <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" />
+      <alis-editor-pc v-if="isPc" :articleId="articleId" :clientId="clientId" :body="body" />
     </no-ssr>
     <no-ssr>
-      <alis-editor-sp v-if="isMobile" />
+      <alis-editor-sp v-if="isMobile" :articleId="articleId" :clientId="clientId" :body="body" />
     </no-ssr>
     <!-- TODO: 分岐を追加 -->
     <!--<div-->
@@ -65,7 +65,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail']),
+    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -74,7 +74,6 @@ export default {
       height: '40px',
       lineHeight: '1.5'
     })
-    this.initMediumEditor()
     // window.addEventListener('resize', this.handleResize)
     if (window.innerWidth <= 640) {
       this.isPc = false
@@ -110,77 +109,6 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
-    initMediumEditor() {
-      this.editorElement = new MediumEditor('.area-body', {
-        imageDragging: false,
-        toolbar: {
-          buttons: [
-            {
-              name: 'h2',
-              action: 'append-h2',
-              tagNames: ['h2'],
-              contentDefault: '',
-              classList: ['custom-class-h2']
-            },
-            {
-              name: 'h3',
-              action: 'append-h3',
-              tagNames: ['h3'],
-              contentDefault: '',
-              classList: ['custom-class-h3']
-            },
-            {
-              name: 'quote',
-              action: 'append-blockquote',
-              tagNames: ['quote'],
-              contentDefault: '',
-              classList: ['custom-class-quote']
-            },
-            'quote',
-            {
-              name: 'bold',
-              action: 'bold',
-              tagNames: ['b', 'strong'],
-              contentDefault: '',
-              classList: ['custom-class-bold']
-            },
-            {
-              name: 'italic',
-              action: 'italic',
-              tagNames: ['i'],
-              contentDefault: '',
-              classList: ['custom-class-italic']
-            },
-            'anchor'
-          ],
-          diffTop: -20
-        },
-        placeholder: {
-          text: ''
-        },
-        spellcheck: false
-      })
-      this.editorElement.subscribe('editableInput', (event, editable) => {
-        this.setIsEdited({ isEdited: true })
-        this.$el.onkeydown = (event) => this.handleEditorInput(event)
-      })
-      // TODO: 表示分岐を追加
-      // $(() => {
-      //   $('.area-body').mediumInsert({
-      //     editor: this.editorElement,
-      //     addons: {
-      //       Part: true,
-      //       embeds: false,
-      //       images: {
-      //         fileUploadOptions: { maxFileSize: 4.5 * 1024 * 1024 },
-      //         messages: {
-      //           maxFileSizeError: '画像は4.5MBまでアップロード可能です：'
-      //         }
-      //       }
-      //     }
-      //   })
-      // })
-    },
     async handleEditorInput(event) {
       const line = MediumEditor.util.getTopBlockContainer(
         this.editorElement.getSelectedParentElement()
