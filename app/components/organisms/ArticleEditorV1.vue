@@ -55,7 +55,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail']),
+    ...mapGetters('article', ['title', 'articleId', 'isEdited', 'thumbnail']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
@@ -85,7 +85,7 @@ export default {
     })
 
     // Start update article interval
-    this.updateArticle()
+    // this.updateArticle()
   },
   beforeDestroy() {
     this.setSaveStatus({ saveStatus: '' })
@@ -287,6 +287,13 @@ export default {
     },
     onInputTitle() {
       this.setIsEdited({ isEdited: true })
+      // Update title
+      this.updateTitle({ title: $('.area-title').val() })
+      // Only upload title
+      const { title, articleId } = this
+      console.log(title)
+      console.log(articleId)
+      this.putDraftArtilceTitle(title, articleId)
     },
     async uploadArticle() {
       // Update title
@@ -416,6 +423,26 @@ export default {
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))
     },
+    putArticleBody() {
+      if (status === 'draft') {
+        try {
+          const res = await axios.put(`/api/me/articles/${articleId}/drafts/body`, params, {
+            headers: {
+              'Authorization': token,
+              'Content-Type': 'application/json'
+            }
+          })
+          setTimeout(() => {
+            console.log('Saved', data)
+            console.log(res)
+            resolve(res)
+          }, 1000)
+        } catch (error) {
+          reject(error)
+        }
+      } else {
+      }
+    },
     ...mapActions('article', [
       'updateTitle',
       'updateBody',
@@ -426,7 +453,8 @@ export default {
       'postNewArticle',
       'setIsEdited',
       'setSaveStatus',
-      'updateThumbnail'
+      'updateThumbnail',
+      'putDraftArtilceTitle'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal'])
   },

@@ -240,6 +240,9 @@ const actions = {
   async putDraftArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/drafts`, article)
   },
+  async putDraftArtilceTitle({ commit }, { title, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, title)
+  },
   async putPublicArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public`, article)
   },
