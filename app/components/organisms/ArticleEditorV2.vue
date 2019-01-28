@@ -15,13 +15,17 @@
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
-        :body="body" />
+        :status="status"
+        :editorContent="editorContent"
+      />
       <alis-editor-sp
         v-else
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
-        :body="body" />
+        :status="status"
+        :editorContent="editorContent"
+      />
     </no-ssr>
   </div>
 </template>
@@ -34,10 +38,8 @@ import { resizeTextarea } from '~/utils/article'
 export default {
   props: {
     title: String,
-    putArticle: {
-      type: Function,
-      required: true
-    }
+    status: String, // drafts or public
+    editorContent: String
   },
   data() {
     return {
@@ -68,7 +70,30 @@ export default {
       }
     },
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
-    ...mapGetters('user', ['showRestrictEditArticleModal'])
+    ...mapGetters('user', ['showRestrictEditArticleModal']),
+    functions() {
+      const {
+        getUserSession,
+        setSaveStatus,
+        setIsSaving,
+        setIsEdited,
+        updateSuggestedThumbnails,
+        updateThumbnail,
+        sendNotification,
+        updateBody
+      } = this
+
+      return {
+        getUserSession,
+        setSaveStatus,
+        setIsSaving,
+        setIsEdited,
+        updateSuggestedThumbnails,
+        updateThumbnail,
+        sendNotification,
+        updateBody
+      }
+    }
   },
   mounted() {
     resizeTextarea({
@@ -81,35 +106,37 @@ export default {
     this.isPc = !isIOS && !isAndroid
 
     // Start update article interval
-    this.updateArticle()
+    this.editArticleTitle()
   },
   beforeDestroy() {
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
   },
   methods: {
-    async updateArticle() {
+    async editArticleTitle() {
       try {
         // Do nothing if user don't edit article
         if (!this.isEdited) {
           this.setSaveStatus({ saveStatus: '' })
           return
         }
-
+        // Update title
+        await this.updateTitle({ title: document.querySelector('.area-title').value })
         // Init
         this.setIsSaving({ isSaving: true })
         this.setIsEdited({ isEdited: false })
         this.setSaveStatus({ saveStatus: '保存中' })
-
-        // Upload article
-        await this.uploadArticleTitle()
-
+        // Save Title
+        const { title, articleId } = this
+        const status = this.status
+        await this.putArticleTitle({ title, articleId, status })
         this.setSaveStatus({ saveStatus: '保存済み' })
         this.setIsSaving({ isSaving: false })
       } catch (error) {
+        this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
         console.error(error)
       } finally {
-        this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
+        this.updateArticleInterval = setTimeout(this.editArticleTitle, 2000)
       }
     },
     onInputTitle() {
@@ -126,9 +153,6 @@ export default {
         throw new Error('Update article failed.')
       }
     },
-    ...mapActions({
-      sendNotification: ADD_TOAST_MESSAGE
-    }),
     ...mapActions('article', [
       'updateTitle',
       'updateSuggestedThumbnails',
@@ -138,9 +162,13 @@ export default {
       'postNewArticle',
       'setIsEdited',
       'setSaveStatus',
-      'updateThumbnail'
+      'updateThumbnail',
+      'putArticleTitle'
     ]),
-    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession'])
+    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession']),
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    })
   },
   watch: {
     async title(value) {

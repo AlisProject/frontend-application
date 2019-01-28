@@ -291,8 +291,6 @@ export default {
       this.updateTitle({ title: $('.area-title').val() })
       // Only upload title
       const { title, articleId } = this
-      console.log(title)
-      console.log(articleId)
       this.putDraftArtilceTitle(title, articleId)
     },
     async uploadArticle() {
@@ -422,26 +420,6 @@ export default {
     },
     isImageContent(fileType) {
       return Boolean(fileType.match(/image.*/))
-    },
-    putArticleBody() {
-      if (status === 'draft') {
-        try {
-          const res = await axios.put(`/api/me/articles/${articleId}/drafts/body`, params, {
-            headers: {
-              'Authorization': token,
-              'Content-Type': 'application/json'
-            }
-          })
-          setTimeout(() => {
-            console.log('Saved', data)
-            console.log(res)
-            resolve(res)
-          }, 1000)
-        } catch (error) {
-          reject(error)
-        }
-      } else {
-      }
     },
     ...mapActions('article', [
       'updateTitle',

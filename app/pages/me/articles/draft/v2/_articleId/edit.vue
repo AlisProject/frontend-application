@@ -24,6 +24,7 @@ export default {
     try {
       await this.$store.dispatch('article/getEditDraftArticle', { articleId })
       // const { body } = this.$store.state.article
+      // this.body = body
       this.componentName = 'EditDraftArticleV2'
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       // const editorBody = this.$el.querySelector('.area-body')
