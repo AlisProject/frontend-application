@@ -54,25 +54,6 @@ export default {
     }
   },
   computed: {
-    functions() {
-      const {
-        getUserSession,
-        setSaveStatus,
-        setIsSaving,
-        setIsEdited,
-        updateSuggestedThumbnails,
-        updateThumbnail
-      } = this
-
-      return {
-        getUserSession,
-        setSaveStatus,
-        setIsSaving,
-        setIsEdited,
-        updateSuggestedThumbnails,
-        updateThumbnail
-      }
-    },
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal']),
     functions() {
@@ -164,6 +145,7 @@ export default {
       'setSaveStatus',
       'updateThumbnail',
       'putArticleTitle',
+      'updateBody',
       'putPublicArticleTitle'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession']),
