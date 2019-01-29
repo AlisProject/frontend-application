@@ -2,7 +2,7 @@
   <div class="create-article-container">
     <app-header />
     <edit-header-nav type="draft-article" />
-    <article-editor-v2 :title="decodedTitle" :status="status"/>
+    <article-editor-v2 :title="decodedTitle" :putArticleTitle="putArticleTitle" :putArticleBody="putArticleBody" />
   </div>
 </template>
 
@@ -32,10 +32,16 @@ export default {
   },
   methods: {
     ...mapActions('article', ['putDraftArticleTitle']),
-    async putArticle() {
+    async putArticleTitle() {
       const { title, articleId } = this
       const article = { title }
       await this.putDraftArticleTitle({ article, articleId })
+    },
+    async putArticleBody() {
+      if (!this.gotArticleData) return
+      const { body, articleId } = this
+      const article = { body }
+      await this.putDraftArticleBody({ article, articleId })
     }
   }
 }

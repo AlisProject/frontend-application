@@ -15,7 +15,6 @@
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
-        :status="status"
         :editorContent="editorContent"
       />
       <alis-editor-sp
@@ -23,7 +22,6 @@
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
-        :status="status"
         :editorContent="editorContent"
       />
     </no-ssr>
@@ -38,7 +36,13 @@ import { resizeTextarea } from '~/utils/article'
 export default {
   props: {
     title: String,
-    status: String, // drafts or public
+    updateArticleTitle: {
+      type: Function,
+      required: true
+    },
+    putArticleBody: {
+      type: Function
+    },
     editorContent: String
   },
   data() {
@@ -80,7 +84,8 @@ export default {
         updateSuggestedThumbnails,
         updateThumbnail,
         sendNotification,
-        updateBody
+        updateBody,
+        putArticleBody
       } = this
 
       return {
@@ -91,7 +96,8 @@ export default {
         updateSuggestedThumbnails,
         updateThumbnail,
         sendNotification,
-        updateBody
+        updateBody,
+        putArticleBody
       }
     }
   },
@@ -106,37 +112,32 @@ export default {
     this.isPc = !isIOS && !isAndroid
 
     // Start update article interval
-    this.editArticleTitle()
+    this.updateArticle()
   },
   beforeDestroy() {
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
   },
   methods: {
-    async editArticleTitle() {
+    async updateArticle() {
       try {
         // Do nothing if user don't edit article
         if (!this.isEdited) {
           this.setSaveStatus({ saveStatus: '' })
           return
         }
-        // Update title
-        await this.updateTitle({ title: document.querySelector('.area-title').value })
         // Init
         this.setIsSaving({ isSaving: true })
         this.setIsEdited({ isEdited: false })
         this.setSaveStatus({ saveStatus: '保存中' })
-        // Save Title
-        const { title, articleId } = this
-        const status = this.status
-        await this.putArticleTitle({ title, articleId, status })
+        // Upload article
+        await this.uploadArticleTitle()
         this.setSaveStatus({ saveStatus: '保存済み' })
         this.setIsSaving({ isSaving: false })
       } catch (error) {
-        this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
         console.error(error)
       } finally {
-        this.updateArticleInterval = setTimeout(this.editArticleTitle, 2000)
+        this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
       }
     },
     onInputTitle() {
@@ -145,9 +146,8 @@ export default {
     async uploadArticleTitle() {
       // Update title
       this.updateTitle({ title: document.querySelector('.area-title').value })
-
       try {
-        await this.putArticle()
+        await this.updateArticleTitle()
       } catch (error) {
         this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
         throw new Error('Update article failed.')
@@ -163,7 +163,8 @@ export default {
       'setIsEdited',
       'setSaveStatus',
       'updateThumbnail',
-      'putArticleTitle'
+      'putArticleTitle',
+      'putPublicArticleTitle'
     ]),
     ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession']),
     ...mapActions({
