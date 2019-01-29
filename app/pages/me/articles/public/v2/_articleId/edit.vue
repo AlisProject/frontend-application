@@ -23,17 +23,12 @@ export default {
     const { articleId } = this.$route.params
     try {
       await this.$store.dispatch('article/getEditPublicArticleDetail', { articleId })
-      // const { body } = this.$store.state.article
       this.componentName = 'EditPublicArticleV2'
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
-      // const editorBody = this.$el.querySelector('.area-body')
-      // editorBody.innerHTML = body
       // Update thumbnails
       const images = Array.from(this.$el.querySelectorAll('figure img'))
       const thumbnails = getThumbnails(images)
       this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
-      // editorBody.dataset.placeholder =
-      //   body === '' || body === '<p><br></p>' ? '本文を入力してください' : ''
       showEmbedTweet()
       preventDropImageOnOGPContent()
     } catch (error) {
