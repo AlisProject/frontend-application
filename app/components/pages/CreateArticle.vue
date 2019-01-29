@@ -22,11 +22,11 @@ export default {
     ...mapGetters('article', ['articleId', 'title', 'body'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticle']),
+    ...mapActions('article', ['putDraftArticleTitle']),
     async putArticle() {
-      const { title, body, articleId } = this
-      const article = { title, body }
-      await this.putDraftArticle({ article, articleId })
+      const { title, articleId } = this
+      const article = { title }
+      await this.putDraftArticleTitle({ article, articleId })
     }
   }
 }

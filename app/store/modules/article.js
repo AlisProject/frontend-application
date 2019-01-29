@@ -677,6 +677,18 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async putDraftArticleTitle({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, article)
+  },
+  async putPublicArticleTitle({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/title`, article)
+  },
+  async putDraftArticleBody({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, article)
+  },
+  async putPublicArticleBody({ commit }, { article, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/body`, article)
   }
 }
 
