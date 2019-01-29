@@ -26,14 +26,14 @@ export default {
     ...mapGetters('article', ['title', 'body', 'thumbnail'])
   },
   methods: {
-    ...mapActions('article', ['putPublicArticle', 'gotArticleData']),
+    ...mapActions('article', ['putPublicArticleTitle', 'gotArticleData']),
     async putArticle() {
       if (!this.gotArticleData) return
-      const { title, body, thumbnail } = this
+      const { title, thumbnail } = this
       const { articleId } = this.$route.params
-      const article = { title, body }
+      const article = { title }
       if (thumbnail !== '') article.eye_catch_url = thumbnail
-      await this.putPublicArticle({ article, articleId })
+      await this.putPublicArticleTitle({ article, articleId })
     }
   }
 }

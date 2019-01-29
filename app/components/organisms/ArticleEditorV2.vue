@@ -14,13 +14,13 @@
         v-if="isPc"
         :articleId="articleId"
         :clientId="clientId"
-        :getUserSession="getUserSession"
+        :functions="functions"
         :body="body" />
       <alis-editor-sp
         v-else
         :articleId="articleId"
         :clientId="clientId"
-        :getUserSession="getUserSession"
+        :functions="functions"
         :body="body" />
     </no-ssr>
   </div>
@@ -28,7 +28,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { getThumbnails, resizeTextarea } from '~/utils/article'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { resizeTextarea } from '~/utils/article'
 
 export default {
   props: {
@@ -47,6 +48,25 @@ export default {
     }
   },
   computed: {
+    functions() {
+      const {
+        getUserSession,
+        setSaveStatus,
+        setIsSaving,
+        setIsEdited,
+        updateSuggestedThumbnails,
+        updateThumbnail
+      } = this
+
+      return {
+        getUserSession,
+        setSaveStatus,
+        setIsSaving,
+        setIsEdited,
+        updateSuggestedThumbnails,
+        updateThumbnail
+      }
+    },
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
@@ -79,15 +99,8 @@ export default {
         this.setIsEdited({ isEdited: false })
         this.setSaveStatus({ saveStatus: '保存中' })
 
-        // Upload images
-        try {
-          await this.uploadImages()
-        } catch (error) {
-          console.error(error)
-        }
-
         // Upload article
-        await this.uploadArticle()
+        await this.uploadArticleTitle()
 
         this.setSaveStatus({ saveStatus: '保存済み' })
         this.setIsSaving({ isSaving: false })
@@ -100,12 +113,9 @@ export default {
     onInputTitle() {
       this.setIsEdited({ isEdited: true })
     },
-    async uploadArticle() {
+    async uploadArticleTitle() {
       // Update title
       this.updateTitle({ title: document.querySelector('.area-title').value })
-
-      const body = this.$el.querySelector('#editor').innerHTML
-      this.updateBody({ body })
 
       try {
         await this.putArticle()
@@ -114,48 +124,11 @@ export default {
         throw new Error('Update article failed.')
       }
     },
-    async uploadImages() {
-      const images = Array.from(this.$el.querySelectorAll('figure img'))
-      await Promise.all(
-        images.map(async (img) => {
-          const isBase64Image = img.src.includes('data:')
-          if (!isBase64Image) {
-            return
-          }
-          try {
-            const base64Image = img.src
-            const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-            const imageContentType = base64Image.substring(
-              base64Image.match(':').index + 1,
-              base64Image.match(';').index
-            )
-            const { image_url: imageUrl } = await this.postArticleImage({
-              articleId: this.articleId,
-              articleImage: base64Hash,
-              imageContentType
-            })
-            img.src = imageUrl
-          } catch (error) {
-            this.sendNotification({ text: '画像のアップロードに失敗しました', type: 'warning' })
-            throw new Error('Image upload failed.')
-          }
-        })
-      )
-      // Update thumbnails
-      const thumbnails = getThumbnails(images)
-      this.updateSuggestedThumbnails({ thumbnails })
-      if (!thumbnails.includes(this.thumbnail)) {
-        this.updateThumbnail({ thumbnail: '' })
-      }
-      // Prevent drag & drop on image
-      Array.from(this.$el.querySelectorAll('.medium-insert-images')).forEach((element) => {
-        if (element.dataset.preventedDragAndDrop === 'true') return
-        element.dataset.preventedDragAndDrop = true
-      })
-    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('article', [
       'updateTitle',
-      'updateBody',
       'updateSuggestedThumbnails',
       'postArticleImage',
       'setRestrictEditArticleModal',
