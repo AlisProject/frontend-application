@@ -56,7 +56,9 @@ export default {
       height: '40px',
       lineHeight: '1.5'
     })
-    this.isPc = window.innerWidth > 640
+    const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent)
+    const isAndroid = navigator.userAgent.includes('Android')
+    this.isPc = !isIOS && !isAndroid
 
     // Start update article interval
     this.updateArticle()
