@@ -15,13 +15,15 @@
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
-        :body="body" />
+        :editorContent="editorContent"
+      />
       <alis-editor-sp
         v-else
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
-        :body="body" />
+        :editorContent="editorContent"
+      />
     </no-ssr>
   </div>
 </template>
@@ -29,7 +31,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import { resizeTextarea } from '~/utils/article'
+import { resizeTextarea, getThumbnails } from '~/utils/article'
 
 if (process.client) {
   if (window.innerWidth <= 640) {
@@ -42,10 +44,14 @@ if (process.client) {
 export default {
   props: {
     title: String,
-    putArticle: {
+    updateArticleTitle: {
       type: Function,
       required: true
-    }
+    },
+    putArticleBody: {
+      type: Function
+    },
+    editorContent: String
   },
   data() {
     return {
@@ -62,8 +68,10 @@ export default {
         setSaveStatus,
         setIsSaving,
         setIsEdited,
-        updateSuggestedThumbnails,
-        updateThumbnail
+        sendNotification,
+        updateBody,
+        putArticleBody,
+        putThumbnail
       } = this
 
       return {
@@ -71,8 +79,10 @@ export default {
         setSaveStatus,
         setIsSaving,
         setIsEdited,
-        updateSuggestedThumbnails,
-        updateThumbnail
+        sendNotification,
+        updateBody,
+        putArticleBody,
+        putThumbnail
       }
     },
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
@@ -128,15 +138,21 @@ export default {
       this.updateTitle({ title: document.querySelector('.area-title').value })
 
       try {
-        await this.putArticle()
+        await this.updateArticleTitle()
       } catch (error) {
         this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
         throw new Error('Update article failed.')
       }
     },
-    ...mapActions({
-      sendNotification: ADD_TOAST_MESSAGE
-    }),
+    putThumbnail() {
+      const images = Array.from(this.$el.querySelectorAll('figure img'))
+      // Update thumbnails
+      const thumbnails = getThumbnails(images)
+      this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
+    },
     ...mapActions('article', [
       'updateTitle',
       'updateSuggestedThumbnails',
@@ -146,9 +162,15 @@ export default {
       'postNewArticle',
       'setIsEdited',
       'setSaveStatus',
-      'updateThumbnail'
+      'updateThumbnail',
+      'putArticleTitle',
+      'updateBody',
+      'putPublicArticleTitle'
     ]),
-    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession'])
+    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession']),
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    })
   },
   watch: {
     async title(value) {

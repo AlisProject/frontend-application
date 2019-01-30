@@ -2,7 +2,12 @@
   <div class="edit-article-container">
     <app-header />
     <edit-header-nav type="draft-article" />
-    <article-editor-v2 :title="decodedTitle" :putArticle="putArticle"/>
+    <article-editor-v2
+      :title="decodedTitle"
+      :updateArticleTitle="updateArticleTitle"
+      :putArticleBody="putDraftArticleBody"
+      :editorContent="body"
+    />
   </div>
 </template>
 
@@ -26,8 +31,8 @@ export default {
     ...mapGetters('article', ['title', 'body', 'articleId'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticleTitle', 'gotArticleData']),
-    async putArticle() {
+    ...mapActions('article', ['putDraftArticleTitle', 'gotArticleData', 'putDraftArticleBody']),
+    async updateArticleTitle() {
       if (!this.gotArticleData) return
       const { title, thumbnail, articleId } = this
       const article = { title }
