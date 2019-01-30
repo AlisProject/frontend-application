@@ -45,4 +45,11 @@ export default {
     "...         editor     ...       "
     "...         ...        ...       ";
 }
+
+@media screen and (max-width: 550px) {
+  .create-article-container {
+    grid-template-rows: 66px 40px min-content min-content min-content;
+    grid-template-columns: 10px 1fr 10px;
+  }
+}
 </style>

@@ -30,13 +30,16 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { resizeTextarea } from '~/utils/article'
+import { isIOS, isAndroid, isMobile } from '~/utils/device'
 
-if (process.client) {
-  if (window.innerWidth <= 640) {
-    require('~/assets/stylesheets/ckeditor-sp.scss')
-  } else {
-    require('~/assets/stylesheets/ckeditor-pc.scss')
+if (process.client && isMobile()) {
+  // if (process.client && window.innerWidth <= 640) {
+  require('~/assets/stylesheets/ckeditor-sp.scss')
+  if (isAndroid()) {
+    // require('~/assets/stylesheets/ckeditor-sp-android.scss')
   }
+} else {
+  require('~/assets/stylesheets/ckeditor-pc.scss')
 }
 
 export default {
@@ -78,24 +81,36 @@ export default {
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
-  mounted() {
+  async mounted() {
+    window.addEventListener('scroll', this.fixHeader)
+
     resizeTextarea({
       targetElement: this.$el.querySelector('.area-title'),
       height: '40px',
       lineHeight: '1.5'
     })
-    const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent)
-    const isAndroid = navigator.userAgent.includes('Android')
-    this.isPc = !isIOS && !isAndroid
+    this.isPc = !isMobile()
+    // this.isPc = window.innerWidth > 640
 
     // Start update article interval
     this.updateArticle()
+    if (isIOS()) {
+      this.fixToolbarPosition()
+    }
   },
   beforeDestroy() {
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
   },
   methods: {
+    async fixToolbarPosition() {
+      if (!document.querySelector('.ck-toolbar')) {
+        await this.$nextTick()
+        this.fixToolbarPosition()
+      } else {
+        // document.querySelector('.ck-toolbar').style.top = `-110px`
+      }
+    },
     async updateArticle() {
       try {
         // Do nothing if user don't edit article
@@ -148,7 +163,13 @@ export default {
       'setSaveStatus',
       'updateThumbnail'
     ]),
-    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession'])
+    ...mapActions('user', ['setRestrictEditArticleModal', 'getUserSession']),
+    fixHeader() {
+      if (isIOS()) {
+        document.querySelector('.area-app-header-container').style.top = `${window.pageYOffset}px`
+        document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset - 110}px`
+      }
+    }
   },
   watch: {
     async title(value) {
@@ -200,6 +221,7 @@ export default {
   grid-area: body;
   width: 100%;
   padding-bottom: 120px;
+
   &.medium-editor-dragover {
     background: #fff;
   }
@@ -208,10 +230,17 @@ export default {
 @media screen and (max-width: 640px) {
   .area-editor-container {
     grid-template-columns: 1fr;
+    /* grid-template-columns: 0 1fr 0; */
+    /* grid-gap: 10px; */
+    /* prettier-ignore */
+    /* grid-template-areas:
+      "... title ..."
+      "... body  ..."; */
   }
 
   .area-title {
     letter-spacing: 0.01em;
+    padding: 0 10px;
   }
 }
 </style>
