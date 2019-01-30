@@ -31,6 +31,14 @@ import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { resizeTextarea } from '~/utils/article'
 
+if (process.client) {
+  if (window.innerWidth <= 640) {
+    require('~/assets/stylesheets/ckeditor-sp.scss')
+  } else {
+    require('~/assets/stylesheets/ckeditor-pc.scss')
+  }
+}
+
 export default {
   props: {
     title: String,
