@@ -37,12 +37,6 @@ export default {
       const article = { title }
       if (thumbnail !== '') article.eye_catch_url = thumbnail
       await this.putDraftArticleTitle({ article, articleId })
-    },
-    async putArticleBody() {
-      if (!this.gotArticleData) return
-      const { body, articleId } = this
-      const article = { body }
-      await this.putDraftArticleBody({ article, articleId })
     }
   }
 }

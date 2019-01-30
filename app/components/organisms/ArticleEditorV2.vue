@@ -31,7 +31,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import { resizeTextarea } from '~/utils/article'
+import { resizeTextarea, getThumbnails } from '~/utils/article'
 
 export default {
   props: {
@@ -54,8 +54,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
-    ...mapGetters('user', ['showRestrictEditArticleModal']),
     functions() {
       const {
         getUserSession,
@@ -66,7 +64,8 @@ export default {
         updateThumbnail,
         sendNotification,
         updateBody,
-        putArticleBody
+        putArticleBody,
+        putThumbnail
       } = this
 
       return {
@@ -78,9 +77,12 @@ export default {
         updateThumbnail,
         sendNotification,
         updateBody,
-        putArticleBody
+        putArticleBody,
+        putThumbnail
       }
-    }
+    },
+    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
+    ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   mounted() {
     resizeTextarea({
@@ -107,12 +109,15 @@ export default {
           this.setSaveStatus({ saveStatus: '' })
           return
         }
+
         // Init
         this.setIsSaving({ isSaving: true })
         this.setIsEdited({ isEdited: false })
         this.setSaveStatus({ saveStatus: '保存中' })
+
         // Upload article
         await this.uploadArticleTitle()
+
         this.setSaveStatus({ saveStatus: '保存済み' })
         this.setIsSaving({ isSaving: false })
       } catch (error) {
@@ -127,11 +132,21 @@ export default {
     async uploadArticleTitle() {
       // Update title
       this.updateTitle({ title: document.querySelector('.area-title').value })
+
       try {
         await this.updateArticleTitle()
       } catch (error) {
         this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
         throw new Error('Update article failed.')
+      }
+    },
+    putThumbnail() {
+      const images = Array.from(this.$el.querySelectorAll('figure img'))
+      // Update thumbnails
+      const thumbnails = getThumbnails(images)
+      this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
       }
     },
     ...mapActions('article', [
