@@ -1,0 +1,7 @@
+@import './ckeditor.scss';
+
+.ck {
+  &.ck-toolbar {
+    filter: drop-shadow(0 3px 5px rgba(192, 192, 192, 0.5));
+  }
+}
