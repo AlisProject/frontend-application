@@ -23,6 +23,7 @@
         :clientId="clientId"
         :functions="functions"
         :editorContent="editorContent"
+        @editor-mounted="fixToolbarPosition"
       />
     </no-ssr>
   </div>
@@ -102,7 +103,6 @@ export default {
 
     // Start update article interval
     this.updateArticle()
-    if (isIOS()) await this.fixToolbarPosition()
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.fixHeader)
@@ -157,16 +157,10 @@ export default {
         this.updateThumbnail({ thumbnail: '' })
       }
     },
-    async fixToolbarPosition(recursiveCount = 0) {
-      const recursiveStopCount = 30
-      if (recursiveCount > recursiveStopCount) return
-      if (!document.querySelector('.ck-toolbar')) {
-        recursiveCount += 1
-        await this.$nextTick()
-        this.fixToolbarPosition(recursiveCount)
-      } else {
-        document.querySelector('.ck-toolbar').style.top = `-${editorToolbarTopOffsetHeight}px`
-      }
+    fixToolbarPosition() {
+      if (!isIOS()) return
+      if (!document.querySelector('.ck-toolbar')) return
+      document.querySelector('.ck-toolbar').style.top = `-${editorToolbarTopOffsetHeight}px`
     },
     fixHeader() {
       if (isIOS()) {
