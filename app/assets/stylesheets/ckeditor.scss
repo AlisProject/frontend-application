@@ -5,13 +5,17 @@
 }
 
 .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
-  border: none;
+  border: 1px solid transparent;
   box-shadow: none;
 }
 
 .ck {
   &.ck-toolbar {
     background: #fff;
+  }
+
+  &.ck-editor__editable_inline {
+    padding: 0;
   }
 
   &.ck-balloon-panel {

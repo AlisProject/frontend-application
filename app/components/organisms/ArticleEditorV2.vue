@@ -40,6 +40,7 @@ if (process.client && isMobile()) {
   if (isAndroid()) require('~/assets/stylesheets/ckeditor-sp-android.scss')
 } else {
   require('~/assets/stylesheets/ckeditor-pc.scss')
+  require('~/assets/stylesheets/ckeditor-view.scss')
 }
 
 const editorToolbarTopOffsetHeight = 120

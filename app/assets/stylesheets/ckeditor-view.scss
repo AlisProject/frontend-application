@@ -1,0 +1,74 @@
+.area-editor-container {
+  .ck-content {
+    * {
+      &::selection {
+        background-color: rgba(0, 134, 204, 0.2);
+      }
+    }
+
+    a {
+      color: #0086cc;
+    }
+
+    p {
+      color: #333;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      line-height: 1.8;
+      margin: 16px 0;
+      word-break: break-word;
+    }
+
+    h2 {
+      color: #333;
+      font-size: 20px;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+      margin: 24px 0 16px;
+      word-break: break-word;
+    }
+
+    h3 {
+      color: #333;
+      font-size: 16px;
+      letter-spacing: 0.03em;
+      line-height: 1.8;
+      margin: 16px 0;
+      word-break: break-word;
+    }
+
+    blockquote {
+      background: #f6f6f6;
+      color: #333;
+      font-size: 16px;
+      letter-spacing: 0.03em;
+      line-height: 1.8;
+      margin: 16px 0;
+      padding: 20px;
+      word-break: break-word;
+      border-left: none;
+      font-style: normal;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    figure {
+      figcaption {
+        color: #666;
+        display: block;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: normal;
+        letter-spacing: 0.03em;
+        line-height: 1.5;
+        margin: 8px 0;
+        outline: 0 solid transparent;
+        text-align: center;
+        word-break: break-all;
+      }
+    }
+  }
+}
