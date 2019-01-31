@@ -26,7 +26,7 @@ export default {
     const { Items: articles } = await this.$axios.$get('/me/articles/drafts', {
       params: { limit: 1 }
     })
-    const latestDraftArticleId = articles[0].article_id
+    const latestDraftArticleId = articles[0] && articles[0].article_id
     const latestDraftArticle = await this.$axios.$get(`/me/articles/${latestDraftArticleId}/drafts`)
     const isLatestDraftArticleEmpty =
       latestDraftArticle.title === null && latestDraftArticle.body === null
