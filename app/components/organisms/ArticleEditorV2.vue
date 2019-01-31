@@ -23,6 +23,7 @@
         :clientId="clientId"
         :functions="functions"
         :editorContent="editorContent"
+        @editor-mounted="fixToolbarPosition"
       />
     </no-ssr>
   </div>
@@ -32,14 +33,16 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { resizeTextarea, getThumbnails } from '~/utils/article'
+import { isIOS, isAndroid, isMobile } from '~/utils/device'
 
-if (process.client) {
-  if (window.innerWidth <= 640) {
-    require('~/assets/stylesheets/ckeditor-sp.scss')
-  } else {
-    require('~/assets/stylesheets/ckeditor-pc.scss')
-  }
+if (process.client && isMobile()) {
+  require('~/assets/stylesheets/ckeditor-sp.scss')
+  if (isAndroid()) require('~/assets/stylesheets/ckeditor-sp-android.scss')
+} else {
+  require('~/assets/stylesheets/ckeditor-pc.scss')
 }
+
+const editorToolbarTopOffsetHeight = 120
 
 export default {
   props: {
@@ -88,20 +91,21 @@ export default {
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
-  mounted() {
+  async mounted() {
+    window.addEventListener('scroll', this.fixHeader)
+
     resizeTextarea({
       targetElement: this.$el.querySelector('.area-title'),
       height: '40px',
       lineHeight: '1.5'
     })
-    const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent)
-    const isAndroid = navigator.userAgent.includes('Android')
-    this.isPc = !isIOS && !isAndroid
+    this.isPc = !isMobile()
 
     // Start update article interval
     this.updateArticle()
   },
   beforeDestroy() {
+    window.removeEventListener('scroll', this.fixHeader)
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
   },
@@ -151,6 +155,20 @@ export default {
       this.updateSuggestedThumbnails({ thumbnails })
       if (!thumbnails.includes(this.thumbnail)) {
         this.updateThumbnail({ thumbnail: '' })
+      }
+    },
+    fixToolbarPosition() {
+      if (!isIOS()) return
+      if (!document.querySelector('.ck-toolbar')) return
+      document.querySelector('.ck-toolbar').style.top = `-${editorToolbarTopOffsetHeight}px`
+    },
+    fixHeader() {
+      if (isIOS()) {
+        document.querySelector('.area-mobile-editor-header-container').style.top = `${
+          window.pageYOffset
+        }px`
+        document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
+          editorToolbarTopOffsetHeight}px`
       }
     },
     ...mapActions('article', [
