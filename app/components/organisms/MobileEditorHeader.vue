@@ -4,7 +4,7 @@
       <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
     </nuxt-link>
     <span class="save-status">{{ saveStatus }}</span>
-    <button class="post-article">
+    <button class="post-article" @click="showMobileEditorHeaderPostArticleModal">
       公開する
     </button>
     <sign-up-modal v-if="showSignUpModal"/>
@@ -18,6 +18,7 @@
     <user-report-modal v-if="userReportModal.isShow"/>
     <article-report-modal v-if="articleReportModal.isShow"/>
     <first-process-modal v-if="firstProcessModal.isShow"/>
+    <mobile-editor-header-post-article-modal v-if="mobileEditorHeaderPostArticleModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -36,6 +37,7 @@ import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerify
 import UserReportModal from '../organisms/UserReportModal'
 import ArticleReportModal from '../organisms/ArticleReportModal'
 import FirstProcessModal from '../organisms/FirstProcessModal'
+import MobileEditorHeaderPostArticleModal from '../organisms/MobileEditorHeaderPostArticleModal'
 import { isIOS, isAndroid } from '~/utils/device'
 
 export default {
@@ -51,7 +53,8 @@ export default {
     RequestPhoneNumberVerifyModal,
     UserReportModal,
     ArticleReportModal,
-    FirstProcessModal
+    FirstProcessModal,
+    MobileEditorHeaderPostArticleModal
   },
   data() {
     return {
@@ -76,7 +79,8 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'firstProcessModal'
+      'firstProcessModal',
+      'mobileEditorHeaderPostArticleModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal']),
     ...mapGetters('article', ['saveStatus'])
@@ -88,8 +92,12 @@ export default {
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },
+    showMobileEditorHeaderPostArticleModal() {
+      this.setMobileEditorHeaderPostArticleModal({ isShow: true })
+    },
     ...mapActions('presentation', ['setArticleListScrollHeight']),
-    ...mapActions('article', ['getPopularArticles', 'resetArticleData'])
+    ...mapActions('article', ['getPopularArticles', 'resetArticleData']),
+    ...mapActions('user', ['setMobileEditorHeaderPostArticleModal'])
   }
 }
 </script>
