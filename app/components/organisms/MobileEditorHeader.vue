@@ -3,12 +3,10 @@
     <nuxt-link to="/" class="logo-link" @click.native="resetData">
       <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
     </nuxt-link>
-    <no-ssr>
-      <div class="session-items">
-        <header-session-links v-if="!loggedIn"/>
-        <header-user-logged-in-items v-else />
-      </div>
-    </no-ssr>
+    <span class="save-status">{{ saveStatus }}</span>
+    <button class="post-article">
+      公開する
+    </button>
     <sign-up-modal v-if="showSignUpModal"/>
     <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
     <login-modal v-if="showLoginModal"/>
@@ -27,8 +25,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
-import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
 import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
@@ -44,8 +40,6 @@ import { isIOS, isAndroid } from '~/utils/device'
 
 export default {
   components: {
-    HeaderSessionLinks,
-    HeaderUserLoggedInItems,
     SignUpModal,
     SignUpAuthFlowModal,
     LoginModal,
@@ -84,7 +78,8 @@ export default {
       'requestPhoneNumberVerifyModal',
       'firstProcessModal'
     ]),
-    ...mapGetters('report', ['userReportModal', 'articleReportModal'])
+    ...mapGetters('report', ['userReportModal', 'articleReportModal']),
+    ...mapGetters('article', ['saveStatus'])
   },
   methods: {
     resetData() {
@@ -120,11 +115,6 @@ export default {
       width: 102px;
       height: auto;
     }
-  }
-
-  .session-items {
-    position: absolute;
-    right: 0;
   }
 }
 
@@ -165,9 +155,26 @@ export default {
     }
   }
 
-  .session-items {
+  .save-status {
+    color: #6e6e6e;
+    font-size: 12px;
     position: absolute;
-    right: 0;
+    right: 90px;
+    width: 48px;
+  }
+
+  .post-article {
+    background-color: #0086cc;
+    border-radius: 2px;
+    border: 0;
+    color: #fff;
+    font-size: 12px;
+    height: 24px;
+    outline: none;
+    padding: 0;
+    position: absolute;
+    right: 12px;
+    width: 60px;
   }
 }
 </style>
