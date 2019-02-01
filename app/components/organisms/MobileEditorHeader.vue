@@ -3,12 +3,10 @@
     <nuxt-link to="/" class="logo-link" @click.native="resetData">
       <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
     </nuxt-link>
-    <no-ssr>
-      <div class="session-items">
-        <header-session-links v-if="!loggedIn"/>
-        <header-user-logged-in-items v-else />
-      </div>
-    </no-ssr>
+    <span class="save-status">{{ saveStatus }}</span>
+    <button class="post-article" @click="showMobileEditorHeaderPostArticleModal">
+      公開する
+    </button>
     <sign-up-modal v-if="showSignUpModal"/>
     <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
     <login-modal v-if="showLoginModal"/>
@@ -20,6 +18,7 @@
     <user-report-modal v-if="userReportModal.isShow"/>
     <article-report-modal v-if="articleReportModal.isShow"/>
     <first-process-modal v-if="firstProcessModal.isShow"/>
+    <mobile-editor-header-post-article-modal v-if="mobileEditorHeaderPostArticleModal.isShow"/>
     <toast position="n"/>
   </header>
 </template>
@@ -27,8 +26,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
-import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
 import SignUpModal from '../organisms/SignUpModal'
 import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
 import LoginModal from '../organisms/LoginModal'
@@ -40,12 +37,11 @@ import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerify
 import UserReportModal from '../organisms/UserReportModal'
 import ArticleReportModal from '../organisms/ArticleReportModal'
 import FirstProcessModal from '../organisms/FirstProcessModal'
+import MobileEditorHeaderPostArticleModal from '../organisms/MobileEditorHeaderPostArticleModal'
 import { isIOS, isAndroid } from '~/utils/device'
 
 export default {
   components: {
-    HeaderSessionLinks,
-    HeaderUserLoggedInItems,
     SignUpModal,
     SignUpAuthFlowModal,
     LoginModal,
@@ -57,7 +53,8 @@ export default {
     RequestPhoneNumberVerifyModal,
     UserReportModal,
     ArticleReportModal,
-    FirstProcessModal
+    FirstProcessModal,
+    MobileEditorHeaderPostArticleModal
   },
   data() {
     return {
@@ -82,9 +79,11 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'firstProcessModal'
+      'firstProcessModal',
+      'mobileEditorHeaderPostArticleModal'
     ]),
-    ...mapGetters('report', ['userReportModal', 'articleReportModal'])
+    ...mapGetters('report', ['userReportModal', 'articleReportModal']),
+    ...mapGetters('article', ['saveStatus'])
   },
   methods: {
     resetData() {
@@ -93,8 +92,12 @@ export default {
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },
+    showMobileEditorHeaderPostArticleModal() {
+      this.setMobileEditorHeaderPostArticleModal({ isShow: true })
+    },
     ...mapActions('presentation', ['setArticleListScrollHeight']),
-    ...mapActions('article', ['getPopularArticles', 'resetArticleData'])
+    ...mapActions('article', ['getPopularArticles', 'resetArticleData']),
+    ...mapActions('user', ['setMobileEditorHeaderPostArticleModal'])
   }
 }
 </script>
@@ -120,11 +123,6 @@ export default {
       width: 102px;
       height: auto;
     }
-  }
-
-  .session-items {
-    position: absolute;
-    right: 0;
   }
 }
 
@@ -165,9 +163,26 @@ export default {
     }
   }
 
-  .session-items {
+  .save-status {
+    color: #6e6e6e;
+    font-size: 12px;
     position: absolute;
-    right: 0;
+    right: 90px;
+    width: 48px;
+  }
+
+  .post-article {
+    background-color: #0086cc;
+    border-radius: 2px;
+    border: 0;
+    color: #fff;
+    font-size: 12px;
+    height: 24px;
+    outline: none;
+    padding: 0;
+    position: absolute;
+    right: 12px;
+    width: 60px;
   }
 }
 </style>

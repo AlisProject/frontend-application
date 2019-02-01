@@ -66,7 +66,8 @@ export default {
       'currentUser',
       'firstProcessModal',
       'tipFlowModal',
-      'currentUserInfo'
+      'currentUserInfo',
+      'mobileEditorHeaderPostArticleModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -165,6 +166,9 @@ export default {
         this.setFirstProcessGotTokeneModal({ isShow: false })
         this.setFirstProcessCreatedArticleModal({ isShow: false })
       }
+      if (this.mobileEditorHeaderPostArticleModal.isShow) {
+        this.setMobileEditorHeaderPostArticleModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -194,7 +198,8 @@ export default {
       'setFirstProcessLikedArticleModal',
       'setFirstProcessTippedArticleModal',
       'setFirstProcessGotTokeneModal',
-      'setFirstProcessCreatedArticleModal'
+      'setFirstProcessCreatedArticleModal',
+      'setMobileEditorHeaderPostArticleModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
