@@ -160,6 +160,9 @@ const state = () => ({
     isTippedArticleModal: false,
     isGotTokenModal: false,
     isCreatedArticleModal: false
+  },
+  mobileEditorHeaderPostArticleModal: {
+    isShow: false
   }
 })
 
@@ -194,7 +197,8 @@ const getters = {
   tipTokenAmount: (state) => state.tipTokenAmount,
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
   distributedTokens: (state) => state.distributedTokens,
-  firstProcessModal: (state) => state.firstProcessModal
+  firstProcessModal: (state) => state.firstProcessModal,
+  mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal
 }
 
 const actions = {
@@ -809,6 +813,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setMobileEditorHeaderPostArticleModal({ commit }, { isShow }) {
+    commit(types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL, { isShow })
   }
 }
 
@@ -1095,6 +1102,9 @@ const mutations = {
   },
   [types.SET_USER_ARTICLES_CURRENT_USER_ID](state, { userId }) {
     state.userArticlesCurrentUserId = userId
+  },
+  [types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL](state, { isShow }) {
+    state.mobileEditorHeaderPostArticleModal.isShow = isShow
   }
 }
 

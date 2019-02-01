@@ -1,6 +1,7 @@
 <template>
   <div :class="`edit-article-container ${deviceType}`">
-    <mobile-editor-header />
+    <app-header v-if="deviceType === 'pc'" />
+    <mobile-editor-header v-else />
     <edit-header-nav type="public-article" />
     <article-editor-v2
       :title="decodedTitle"
@@ -13,6 +14,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import AppHeader from '../organisms/AppHeader'
 import MobileEditorHeader from '../organisms/MobileEditorHeader'
 import EditHeaderNav from '../molecules/EditHeaderNav'
 import ArticleEditorV2 from '../organisms/ArticleEditorV2'
@@ -21,6 +23,7 @@ import { isIOS, isAndroid } from '~/utils/device'
 
 export default {
   components: {
+    AppHeader,
     MobileEditorHeader,
     EditHeaderNav,
     ArticleEditorV2
@@ -67,11 +70,11 @@ export default {
     grid-template-columns: 1fr 640px 1fr;
     /* prettier-ignore */
     grid-template-areas:
-      "mobile-editor-header mobile-editor-header mobile-editor-header"
-      "nav                  nav                  nav                 "
-      "...                  ...                  ...                 "
-      "...                  editor               ...                 "
-      "...                  ...                  ...                 ";
+      "app-header app-header app-header"
+      "nav        nav        nav       "
+      "...        ...        ...       "
+      "...        editor     ...       "
+      "...        ...        ...       ";
   }
 }
 
