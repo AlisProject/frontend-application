@@ -1,41 +1,32 @@
 <template>
-    <a :href=src target="_blank" class="twitter-profile-card">
-      <div class="title">test</div>
-      <div class="description">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</div>
-      <div class="site">twitter.com</div>
-    </a>
+  <a href="hoge" target="_blank" class="iframely-embed-card">
+    <div class="title">{{title}}</div>
+    <div class="description">{{description}}</div>
+    <img class="thumbnail" :src=src>
+    <div class="site">{{site}}</div>
+  </a>
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
+      src: null,
       title: null,
       description: null,
-      profileName: null,
-      src: null
+      site: null
     }
   },
   async mounted() {
-    console.log('A1')
-    const twitterProfileName = this.$route.params.userName
-    console.log('A2')
-    this.src = `https://twitter.com/${twitterProfileName}`
-    console.log('A3')
-    this.profileName = twitterProfileName
-    console.log(twitterProfileName)
-    console.log('A4')
-    const response = await axios.get(
-      `https://iframe.ly/api/oembed?api_key=${process.env.IFRAMELY_API_KEY}&url=${encodeURIComponent(`twitter.com/${twitterProfileName}`)}&omit_script=1&omit_css=1`
+    const response = await this.$axios.$get(
+      `https://iframe.ly/api/iframely?api_key=${process.env.IFRAMELY_API_KEY}&url=${encodeURIComponent(this.$route.query.url)}&omit_script=1&omit_css=1`
     )
     console.log(response)
-    console.log('A5')
-    this.title = await response.data.title
-    console.log('A6')
-    console.log(this.title)
-    this.description = await response.data.description
-    console.log('A7')
+    this.title = response.meta.title
+    this.description = response.meta.description
+    this.site = response.url.split('/')[2]
+    const links = response.links
+    this.src = (links.thumbnail && links.thumbnail[0].href) || (links.icon && links.icon[0].href)
   }
 }
 </script>
