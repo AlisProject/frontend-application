@@ -443,12 +443,6 @@ export default {
   }
 }
 
-@media screen and (max-width: 640px) {
-  .area-post-article {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 550px) {
   .nav-link {
     font-size: 12px;

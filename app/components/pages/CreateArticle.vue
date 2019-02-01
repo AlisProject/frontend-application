@@ -76,16 +76,18 @@ export default {
   }
 }
 
-.create-article-container.ios,
-.create-article-container.android {
-  grid-template-rows: 66px 40px min-content min-content min-content;
-  grid-template-columns: 10px 1fr 10px;
-  /* prettier-ignore */
-  grid-template-areas:
+@media screen and (max-width: 640px) {
+  .create-article-container.ios,
+  .create-article-container.android {
+    grid-template-rows: 66px 40px min-content min-content min-content;
+    grid-template-columns: 10px 1fr 10px;
+    /* prettier-ignore */
+    grid-template-areas:
     "mobile-editor-header mobile-editor-header mobile-editor-header"
     "nav                  nav                  nav                 "
     "...                  ...                  ...                 "
     "editor               editor               editor              "
     "...                  ...                  ...                 ";
+  }
 }
 </style>

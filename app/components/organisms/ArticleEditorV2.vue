@@ -42,7 +42,7 @@ if (process.client && isMobile()) {
   require('~/assets/stylesheets/ckeditor-pc.scss')
 }
 
-const editorToolbarTopOffsetHeight = 120
+const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 120 : 240
 
 export default {
   props: {
@@ -252,6 +252,7 @@ export default {
 
   .area-title {
     letter-spacing: 0.01em;
+    padding: 2px 12px;
   }
 }
 </style>
