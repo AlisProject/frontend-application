@@ -1,6 +1,8 @@
 .ck {
-  &.ck-toolbar {
-    position: fixed;
-    top: 56px;
+  &.ck-sticky-panel {
+    .ck.ck-toolbar {
+      position: fixed;
+      top: 56px;
+    }
   }
 }
