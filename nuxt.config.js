@@ -111,7 +111,8 @@ module.exports = {
   css: [
     '~assets/stylesheets/medium-editor.scss',
     '~assets/stylesheets/vuex-toast.scss',
-    '@alisproject/alis-editor/dist/AlisEditor.css'
+    '@alisproject/alis-editor/dist/AlisEditor.css',
+    '~/assets/stylesheets/ckeditor-view.scss'
   ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,

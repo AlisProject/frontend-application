@@ -1,3 +1,4 @@
+.v2-content,
 .area-editor-container {
   .ck-content {
     * {
@@ -45,7 +46,7 @@
       letter-spacing: 0.03em;
       line-height: 1.8;
       margin: 16px 0;
-      padding: 20px;
+      padding: 4px 20px;
       word-break: break-word;
       border-left: none;
       font-style: normal;
@@ -55,8 +56,8 @@
       max-width: 100%;
     }
 
-    figure {
-      figcaption {
+    .image {
+      > figcaption {
         color: #666;
         display: block;
         font-size: 12px;
@@ -68,6 +69,9 @@
         outline: 0 solid transparent;
         text-align: center;
         word-break: break-all;
+        background-color: initial;
+        padding: 0;
+        outline-offset: 0;
       }
     }
   }
