@@ -42,7 +42,7 @@ if (process.client && isMobile()) {
   require('~/assets/stylesheets/ckeditor-pc.scss')
 }
 
-const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 118 : 240
+const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 118 : 236
 
 export default {
   props: {
