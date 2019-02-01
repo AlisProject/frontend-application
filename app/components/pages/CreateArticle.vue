@@ -62,9 +62,9 @@ export default {
 .pc,
 .ios,
 .android {
-  .create-article-container {
+  &.create-article-container {
     display: grid;
-    grid-template-rows: 100px 40px 50px 650px 75px;
+    grid-template-rows: 100px 74px 50px 650px 75px;
     grid-template-columns: 1fr 640px 1fr;
     /* prettier-ignore */
     grid-template-areas:
