@@ -32,7 +32,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import { resizeTextarea, getThumbnails } from '~/utils/article'
+import { resizeTextarea, getThumbnails, preventDragAndDrop } from '~/utils/article'
 import { isIOS, isAndroid, isMobile } from '~/utils/device'
 
 if (process.client && isMobile()) {
@@ -100,6 +100,7 @@ export default {
       lineHeight: '1.5'
     })
     this.isPc = !isMobile()
+    preventDragAndDrop(window)
 
     // Start update article interval
     this.updateArticle()
