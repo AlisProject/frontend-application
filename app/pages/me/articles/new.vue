@@ -54,6 +54,17 @@ export default {
       this.componentName = 'EditDraftArticleV2'
     }
   },
-  head: { ...head, title: '新規記事' }
+  head: {
+    ...head,
+    title: '新規記事',
+    meta: [
+      {
+        hid: 'viewport',
+        name: 'viewport',
+        content:
+          'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+      }
+    ]
+  }
 }
 </script>

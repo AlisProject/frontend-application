@@ -41,6 +41,16 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     })
   },
-  head: { title: '記事編集' }
+  head: {
+    title: '記事編集',
+    meta: [
+      {
+        hid: 'viewport',
+        name: 'viewport',
+        content:
+          'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'
+      }
+    ]
+  }
 }
 </script>
