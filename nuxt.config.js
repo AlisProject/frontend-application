@@ -13,7 +13,7 @@ module.exports = {
     titleTemplate: '%s | ALIS',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'apple-mobile-web-app-title', content: 'ALIS' },
       {
         hid: 'description',
