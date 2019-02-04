@@ -1,7 +1,7 @@
 <template>
   <div class="article-container">
     <app-header />
-    <div class="area-article">
+    <div class="area-article v1-content">
       <no-ssr>
         <article-header :article="article" :topic="topic" :isCurrentUser="isCurrentUser" />
       </no-ssr>

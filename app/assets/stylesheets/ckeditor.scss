@@ -5,7 +5,7 @@
 }
 
 .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
-  border: none;
+  border: 1px solid transparent;
   box-shadow: none;
 }
 
@@ -49,7 +49,32 @@
       display: none;
     }
   }
+
   &.ck-tooltip {
     display: none;
+  }
+
+  &.ck-input.ck-input-text {
+    border: none;
+  }
+
+  &.ck-link-actions {
+    .ck-button.ck-link-actions__preview {
+      .ck-button__label {
+        color: #0086cc;
+      }
+    }
+  }
+
+  .ck-link_selected {
+    background: none;
+  }
+}
+
+.area-editor-container {
+  .ck-content {
+    .image {
+      margin: 24px 3px;
+    }
   }
 }

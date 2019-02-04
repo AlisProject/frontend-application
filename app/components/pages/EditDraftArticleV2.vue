@@ -77,16 +77,18 @@ export default {
   }
 }
 
-.edit-article-container.ios,
-.edit-article-container.android {
-  grid-template-rows: 66px 40px min-content min-content min-content;
-  grid-template-columns: 10px 1fr 10px;
-  /* prettier-ignore */
-  grid-template-areas:
+@media screen and (max-width: 640px) {
+  .edit-article-container.ios,
+  .edit-article-container.android {
+    grid-template-rows: 66px 40px min-content min-content min-content;
+    grid-template-columns: 10px 1fr 10px;
+    /* prettier-ignore */
+    grid-template-areas:
     "mobile-editor-header mobile-editor-header mobile-editor-header"
     "nav                  nav                  nav                 "
     "...                  ...                  ...                 "
     "editor               editor               editor              "
     "...                  ...                  ...                 ";
+  }
 }
 </style>

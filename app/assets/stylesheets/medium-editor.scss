@@ -1,4 +1,4 @@
-.area-content,
+.v1-content,
 .medium-editor-element {
   * {
     &::selection {
@@ -363,7 +363,7 @@
 }
 
 @media screen and (max-width: 640px) {
-  .area-content,
+  .v1-content,
   .medium-editor-element {
     h2 {
       font-size: 20px;
