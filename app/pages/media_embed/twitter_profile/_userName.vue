@@ -1,9 +1,9 @@
 <template>
-    <a :href=src target="_blank" class="twitter-profile-card">
-      <div class="title">test</div>
-      <div class="description">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</div>
-      <div class="site">twitter.com</div>
-    </a>
+  <a :href=src target="_blank" class="twitter-profile-card">
+    <div class="title">{{title}}</div>
+    <div class="description">{{description}}</div>
+    <div class="site">twitter.com</div>
+  </a>
 </template>
 
 <script>

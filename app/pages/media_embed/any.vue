@@ -2,7 +2,7 @@
   <a href="hoge" target="_blank" class="iframely-embed-card">
     <div class="title">{{title}}</div>
     <div class="description">{{description}}</div>
-    <img class="thumbnail" :src=src>
+    <img class="thumbnail" :src=src />
     <div class="site">{{site}}</div>
   </a>
 </template>
