@@ -111,7 +111,8 @@ export default {
       const articleId = this.article.article_id
       try {
         await this.unpublishPublicArticle({ articleId })
-        this.$router.push(`/users/${this.article.user_id}`)
+        // 下書きに戻した後に下書き記事ページの記事情報を更新するために location.href を使う
+        location.href = `/users/${this.article.user_id}/drafts`
         this.sendNotification({ text: '記事を下書きに戻しました' })
       } catch (e) {
         this.sendNotification({ text: '記事を下書きに戻せませんでした', type: 'warning' })
