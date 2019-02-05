@@ -12,6 +12,7 @@
     <no-ssr>
       <alis-editor-pc
         v-if="isPc"
+        class="area-body"
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
@@ -19,6 +20,7 @@
       />
       <alis-editor-sp
         v-else
+        class="area-body"
         :articleId="articleId"
         :clientId="clientId"
         :functions="functions"
@@ -254,6 +256,10 @@ export default {
   .area-title {
     letter-spacing: 0.01em;
     padding: 2px 12px;
+  }
+
+  .area-body {
+    padding-bottom: 0;
   }
 }
 </style>
