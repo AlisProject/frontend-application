@@ -847,7 +847,7 @@ const mutations = {
   },
   [types.SET_ARTICLE_TAGS](state, { tags = [] }) {
     // vue-tags-input の形式に適するようにタグを整形
-    const formattedTags = tags.map((tag) => {
+    const formattedTags = (tags || []).map((tag) => {
       return {
         text: tag,
         tiClasses: ['valid']
