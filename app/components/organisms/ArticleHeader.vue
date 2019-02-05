@@ -5,7 +5,10 @@
       <span class="article-status">(公開中)</span>
       <div class="article-button" @click="toggleArticlePopup">
         <div class="article-popup" v-show="isArticlePopupShown">
-          <span class="article-popup-content unpblish-button" @click="unpublish">
+          <span
+            class="article-popup-content unpublish-button"
+            :class="{ 'show-unpublish-button': isV2Article }"
+            @click="unpublish">
             記事を下書きに戻す
           </span>
           <a
@@ -21,6 +24,7 @@
       </div>
       <nuxt-link
         class="edit-article"
+        :class="{ 'show-edit-article': isV2Article }"
         :to="`/me/articles/public/v2/${article.article_id}/edit`"
         v-if="isV2Article">
         編集する
@@ -257,14 +261,22 @@ export default {
       .article-popup {
         left: -190px;
 
-        .article-popup-content.unpblish-button {
+        .article-popup-content.unpublish-button {
           display: none;
+
+          &.show-unpublish-button {
+            display: block;
+          }
         }
       }
     }
 
     .edit-article {
       display: none;
+
+      &.show-edit-article {
+        display: block;
+      }
     }
   }
 }
