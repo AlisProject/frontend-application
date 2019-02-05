@@ -168,7 +168,7 @@ export default {
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
         return
       }
-      location.href = '/me/articles/new'
+      this.$router.push('/me/articles/new')
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
