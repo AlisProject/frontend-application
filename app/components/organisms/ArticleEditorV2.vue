@@ -95,7 +95,11 @@ export default {
   },
   async mounted() {
     window.addEventListener('scroll', this.fixHeader)
-
+    await this.$nextTick()
+    const areaBodyElement = document.querySelector('.area-body')
+    areaBodyElement.addEventListener('dragover', this.handleDragover)
+    areaBodyElement.addEventListener('dragleave', this.handleDragleaveAndDrop)
+    areaBodyElement.addEventListener('drop', this.handleDragleaveAndDrop)
     resizeTextarea({
       targetElement: this.$el.querySelector('.area-title'),
       height: '40px',
@@ -109,6 +113,10 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.fixHeader)
+    const areaBodyElement = document.querySelector('.area-body')
+    areaBodyElement.removeEventListener('dragover', this.handleDragover)
+    areaBodyElement.removeEventListener('dragleave', this.handleDragleaveAndDrop)
+    areaBodyElement.removeEventListener('drop', this.handleDragleaveAndDrop)
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
   },
@@ -172,6 +180,16 @@ export default {
         }px`
         document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
           editorToolbarTopOffsetHeight}px`
+      }
+    },
+    handleDragover(e) {
+      if (e.target.nodeName === 'P') {
+        e.target.classList.add('alis-editor-dragover')
+      }
+    },
+    handleDragleaveAndDrop(e) {
+      if (e.target.nodeName === 'P') {
+        e.target.classList.remove('alis-editor-dragover')
       }
     },
     ...mapActions('article', [
