@@ -49,10 +49,9 @@ export default {
     ...mapActions('article', ['putDraftArticleTitle', 'gotArticleData', 'putDraftArticleBody']),
     async updateArticleTitle() {
       if (!this.gotArticleData) return
-      const { title, thumbnail, articleId } = this
-      const article = { title }
-      if (thumbnail !== '') article.eye_catch_url = thumbnail
-      await this.putDraftArticleTitle({ article, articleId })
+      const { title, articleId } = this
+      const articleTitle = { title }
+      await this.putDraftArticleTitle({ articleTitle, articleId })
     }
   }
 }

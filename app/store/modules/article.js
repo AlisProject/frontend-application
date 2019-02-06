@@ -678,17 +678,17 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async putDraftArticleTitle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, article)
+  async putDraftArticleTitle({ commit }, { articleTitle, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, articleTitle)
   },
-  async putPublicArticleTitle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/title`, article)
+  async putPublicArticleTitle({ commit }, { articleTitle, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/title`, articleTitle)
   },
-  async putDraftArticleBody({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, article)
+  async putDraftArticleBody({ commit }, { articleBody, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, articleBody)
   },
-  async putPublicArticleBody({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/body`, article)
+  async putPublicArticleBody({ commit }, { articleBody, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/body`, articleBody)
   }
 }
 
