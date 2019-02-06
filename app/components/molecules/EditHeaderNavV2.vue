@@ -10,18 +10,18 @@
         class="area-articles-link"
         v-if="type === 'draft-article'">下書き</nuxt-link>
       <span class="area-save-status">{{ saveStatus }}</span>
-      <edit-header-nav-post-article />
+      <edit-header-nav-post-article-v2 />
     </div>
   </nav>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
+import EditHeaderNavPostArticleV2 from '../molecules/EditHeaderNavPostArticleV2'
 
 export default {
   components: {
-    EditHeaderNavPostArticle
+    EditHeaderNavPostArticleV2
   },
   props: {
     type: {
