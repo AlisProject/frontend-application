@@ -24,8 +24,8 @@ export default {
       `https://iframe.ly/api/oembed?api_key=${process.env.IFRAMELY_API_KEY}` +
       `&url=${encodeURIComponent(`twitter.com/${twitterProfileName}`)}&omit_script=1&omit_css=1`
     )
-    this.title = await response.title
-    this.description = await response.description
+    this.title = response.title
+    this.description = response.description
   }
 }
 </script>
