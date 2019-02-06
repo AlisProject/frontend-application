@@ -90,11 +90,12 @@ export default {
           return
         }
 
-        const article = { title, body, overview }
+        const articleTitle = { title }
+        const articleBody = { body }
 
-        if (this.thumbnail !== '') {
-          article.eye_catch_url = this.thumbnail
-        }
+        // if (this.thumbnail !== '') {
+        //   article.eye_catch_url = this.thumbnail
+        // }
 
         // タグのデータ形式をAPIに適するように整形
         const tags = this.tags.map((tag) => tag.text)
@@ -103,10 +104,12 @@ export default {
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
         ) {
-          await this.putDraftArticle({ article, articleId })
+          await this.putDraftArticleTitle({ articleTitle, articleId })
+          await this.putDraftArticleBody({ articleBody, articleId })
           await this.publishDraftArticle({ articleId, topic: topicType, tags })
         } else if (location.href.includes('/me/articles/public')) {
-          await this.putPublicArticle({ article, articleId })
+          await this.putPublicArticleTitle({ articleTitle, articleId })
+          await this.putPublicArticleBody({ articleBody, articleId })
           await this.republishPublicArticle({ articleId, topic: topicType, tags })
         }
         this.setMobileEditorHeaderPostArticleModal({ isShow: false })
@@ -143,7 +146,10 @@ export default {
       'publishDraftArticle',
       'republishPublicArticle',
       'putDraftArticle',
-      'putPublicArticle',
+      'putDraftArticleTitle',
+      'putDraftArticleBody',
+      'putPublicArticleTitle',
+      'putPublicArticleBody',
       'updateSuggestedThumbnails',
       'postArticleImage',
       'updateBody',
