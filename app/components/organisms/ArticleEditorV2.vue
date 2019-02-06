@@ -17,6 +17,8 @@
         :clientId="clientId"
         :functions="functions"
         :editorContent="editorContent"
+        :iframeKey="iframeKey"
+        :domain="domain"
       />
       <alis-editor-sp
         v-else
@@ -25,6 +27,8 @@
         :clientId="clientId"
         :functions="functions"
         :editorContent="editorContent"
+        :iframeKey="iframeKey"
+        :domain="domain"
         @editor-mounted="fixToolbarPosition"
       />
     </no-ssr>
@@ -63,7 +67,9 @@ export default {
       isPc: true,
       updateArticleInterval: null,
       isInitTitleHeight: false,
-      clientId: process.env.CLIENT_ID
+      clientId: process.env.CLIENT_ID,
+      iframeKey: process.env.IFRAMELY_API_KEY,
+      domain: process.env.DOMAIN
     }
   },
   computed: {

@@ -19,9 +19,9 @@ export default {
   },
   async mounted() {
     const response = await this.$axios.$get(
-      `https://iframe.ly/api/iframely?api_key=${process.env.IFRAMELY_API_KEY}&url=${encodeURIComponent(this.$route.query.url)}&omit_script=1&omit_css=1`
+      `https://iframe.ly/api/iframely?api_key=${process.env.IFRAMELY_API_KEY}` +
+      `&url=${encodeURIComponent(this.$route.query.url)}&omit_script=1&omit_css=1`
     )
-    console.log(response)
     this.title = response.meta.title
     this.description = response.meta.description
     this.site = response.url.split('/')[2]
@@ -32,40 +32,67 @@ export default {
 </script>
 
 <style lang="scss">
-.twitter-profile-card {
+.iframely-embed-card {
   border-radius: 4px;
-  border: 1px solid #e2e8ed;
+  border: 1px solid #e3e3e3;
   box-sizing: border-box;
   cursor: pointer;
   display: block;
+  height: 140px;
   padding: 20px;
+  position: relative;
   text-decoration: none;
   width: 100%;
-  height: 120px;
-  position: relative;
 
   .title {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
     color: #030303;
+    display: -webkit-box;
     font-size: 16px;
     font-weight: 500;
+    height: 22px;
     letter-spacing: 0.8px;
-    margin-bottom: 8px;
+    line-height: 1.5;
+    margin: 0 120px 10px 0;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    word-break: break-word;
+
+    &.without-space {
+      margin: 0 0 10px 0;
+    }
   }
 
   .description {
-    color: #6e6e6e;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.7px;
-    line-height: 1.5;
-    margin-bottom: 8px;
-    overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
-    text-align: left;
+    color: #6e6e6e;
     display: -webkit-box;
+    font-size: 14px;
+    font-weight: 500;
+    height: 42px;
+    letter-spacing: 0.7px;
+    line-height: 1.6;
+    margin: 0 120px 10px 0;
+    overflow: hidden;
+    text-align: left;
     text-overflow: ellipsis;
     word-break: break-word;
+
+    &.without-space {
+      margin: 0 0 10px 0;
+    }
+  }
+
+  .thumbnail {
+    height: 100px;
+    object-fit: cover;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 100px;
   }
 
   .site {
