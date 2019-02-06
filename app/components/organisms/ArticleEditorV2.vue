@@ -198,7 +198,6 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'postNewArticle',
       'setIsEdited',
       'setSaveStatus',
       'updateThumbnail',
