@@ -2,7 +2,7 @@
   <div :class="`edit-article-container ${deviceType}`">
     <app-header v-if="deviceType === 'pc'" />
     <mobile-editor-header v-else />
-    <edit-header-nav type="draft-article" />
+    <edit-header-nav-v2 type="draft-article" />
     <article-editor-v2
       :title="decodedTitle"
       :updateArticleTitle="updateArticleTitle"
@@ -16,7 +16,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import MobileEditorHeader from '../organisms/MobileEditorHeader'
-import EditHeaderNav from '../molecules/EditHeaderNav'
+import EditHeaderNavV2 from '../molecules/EditHeaderNavV2'
 import ArticleEditorV2 from '../organisms/ArticleEditorV2'
 import { htmlDecode } from '~/utils/article'
 import { isIOS, isAndroid } from '~/utils/device'
@@ -25,7 +25,7 @@ export default {
   components: {
     AppHeader,
     MobileEditorHeader,
-    EditHeaderNav,
+    EditHeaderNavV2,
     ArticleEditorV2
   },
   data() {
