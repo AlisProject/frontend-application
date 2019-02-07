@@ -2,7 +2,7 @@
   <div :class="`edit-article-container ${deviceType}`">
     <app-header v-if="deviceType === 'pc'" />
     <mobile-editor-header v-else />
-    <edit-header-nav type="public-article" />
+    <edit-header-nav-v2 type="public-article" />
     <article-editor-v2
       :title="decodedTitle"
       :updateArticleTitle="updateArticleTitle"
@@ -16,7 +16,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import MobileEditorHeader from '../organisms/MobileEditorHeader'
-import EditHeaderNav from '../molecules/EditHeaderNav'
+import EditHeaderNavV2 from '../molecules/EditHeaderNavV2'
 import ArticleEditorV2 from '../organisms/ArticleEditorV2'
 import { htmlDecode } from '~/utils/article'
 import { isIOS, isAndroid } from '~/utils/device'
@@ -25,7 +25,7 @@ export default {
   components: {
     AppHeader,
     MobileEditorHeader,
-    EditHeaderNav,
+    EditHeaderNavV2,
     ArticleEditorV2
   },
   data() {
@@ -44,17 +44,16 @@ export default {
     decodedTitle() {
       return htmlDecode(this.title)
     },
-    ...mapGetters('article', ['title', 'body', 'thumbnail'])
+    ...mapGetters('article', ['title', 'body'])
   },
   methods: {
     ...mapActions('article', ['putPublicArticleTitle', 'gotArticleData', 'putPublicArticleBody']),
     async updateArticleTitle() {
       if (!this.gotArticleData) return
-      const { title, thumbnail } = this
+      const { title } = this
       const { articleId } = this.$route.params
-      const article = { title }
-      if (thumbnail !== '') article.eye_catch_url = thumbnail
-      await this.putPublicArticleTitle({ article, articleId })
+      const articleTitle = { title }
+      await this.putPublicArticleTitle({ articleTitle, articleId })
     }
   }
 }
