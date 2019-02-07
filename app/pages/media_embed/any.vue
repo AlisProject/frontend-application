@@ -20,7 +20,7 @@ export default {
     }
   },
   async mounted() {
-    this.href = encodeURIComponent(this.$route.query.url)
+    this.href = encodeURI(this.$route.query.url)
     const response = await this.$axios.$get(
       `https://iframe.ly/api/iframely?api_key=${
         process.env.IFRAMELY_API_KEY
