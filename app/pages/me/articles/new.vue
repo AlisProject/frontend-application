@@ -34,8 +34,8 @@ export default {
     }
     const latestDraftArticleId = articles[0].article_id
     const latestDraftArticle = await this.$axios.$get(`/me/articles/${latestDraftArticleId}/drafts`)
-    const isLatestDraftArticleEmpty =
-      latestDraftArticle.title === null && latestDraftArticle.body === null
+    const { title = null, body = null } = latestDraftArticle
+    const isLatestDraftArticleEmpty = title === null && body === '<p>&nbsp;</p>'
     if (isLatestDraftArticleEmpty && isV2(latestDraftArticle)) {
       await this.useLatestDraftArticle(latestDraftArticleId)
     } else {
