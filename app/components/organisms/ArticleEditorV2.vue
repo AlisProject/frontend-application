@@ -17,7 +17,7 @@
         :clientId="clientId"
         :functions="functions"
         :editorContent="editorContent"
-        :iframeKey="iframeKey"
+        :iframelyApiKey="iframelyApiKey"
         :domain="domain"
       />
       <alis-editor-sp
@@ -27,7 +27,7 @@
         :clientId="clientId"
         :functions="functions"
         :editorContent="editorContent"
-        :iframeKey="iframeKey"
+        :iframelyApiKey="iframelyApiKey"
         :domain="domain"
         @editor-mounted="fixToolbarPosition"
       />
