@@ -18,7 +18,7 @@ export default {
   },
   async mounted() {
     const twitterProfileName = this.$route.params.userName
-    this.href = `https://twitter.com/${twitterProfileName}`
+    this.href = encodeURIComponent(`https://twitter.com/${twitterProfileName}`)
     this.profileName = twitterProfileName
     const response = await this.$axios.$get(
       `https://iframe.ly/api/oembed?api_key=${
