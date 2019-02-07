@@ -69,6 +69,15 @@
   .ck-link_selected {
     background: none;
   }
+
+  &.ck-editor__is-empty:not(.ck-focused):before {
+    color: #898989;
+    content: '本文を入力してください';
+    cursor: text;
+    display: block;
+    margin: 16px 0;
+    position: absolute;
+  }
 }
 
 .area-editor-container {
