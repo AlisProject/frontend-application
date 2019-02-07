@@ -68,7 +68,7 @@ export default {
       updateArticleInterval: null,
       isInitTitleHeight: false,
       clientId: process.env.CLIENT_ID,
-      iframeKey: process.env.IFRAMELY_API_KEY,
+      iframelyApiKey: process.env.IFRAMELY_API_KEY,
       domain: process.env.DOMAIN
     }
   },
