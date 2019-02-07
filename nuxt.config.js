@@ -1,3 +1,5 @@
+const axiosRetry = require('axios-retry')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -82,7 +84,11 @@ module.exports = {
   ],
   axios: {
     baseURL: process.env.BASE_URL,
-    proxyHeaders: false
+    proxyHeaders: false,
+    retry: {
+      retries: 3,
+      retryDelay: axiosRetry.exponentialDelay
+    }
   },
   srcDir: 'app',
   router: {
