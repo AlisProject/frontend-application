@@ -44,8 +44,7 @@ export default {
   },
   methods: {
     async createNewArticle() {
-      const article = { title: '', body: '' }
-      await this.$store.dispatch('article/postNewArticle', { article })
+      await this.$store.dispatch('article/postNewArticleId')
       this.componentName = 'CreateArticle'
     },
     async useLatestDraftArticle(articleId) {

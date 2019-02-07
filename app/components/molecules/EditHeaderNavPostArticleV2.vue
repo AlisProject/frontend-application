@@ -111,11 +111,6 @@ export default {
 
         const articleTitle = { title }
         const articleBody = { body }
-
-        // if (this.thumbnail !== '') {
-        //   article.eye_catch_url = this.thumbnail
-        // }
-
         // タグのデータ形式をAPIに適するように整形
         const tags = this.tags.map((tag) => tag.text)
 
@@ -125,11 +120,21 @@ export default {
         ) {
           await this.putDraftArticleTitle({ articleTitle, articleId })
           await this.putDraftArticleBody({ articleBody, articleId })
-          await this.publishDraftArticle({ articleId, topic: topicType, tags })
+          await this.publishDraftArticleWithHeader({
+            articleId,
+            topic: topicType,
+            tags,
+            eyeCatchUrl: this.thumbnail
+          })
         } else if (location.href.includes('/me/articles/public')) {
           await this.putPublicArticleTitle({ articleTitle, articleId })
           await this.putPublicArticleBody({ articleBody, articleId })
-          await this.republishPublicArticle({ articleId, topic: topicType, tags })
+          await this.republishPublicArticleWithHeader({
+            articleId,
+            topic: topicType,
+            tags,
+            eyeCatchUrl: this.thumbnail
+          })
         }
         this.$router.push(`/${this.currentUserInfo.user_id}/articles/${articleId}`)
         this.sendNotification({ text: '記事を公開しました' })
@@ -179,8 +184,8 @@ export default {
     }),
     ...mapActions('article', [
       'updateThumbnail',
-      'publishDraftArticle',
-      'republishPublicArticle',
+      'publishDraftArticleWithHeader',
+      'republishPublicArticleWithHeader',
       'putDraftArticleTitle',
       'putDraftArticleBody',
       'putPublicArticleTitle',

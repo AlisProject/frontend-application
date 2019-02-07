@@ -689,6 +689,24 @@ const actions = {
   },
   async putPublicArticleBody({ commit }, { articleBody, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public/body`, articleBody)
+  },
+  async postNewArticleId({ commit }) {
+    const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts/article_id')
+    commit(types.SET_ARTICLE_ID, { articleId })
+  },
+  async publishDraftArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, {
+      topic,
+      tags,
+      eye_catch_url: eyeCatchUrl
+    })
+  },
+  async republishPublicArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, {
+      topic,
+      tags,
+      eye_catch_url: eyeCatchUrl
+    })
   }
 }
 
