@@ -12,7 +12,7 @@
       <img
         class="eye-catch-image"
         src="~assets/images/pc/common/thumbnail_noimg.png"
-        v-if="article.eye_catch_url === null">
+        v-if="article.eye_catch_url === null || article.eye_catch_url === undefined">
       <img
         class="eye-catch-image"
         :src="article.eye_catch_url"
