@@ -1,5 +1,5 @@
 <template>
-  <a :href=src target="_blank" class="twitter-profile-card">
+  <a :href=href target="_blank" class="twitter-profile-card">
     <div class="title">{{title}}</div>
     <div class="description">{{description}}</div>
     <div class="site">twitter.com</div>
@@ -13,16 +13,17 @@ export default {
       title: null,
       description: null,
       profileName: null,
-      src: null
+      href: null
     }
   },
   async mounted() {
     const twitterProfileName = this.$route.params.userName
-    this.src = `https://twitter.com/${twitterProfileName}`
+    this.href = `https://twitter.com/${twitterProfileName}`
     this.profileName = twitterProfileName
     const response = await this.$axios.$get(
-      `https://iframe.ly/api/oembed?api_key=${process.env.IFRAMELY_API_KEY}` +
-      `&url=${encodeURIComponent(`twitter.com/${twitterProfileName}`)}&omit_script=1&omit_css=1`
+      `https://iframe.ly/api/oembed?api_key=${
+        process.env.IFRAMELY_API_KEY
+      }&url=${encodeURIComponent(`twitter.com/${twitterProfileName}`)}&omit_script=1&omit_css=1`
     )
     this.title = response.title
     this.description = response.description

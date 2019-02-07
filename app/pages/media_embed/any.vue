@@ -1,8 +1,8 @@
 <template>
-  <a href="hoge" target="_blank" class="iframely-embed-card">
-    <div class="title">{{title}}</div>
-    <div class="description">{{description}}</div>
-    <img class="thumbnail" :src=src />
+  <a :href="href" target="_blank" class="iframely-embed-card">
+    <div class="title" :class="{'without-space': !hasThumbnail}">{{title}}</div>
+    <div class="description" :class="{'without-space': !hasThumbnail}">{{description}}</div>
+    <img class="thumbnail" :src=src v-if="hasThumbnail" />
     <div class="site">{{site}}</div>
   </a>
 </template>
@@ -14,19 +14,24 @@ export default {
       src: null,
       title: null,
       description: null,
-      site: null
+      site: null,
+      href: null,
+      hasThumbnail: false
     }
   },
   async mounted() {
+    this.href = this.$route.query.url
     const response = await this.$axios.$get(
-      `https://iframe.ly/api/iframely?api_key=${process.env.IFRAMELY_API_KEY}` +
-      `&url=${encodeURIComponent(this.$route.query.url)}&omit_script=1&omit_css=1`
+      `https://iframe.ly/api/iframely?api_key=${
+        process.env.IFRAMELY_API_KEY
+      }&url=${encodeURIComponent(this.href)}&omit_script=1&omit_css=1`
     )
     this.title = response.meta.title
     this.description = response.meta.description
     this.site = response.url.split('/')[2]
     const links = response.links
     this.src = (links.thumbnail && links.thumbnail[0].href) || (links.icon && links.icon[0].href)
+    this.hasThumbnail = Boolean(this.src)
   }
 }
 </script>
