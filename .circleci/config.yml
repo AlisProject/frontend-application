@@ -24,7 +24,7 @@ jobs:
             nvm alias default v8.9.4
             npm install -g yarn@1.6.0
 
-      - run: yarn install
+      - run: yarn install --pure-lockfile
 
       - save_cache:
           paths:
