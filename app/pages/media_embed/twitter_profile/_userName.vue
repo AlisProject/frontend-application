@@ -38,16 +38,16 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   display: block;
+  height: 140px;
   padding: 20px;
   text-decoration: none;
   width: 100%;
-  height: 120px;
-  position: relative;
 
   .title {
     color: #030303;
     font-size: 16px;
     font-weight: 500;
+    height: 22px;
     letter-spacing: 0.8px;
     margin-bottom: 8px;
   }
@@ -56,9 +56,10 @@ export default {
     color: #6e6e6e;
     font-size: 14px;
     font-weight: 500;
+    height: 42px;
     letter-spacing: 0.7px;
-    line-height: 1.5;
-    margin-bottom: 8px;
+    line-height: 1.6;
+    margin: 0 10px 10px 0;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
