@@ -38,7 +38,7 @@ import ArticleTags from '../molecules/ArticleTags'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
 import AppFooter from '../organisms/AppFooter'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, showEmbed } from '~/utils/article'
 
 export default {
   components: {
@@ -62,6 +62,9 @@ export default {
       type: String,
       required: false
     }
+  },
+  mounted() {
+    showEmbed()
   },
   beforeDestroy() {
     this.resetArticleCommentsLastEvaluatedKey()
