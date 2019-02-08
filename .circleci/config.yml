@@ -49,5 +49,5 @@ jobs:
           name: deploy
           command: |
             sudo apt-get -y -qq install awscli
-            sudo npm install -g serverless
+            npm install -g serverless
             ./deploy.sh
