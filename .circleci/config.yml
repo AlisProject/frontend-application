@@ -1,7 +1,8 @@
 version: 2
 jobs:
   build:
-    machine: true
+    docker:
+      - image: circleci/node:8.9.4-browsers
 
     working_directory: ~/repo
 
@@ -14,15 +15,9 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: Setup NodeJS and Yarn
+          name: setup yarn
           command: |
-            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
-            source $BASH_ENV
-            nvm install v8.9.4
-            nvm alias default v8.9.4
-            npm install -g yarn@1.6.0
+            sudo npm install -g yarn@1.6.0
 
       - run: yarn install --pure-lockfile
 
@@ -49,5 +44,5 @@ jobs:
           name: deploy
           command: |
             sudo apt-get -y -qq install awscli
-            npm install -g serverless
+            sudo npm install -g serverless
             ./deploy.sh
