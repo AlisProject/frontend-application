@@ -48,6 +48,10 @@
     &.ck-tooltip {
       display: none;
     }
+
+    &:not(.ck-disabled):hover {
+      background: none;
+    }
   }
 
   &.ck-tooltip {
