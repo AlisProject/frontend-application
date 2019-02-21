@@ -12,16 +12,16 @@
 
   h2 {
     color: #333;
-    font-size: 20px;
+    font-size: 24px;
     letter-spacing: 0.03em;
     line-height: 1.6;
-    margin: 24px 0 16px;
+    margin: 24px 0;
     word-break: break-word;
   }
 
   h3 {
     color: #333;
-    font-size: 16px;
+    font-size: 20px;
     letter-spacing: 0.03em;
     line-height: 1.8;
     margin: 16px 0;
@@ -44,7 +44,7 @@
     font-size: 16px;
     letter-spacing: 0.03em;
     line-height: 1.8;
-    margin: 16px 0;
+    margin: 24px 0;
     padding: 20px;
     word-break: break-word;
   }
@@ -366,17 +366,17 @@
   .v1-content,
   .medium-editor-element {
     h2 {
-      font-size: 20px;
+      font-size: 24px;
       letter-spacing: 0;
       line-height: 1.6;
-      margin: 24px 0 12px;
+      margin: 24px 0;
     }
 
     h3 {
-      font-size: 16px;
+      font-size: 20px;
       letter-spacing: 0;
       line-height: 1.7;
-      margin: 18px 0 12px;
+      margin: 12px 0;
     }
 
     p {
@@ -390,7 +390,7 @@
       font-size: 16px;
       letter-spacing: 0;
       line-height: 1.8;
-      margin: 12px 0;
+      margin: 20px 0;
     }
 
     figure {
