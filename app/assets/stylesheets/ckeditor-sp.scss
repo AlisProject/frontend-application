@@ -13,6 +13,10 @@
 
   &.ck-editor__editable {
     border: none;
+
+    &:not(.ck-editor__nested-editable).ck-focused {
+      border: none;
+    }
   }
 
   &.ck-editor__editable_inline {
