@@ -48,7 +48,7 @@ if (process.client && isMobile()) {
   require('~/assets/stylesheets/ckeditor-pc.scss')
 }
 
-const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 118 : 236
+const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 98 : 216
 
 export default {
   props: {
@@ -274,6 +274,7 @@ export default {
 @media screen and (max-width: 640px) {
   .area-editor-container {
     grid-template-columns: 1fr;
+    grid-gap: 0;
   }
 
   .area-title {
