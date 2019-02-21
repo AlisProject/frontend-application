@@ -684,15 +684,13 @@ const actions = {
     }
   },
   async putDraftArticleTitle({ commit }, { articleTitle, articleId }) {
-    // await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, articleTitle)
-    throw new Error()
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, articleTitle)
   },
   async putPublicArticleTitle({ commit }, { articleTitle, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public/title`, articleTitle)
   },
   async putDraftArticleBody({ commit }, { articleBody, articleId }) {
-    // await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, articleBody)
-    throw new Error()
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, articleBody)
   },
   async putPublicArticleBody({ commit }, { articleBody, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public/body`, articleBody)
