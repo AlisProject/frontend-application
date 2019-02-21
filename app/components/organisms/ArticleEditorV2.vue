@@ -49,7 +49,7 @@ if (process.client && isMobile()) {
   require('~/assets/stylesheets/ckeditor-pc.scss')
 }
 
-const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 118 : 236
+const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 98 : 216
 
 export default {
   props: {
@@ -102,6 +102,7 @@ export default {
   },
   async mounted() {
     window.addEventListener('scroll', this.fixHeader)
+    window.addEventListener('error', this.handleError)
     await this.$nextTick()
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.addEventListener('dragover', this.handleDragover)
@@ -125,6 +126,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.fixHeader)
+    window.removeEventListener('error', this.handleError)
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.removeEventListener('dragover', this.handleDragover)
     areaBodyElement.removeEventListener('dragleave', this.handleDragleaveAndDrop)
@@ -223,6 +225,17 @@ export default {
     handleTitleBlur() {
       this.changeToolbarButtonState(true)
     },
+    handleError(event) {
+      const message = (event.error && event.error.message) || ''
+      if (message.startsWith('view-createPositionAt-offset-required:')) {
+        return
+      }
+      this.sendNotification({
+        text: 'エラーが発生しました。ページを再読み込みしてください',
+        type: 'warning',
+        dismissAfter: 60 * 60 * 1000 // 1 時間
+      })
+    },
     ...mapActions('article', [
       'updateTitle',
       'updateSuggestedThumbnails',
@@ -299,6 +312,7 @@ export default {
 @media screen and (max-width: 640px) {
   .area-editor-container {
     grid-template-columns: 1fr;
+    grid-gap: 0;
   }
 
   .area-title {
@@ -309,5 +323,11 @@ export default {
   .area-body {
     padding-bottom: 0;
   }
+}
+</style>
+
+<style lang="scss">
+.toast {
+  position: absolute;
 }
 </style>

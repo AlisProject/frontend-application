@@ -44,11 +44,13 @@ export default {
   },
   methods: {
     async createNewArticle() {
-      await this.$store.dispatch('article/postNewArticleId')
+      const articleId = await this.$store.dispatch('article/postNewArticleId')
+      history.replaceState(null, null, `/me/articles/draft/v2/${articleId}/edit`)
       this.componentName = 'CreateArticle'
     },
     async useLatestDraftArticle(articleId) {
       await this.$store.dispatch('article/getEditDraftArticle', { articleId })
+      history.replaceState(null, null, `/me/articles/draft/v2/${articleId}/edit`)
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       this.componentName = 'EditDraftArticleV2'
     }
