@@ -64,7 +64,6 @@ export default {
     return {
       isPc: true,
       updateArticleInterval: null,
-      isInitTitleHeight: false,
       clientId: process.env.CLIENT_ID,
       iframelyApiKey: process.env.IFRAMELY_API_KEY,
       domain: process.env.DOMAIN,
@@ -122,7 +121,16 @@ export default {
     })
     this.isPc = !isMobile()
     preventDragAndDrop(window)
-
+    const textarea = this.$el.querySelector('.area-title')
+    if (textarea.scrollHeight > textarea.offsetHeight) {
+      textarea.style.height = `${textarea.scrollHeight}px`
+    }
+    setTimeout(() => {
+      const titleElementHeight = Number(textarea.style.height.split('px')[0])
+      if (this.titleElementHeight === titleElementHeight) return
+      this.titleElementHeight = titleElementHeight
+      document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
+    }, 0)
     // Start update article interval
     this.updateArticle()
   },
@@ -233,17 +241,6 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     })
-  },
-  watch: {
-    async title(value) {
-      if (this.isInitTitleHeight) return
-      await this.$nextTick()
-      const textarea = this.$el.querySelector('.area-title')
-      if (textarea.scrollHeight > textarea.offsetHeight) {
-        textarea.style.height = `${textarea.scrollHeight}px`
-      }
-      this.isInitTitleHeight = true
-    }
   }
 }
 </script>
