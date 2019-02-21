@@ -30,6 +30,7 @@
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
         @editor-mounted="fixToolbarPosition"
+        ref="alisEditorSp"
       />
     </no-ssr>
   </div>
@@ -112,6 +113,11 @@ export default {
       lineHeight: '1.5'
     })
     this.isPc = !isMobile()
+    if (!this.isPc) {
+      const areaTitleElement = this.$el.querySelector('.area-title')
+      areaTitleElement.addEventListener('focus', this.handleTitleFocus)
+      areaTitleElement.addEventListener('blur', this.handleTitleBlur)
+    }
     preventDragAndDrop(window)
 
     // Start update article interval
@@ -123,6 +129,11 @@ export default {
     areaBodyElement.removeEventListener('dragover', this.handleDragover)
     areaBodyElement.removeEventListener('dragleave', this.handleDragleaveAndDrop)
     areaBodyElement.removeEventListener('drop', this.handleDragleaveAndDrop)
+    if (!this.isPc) {
+      const areaTitleElement = this.$el.querySelector('.area-title')
+      areaTitleElement.removeEventListener('focus', this.handleTitleFocus)
+      areaTitleElement.removeEventListener('blur', this.handleTitleBlur)
+    }
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
   },
@@ -197,6 +208,20 @@ export default {
       if (e.target.nodeName === 'P') {
         e.target.classList.remove('alis-editor-dragover')
       }
+    },
+    changeToolbarButtonState(isEnabled) {
+      if (!this.$refs.alisEditorSp) return
+      this.$refs.alisEditorSp.changeToolbarButtonState(
+        this.$refs.alisEditorSp.editor,
+        this.$refs.alisEditorSp.toolbar,
+        isEnabled
+      )
+    },
+    handleTitleFocus() {
+      this.changeToolbarButtonState(false)
+    },
+    handleTitleBlur() {
+      this.changeToolbarButtonState(true)
     },
     ...mapActions('article', [
       'updateTitle',
