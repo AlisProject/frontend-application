@@ -22,6 +22,7 @@ const state = () => ({
   draftArticlesLastEvaluatedKey: {},
   hasPublicArticlesLastEvaluatedKey: false,
   isEdited: false,
+  isEditedBody: false,
   saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
   articleCommentLikedCommentIds: [],
@@ -74,6 +75,7 @@ const getters = {
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
+  isEditedBody: (state) => state.isEditedBody,
   saveStatus: (state) => state.saveStatus,
   articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
   hasArticleCommentsLastEvaluatedKey: (state) =>
@@ -361,6 +363,9 @@ const actions = {
   },
   setIsEdited({ commit }, { isEdited }) {
     commit(types.SET_IS_EDITED, { isEdited })
+  },
+  setIsEditedBody({ commit }, { isEditedBody }) {
+    commit(types.SET_IS_EDITED_BODY, { isEditedBody })
   },
   setSaveStatus({ commit }, { saveStatus }) {
     commit(types.SET_SAVE_STATUS, { saveStatus })
@@ -679,13 +684,15 @@ const actions = {
     }
   },
   async putDraftArticleTitle({ commit }, { articleTitle, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, articleTitle)
+    // await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, articleTitle)
+    throw new Error()
   },
   async putPublicArticleTitle({ commit }, { articleTitle, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public/title`, articleTitle)
   },
   async putDraftArticleBody({ commit }, { articleBody, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, articleBody)
+    // await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, articleBody)
+    throw new Error()
   },
   async putPublicArticleBody({ commit }, { articleBody, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/public/body`, articleBody)
@@ -775,6 +782,9 @@ const mutations = {
   },
   [types.SET_IS_EDITED](state, { isEdited }) {
     state.isEdited = isEdited
+  },
+  [types.SET_IS_EDITED_BODY](state, { isEditedBody }) {
+    state.isEditedBody = isEditedBody
   },
   [types.SET_SAVE_STATUS](state, { saveStatus }) {
     state.saveStatus = saveStatus
