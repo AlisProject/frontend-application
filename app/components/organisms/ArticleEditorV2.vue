@@ -48,8 +48,6 @@ if (process.client && isMobile()) {
   require('~/assets/stylesheets/ckeditor-pc.scss')
 }
 
-const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 118 : 236
-
 export default {
   props: {
     title: String,
@@ -69,7 +67,8 @@ export default {
       isInitTitleHeight: false,
       clientId: process.env.CLIENT_ID,
       iframelyApiKey: process.env.IFRAMELY_API_KEY,
-      domain: process.env.DOMAIN
+      domain: process.env.DOMAIN,
+      titleElementHeight: 40
     }
   },
   computed: {
@@ -96,6 +95,16 @@ export default {
         putThumbnail
       }
     },
+    editorToolbarTopOffsetHeight() {
+      // alis-editor のツールバーをページの上部に表示させるため、元々エディタのすぐ上にある
+      // ツールバーの位置を上に移動させる必要がある。
+      // この算出プロパティではその高さを返している。
+      // どれだけ上に移動するかは、タイトルのテキストエリアの高さにより変化するため、タイトルの文字数が変わるたびに
+      // titleElementHeight の値を更新しこの算出プロパティで返す高さを更新している。
+      return process.client && window.innerWidth <= 640
+        ? 78 + this.titleElementHeight
+        : 196 + this.titleElementHeight
+    },
     ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
@@ -108,7 +117,7 @@ export default {
     areaBodyElement.addEventListener('drop', this.handleDragleaveAndDrop)
     resizeTextarea({
       targetElement: this.$el.querySelector('.area-title'),
-      height: '40px',
+      height: `${this.titleElementHeight}px`,
       lineHeight: '1.5'
     })
     this.isPc = !isMobile()
@@ -151,8 +160,17 @@ export default {
         this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
       }
     },
-    onInputTitle() {
+    onInputTitle(event) {
       this.setIsEdited({ isEdited: true })
+
+      // resizeTextarea 関数の処理後にタイトルの高さを取得しないと、リサイズ後の高さが取得できないため、
+      // setTimeout で処理を遅らせている。
+      setTimeout(() => {
+        const titleElementHeight = Number(event.target.style.height.split('px')[0])
+        if (this.titleElementHeight === titleElementHeight) return
+        this.titleElementHeight = titleElementHeight
+        document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
+      }, 0)
     },
     async uploadArticleTitle() {
       // Update title
@@ -177,7 +195,7 @@ export default {
     fixToolbarPosition() {
       if (!isIOS()) return
       if (!document.querySelector('.ck-toolbar')) return
-      document.querySelector('.ck-toolbar').style.top = `-${editorToolbarTopOffsetHeight}px`
+      document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
     },
     fixHeader() {
       if (isIOS()) {
@@ -185,7 +203,7 @@ export default {
           window.pageYOffset
         }px`
         document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
-          editorToolbarTopOffsetHeight}px`
+          this.editorToolbarTopOffsetHeight}px`
       }
     },
     handleDragover(e) {
