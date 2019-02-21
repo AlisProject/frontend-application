@@ -205,7 +205,11 @@ export default {
       if (message.startsWith('view-createPositionAt-offset-required:')) {
         return
       }
-      this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
+      this.sendNotification({
+        text: 'エラーが発生しました。ページを再読み込みしてください',
+        type: 'warning',
+        dismissAfter: 60 * 60 * 1000 // 1 時間
+      })
     },
     ...mapActions('article', [
       'updateTitle',
@@ -293,5 +297,11 @@ export default {
   .area-body {
     padding-bottom: 0;
   }
+}
+</style>
+
+<style lang="scss">
+.toast {
+  position: absolute;
 }
 </style>
