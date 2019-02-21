@@ -693,6 +693,7 @@ const actions = {
   async postNewArticleId({ commit }) {
     const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts/article_id')
     commit(types.SET_ARTICLE_ID, { articleId })
+    return articleId
   },
   async publishDraftArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
     await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, {
