@@ -101,6 +101,7 @@ export default {
   },
   async mounted() {
     window.addEventListener('scroll', this.fixHeader)
+    window.addEventListener('error', this.handleError)
     await this.$nextTick()
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.addEventListener('dragover', this.handleDragover)
@@ -119,6 +120,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.fixHeader)
+    window.removeEventListener('error', this.handleError)
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.removeEventListener('dragover', this.handleDragover)
     areaBodyElement.removeEventListener('dragleave', this.handleDragleaveAndDrop)
@@ -197,6 +199,13 @@ export default {
       if (e.target.nodeName === 'P') {
         e.target.classList.remove('alis-editor-dragover')
       }
+    },
+    handleError(event) {
+      const message = (event.error && event.error.message) || ''
+      if (message.startsWith('view-createPositionAt-offset-required:')) {
+        return
+      }
+      this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
     },
     ...mapActions('article', [
       'updateTitle',
