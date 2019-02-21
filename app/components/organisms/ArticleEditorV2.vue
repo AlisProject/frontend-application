@@ -110,6 +110,7 @@ export default {
   },
   async mounted() {
     window.addEventListener('scroll', this.fixHeader)
+    window.addEventListener('error', this.handleError)
     this.isPc = !isMobile()
     this.isChecked = true
     await this.$nextTick()
