@@ -105,7 +105,7 @@ export default {
         ? 58 + this.titleElementHeight
         : 196 + this.titleElementHeight
     },
-    ...mapGetters('article', ['articleId', 'isEdited', 'isEditedBody', 'thumbnail', 'body']),
+    ...mapGetters('article', ['articleId', 'isEditedTitle', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   async mounted() {
@@ -147,15 +147,14 @@ export default {
     async updateArticle() {
       try {
         // Do nothing if user don't edit article
-        if (!this.isEdited && !this.isEditedBody) {
+        if (!this.isEditedTitle) {
           this.setSaveStatus({ saveStatus: '' })
           return
         }
 
         // Init
         this.setIsSaving({ isSaving: true })
-        this.setIsEdited({ isEdited: false })
-        this.setIsEditedBody({ isEditedBody: false })
+        this.setIsEditedTitle({ isEditedTitle: false })
         this.setSaveStatus({ saveStatus: '保存中' })
 
         // Upload article
@@ -248,6 +247,7 @@ export default {
       'setRestrictEditArticleModal',
       'setIsSaving',
       'setIsEdited',
+      'setIsEditedTitle',
       'setIsEditedBody',
       'setSaveStatus',
       'updateThumbnail',

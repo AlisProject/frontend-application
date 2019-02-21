@@ -22,6 +22,7 @@ const state = () => ({
   draftArticlesLastEvaluatedKey: {},
   hasPublicArticlesLastEvaluatedKey: false,
   isEdited: false,
+  isEditedTitle: false,
   isEditedBody: false,
   saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
@@ -75,6 +76,7 @@ const getters = {
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
+  isEditedTitle: (state) => state.isEditedTitle,
   isEditedBody: (state) => state.isEditedBody,
   saveStatus: (state) => state.saveStatus,
   articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
@@ -363,6 +365,9 @@ const actions = {
   },
   setIsEdited({ commit }, { isEdited }) {
     commit(types.SET_IS_EDITED, { isEdited })
+  },
+  setIsEditedTitle({ commit }, { isEditedTitle }) {
+    commit(types.SET_IS_EDITED_TITLE, { isEditedTitle })
   },
   setIsEditedBody({ commit }, { isEditedBody }) {
     commit(types.SET_IS_EDITED_BODY, { isEditedBody })
@@ -780,6 +785,9 @@ const mutations = {
   },
   [types.SET_IS_EDITED](state, { isEdited }) {
     state.isEdited = isEdited
+  },
+  [types.SET_IS_EDITED_TITLE](state, { isEditedTitle }) {
+    state.isEditedTitle = isEditedTitle
   },
   [types.SET_IS_EDITED_BODY](state, { isEditedBody }) {
     state.isEditedBody = isEditedBody
