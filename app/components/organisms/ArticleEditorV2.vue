@@ -11,7 +11,7 @@
       :value="title"/>
     <no-ssr>
       <alis-editor-pc
-        v-if="isPc"
+        v-if="isChecked && isPc"
         class="area-body"
         :articleId="articleId"
         :clientId="clientId"
@@ -21,7 +21,7 @@
         :domain="domain"
       />
       <alis-editor-sp
-        v-else
+        v-else-if="isChecked && !isPc"
         class="area-body"
         :articleId="articleId"
         :clientId="clientId"
@@ -67,7 +67,8 @@ export default {
       clientId: process.env.CLIENT_ID,
       iframelyApiKey: process.env.IFRAMELY_API_KEY,
       domain: process.env.DOMAIN,
-      titleElementHeight: 40
+      titleElementHeight: 40,
+      isChecked: false
     }
   },
   computed: {
@@ -76,7 +77,7 @@ export default {
         getUserSession,
         setSaveStatus,
         setIsSaving,
-        setIsEdited,
+        setIsEditedBody,
         sendNotification,
         updateBody,
         putArticleBody,
@@ -87,7 +88,7 @@ export default {
         getUserSession,
         setSaveStatus,
         setIsSaving,
-        setIsEdited,
+        setIsEditedBody,
         sendNotification,
         updateBody,
         putArticleBody,
@@ -104,12 +105,14 @@ export default {
         ? 58 + this.titleElementHeight
         : 196 + this.titleElementHeight
     },
-    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
+    ...mapGetters('article', ['articleId', 'isEditedTitle', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   async mounted() {
     window.addEventListener('scroll', this.fixHeader)
     window.addEventListener('error', this.handleError)
+    this.isPc = !isMobile()
+    this.isChecked = true
     await this.$nextTick()
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.addEventListener('dragover', this.handleDragover)
@@ -120,7 +123,6 @@ export default {
       height: `${this.titleElementHeight}px`,
       lineHeight: '1.5'
     })
-    this.isPc = !isMobile()
     preventDragAndDrop(window)
     const textarea = this.$el.querySelector('.area-title')
     if (textarea.scrollHeight > textarea.offsetHeight) {
@@ -145,14 +147,14 @@ export default {
     async updateArticle() {
       try {
         // Do nothing if user don't edit article
-        if (!this.isEdited) {
+        if (!this.isEditedTitle) {
           this.setSaveStatus({ saveStatus: '' })
           return
         }
 
         // Init
         this.setIsSaving({ isSaving: true })
-        this.setIsEdited({ isEdited: false })
+        this.setIsEditedTitle({ isEditedTitle: false })
         this.setSaveStatus({ saveStatus: '保存中' })
 
         // Upload article
@@ -177,7 +179,10 @@ export default {
       try {
         await this.updateArticleTitle()
       } catch (error) {
-        this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
+        this.sendNotification({
+          text: '記事の更新に失敗しました。お手数ですが、しばらく時間を置いて再度お試しください',
+          type: 'warning'
+        })
         throw new Error('Update article failed.')
       }
     },
@@ -242,6 +247,8 @@ export default {
       'setRestrictEditArticleModal',
       'setIsSaving',
       'setIsEdited',
+      'setIsEditedTitle',
+      'setIsEditedBody',
       'setSaveStatus',
       'updateThumbnail',
       'putArticleTitle',
