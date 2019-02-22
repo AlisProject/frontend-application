@@ -169,7 +169,7 @@ export default {
       }
     },
     async onInputTitle(event) {
-      this.setIsEdited({ isEdited: true })
+      this.setIsEditedTitle({ isEditedTitle: true })
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     async uploadArticleTitle() {
@@ -246,7 +246,6 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'setIsEdited',
       'setIsEditedTitle',
       'setIsEditedBody',
       'setSaveStatus',
