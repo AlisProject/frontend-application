@@ -47,8 +47,8 @@ export default {
     color: #030303;
     font-size: 16px;
     font-weight: 500;
-    height: 22px;
     letter-spacing: 0.8px;
+    line-height: 1.5;
     margin-bottom: 8px;
   }
 
@@ -59,7 +59,7 @@ export default {
     height: 42px;
     letter-spacing: 0.7px;
     line-height: 1.6;
-    margin: 0 10px 10px 0;
+    margin-bottom: 8px;
     overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
