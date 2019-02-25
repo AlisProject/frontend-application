@@ -117,7 +117,6 @@ export default {
     if (!this.isPc) {
       const areaTitleElement = this.$el.querySelector('.area-title')
       areaTitleElement.addEventListener('focus', this.handleTitleFocus)
-      areaTitleElement.addEventListener('blur', this.handleTitleBlur)
     }
     preventDragAndDrop(window)
 
@@ -134,7 +133,6 @@ export default {
     if (!this.isPc) {
       const areaTitleElement = this.$el.querySelector('.area-title')
       areaTitleElement.removeEventListener('focus', this.handleTitleFocus)
-      areaTitleElement.removeEventListener('blur', this.handleTitleBlur)
     }
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
@@ -221,9 +219,6 @@ export default {
     },
     handleTitleFocus() {
       this.changeToolbarButtonState(false)
-    },
-    handleTitleBlur() {
-      this.changeToolbarButtonState(true)
     },
     handleError(event) {
       const message = (event.error && event.error.message) || ''
