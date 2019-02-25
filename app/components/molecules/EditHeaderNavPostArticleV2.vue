@@ -202,7 +202,7 @@ export default {
   },
   computed: {
     publishable() {
-      return !this.isEdited && !this.isSaving
+      return (!this.isEditedTitle || !this.isEditedBody) && !this.isSaving
     },
     ...mapGetters('article', [
       'articleId',
@@ -211,7 +211,8 @@ export default {
       'thumbnail',
       'suggestedThumbnails',
       'isSaving',
-      'isEdited',
+      'isEditedTitle',
+      'isEditedBody',
       'topics',
       'topicType',
       'tags'

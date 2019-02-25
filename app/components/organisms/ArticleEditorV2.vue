@@ -11,7 +11,7 @@
       :value="title"/>
     <no-ssr>
       <alis-editor-pc
-        v-if="isPc"
+        v-if="isChecked && isPc"
         class="area-body"
         :articleId="articleId"
         :clientId="clientId"
@@ -21,7 +21,7 @@
         :domain="domain"
       />
       <alis-editor-sp
-        v-else
+        v-else-if="isChecked && !isPc"
         class="area-body"
         :articleId="articleId"
         :clientId="clientId"
@@ -49,8 +49,6 @@ if (process.client && isMobile()) {
   require('~/assets/stylesheets/ckeditor-pc.scss')
 }
 
-const editorToolbarTopOffsetHeight = process.client && window.innerWidth <= 640 ? 98 : 216
-
 export default {
   props: {
     title: String,
@@ -67,10 +65,11 @@ export default {
     return {
       isPc: true,
       updateArticleInterval: null,
-      isInitTitleHeight: false,
       clientId: process.env.CLIENT_ID,
       iframelyApiKey: process.env.IFRAMELY_API_KEY,
-      domain: process.env.DOMAIN
+      domain: process.env.DOMAIN,
+      titleElementHeight: 40,
+      isChecked: false
     }
   },
   computed: {
@@ -79,7 +78,7 @@ export default {
         getUserSession,
         setSaveStatus,
         setIsSaving,
-        setIsEdited,
+        setIsEditedBody,
         sendNotification,
         updateBody,
         putArticleBody,
@@ -90,35 +89,51 @@ export default {
         getUserSession,
         setSaveStatus,
         setIsSaving,
-        setIsEdited,
+        setIsEditedBody,
         sendNotification,
         updateBody,
         putArticleBody,
         putThumbnail
       }
     },
-    ...mapGetters('article', ['articleId', 'isEdited', 'thumbnail', 'body']),
+    editorToolbarTopOffsetHeight() {
+      // alis-editor のツールバーをページの上部に表示させるため、元々エディタのすぐ上にある
+      // ツールバーの位置を上に移動させる必要がある。
+      // この算出プロパティではその高さを返している。
+      // どれだけ上に移動するかは、タイトルのテキストエリアの高さにより変化するため、タイトルの文字数が変わるたびに
+      // titleElementHeight の値を更新しこの算出プロパティで返す高さを更新している。
+      return process.client && window.innerWidth <= 640
+        ? 58 + this.titleElementHeight
+        : 196 + this.titleElementHeight
+    },
+    ...mapGetters('article', ['articleId', 'isEditedTitle', 'thumbnail', 'body']),
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   async mounted() {
     window.addEventListener('scroll', this.fixHeader)
     window.addEventListener('error', this.handleError)
+    this.isPc = !isMobile()
+    this.isChecked = true
     await this.$nextTick()
+    if (!this.isPc) {
+      const areaTitleElement = this.$el.querySelector('.area-title')
+      areaTitleElement.addEventListener('focus', this.handleTitleFocus)
+    }
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.addEventListener('dragover', this.handleDragover)
     areaBodyElement.addEventListener('dragleave', this.handleDragleaveAndDrop)
     areaBodyElement.addEventListener('drop', this.handleDragleaveAndDrop)
     resizeTextarea({
       targetElement: this.$el.querySelector('.area-title'),
-      height: '40px',
+      height: `${this.titleElementHeight}px`,
       lineHeight: '1.5'
     })
-    this.isPc = !isMobile()
-    if (!this.isPc) {
-      const areaTitleElement = this.$el.querySelector('.area-title')
-      areaTitleElement.addEventListener('focus', this.handleTitleFocus)
-    }
     preventDragAndDrop(window)
+    const textarea = this.$el.querySelector('.area-title')
+    if (textarea.scrollHeight > textarea.offsetHeight) {
+      textarea.style.height = `${textarea.scrollHeight}px`
+    }
+    await this.fixToolbarPositionByTitleElementHeight(textarea)
 
     // Start update article interval
     this.updateArticle()
@@ -126,14 +141,14 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.fixHeader)
     window.removeEventListener('error', this.handleError)
-    const areaBodyElement = document.querySelector('.area-body')
-    areaBodyElement.removeEventListener('dragover', this.handleDragover)
-    areaBodyElement.removeEventListener('dragleave', this.handleDragleaveAndDrop)
-    areaBodyElement.removeEventListener('drop', this.handleDragleaveAndDrop)
     if (!this.isPc) {
       const areaTitleElement = this.$el.querySelector('.area-title')
       areaTitleElement.removeEventListener('focus', this.handleTitleFocus)
     }
+    const areaBodyElement = document.querySelector('.area-body')
+    areaBodyElement.removeEventListener('dragover', this.handleDragover)
+    areaBodyElement.removeEventListener('dragleave', this.handleDragleaveAndDrop)
+    areaBodyElement.removeEventListener('drop', this.handleDragleaveAndDrop)
     this.setSaveStatus({ saveStatus: '' })
     clearInterval(this.updateArticleInterval)
   },
@@ -141,14 +156,14 @@ export default {
     async updateArticle() {
       try {
         // Do nothing if user don't edit article
-        if (!this.isEdited) {
+        if (!this.isEditedTitle) {
           this.setSaveStatus({ saveStatus: '' })
           return
         }
 
         // Init
         this.setIsSaving({ isSaving: true })
-        this.setIsEdited({ isEdited: false })
+        this.setIsEditedTitle({ isEditedTitle: false })
         this.setSaveStatus({ saveStatus: '保存中' })
 
         // Upload article
@@ -162,8 +177,9 @@ export default {
         this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
       }
     },
-    onInputTitle() {
-      this.setIsEdited({ isEdited: true })
+    async onInputTitle(event) {
+      this.setIsEditedTitle({ isEditedTitle: true })
+      await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     async uploadArticleTitle() {
       // Update title
@@ -172,7 +188,10 @@ export default {
       try {
         await this.updateArticleTitle()
       } catch (error) {
-        this.sendNotification({ text: '記事の更新に失敗しました', type: 'warning' })
+        this.sendNotification({
+          text: '記事の更新に失敗しました。お手数ですが、しばらく時間を置いて再度お試しください',
+          type: 'warning'
+        })
         throw new Error('Update article failed.')
       }
     },
@@ -188,7 +207,7 @@ export default {
     fixToolbarPosition() {
       if (!isIOS()) return
       if (!document.querySelector('.ck-toolbar')) return
-      document.querySelector('.ck-toolbar').style.top = `-${editorToolbarTopOffsetHeight}px`
+      document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
     },
     fixHeader() {
       if (isIOS()) {
@@ -196,8 +215,18 @@ export default {
           window.pageYOffset
         }px`
         document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
-          editorToolbarTopOffsetHeight}px`
+          this.editorToolbarTopOffsetHeight}px`
       }
+    },
+    async fixToolbarPositionByTitleElementHeight(targetElement) {
+      // resizeTextarea 関数の処理後にタイトルの高さを取得しないと、リサイズ後の高さが取得できないため、
+      // $nextTick で処理を遅らせている。
+      await this.$nextTick()
+      const titleElementHeight = Number(targetElement.style.height.split('px')[0])
+      if (this.titleElementHeight === titleElementHeight) return
+      this.titleElementHeight = titleElementHeight
+      if (!document.querySelector('.ck-toolbar')) return
+      document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
     },
     handleDragover(e) {
       if (e.target.nodeName === 'P') {
@@ -237,7 +266,8 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'setIsEdited',
+      'setIsEditedTitle',
+      'setIsEditedBody',
       'setSaveStatus',
       'updateThumbnail',
       'putArticleTitle',
@@ -248,17 +278,6 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     })
-  },
-  watch: {
-    async title(value) {
-      if (this.isInitTitleHeight) return
-      await this.$nextTick()
-      const textarea = this.$el.querySelector('.area-title')
-      if (textarea.scrollHeight > textarea.offsetHeight) {
-        textarea.style.height = `${textarea.scrollHeight}px`
-      }
-      this.isInitTitleHeight = true
-    }
   }
 }
 </script>

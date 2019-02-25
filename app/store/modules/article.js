@@ -22,6 +22,8 @@ const state = () => ({
   draftArticlesLastEvaluatedKey: {},
   hasPublicArticlesLastEvaluatedKey: false,
   isEdited: false,
+  isEditedTitle: false,
+  isEditedBody: false,
   saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
   articleCommentLikedCommentIds: [],
@@ -64,7 +66,7 @@ const getters = {
   articleId: (state) => state.articleId,
   title: (state) => state.title,
   body: (state) => state.body,
-  suggestedThumbnails: (state) => state.suggestedThumbnails,
+  suggestedThumbnails: (state) => Array.from(new Set(state.suggestedThumbnails)),
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
   gotArticleData: (state) => state.gotArticleData,
@@ -74,6 +76,8 @@ const getters = {
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
+  isEditedTitle: (state) => state.isEditedTitle,
+  isEditedBody: (state) => state.isEditedBody,
   saveStatus: (state) => state.saveStatus,
   articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
   hasArticleCommentsLastEvaluatedKey: (state) =>
@@ -361,6 +365,12 @@ const actions = {
   },
   setIsEdited({ commit }, { isEdited }) {
     commit(types.SET_IS_EDITED, { isEdited })
+  },
+  setIsEditedTitle({ commit }, { isEditedTitle }) {
+    commit(types.SET_IS_EDITED_TITLE, { isEditedTitle })
+  },
+  setIsEditedBody({ commit }, { isEditedBody }) {
+    commit(types.SET_IS_EDITED_BODY, { isEditedBody })
   },
   setSaveStatus({ commit }, { saveStatus }) {
     commit(types.SET_SAVE_STATUS, { saveStatus })
@@ -775,6 +785,12 @@ const mutations = {
   },
   [types.SET_IS_EDITED](state, { isEdited }) {
     state.isEdited = isEdited
+  },
+  [types.SET_IS_EDITED_TITLE](state, { isEditedTitle }) {
+    state.isEditedTitle = isEditedTitle
+  },
+  [types.SET_IS_EDITED_BODY](state, { isEditedBody }) {
+    state.isEditedBody = isEditedBody
   },
   [types.SET_SAVE_STATUS](state, { saveStatus }) {
     state.saveStatus = saveStatus
