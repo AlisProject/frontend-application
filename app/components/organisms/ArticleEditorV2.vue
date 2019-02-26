@@ -7,7 +7,7 @@
       spellcheck="false"
       maxlength="255"
       @input="onInputTitle"
-      @keydown.enter.prevent
+      @keydown.enter.prevent="handleEnter"
       :value="title"/>
     <no-ssr>
       <alis-editor-pc
@@ -19,6 +19,7 @@
         :editorContent="editorContent"
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
+        :isPressedEnterInTitle="isPressedEnterInTitle"
       />
       <alis-editor-sp
         v-else-if="isChecked && !isPc"
@@ -29,6 +30,7 @@
         :editorContent="editorContent"
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
+        :isPressedEnterInTitle="isPressedEnterInTitle"
         @editor-mounted="fixToolbarPosition"
         ref="alisEditorSp"
       />
@@ -69,7 +71,8 @@ export default {
       iframelyApiKey: process.env.IFRAMELY_API_KEY,
       domain: process.env.DOMAIN,
       titleElementHeight: 40,
-      isChecked: false
+      isChecked: false,
+      isPressedEnterInTitle: false
     }
   },
   computed: {
@@ -182,6 +185,11 @@ export default {
     async onInputTitle(event) {
       this.setIsEditedTitle({ isEditedTitle: true })
       await this.fixToolbarPositionByTitleElementHeight(event.target)
+    },
+    handleEnter(event) {
+      if (event.target.textLength === event.target.selectionEnd) {
+        this.isPressedEnterInTitle = !this.isPressedEnterInTitle
+      }
     },
     async uploadArticleTitle() {
       // Update title
