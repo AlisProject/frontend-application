@@ -7,7 +7,7 @@
       spellcheck="false"
       maxlength="255"
       @input="onInputTitle"
-      @keydown.enter="handleEnter"
+      @keydown.enter.prevent="handleEnter"
       :value="title"/>
     <no-ssr>
       <alis-editor-pc
@@ -176,7 +176,6 @@ export default {
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     handleEnter(event) {
-      event.preventDefault()
       if (event.target.textLength === event.target.selectionEnd) {
         this.isPressedEnterInTitle = !this.isPressedEnterInTitle
       }
