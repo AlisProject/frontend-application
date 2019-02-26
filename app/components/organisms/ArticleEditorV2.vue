@@ -30,8 +30,9 @@
         :editorContent="editorContent"
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
-        @editor-mounted="fixToolbarPosition"
         :isPressedEnterInTitle="isPressedEnterInTitle"
+        @editor-mounted="fixToolbarPosition"
+        ref="alisEditorSp"
       />
     </no-ssr>
   </div>
@@ -117,6 +118,11 @@ export default {
     this.isPc = !isMobile()
     this.isChecked = true
     await this.$nextTick()
+    if (!this.isPc) {
+      const areaTitleElement = this.$el.querySelector('.area-title')
+      areaTitleElement.addEventListener('focus', this.handleTitleFocus)
+      areaTitleElement.addEventListener('blur', this.handleTitleBlur)
+    }
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.addEventListener('dragover', this.handleDragover)
     areaBodyElement.addEventListener('dragleave', this.handleDragleaveAndDrop)
@@ -139,6 +145,11 @@ export default {
   beforeDestroy() {
     window.removeEventListener('scroll', this.fixHeader)
     window.removeEventListener('error', this.handleError)
+    if (!this.isPc) {
+      const areaTitleElement = this.$el.querySelector('.area-title')
+      areaTitleElement.removeEventListener('focus', this.handleTitleFocus)
+      areaTitleElement.removeEventListener('blur', this.handleTitleBlur)
+    }
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.removeEventListener('dragover', this.handleDragover)
     areaBodyElement.removeEventListener('dragleave', this.handleDragleaveAndDrop)
@@ -236,6 +247,20 @@ export default {
       if (e.target.nodeName === 'P') {
         e.target.classList.remove('alis-editor-dragover')
       }
+    },
+    changeToolbarButtonState(isEnabled) {
+      if (!this.$refs.alisEditorSp) return
+      this.$refs.alisEditorSp.changeToolbarButtonState(
+        this.$refs.alisEditorSp.editor,
+        this.$refs.alisEditorSp.toolbar,
+        isEnabled
+      )
+    },
+    handleTitleFocus() {
+      this.changeToolbarButtonState(false)
+    },
+    handleTitleBlur() {
+      this.changeToolbarButtonState(true)
     },
     handleError(event) {
       const message = (event.error && event.error.message) || ''
