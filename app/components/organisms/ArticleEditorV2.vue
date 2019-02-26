@@ -38,7 +38,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import { resizeTextarea, getThumbnails, preventDragAndDrop } from '~/utils/article'
+import {
+  resizeTextarea,
+  getThumbnails,
+  preventDragAndDrop,
+  getResourceFromIframely
+} from '~/utils/article'
 import { isIOS, isAndroid, isMobile } from '~/utils/device'
 
 if (process.client && isMobile()) {
@@ -92,7 +97,8 @@ export default {
         sendNotification,
         updateBody,
         putArticleBody,
-        putThumbnail
+        putThumbnail,
+        getResourceFromIframely
       }
     },
     editorToolbarTopOffsetHeight() {
