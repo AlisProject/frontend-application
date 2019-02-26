@@ -118,6 +118,7 @@ export default {
     if (!this.isPc) {
       const areaTitleElement = this.$el.querySelector('.area-title')
       areaTitleElement.addEventListener('focus', this.handleTitleFocus)
+      areaTitleElement.addEventListener('blur', this.handleTitleBlur)
     }
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.addEventListener('dragover', this.handleDragover)
@@ -144,6 +145,7 @@ export default {
     if (!this.isPc) {
       const areaTitleElement = this.$el.querySelector('.area-title')
       areaTitleElement.removeEventListener('focus', this.handleTitleFocus)
+      areaTitleElement.removeEventListener('blur', this.handleTitleBlur)
     }
     const areaBodyElement = document.querySelector('.area-body')
     areaBodyElement.removeEventListener('dragover', this.handleDragover)
@@ -248,6 +250,9 @@ export default {
     },
     handleTitleFocus() {
       this.changeToolbarButtonState(false)
+    },
+    handleTitleBlur() {
+      this.changeToolbarButtonState(true)
     },
     handleError(event) {
       const message = (event.error && event.error.message) || ''
