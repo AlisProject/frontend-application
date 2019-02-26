@@ -188,7 +188,7 @@ export default {
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     handleEnter(event) {
-      if (!event.isComposing && (event.target.textLength === event.target.selectionEnd)) {
+      if (!event.isComposing && event.target.textLength === event.target.selectionEnd) {
         this.isPressedEnterInTitle = !this.isPressedEnterInTitle
       }
     },
