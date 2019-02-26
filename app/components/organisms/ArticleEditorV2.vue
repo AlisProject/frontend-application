@@ -8,7 +8,7 @@
       maxlength="255"
       @input="onInputTitle"
       @keydown.enter.prevent="handleEnter"
-      :value="title"/>
+      v-model="title"/>
     <no-ssr>
       <alis-editor-pc
         v-if="isChecked && isPc"
@@ -53,7 +53,7 @@ if (process.client && isMobile()) {
 
 export default {
   props: {
-    title: String,
+    defaultTitle: String,
     updateArticleTitle: {
       type: Function,
       required: true
@@ -72,7 +72,8 @@ export default {
       domain: process.env.DOMAIN,
       titleElementHeight: 40,
       isChecked: false,
-      isPressedEnterInTitle: false
+      isPressedEnterInTitle: false,
+      title: this.defaultTitle
     }
   },
   computed: {
@@ -187,13 +188,13 @@ export default {
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     handleEnter(event) {
-      if (event.target.textLength === event.target.selectionEnd) {
+      if (!event.isComposing && event.target.textLength === event.target.selectionEnd) {
         this.isPressedEnterInTitle = !this.isPressedEnterInTitle
       }
     },
     async uploadArticleTitle() {
       // Update title
-      this.updateTitle({ title: document.querySelector('.area-title').value })
+      this.updateTitle({ title: this.title })
 
       try {
         await this.updateArticleTitle()
