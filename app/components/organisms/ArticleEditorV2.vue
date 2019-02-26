@@ -183,7 +183,6 @@ export default {
       }
     },
     async onInputTitle(event) {
-      console.log(event.data)
       this.setIsEditedTitle({ isEditedTitle: true })
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
