@@ -4,7 +4,7 @@
     <mobile-editor-header v-else />
     <edit-header-nav-v2 type="public-article" />
     <article-editor-v2
-      :title="decodedTitle"
+      :defaultTitle="decodedTitle"
       :updateArticleTitle="updateArticleTitle"
       :putArticleBody="putPublicArticleBody"
       :editorContent="body"

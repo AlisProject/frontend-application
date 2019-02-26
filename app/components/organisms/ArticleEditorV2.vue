@@ -53,7 +53,7 @@ if (process.client && isMobile()) {
 
 export default {
   props: {
-    title: String,
+    defaultTitle: String,
     updateArticleTitle: {
       type: Function,
       required: true
@@ -72,7 +72,8 @@ export default {
       domain: process.env.DOMAIN,
       titleElementHeight: 40,
       isChecked: false,
-      isPressedEnterInTitle: false
+      isPressedEnterInTitle: false,
+      title: this.defaultTitle
     }
   },
   computed: {
@@ -193,7 +194,7 @@ export default {
     },
     async uploadArticleTitle() {
       // Update title
-      this.updateTitle({ title: document.querySelector('.area-title').value })
+      this.updateTitle({ title: this.title })
 
       try {
         await this.updateArticleTitle()
