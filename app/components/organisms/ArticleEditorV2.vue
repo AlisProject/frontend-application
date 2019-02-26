@@ -359,9 +359,3 @@ export default {
   }
 }
 </style>
-
-<style lang="scss">
-.toast {
-  position: absolute;
-}
-</style>
