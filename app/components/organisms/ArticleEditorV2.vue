@@ -8,7 +8,7 @@
       maxlength="255"
       @input="onInputTitle"
       @keydown.enter.prevent="handleEnter"
-      :value="title"/>
+      v-model="title"/>
     <no-ssr>
       <alis-editor-pc
         v-if="isChecked && isPc"
@@ -183,11 +183,12 @@ export default {
       }
     },
     async onInputTitle(event) {
+      console.log(event.data)
       this.setIsEditedTitle({ isEditedTitle: true })
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     handleEnter(event) {
-      if (event.target.textLength === event.target.selectionEnd) {
+      if (!event.isComposing && (event.target.textLength === event.target.selectionEnd)) {
         this.isPressedEnterInTitle = !this.isPressedEnterInTitle
       }
     },
