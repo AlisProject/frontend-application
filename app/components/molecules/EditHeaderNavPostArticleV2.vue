@@ -97,14 +97,13 @@ export default {
         if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
         const { articleId, title, body, topicType } = this
-        const overview = body
-          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-          .replace(/\r?\n?\s/g, ' ')
-          .slice(0, 100)
-        if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
-        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
+        const hasTitle = title !== undefined && title !== null && title !== ''
+        const hasBody =
+          body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '').replace(/\r?\n?\s/g, ' ') !== '&nbsp;'
+        if (!hasTitle) this.sendNotification({ text: 'タイトルを入力してください' })
+        if (!hasBody) this.sendNotification({ text: '本文にテキストを入力してください' })
         if (topicType === null) this.sendNotification({ text: 'カテゴリを選択してください' })
-        if (title === '' || overview === '' || topicType === null) {
+        if (!hasTitle || !hasBody || topicType === null) {
           this.publishingArticle = false
           return
         }
