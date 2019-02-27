@@ -120,7 +120,9 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   async mounted() {
-    window.addEventListener('scroll', this.fixHeader)
+    if (isIOS()) {
+      window.addEventListener('scroll', this.fixHeader)
+    }
     window.addEventListener('error', this.handleError)
     this.isPc = !isMobile()
     this.isChecked = true
@@ -150,7 +152,9 @@ export default {
     this.updateArticle()
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.fixHeader)
+    if (isIOS()) {
+      window.removeEventListener('scroll', this.fixHeader)
+    }
     window.removeEventListener('error', this.handleError)
     if (!this.isPc) {
       const areaTitleElement = this.$el.querySelector('.area-title')
@@ -227,13 +231,11 @@ export default {
       document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
     },
     fixHeader() {
-      if (isIOS()) {
-        document.querySelector('.area-mobile-editor-header-container').style.top = `${
-          window.pageYOffset
-        }px`
-        document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
-          this.editorToolbarTopOffsetHeight}px`
-      }
+      document.querySelector('.area-mobile-editor-header-container').style.top = `${
+        window.pageYOffset
+      }px`
+      document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
+        this.editorToolbarTopOffsetHeight}px`
     },
     async fixToolbarPositionByTitleElementHeight(targetElement) {
       // resizeTextarea 関数の処理後にタイトルの高さを取得しないと、リサイズ後の高さが取得できないため、
