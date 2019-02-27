@@ -19,7 +19,7 @@
         :editorContent="editorContent"
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
-        :isPressedEnterInTitle="isPressedEnterInTitle"
+        ref="alisEditorPc"
       />
       <alis-editor-sp
         v-else-if="isChecked && !isPc"
@@ -30,7 +30,6 @@
         :editorContent="editorContent"
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
-        :isPressedEnterInTitle="isPressedEnterInTitle"
         @editor-mounted="fixToolbarPosition"
         ref="alisEditorSp"
       />
@@ -77,7 +76,6 @@ export default {
       domain: process.env.DOMAIN,
       titleElementHeight: 40,
       isChecked: false,
-      isPressedEnterInTitle: false,
       title: this.defaultTitle
     }
   },
@@ -199,7 +197,11 @@ export default {
     },
     handleEnter(event) {
       if (!event.isComposing && event.target.textLength === event.target.selectionEnd) {
-        this.isPressedEnterInTitle = !this.isPressedEnterInTitle
+        if (this.isPc) {
+          this.$refs.alisEditorPc.focusEditor()
+        } else {
+          this.$refs.alisEditorSp.focusEditor()
+        }
       }
     },
     async uploadArticleTitle() {
