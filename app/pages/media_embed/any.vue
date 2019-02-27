@@ -1,31 +1,29 @@
 <template>
   <a :href="href" target="_blank" class="iframely-embed-card">
-    <div class="title" :class="{'without-space': !hasThumbnail}">{{title}}</div>
-    <div class="description" :class="{'without-space': !hasThumbnail}">{{description}}</div>
+    <div class="title" :class="{ 'without-space': !hasThumbnail }">{{ title }}</div>
+    <div class="description" :class="{ 'without-space': !hasThumbnail }">{{ description }}</div>
     <img class="thumbnail" :src=src v-if="hasThumbnail" />
-    <div class="site">{{site}}</div>
+    <div class="site">{{ site }}</div>
   </a>
 </template>
 
 <script>
+import { getResourceFromIframely } from '~/utils/article'
+
 export default {
   data() {
     return {
-      src: null,
-      title: null,
-      description: null,
-      site: null,
-      href: null,
+      src: '',
+      title: '',
+      description: '',
+      site: '',
+      href: '',
       hasThumbnail: false
     }
   },
   async mounted() {
     this.href = encodeURI(this.$route.query.url)
-    const response = await this.$axios.$get(
-      `https://iframe.ly/api/iframely?api_key=${process.env.IFRAMELY_API_KEY}&url=${
-        this.href
-      }&omit_script=1&omit_css=1`
-    )
+    const response = (await getResourceFromIframely('iframely', this.href)).data
     this.title = response.meta.title
     this.description = response.meta.description
     this.site = response.url.split('/')[2]
