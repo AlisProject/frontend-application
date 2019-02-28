@@ -1,30 +1,28 @@
 <template>
-  <a :href=href target="_blank" class="twitter-profile-card">
-    <div class="title">{{title}}</div>
-    <div class="description">{{description}}</div>
+  <a :href="href" target="_blank" class="twitter-profile-card">
+    <div class="title">{{ title }}</div>
+    <div class="description">{{ description }}</div>
     <div class="site">twitter.com</div>
   </a>
 </template>
 
 <script>
+import { getResourceFromIframely } from '~/utils/article'
+
 export default {
   data() {
     return {
-      title: null,
-      description: null,
-      profileName: null,
-      href: null
+      title: '',
+      description: '',
+      profileName: '',
+      href: ''
     }
   },
   async mounted() {
     const twitterProfileName = this.$route.params.userName
     this.href = encodeURI(`https://twitter.com/${twitterProfileName}`)
     this.profileName = twitterProfileName
-    const response = await this.$axios.$get(
-      `https://iframe.ly/api/oembed?api_key=${
-        process.env.IFRAMELY_API_KEY
-      }&url=${encodeURIComponent(`twitter.com/${twitterProfileName}`)}&omit_script=1&omit_css=1`
-    )
+    const response = (await getResourceFromIframely('oembed', this.href)).data
     this.title = response.title
     this.description = response.description
   }
