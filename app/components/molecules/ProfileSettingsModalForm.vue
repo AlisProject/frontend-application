@@ -13,7 +13,7 @@
           <label class="upload-btn">
             <img
               class="btn-pic"
-              src="~/assets/images/pc/common/icon_profile_img.png"
+              src="~assets/images/pc/common/icon_profile_img.png"
               alt="upload"
             >
             <input class="upload-img-input" type="file" accept="image/*" @change="onFileChange">

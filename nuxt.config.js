@@ -68,8 +68,10 @@ module.exports = {
   /*
    ** Build configuration
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', 'nuxt-sass-resources-loader'],
-  sassResources: ['~/assets/stylesheets/mixins/**.scss'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', '@nuxtjs/style-resources'],
+  styleResources: {
+    scss: ['~assets/stylesheets/mixins/**.scss']
+  },
   markdownit: {
     injected: true,
     preset: 'default',
@@ -95,15 +97,21 @@ module.exports = {
     base: '/'
   },
   render: {
-    gzip: false
+    /**
+     * compression を通すと API Gateway がレスポンスを返せないので
+     * なにもしないミドルウェアを定義しておく
+     */
+    compressor: (req, res, next) => {
+      next()
+    }
   },
   build: {
     publicPath: `https://${process.env.DOMAIN}/d/nuxt/dist/`,
     /*
      ** Run ESLint on save
      */
-    extend(config, { isDev, isClient }) {
-      if (isDev && isClient) {
+    extend(config) {
+      if (process.server && process.browser) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -111,14 +119,13 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    },
-    vendor: ['axios', 'moment', '@johmun/vue-tags-input', '@alisproject/alis-editor']
+    }
   },
   css: [
     '~assets/stylesheets/medium-editor.scss',
     '~assets/stylesheets/vuex-toast.scss',
     '@alisproject/alis-editor/dist/AlisEditor.css',
-    '~/assets/stylesheets/ckeditor-view.scss'
+    '~assets/stylesheets/ckeditor-view.scss'
   ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,

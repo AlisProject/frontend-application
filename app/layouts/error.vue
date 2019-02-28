@@ -67,7 +67,7 @@ export default {
 
 .page-500-container,
 .page-404-container {
-  background: url('~/assets/images/pc/common/image_bg404.png') no-repeat;
+  background: url('~assets/images/pc/common/image_bg404.png') no-repeat;
   background-position: center bottom;
   background-size: 600px;
   text-align: center;

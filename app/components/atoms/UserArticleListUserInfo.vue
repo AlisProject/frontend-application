@@ -203,7 +203,7 @@ export default {
 
 .report-user {
   grid-area: sub-icon;
-  background-image: url('~/assets/images/pc/common/icon_draftcassette_active.png');
+  background-image: url('~assets/images/pc/common/icon_draftcassette_active.png');
   background-position: 10px;
   background-repeat: no-repeat;
   background-size: 20px;

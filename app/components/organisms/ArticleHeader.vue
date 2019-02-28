@@ -228,7 +228,7 @@ export default {
   }
 
   .edit-article {
-    background: url('~/assets/images/sp/common/icon_editprofile.png') no-repeat;
+    background: url('~assets/images/sp/common/icon_editprofile.png') no-repeat;
     background-size: 20px;
     color: #0086cc;
     cursor: pointer;
