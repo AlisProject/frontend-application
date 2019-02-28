@@ -48,6 +48,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
+import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
@@ -151,6 +152,7 @@ export default {
     },
     togglePopup() {
       if (!this.publishable) return
+      this.setThumbnails()
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -177,6 +179,14 @@ export default {
     },
     onChangeTagValidationState(isInvalid) {
       this.isInvalidTag = isInvalid
+    },
+    setThumbnails() {
+      const images = Array.from(document.querySelectorAll('figure img'))
+      const thumbnails = getThumbnails(images)
+      this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE

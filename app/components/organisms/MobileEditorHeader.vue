@@ -17,6 +17,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
 import MobileEditorHeaderPostArticleModal from '../organisms/MobileEditorHeaderPostArticleModal'
 import { isIOS, isAndroid } from '~/utils/device'
+import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
@@ -47,10 +48,19 @@ export default {
       this.setArticleListScrollHeight({ scroll: 0 })
     },
     showMobileEditorHeaderPostArticleModal() {
+      this.setThumbnails()
       this.setMobileEditorHeaderPostArticleModal({ isShow: true })
     },
+    setThumbnails() {
+      const images = Array.from(document.querySelectorAll('figure img'))
+      const thumbnails = getThumbnails(images)
+      this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
+    },
     ...mapActions('presentation', ['setArticleListScrollHeight']),
-    ...mapActions('article', ['resetArticleData']),
+    ...mapActions('article', ['resetArticleData', 'updateSuggestedThumbnails', 'updateThumbnail']),
     ...mapActions('user', ['setMobileEditorHeaderPostArticleModal'])
   }
 }

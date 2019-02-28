@@ -40,12 +40,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import {
-  resizeTextarea,
-  getThumbnails,
-  preventDragAndDrop,
-  getResourceFromIframely
-} from '~/utils/article'
+import { resizeTextarea, preventDragAndDrop, getResourceFromIframely } from '~/utils/article'
 import { isIOS, isAndroid, isMobile } from '~/utils/device'
 
 if (process.client && isMobile()) {
@@ -88,8 +83,7 @@ export default {
         setIsEditedBody,
         sendNotification,
         updateBody,
-        putArticleBody,
-        putThumbnail
+        putArticleBody
       } = this
 
       return {
@@ -100,7 +94,6 @@ export default {
         sendNotification,
         updateBody,
         putArticleBody,
-        putThumbnail,
         getResourceFromIframely
       }
     },
@@ -219,15 +212,6 @@ export default {
         throw new Error('Update article failed.')
       }
     },
-    putThumbnail() {
-      const images = Array.from(this.$el.querySelectorAll('figure img'))
-      // Update thumbnails
-      const thumbnails = getThumbnails(images)
-      this.updateSuggestedThumbnails({ thumbnails })
-      if (!thumbnails.includes(this.thumbnail)) {
-        this.updateThumbnail({ thumbnail: '' })
-      }
-    },
     fixToolbarPosition() {
       if (!isIOS()) return
       if (!document.querySelector('.ck-toolbar')) return
@@ -287,14 +271,12 @@ export default {
     },
     ...mapActions('article', [
       'updateTitle',
-      'updateSuggestedThumbnails',
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
       'setIsEditedTitle',
       'setIsEditedBody',
       'setSaveStatus',
-      'updateThumbnail',
       'putArticleTitle',
       'updateBody',
       'putPublicArticleTitle'
