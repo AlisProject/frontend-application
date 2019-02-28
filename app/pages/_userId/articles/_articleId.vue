@@ -1,15 +1,24 @@
 <template>
-  <article-detail :article="article" :topic="topicDisplayName"/>
+  <component :is="componentName" :article="article" :topic="topicDisplayName" />
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import ArticleDetail from '~/components/pages/ArticleDetail'
-import { htmlDecode } from '~/utils/article'
+import BlankPage from '~/components/pages/BlankPage'
+import ArticleDetailV1 from '~/components/pages/ArticleDetailV1'
+import ArticleDetailV2 from '~/components/pages/ArticleDetailV2'
+import { htmlDecode, isV2 } from '~/utils/article'
 
 export default {
   components: {
-    ArticleDetail
+    BlankPage,
+    ArticleDetailV1,
+    ArticleDetailV2
+  },
+  data() {
+    return {
+      componentName: 'BlankPage'
+    }
   },
   async fetch({ store, params, error, redirect }) {
     try {
@@ -32,6 +41,13 @@ export default {
       })
     } catch (e) {
       error({ statusCode: 404 })
+    }
+  },
+  created() {
+    if (isV2(this.article)) {
+      this.componentName = 'ArticleDetailV2'
+    } else {
+      this.componentName = 'ArticleDetailV1'
     }
   },
   async mounted() {

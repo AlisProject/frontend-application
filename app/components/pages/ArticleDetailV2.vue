@@ -1,12 +1,12 @@
 <template>
   <div class="article-container">
     <app-header />
-    <div class="area-article">
+    <div class="area-article v2-content">
       <no-ssr>
         <article-header :article="article" :topic="topic" :isCurrentUser="isCurrentUser" />
       </no-ssr>
       <h1 class="area-title">{{ decodedTitle }}</h1>
-      <div class="area-content" v-html="article.body" />
+      <div class="area-content ck-content" v-html="article.body" />
       <article-tags :tags="article.tags"/>
       <article-footer-actions
         :articleId="article.article_id"
@@ -38,7 +38,7 @@ import ArticleTags from '../molecules/ArticleTags'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
 import AppFooter from '../organisms/AppFooter'
-import { showEmbedTweet, htmlDecode } from '~/utils/article'
+import { htmlDecode, showEmbed } from '~/utils/article'
 
 export default {
   components: {
@@ -64,11 +64,7 @@ export default {
     }
   },
   mounted() {
-    const figcaptions = document.querySelectorAll('figcaption')
-    figcaptions.forEach((figcaption) => {
-      figcaption.removeAttribute('contenteditable')
-    })
-    showEmbedTweet()
+    showEmbed()
   },
   beforeDestroy() {
     this.resetArticleCommentsLastEvaluatedKey()

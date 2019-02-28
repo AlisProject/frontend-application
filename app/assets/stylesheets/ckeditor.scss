@@ -1,0 +1,110 @@
+:root {
+  --ck-color-toolbar-background: #fff;
+  --ck-spacing-standard: 0;
+  --ck-border-radius: 5px;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+  border: 1px solid transparent;
+  box-shadow: none;
+}
+
+.ck {
+  &.ck-toolbar {
+    background: #fff;
+  }
+
+  &.ck-balloon-panel {
+    border: none;
+    box-shadow: none;
+
+    &[class*='arrow_n'] {
+      &:before {
+        border-top-color: #fff;
+        border-bottom-color: #fff;
+      }
+
+      &.ck-toolbar-container:after {
+        border-top-color: #fff;
+        border-bottom-color: #fff;
+        z-index: 0;
+      }
+    }
+
+    &[class*='arrow_s'] {
+      &:before {
+        display: none;
+      }
+
+      &.ck-toolbar-container:after {
+        border-top-color: #fff;
+        filter: none;
+        z-index: 0;
+      }
+    }
+  }
+
+  &.ck-button {
+    &.ck-tooltip {
+      display: none;
+    }
+
+    &:not(.ck-disabled):hover {
+      background: none;
+      cursor: pointer;
+    }
+  }
+
+  &.ck-tooltip {
+    display: none;
+  }
+
+  &.ck-input.ck-input-text {
+    border: none;
+  }
+
+  &.ck-link-actions {
+    .ck-button.ck-link-actions__preview {
+      .ck-button__label {
+        color: #0086cc;
+      }
+    }
+  }
+
+  .ck-link_selected {
+    background: none;
+  }
+
+  &.ck-editor__is-empty:not(.ck-focused):before {
+    color: #898989;
+    content: '本文を入力してください';
+    cursor: text;
+    display: block;
+    margin: 16px 0;
+    position: absolute;
+  }
+
+  .media {
+    margin: 1em 3px;
+  }
+}
+
+.area-editor-container {
+  .ck-content {
+    .image {
+      margin: 24px 3px;
+    }
+
+    .image-style-align-right {
+      margin-left: 30px;
+    }
+
+    .image-style-align-left {
+      margin-right: 30px;
+    }
+  }
+}
+
+.alis-editor-dragover {
+  background: #ddd;
+}

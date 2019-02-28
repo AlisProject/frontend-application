@@ -1,6 +1,10 @@
 <template>
   <section>
-    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'draft'">
+    <!--
+      v1 の記事は medium-editor に関連したライブラリを CDN 経由で取得する必要があるため、
+      http 通信でのページ遷移を行う必要がある。そのため、a タグを用いている。
+    -->
+    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'draft' && !isV2Article">
       <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
       <article-card-content :article="article"/>
     </a>
@@ -14,6 +18,7 @@
 <script>
 import ArticleCardImage from '../atoms/ArticleCardImage'
 import ArticleCardContent from '../organisms/ArticleCardContent'
+import { isV2 } from '~/utils/article'
 
 export default {
   props: {
@@ -29,11 +34,16 @@ export default {
     ArticleCardContent
   },
   computed: {
+    isV2Article() {
+      return isV2(this.article)
+    },
     getLink() {
       let link = ''
       switch (this.linkTo) {
         case 'draft':
-          link = `/me/articles/draft/${this.article.article_id}/edit`
+          link = this.isV2Article
+            ? `/me/articles/draft/v2/${this.article.article_id}/edit`
+            : `/me/articles/draft/${this.article.article_id}/edit`
           break
         default:
           link = `/${this.article.user_id}/articles/${this.article.article_id}`

@@ -11,10 +11,15 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: setup yarn
+          command: |
+            sudo npm install -g yarn@1.6.0
+
+      - run: yarn install --pure-lockfile
 
       - save_cache:
           paths:
@@ -41,4 +46,3 @@ jobs:
             sudo apt-get -y -qq install awscli
             sudo npm install -g serverless
             ./deploy.sh
-

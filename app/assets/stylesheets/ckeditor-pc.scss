@@ -1,0 +1,15 @@
+@import './ckeditor.scss';
+
+.ck {
+  &.ck-toolbar {
+    filter: drop-shadow(0 3px 5px rgba(192, 192, 192, 0.5));
+  }
+
+  &.ck-balloon-panel {
+    filter: drop-shadow(0 3px 5px rgba(192, 192, 192, 0.5));
+  }
+
+  &.ck-editor__editable_inline {
+    padding: 0;
+  }
+}

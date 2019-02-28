@@ -5,7 +5,10 @@
       <span class="article-status">(公開中)</span>
       <div class="article-button" @click="toggleArticlePopup">
         <div class="article-popup" v-show="isArticlePopupShown">
-          <span class="article-popup-content unpblish-button" @click="unpublish">
+          <span
+            class="article-popup-content unpublish-button"
+            :class="{ 'show-unpublish-button': isV2Article }"
+            @click="unpublish">
             記事を下書きに戻す
           </span>
           <a
@@ -19,7 +22,14 @@
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
         </div>
       </div>
-      <a class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`">
+      <nuxt-link
+        class="edit-article"
+        :class="{ 'show-edit-article': isV2Article }"
+        :to="`/me/articles/public/v2/${article.article_id}/edit`"
+        v-if="isV2Article">
+        編集する
+      </nuxt-link>
+      <a class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`" v-else>
         編集する
       </a>
     </template>
@@ -29,6 +39,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { isV2 } from '~/utils/article'
 
 export default {
   data() {
@@ -88,6 +99,9 @@ export default {
     },
     facebookShareUrl() {
       return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.shareUrl)}`
+    },
+    isV2Article() {
+      return isV2(this.article)
     }
   },
   methods: {
@@ -101,7 +115,8 @@ export default {
       const articleId = this.article.article_id
       try {
         await this.unpublishPublicArticle({ articleId })
-        this.$router.push(`/users/${this.article.user_id}`)
+        // 下書きに戻した後に下書き記事ページの記事情報を更新するために location.href を使う
+        location.href = `/users/${this.article.user_id}/drafts`
         this.sendNotification({ text: '記事を下書きに戻しました' })
       } catch (e) {
         this.sendNotification({ text: '記事を下書きに戻せませんでした', type: 'warning' })
@@ -247,14 +262,22 @@ export default {
       .article-popup {
         left: -190px;
 
-        .article-popup-content.unpblish-button {
+        .article-popup-content.unpublish-button {
           display: none;
+
+          &.show-unpublish-button {
+            display: block;
+          }
         }
       }
     }
 
     .edit-article {
       display: none;
+
+      &.show-edit-article {
+        display: block;
+      }
     }
   }
 }

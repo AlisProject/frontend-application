@@ -1,0 +1,38 @@
+@import './ckeditor.scss';
+
+.ck {
+  &.ck-editor__top {
+    .ck.ck-toolbar {
+      border: none;
+      filter: none;
+      position: absolute;
+      width: 100%;
+      box-shadow: 0px 6px 5px -5px rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  &.ck-editor__editable {
+    border: none;
+
+    &:not(.ck-editor__nested-editable).ck-focused {
+      border: none;
+    }
+  }
+
+  &.ck-editor__editable_inline {
+    padding: 0 12px;
+  }
+
+  &.ck-balloon-panel {
+    filter: drop-shadow(0 3px 5px rgba(192, 192, 192, 0.5));
+
+    .ck-toolbar {
+      filter: drop-shadow(0 3px 5px rgba(192, 192, 192, 0.5));
+      position: relative;
+    }
+  }
+}
+
+.toast {
+  position: absolute;
+}

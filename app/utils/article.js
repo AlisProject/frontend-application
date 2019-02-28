@@ -344,3 +344,56 @@ export function resizeTextarea({ targetElement, height, lineHeight, defaultHeigh
     }
   })
 }
+
+export function isV2(article = {}) {
+  if (article.version === undefined) return false
+  const isV2 = article.version >= 2 && article.version < 3
+  return isV2
+}
+
+export function showEmbed() {
+  document.querySelectorAll('oembed[url]').forEach(async (element) => {
+    const url = element.attributes.url.value
+
+    const isTwitterResource =
+      url === 'https://twitter.com' || url.startsWith('https://twitter.com/')
+    const isTweet = isTwitterResource && url.split('/')[4] === 'status'
+    const isGistResource = url.startsWith('https://gist.github.com/')
+    const isYouTubeResource = isYouTubeVideoURL(url)
+    const isFacebookResource = isFacebookPostURL(url)
+    const isInstagramResource = isInstagramURL(url)
+    let result
+
+    try {
+      result = (await getResourceFromIframely(isTwitterResource ? 'oembed' : 'iframely', url)).data
+    } catch (error) {
+      console.error(error)
+      return
+    }
+
+    if (
+      isTweet ||
+      isGistResource ||
+      isYouTubeResource ||
+      isFacebookResource ||
+      isInstagramResource
+    ) {
+      iframely.load(element, url)
+      return
+    }
+
+    if (isTwitterResource) {
+      const { title, description } = result
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
+
+      element.innerHTML = getTwitterProfileTemplate({ ...result })
+    } else {
+      const { title, description } = result.meta
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
+
+      element.innerHTML = getIframelyEmbedTemplate({ ...result })
+    }
+  })
+}

@@ -59,7 +59,6 @@ export default {
       publishingArticle: false,
       isPopupShown: false,
       isThumbnailSelected: false,
-      topic: null,
       isInvalidTag: false
     }
   },
@@ -97,15 +96,15 @@ export default {
 
         if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
-        const { articleId, title, body, topic } = this
+        const { articleId, title, body, topicType } = this
         const overview = body
           .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
           .replace(/\r?\n?\s/g, ' ')
           .slice(0, 100)
         if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
         if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
-        if (topic === null) this.sendNotification({ text: 'カテゴリを選択してください' })
-        if (title === '' || overview === '' || topic === null) {
+        if (topicType === null) this.sendNotification({ text: 'カテゴリを選択してください' })
+        if (title === '' || overview === '' || topicType === null) {
           this.publishingArticle = false
           return
         }
@@ -124,10 +123,10 @@ export default {
           location.href.includes('/me/articles/new')
         ) {
           await this.putDraftArticle({ article, articleId })
-          await this.publishDraftArticle({ articleId, topic, tags })
+          await this.publishDraftArticle({ articleId, topic: topicType, tags })
         } else if (location.href.includes('/me/articles/public')) {
           await this.putPublicArticle({ article, articleId })
-          await this.republishPublicArticle({ articleId, topic, tags })
+          await this.republishPublicArticle({ articleId, topic: topicType, tags })
         }
         this.$router.push(`/${this.currentUserInfo.user_id}/articles/${articleId}`)
         this.sendNotification({ text: '記事を公開しました' })
@@ -224,10 +223,6 @@ export default {
       ) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
       }
-    },
-    topicType() {
-      if (this.topicType === null) return
-      this.topic = this.topicType
     }
   }
 }
@@ -440,12 +435,6 @@ export default {
     &::before {
       top: 25px !important;
     }
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .area-post-article {
-    display: none;
   }
 }
 

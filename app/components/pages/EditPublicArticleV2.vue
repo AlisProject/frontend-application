@@ -1,18 +1,19 @@
 <template>
-  <div :class="`create-article-container ${deviceType}`">
+  <div :class="`edit-article-container ${deviceType}`">
     <app-header v-if="deviceType === 'pc'" />
     <mobile-editor-header v-else />
-    <edit-header-nav-v2 type="draft-article" />
+    <edit-header-nav-v2 type="public-article" />
     <article-editor-v2
-      :title="decodedTitle"
+      :defaultTitle="decodedTitle"
       :updateArticleTitle="updateArticleTitle"
-      :putArticleBody="putDraftArticleBody"
+      :putArticleBody="putPublicArticleBody"
+      :editorContent="body"
     />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import MobileEditorHeader from '../organisms/MobileEditorHeader'
 import EditHeaderNavV2 from '../molecules/EditHeaderNavV2'
@@ -43,15 +44,16 @@ export default {
     decodedTitle() {
       return htmlDecode(this.title)
     },
-    ...mapGetters('article', ['articleId', 'title', 'body'])
+    ...mapGetters('article', ['title', 'body'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticleTitle', 'gotArticleData', 'putDraftArticleBody']),
+    ...mapActions('article', ['putPublicArticleTitle', 'gotArticleData', 'putPublicArticleBody']),
     async updateArticleTitle() {
       if (!this.gotArticleData) return
-      const { title, articleId } = this
+      const { title } = this
+      const { articleId } = this.$route.params
       const articleTitle = { title }
-      await this.putDraftArticleTitle({ articleTitle, articleId })
+      await this.putPublicArticleTitle({ articleTitle, articleId })
     }
   }
 }
@@ -61,7 +63,7 @@ export default {
 .pc,
 .ios,
 .android {
-  &.create-article-container {
+  &.edit-article-container {
     display: grid;
     grid-template-rows: 100px 74px 50px 650px 75px;
     grid-template-columns: 1fr 640px 1fr;
@@ -76,8 +78,8 @@ export default {
 }
 
 @media screen and (max-width: 640px) {
-  .create-article-container.ios,
-  .create-article-container.android {
+  .edit-article-container.ios,
+  .edit-article-container.android {
     grid-template-rows: 66px 40px min-content min-content min-content;
     grid-template-columns: 10px 1fr 10px;
     /* prettier-ignore */

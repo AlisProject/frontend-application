@@ -1,3 +1,5 @@
+const axiosRetry = require('axios-retry')
+
 module.exports = {
   /*
   ** Headers of the page
@@ -13,7 +15,7 @@ module.exports = {
     titleTemplate: '%s | ALIS',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'apple-mobile-web-app-title', content: 'ALIS' },
       {
         hid: 'description',
@@ -77,11 +79,16 @@ module.exports = {
     '~/plugins/axios',
     '~/plugins/vuelidate',
     { src: '~plugins/gtm.js', ssr: false },
-    { src: '~/plugins/vue-tags-input', ssr: false }
+    { src: '~/plugins/vue-tags-input', ssr: false },
+    { src: '~/plugins/editor', ssr: false }
   ],
   axios: {
     baseURL: process.env.BASE_URL,
-    proxyHeaders: false
+    proxyHeaders: false,
+    retry: {
+      retries: 3,
+      retryDelay: axiosRetry.exponentialDelay
+    }
   },
   srcDir: 'app',
   router: {
@@ -105,9 +112,14 @@ module.exports = {
         })
       }
     },
-    vendor: ['axios', 'moment', '@johmun/vue-tags-input']
+    vendor: ['axios', 'moment', '@johmun/vue-tags-input', '@alisproject/alis-editor']
   },
-  css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
+  css: [
+    '~assets/stylesheets/medium-editor.scss',
+    '~assets/stylesheets/vuex-toast.scss',
+    '@alisproject/alis-editor/dist/AlisEditor.css',
+    '~/assets/stylesheets/ckeditor-view.scss'
+  ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
     REGION: process.env.REGION,
