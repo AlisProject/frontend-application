@@ -171,7 +171,6 @@ export default {
       try {
         // Do nothing if user don't edit article
         if (!this.isEditedTitle) {
-          this.setSaveStatus({ saveStatus: '' })
           return
         }
 
@@ -192,6 +191,7 @@ export default {
       }
     },
     async onInputTitle(event) {
+      this.setSaveStatus({ saveStatus: '' })
       this.setIsEditedTitle({ isEditedTitle: true })
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
