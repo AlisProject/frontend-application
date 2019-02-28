@@ -1,87 +1,108 @@
 <template>
   <div>
-    <h1 class="title" v-if="isSelectedEmailAuth">新規登録</h1>
+    <h1 v-if="isSelectedEmailAuth" class="title">
+      新規登録
+    </h1>
     <div class="modal-body">
-      <div class="email-auth" v-show="isSelectedEmailAuth" :class="{ isSelectedEmailAuth }">
+      <div v-show="isSelectedEmailAuth" class="email-auth" :class="{ isSelectedEmailAuth }">
         <form class="signup-form" @keypress.enter.prevent="onSubmit">
-          <div class="signup-form-group" :class="{ 'error': hasUserIdError }">
+          <div class="signup-form-group" :class="{ error: hasUserIdError }">
             <label class="signup-form-label">ユーザーID※半角英数字3文字以上</label>
             <input
+              ref="userId"
               class="signup-form-input"
               type="text"
               placeholder="taro"
               maxlength="30"
-              ref="userId"
               @input="setUserId"
               @blur="showError('userId')"
-              @focus="resetError('userId')">
-            <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">半角英数字と-（ハイフン）のみご利用下さい</p>
-            <p class="error-message" v-if="showErrorUserIdMinLength && showErrorUserId">3文字以上の英数字で入力してください</p>
+              @focus="resetError('userId')"
+            >
+            <p v-if="showErrorUserId && !showErrorUserIdMinLength" class="error-message">
+              半角英数字と-（ハイフン）のみご利用下さい
+            </p>
+            <p v-if="showErrorUserIdMinLength && showErrorUserId" class="error-message">
+              3文字以上の英数字で入力してください
+            </p>
           </div>
-          <div class="signup-form-group" :class="{ 'error': hasEmailError }">
+          <div class="signup-form-group" :class="{ error: hasEmailError }">
             <label class="signup-form-label">メールアドレス</label>
             <input
+              ref="email"
               class="signup-form-input"
               type="email"
               placeholder="alis@example.com"
               maxlength="256"
-              ref="email"
               @input="setEmail"
               @blur="showError('email')"
-              @focus="resetError('email')">
-            <p class="error-message" v-if="showErrorInvalidEmail">メールアドレスの形式が正しくありません</p>
+              @focus="resetError('email')"
+            >
+            <p v-if="showErrorInvalidEmail" class="error-message">
+              メールアドレスの形式が正しくありません
+            </p>
           </div>
-          <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
+          <div class="signup-form-group" :class="{ error: hasPasswordError }">
             <label class="signup-form-label">パスワード※半角英数字8文字以上</label>
             <input
+              ref="password"
               class="signup-form-input"
               type="password"
               placeholder="●●●●●●●●"
-              ref="password"
               @input="setPassword"
               @blur="showError('password')"
-              @focus="resetError('password')">
-            <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上で入力してください</p>
+              @focus="resetError('password')"
+            >
+            <p v-if="showErrorInvalidPassword" class="error-message">
+              パスワードは8文字以上で入力してください
+            </p>
           </div>
         </form>
         <div class="modal-footer">
-          <p class="error-message">{{ errorMessage }}</p>
+          <p class="error-message">
+            {{ errorMessage }}
+          </p>
           <p class="agreement-confirmation">
-            <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・
-            <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意して
+            <nuxt-link to="/terms" target="_blank">
+              利用規約
+            </nuxt-link>・
+            <nuxt-link to="/privacy" target="_blank">
+              プライバシーポリシー
+            </nuxt-link>に同意して
           </p>
           <app-button class="registration-button" :disabled="invalidSubmit" @click="onSubmit">
             登録する
           </app-button>
         </div>
       </div>
-      <div class="external-provider-auth" v-show="!isSelectedEmailAuth">
+      <div v-show="!isSelectedEmailAuth" class="external-provider-auth">
         <a class="line-button" :href="lineSignUpAuthorizeURL">
           LINEではじめる
         </a>
         <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
           twitterではじめる
         </a>
-        <p
-          class="for-email-signup"
-          @click="showEmailAuth">
+        <p class="for-email-signup" @click="showEmailAuth">
           メールではじめる
         </p>
         <p class="agreement-confirmation">
-          上記を押した場合、<nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・<nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意したものとみなします
+          上記を押した場合、<nuxt-link to="/terms" target="_blank">
+            利用規約
+          </nuxt-link>・<nuxt-link
+            to="/privacy"
+            target="_blank"
+          >
+            プライバシーポリシー
+          </nuxt-link>に同意したものとみなします
         </p>
         <p class="external-provider-confirmation">
           ※外部サービス上でALISを使っていることは表示されません
         </p>
       </div>
     </div>
-    <div
-      class="for-login-user"
-      @click="transitToLogin"
-      v-if="!isSelectedEmailAuth">
+    <div v-if="!isSelectedEmailAuth" class="for-login-user" @click="transitToLogin">
       ログインされる方は<span class="link-sp">こちら</span>
     </div>
-    <div class="for-login-user-sp" v-else>
+    <div v-else class="for-login-user-sp">
       ログインの方は<span class="for-login-user-link" @click="transitToLogin">こちら</span>
     </div>
   </div>
@@ -97,6 +118,9 @@ function userId(value) {
 }
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       errorMessage: '',
@@ -108,9 +132,6 @@ export default {
   async mounted() {
     this.lineSignUpAuthorizeURL = await this.getLineSignUpAuthorizeURL()
     this.twitterSignUpAuthorizeURL = await this.getTwitterSignUpAuthorizeURL()
-  },
-  components: {
-    AppButton
   },
   computed: {
     showErrorUserIdMinLength() {

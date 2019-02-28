@@ -1,39 +1,51 @@
 <template>
   <div>
-    <h1 class="title" v-if="isSelectedEmailAuth">ログイン</h1>
+    <h1 v-if="isSelectedEmailAuth" class="title">
+      ログイン
+    </h1>
     <div class="modal-body">
-      <div class="email-auth" v-show="isSelectedEmailAuth" :class="{ isSelectedEmailAuth }">
+      <div v-show="isSelectedEmailAuth" class="email-auth" :class="{ isSelectedEmailAuth }">
         <form class="signup-form" @keypress.enter="onSubmit">
-          <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
+          <div class="signup-form-group" :class="{ error: hasUserIdOrEmailError }">
             <label class="signup-form-label">ユーザーID または メールアドレス</label>
             <input
+              ref="userIdOrEmail"
               class="signup-form-input"
               type="text"
               placeholder="alis@example.com"
-              ref="userIdOrEmail"
               @input="setUserIdOrEmail"
               @blur="showError('userIdOrEmail')"
-              @focus="resetError('userIdOrEmail')">
+              @focus="resetError('userIdOrEmail')"
+            >
           </div>
-          <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
+          <div class="signup-form-group" :class="{ error: hasPasswordError }">
             <label class="signup-form-label">パスワード※半角英数字8文字以上</label>
             <input
+              ref="password"
               class="signup-form-input"
               type="password"
-              ref="password"
               placeholder="●●●●●●●●"
               @input="setPassword"
               @blur="showError('password')"
-              @focus="resetError('password')">
-            <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上で入力してください</p>
+              @focus="resetError('password')"
+            >
+            <p v-if="showErrorInvalidPassword" class="error-message">
+              パスワードは8文字以上で入力してください
+            </p>
           </div>
         </form>
         <div class="modal-footer">
-          <p class="error-message">{{ errorMessage }}</p>
+          <p class="error-message">
+            {{ errorMessage }}
+          </p>
 
           <p class="agreement-confirmation" :class="{ isSelectedEmailAuth }">
-            <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>、
-            <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意して
+            <nuxt-link to="/terms" target="_blank">
+              利用規約
+            </nuxt-link>、
+            <nuxt-link to="/privacy" target="_blank">
+              プライバシーポリシー
+            </nuxt-link>に同意して
           </p>
           <app-button class="login-button" :disabled="invalidSubmit" @click="onSubmit">
             ログインする
@@ -43,30 +55,32 @@
           </p>
         </div>
       </div>
-      <div class="external-provider-auth" v-show="!isSelectedEmailAuth">
+      <div v-show="!isSelectedEmailAuth" class="external-provider-auth">
         <a class="line-button" :href="lineLoginAuthorizeURL">
           LINEでログイン
         </a>
         <a class="twitter-button" :href="twitterLoginAuthorizeURL">
           twitterでログイン
         </a>
-        <p
-          class="for-email-login"
-          @click="showEmailAuth">
+        <p class="for-email-login" @click="showEmailAuth">
           メールでログイン
         </p>
         <p class="agreement-confirmation">
-          上記を押した場合、<nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・<nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意したものとみなします
+          上記を押した場合、<nuxt-link to="/terms" target="_blank">
+            利用規約
+          </nuxt-link>・<nuxt-link
+            to="/privacy"
+            target="_blank"
+          >
+            プライバシーポリシー
+          </nuxt-link>に同意したものとみなします
         </p>
       </div>
     </div>
-    <div
-      class="for-signup-user"
-      @click="transitToSignup"
-      v-if="!isSelectedEmailAuth">
+    <div v-if="!isSelectedEmailAuth" class="for-signup-user" @click="transitToSignup">
       新規登録をされる方は<span class="link-sp">こちら</span>
     </div>
-    <div class="for-signup-user-sp" v-else>
+    <div v-else class="for-signup-user-sp">
       新規登録をされる方は<span class="for-signup-user-link" @click="transitToSignup">こちら</span>
     </div>
   </div>
@@ -79,6 +93,9 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       errorMessage: '',
@@ -91,9 +108,6 @@ export default {
   async mounted() {
     this.lineLoginAuthorizeURL = await this.getLineLoginAuthorizeURL()
     this.twitterLoginAuthorizeURL = await this.getTwitterLoginAuthorizeURL()
-  },
-  components: {
-    AppButton
   },
   computed: {
     showErrorInvalidPassword() {

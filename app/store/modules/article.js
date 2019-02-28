@@ -58,45 +58,45 @@ const state = () => ({
 })
 
 const getters = {
-  article: (state) => state.article,
-  popularArticles: (state) => uniqBy(state.popularArticles, 'article_id'),
-  newArticles: (state) => uniqBy(state.newArticles, 'article_id'),
-  publicArticles: (state) => state.publicArticles,
-  draftArticles: (state) => state.draftArticles,
-  articleId: (state) => state.articleId,
-  title: (state) => state.title,
-  body: (state) => state.body,
-  suggestedThumbnails: (state) => Array.from(new Set(state.suggestedThumbnails)),
-  thumbnail: (state) => state.thumbnail,
-  isSaving: (state) => state.isSaving,
-  gotArticleData: (state) => state.gotArticleData,
-  publicArticlesLastEvaluatedKey: (state) => state.publicArticlesLastEvaluatedKey,
-  draftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey,
-  hasDraftArticlesLastEvaluatedKey: (state) => state.draftArticlesLastEvaluatedKey !== null,
-  likesCount: (state) => state.likesCount,
-  isLikedArticle: (state) => state.isLikedArticle,
-  isEdited: (state) => state.isEdited,
-  isEditedTitle: (state) => state.isEditedTitle,
-  isEditedBody: (state) => state.isEditedBody,
-  saveStatus: (state) => state.saveStatus,
-  articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
-  hasArticleCommentsLastEvaluatedKey: (state) =>
+  article: state => state.article,
+  popularArticles: state => uniqBy(state.popularArticles, 'article_id'),
+  newArticles: state => uniqBy(state.newArticles, 'article_id'),
+  publicArticles: state => state.publicArticles,
+  draftArticles: state => state.draftArticles,
+  articleId: state => state.articleId,
+  title: state => state.title,
+  body: state => state.body,
+  suggestedThumbnails: state => Array.from(new Set(state.suggestedThumbnails)),
+  thumbnail: state => state.thumbnail,
+  isSaving: state => state.isSaving,
+  gotArticleData: state => state.gotArticleData,
+  publicArticlesLastEvaluatedKey: state => state.publicArticlesLastEvaluatedKey,
+  draftArticlesLastEvaluatedKey: state => state.draftArticlesLastEvaluatedKey,
+  hasDraftArticlesLastEvaluatedKey: state => state.draftArticlesLastEvaluatedKey !== null,
+  likesCount: state => state.likesCount,
+  isLikedArticle: state => state.isLikedArticle,
+  isEdited: state => state.isEdited,
+  isEditedTitle: state => state.isEditedTitle,
+  isEditedBody: state => state.isEditedBody,
+  saveStatus: state => state.saveStatus,
+  articleCommentsLastEvaluatedKey: state => state.articleCommentsLastEvaluatedKey,
+  hasArticleCommentsLastEvaluatedKey: state =>
     !!Object.keys(state.articleCommentsLastEvaluatedKey || {}).length,
-  articleCommentLikedCommentIds: (state) => state.articleCommentLikedCommentIs,
-  searchArticles: (state) => state.searchArticles,
-  topics: (state) => state.topics.sort((a, b) => a.order > b.order),
-  page: (state) => state.page,
-  isLastPage: (state) => state.isLastPage,
-  articleType: (state) => state.articleType,
-  topicType: (state) => state.topicType || null,
-  topicDisplayName: (state) => state.topicDisplayName,
-  fetchingArticleTopic: (state) => state.fetchingArticleTopic,
-  tags: (state) => state.tags,
-  tagArticles: (state) => state.tagArticles,
-  hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
-  isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
-  eyecatchArticles: (state) => state.eyecatchArticles,
-  recommendedArticles: (state) => state.recommendedArticles
+  articleCommentLikedCommentIds: state => state.articleCommentLikedCommentIs,
+  searchArticles: state => state.searchArticles,
+  topics: state => state.topics.sort((a, b) => a.order > b.order),
+  page: state => state.page,
+  isLastPage: state => state.isLastPage,
+  articleType: state => state.articleType,
+  topicType: state => state.topicType || null,
+  topicDisplayName: state => state.topicDisplayName,
+  fetchingArticleTopic: state => state.fetchingArticleTopic,
+  tags: state => state.tags,
+  tagArticles: state => state.tagArticles,
+  hasPublicArticlesLastEvaluatedKey: state => state.hasPublicArticlesLastEvaluatedKey,
+  isFetchedPublicArticle: state => state.isFetchedPublicArticle,
+  eyecatchArticles: state => state.eyecatchArticles,
+  recommendedArticles: state => state.recommendedArticles
 }
 
 const actions = {
@@ -815,7 +815,7 @@ const mutations = {
     state.article.comments = [...comments]
   },
   [types.DELETE_ARTICLE_COMMENT](state, { commentId }) {
-    const comments = state.article.comments.filter((comment) => comment.comment_id !== commentId)
+    const comments = state.article.comments.filter(comment => comment.comment_id !== commentId)
     state.article.comments = comments
   },
   [types.SET_SEARCH_ARTICLES](state, { articles }) {
@@ -912,16 +912,16 @@ const mutations = {
   },
   [types.ADD_ARTICLE_REPLY_COMMENT](state, { replyComment, parentId }) {
     const parentCommentIndex = state.article.comments.findIndex(
-      (comment) => comment.comment_id === parentId
+      comment => comment.comment_id === parentId
     )
     state.article.comments[parentCommentIndex].replies.unshift(replyComment)
   },
   [types.DELETE_ARTICLE_REPLY_COMMENT](state, { commentId, parentId }) {
     const parentCommentIndex = state.article.comments.findIndex(
-      (comment) => comment.comment_id === parentId
+      comment => comment.comment_id === parentId
     )
     const replies = state.article.comments[parentCommentIndex].replies.filter(
-      (comment) => comment.comment_id !== commentId
+      comment => comment.comment_id !== commentId
     )
     state.article.comments[parentCommentIndex].replies = replies
   },

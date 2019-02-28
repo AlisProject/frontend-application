@@ -2,9 +2,9 @@
   <div class="area-user-article-card-list-container">
     <article-card
       v-for="article in articles"
-      :article="article"
       :key="article.article_id"
-      :linkTo="linkTo"
+      :article="article"
+      :link-to="linkTo"
     />
   </div>
 </template>

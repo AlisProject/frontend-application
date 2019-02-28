@@ -1,5 +1,5 @@
 <template>
-  <tag-article-list/>
+  <tag-article-list />
 </template>
 
 <script>

@@ -2,8 +2,8 @@
   <div class="area-notification-list-container">
     <notification-card
       v-for="notification in notifications"
-      :notification="notification"
       :key="notification.sort_key"
+      :notification="notification"
     />
   </div>
 </template>

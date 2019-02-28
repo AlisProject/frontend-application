@@ -2,23 +2,27 @@
   <nuxt-link :to="`/users/${user.user_id}`" class="search-user-card-container">
     <div class="search-user">
       <img
+        v-if="user.icon_image_url !== undefined"
         class="search-user-icon"
         :alt="imageCaption"
         :src="user.icon_image_url"
-        v-if="user.icon_image_url !== undefined"
       >
       <img
+        v-else
         class="search-user-icon"
         :alt="imageCaption"
         src="~assets/images/pc/common/icon_user_noimg.png"
-        v-else
       >
       <ul class="info">
-        <li class="user-display-name">{{ decodedUserDisplayName }}</li>
-        <li class="user-id">@{{ user.user_id }}</li>
+        <li class="user-display-name">
+          {{ decodedUserDisplayName }}
+        </li>
+        <li class="user-id">
+          @{{ user.user_id }}
+        </li>
       </ul>
     </div>
-    <span class="body" v-if="hasSelfIntroduction">{{ decodedSelfIntroduction }}</span>
+    <span v-if="hasSelfIntroduction" class="body">{{ decodedSelfIntroduction }}</span>
   </nuxt-link>
 </template>
 

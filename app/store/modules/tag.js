@@ -11,7 +11,7 @@ const state = () => ({
 })
 
 const getters = {
-  searchTags: (state) => state.searchTags
+  searchTags: state => state.searchTags
 }
 
 const actions = {

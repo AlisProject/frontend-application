@@ -1,8 +1,8 @@
 <template>
   <nuxt-link :to="`/users/${article.userInfo.user_id}`" class="area-data">
-    <article-card-content-data-profile-icon :user="article.userInfo"/>
-    <article-card-content-data-username :username="article.userInfo.user_display_name"/>
-    <article-card-content-data-published-at :publishedAt="publishedAt"/>
+    <article-card-content-data-profile-icon :user="article.userInfo" />
+    <article-card-content-data-username :username="article.userInfo.user_display_name" />
+    <article-card-content-data-published-at :published-at="publishedAt" />
   </nuxt-link>
 </template>
 
@@ -12,16 +12,16 @@ import ArticleCardContentDataUsername from '../atoms/ArticleCardContentDataUsern
 import ArticleCardContentDataPublishedAt from '../atoms/ArticleCardContentDataPublishedAt'
 
 export default {
+  components: {
+    ArticleCardContentDataProfileIcon,
+    ArticleCardContentDataUsername,
+    ArticleCardContentDataPublishedAt
+  },
   props: {
     article: {
       type: Object,
       required: true
     }
-  },
-  components: {
-    ArticleCardContentDataProfileIcon,
-    ArticleCardContentDataUsername,
-    ArticleCardContentDataPublishedAt
   },
   computed: {
     publishedAt() {

@@ -7,8 +7,8 @@
     <button class="post-article" @click="showMobileEditorHeaderPostArticleModal">
       公開する
     </button>
-    <mobile-editor-header-post-article-modal v-if="mobileEditorHeaderPostArticleModal.isShow"/>
-    <toast position="n"/>
+    <mobile-editor-header-post-article-modal v-if="mobileEditorHeaderPostArticleModal.isShow" />
+    <toast position="n" />
   </header>
 </template>
 

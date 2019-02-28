@@ -2,8 +2,8 @@ const axiosRetry = require('axios-retry')
 
 module.exports = {
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     script: [
       {
@@ -62,12 +62,12 @@ module.exports = {
     ]
   },
   /*
-  ** Customize the progress bar color
-  */
+   ** Customize the progress bar color
+   */
   loading: { color: '#0086cc' },
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', 'nuxt-sass-resources-loader'],
   sassResources: ['~/assets/stylesheets/mixins/**.scss'],
   markdownit: {
@@ -100,8 +100,8 @@ module.exports = {
   build: {
     publicPath: `https://${process.env.DOMAIN}/d/nuxt/dist/`,
     /*
-    ** Run ESLint on save
-    */
+     ** Run ESLint on save
+     */
     extend(config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({

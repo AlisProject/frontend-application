@@ -1,10 +1,6 @@
 <template>
   <div class="area-tags">
-    <nuxt-link
-      v-for="tag in tags"
-      :to="`/tag/${tag}`"
-      :key="tag"
-      class="tag">
+    <nuxt-link v-for="tag in tags" :key="tag" :to="`/tag/${tag}`" class="tag">
       <span class="tag-inner" @click="resetData">
         {{ tag }}
       </span>

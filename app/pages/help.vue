@@ -1,5 +1,5 @@
 <template>
-  <help-page/>
+  <help-page />
 </template>
 
 <script>

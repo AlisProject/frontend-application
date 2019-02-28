@@ -3,10 +3,11 @@
     <template v-for="(article, i) in articles">
       <eyecatch-article-card
         v-if="article !== null"
+        :key="article.id"
         :article="article"
         :order="`eyecatch${i + 1}`"
-        :key="article.id" />
-      <eyecatch-alternative-image :order="`eyecatch${i + 1}`" v-else />
+      />
+      <eyecatch-alternative-image v-else :order="`eyecatch${i + 1}`" />
     </template>
   </div>
 </template>

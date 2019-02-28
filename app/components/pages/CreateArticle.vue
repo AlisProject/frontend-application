@@ -5,8 +5,8 @@
     <edit-header-nav-v2 type="draft-article" />
     <article-editor-v2
       :title="decodedTitle"
-      :updateArticleTitle="updateArticleTitle"
-      :putArticleBody="putDraftArticleBody"
+      :update-article-title="updateArticleTitle"
+      :put-article-body="putDraftArticleBody"
     />
   </div>
 </template>

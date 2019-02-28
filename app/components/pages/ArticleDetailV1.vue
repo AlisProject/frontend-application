@@ -3,26 +3,30 @@
     <app-header />
     <div class="area-article v1-content">
       <no-ssr>
-        <article-header :article="article" :topic="topic" :isCurrentUser="isCurrentUser" />
+        <article-header :article="article" :topic="topic" :is-current-user="isCurrentUser" />
       </no-ssr>
-      <h1 class="area-title">{{ decodedTitle }}</h1>
+      <h1 class="area-title">
+        {{ decodedTitle }}
+      </h1>
       <div class="area-content" v-html="article.body" />
-      <article-tags :tags="article.tags"/>
+      <article-tags :tags="article.tags" />
       <article-footer-actions
-        :articleId="article.article_id"
-        :articleUserId="article.user_id"
-        :likesCount="likesCount"
-        :isLikedArticle="isLikedArticle"/>
+        :article-id="article.article_id"
+        :article-user-id="article.user_id"
+        :likes-count="likesCount"
+        :is-liked-article="isLikedArticle"
+      />
       <article-side-actions
-        :articleId="article.article_id"
-        :likesCount="likesCount"
-        :isLikedArticle="isLikedArticle"/>
-      <article-sub-infos :publishedAt="publishedAt" :tokenAmount="article.alisToken"/>
-      <author-info :user="article.userInfo"/>
+        :article-id="article.article_id"
+        :likes-count="likesCount"
+        :is-liked-article="isLikedArticle"
+      />
+      <article-sub-infos :published-at="publishedAt" :token-amount="article.alisToken" />
+      <author-info :user="article.userInfo" />
     </div>
-    <article-comments :comments="article.comments"/>
-    <article-comment-form/>
-    <app-footer/>
+    <article-comments :comments="article.comments" />
+    <article-comment-form />
+    <app-footer />
   </div>
 </template>
 

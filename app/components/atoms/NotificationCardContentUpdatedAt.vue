@@ -1,5 +1,7 @@
 <template>
-  <p class="area-date">{{ formattedUpdatedAt }}</p>
+  <p class="area-date">
+    {{ formattedUpdatedAt }}
+  </p>
 </template>
 
 <script>

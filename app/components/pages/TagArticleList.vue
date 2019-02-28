@@ -10,13 +10,13 @@
       </span>
     </div>
     <div class="area-tag-articles">
-      <p class="no-result-message" v-if="tagArticles.articles.length === 0">
+      <p v-if="tagArticles.articles.length === 0" class="no-result-message">
         該当する記事が存在しません。
       </p>
-      <search-article-card-list :articles="tagArticles.articles" v-else/>
+      <search-article-card-list v-else :articles="tagArticles.articles" />
     </div>
-    <the-loader :isLoading="!tagArticles.isLastPage"/>
-    <app-footer/>
+    <the-loader :is-loading="!tagArticles.isLastPage" />
+    <app-footer />
   </div>
 </template>
 
@@ -89,7 +89,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .tag-article-list {

@@ -6,8 +6,7 @@
       </p>
       <p class="signup-form-description">
         ご登録いただいたメールアドレスに記載のリンクにアクセスし、ログイン
-        を行うことで登録が完了します。※メールが届かない場合はこちらから再
-        送してください。
+        を行うことで登録が完了します。※メールが届かない場合はこちらから再 送してください。
       </p>
       <app-button class="to-top-button" @click="transitToTop">
         トップに戻る

@@ -1,5 +1,5 @@
 <template>
-  <new-article-list/>
+  <new-article-list />
 </template>
 
 <script>

@@ -2,8 +2,8 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        アカウント登録が<span class="br"/>完了しました。<br>
-        記事を書いたりいいねをして<span class="br"/>ALISを獲得しましょう。
+        アカウント登録が<span class="br" />完了しました。<br>
+        記事を書いたりいいねをして<span class="br" />ALISを獲得しましょう。
       </p>
       <app-button class="submit" @click="close">
         <nuxt-link to="/me/articles/new">

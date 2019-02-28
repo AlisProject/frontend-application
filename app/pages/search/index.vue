@@ -1,6 +1,6 @@
 <template>
   <no-ssr>
-    <search-page/>
+    <search-page />
   </no-ssr>
 </template>
 

@@ -1,10 +1,12 @@
 <template>
   <div>
-    <app-header class="app-header"/>
-    <div class="logo-mobile"></div>
+    <app-header class="app-header" />
+    <div class="logo-mobile" />
     <div v-if="error.statusCode === 404">
       <div class="page-404-container">
-        <h1 class="title">お探しのページは<span class="br"/>見つかりませんでした</h1>
+        <h1 class="title">
+          お探しのページは<span class="br" />見つかりませんでした
+        </h1>
         <p class="description">
           アクセスしようとしたページは削除、変更されたか、<br>
           現在利用できない可能性があります。
@@ -29,10 +31,11 @@
           class="twitter-timeline"
           data-width="380"
           data-height="500"
-          href="https://twitter.com/ALIS_media?ref_src=twsrc%5Etfw">
+          href="https://twitter.com/ALIS_media?ref_src=twsrc%5Etfw"
+        >
           Tweets by ALIS_media
         </a>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />
       </div>
     </div>
   </div>

@@ -1,18 +1,18 @@
 <template>
-  <div
-    class="area-user-info-container"
-    :class="{ 'is-current-user': isCurrentUser }">
+  <div class="area-user-info-container" :class="{ 'is-current-user': isCurrentUser }">
     <div class="area-profile-icon">
       <img
+        v-if="user.icon_image_url !== undefined"
         class="profile-icon"
         alt="profile-icon"
         :src="user.icon_image_url"
-        v-if="user.icon_image_url !== undefined">
+      >
       <img
+        v-else
         class="profile-icon"
         alt="profile-icon"
         src="~assets/images/pc/common/icon_user_noimg.png"
-        v-else>
+      >
     </div>
     <div class="area-user-display-name">
       <p class="user-display-name">
@@ -20,13 +20,13 @@
       </p>
     </div>
     <no-ssr>
-      <div class="profile-edit" @click="showProfileSettingsModal" v-if="isCurrentUser">
+      <div v-if="isCurrentUser" class="profile-edit" @click="showProfileSettingsModal">
         プロフィールを編集
       </div>
     </no-ssr>
     <no-ssr>
-      <div class="report-user" @click="toggleReportPopup" v-if="!isCurrentUser && loggedIn">
-        <div class="report-popup" v-show="isReportPopupShown">
+      <div v-if="!isCurrentUser && loggedIn" class="report-user" @click="toggleReportPopup">
+        <div v-show="isReportPopupShown" class="report-popup">
           <span class="report" @click="showUserReportModal">
             報告する
           </span>

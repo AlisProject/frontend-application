@@ -4,32 +4,36 @@
     <template v-if="isCurrentUser">
       <span class="article-status">(公開中)</span>
       <div class="article-button" @click="toggleArticlePopup">
-        <div class="article-popup" v-show="isArticlePopupShown">
+        <div v-show="isArticlePopupShown" class="article-popup">
           <span
             class="article-popup-content unpublish-button"
             :class="{ 'show-unpublish-button': isV2Article }"
-            @click="unpublish">
+            @click="unpublish"
+          >
             記事を下書きに戻す
           </span>
           <a
             class="article-popup-content"
             :href="twitterShareUrl"
-            target="_blank">twitterでシェアする</a>
+            target="_blank"
+          >twitterでシェアする</a>
           <a
             class="article-popup-content"
             :href="facebookShareUrl"
-            target="_blank">facebookでシェアする</a>
+            target="_blank"
+          >facebookでシェアする</a>
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
         </div>
       </div>
       <nuxt-link
+        v-if="isV2Article"
         class="edit-article"
         :class="{ 'show-edit-article': isV2Article }"
         :to="`/me/articles/public/v2/${article.article_id}/edit`"
-        v-if="isV2Article">
+      >
         編集する
       </nuxt-link>
-      <a class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`" v-else>
+      <a v-else class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`">
         編集する
       </a>
     </template>
@@ -42,11 +46,6 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { isV2 } from '~/utils/article'
 
 export default {
-  data() {
-    return {
-      isArticlePopupShown: false
-    }
-  },
   props: {
     article: {
       type: Object,
@@ -59,6 +58,29 @@ export default {
     isCurrentUser: {
       type: Boolean,
       required: true
+    }
+  },
+  data() {
+    return {
+      isArticlePopupShown: false
+    }
+  },
+  computed: {
+    shareUrl() {
+      return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
+        this.article.article_id
+      }`
+    },
+    twitterShareUrl() {
+      return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+        this.shareUrl
+      )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
+    },
+    facebookShareUrl() {
+      return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.shareUrl)}`
+    },
+    isV2Article() {
+      return isV2(this.article)
     }
   },
   mounted() {
@@ -84,24 +106,6 @@ export default {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
       })
-    }
-  },
-  computed: {
-    shareUrl() {
-      return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
-        this.article.article_id
-      }`
-    },
-    twitterShareUrl() {
-      return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        this.shareUrl
-      )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
-    },
-    facebookShareUrl() {
-      return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.shareUrl)}`
-    },
-    isV2Article() {
-      return isV2(this.article)
     }
   },
   methods: {

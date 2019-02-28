@@ -4,10 +4,10 @@
     <mobile-editor-header v-else />
     <edit-header-nav-v2 type="public-article" />
     <article-editor-v2
-      :defaultTitle="decodedTitle"
-      :updateArticleTitle="updateArticleTitle"
-      :putArticleBody="putPublicArticleBody"
-      :editorContent="body"
+      :default-title="decodedTitle"
+      :update-article-title="updateArticleTitle"
+      :put-article-body="putPublicArticleBody"
+      :editor-content="body"
     />
   </div>
 </template>

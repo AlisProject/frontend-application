@@ -1,10 +1,6 @@
 <template>
   <div class="area-search-user-card-list-container">
-    <search-user-card
-      v-for="user in users"
-      :user="user"
-      :key="user.user_id"
-    />
+    <search-user-card v-for="user in users" :key="user.user_id" :user="user" />
   </div>
 </template>
 

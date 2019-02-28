@@ -13,7 +13,8 @@
           :autocomplete-always-open="true"
           :separators="['　']"
           @before-adding-tag="checkTags"
-          @tags-changed="handleTagsChanged" />
+          @tags-changed="handleTagsChanged"
+        />
       </no-ssr>
     </div>
     <span class="error-message">

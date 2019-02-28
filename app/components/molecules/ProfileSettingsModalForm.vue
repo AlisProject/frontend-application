@@ -4,41 +4,45 @@
       <form class="signup-form" @submit.prevent>
         <div class="upload-img-section">
           <img
-            class="upload-img"
             v-if="currentUserInfo.icon_image_url !== undefined"
-            :src="currentUserInfo.icon_image_url" />
-          <img
             class="upload-img"
-            v-else-if="uploadedImage"
-            :src="uploadedImage" />
-          <div class="upload-img-dammy" v-else />
+            :src="currentUserInfo.icon_image_url"
+          >
+          <img v-else-if="uploadedImage" class="upload-img" :src="uploadedImage">
+          <div v-else class="upload-img-dammy" />
           <label class="upload-btn">
-            <img class="btn-pic" src="~/assets/images/pc/common/icon_profile_img.png" alt="upload">
+            <img
+              class="btn-pic"
+              src="~/assets/images/pc/common/icon_profile_img.png"
+              alt="upload"
+            >
             <input class="upload-img-input" type="file" accept="image/*" @change="onFileChange">
           </label>
         </div>
-        <div class="signup-form-group" :class="{ 'error': hasUserDisplayNameError }">
+        <div class="signup-form-group" :class="{ error: hasUserDisplayNameError }">
           <label class="signup-form-label">ユーザー名</label>
           <input
+            v-model="userDisplayName"
             class="signup-form-input"
             type="text"
             minlength="1"
             maxlength="30"
             placeholder="田中太郎"
-            v-model="userDisplayName"
             @input="setUserDisplayName($event.target.value)"
             @blur="showError('userDisplayName')"
-            @focus="resetError('userDisplayName')">
+            @focus="resetError('userDisplayName')"
+          >
           <label class="signup-form-label">自己紹介</label>
         </div>
         <div class="signup-form-group">
           <textarea
+            v-model="selfIntroduction"
             class="signup-form-textarea"
             type="text"
             placeholder="100文字以内でご入力ください"
             maxlength="100"
-            v-model="selfIntroduction"
-            @input="setSelfIntroduction($event.target.value)"/>
+            @input="setSelfIntroduction($event.target.value)"
+          />
         </div>
       </form>
     </div>
@@ -54,20 +58,20 @@
 import { mapActions, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import loadImage from 'blueimp-load-image'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
-import loadImage from 'blueimp-load-image'
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       userDisplayName: '',
       selfIntroduction: '',
       uploadedImage: ''
     }
-  },
-  components: {
-    AppButton
   },
   async created() {
     await this.setCurrentUserInfo()

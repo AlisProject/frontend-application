@@ -1,5 +1,5 @@
 <template>
-  <privacy-policy/>
+  <privacy-policy />
 </template>
 
 <script>

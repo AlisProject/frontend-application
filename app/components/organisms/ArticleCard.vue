@@ -4,13 +4,17 @@
       v1 の記事は medium-editor に関連したライブラリを CDN 経由で取得する必要があるため、
       http 通信でのページ遷移を行う必要がある。そのため、a タグを用いている。
     -->
-    <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'draft' && !isV2Article">
-      <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
-      <article-card-content :article="article"/>
+    <a
+      v-if="linkTo === 'draft' && !isV2Article"
+      :href="`${getLink}`"
+      class="article-card-container"
+    >
+      <article-card-image :eye-catch-url="article.eye_catch_url" />
+      <article-card-content :article="article" />
     </a>
-    <nuxt-link :to="`${getLink}`" class="article-card-container" v-else>
-      <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
-      <article-card-content :article="article"/>
+    <nuxt-link v-else :to="`${getLink}`" class="article-card-container">
+      <article-card-image :eye-catch-url="article.eye_catch_url" />
+      <article-card-content :article="article" />
     </nuxt-link>
   </section>
 </template>
@@ -21,6 +25,10 @@ import ArticleCardContent from '../organisms/ArticleCardContent'
 import { isV2 } from '~/utils/article'
 
 export default {
+  components: {
+    ArticleCardImage,
+    ArticleCardContent
+  },
   props: {
     article: {
       type: Object
@@ -28,10 +36,6 @@ export default {
     linkTo: {
       type: String
     }
-  },
-  components: {
-    ArticleCardImage,
-    ArticleCardContent
   },
   computed: {
     isV2Article() {

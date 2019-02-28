@@ -1,8 +1,5 @@
 <template>
-  <a
-    :href="articlePath"
-    class="eyecatch-alternative-image-container"
-    :class="order"/>
+  <a :href="articlePath" class="eyecatch-alternative-image-container" :class="order" />
 </template>
 
 <script>

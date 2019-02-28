@@ -167,38 +167,38 @@ const state = () => ({
 })
 
 const getters = {
-  currentUser: (state) => state.currentUser,
-  loggedIn: (state) => state.loggedIn,
-  showSignUpModal: (state) => state.showSignUpModal,
-  sentMail: (state) => state.sentMail,
-  signUpModal: (state) => state.signUpModal,
-  showSignUpAuthFlowModal: (state) => state.showSignUpAuthFlowModal,
-  signUpAuthFlowModal: (state) => state.signUpAuthFlowModal,
-  showLoginModal: (state) => state.showLoginModal,
-  loginModal: (state) => state.loginModal,
-  showProfileSettingsModal: (state) => state.showProfileSettingsModal,
-  profileSettingsModal: (state) => state.profileSettingsModal,
-  currentUserInfo: (state) => state.currentUserInfo,
-  showRestrictEditArticleModal: (state) => state.showRestrictEditArticleModal,
-  userInfo: (state) => state.userInfo,
-  userArticles: (state) => state.userArticles,
-  userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
-  hasUserArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey !== null,
-  requestLoginModal: (state) => state.requestLoginModal,
-  alisToken: (state) => state.alisToken,
-  notifications: (state) => uniqBy(state.notifications, 'notification_id'),
-  notificationsLastEvaluatedKey: (state) => state.notificationsLastEvaluatedKey,
-  unreadNotification: (state) => state.unreadNotification,
-  hasNotificationsLastEvaluatedKey: (state) =>
+  currentUser: state => state.currentUser,
+  loggedIn: state => state.loggedIn,
+  showSignUpModal: state => state.showSignUpModal,
+  sentMail: state => state.sentMail,
+  signUpModal: state => state.signUpModal,
+  showSignUpAuthFlowModal: state => state.showSignUpAuthFlowModal,
+  signUpAuthFlowModal: state => state.signUpAuthFlowModal,
+  showLoginModal: state => state.showLoginModal,
+  loginModal: state => state.loginModal,
+  showProfileSettingsModal: state => state.showProfileSettingsModal,
+  profileSettingsModal: state => state.profileSettingsModal,
+  currentUserInfo: state => state.currentUserInfo,
+  showRestrictEditArticleModal: state => state.showRestrictEditArticleModal,
+  userInfo: state => state.userInfo,
+  userArticles: state => state.userArticles,
+  userArticlesLastEvaluatedKey: state => state.userArticlesLastEvaluatedKey,
+  hasUserArticlesLastEvaluatedKey: state => state.userArticlesLastEvaluatedKey !== null,
+  requestLoginModal: state => state.requestLoginModal,
+  alisToken: state => state.alisToken,
+  notifications: state => uniqBy(state.notifications, 'notification_id'),
+  notificationsLastEvaluatedKey: state => state.notificationsLastEvaluatedKey,
+  unreadNotification: state => state.unreadNotification,
+  hasNotificationsLastEvaluatedKey: state =>
     !!Object.keys(state.notificationsLastEvaluatedKey || {}).length,
-  searchUsers: (state) => state.searchUsers,
-  showTipModal: (state) => state.showTipModal,
-  tipFlowModal: (state) => state.tipFlowModal,
-  tipTokenAmount: (state) => state.tipTokenAmount,
-  requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
-  distributedTokens: (state) => state.distributedTokens,
-  firstProcessModal: (state) => state.firstProcessModal,
-  mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal
+  searchUsers: state => state.searchUsers,
+  showTipModal: state => state.showTipModal,
+  tipFlowModal: state => state.tipFlowModal,
+  tipTokenAmount: state => state.tipTokenAmount,
+  requestPhoneNumberVerifyModal: state => state.requestPhoneNumberVerifyModal,
+  distributedTokens: state => state.distributedTokens,
+  firstProcessModal: state => state.firstProcessModal,
+  mobileEditorHeaderPostArticleModal: state => state.mobileEditorHeaderPostArticleModal
 }
 
 const actions = {
@@ -741,7 +741,7 @@ const actions = {
   },
   async getDistributedTokens({ commit }) {
     try {
-      let distributedTokens = {}
+      const distributedTokens = {}
       const result = await this.$axios.$get('/me/wallet/distributed_tokens')
       const formatNumber = 10 ** 18
       Object.keys(result).forEach((key) => {

@@ -2,7 +2,7 @@
   <div class="edit-article-container">
     <app-header />
     <edit-header-nav-v1 type="public-article" />
-    <article-editor-v1 :title="decodedTitle" :putArticle="putArticle"/>
+    <article-editor-v1 :title="decodedTitle" :put-article="putArticle" />
   </div>
 </template>
 

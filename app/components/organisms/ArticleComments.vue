@@ -1,14 +1,15 @@
 <template>
-  <div class="area-article-comments" id="article-comments">
+  <div id="article-comments" class="area-article-comments">
     <div class="header-contents">
       <span class="to-comment-button" @click="moveToBottom">コメントする</span>
       <span
+        v-if="hasArticleCommentsLastEvaluatedKey"
         class="read-more-button"
         @click="showComments"
-        v-if="hasArticleCommentsLastEvaluatedKey">前のコメントを表示</span>
+      >前のコメントを表示</span>
     </div>
     <div class="article-comments">
-      <article-comment v-for="comment in comments" :comment="comment" :key="comment.comment_id"/>
+      <article-comment v-for="comment in comments" :key="comment.comment_id" :comment="comment" />
     </div>
   </div>
 </template>
@@ -21,15 +22,15 @@ export default {
   components: {
     ArticleComment
   },
-  data() {
-    return {
-      loadingComments: false
-    }
-  },
   props: {
     comments: {
       type: Array,
       required: true
+    }
+  },
+  data() {
+    return {
+      loadingComments: false
     }
   },
   computed: {
@@ -53,12 +54,10 @@ export default {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
         return
-      } else {
-        if (!this.currentUser.phoneNumberVerified) {
-          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
-          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          return
-        }
+      } else if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
       }
 
       if (!document.querySelector('.article-comment-form-box')) {

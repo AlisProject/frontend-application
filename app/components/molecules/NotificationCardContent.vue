@@ -1,7 +1,7 @@
 <template>
   <div class="area-notification-card-content">
-    <notification-card-content-description :notification="notification"/>
-    <notification-card-content-updated-at :updatedAt="convertSortKeyToUnixTime"/>
+    <notification-card-content-description :notification="notification" />
+    <notification-card-content-updated-at :updated-at="convertSortKeyToUnixTime" />
   </div>
 </template>
 
@@ -10,15 +10,15 @@ import NotificationCardContentDescription from '../atoms/NotificationCardContent
 import NotificationCardContentUpdatedAt from '../atoms/NotificationCardContentUpdatedAt'
 
 export default {
+  components: {
+    NotificationCardContentDescription,
+    NotificationCardContentUpdatedAt
+  },
   props: {
     notification: {
       type: Object,
       required: true
     }
-  },
-  components: {
-    NotificationCardContentDescription,
-    NotificationCardContentUpdatedAt
   },
   computed: {
     convertSortKeyToUnixTime() {

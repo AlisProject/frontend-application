@@ -2,13 +2,19 @@
   <nav class="area-nav" :class="{ 'is-fixed': isFixed }">
     <div class="area-nav-inner">
       <nuxt-link
+        v-if="type === 'public-article'"
         :to="`/users/${currentUserInfo.user_id}`"
         class="area-articles-link"
-        v-if="type === 'public-article'">公開中</nuxt-link>
+      >
+        公開中
+      </nuxt-link>
       <nuxt-link
+        v-if="type === 'draft-article'"
         :to="`/users/${currentUserInfo.user_id}/drafts`"
         class="area-articles-link"
-        v-if="type === 'draft-article'">下書き</nuxt-link>
+      >
+        下書き
+      </nuxt-link>
       <span class="area-save-status">{{ saveStatus }}</span>
       <edit-header-nav-post-article-v1 />
     </div>

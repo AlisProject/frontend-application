@@ -4,12 +4,12 @@
       <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
     </div>
     <no-ssr>
-      <div class="action area-tip" @click="tip" v-if="!isMyArticle"/>
+      <div v-if="!isMyArticle" class="action area-tip" @click="tip" />
     </no-ssr>
     <a class="sub-action area-share-twitter" target="_blank" />
     <a class="sub-action area-share-facebook" target="_blank" />
     <div class="sub-action area-etc" @click="toggleEtcPopup">
-      <div class="etc-popup" v-show="isEtcPopupShown">
+      <div v-show="isEtcPopupShown" class="etc-popup">
         <span class="report" @click="showPopupReportModal">
           報告する
         </span>
@@ -23,11 +23,6 @@ import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
-  data() {
-    return {
-      isEtcPopupShown: false
-    }
-  },
   props: {
     articleId: {
       type: String,
@@ -44,6 +39,11 @@ export default {
     isLikedArticle: {
       type: Boolean,
       required: true
+    }
+  },
+  data() {
+    return {
+      isEtcPopupShown: false
     }
   },
   mounted() {

@@ -3,16 +3,12 @@
     <div class="wrapper">
       <p class="description">
         {{ confirmText }}<br>
-        新規登録・ログイン<span class="br"/>しましょう
+        新規登録・ログイン<span class="br" />しましょう
       </p>
-      <app-button
-        @click="showSignUpModal"
-        class="signup-button">
+      <app-button class="signup-button" @click="showSignUpModal">
         新規登録する
       </app-button>
-      <app-button
-        @click="showLoginModal"
-        class="login-button">
+      <app-button class="login-button" @click="showLoginModal">
         ログインする
       </app-button>
     </div>

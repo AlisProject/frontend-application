@@ -7,36 +7,38 @@
       お贈り先をご確認の上、贈る量を決めて確認画面へお進みください
     </span>
     <img
+      v-if="article.userInfo.icon_image_url !== undefined"
       class="author-icon"
       :src="article.userInfo.icon_image_url"
       :alt="imageCaption"
-      v-if="article.userInfo.icon_image_url !== undefined">
+    >
     <img
+      v-else
       class="author-icon"
       src="~assets/images/pc/common/icon_user_noimg.png"
       :alt="imageCaption"
-      v-else>
+    >
     <span class="user-display-name">
       {{ decodedUserDisplayName }}
     </span>
-    <span class="user-id">
-      @{{ article.userInfo.user_id }}
-    </span>
+    <span class="user-id"> @{{ article.userInfo.user_id }} </span>
     <div class="triangle-mark" />
     <div class="token-amount-input-box">
       <input
+        v-model="tipTokenAmount"
         class="token-amount-input"
         type="number"
-        v-model="tipTokenAmount"
-        @keydown.up.down.prevent>
+        @keydown.up.down.prevent
+      >
       <span class="token-amount-input-unit">ALIS</span>
     </div>
     <div class="select-unit-box">
       <div
         v-for="unit in orderedUnitList"
-        @click="addTipTokenAmount(unit.amount)"
         :data-token-amount="unit.amount"
-        :class="`unit-item unit-${unit.name}`">
+        :class="`unit-item unit-${unit.name}`"
+        @click="addTipTokenAmount(unit.amount)"
+      >
         {{ unit.amount }}
       </div>
     </div>
@@ -199,7 +201,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .tip-flow-select-tip-amount-modal {

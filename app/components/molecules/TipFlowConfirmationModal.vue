@@ -8,27 +8,27 @@
       ※操作の取り消しはできませんのでご注意ください
     </span>
     <img
+      v-if="article.userInfo.icon_image_url !== undefined"
       class="author-icon"
       :src="article.userInfo.icon_image_url"
       :alt="imageCaption"
-      v-if="article.userInfo.icon_image_url !== undefined">
+    >
     <img
+      v-else
       class="author-icon"
       src="~assets/images/pc/common/icon_user_noimg.png"
       :alt="imageCaption"
-      v-else>
+    >
     <span class="user-display-name">
       {{ decodedUserDisplayName }}
     </span>
-    <span class="user-id">
-      @{{ article.userInfo.user_id }}
-    </span>
+    <span class="user-id"> @{{ article.userInfo.user_id }} </span>
     <div class="triangle-mark" />
     <div class="token-amount-input-box">
       <span class="token-amount-input">{{ tipTokenAmountForUser }}</span>
       <span class="token-amount-input-unit">ALIS</span>
     </div>
-      <span class="error-message">
+    <span class="error-message">
       {{ errorMessage }}
     </span>
     <app-button class="send-token-button" @click="moveToCompletedPage">
