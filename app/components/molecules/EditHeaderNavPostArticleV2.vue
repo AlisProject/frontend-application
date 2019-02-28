@@ -99,8 +99,7 @@ export default {
         this.publishingArticle = true
         const { articleId, title, body, topicType } = this
         const hasTitle = title !== undefined && title !== null && title !== ''
-        const hasBody =
-          body.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '').replace(/\r?\n?\s/g, ' ') !== '&nbsp;'
+        const hasBody = body !== '<p>&nbsp;</p>'
         if (!hasTitle) this.sendNotification({ text: 'タイトルを入力してください' })
         if (!hasBody) this.sendNotification({ text: '本文にテキストを入力してください' })
         if (topicType === null) this.sendNotification({ text: 'カテゴリを選択してください' })
