@@ -7,7 +7,7 @@ import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import BlankPage from '~/components/pages/BlankPage'
 import EditDraftArticleV2 from '~/components/pages/EditDraftArticleV2'
-import { showEmbedTweet, getThumbnails, preventDropImageOnOGPContent } from '~/utils/article'
+import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
@@ -29,8 +29,6 @@ export default {
       const images = Array.from(this.$el.querySelectorAll('figure img'))
       const thumbnails = getThumbnails(images)
       this.$store.dispatch('article/updateSuggestedThumbnails', { thumbnails })
-      showEmbedTweet()
-      preventDropImageOnOGPContent()
     } catch (error) {
       this.sendNotification({ text: '記事データの取得に失敗しました', type: 'warning' })
       console.error(error)

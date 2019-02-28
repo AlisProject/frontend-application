@@ -7,17 +7,6 @@
     <button class="post-article" @click="showMobileEditorHeaderPostArticleModal">
       公開する
     </button>
-    <sign-up-modal v-if="showSignUpModal"/>
-    <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
-    <login-modal v-if="showLoginModal"/>
-    <profile-settings-modal v-if="showProfileSettingsModal"/>
-    <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
-    <request-login-modal v-if="requestLoginModal.isShow"/>
-    <tip-modal v-if="showTipModal"/>
-    <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
-    <user-report-modal v-if="userReportModal.isShow"/>
-    <article-report-modal v-if="articleReportModal.isShow"/>
-    <first-process-modal v-if="firstProcessModal.isShow"/>
     <mobile-editor-header-post-article-modal v-if="mobileEditorHeaderPostArticleModal.isShow"/>
     <toast position="n"/>
   </header>
@@ -26,34 +15,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import SignUpModal from '../organisms/SignUpModal'
-import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
-import LoginModal from '../organisms/LoginModal'
-import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
-import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
-import RequestLoginModal from '../organisms/RequestLoginModal'
-import TipModal from '../organisms/TipModal'
-import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
-import UserReportModal from '../organisms/UserReportModal'
-import ArticleReportModal from '../organisms/ArticleReportModal'
-import FirstProcessModal from '../organisms/FirstProcessModal'
 import MobileEditorHeaderPostArticleModal from '../organisms/MobileEditorHeaderPostArticleModal'
 import { isIOS, isAndroid } from '~/utils/device'
+import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
-    SignUpModal,
-    SignUpAuthFlowModal,
-    LoginModal,
-    RestrictEditArticleModal,
-    ProfileSettingsModal,
-    RequestLoginModal,
-    TipModal,
     Toast,
-    RequestPhoneNumberVerifyModal,
-    UserReportModal,
-    ArticleReportModal,
-    FirstProcessModal,
     MobileEditorHeaderPostArticleModal
   },
   data() {
@@ -69,20 +37,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', [
-      'loggedIn',
-      'showSignUpModal',
-      'showSignUpAuthFlowModal',
-      'showLoginModal',
-      'showProfileSettingsModal',
-      'showRestrictEditArticleModal',
-      'requestLoginModal',
-      'showTipModal',
-      'requestPhoneNumberVerifyModal',
-      'firstProcessModal',
-      'mobileEditorHeaderPostArticleModal'
-    ]),
-    ...mapGetters('report', ['userReportModal', 'articleReportModal']),
+    ...mapGetters('user', ['loggedIn', 'mobileEditorHeaderPostArticleModal']),
     ...mapGetters('article', ['saveStatus'])
   },
   methods: {
@@ -93,10 +48,19 @@ export default {
       this.setArticleListScrollHeight({ scroll: 0 })
     },
     showMobileEditorHeaderPostArticleModal() {
+      this.setThumbnails()
       this.setMobileEditorHeaderPostArticleModal({ isShow: true })
     },
+    setThumbnails() {
+      const images = Array.from(document.querySelectorAll('figure img'))
+      const thumbnails = getThumbnails(images)
+      this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
+    },
     ...mapActions('presentation', ['setArticleListScrollHeight']),
-    ...mapActions('article', ['getPopularArticles', 'resetArticleData']),
+    ...mapActions('article', ['resetArticleData', 'updateSuggestedThumbnails', 'updateThumbnail']),
     ...mapActions('user', ['setMobileEditorHeaderPostArticleModal'])
   }
 }

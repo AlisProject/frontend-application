@@ -19,7 +19,7 @@
         :editorContent="editorContent"
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
-        :isPressedEnterInTitle="isPressedEnterInTitle"
+        ref="alisEditorPc"
       />
       <alis-editor-sp
         v-else-if="isChecked && !isPc"
@@ -30,7 +30,6 @@
         :editorContent="editorContent"
         :iframelyApiKey="iframelyApiKey"
         :domain="domain"
-        :isPressedEnterInTitle="isPressedEnterInTitle"
         @editor-mounted="fixToolbarPosition"
         ref="alisEditorSp"
       />
@@ -41,12 +40,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import {
-  resizeTextarea,
-  getThumbnails,
-  preventDragAndDrop,
-  getResourceFromIframely
-} from '~/utils/article'
+import { resizeTextarea, preventDragAndDrop, getResourceFromIframely } from '~/utils/article'
 import { isIOS, isAndroid, isMobile } from '~/utils/device'
 
 if (process.client && isMobile()) {
@@ -77,7 +71,6 @@ export default {
       domain: process.env.DOMAIN,
       titleElementHeight: 40,
       isChecked: false,
-      isPressedEnterInTitle: false,
       title: this.defaultTitle
     }
   },
@@ -90,8 +83,7 @@ export default {
         setIsEditedBody,
         sendNotification,
         updateBody,
-        putArticleBody,
-        putThumbnail
+        putArticleBody
       } = this
 
       return {
@@ -102,7 +94,6 @@ export default {
         sendNotification,
         updateBody,
         putArticleBody,
-        putThumbnail,
         getResourceFromIframely
       }
     },
@@ -120,7 +111,9 @@ export default {
     ...mapGetters('user', ['showRestrictEditArticleModal'])
   },
   async mounted() {
-    window.addEventListener('scroll', this.fixHeader)
+    if (isIOS()) {
+      window.addEventListener('scroll', this.fixHeader)
+    }
     window.addEventListener('error', this.handleError)
     this.isPc = !isMobile()
     this.isChecked = true
@@ -150,7 +143,9 @@ export default {
     this.updateArticle()
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.fixHeader)
+    if (isIOS()) {
+      window.removeEventListener('scroll', this.fixHeader)
+    }
     window.removeEventListener('error', this.handleError)
     if (!this.isPc) {
       const areaTitleElement = this.$el.querySelector('.area-title')
@@ -169,7 +164,6 @@ export default {
       try {
         // Do nothing if user don't edit article
         if (!this.isEditedTitle) {
-          this.setSaveStatus({ saveStatus: '' })
           return
         }
 
@@ -184,18 +178,24 @@ export default {
         this.setSaveStatus({ saveStatus: '保存済み' })
         this.setIsSaving({ isSaving: false })
       } catch (error) {
+        this.setSaveStatus({ saveStatus: '' })
         console.error(error)
       } finally {
         this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
       }
     },
     async onInputTitle(event) {
+      this.setSaveStatus({ saveStatus: '' })
       this.setIsEditedTitle({ isEditedTitle: true })
       await this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     handleEnter(event) {
       if (!event.isComposing && event.target.textLength === event.target.selectionEnd) {
-        this.isPressedEnterInTitle = !this.isPressedEnterInTitle
+        if (this.isPc) {
+          this.$refs.alisEditorPc.focusEditor()
+        } else {
+          this.$refs.alisEditorSp.focusEditor()
+        }
       }
     },
     async uploadArticleTitle() {
@@ -212,28 +212,17 @@ export default {
         throw new Error('Update article failed.')
       }
     },
-    putThumbnail() {
-      const images = Array.from(this.$el.querySelectorAll('figure img'))
-      // Update thumbnails
-      const thumbnails = getThumbnails(images)
-      this.updateSuggestedThumbnails({ thumbnails })
-      if (!thumbnails.includes(this.thumbnail)) {
-        this.updateThumbnail({ thumbnail: '' })
-      }
-    },
     fixToolbarPosition() {
       if (!isIOS()) return
       if (!document.querySelector('.ck-toolbar')) return
       document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
     },
     fixHeader() {
-      if (isIOS()) {
-        document.querySelector('.area-mobile-editor-header-container').style.top = `${
-          window.pageYOffset
-        }px`
-        document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
-          this.editorToolbarTopOffsetHeight}px`
-      }
+      document.querySelector('.area-mobile-editor-header-container').style.top = `${
+        window.pageYOffset
+      }px`
+      document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
+        this.editorToolbarTopOffsetHeight}px`
     },
     async fixToolbarPositionByTitleElementHeight(targetElement) {
       // resizeTextarea 関数の処理後にタイトルの高さを取得しないと、リサイズ後の高さが取得できないため、
@@ -282,14 +271,12 @@ export default {
     },
     ...mapActions('article', [
       'updateTitle',
-      'updateSuggestedThumbnails',
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
       'setIsEditedTitle',
       'setIsEditedBody',
       'setSaveStatus',
-      'updateThumbnail',
       'putArticleTitle',
       'updateBody',
       'putPublicArticleTitle'

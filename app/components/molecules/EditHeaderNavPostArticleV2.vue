@@ -48,6 +48,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
+import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
@@ -97,14 +98,12 @@ export default {
         if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
         const { articleId, title, body, topicType } = this
-        const overview = body
-          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-          .replace(/\r?\n?\s/g, ' ')
-          .slice(0, 100)
-        if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
-        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
+        const hasTitle = title !== undefined && title !== null && title !== ''
+        const hasBody = body !== '<p>&nbsp;</p>'
+        if (!hasTitle) this.sendNotification({ text: 'タイトルを入力してください' })
+        if (!hasBody) this.sendNotification({ text: '本文にテキストを入力してください' })
         if (topicType === null) this.sendNotification({ text: 'カテゴリを選択してください' })
-        if (title === '' || overview === '' || topicType === null) {
+        if (!hasTitle || !hasBody || topicType === null) {
           this.publishingArticle = false
           return
         }
@@ -152,6 +151,7 @@ export default {
     },
     togglePopup() {
       if (!this.publishable) return
+      this.setThumbnails()
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -178,6 +178,14 @@ export default {
     },
     onChangeTagValidationState(isInvalid) {
       this.isInvalidTag = isInvalid
+    },
+    setThumbnails() {
+      const images = Array.from(document.querySelectorAll('figure img'))
+      const thumbnails = getThumbnails(images)
+      this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE

@@ -1,5 +1,9 @@
 <template>
   <section>
+    <!--
+      v1 の記事は medium-editor に関連したライブラリを CDN 経由で取得する必要があるため、
+      http 通信でのページ遷移を行う必要がある。そのため、a タグを用いている。
+    -->
     <a :href="`${getLink}`" class="article-card-container" v-if="linkTo === 'draft' && !isV2Article">
       <article-card-image :eyeCatchUrl="article.eye_catch_url"/>
       <article-card-content :article="article"/>
