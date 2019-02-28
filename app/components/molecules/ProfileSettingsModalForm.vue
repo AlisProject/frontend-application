@@ -11,11 +11,7 @@
           <img v-else-if="uploadedImage" class="upload-img" :src="uploadedImage">
           <div v-else class="upload-img-dammy" />
           <label class="upload-btn">
-            <img
-              class="btn-pic"
-              src="~assets/images/pc/common/icon_profile_img.png"
-              alt="upload"
-            >
+            <img class="btn-pic" src="~assets/images/pc/common/icon_profile_img.png" alt="upload">
             <input class="upload-img-input" type="file" accept="image/*" @change="onFileChange">
           </label>
         </div>

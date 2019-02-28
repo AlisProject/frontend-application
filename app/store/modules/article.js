@@ -885,7 +885,7 @@ const mutations = {
     const formattedTags = (tags || []).map((tag) => {
       return {
         text: tag,
-        tiClasses: ['valid']
+        tiClasses: ['ti-valid']
       }
     })
     state.tags = formattedTags
