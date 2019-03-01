@@ -13,6 +13,7 @@ const setHeadersMiddleware = (req, res, next) => {
   } else {
     res.header('x-frame-options', 'DENY')
   }
+  next()
 }
 
 module.exports = {
