@@ -8,6 +8,16 @@
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />
     </nuxt-link>
+    <a
+      v-else-if="notification.type === 'announce'"
+      :href="notification.announce_url"
+      target="_blank"
+      rel="noopener"
+      class="notification-card-container"
+    >
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
+    </a>
     <nuxt-link v-else :to="articlePath" class="notification-card-container">
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />

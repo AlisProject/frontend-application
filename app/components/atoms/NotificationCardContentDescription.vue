@@ -21,6 +21,9 @@
   <p v-else-if="notification.type === 'thread'" class="area-description">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>が<span class="gray-darker">コメント</span>しました。
   </p>
+  <p v-else-if="notification.type === 'announce'" class="area-description">
+    {{ notification.announce_body }}
+  </p>
 </template>
 
 <script>
