@@ -71,7 +71,11 @@
         </li>
       </ul>
       <nuxt-link class="banner-planning-box" to="/tag/ALIS参加募集企画">
-        <img class="banner-planning" src="~assets/images/pc/common/banner_planning.png" alt="ALIS参加募集企画">
+        <img
+          class="banner-planning"
+          src="~assets/images/pc/common/banner_planning.png"
+          alt="ALIS参加募集企画"
+        >
       </nuxt-link>
     </div>
     <div v-show="isMenuShown" class="cover" @click="closeMenu" />
