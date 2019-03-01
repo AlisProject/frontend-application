@@ -54,8 +54,8 @@ const state = () => ({
 })
 
 const getters = {
-  userReportModal: (state) => state.userReportModal,
-  articleReportModal: (state) => state.articleReportModal
+  userReportModal: state => state.userReportModal,
+  articleReportModal: state => state.articleReportModal
 }
 
 const actions = {

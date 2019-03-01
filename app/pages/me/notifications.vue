@@ -1,5 +1,5 @@
 <template>
-  <notification-page/>
+  <notification-page />
 </template>
 
 <script>

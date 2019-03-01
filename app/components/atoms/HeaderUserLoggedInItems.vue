@@ -3,49 +3,44 @@
     <nuxt-link
       class="search-icon-box"
       to="/search?context=article"
-      @click.native="resetSearchStates">
+      @click.native="resetSearchStates"
+    >
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     </nuxt-link>
     <span class="notification-icon-box" @click="moveToNotificationPage">
       <img
+        v-if="unreadNotification"
         class="notification-icon"
         src="~assets/images/pc/common/icon_notification_mark.png"
-        v-if="unreadNotification">
-      <img
-        class="notification-icon"
-        src="~assets/images/pc/common/icon_notification.png"
-        v-else>
+      >
+      <img v-else class="notification-icon" src="~assets/images/pc/common/icon_notification.png">
     </span>
     <div
+      v-if="currentUserInfo.icon_image_url !== undefined"
       class="profile-icon-box"
       @click="toggleMenu"
-      v-if="currentUserInfo.icon_image_url !== undefined">
+    >
       <img class="profile-icon" :src="currentUserInfo.icon_image_url">
     </div>
-    <div
-      class="profile-icon-box"
-      @click="toggleMenu"
-      v-else>
+    <div v-else class="profile-icon-box" @click="toggleMenu">
       <img class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
     </div>
-    <div class="menu" v-if="isMenuShown">
+    <div v-if="isMenuShown" class="menu">
       <template v-if="currentUserInfo.icon_image_url !== undefined">
         <div class="background-user-image-box">
           <img class="background-user-image" :src="currentUserInfo.icon_image_url">
         </div>
-        <img
-          :src="currentUserInfo.icon_image_url"
-          class="profile-image">
+        <img :src="currentUserInfo.icon_image_url" class="profile-image">
       </template>
       <template v-else>
         <div class="background-user-image-box">
           <img class="background-user-image" src="~assets/images/pc/common/icon_user_noimg.png">
         </div>
-        <img
-          src="~assets/images/pc/common/icon_user_noimg.png"
-          class="profile-image">
+        <img src="~assets/images/pc/common/icon_user_noimg.png" class="profile-image">
       </template>
-      <p class="alis-token-amount">{{ formattedAlisToken }} ALIS</p>
+      <p class="alis-token-amount">
+        {{ formattedAlisToken }} ALIS
+      </p>
       <ul class="menu-links">
         <li class="menu-link">
           <nuxt-link class="reset-link-style" to="/me/articles/new" event="">
@@ -55,7 +50,9 @@
           </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
+          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">
+            マイページ
+          </nuxt-link>
         </li>
         <!-- <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
@@ -74,7 +71,7 @@
         </li>
       </ul>
     </div>
-    <div class="cover" v-show="isMenuShown" @click="closeMenu"></div>
+    <div v-show="isMenuShown" class="cover" @click="closeMenu" />
   </div>
 </template>
 

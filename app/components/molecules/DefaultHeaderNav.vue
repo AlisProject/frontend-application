@@ -1,9 +1,7 @@
 <template>
   <nav class="area-nav">
     <div class="area-nav-links" @scroll="handleHorizontalScroll">
-      <nuxt-link
-        to="/"
-        class="nav-link area-topic0">
+      <nuxt-link to="/" class="nav-link area-topic0">
         <span class="topic-display-name">
           オススメ
         </span>
@@ -14,10 +12,13 @@
         :data-topic="topic.name"
         :style="`background-image: url(${topicImages[topic.name]})`"
         :to="to(topic.name)"
-        :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
-        @click.native="resetData">
+        :class="
+          `nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`
+        "
+        @click.native="resetData"
+      >
         <span class="topic-display-name">
-          {{topic.display_name}}
+          {{ topic.display_name }}
         </span>
       </nuxt-link>
     </div>

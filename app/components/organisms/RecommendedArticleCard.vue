@@ -1,7 +1,8 @@
 <template>
   <nuxt-link
     class="recommended-article-card"
-    :to="`/${article.user_id}/articles/${article.article_id}`">
+    :to="`/${article.user_id}/articles/${article.article_id}`"
+  >
     <span class="topic">
       {{ topicDisplayName }}
     </span>
@@ -10,24 +11,20 @@
     </h2>
     <div class="eye-catch-image-box">
       <img
+        v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
         class="eye-catch-image"
         src="~assets/images/pc/common/thumbnail_noimg.png"
-        v-if="article.eye_catch_url === null || article.eye_catch_url === undefined">
-      <img
-        class="eye-catch-image"
-        :src="article.eye_catch_url"
-        v-else>
+      >
+      <img v-else class="eye-catch-image" :src="article.eye_catch_url">
     </div>
     <no-ssr>
       <nuxt-link :to="`/users/${article.user_id}`" class="article-data-box">
         <img
+          v-if="article.userInfo.icon_image_url !== undefined"
           class="profile-icon"
           :src="article.userInfo.icon_image_url"
-          v-if="article.userInfo.icon_image_url !== undefined">
-        <img
-          class="profile-icon"
-          src="~assets/images/pc/common/icon_user_noimg.png"
-          v-else>
+        >
+        <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
         <span class="username">
           {{ decodedUsername }}
         </span>
@@ -69,7 +66,7 @@ export default {
       return formatDate(this.publishedAt)
     },
     topicDisplayName() {
-      const topic = this.topics.find((topic) => topic.name === this.article.topic)
+      const topic = this.topics.find(topic => topic.name === this.article.topic)
       return topic.display_name
     },
     formattedTokenAmount() {

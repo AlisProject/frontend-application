@@ -1,28 +1,28 @@
 <template>
   <div class="area-notification-card-image">
     <img
+      v-if="notification.type === 'like'"
       class="profile-icon"
       src="~assets/images/pc/common/icon_like.png"
-      v-if="notification.type === 'like'">
+    >
     <template
-      v-if="notification.type === 'comment' ||
-            notification.type === 'tip' ||
-            notification.type === 'reply' ||
-            notification.type === 'thread'">
+      v-if="
+        notification.type === 'comment' ||
+          notification.type === 'tip' ||
+          notification.type === 'reply' ||
+          notification.type === 'thread'
+      "
+    >
       <img
+        v-if="notification.userInfo.icon_image_url"
         class="profile-icon"
         :src="notification.userInfo.icon_image_url"
-        v-if="notification.userInfo.icon_image_url">
-      <img
-        class="profile-icon"
-        src="~assets/images/pc/common/icon_user_noimg.png"
-        v-else>
+      >
+      <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
     </template>
-    <div class="sub-icon comment" v-if="notification.type === 'comment'" />
-    <div class="sub-icon tip" v-if="notification.type === 'tip'" />
-    <div
-      class="tip-error-icon"
-      v-if="notification.type === 'tip_error'"/>
+    <div v-if="notification.type === 'comment'" class="sub-icon comment" />
+    <div v-if="notification.type === 'tip'" class="sub-icon tip" />
+    <div v-if="notification.type === 'tip_error'" class="tip-error-icon" />
   </div>
 </template>
 

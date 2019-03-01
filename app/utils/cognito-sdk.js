@@ -191,7 +191,7 @@ export default class CognitoSDK {
           reject(err)
           return
         }
-        resolve(result.find((item) => item.Name === 'email').Value)
+        resolve(result.find(item => item.Name === 'email').Value)
       })
     })
   }
@@ -262,8 +262,8 @@ export default class CognitoSDK {
     this.cognitoUser = this.getCognitoUser(Username)
     return new Promise((resolve, reject) => {
       this.cognitoUser.confirmPassword(code, password, {
-        onSuccess: (result) => resolve(result),
-        onFailure: (err) => reject(err)
+        onSuccess: result => resolve(result),
+        onFailure: err => reject(err)
       })
     })
   }

@@ -2,17 +2,18 @@
   <div>
     <div class="modal-body">
       <div class="select-reason-box">
-        <div class="reason-input-box" v-for="reportReason in orderedReportReasons">
+        <div v-for="reportReason in orderedReportReasons" class="reason-input-box">
           <input
+            :id="reportReason.reason"
             class="reason-input"
             type="radio"
-            :id="reportReason.reason"
             :value="reportReason.reason"
             :checked="userReportModal.selectReason.formData.reason === reportReason.reason"
-            @change="setReason(reportReason.reason)">
-            <label class="reason-input-label" :for="reportReason.reason">
-              {{ reportReason.reasonName }}
-            </label>
+            @change="setReason(reportReason.reason)"
+          >
+          <label class="reason-input-label" :for="reportReason.reason">
+            {{ reportReason.reasonName }}
+          </label>
         </div>
       </div>
     </div>
@@ -30,6 +31,9 @@ import { required } from 'vuelidate/lib/validators'
 import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       reportReasons: [
@@ -70,9 +74,6 @@ export default {
         }
       ]
     }
-  },
-  components: {
-    AppButton
   },
   computed: {
     orderedReportReasons() {

@@ -8,7 +8,11 @@
     </nav>
     <div class="area-distributed-tokens">
       <div class="doughnut-chart-box">
-        <doughnut-chart :data="doughnutChartData" :options="doughnutChartOptions" class="doughnut-chart"/>
+        <doughnut-chart
+          :data="doughnutChartData"
+          :options="doughnutChartOptions"
+          class="doughnut-chart"
+        />
         <span class="amount">{{ addDigitSeparator(totalAmount) }}</span>
         <span class="unit">ALIS</span>
         <span class="aggregation-date">※2019/1/1より集計</span>
@@ -16,28 +20,28 @@
       <div class="distributed-token-detail-box">
         <ul class="distributed-token-detail-box-ul">
           <li class="distributed-token-detail-content">
-            <div class="list-mark article"/>
+            <div class="list-mark article" />
             <span class="kind">記事執筆</span>
             <span class="amount">{{ addDigitSeparator(distributedTokens.article) }}</span>
             <span class="unit">ALIS</span>
             <span class="rate">({{ rate.article }}%)</span>
           </li>
           <li class="distributed-token-detail-content">
-            <div class="list-mark like"/>
+            <div class="list-mark like" />
             <span class="kind">いいね</span>
             <span class="amount">{{ addDigitSeparator(distributedTokens.like) }}</span>
             <span class="unit">ALIS</span>
             <span class="rate">({{ rate.like }}%)</span>
           </li>
           <li class="distributed-token-detail-content">
-            <div class="list-mark tip"/>
+            <div class="list-mark tip" />
             <span class="kind">投げ銭</span>
             <span class="amount">{{ addDigitSeparator(distributedTokens.tip) }}</span>
             <span class="unit">ALIS</span>
             <span class="rate">({{ rate.tip }}%)</span>
           </li>
           <li class="distributed-token-detail-content">
-            <div class="list-mark bonus"/>
+            <div class="list-mark bonus" />
             <span class="kind">保有ボーナス</span>
             <span class="amount">{{ addDigitSeparator(distributedTokens.bonus) }}</span>
             <span class="unit">ALIS</span>
@@ -147,7 +151,7 @@ export default {
       return num
     },
     getRate(num, totalAmount) {
-      return Math.floor(num / totalAmount * 100) || 0
+      return Math.floor((num / totalAmount) * 100) || 0
     }
   }
 }

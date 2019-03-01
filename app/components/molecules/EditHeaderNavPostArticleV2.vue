@@ -1,42 +1,59 @@
 <template>
   <div class="area-post-article">
-    <app-button class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
+    <app-button
+      class="nav-link post-article"
+      :class="{ disable: !publishable }"
+      @click="togglePopup"
+    >
       公開する
     </app-button>
     <div v-show="isPopupShown" class="popup">
-      <h3 class="headline">1. サムネイルの選択</h3>
+      <h3 class="headline">
+        1. サムネイルの選択
+      </h3>
       <div class="thumbnails">
-        <span class="no-thumbnail-message" v-if="suggestedThumbnails.length === 0">
+        <span v-if="suggestedThumbnails.length === 0" class="no-thumbnail-message">
           画像がありません
         </span>
         <div
           v-for="img in suggestedThumbnails"
           :key="img"
           class="thumbnail-box"
-          :class="{ 'selected': img === thumbnail }"
-          @click.prevent="selectThumbnail">
-          <img
-            :src="img"
-            class="thumbnail"/>
+          :class="{ selected: img === thumbnail }"
+          @click.prevent="selectThumbnail"
+        >
+          <img :src="img" class="thumbnail">
         </div>
       </div>
-      <h3 class="headline">2. カテゴリの設定</h3>
+      <h3 class="headline">
+        2. カテゴリの設定
+      </h3>
       <div class="article-type-select-box">
         <no-ssr>
-          <select required class="article-type-select" :value="topicType" @change="handleChangeTopicType">
-            <option value='' disabled selected class="placeholder">選択してください</option>
+          <select
+            required
+            class="article-type-select"
+            :value="topicType"
+            @change="handleChangeTopicType"
+          >
+            <option value="" disabled selected class="placeholder">
+              選択してください
+            </option>
             <option v-for="topic in topics" :value="topic.name">
               {{ topic.display_name }}
             </option>
           </select>
         </no-ssr>
       </div>
-      <h3 class="headline">3. タグの設定</h3>
-      <tags-input-form @change-tag-validation-state="onChangeTagValidationState"/>
+      <h3 class="headline">
+        3. タグの設定
+      </h3>
+      <tags-input-form @change-tag-validation-state="onChangeTagValidationState" />
       <app-button
         class="submit"
+        :disabled="!publishable || isInvalidTag || publishingArticle"
         @click="publish"
-        :disabled="!publishable || isInvalidTag || publishingArticle">
+      >
         公開する
       </app-button>
     </div>
@@ -75,7 +92,8 @@ export default {
   },
   mounted() {
     this.listen(window, 'click', (event) => {
-      if (!this.$el.contains(event.target)) {
+      // タグの ☓ ボタンを押したときにはポップアップを非表示にしない
+      if (!this.$el.contains(event.target) && !event.target.classList.contains('ti-icon-close')) {
         this.closePopup()
       }
     })
@@ -111,7 +129,7 @@ export default {
         const articleTitle = { title }
         const articleBody = { body }
         // タグのデータ形式をAPIに適するように整形
-        const tags = this.tags.map((tag) => tag.text)
+        const tags = this.tags.map(tag => tag.text)
 
         if (
           location.href.includes('/me/articles/draft') ||
@@ -237,7 +255,7 @@ export default {
       if (
         this.isThumbnailSelected &&
         Array.from(document.querySelectorAll('.thumbnails img')).filter(
-          (img) => img.classList.contains('selected').length !== 0
+          img => img.classList.contains('selected').length !== 0
         )
       ) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })

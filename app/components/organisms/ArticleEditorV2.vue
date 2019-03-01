@@ -1,6 +1,7 @@
 <template>
   <div class="area-editor-container">
     <textarea
+      v-model="title"
       class="area-title"
       type="text"
       placeholder="タイトル"
@@ -8,30 +9,30 @@
       maxlength="255"
       @input="onInputTitle"
       @keydown.enter.prevent="handleEnter"
-      v-model="title"/>
+    />
     <no-ssr>
       <alis-editor-pc
         v-if="isChecked && isPc"
-        class="area-body"
-        :articleId="articleId"
-        :clientId="clientId"
-        :functions="functions"
-        :editorContent="editorContent"
-        :iframelyApiKey="iframelyApiKey"
-        :domain="domain"
         ref="alisEditorPc"
+        class="area-body"
+        :article-id="articleId"
+        :client-id="clientId"
+        :functions="functions"
+        :editor-content="editorContent"
+        :iframely-api-key="iframelyApiKey"
+        :domain="domain"
       />
       <alis-editor-sp
         v-else-if="isChecked && !isPc"
+        ref="alisEditorSp"
         class="area-body"
-        :articleId="articleId"
-        :clientId="clientId"
+        :article-id="articleId"
+        :client-id="clientId"
         :functions="functions"
-        :editorContent="editorContent"
-        :iframelyApiKey="iframelyApiKey"
+        :editor-content="editorContent"
+        :iframely-api-key="iframelyApiKey"
         :domain="domain"
         @editor-mounted="fixToolbarPosition"
-        ref="alisEditorSp"
       />
     </no-ssr>
   </div>

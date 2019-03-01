@@ -2,21 +2,27 @@
   <nuxt-link :to="`/users/${user.user_id}`" class="area-author-info">
     <div class="author">
       <img
+        v-if="user.icon_image_url !== undefined"
         class="icon"
         :alt="imageCaption"
         :src="user.icon_image_url"
-        v-if="user.icon_image_url !== undefined">
+      >
       <img
+        v-else
         class="icon"
         :alt="imageCaption"
         src="~assets/images/pc/common/icon_user_noimg.png"
-        v-else>
+      >
       <ul class="info">
-        <li class="user-display-name">{{ decodedUserDisplayName }}</li>
-        <li class="user-id">@{{ user.user_id }}</li>
+        <li class="user-display-name">
+          {{ decodedUserDisplayName }}
+        </li>
+        <li class="user-id">
+          @{{ user.user_id }}
+        </li>
       </ul>
     </div>
-    <span class="body" v-if="hasSelfIntroduction">
+    <span v-if="hasSelfIntroduction" class="body">
       {{ decodedSelfIntroduction }}
     </span>
   </nuxt-link>

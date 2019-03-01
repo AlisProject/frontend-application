@@ -3,9 +3,9 @@
     <app-header />
     <user-article-list-user-info :user="userInfo" />
     <user-profile-nav />
-    <user-article-card-list :articles="draftArticles" :linkTo="'draft'"/>
-    <the-loader :isLoading="hasDraftArticlesLastEvaluatedKey"/>
-    <app-footer/>
+    <user-article-card-list :articles="draftArticles" :link-to="'draft'" />
+    <the-loader :is-loading="hasDraftArticlesLastEvaluatedKey" />
+    <app-footer />
   </div>
 </template>
 

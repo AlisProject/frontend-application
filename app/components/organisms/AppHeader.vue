@@ -5,22 +5,22 @@
     </nuxt-link>
     <no-ssr>
       <div class="session-items">
-        <header-session-links v-if="!loggedIn"/>
+        <header-session-links v-if="!loggedIn" />
         <header-user-logged-in-items v-else />
       </div>
     </no-ssr>
-    <sign-up-modal v-if="showSignUpModal"/>
-    <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
-    <login-modal v-if="showLoginModal"/>
-    <profile-settings-modal v-if="showProfileSettingsModal"/>
-    <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
-    <request-login-modal v-if="requestLoginModal.isShow"/>
-    <tip-modal v-if="showTipModal"/>
-    <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
-    <user-report-modal v-if="userReportModal.isShow"/>
-    <article-report-modal v-if="articleReportModal.isShow"/>
-    <first-process-modal v-if="firstProcessModal.isShow"/>
-    <toast position="n"/>
+    <sign-up-modal v-if="showSignUpModal" />
+    <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal" />
+    <login-modal v-if="showLoginModal" />
+    <profile-settings-modal v-if="showProfileSettingsModal" />
+    <restrict-edit-article-modal v-if="showRestrictEditArticleModal" />
+    <request-login-modal v-if="requestLoginModal.isShow" />
+    <tip-modal v-if="showTipModal" />
+    <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow" />
+    <user-report-modal v-if="userReportModal.isShow" />
+    <article-report-modal v-if="articleReportModal.isShow" />
+    <first-process-modal v-if="firstProcessModal.isShow" />
+    <toast position="n" />
   </header>
 </template>
 
@@ -85,7 +85,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .area-app-header-container {

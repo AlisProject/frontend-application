@@ -1,20 +1,20 @@
 <template>
   <div class="top-page" :class="{ 'is-show-guide': isShowGuide }">
     <app-header />
-    <default-header-nav class="default-header-nav"/>
-    <eyecatch-article-card-list
-      :articles="eyecatchArticles"
-      class="eyecatch-article-card-list"/>
+    <default-header-nav class="default-header-nav" />
+    <eyecatch-article-card-list :articles="eyecatchArticles" class="eyecatch-article-card-list" />
     <recommended-article-card-list
-      :articles="eyecatchArticles.filter(article => article !== null)"
-      class="eyecatch-article-card-list-sp"/>
+      :articles="eyecatchArticles.filter((article) => article !== null)"
+      class="eyecatch-article-card-list-sp"
+    />
     <recommended-article-card-list
       :articles="recommendedArticles.articles"
-      class="recommended-article-card-list"/>
+      class="recommended-article-card-list"
+    />
     <how-to-use-image class="how-to-use-image" />
     <sub-footer class="sub-footer" />
-    <the-loader :isLoading="!recommendedArticles.isLastPage"/>
-    <app-footer class="app-footer"/>
+    <the-loader :is-loading="!recommendedArticles.isLastPage" />
+    <app-footer class="app-footer" />
   </div>
 </template>
 

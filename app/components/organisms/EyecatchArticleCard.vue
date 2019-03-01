@@ -3,20 +3,19 @@
     class="eyecatch-article-card"
     :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
-    :style="{ 'background': `url(${eyeCatchImagePath}) center center / cover no-repeat` }" >
+    :style="{ background: `url(${eyeCatchImagePath}) center center / cover no-repeat` }"
+  >
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
     <no-ssr>
       <nuxt-link :to="`/users/${article.user_id}`" class="article-data-box">
         <img
+          v-if="article.userInfo.icon_image_url !== undefined"
           class="profile-icon"
           :src="article.userInfo.icon_image_url"
-          v-if="article.userInfo.icon_image_url !== undefined">
-        <img
-          class="profile-icon"
-          src="~assets/images/pc/common/icon_user_noimg.png"
-          v-else>
+        >
+        <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
         <span class="username">
           {{ decodedUsername }}
         </span>

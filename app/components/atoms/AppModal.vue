@@ -5,21 +5,23 @@
         <div class="modal-container">
           <div class="modal-header">
             <div class="modal-header-content">
-              <slot name="modal-header-content"/>
+              <slot name="modal-header-content" />
             </div>
             <span
+              v-if="isShowCloseModalButton"
               class="modal-header-default-button"
               @click="closeModal"
-              v-if="isShowCloseModalButton"
             >✕</span>
           </div>
           <div class="modal-body">
             <slot name="modal-title">
-              <h2 class="title">{{title}}</h2>
+              <h2 class="title">
+                {{ title }}
+              </h2>
             </slot>
           </div>
           <div class="modal-content">
-            <slot v-if="showModalContentLately" name="modal-content"/>
+            <slot v-if="showModalContentLately" name="modal-content" />
           </div>
         </div>
       </div>

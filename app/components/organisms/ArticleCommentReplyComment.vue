@@ -3,26 +3,36 @@
     <div>
       <div class="article-comment">
         <nuxt-link :to="`/users/${replyComment.userInfo.user_id}`" class="commented-user">
-          <img class="icon" :src="replyComment.userInfo.icon_image_url" v-if="hasUserIcon">
-          <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
+          <img v-if="hasUserIcon" class="icon" :src="replyComment.userInfo.icon_image_url">
+          <img v-else class="icon" src="~assets/images/pc/common/icon_user_noimg.png">
           <ul class="info">
-            <li class="info-content">{{ decodedUserDisplayName }}</li>
-            <li class="info-created-at">{{ createdAt }}</li>
-            <li class="info-reply-target-user-name">返信先：{{ decodedReplyedUserDisplayName }}</li>
+            <li class="info-content">
+              {{ decodedUserDisplayName }}
+            </li>
+            <li class="info-created-at">
+              {{ createdAt }}
+            </li>
+            <li class="info-reply-target-user-name">
+              返信先：{{ decodedReplyedUserDisplayName }}
+            </li>
           </ul>
         </nuxt-link>
-        <div class="action-delete" @click="toggleDeleteCommentPopup" v-if="showDeleteAction">
+        <div v-if="showDeleteAction" class="action-delete" @click="toggleDeleteCommentPopup">
           <img class="icon" src="~assets/images/pc/article/a_icon_menu.png">
-          <div class="delete-comment-popup" v-show="isDeleteCommentPopupShown">
+          <div v-show="isDeleteCommentPopupShown" class="delete-comment-popup">
             <span class="delete" @click="deleteComment">
               削除する
             </span>
           </div>
         </div>
-        <p class="body" v-html="commentText"/>
-        <div class="action-like" :class="{ 'disable': isLikedComment }" @click="like">
-          <img class="icon" src="~assets/images/pc/article/a_icon_Good_selected.png" v-if="isLikedComment">
-          <img class="icon" src="~assets/images/pc/article/a_icon_Good.png" v-else>
+        <p class="body" v-html="commentText" />
+        <div class="action-like" :class="{ disable: isLikedComment }" @click="like">
+          <img
+            v-if="isLikedComment"
+            class="icon"
+            src="~assets/images/pc/article/a_icon_Good_selected.png"
+          >
+          <img v-else class="icon" src="~assets/images/pc/article/a_icon_Good.png">
           <span class="likes-count">{{ likesCount }}</span>
         </div>
         <div class="action-reply" @click="reply">
@@ -39,7 +49,6 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { formatDateFromNow } from '~/utils/format'
 import urlRegex from 'url-regex'
 import { htmlDecode } from '~/utils/article'
-import ArticleCommentReplyComments from '../organisms/ArticleCommentReplyComments'
 
 export default {
   props: {
@@ -55,9 +64,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  components: {
-    ArticleCommentReplyComments
   },
   data() {
     return {
@@ -121,12 +127,10 @@ export default {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleCommentLike' })
         return
-      } else {
-        if (!this.currentUser.phoneNumberVerified) {
-          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCommentLike' })
-          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          return
-        }
+      } else if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCommentLike' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
       }
       if (this.isLikedComment) return
       try {
@@ -171,12 +175,10 @@ export default {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleComment' })
         return
-      } else {
-        if (!this.currentUser.phoneNumberVerified) {
-          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
-          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          return
-        }
+      } else if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
       }
 
       window.scrollTo({

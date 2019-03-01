@@ -1,13 +1,11 @@
 <template>
   <div class="area-article-card-image">
     <img
+      v-if="eyeCatchUrl === null"
       class="article-image"
       src="~assets/images/pc/common/thumbnail_noimg.png"
-      v-if="eyeCatchUrl === null">
-    <img
-      class="article-image"
-      :src="eyeCatchUrl"
-      v-else>
+    >
+    <img v-else class="article-image" :src="eyeCatchUrl">
   </div>
 </template>
 

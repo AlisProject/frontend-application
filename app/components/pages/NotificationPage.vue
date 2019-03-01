@@ -1,10 +1,12 @@
 <template>
   <div class="notification-list-container">
     <app-header />
-    <h1 class="area-title">{{ title }}</h1>
-    <notification-card-list :notifications="notifications"/>
-    <the-loader :isLoading="hasNotificationsLastEvaluatedKey"/>
-    <app-footer/>
+    <h1 class="area-title">
+      {{ title }}
+    </h1>
+    <notification-card-list :notifications="notifications" />
+    <the-loader :is-loading="hasNotificationsLastEvaluatedKey" />
+    <app-footer />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <popular-article-list/>
+  <popular-article-list />
 </template>
 
 <script>

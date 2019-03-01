@@ -3,17 +3,20 @@
     <nuxt-link
       class="search-icon-box"
       to="/search?context=article"
-      @click.native="resetSearchStates">
+      @click.native="resetSearchStates"
+    >
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
     <span class="login" @click="showLoginModal">ログイン</span>
-    <app-button class="sign-up" @click="showSignUpModal">新規登録</app-button>
+    <app-button class="sign-up" @click="showSignUpModal">
+      新規登録
+    </app-button>
   </div>
 </template>
 
 <script>
-import AppButton from '../atoms/AppButton'
 import { mapActions } from 'vuex'
+import AppButton from '../atoms/AppButton'
 
 export default {
   components: {
@@ -49,7 +52,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .session {

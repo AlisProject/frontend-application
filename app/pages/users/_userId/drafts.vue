@@ -1,5 +1,5 @@
 <template>
-  <draft-article-list/>
+  <draft-article-list />
 </template>
 
 <script>

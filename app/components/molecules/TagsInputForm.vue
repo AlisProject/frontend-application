@@ -8,12 +8,16 @@
           :max-tags="5"
           :maxlength="25"
           placeholder="タグを入力してください"
-          :class="{ 'invalid-tag': isInvalidTag, 'hide-autocomplete-items': !hasAutocompleteItems }"
+          :class="{
+            'ti-invalid-tag': isInvalidTag,
+            'hide-autocomplete-items': !hasAutocompleteItems
+          }"
           :autocomplete-items="autocompleteItems"
           :autocomplete-always-open="true"
           :separators="['　']"
           @before-adding-tag="checkTags"
-          @tags-changed="handleTagsChanged" />
+          @tags-changed="handleTagsChanged"
+        />
       </no-ssr>
     </div>
     <span class="error-message">
@@ -84,15 +88,15 @@ export default {
       this.errorMessage = message
     },
     focusToTagInputForm() {
-      this.$el.querySelector('.new-tag-input').focus()
+      document.querySelector('.ti-new-tag-input').focus()
     },
     repositionAutocompletePopup() {
       const tagsInputFormRect = document.querySelector('.tags-input-form').getBoundingClientRect()
       const newTagInputWrappeRect = document
-        .querySelector('.new-tag-input-wrapper')
+        .querySelector('.ti-new-tag-input-wrapper')
         .getBoundingClientRect()
 
-      document.querySelector('.autocomplete').style.left = `
+      document.querySelector('.ti-autocomplete').style.left = `
         ${newTagInputWrappeRect.x - tagsInputFormRect.x}px
       `
     },
@@ -112,7 +116,7 @@ export default {
       this.autocompleteItems = autocompleteItems
     },
     addTagCounts(items) {
-      Array.from(document.querySelectorAll('.autocomplete ul div')).forEach((item, i) => {
+      Array.from(document.querySelectorAll('.ti-autocomplete ul div')).forEach((item, i) => {
         item.dataset.count = `(${items[i].count})`
       })
     },
@@ -156,7 +160,7 @@ export default {
       this.$emit('change-tag-validation-state', this.isInvalidTag)
     },
     tags(newTags, oldTags) {
-      const newTagInputWrapper = this.$el.querySelector('.new-tag-input-wrapper')
+      const newTagInputWrapper = document.querySelector('.ti-new-tag-input-wrapper')
 
       // タグが5つあるとき、タグの入力ができないようにする
       if (newTags.length === 5) {
@@ -195,19 +199,19 @@ export default {
 <style lang="scss">
 .tags-input-form {
   .vue-tags-input {
-    .input {
+    .ti-input {
       border: none;
     }
 
-    &.invalid-tag .new-tag-input-wrapper input {
+    &.invalid-tag .ti-new-tag-input-wrapper input {
       color: #f06273;
     }
 
-    &.hide-autocomplete-items .autocomplete {
+    &.hide-autocomplete-items .ti-autocomplete {
       display: none;
     }
 
-    .autocomplete {
+    .ti-autocomplete {
       width: auto;
       border: none;
       box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
@@ -215,7 +219,7 @@ export default {
       padding: 4px 8px;
       text-align: left;
 
-      .item {
+      .ti-item {
         padding: 2px 0;
         color: #6e6e6e;
         font-size: 12px;
@@ -228,7 +232,7 @@ export default {
           }
         }
 
-        &.selected-item {
+        &.ti-selected-item {
           background-color: transparent;
           color: #0086cc;
         }
@@ -236,8 +240,8 @@ export default {
     }
   }
 
-  .tags {
-    .new-tag-input-wrapper {
+  .ti-tags {
+    .ti-new-tag-input-wrapper {
       font-size: 12px;
       margin: 4px;
 
@@ -252,26 +256,26 @@ export default {
       }
     }
 
-    .tag {
+    .ti-tag {
       border-radius: 4px;
       font-size: 12px;
       margin: 4px;
       padding: 6px 5px 6px 8px;
       word-break: break-word;
 
-      .content {
+      .ti-content {
         color: #0086cc;
       }
 
-      &.valid {
+      &.ti-valid {
         background-color: rgba(0, 134, 204, 0.05);
       }
 
-      &.tag.deletion-mark {
+      &.ti-tag.ti-deletion-mark {
         background-color: rgba(0, 134, 204, 0.2);
       }
 
-      .icon-close {
+      .ti-icon-close {
         color: #0086cc;
       }
     }

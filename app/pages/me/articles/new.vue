@@ -1,5 +1,5 @@
 <template>
-  <component :is="componentName"/>
+  <component :is="componentName" />
 </template>
 
 <script>
@@ -10,15 +10,15 @@ import { isV2 } from '~/utils/article'
 import head from '~/utils/editor-head'
 
 export default {
-  data() {
-    return {
-      componentName: 'BlankPage'
-    }
-  },
   components: {
     BlankPage,
     CreateArticle,
     EditDraftArticleV2
+  },
+  data() {
+    return {
+      componentName: 'BlankPage'
+    }
   },
   async created() {
     // 下書き記事の最新記事を確認し、v2 の空記事だった場合はその記事を利用する

@@ -1,14 +1,16 @@
 <template>
   <img
+    v-if="user.icon_image_url !== undefined"
     class="area-profile-icon"
     :src="user.icon_image_url"
     :alt="imageCaption"
-    v-if="user.icon_image_url !== undefined">
+  >
   <img
+    v-else
     class="area-profile-icon"
     src="~assets/images/pc/common/icon_user_noimg.png"
     :alt="imageCaption"
-    v-else>
+  >
 </template>
 
 <script>

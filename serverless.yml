@@ -1,7 +1,7 @@
 service:
   name: ${env:NUXT_API_GATEWAY_NAME}
 
-frameworkVersion: ">=1.26.1"
+frameworkVersion: '>=1.26.1'
 
 provider:
   name: aws
@@ -22,7 +22,6 @@ package:
     - node_modules/prettier-eslint/**
     - node_modules/babel**/**
     - node_modules/caniuse-db/**
-    - node_modules/caniuse-lite/**
     - node_modules/prettier/**
     - node_modules/yargs/**
     - node_modules/typescript/**
@@ -37,6 +36,7 @@ package:
     - server/**
     - configs/**
     - nuxt.config.js
+    - .nuxt/**
     - node_modules/postcss/**
     - node_modules/postcss-cssnext/**
     - node_modules/postcss-import/**

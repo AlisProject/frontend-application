@@ -5,7 +5,8 @@
         <div
           v-if="isCopyrightViolation"
           class="signup-form-group"
-          :class="{ 'error': hasOriginURLError }">
+          :class="{ error: hasOriginURLError }"
+        >
           <label class="signup-form-label">著作権元と思われる記事のURL</label>
           <input
             class="signup-form-input"
@@ -13,8 +14,11 @@
             placeholder="https://example.com"
             @input="setOriginURL($event.target.value)"
             @blur="showError('originURL')"
-            @focus="resetError('originURL')">
-          <p class="error-message" v-if="showErrorUrl">URLを正しい形式で入力してください</p>
+            @focus="resetError('originURL')"
+          >
+          <p v-if="showErrorUrl" class="error-message">
+            URLを正しい形式で入力してください
+          </p>
         </div>
         <div class="signup-form-group">
           <label class="signup-form-label">報告の詳細※任意</label>
@@ -23,7 +27,8 @@
             type="text"
             placeholder="具体的な報告の内容や報告の箇所をご記入ください"
             maxlength="400"
-            @input="setFreeText($event.target.value)"/>
+            @input="setFreeText($event.target.value)"
+          />
         </div>
       </form>
     </div>
@@ -38,8 +43,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
-import AppButton from '../atoms/AppButton'
 import urlRegex from 'url-regex'
+import AppButton from '../atoms/AppButton'
 
 function url(value) {
   return urlRegex({ exact: true }).test(value)

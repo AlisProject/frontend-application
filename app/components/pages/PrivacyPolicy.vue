@@ -2,10 +2,12 @@
   <div class="privacy-policy-container">
     <app-header />
     <div class="area-article">
-      <h1 class="area-title">{{ title }}</h1>
+      <h1 class="area-title">
+        {{ title }}
+      </h1>
       <div class="area-content" v-html="$md.render(body)" />
     </div>
-    <app-footer/>
+    <app-footer />
   </div>
 </template>
 

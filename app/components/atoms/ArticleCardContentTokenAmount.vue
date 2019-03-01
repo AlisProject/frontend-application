@@ -1,5 +1,7 @@
 <template>
-  <p class="token-amount" :class="{ nonDisplay: tokenAmount === undefined }">{{ formattedTokenAmount }}</p>
+  <p class="token-amount" :class="{ nonDisplay: tokenAmount === undefined }">
+    {{ formattedTokenAmount }}
+  </p>
 </template>
 
 <script>

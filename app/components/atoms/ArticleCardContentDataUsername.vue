@@ -1,5 +1,7 @@
 <template>
-  <p class="area-name">{{ decodedUsername }}</p>
+  <p class="area-name">
+    {{ decodedUsername }}
+  </p>
 </template>
 
 <script>
