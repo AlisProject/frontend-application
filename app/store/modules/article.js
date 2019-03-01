@@ -212,6 +212,7 @@ const actions = {
   },
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
+    commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
     const [userInfo, alisToken, likesCount, comments] = await Promise.all([
       dispatch('getUserInfo', { userId: article.user_id }),
       dispatch('getAlisToken', { articleId }),
@@ -942,6 +943,9 @@ const mutations = {
   },
   [types.SET_IS_FETCHING_TAG_ARTICLES](state, { isFetching }) {
     state.tagArticles.isFetching = isFetching
+  },
+  [types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state) {
+    state.articleCommentsLastEvaluatedKey = {}
   }
 }
 
