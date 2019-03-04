@@ -91,7 +91,8 @@ export default {
   },
   mounted() {
     this.listen(window, 'click', (event) => {
-      if (!this.$el.contains(event.target)) {
+      // タグの ☓ ボタンを押したときにはポップアップを非表示にしない
+      if (!this.$el.contains(event.target) && !event.target.classList.contains('ti-icon-close')) {
         this.closePopup()
       }
     })
