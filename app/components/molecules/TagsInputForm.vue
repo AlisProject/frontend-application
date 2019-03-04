@@ -39,6 +39,15 @@ export default {
       autocompleteItems: []
     }
   },
+  async mounted() {
+    await this.$nextTick()
+    const newTagInputWrapper = document.querySelector('.ti-new-tag-input-wrapper')
+
+    // タグが5つあるとき、タグの入力ができないようにする
+    if (this.tags.length === 5) {
+      newTagInputWrapper.style.display = 'none'
+    }
+  },
   methods: {
     handleTagsChanged(tags) {
       this.autocompleteItems = []
