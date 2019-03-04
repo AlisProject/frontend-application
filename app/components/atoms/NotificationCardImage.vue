@@ -5,6 +5,11 @@
       class="profile-icon"
       src="~assets/images/pc/common/icon_like.png"
     >
+    <img
+      v-else-if="notification.type === 'announce'"
+      class="profile-icon"
+      src="~assets/images/pc/notification/icon_announce.png"
+    >
     <template
       v-if="
         notification.type === 'comment' ||
