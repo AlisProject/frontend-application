@@ -70,6 +70,18 @@
           </span>
         </li>
       </ul>
+      <nuxt-link class="banner-planning-box" to="/tag/ALIS参加募集企画">
+        <img
+          class="banner-planning pc"
+          src="~assets/images/pc/common/banner_planning.png"
+          alt="ALIS参加募集企画"
+        >
+        <img
+          class="banner-planning sp"
+          src="~assets/images/sp/common/banner_planning.png"
+          alt="ALIS参加募集企画"
+        >
+      </nuxt-link>
     </div>
     <div v-show="isMenuShown" class="cover" @click="closeMenu" />
   </div>
@@ -329,6 +341,23 @@ export default {
       }
     }
   }
+
+  .banner-planning-box {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    display: block;
+    height: 60px;
+    overflow: hidden;
+
+    .banner-planning {
+      height: auto;
+      width: 100%;
+
+      &.sp {
+        display: none;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 1080px) {
@@ -380,6 +409,20 @@ export default {
       overflow: hidden;
       text-align: center;
     }
+
+    .banner-planning-box {
+      margin: 16px;
+
+      .banner-planning {
+        &.sp {
+          display: block;
+        }
+
+        &.pc {
+          display: none;
+        }
+      }
+    }
   }
 
   .cover {
@@ -403,5 +446,17 @@ export default {
 
 @media screen and (max-width: 550px) {
   @include spStyles();
+}
+
+@media screen and (max-width: 320px) {
+  .menu {
+    .menu-links {
+      .menu-link {
+        &:last-child {
+          margin-top: 0;
+        }
+      }
+    }
+  }
 }
 </style>
