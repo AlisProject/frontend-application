@@ -228,7 +228,7 @@ export default {
     },
     fixToolbarPositionByTitleElementHeight(targetElement) {
       // resizeTextarea 関数の処理後にタイトルの高さを取得しないと、リサイズ後の高さが取得できないため、
-      // $nextTick で処理を遅らせている。
+      // 処理を待ってから高さの変更を行っている。
       setTimeout(() => {
         const titleElementHeight = Number(targetElement.style.height.split('px')[0])
         if (this.titleElementHeight === titleElementHeight) return
