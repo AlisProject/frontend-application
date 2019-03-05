@@ -14,6 +14,7 @@ module.exports = {
     'no-irregular-whitespace': 'off',
     'require-await': 'off',
     'space-before-function-paren': 'off',
+    'vue/attribute-hyphenation': 'off',
     'vue/no-side-effects-in-computed-properties': 'off',
     'vue/no-unused-component': 'off',
     'vue/no-v-html': 'off',
