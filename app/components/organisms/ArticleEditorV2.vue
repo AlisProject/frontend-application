@@ -138,7 +138,7 @@ export default {
     if (textarea.scrollHeight > textarea.offsetHeight) {
       textarea.style.height = `${textarea.scrollHeight}px`
     }
-    await this.fixToolbarPositionByTitleElementHeight(textarea)
+    this.fixToolbarPositionByTitleElementHeight(textarea)
 
     // Start update article interval
     this.updateArticle()
@@ -188,7 +188,8 @@ export default {
     async onInputTitle(event) {
       this.setSaveStatus({ saveStatus: '' })
       this.setIsEditedTitle({ isEditedTitle: true })
-      await this.fixToolbarPositionByTitleElementHeight(event.target)
+      if (isAndroid()) return
+      this.fixToolbarPositionByTitleElementHeight(event.target)
     },
     handleEnter(event) {
       if (!event.isComposing && event.target.textLength === event.target.selectionEnd) {
@@ -225,15 +226,16 @@ export default {
       document.querySelector('.ck-toolbar').style.top = `${window.pageYOffset -
         this.editorToolbarTopOffsetHeight}px`
     },
-    async fixToolbarPositionByTitleElementHeight(targetElement) {
+    fixToolbarPositionByTitleElementHeight(targetElement) {
       // resizeTextarea 関数の処理後にタイトルの高さを取得しないと、リサイズ後の高さが取得できないため、
       // $nextTick で処理を遅らせている。
-      await this.$nextTick()
-      const titleElementHeight = Number(targetElement.style.height.split('px')[0])
-      if (this.titleElementHeight === titleElementHeight) return
-      this.titleElementHeight = titleElementHeight
-      if (!document.querySelector('.ck-toolbar')) return
-      document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
+      setTimeout(() => {
+        const titleElementHeight = Number(targetElement.style.height.split('px')[0])
+        if (this.titleElementHeight === titleElementHeight) return
+        this.titleElementHeight = titleElementHeight
+        if (!document.querySelector('.ck-toolbar')) return
+        document.querySelector('.ck-toolbar').style.top = `-${this.editorToolbarTopOffsetHeight}px`
+      }, 10)
     },
     handleDragover(e) {
       if (e.target.nodeName === 'P') {
