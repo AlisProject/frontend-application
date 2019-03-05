@@ -2,8 +2,8 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        はじめての記事投稿<span class="br"/>お疲れ様でした！<br>
-        記事にいいねがつき、<span class="br"/>ALISを獲得するのを<span class="br"/>待ちましょう。
+        はじめての記事投稿<span class="br" />お疲れ様でした！<br>
+        記事にいいねがつき、<span class="br" />ALISを獲得するのを<span class="br" />待ちましょう。
       </p>
       <app-button class="submit" @click="submit">
         <nuxt-link to="/">

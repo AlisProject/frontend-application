@@ -2,8 +2,8 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        あなたのいいねが<span class="br"/>みんなのやる気を支えます。<br>
-        次はあなたが記事を投稿し、<span class="br"/>いいねを獲得してみませんか？
+        あなたのいいねが<span class="br" />みんなのやる気を支えます。<br>
+        次はあなたが記事を投稿し、<span class="br" />いいねを獲得してみませんか？
       </p>
       <app-button class="submit" @click="close">
         <nuxt-link to="/me/articles/new">
