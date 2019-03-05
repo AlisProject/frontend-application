@@ -3,7 +3,9 @@
     <div class="wrapper">
       <p class="description">
         はじめてALISを贈りました！<br>
-        よければコメントも残して<span class="br"/>応援した人と<span class="br"/>つながってみませんか？
+        よければコメントも残して<span class="br" />応援した人と<span
+          class="br"
+        />つながってみませんか？
       </p>
       <app-button class="submit" @click="submit">
         コメントする

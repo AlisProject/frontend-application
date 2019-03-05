@@ -2,8 +2,8 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        はじめてのALIS獲得<span class="br"/>おめでとうございます！<br>
-        ALISでの新たな出会いを<span class="br"/>お楽しみください。
+        はじめてのALIS獲得<span class="br" />おめでとうございます！<br>
+        ALISでの新たな出会いを<span class="br" />お楽しみください。
       </p>
       <app-button class="submit" @click="submit">
         記事を作成する
