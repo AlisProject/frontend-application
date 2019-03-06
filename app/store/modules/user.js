@@ -700,9 +700,7 @@ const actions = {
   },
   async getYahooLoginAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get(
-        '/login/yahoo/authorization_url'
-      )
+      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -736,9 +734,7 @@ const actions = {
   },
   async getYahooSignUpAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get(
-        '/login/yahoo/authorization_url'
-      )
+      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
