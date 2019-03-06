@@ -13,7 +13,8 @@ export default {
       localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       ) || ''
-    const isExternalProviderUserId = userId.startsWith('LINE-') || userId.startsWith('Twitter-')
+    const isExternalProviderUserId =
+      userId.startsWith('LINE-') || userId.startsWith('Twitter-') || userId.startsWith('Facebook-')
 
     if (isExternalProviderUserId) {
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
