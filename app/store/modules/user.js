@@ -616,17 +616,6 @@ const actions = {
   initCognitoAuth({ state }) {
     this.cognitoAuth = new CognitoAuthSDK()
   },
-  async checkAuthByLine({ commit, dispatch }, { code }) {
-    dispatch('initCognitoAuth')
-
-    const result = await this.$axios.$post('/login/line', { code })
-    this.cognitoAuth.setTokens(result)
-
-    const hasUserId = result.has_user_id
-    const status = result.status
-
-    return { hasUserId, status }
-  },
   setSignUpAuthFlowInputUserIdModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_MODAL, { isShow })
   },
@@ -709,20 +698,6 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
-    dispatch('initCognitoAuth')
-
-    const result = await this.$axios.$post('/login/twitter', {
-      oauth_token: oauthToken,
-      oauth_verifier: oauthVerifier
-    })
-    this.cognitoAuth.setTokens(result)
-
-    const hasUserId = result.has_user_id
-    const status = result.status
-
-    return { hasUserId, status }
-  },
   async getLineSignUpAuthorizeURL() {
     try {
       const { callback_url: callbackUrl } = await this.$axios.$get(
@@ -748,6 +723,31 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async checkAuthByLine({ commit, dispatch }, { code }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/line', { code })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/twitter', {
+      oauth_token: oauthToken,
+      oauth_verifier: oauthVerifier
+    })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
   },
   async checkAuthByFacebook({ commit, dispatch }, { code, state }) {
     dispatch('initCognitoAuth')
