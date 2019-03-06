@@ -79,10 +79,10 @@
           LINEではじめる
         </a>
         <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
-          twitterではじめる
+          Twitterではじめる
         </a>
         <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
-          facebookではじめる
+          Facebookではじめる
         </a>
         <a class="yahoo-button" :href="yahooSignUpAuthorizeURL">
           Yahoo!ではじめる

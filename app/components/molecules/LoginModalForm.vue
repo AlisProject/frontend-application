@@ -60,10 +60,10 @@
           LINEでログイン
         </a>
         <a class="twitter-button" :href="twitterLoginAuthorizeURL">
-          twitterでログイン
+          Twitterでログイン
         </a>
         <a class="facebook-button" :href="facebookLoginAuthorizeURL">
-          facebookでログイン
+          Facebookでログイン
         </a>
         <a class="yahoo-button" :href="yahooLoginAuthorizeURL">
           Yahoo!でログイン
