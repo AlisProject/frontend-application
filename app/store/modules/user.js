@@ -701,6 +701,14 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getFacebookLoginAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
     dispatch('initCognitoAuth')
 
@@ -732,6 +740,25 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getFacebookSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async checkAuthByFacebook({ commit, dispatch }, { code, state }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/facebook', { code, state })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
   },
   setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })

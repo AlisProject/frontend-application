@@ -81,6 +81,9 @@
         <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
           twitterではじめる
         </a>
+        <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
+          facebookではじめる
+        </a>
         <p class="for-email-signup" @click="showEmailAuth">
           メールではじめる
         </p>
@@ -123,12 +126,23 @@ export default {
       errorMessage: '',
       lineSignUpAuthorizeURL: null,
       twitterSignUpAuthorizeURL: null,
+      facebookSignUpAuthorizeURL: null,
       isSelectedEmailAuth: false
     }
   },
   async mounted() {
-    this.lineSignUpAuthorizeURL = await this.getLineSignUpAuthorizeURL()
-    this.twitterSignUpAuthorizeURL = await this.getTwitterSignUpAuthorizeURL()
+    const [
+      lineSignUpAuthorizeURL,
+      twitterSignUpAuthorizeURL,
+      facebookSignUpAuthorizeURL
+    ] = await Promise.all([
+      this.getLineSignUpAuthorizeURL(),
+      this.getTwitterSignUpAuthorizeURL(),
+      this.getFacebookSignUpAuthorizeURL()
+    ])
+    this.lineSignUpAuthorizeURL = lineSignUpAuthorizeURL
+    this.twitterSignUpAuthorizeURL = twitterSignUpAuthorizeURL
+    this.facebookSignUpAuthorizeURL = facebookSignUpAuthorizeURL
   },
   computed: {
     showErrorUserIdMinLength() {
@@ -242,7 +256,8 @@ export default {
       'setLoginModal',
       'resetPassword',
       'getLineSignUpAuthorizeURL',
-      'getTwitterSignUpAuthorizeURL'
+      'getTwitterSignUpAuthorizeURL',
+      'getFacebookSignUpAuthorizeURL'
     ])
   }
 }
@@ -383,7 +398,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 270px;
+  margin-top: 214px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;
@@ -395,6 +410,15 @@ export default {
   margin: 20px 0 0;
   background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
   background-color: #1da1f3;
+  background-size: 20px;
+  background-position: 26px 10px;
+  @include external-provider-button();
+}
+
+.facebook-button {
+  margin: 20px 0 0;
+  background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
+  background-color: #425eac;
   background-size: 20px;
   background-position: 26px 10px;
   @include external-provider-button();
@@ -465,7 +489,7 @@ export default {
   }
 
   .line-button {
-    margin-top: 370px;
+    margin-top: 314px;
   }
 
   .for-login-user {
