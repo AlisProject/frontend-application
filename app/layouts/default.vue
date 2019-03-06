@@ -14,7 +14,10 @@ export default {
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       ) || ''
     const isExternalProviderUserId =
-      userId.startsWith('LINE-') || userId.startsWith('Twitter-') || userId.startsWith('Facebook-')
+      userId.startsWith('LINE-') ||
+      userId.startsWith('Twitter-') ||
+      userId.startsWith('Facebook-') ||
+      userId.startsWith('Yahoo-')
 
     if (isExternalProviderUserId) {
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })

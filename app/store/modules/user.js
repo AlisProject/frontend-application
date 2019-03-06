@@ -698,6 +698,16 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getYahooLoginAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get(
+        '/login/yahoo/authorization_url'
+      )
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async getLineSignUpAuthorizeURL() {
     try {
       const { callback_url: callbackUrl } = await this.$axios.$get(
@@ -719,6 +729,16 @@ const actions = {
   async getFacebookSignUpAuthorizeURL() {
     try {
       const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getYahooSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get(
+        '/login/yahoo/authorization_url'
+      )
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -753,6 +773,17 @@ const actions = {
     dispatch('initCognitoAuth')
 
     const result = await this.$axios.$post('/login/facebook', { code, state })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByYahoo({ commit, dispatch }, { code, state }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/yahoo', { code, state })
     this.cognitoAuth.setTokens(result)
 
     const hasUserId = result.has_user_id

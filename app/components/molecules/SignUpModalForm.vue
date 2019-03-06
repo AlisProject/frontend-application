@@ -84,6 +84,9 @@
         <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
           facebookではじめる
         </a>
+        <a class="yahoo-button" :href="yahooSignUpAuthorizeURL">
+          Yahoo!ではじめる
+        </a>
         <p class="for-email-signup" @click="showEmailAuth">
           メールではじめる
         </p>
@@ -127,6 +130,7 @@ export default {
       lineSignUpAuthorizeURL: null,
       twitterSignUpAuthorizeURL: null,
       facebookSignUpAuthorizeURL: null,
+      yahooSignUpAuthorizeURL: null,
       isSelectedEmailAuth: false
     }
   },
@@ -134,15 +138,18 @@ export default {
     const [
       lineSignUpAuthorizeURL,
       twitterSignUpAuthorizeURL,
-      facebookSignUpAuthorizeURL
+      facebookSignUpAuthorizeURL,
+      yahooSignUpAuthorizeURL
     ] = await Promise.all([
       this.getLineSignUpAuthorizeURL(),
       this.getTwitterSignUpAuthorizeURL(),
-      this.getFacebookSignUpAuthorizeURL()
+      this.getFacebookSignUpAuthorizeURL(),
+      this.getYahooSignUpAuthorizeURL()
     ])
     this.lineSignUpAuthorizeURL = lineSignUpAuthorizeURL
     this.twitterSignUpAuthorizeURL = twitterSignUpAuthorizeURL
     this.facebookSignUpAuthorizeURL = facebookSignUpAuthorizeURL
+    this.yahooSignUpAuthorizeURL = yahooSignUpAuthorizeURL
   },
   computed: {
     showErrorUserIdMinLength() {
@@ -257,7 +264,8 @@ export default {
       'resetPassword',
       'getLineSignUpAuthorizeURL',
       'getTwitterSignUpAuthorizeURL',
-      'getFacebookSignUpAuthorizeURL'
+      'getFacebookSignUpAuthorizeURL',
+      'getYahooSignUpAuthorizeURL'
     ])
   }
 }
@@ -398,7 +406,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 214px;
+  margin-top: 158px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;
@@ -422,6 +430,16 @@ export default {
   background-size: 20px;
   background-position: 26px 10px;
   @include external-provider-button();
+}
+
+.yahoo-button {
+  margin: 20px 0 0;
+  background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
+  background-color: #fff;
+  background-size: 20px;
+  background-position: 26px 10px;
+  @include external-provider-button();
+  color: #030303;
 }
 
 .for-email-signup {
@@ -489,7 +507,7 @@ export default {
   }
 
   .line-button {
-    margin-top: 314px;
+    margin-top: 258px;
   }
 
   .for-login-user {

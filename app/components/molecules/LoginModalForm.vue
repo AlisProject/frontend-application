@@ -63,7 +63,10 @@
           twitterでログイン
         </a>
         <a class="facebook-button" :href="facebookLoginAuthorizeURL">
-          facebookではじめる
+          facebookでログイン
+        </a>
+        <a class="yahoo-button" :href="yahooLoginAuthorizeURL">
+          Yahoo!でログイン
         </a>
         <p class="for-email-login" @click="showEmailAuth">
           メールでログイン
@@ -102,6 +105,7 @@ export default {
       lineLoginAuthorizeURL: null,
       twitterLoginAuthorizeURL: null,
       facebookLoginAuthorizeURL: null,
+      yahooLoginAuthorizeURL: null,
       isSelectedEmailAuth: false,
       isProcessing: false
     }
@@ -110,15 +114,18 @@ export default {
     const [
       lineLoginAuthorizeURL,
       twitterLoginAuthorizeURL,
-      facebookLoginAuthorizeURL
+      facebookLoginAuthorizeURL,
+      yahooLoginAuthorizeURL
     ] = await Promise.all([
       this.getLineLoginAuthorizeURL(),
       this.getTwitterLoginAuthorizeURL(),
-      this.getFacebookLoginAuthorizeURL()
+      this.getFacebookLoginAuthorizeURL(),
+      this.getYahooLoginAuthorizeURL()
     ])
     this.lineLoginAuthorizeURL = lineLoginAuthorizeURL
     this.twitterLoginAuthorizeURL = twitterLoginAuthorizeURL
     this.facebookLoginAuthorizeURL = facebookLoginAuthorizeURL
+    this.yahooLoginAuthorizeURL = yahooLoginAuthorizeURL
   },
   computed: {
     showErrorInvalidPassword() {
@@ -226,7 +233,8 @@ export default {
       'setSignUpAuthFlowInputPhoneNumberModal',
       'getLineLoginAuthorizeURL',
       'getTwitterLoginAuthorizeURL',
-      'getFacebookLoginAuthorizeURL'
+      'getFacebookLoginAuthorizeURL',
+      'getYahooLoginAuthorizeURL'
     ])
   }
 }
@@ -381,7 +389,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 214px;
+  margin-top: 158px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;
@@ -405,6 +413,16 @@ export default {
   background-size: 20px;
   background-position: 26px 10px;
   @include external-provider-button();
+}
+
+.yahoo-button {
+  margin: 20px 0 0;
+  background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
+  background-color: #fff;
+  background-size: 20px;
+  background-position: 26px 10px;
+  @include external-provider-button();
+  color: #030303;
 }
 
 .for-email-login {
@@ -464,7 +482,7 @@ export default {
   }
 
   .line-button {
-    margin-top: 314px;
+    margin-top: 258px;
   }
 
   .for-signup-user {
