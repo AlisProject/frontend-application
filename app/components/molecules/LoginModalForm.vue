@@ -111,21 +111,17 @@ export default {
     }
   },
   async mounted() {
-    const [
-      lineLoginAuthorizeURL,
-      twitterLoginAuthorizeURL,
-      facebookLoginAuthorizeURL,
-      yahooLoginAuthorizeURL
+    ;[
+      this.lineLoginAuthorizeURL,
+      this.twitterLoginAuthorizeURL,
+      this.facebookLoginAuthorizeURL,
+      this.yahooLoginAuthorizeURL
     ] = await Promise.all([
       this.getLineLoginAuthorizeURL(),
       this.getTwitterLoginAuthorizeURL(),
       this.getFacebookLoginAuthorizeURL(),
       this.getYahooLoginAuthorizeURL()
     ])
-    this.lineLoginAuthorizeURL = lineLoginAuthorizeURL
-    this.twitterLoginAuthorizeURL = twitterLoginAuthorizeURL
-    this.facebookLoginAuthorizeURL = facebookLoginAuthorizeURL
-    this.yahooLoginAuthorizeURL = yahooLoginAuthorizeURL
   },
   computed: {
     showErrorInvalidPassword() {

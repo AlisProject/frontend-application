@@ -135,21 +135,17 @@ export default {
     }
   },
   async mounted() {
-    const [
-      lineSignUpAuthorizeURL,
-      twitterSignUpAuthorizeURL,
-      facebookSignUpAuthorizeURL,
-      yahooSignUpAuthorizeURL
+    ;[
+      this.lineSignUpAuthorizeURL,
+      this.twitterSignUpAuthorizeURL,
+      this.facebookSignUpAuthorizeURL,
+      this.yahooSignUpAuthorizeURL
     ] = await Promise.all([
       this.getLineSignUpAuthorizeURL(),
       this.getTwitterSignUpAuthorizeURL(),
       this.getFacebookSignUpAuthorizeURL(),
       this.getYahooSignUpAuthorizeURL()
     ])
-    this.lineSignUpAuthorizeURL = lineSignUpAuthorizeURL
-    this.twitterSignUpAuthorizeURL = twitterSignUpAuthorizeURL
-    this.facebookSignUpAuthorizeURL = facebookSignUpAuthorizeURL
-    this.yahooSignUpAuthorizeURL = yahooSignUpAuthorizeURL
   },
   computed: {
     showErrorUserIdMinLength() {
