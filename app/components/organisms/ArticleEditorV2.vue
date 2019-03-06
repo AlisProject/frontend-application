@@ -271,6 +271,8 @@ export default {
         type: 'warning',
         dismissAfter: 60 * 60 * 1000 // 1 時間
       })
+      if (!document.querySelector('.toast')) return
+      document.querySelector('.toast').style.position = 'absolute'
     },
     ...mapActions('article', [
       'updateTitle',
