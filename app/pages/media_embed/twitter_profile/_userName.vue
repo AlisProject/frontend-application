@@ -31,6 +31,7 @@ export default {
 
 <style lang="scss">
 .twitter-profile-card {
+  background: #fff;
   border-radius: 4px;
   border: 1px solid #e2e8ed;
   box-sizing: border-box;
