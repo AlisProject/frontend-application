@@ -10,6 +10,7 @@ module.exports = {
   extends: '@nuxtjs',
   // add your custom rules here
   rules: {
+    'arrow-parens': 'off',
     'no-console': 'off',
     'no-irregular-whitespace': 'off',
     'require-await': 'off',

@@ -146,7 +146,7 @@ export default {
       })
       this.editorElement.subscribe('editableInput', (event, editable) => {
         this.setIsEdited({ isEdited: true })
-        this.$el.onkeydown = event => this.handleEditorInput(event)
+        this.$el.onkeydown = (event) => this.handleEditorInput(event)
       })
       $(() => {
         $('.area-body').mediumInsert({
