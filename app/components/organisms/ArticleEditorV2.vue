@@ -271,6 +271,8 @@ export default {
         type: 'warning',
         dismissAfter: 60 * 60 * 1000 // 1 時間
       })
+      // PC で position = 'absolute' を指定すると表示が崩れるため、処理をストップする
+      if (this.isPc) return
       if (!document.querySelector('.toast')) return
       document.querySelector('.toast').style.position = 'absolute'
     },
