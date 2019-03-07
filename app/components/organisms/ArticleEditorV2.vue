@@ -138,7 +138,9 @@ export default {
     if (textarea.scrollHeight > textarea.offsetHeight) {
       textarea.style.height = `${textarea.scrollHeight}px`
     }
-    this.fixToolbarPositionByTitleElementHeight(textarea)
+    if (isIOS()) {
+      this.fixToolbarPositionByTitleElementHeight(textarea)
+    }
 
     // Start update article interval
     this.updateArticle()
