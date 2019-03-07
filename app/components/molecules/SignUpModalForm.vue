@@ -421,19 +421,19 @@ export default {
 
 .facebook-button {
   margin: 20px 0 0;
-  background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
+  background: url('~assets/images/pc/common/icon_btn_facebook.png') no-repeat;
   background-color: #425eac;
-  background-size: 20px;
-  background-position: 26px 10px;
+  background-size: 22px;
+  background-position: 25px 7px;
   @include external-provider-button();
 }
 
 .yahoo-button {
   margin: 20px 0 0;
-  background: url('~assets/images/pc/common/icon_twitter.png') no-repeat;
+  background: url('~assets/images/pc/common/icon_btn_yahoo.png') no-repeat;
   background-color: #fff;
-  background-size: 20px;
-  background-position: 26px 10px;
+  background-size: 22px;
+  background-position: 26px 8px;
   @include external-provider-button();
   color: #030303;
 }
