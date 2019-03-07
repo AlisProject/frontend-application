@@ -1,12 +1,12 @@
 <template>
   <div class="area-editor-container">
     <textarea
-      v-model="title"
       class="area-title"
       type="text"
       placeholder="タイトル"
       spellcheck="false"
       maxlength="255"
+      :value="title"
       @input="onInputTitle"
       @keydown.enter.prevent="handleEnter"
     />
@@ -186,6 +186,7 @@ export default {
       }
     },
     async onInputTitle(event) {
+      this.title = event.target.value
       this.setSaveStatus({ saveStatus: '' })
       this.setIsEditedTitle({ isEditedTitle: true })
       if (isAndroid()) return
