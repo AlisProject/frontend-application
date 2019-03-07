@@ -36,6 +36,7 @@ export default {
 
 <style lang="scss">
 .iframely-embed-card {
+  background: #fff;
   border-radius: 4px;
   border: 1px solid #e3e3e3;
   box-sizing: border-box;
