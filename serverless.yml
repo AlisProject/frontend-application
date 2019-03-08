@@ -21,6 +21,8 @@ package:
     - README.md
     - package.json
     - yarn.lock
+    - node_modules/@alisproject/dist/AlisEditor.common.js*
+    - node_modules/@alisproject/dist/AlisEditor.umd.js*
     - node_modules/prettier-eslint/**
     - node_modules/babel**/**
     - node_modules/caniuse-db/**
