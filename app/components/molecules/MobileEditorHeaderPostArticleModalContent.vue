@@ -248,12 +248,13 @@ export default {
   }
 
   .thumbnails {
+    height: 120px;
+    margin-bottom: 10px;
     overflow-x: scroll;
     overflow-y: hidden;
-    white-space: nowrap;
-    margin-bottom: 10px;
+    text-align: center;
     user-select: none;
-    height: 120px;
+    white-space: nowrap;
 
     &::-webkit-scrollbar {
       height: 40px;
@@ -384,7 +385,7 @@ export default {
   }
 
   .submit {
-    margin: 0 auto;
+    margin: 0 auto 30px;
   }
 }
 
@@ -397,6 +398,13 @@ export default {
     &::before {
       top: 25px !important;
     }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .wrapper {
+    padding: 40px 30px;
+    width: 320px;
   }
 }
 </style>
