@@ -33,6 +33,7 @@ package:
     - node_modules/cssnano/**
     - node_modules/xxhashjs/**
     - node_modules/jschardet/**
+    - node_modules/rxjs/**
     - node_modules/**/*.md
     - node_modules/**/bin/**
   include:
