@@ -7,7 +7,6 @@ import BlankPage from '~/components/pages/BlankPage'
 import CreateArticle from '~/components/pages/CreateArticle'
 import EditDraftArticleV2 from '~/components/pages/EditDraftArticleV2'
 import { isV2 } from '~/utils/article'
-import head from '~/utils/editor-head'
 
 export default {
   components: {
@@ -56,7 +55,6 @@ export default {
     }
   },
   head: {
-    ...head,
     title: '新規記事',
     meta: [
       {
