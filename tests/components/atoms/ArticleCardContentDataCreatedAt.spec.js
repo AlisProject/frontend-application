@@ -1,4 +1,5 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ja'
 import { mount } from '@vue/test-utils'
 import ArticleCardContentDataPublishedAt from '@/components/atoms/ArticleCardContentDataPublishedAt.vue'
 
@@ -11,9 +12,10 @@ describe('ArticleCardContentDataPublishedAt', () => {
       }
     })
     expect(wrapper.element.innerHTML).toMatch(
-      moment(publishedAt, 'X')
+      dayjs
+        .unix(publishedAt)
         .locale('ja')
-        .format('L')
+        .format('YYYY/MM/DD')
     )
   })
 })
