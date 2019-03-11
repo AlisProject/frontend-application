@@ -15,10 +15,14 @@ package:
     - .**
     - .**/*
     - app/**
+    - tests/**
+    - coverage/**
     - LICENSE
     - README.md
     - package.json
     - yarn.lock
+    - node_modules/@alisproject/dist/AlisEditor.common.js*
+    - node_modules/@alisproject/dist/AlisEditor.umd.js*
     - node_modules/prettier-eslint/**
     - node_modules/babel**/**
     - node_modules/caniuse-db/**
@@ -29,6 +33,8 @@ package:
     - node_modules/cssnano/**
     - node_modules/xxhashjs/**
     - node_modules/jschardet/**
+    - node_modules/rxjs/**
+    - node_modules/inquirer/**
     - node_modules/**/*.md
     - node_modules/**/bin/**
   include:
