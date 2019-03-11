@@ -9,7 +9,7 @@
             :src="currentUserInfo.icon_image_url"
           >
           <img v-else-if="uploadedImage" class="upload-img" :src="uploadedImage">
-          <div v-else class="upload-img-dammy" />
+          <img v-else src="~assets/images/pc/common/icon_user_noimg.png" class="upload-img">
           <label class="upload-btn">
             <img class="btn-pic" src="~assets/images/pc/common/icon_profile_img.png" alt="upload">
             <input class="upload-img-input" type="file" accept="image/*" @change="onFileChange">
@@ -235,17 +235,12 @@ export default {
       margin: 0 auto 30px;
 
       .upload-img {
-        width: 120px;
-        height: 120px;
         border-radius: 50%;
+        border: 1px solid #d8d8d8;
+        box-sizing: border-box;
+        height: 120px;
         object-fit: cover;
-      }
-
-      .upload-img-dammy {
         width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: #d8d8d8;
       }
 
       .upload-btn {
@@ -339,11 +334,6 @@ export default {
         margin: 0 auto 20px;
 
         .upload-img {
-          width: 100px;
-          height: 100px;
-        }
-
-        .upload-img-dammy {
           width: 100px;
           height: 100px;
         }
