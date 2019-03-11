@@ -5,7 +5,7 @@
         アカウント登録が<span class="br" />完了しました。<br>
         記事を書いたりいいねをして<span class="br" />ALISを獲得しましょう。
       </p>
-      <app-button class="submit" @click="close">
+      <app-button class="submit" @click.native="close">
         <nuxt-link to="/me/articles/new">
           記事を作成する
         </nuxt-link>
