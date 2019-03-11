@@ -129,7 +129,7 @@ export default {
         const articleTitle = { title }
         const articleBody = { body }
         // タグのデータ形式をAPIに適するように整形
-        const tags = this.tags.map(tag => tag.text)
+        const tags = this.tags.map((tag) => tag.text)
 
         if (
           location.href.includes('/me/articles/draft') ||
@@ -255,7 +255,7 @@ export default {
       if (
         this.isThumbnailSelected &&
         Array.from(document.querySelectorAll('.thumbnails img')).filter(
-          img => img.classList.contains('selected').length !== 0
+          (img) => img.classList.contains('selected').length !== 0
         )
       ) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })

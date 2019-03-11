@@ -66,7 +66,7 @@ export default {
       return formatDate(this.publishedAt)
     },
     topicDisplayName() {
-      const topic = this.topics.find(topic => topic.name === this.article.topic)
+      const topic = this.topics.find((topic) => topic.name === this.article.topic)
       return topic.display_name
     },
     formattedTokenAmount() {

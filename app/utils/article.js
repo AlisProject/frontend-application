@@ -33,8 +33,8 @@ export function createInsertPluginTemplateFromUrl(url) {
 
 export function getThumbnails(images) {
   return images
-    .filter(img => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
-    .map(img => img.src)
+    .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
+    .map((img) => img.src)
 }
 
 export function getIframelyUrlTemplate(url) {
@@ -287,7 +287,7 @@ export function isYouTubeVideoURL(url) {
     /^https?:\/\/www\.youtube\.com\/user\/[a-zA-Z0-9_-]+\/?\?v=([a-zA-Z0-9_-]+)/i,
     /^https?:\/\/www\.youtube-nocookie\.com\/(?:v|embed)\/([a-zA-Z0-9_-]+)/i
   ]
-  const isYouTubeVideoURL = regexes.some(regex => regex.test(url))
+  const isYouTubeVideoURL = regexes.some((regex) => regex.test(url))
 
   return isYouTubeVideoURL
 }
@@ -303,7 +303,7 @@ export function isFacebookPostURL(url) {
     /^https?:\/\/(?:www|m|business)\.facebook\.com\/notes\/([a-zA-Z0-9.-]+)\/[^/]+\/(\d{10,})/i,
     /^https?:\/\/(?:www|m|business)\.facebook\.com\/media\/set\/\?set=[^/]+(\d{10,})/i
   ]
-  const isFacebookPostURL = regexes.some(regex => regex.test(url))
+  const isFacebookPostURL = regexes.some((regex) => regex.test(url))
 
   return isFacebookPostURL
 }
@@ -316,7 +316,7 @@ export function isInstagramURL(url) {
     /^https?:\/\/instagr\.am\/(?:[a-zA-Z0-9_-]+\/)?p\/([a-zA-Z0-9_-]+)/i,
     /^https?:\/\/instagram\.com\/(?:[a-zA-Z0-9_-]+\/)?(?:p|tv)\/([a-zA-Z0-9_-]+)$/i
   ]
-  const isInstagramURL = regexes.some(regex => regex.test(url))
+  const isInstagramURL = regexes.some((regex) => regex.test(url))
 
   return isInstagramURL
 }

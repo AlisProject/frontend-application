@@ -13,13 +13,13 @@ const state = () => ({
 })
 
 const getters = {
-  articleListScrollHeight: state => state.articleListScrollHeight,
-  notificationListScrollHeight: state => state.notificationListScrollHeight,
-  searchArticlesScrollHeight: state => state.searchArticlesScrollHeight,
-  searchUsersScrollHeight: state => state.searchUsersScrollHeight,
-  searchTagsScrollHeight: state => state.searchTagsScrollHeight,
-  tagArticlesScrollHeight: state => state.tagArticlesScrollHeight,
-  defaultHeaderNavHorizontalScrollPosition: state =>
+  articleListScrollHeight: (state) => state.articleListScrollHeight,
+  notificationListScrollHeight: (state) => state.notificationListScrollHeight,
+  searchArticlesScrollHeight: (state) => state.searchArticlesScrollHeight,
+  searchUsersScrollHeight: (state) => state.searchUsersScrollHeight,
+  searchTagsScrollHeight: (state) => state.searchTagsScrollHeight,
+  tagArticlesScrollHeight: (state) => state.tagArticlesScrollHeight,
+  defaultHeaderNavHorizontalScrollPosition: (state) =>
     state.defaultHeaderNavHorizontalScrollPosition
 }
 
