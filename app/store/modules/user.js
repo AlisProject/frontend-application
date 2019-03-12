@@ -616,17 +616,6 @@ const actions = {
   initCognitoAuth({ state }) {
     this.cognitoAuth = new CognitoAuthSDK()
   },
-  async checkAuthByLine({ commit, dispatch }, { code }) {
-    dispatch('initCognitoAuth')
-
-    const result = await this.$axios.$post('/login/line', { code })
-    this.cognitoAuth.setTokens(result)
-
-    const hasUserId = result.has_user_id
-    const status = result.status
-
-    return { hasUserId, status }
-  },
   setSignUpAuthFlowInputUserIdModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_MODAL, { isShow })
   },
@@ -701,19 +690,21 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
-    dispatch('initCognitoAuth')
-
-    const result = await this.$axios.$post('/login/twitter', {
-      oauth_token: oauthToken,
-      oauth_verifier: oauthVerifier
-    })
-    this.cognitoAuth.setTokens(result)
-
-    const hasUserId = result.has_user_id
-    const status = result.status
-
-    return { hasUserId, status }
+  async getFacebookLoginAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getYahooLoginAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
   },
   async getLineSignUpAuthorizeURL() {
     try {
@@ -732,6 +723,69 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getFacebookSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getYahooSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async checkAuthByLine({ commit, dispatch }, { code }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/line', { code })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/twitter', {
+      oauth_token: oauthToken,
+      oauth_verifier: oauthVerifier
+    })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByFacebook({ commit, dispatch }, { code, state }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/facebook', { code, state })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByYahoo({ commit, dispatch }, { code, state }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/yahoo', { code, state })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
   },
   setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })

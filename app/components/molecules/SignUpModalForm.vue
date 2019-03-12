@@ -79,7 +79,13 @@
           LINEではじめる
         </a>
         <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
-          twitterではじめる
+          Twitterではじめる
+        </a>
+        <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
+          Facebookではじめる
+        </a>
+        <a class="yahoo-button" :href="yahooSignUpAuthorizeURL">
+          Yahoo!ではじめる
         </a>
         <p class="for-email-signup" @click="showEmailAuth">
           メールではじめる
@@ -123,12 +129,23 @@ export default {
       errorMessage: '',
       lineSignUpAuthorizeURL: null,
       twitterSignUpAuthorizeURL: null,
+      facebookSignUpAuthorizeURL: null,
+      yahooSignUpAuthorizeURL: null,
       isSelectedEmailAuth: false
     }
   },
   async mounted() {
-    this.lineSignUpAuthorizeURL = await this.getLineSignUpAuthorizeURL()
-    this.twitterSignUpAuthorizeURL = await this.getTwitterSignUpAuthorizeURL()
+    ;[
+      this.lineSignUpAuthorizeURL,
+      this.twitterSignUpAuthorizeURL,
+      this.facebookSignUpAuthorizeURL,
+      this.yahooSignUpAuthorizeURL
+    ] = await Promise.all([
+      this.getLineSignUpAuthorizeURL(),
+      this.getTwitterSignUpAuthorizeURL(),
+      this.getFacebookSignUpAuthorizeURL(),
+      this.getYahooSignUpAuthorizeURL()
+    ])
   },
   computed: {
     showErrorUserIdMinLength() {
@@ -242,7 +259,9 @@ export default {
       'setLoginModal',
       'resetPassword',
       'getLineSignUpAuthorizeURL',
-      'getTwitterSignUpAuthorizeURL'
+      'getTwitterSignUpAuthorizeURL',
+      'getFacebookSignUpAuthorizeURL',
+      'getYahooSignUpAuthorizeURL'
     ])
   }
 }
@@ -383,7 +402,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 270px;
+  margin-top: 158px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;
@@ -398,6 +417,25 @@ export default {
   background-size: 20px;
   background-position: 26px 10px;
   @include external-provider-button();
+}
+
+.facebook-button {
+  margin: 20px 0 0;
+  background: url('~assets/images/pc/common/icon_btn_facebook.png') no-repeat;
+  background-color: #425eac;
+  background-size: 22px;
+  background-position: 25px 7px;
+  @include external-provider-button();
+}
+
+.yahoo-button {
+  margin: 20px 0 0;
+  background: url('~assets/images/pc/common/icon_btn_yahoo.png') no-repeat;
+  background-color: #fff;
+  background-size: 22px;
+  background-position: 26px 8px;
+  @include external-provider-button();
+  color: #030303;
 }
 
 .for-email-signup {
@@ -465,7 +503,7 @@ export default {
   }
 
   .line-button {
-    margin-top: 370px;
+    margin-top: 258px;
   }
 
   .for-login-user {
