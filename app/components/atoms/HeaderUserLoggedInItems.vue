@@ -180,7 +180,7 @@ export default {
       this.$router.push('/me/articles/new')
     },
     async checkPhoneNumberVerifiedAndGetUsersAlisToken() {
-      if (this.currentUser.phoneNumberVerified) {
+      if (this.currentUser && this.currentUser.phoneNumberVerified) {
         await this.getUsersAlisToken()
       }
     },
