@@ -100,11 +100,10 @@ export default {
   },
   async mounted() {
     try {
-      await Promise.all([
-        this.setCurrentUserInfo(),
-        this.getUnreadNotification(),
-        this.getUsersAlisToken()
-      ])
+      await Promise.all([this.setCurrentUserInfo(), this.getUnreadNotification()])
+      if (this.currentUser.phoneNumberVerified) {
+        await this.getUsersAlisToken()
+      }
     } catch (error) {
       console.error(error)
     }
