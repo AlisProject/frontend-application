@@ -14,7 +14,7 @@ export default {
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       ) || ''
     const externalProviderUserIdPrefix = ['LINE-', 'Twitter-', 'Facebook-', 'Yahoo-']
-    const isExternalProviderUserId = externalProviderUserIdPrefix.some(prefix =>
+    const isExternalProviderUserId = externalProviderUserIdPrefix.some((prefix) =>
       userId.startsWith(prefix)
     )
 
