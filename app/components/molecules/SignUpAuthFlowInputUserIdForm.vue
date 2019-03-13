@@ -111,6 +111,7 @@ export default {
 
       try {
         await this.postUserId({ userId })
+        await this.refreshUserSession()
         await this.getUserSession()
         this.setSignUpAuthFlowInputUserIdModal({ isShow: false })
         this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
@@ -135,7 +136,8 @@ export default {
       'postUserId',
       'setSignUpAuthFlowInputUserIdModal',
       'setSignUpAuthFlowInputPhoneNumberModal',
-      'getUserSession'
+      'getUserSession',
+      'refreshUserSession'
     ])
   }
 }
