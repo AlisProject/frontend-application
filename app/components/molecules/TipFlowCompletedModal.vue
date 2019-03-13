@@ -27,10 +27,10 @@ export default {
     closeModal() {
       this.setTipModal({ showTipModal: false })
       this.setTipFlowCompletedModal({ isShow: false })
-      // if (!this.currentUserInfo.is_tipped_article) {
-      //   this.setFirstProcessModal({ isShow: true })
-      //   this.setFirstProcessTippedArticleModal({ isShow: true })
-      // }
+      if (!this.currentUserInfo.is_tipped_article) {
+        this.setFirstProcessModal({ isShow: true })
+        this.setFirstProcessTippedArticleModal({ isShow: true })
+      }
     },
     ...mapActions('user', [
       'setTipModal',

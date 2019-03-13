@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="article-side-actions" v-show="scrollY > 300">
+    <div v-show="scrollY > 300" class="article-side-actions">
       <div class="action like" :class="{ liked: isLikedArticle }" @click="like">
         <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
       </div>
@@ -75,10 +75,10 @@ export default {
             type: 'warning'
           })
         }
-        // if (!this.currentUserInfo.is_liked_article) {
-        //   this.setFirstProcessModal({ isShow: true })
-        //   this.setFirstProcessLikedArticleModal({ isShow: true })
-        // }
+        if (!this.currentUserInfo.is_liked_article) {
+          this.setFirstProcessModal({ isShow: true })
+          this.setFirstProcessLikedArticleModal({ isShow: true })
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
       }

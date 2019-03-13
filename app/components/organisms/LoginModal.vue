@@ -1,9 +1,5 @@
 <template>
-  <app-modal
-    title=""
-    @close="resetStates"
-    :showModalContent="showLoginModal"
-    :maxWidth="1034">
+  <app-modal title="" :show-modal-content="showLoginModal" :max-width="1034" @close="resetStates">
     <div slot="modal-content">
       <login-modal-form />
     </div>

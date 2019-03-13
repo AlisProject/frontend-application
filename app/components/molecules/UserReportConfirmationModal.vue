@@ -63,7 +63,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
 .confirm-text {
   color: #030303;

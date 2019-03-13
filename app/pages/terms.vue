@@ -1,5 +1,5 @@
 <template>
-  <terms-of-service/>
+  <terms-of-service />
 </template>
 
 <script>

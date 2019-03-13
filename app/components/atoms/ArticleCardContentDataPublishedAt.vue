@@ -1,5 +1,7 @@
 <template>
-  <p class="area-date">{{ formattedPublishedAt }}</p>
+  <p class="area-date">
+    {{ formattedPublishedAt }}
+  </p>
 </template>
 
 <script>

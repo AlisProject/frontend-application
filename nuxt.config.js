@@ -1,7 +1,9 @@
+const axiosRetry = require('axios-retry')
+
 module.exports = {
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     script: [
       {
@@ -13,7 +15,7 @@ module.exports = {
     titleTemplate: '%s | ALIS',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'viewport', name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { name: 'apple-mobile-web-app-title', content: 'ALIS' },
       {
         hid: 'description',
@@ -60,14 +62,16 @@ module.exports = {
     ]
   },
   /*
-  ** Customize the progress bar color
-  */
+   ** Customize the progress bar color
+   */
   loading: { color: '#0086cc' },
   /*
-  ** Build configuration
-  */
-  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', 'nuxt-sass-resources-loader'],
-  sassResources: ['~/assets/stylesheets/mixins/**.scss'],
+   ** Build configuration
+   */
+  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', '@nuxtjs/style-resources'],
+  styleResources: {
+    scss: ['~assets/stylesheets/mixins/**.scss']
+  },
   markdownit: {
     injected: true,
     preset: 'default',
@@ -77,26 +81,37 @@ module.exports = {
     '~/plugins/axios',
     '~/plugins/vuelidate',
     { src: '~plugins/gtm.js', ssr: false },
-    { src: '~/plugins/vue-tags-input', ssr: false }
+    { src: '~/plugins/vue-tags-input', ssr: false },
+    { src: '~/plugins/editor', ssr: false }
   ],
   axios: {
     baseURL: process.env.BASE_URL,
-    proxyHeaders: false
+    proxyHeaders: false,
+    retry: {
+      retries: 3,
+      retryDelay: axiosRetry.exponentialDelay
+    }
   },
   srcDir: 'app',
   router: {
     base: '/'
   },
   render: {
-    gzip: false
+    /**
+     * compression を通すと API Gateway がレスポンスを返せないので
+     * なにもしないミドルウェアを定義しておく
+     */
+    compressor: (req, res, next) => {
+      next()
+    }
   },
   build: {
     publicPath: `https://${process.env.DOMAIN}/d/nuxt/dist/`,
     /*
-    ** Run ESLint on save
-    */
-    extend(config, { isDev, isClient }) {
-      if (isDev && isClient) {
+     ** Run ESLint on save
+     */
+    extend(config) {
+      if (process.server && process.browser) {
         config.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
@@ -104,10 +119,14 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    },
-    vendor: ['axios', 'moment', '@johmun/vue-tags-input']
+    }
   },
-  css: ['~assets/stylesheets/medium-editor.scss', '~assets/stylesheets/vuex-toast.scss'],
+  css: [
+    '~assets/stylesheets/medium-editor.scss',
+    '~assets/stylesheets/vuex-toast.scss',
+    '@alisproject/alis-editor/dist/AlisEditor.css',
+    '~assets/stylesheets/ckeditor-view.scss'
+  ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
     REGION: process.env.REGION,

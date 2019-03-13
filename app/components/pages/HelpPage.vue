@@ -2,7 +2,9 @@
   <div class="help-container">
     <app-header />
     <div class="area-help">
-      <h1 class="title">お問い合わせ</h1>
+      <h1 class="title">
+        お問い合わせ
+      </h1>
       <p class="description">
         クローズドβ版のため、ご不便をおかけいたしております。
         問い合わせでいただいた内容は確認次第ご返信させていただきます。
@@ -13,7 +15,7 @@
         </a>
       </app-button>
     </div>
-    <app-footer/>
+    <app-footer />
   </div>
 </template>
 

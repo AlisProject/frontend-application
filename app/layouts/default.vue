@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt/>
+    <nuxt />
   </div>
 </template>
 
@@ -13,7 +13,10 @@ export default {
       localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       ) || ''
-    const isExternalProviderUserId = userId.startsWith('LINE-') || userId.startsWith('Twitter-')
+    const externalProviderUserIdPrefix = ['LINE-', 'Twitter-', 'Facebook-', 'Yahoo-']
+    const isExternalProviderUserId = externalProviderUserIdPrefix.some((prefix) =>
+      userId.startsWith(prefix)
+    )
 
     if (isExternalProviderUserId) {
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })

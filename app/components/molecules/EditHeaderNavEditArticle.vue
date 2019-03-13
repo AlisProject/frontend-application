@@ -1,9 +1,12 @@
 <template>
   <div class="area-post-article">
-    <span @click="unpublish" class="nav-link unpublish-article">
+    <span class="nav-link unpublish-article" @click="unpublish">
       下書きに戻す
     </span>
-    <a :href="`/me/articles/public/${this.$route.params.articleId}/edit`" class="nav-link post-article">
+    <a
+      :href="`/me/articles/public/${this.$route.params.articleId}/edit`"
+      class="nav-link post-article"
+    >
       編集
     </a>
   </div>
@@ -33,7 +36,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .nav-link {

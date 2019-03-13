@@ -1,5 +1,5 @@
 <template>
-  <app-modal :title="title" :showModalContent="articleReportModal.isShow">
+  <app-modal :title="title" :show-modal-content="articleReportModal.isShow">
     <div slot="modal-content">
       <article-report-select-reason-modal v-if="isSelectReasonModal" />
       <article-report-input-free-text-modal v-if="isInputFreeTextModal" />

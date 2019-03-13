@@ -14,7 +14,7 @@ export default async ({ $axios, store, env }) => {
         const token = localStorage.getItem(
           `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
         )
-        req.headers.common['Authorization'] = token
+        req.headers.common.Authorization = token
       } catch (e) {}
     }
     return req

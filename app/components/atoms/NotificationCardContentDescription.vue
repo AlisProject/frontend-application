@@ -1,25 +1,28 @@
 <template>
-  <p class="area-description" v-if="notification.type === 'like'">
+  <p v-if="notification.type === 'like'" class="area-description">
     <span class="gray-darker">{{ notification.liked_count }}人</span>があなたの記事にいいねしました。"{{ decodedArticleTitle }}"
   </p>
-  <p class="area-description" v-else-if="notification.type === 'comment'">
+  <p v-else-if="notification.type === 'comment'" class="area-description">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>があなたの記事に<span class="gray-darker">コメント</span>しました。
   </p>
-  <p class="area-description" v-else-if="notification.type === 'tip'">
+  <p v-else-if="notification.type === 'tip'" class="area-description">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>
     から
     <span class="gray-darker">{{ tipTokenAmountForUser }}ALIS</span>
     受け取りました。"{{ decodedArticleTitle }}"
   </p>
-  <p class="area-description" v-else-if="notification.type === 'tip_error'">
+  <p v-else-if="notification.type === 'tip_error'" class="area-description">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>
     にALISを贈れませんでした。"{{ decodedArticleTitle }}"
   </p>
-  <p class="area-description" v-else-if="notification.type === 'reply'">
+  <p v-else-if="notification.type === 'reply'" class="area-description">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>があなたの<span class="gray-darker">コメントに返信</span>しました。
   </p>
-  <p class="area-description" v-else-if="notification.type === 'thread'">
+  <p v-else-if="notification.type === 'thread'" class="area-description">
     <span class="gray-darker">{{ decodedUserDisplayName }}</span>が<span class="gray-darker">コメント</span>しました。
+  </p>
+  <p v-else-if="notification.type === 'announce'" class="area-description">
+    {{ notification.announce_body }}
   </p>
 </template>
 

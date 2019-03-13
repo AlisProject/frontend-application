@@ -2,8 +2,8 @@
   <div class="area-related-articles">
     <article-card
       v-for="article in articles"
-      :article="article"
       :key="article.id"
+      :article="article"
       class="article-card"
     />
   </div>

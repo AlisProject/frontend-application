@@ -1,9 +1,9 @@
 <template>
   <app-modal title="">
     <div slot="modal-content">
-      <tip-flow-select-tip-amount-modal v-if="isSelectTipAmountModal"/>
-      <tip-flow-confirmation-modal v-if="isConfirmationModal"/>
-      <tip-flow-completed-modal v-if="isCompletedModal"/>
+      <tip-flow-select-tip-amount-modal v-if="isSelectTipAmountModal" />
+      <tip-flow-confirmation-modal v-if="isConfirmationModal" />
+      <tip-flow-completed-modal v-if="isCompletedModal" />
     </div>
   </app-modal>
 </template>

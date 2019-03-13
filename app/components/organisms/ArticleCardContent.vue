@@ -2,12 +2,12 @@
   <div class="area-article-card-content">
     <article-card-content-title :title="article.title" />
     <no-ssr>
-      <article-card-content-tags :tags="article.tags"/>
+      <article-card-content-tags :tags="article.tags" />
     </no-ssr>
     <no-ssr>
-      <article-card-content-data :article="article"/>
+      <article-card-content-data :article="article" />
     </no-ssr>
-    <article-card-content-token-amount :tokenAmount="article.alisToken"/>
+    <article-card-content-token-amount :token-amount="article.alisToken" />
   </div>
 </template>
 
@@ -18,17 +18,17 @@ import ArticleCardContentData from '../molecules/ArticleCardContentData'
 import ArticleCardContentTokenAmount from '../atoms/ArticleCardContentTokenAmount'
 
 export default {
-  props: {
-    article: {
-      type: Object,
-      required: true
-    }
-  },
   components: {
     ArticleCardContentTitle,
     ArticleCardContentTags,
     ArticleCardContentData,
     ArticleCardContentTokenAmount
+  },
+  props: {
+    article: {
+      type: Object,
+      required: true
+    }
   }
 }
 </script>
@@ -44,10 +44,9 @@ export default {
     "...   ... "
     "tags  tags "
     "...   ... "
-    "...   ... "
     "data  ...  ";
-  grid-template-columns: 248px auto;
-  grid-template-rows: 48px 0 40px 0 0 auto;
+  grid-template-columns: 220px auto;
+  grid-template-rows: 48px 0 40px 0 44px;
   position: relative;
   grid-gap: 4px;
 }

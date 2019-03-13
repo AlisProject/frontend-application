@@ -2,26 +2,32 @@
   <nav class="area-nav" :class="{ 'is-fixed': isFixed }">
     <div class="area-nav-inner">
       <nuxt-link
+        v-if="type === 'public-article'"
         :to="`/users/${currentUserInfo.user_id}`"
         class="area-articles-link"
-        v-if="type === 'public-article'">公開中</nuxt-link>
+      >
+        公開中
+      </nuxt-link>
       <nuxt-link
+        v-if="type === 'draft-article'"
         :to="`/users/${currentUserInfo.user_id}/drafts`"
         class="area-articles-link"
-        v-if="type === 'draft-article'">下書き</nuxt-link>
+      >
+        下書き
+      </nuxt-link>
       <span class="area-save-status">{{ saveStatus }}</span>
-      <edit-header-nav-post-article />
+      <edit-header-nav-post-article-v2 />
     </div>
   </nav>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import EditHeaderNavPostArticle from '../molecules/EditHeaderNavPostArticle'
+import EditHeaderNavPostArticleV2 from '../molecules/EditHeaderNavPostArticleV2'
 
 export default {
   components: {
-    EditHeaderNavPostArticle
+    EditHeaderNavPostArticleV2
   },
   props: {
     type: {
@@ -118,7 +124,8 @@ export default {
   }
 }
 
-@media screen and (max-width: 640px) {
+.ios,
+.android {
   .area-nav {
     display: none;
   }

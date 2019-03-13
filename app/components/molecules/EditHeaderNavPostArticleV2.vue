@@ -1,42 +1,59 @@
 <template>
   <div class="area-post-article">
-    <app-button class="nav-link post-article" :class="{ disable: !publishable }" @click="togglePopup">
+    <app-button
+      class="nav-link post-article"
+      :class="{ disable: !publishable }"
+      @click="togglePopup"
+    >
       公開する
     </app-button>
     <div v-show="isPopupShown" class="popup">
-      <h3 class="headline">1. サムネイルの選択</h3>
+      <h3 class="headline">
+        1. サムネイルの選択
+      </h3>
       <div class="thumbnails">
-        <span class="no-thumbnail-message" v-if="suggestedThumbnails.length === 0">
+        <span v-if="suggestedThumbnails.length === 0" class="no-thumbnail-message">
           画像がありません
         </span>
         <div
           v-for="img in suggestedThumbnails"
           :key="img"
           class="thumbnail-box"
-          :class="{ 'selected': img === thumbnail }"
-          @click.prevent="selectThumbnail">
-          <img
-            :src="img"
-            class="thumbnail"/>
+          :class="{ selected: img === thumbnail }"
+          @click.prevent="selectThumbnail"
+        >
+          <img :src="img" class="thumbnail">
         </div>
       </div>
-      <h3 class="headline">2. カテゴリの設定</h3>
+      <h3 class="headline">
+        2. カテゴリの設定
+      </h3>
       <div class="article-type-select-box">
         <no-ssr>
-          <select required class="article-type-select" :value="topicType" @change="handleChangeTopicType">
-            <option value='' disabled selected class="placeholder">選択してください</option>
+          <select
+            required
+            class="article-type-select"
+            :value="topicType"
+            @change="handleChangeTopicType"
+          >
+            <option value="" disabled selected class="placeholder">
+              選択してください
+            </option>
             <option v-for="topic in topics" :value="topic.name">
               {{ topic.display_name }}
             </option>
           </select>
         </no-ssr>
       </div>
-      <h3 class="headline">3. タグの設定</h3>
-      <tags-input-form @change-tag-validation-state="onChangeTagValidationState"/>
+      <h3 class="headline">
+        3. タグの設定
+      </h3>
+      <tags-input-form @change-tag-validation-state="onChangeTagValidationState" />
       <app-button
         class="submit"
+        :disabled="!publishable || isInvalidTag || publishingArticle"
         @click="publish"
-        :disabled="!publishable || isInvalidTag || publishingArticle">
+      >
         公開する
       </app-button>
     </div>
@@ -48,6 +65,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
+import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
@@ -59,7 +77,6 @@ export default {
       publishingArticle: false,
       isPopupShown: false,
       isThumbnailSelected: false,
-      topic: null,
       isInvalidTag: false
     }
   },
@@ -75,7 +92,8 @@ export default {
   },
   mounted() {
     this.listen(window, 'click', (event) => {
-      if (!this.$el.contains(event.target)) {
+      // タグの ☓ ボタンを押したときにはポップアップを非表示にしない
+      if (!this.$el.contains(event.target) && !event.target.classList.contains('ti-icon-close')) {
         this.closePopup()
       }
     })
@@ -97,25 +115,19 @@ export default {
 
         if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
-        const { articleId, title, body, topic } = this
-        const overview = body
-          .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-          .replace(/\r?\n?\s/g, ' ')
-          .slice(0, 100)
-        if (title === '') this.sendNotification({ text: 'タイトルを入力してください' })
-        if (overview === '') this.sendNotification({ text: '本文にテキストを入力してください' })
-        if (topic === null) this.sendNotification({ text: 'カテゴリを選択してください' })
-        if (title === '' || overview === '' || topic === null) {
+        const { articleId, title, body, topicType } = this
+        const hasTitle = title !== undefined && title !== null && title !== ''
+        const hasBody = body !== '<p>&nbsp;</p>'
+        if (!hasTitle) this.sendNotification({ text: 'タイトルを入力してください' })
+        if (!hasBody) this.sendNotification({ text: '本文にテキストを入力してください' })
+        if (topicType === null) this.sendNotification({ text: 'カテゴリを選択してください' })
+        if (!hasTitle || !hasBody || topicType === null) {
           this.publishingArticle = false
           return
         }
 
-        const article = { title, body, overview }
-
-        if (this.thumbnail !== '') {
-          article.eye_catch_url = this.thumbnail
-        }
-
+        const articleTitle = { title }
+        const articleBody = { body }
         // タグのデータ形式をAPIに適するように整形
         const tags = this.tags.map((tag) => tag.text)
 
@@ -123,20 +135,32 @@ export default {
           location.href.includes('/me/articles/draft') ||
           location.href.includes('/me/articles/new')
         ) {
-          await this.putDraftArticle({ article, articleId })
-          await this.publishDraftArticle({ articleId, topic, tags })
+          await this.putDraftArticleTitle({ articleTitle, articleId })
+          await this.putDraftArticleBody({ articleBody, articleId })
+          await this.publishDraftArticleWithHeader({
+            articleId,
+            topic: topicType,
+            tags,
+            eyeCatchUrl: this.thumbnail
+          })
         } else if (location.href.includes('/me/articles/public')) {
-          await this.putPublicArticle({ article, articleId })
-          await this.republishPublicArticle({ articleId, topic, tags })
+          await this.putPublicArticleTitle({ articleTitle, articleId })
+          await this.putPublicArticleBody({ articleBody, articleId })
+          await this.republishPublicArticleWithHeader({
+            articleId,
+            topic: topicType,
+            tags,
+            eyeCatchUrl: this.thumbnail
+          })
         }
         this.$router.push(`/${this.currentUserInfo.user_id}/articles/${articleId}`)
         this.sendNotification({ text: '記事を公開しました' })
         this.resetArticleTopic()
 
-        // if (!this.currentUserInfo.is_created_article) {
-        //   this.setFirstProcessModal({ isShow: true })
-        //   this.setFirstProcessCreatedArticleModal({ isShow: true })
-        // }
+        if (!this.currentUserInfo.is_created_article) {
+          this.setFirstProcessModal({ isShow: true })
+          this.setFirstProcessCreatedArticleModal({ isShow: true })
+        }
       } catch (e) {
         this.publishingArticle = false
         this.sendNotification({ text: '記事の公開に失敗しました', type: 'warning' })
@@ -145,6 +169,7 @@ export default {
     },
     togglePopup() {
       if (!this.publishable) return
+      this.setThumbnails()
       this.isPopupShown = !this.isPopupShown
     },
     closePopup() {
@@ -172,15 +197,25 @@ export default {
     onChangeTagValidationState(isInvalid) {
       this.isInvalidTag = isInvalid
     },
+    setThumbnails() {
+      const images = Array.from(document.querySelectorAll('figure img'))
+      const thumbnails = getThumbnails(images)
+      this.updateSuggestedThumbnails({ thumbnails })
+      if (!thumbnails.includes(this.thumbnail)) {
+        this.updateThumbnail({ thumbnail: '' })
+      }
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('article', [
       'updateThumbnail',
-      'publishDraftArticle',
-      'republishPublicArticle',
-      'putDraftArticle',
-      'putPublicArticle',
+      'publishDraftArticleWithHeader',
+      'republishPublicArticleWithHeader',
+      'putDraftArticleTitle',
+      'putDraftArticleBody',
+      'putPublicArticleTitle',
+      'putPublicArticleBody',
       'updateSuggestedThumbnails',
       'postArticleImage',
       'updateBody',
@@ -193,7 +228,7 @@ export default {
   },
   computed: {
     publishable() {
-      return !this.isEdited && !this.isSaving
+      return (!this.isEditedTitle || !this.isEditedBody) && !this.isSaving
     },
     ...mapGetters('article', [
       'articleId',
@@ -202,7 +237,8 @@ export default {
       'thumbnail',
       'suggestedThumbnails',
       'isSaving',
-      'isEdited',
+      'isEditedTitle',
+      'isEditedBody',
       'topics',
       'topicType',
       'tags'
@@ -224,10 +260,6 @@ export default {
       ) {
         this.updateThumbnail({ thumbnail: this.suggestedThumbnails[0] })
       }
-    },
-    topicType() {
-      if (this.topicType === null) return
-      this.topic = this.topicType
     }
   }
 }
@@ -440,12 +472,6 @@ export default {
     &::before {
       top: 25px !important;
     }
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .area-post-article {
-    display: none;
   }
 }
 

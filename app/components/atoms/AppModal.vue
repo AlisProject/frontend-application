@@ -5,21 +5,23 @@
         <div class="modal-container">
           <div class="modal-header">
             <div class="modal-header-content">
-              <slot name="modal-header-content"/>
+              <slot name="modal-header-content" />
             </div>
             <span
+              v-if="isShowCloseModalButton"
               class="modal-header-default-button"
               @click="closeModal"
-              v-if="isShowCloseModalButton"
             >✕</span>
           </div>
           <div class="modal-body">
             <slot name="modal-title">
-              <h2 class="title">{{title}}</h2>
+              <h2 class="title">
+                {{ title }}
+              </h2>
             </slot>
           </div>
           <div class="modal-content">
-            <slot v-if="showModalContentLately" name="modal-content"/>
+            <slot v-if="showModalContentLately" name="modal-content" />
           </div>
         </div>
       </div>
@@ -66,7 +68,8 @@ export default {
       'currentUser',
       'firstProcessModal',
       'tipFlowModal',
-      'currentUserInfo'
+      'currentUserInfo',
+      'mobileEditorHeaderPostArticleModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -132,12 +135,12 @@ export default {
       if (this.showTipModal) {
         this.setTipModal({ showTipModal: false })
 
-        // if (this.tipFlowModal.isCompletedModal) {
-        //   if (!this.currentUserInfo.is_tipped_article) {
-        //     this.setFirstProcessModal({ isShow: true })
-        //     this.setFirstProcessTippedArticleModal({ isShow: true })
-        //   }
-        // }
+        if (this.tipFlowModal.isCompletedModal) {
+          if (!this.currentUserInfo.is_tipped_article) {
+            this.setFirstProcessModal({ isShow: true })
+            this.setFirstProcessTippedArticleModal({ isShow: true })
+          }
+        }
         this.hideTipFlowModalContent()
         return
       }
@@ -164,6 +167,9 @@ export default {
         this.setFirstProcessTippedArticleModal({ isShow: false })
         this.setFirstProcessGotTokeneModal({ isShow: false })
         this.setFirstProcessCreatedArticleModal({ isShow: false })
+      }
+      if (this.mobileEditorHeaderPostArticleModal.isShow) {
+        this.setMobileEditorHeaderPostArticleModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
@@ -194,7 +200,8 @@ export default {
       'setFirstProcessLikedArticleModal',
       'setFirstProcessTippedArticleModal',
       'setFirstProcessGotTokeneModal',
-      'setFirstProcessCreatedArticleModal'
+      'setFirstProcessCreatedArticleModal',
+      'setMobileEditorHeaderPostArticleModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

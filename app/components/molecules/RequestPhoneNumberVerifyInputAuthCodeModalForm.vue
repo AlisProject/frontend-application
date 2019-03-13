@@ -8,7 +8,7 @@
         SMSに記載の6桁の認証コードを入力してください
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
-        <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
+        <div class="signup-form-group" :class="{ error: hasPhoneNumberError }">
           <label class="signup-form-label">認証コード</label>
           <input
             class="signup-form-input"
@@ -18,14 +18,21 @@
             autofocus
             @input="setAuthCode"
             @blur="showError('authCode')"
-            @focus="resetError('authCode')">
-          <p class="error-message" v-if="showErrorAuthCodeNumeric">認証コードは数字で入力してください</p>
-          <p class="error-message" v-else-if="showErrorInvalidAuthCode">認証コードは6文字で入力してください</p>
+            @focus="resetError('authCode')"
+          >
+          <p v-if="showErrorAuthCodeNumeric" class="error-message">
+            認証コードは数字で入力してください
+          </p>
+          <p v-else-if="showErrorInvalidAuthCode" class="error-message">
+            認証コードは6文字で入力してください
+          </p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message">{{errorMessage}}</p>
+      <p class="error-message">
+        {{ errorMessage }}
+      </p>
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         認証コードを送信する
       </app-button>
@@ -43,13 +50,13 @@ import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validator
 import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       errorMessage: ''
     }
-  },
-  components: {
-    AppButton
   },
   computed: {
     showErrorInvalidAuthCode() {

@@ -6,12 +6,13 @@
       placeholder="タイトル"
       spellcheck="false"
       maxlength="255"
+      :value="title"
       @input="onInputTitle"
       @keydown.enter.prevent
-      :value="title"/>
+    />
     <div
-      class="area-body"
       ref="editable"
+      class="area-body"
       @dragover="preventDragoverImage"
       @drop="preventDropImage"
     />
@@ -375,11 +376,9 @@ export default {
         if (!this.showRestrictEditArticleModal) {
           this.setRestrictEditArticleModal({ showRestrictEditArticleModal: true })
         }
-      } else {
-        if (this.showRestrictEditArticleModal) {
-          document.querySelector('html,body').style.overflow = ''
-          this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
-        }
+      } else if (this.showRestrictEditArticleModal) {
+        document.querySelector('html,body').style.overflow = ''
+        this.setRestrictEditArticleModal({ showRestrictEditArticleModal: false })
       }
     },
     preventDragoverImage(event) {

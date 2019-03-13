@@ -2,8 +2,8 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        アカウント登録が<span class="br"/>完了しました。<br>
-        ALISのはじめ方を<span class="br"/>確認しましょう。
+        アカウント登録が<span class="br" />完了しました。<br>
+        ALISのはじめ方を<span class="br" />確認しましょう。
       </p>
       <app-button class="submit" @click="close">
         <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B">

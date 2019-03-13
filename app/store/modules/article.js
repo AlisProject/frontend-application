@@ -22,6 +22,8 @@ const state = () => ({
   draftArticlesLastEvaluatedKey: {},
   hasPublicArticlesLastEvaluatedKey: false,
   isEdited: false,
+  isEditedTitle: false,
+  isEditedBody: false,
   saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
   articleCommentLikedCommentIds: [],
@@ -64,7 +66,7 @@ const getters = {
   articleId: (state) => state.articleId,
   title: (state) => state.title,
   body: (state) => state.body,
-  suggestedThumbnails: (state) => state.suggestedThumbnails,
+  suggestedThumbnails: (state) => Array.from(new Set(state.suggestedThumbnails)),
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
   gotArticleData: (state) => state.gotArticleData,
@@ -74,6 +76,8 @@ const getters = {
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
+  isEditedTitle: (state) => state.isEditedTitle,
+  isEditedBody: (state) => state.isEditedBody,
   saveStatus: (state) => state.saveStatus,
   articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
   hasArticleCommentsLastEvaluatedKey: (state) =>
@@ -208,6 +212,7 @@ const actions = {
   },
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
+    commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
     const [userInfo, alisToken, likesCount, comments] = await Promise.all([
       dispatch('getUserInfo', { userId: article.user_id }),
       dispatch('getAlisToken', { articleId }),
@@ -361,6 +366,12 @@ const actions = {
   },
   setIsEdited({ commit }, { isEdited }) {
     commit(types.SET_IS_EDITED, { isEdited })
+  },
+  setIsEditedTitle({ commit }, { isEditedTitle }) {
+    commit(types.SET_IS_EDITED_TITLE, { isEditedTitle })
+  },
+  setIsEditedBody({ commit }, { isEditedBody }) {
+    commit(types.SET_IS_EDITED_BODY, { isEditedBody })
   },
   setSaveStatus({ commit }, { saveStatus }) {
     commit(types.SET_SAVE_STATUS, { saveStatus })
@@ -677,6 +688,37 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async putDraftArticleTitle({ commit }, { articleTitle, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/title`, articleTitle)
+  },
+  async putPublicArticleTitle({ commit }, { articleTitle, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/title`, articleTitle)
+  },
+  async putDraftArticleBody({ commit }, { articleBody, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/body`, articleBody)
+  },
+  async putPublicArticleBody({ commit }, { articleBody, articleId }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/body`, articleBody)
+  },
+  async postNewArticleId({ commit }) {
+    const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts/article_id')
+    commit(types.SET_ARTICLE_ID, { articleId })
+    return articleId
+  },
+  async publishDraftArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, {
+      topic,
+      tags,
+      eye_catch_url: eyeCatchUrl
+    })
+  },
+  async republishPublicArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
+    await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, {
+      topic,
+      tags,
+      eye_catch_url: eyeCatchUrl
+    })
   }
 }
 
@@ -744,6 +786,12 @@ const mutations = {
   },
   [types.SET_IS_EDITED](state, { isEdited }) {
     state.isEdited = isEdited
+  },
+  [types.SET_IS_EDITED_TITLE](state, { isEditedTitle }) {
+    state.isEditedTitle = isEditedTitle
+  },
+  [types.SET_IS_EDITED_BODY](state, { isEditedBody }) {
+    state.isEditedBody = isEditedBody
   },
   [types.SET_SAVE_STATUS](state, { saveStatus }) {
     state.saveStatus = saveStatus
@@ -835,10 +883,10 @@ const mutations = {
   },
   [types.SET_ARTICLE_TAGS](state, { tags = [] }) {
     // vue-tags-input の形式に適するようにタグを整形
-    const formattedTags = tags.map((tag) => {
+    const formattedTags = (tags || []).map((tag) => {
       return {
         text: tag,
-        tiClasses: ['valid']
+        tiClasses: ['ti-valid']
       }
     })
     state.tags = formattedTags
@@ -895,6 +943,9 @@ const mutations = {
   },
   [types.SET_IS_FETCHING_TAG_ARTICLES](state, { isFetching }) {
     state.tagArticles.isFetching = isFetching
+  },
+  [types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state) {
+    state.articleCommentsLastEvaluatedKey = {}
   }
 }
 

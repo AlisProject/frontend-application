@@ -1,11 +1,11 @@
 <template>
   <div class="popular-article-list-container">
     <app-header />
-    <default-header-nav/>
+    <default-header-nav />
     <article-type-select-nav />
-    <article-card-list :articles="popularArticles"/>
-    <the-loader :isLoading="!isLastPage"/>
-    <app-footer/>
+    <article-card-list :articles="popularArticles" />
+    <the-loader :is-loading="!isLastPage" />
+    <app-footer />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <user-article-list/>
+  <user-article-list />
 </template>
 
 <script>

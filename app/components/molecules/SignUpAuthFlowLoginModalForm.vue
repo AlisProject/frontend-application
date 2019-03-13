@@ -2,40 +2,50 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        登録を完了させるため、<span class="br"/>以下からログインしてください
+        登録を完了させるため、<span class="br" />以下からログインしてください
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
-        <div class="signup-form-group" :class="{ 'error': hasUserIdOrEmailError }">
+        <div class="signup-form-group" :class="{ error: hasUserIdOrEmailError }">
           <label class="signup-form-label">ユーザーID または メールアドレス</label>
           <input
+            ref="userIdOrEmail"
             class="signup-form-input"
             type="text"
             placeholder="alis@example.com"
             autofocus
-            ref="userIdOrEmail"
             @input="setUserIdOrEmail"
             @blur="showError('userIdOrEmail')"
-            @focus="resetError('userIdOrEmail')">
+            @focus="resetError('userIdOrEmail')"
+          >
         </div>
-        <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
+        <div class="signup-form-group" :class="{ error: hasPasswordError }">
           <label class="signup-form-label">パスワード※半角英数字8文字以上</label>
           <input
+            ref="password"
             class="signup-form-input"
             type="password"
             placeholder="●●●●●●●●"
-            ref="password"
             @input="setPassword"
             @blur="showError('password')"
-            @focus="resetError('password')">
-          <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上で入力してください</p>
+            @focus="resetError('password')"
+          >
+          <p v-if="showErrorInvalidPassword" class="error-message">
+            パスワードは8文字以上で入力してください
+          </p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message">{{errorMessage}}</p>
+      <p class="error-message">
+        {{ errorMessage }}
+      </p>
       <p class="agreement-confirmation">
-        <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>、
-        <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意して
+        <nuxt-link to="/terms" target="_blank">
+          利用規約
+        </nuxt-link>、
+        <nuxt-link to="/privacy" target="_blank">
+          プライバシーポリシー
+        </nuxt-link>に同意して
       </p>
       <app-button class="login-button" :disabled="invalidSubmit" @click="onSubmit">
         ログインする
@@ -53,13 +63,13 @@ import { required, minLength } from 'vuelidate/lib/validators'
 import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       errorMessage: ''
     }
-  },
-  components: {
-    AppButton
   },
   computed: {
     showErrorInvalidPassword() {

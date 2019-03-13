@@ -1,9 +1,6 @@
 <template>
   <div class="area-article-card-list-container">
-    <recommended-article-card
-      v-for="article in articles"
-      :article="article"
-      :key="article.id" />
+    <recommended-article-card v-for="article in articles" :key="article.id" :article="article" />
   </div>
 </template>
 

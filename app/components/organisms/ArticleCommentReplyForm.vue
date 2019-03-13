@@ -2,30 +2,36 @@
   <div class="area-article-comment-form">
     <div class="article-comment-reply-form-box">
       <no-ssr>
-        <div class="comment-user" v-if="loggedIn">
-          <img class="icon" :src="currentUserInfo.icon_image_url" v-if="currentUserInfo.icon_image_url !== undefined">
-          <img class="icon" src="~assets/images/pc/common/icon_user_noimg.png" v-else>
+        <div v-if="loggedIn" class="comment-user">
+          <img
+            v-if="currentUserInfo.icon_image_url !== undefined"
+            class="icon"
+            :src="currentUserInfo.icon_image_url"
+          >
+          <img v-else class="icon" src="~assets/images/pc/common/icon_user_noimg.png">
           <div class="user-info-box">
             <span class="name">{{ decodedUserDisplayName }}</span>
-            <span class="reply-target-user-name" v-if="isShowReplyTarget">
+            <span v-if="isShowReplyTarget" class="reply-target-user-name">
               返信先：{{ replyInfo.replyedUserDisplayName }}
             </span>
           </div>
         </div>
       </no-ssr>
       <textarea
+        v-model.trim="comment"
         class="reply-comment-textarea"
         type="text"
         placeholder="コメントを入力してください"
         maxlength="400"
         @focus="checkLogin"
-        v-model.trim="comment"/>
+      />
       <span
         class="comment-submit"
-        :class="{ 'disable': isCommentEmpty }"
+        :class="{ disable: isCommentEmpty }"
+        tabindex="0"
         @click="submit"
         @keypress.enter="submit"
-        tabindex="0">返信する</span>
+      >返信する</span>
     </div>
   </div>
 </template>
@@ -93,12 +99,10 @@ export default {
       if (!this.loggedIn) {
         this.showModal()
         return
-      } else {
-        if (!this.currentUser.phoneNumberVerified) {
-          this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
-          this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-          return
-        }
+      } else if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleComment' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
       }
       try {
         if (this.postingComment) return
@@ -173,6 +177,7 @@ export default {
         height: 36px;
         margin-right: 16px;
         width: 36px;
+        object-fit: cover;
       }
 
       .user-info-box {

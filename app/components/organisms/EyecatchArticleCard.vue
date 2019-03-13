@@ -3,30 +3,27 @@
     class="eyecatch-article-card"
     :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
-    :style="{ 'background': `url(${eyeCatchImagePath}) center center / cover no-repeat` }" >
+    :style="{ background: `url(${eyeCatchImagePath}) center center / cover no-repeat` }"
+  >
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
     <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="profile-icon-box">
+      <nuxt-link :to="`/users/${article.user_id}`" class="article-data-box">
         <img
+          v-if="article.userInfo.icon_image_url !== undefined"
           class="profile-icon"
           :src="article.userInfo.icon_image_url"
-          v-if="article.userInfo.icon_image_url !== undefined">
-        <img
-          class="profile-icon"
-          src="~assets/images/pc/common/icon_user_noimg.png"
-          v-else>
+        >
+        <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
+        <span class="username">
+          {{ decodedUsername }}
+        </span>
+        <span class="published-at">
+          {{ formattedPublishedAt }}
+        </span>
       </nuxt-link>
     </no-ssr>
-    <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="username">
-        {{ decodedUsername }}
-      </nuxt-link>
-    </no-ssr>
-    <span class="published-at">
-      {{ formattedPublishedAt }}
-    </span>
     <span class="token-amount">
       {{ formattedTokenAmount }}
     </span>
@@ -63,7 +60,7 @@ export default {
       return formatDate(this.publishedAt)
     },
     eyeCatchImagePath() {
-      return this.article.eye_catch_url !== null
+      return this.article.eye_catch_url !== null || this.article.eye_catch_url !== undefined
         ? this.article.eye_catch_url
         : require('~/assets/images/pc/common/thumbnail_noimg.png')
     },
@@ -161,17 +158,19 @@ export default {
   }
 }
 
-.profile-icon-box {
-  bottom: 20px;
-  height: 36px;
+.article-data-box {
+  width: 220px;
+  height: 46px;
+  bottom: 14px;
   left: 20px;
   position: absolute;
+}
 
-  .profile-icon {
-    border-radius: 50%;
-    height: 36px;
-    width: 36px;
-  }
+.profile-icon {
+  border-radius: 50%;
+  height: 36px;
+  width: 36px;
+  object-fit: cover;
 }
 
 .username,
@@ -186,18 +185,18 @@ export default {
 }
 
 .username {
-  bottom: 40px;
-  left: 72px;
+  left: 52px;
   overflow: hidden;
+  text-decoration: none;
   text-overflow: ellipsis;
+  top: 8px;
   white-space: nowrap;
   width: 190px;
-  text-decoration: none;
 }
 
 .published-at {
-  bottom: 22px;
-  left: 72px;
+  bottom: 8px;
+  left: 52px;
 }
 
 .token-amount {

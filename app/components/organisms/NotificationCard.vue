@@ -1,18 +1,26 @@
 <template>
   <section>
     <nuxt-link
+      v-if="notification.type === 'tip'"
       :to="`/users/${notification.acted_user_id}`"
       class="notification-card-container"
-      v-if="notification.type === 'tip'">
-      <notification-card-image :notification="notification"/>
-      <notification-card-content :notification="notification"/>
+    >
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
     </nuxt-link>
-    <nuxt-link
-      :to="articlePath"
+    <a
+      v-else-if="notification.type === 'announce'"
+      :href="notification.announce_url"
+      target="_blank"
+      rel="noopener"
       class="notification-card-container"
-      v-else>
-      <notification-card-image :notification="notification"/>
-      <notification-card-content :notification="notification"/>
+    >
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
+    </a>
+    <nuxt-link v-else :to="articlePath" class="notification-card-container">
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
     </nuxt-link>
   </section>
 </template>
@@ -22,14 +30,14 @@ import NotificationCardImage from '../atoms/NotificationCardImage'
 import NotificationCardContent from '../molecules/NotificationCardContent'
 
 export default {
+  components: {
+    NotificationCardImage,
+    NotificationCardContent
+  },
   props: {
     notification: {
       type: Object
     }
-  },
-  components: {
-    NotificationCardImage,
-    NotificationCardContent
   },
   computed: {
     articlePath() {

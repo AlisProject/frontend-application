@@ -1,46 +1,46 @@
 <template>
   <div class="logged-in">
-    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
+    <nuxt-link
+      class="search-icon-box"
+      to="/search?context=article"
+      @click.native="resetSearchStates"
+    >
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
     </nuxt-link>
-    <span class="notification-link" @click="moveToNotificationPage">
+    <span class="notification-icon-box" @click="moveToNotificationPage">
       <img
+        v-if="unreadNotification"
         class="notification-icon"
         src="~assets/images/pc/common/icon_notification_mark.png"
-        v-if="unreadNotification">
-      <img
-        class="notification-icon"
-        src="~assets/images/pc/common/icon_notification.png"
-        v-else>
+      >
+      <img v-else class="notification-icon" src="~assets/images/pc/common/icon_notification.png">
     </span>
-    <img
-      class="profile-icon"
-      :src="currentUserInfo.icon_image_url"
+    <div
+      v-if="currentUserInfo.icon_image_url !== undefined"
+      class="profile-icon-box"
       @click="toggleMenu"
-      v-if="currentUserInfo.icon_image_url !== undefined">
-    <img
-      class="profile-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
-      @click="toggleMenu"
-      v-else>
-    <div class="menu" v-if="isMenuShown">
+    >
+      <img class="profile-icon" :src="currentUserInfo.icon_image_url">
+    </div>
+    <div v-else class="profile-icon-box" @click="toggleMenu">
+      <img class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
+    </div>
+    <div v-if="isMenuShown" class="menu">
       <template v-if="currentUserInfo.icon_image_url !== undefined">
         <div class="background-user-image-box">
           <img class="background-user-image" :src="currentUserInfo.icon_image_url">
         </div>
-        <img
-          :src="currentUserInfo.icon_image_url"
-          class="profile-image">
+        <img :src="currentUserInfo.icon_image_url" class="profile-image">
       </template>
       <template v-else>
         <div class="background-user-image-box">
           <img class="background-user-image" src="~assets/images/pc/common/icon_user_noimg.png">
         </div>
-        <img
-          src="~assets/images/pc/common/icon_user_noimg.png"
-          class="profile-image">
+        <img src="~assets/images/pc/common/icon_user_noimg.png" class="profile-image">
       </template>
-      <p class="alis-token-amount">{{ formattedAlisToken }} ALIS</p>
+      <p class="alis-token-amount">
+        {{ formattedAlisToken }} ALIS
+      </p>
       <ul class="menu-links">
         <li class="menu-link">
           <nuxt-link class="reset-link-style" to="/me/articles/new" event="">
@@ -50,7 +50,9 @@
           </nuxt-link>
         </li>
         <li class="menu-link">
-          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">マイページ</nuxt-link>
+          <nuxt-link class="menu-link-inner" :to="`/users/${currentUserInfo.user_id}`">
+            マイページ
+          </nuxt-link>
         </li>
         <!-- <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
@@ -68,8 +70,20 @@
           </span>
         </li>
       </ul>
+      <nuxt-link class="banner-planning-box" to="/tag/ALIS参加募集企画">
+        <img
+          class="banner-planning pc"
+          src="~assets/images/pc/common/banner_planning.png"
+          alt="ALIS参加募集企画"
+        >
+        <img
+          class="banner-planning sp"
+          src="~assets/images/sp/common/banner_planning.png"
+          alt="ALIS参加募集企画"
+        >
+      </nuxt-link>
     </div>
-    <div class="cover" v-show="isMenuShown" @click="closeMenu"></div>
+    <div v-show="isMenuShown" class="cover" @click="closeMenu" />
   </div>
 </template>
 
@@ -163,7 +177,7 @@ export default {
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
         return
       }
-      location.href = '/me/articles/new'
+      this.$router.push('/me/articles/new')
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
@@ -197,25 +211,38 @@ export default {
   align-items: center;
   position: relative;
 
-  .notification-link {
+  .search-icon-box,
+  .notification-icon-box,
+  .profile-icon-box {
+    align-items: center;
     cursor: pointer;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    width: 40px;
   }
 
-  .search-icon {
-    width: 24px;
-    margin: 0 40px 0 88px;
+  .search-icon-box {
+    margin-right: 22px;
+
+    .search-icon {
+      width: 24px;
+    }
   }
 
-  .notification-icon {
-    width: 24px;
-    margin-right: 40px;
+  .notification-icon-box {
+    margin-right: 32px;
+
+    .notification-icon {
+      width: 24px;
+    }
   }
 
-  .profile-icon {
+  .profile-icon-box .profile-icon {
     border-radius: 50%;
-    cursor: pointer;
     height: 40px;
     width: 40px;
+    object-fit: cover;
   }
 }
 
@@ -314,6 +341,23 @@ export default {
       }
     }
   }
+
+  .banner-planning-box {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    display: block;
+    height: 60px;
+    overflow: hidden;
+
+    .banner-planning {
+      height: auto;
+      width: 100%;
+
+      &.sp {
+        display: none;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 1080px) {
@@ -324,13 +368,23 @@ export default {
 
 @mixin spStyles() {
   .logged-in {
-    .search-icon,
-    .notification-icon {
-      width: 16px;
-      margin: 2px 24px 0 0;
+    .search-icon-box {
+      margin-right: 0;
+
+      .search-icon {
+        width: 16px;
+      }
     }
 
-    .profile-icon {
+    .notification-icon-box {
+      margin-right: 0;
+
+      .notification-icon {
+        width: 16px;
+      }
+    }
+
+    .profile-icon-box .profile-icon {
       height: 24px;
       width: 24px;
     }
@@ -355,6 +409,20 @@ export default {
       overflow: hidden;
       text-align: center;
     }
+
+    .banner-planning-box {
+      margin: 16px;
+
+      .banner-planning {
+        &.sp {
+          display: block;
+        }
+
+        &.pc {
+          display: none;
+        }
+      }
+    }
   }
 
   .cover {
@@ -378,5 +446,17 @@ export default {
 
 @media screen and (max-width: 550px) {
   @include spStyles();
+}
+
+@media screen and (max-width: 320px) {
+  .menu {
+    .menu-links {
+      .menu-link {
+        &:last-child {
+          margin-top: 0;
+        }
+      }
+    }
+  }
 }
 </style>

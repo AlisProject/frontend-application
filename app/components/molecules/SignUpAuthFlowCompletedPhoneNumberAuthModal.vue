@@ -2,11 +2,13 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        アカウント登録が<span class="br"/>完了しました。<br>
-        記事を書いたりいいねをして<span class="br"/>ALISを獲得しましょう。
+        アカウント登録が<span class="br" />完了しました。<br>
+        記事を書いたりいいねをして<span class="br" />ALISを獲得しましょう。
       </p>
-      <app-button class="submit" @click="submit">
-        記事を作成する
+      <app-button class="submit" @click.native="close">
+        <nuxt-link to="/me/articles/new">
+          記事を作成する
+        </nuxt-link>
       </app-button>
       <app-button class="close" @click="close">
         閉じる
@@ -24,9 +26,6 @@ export default {
     AppButton
   },
   methods: {
-    submit() {
-      location.href = '/me/articles/new'
-    },
     close() {
       this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
       this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
@@ -97,11 +96,11 @@ export default {
 
     .description {
       font-size: 20px;
-      margin: 340px 0 20px;
+      margin: 340px 0 0;
     }
 
     .submit {
-      display: none;
+      margin: 30px 0 0;
     }
 
     .close {
@@ -115,12 +114,8 @@ export default {
     background-size: auto 240px;
 
     .description {
-      margin: 260px 0 20px;
+      margin: 260px 0 0;
       font-size: 18px;
-    }
-
-    .submit {
-      margin: 30px 0 0;
     }
   }
 }

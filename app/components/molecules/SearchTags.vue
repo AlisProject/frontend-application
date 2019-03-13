@@ -1,7 +1,9 @@
 <template>
   <div class="area-tags">
-    <nuxt-link v-for="tag in tags" :to="`/tag/${tag.name}`" :key="tag.name" class="tag">
-      <span class="tag-inner" @click="resetData" :data-count="`(${tag.count})`">{{ tag.name }}</span>
+    <nuxt-link v-for="tag in tags" :key="tag.name" :to="`/tag/${tag.name}`" class="tag">
+      <span class="tag-inner" :data-count="`(${tag.count})`" @click="resetData">{{
+        tag.name
+      }}</span>
     </nuxt-link>
   </div>
 </template>

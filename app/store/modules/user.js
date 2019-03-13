@@ -109,7 +109,7 @@ const state = () => ({
     isShow: false,
     requestType: ''
   },
-  alisToken: 0,
+  alisToken: '0',
   notifications: [],
   notificationsLastEvaluatedKey: {},
   unreadNotification: false,
@@ -160,6 +160,9 @@ const state = () => ({
     isTippedArticleModal: false,
     isGotTokenModal: false,
     isCreatedArticleModal: false
+  },
+  mobileEditorHeaderPostArticleModal: {
+    isShow: false
   }
 })
 
@@ -194,7 +197,8 @@ const getters = {
   tipTokenAmount: (state) => state.tipTokenAmount,
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
   distributedTokens: (state) => state.distributedTokens,
-  firstProcessModal: (state) => state.firstProcessModal
+  firstProcessModal: (state) => state.firstProcessModal,
+  mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal
 }
 
 const actions = {
@@ -612,17 +616,6 @@ const actions = {
   initCognitoAuth({ state }) {
     this.cognitoAuth = new CognitoAuthSDK()
   },
-  async checkAuthByLine({ commit, dispatch }, { code }) {
-    dispatch('initCognitoAuth')
-
-    const result = await this.$axios.$post('/login/line', { code })
-    this.cognitoAuth.setTokens(result)
-
-    const hasUserId = result.has_user_id
-    const status = result.status
-
-    return { hasUserId, status }
-  },
   setSignUpAuthFlowInputUserIdModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_USER_ID_MODAL, { isShow })
   },
@@ -697,19 +690,21 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
-    dispatch('initCognitoAuth')
-
-    const result = await this.$axios.$post('/login/twitter', {
-      oauth_token: oauthToken,
-      oauth_verifier: oauthVerifier
-    })
-    this.cognitoAuth.setTokens(result)
-
-    const hasUserId = result.has_user_id
-    const status = result.status
-
-    return { hasUserId, status }
+  async getFacebookLoginAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getYahooLoginAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
   },
   async getLineSignUpAuthorizeURL() {
     try {
@@ -729,6 +724,69 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getFacebookSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getYahooSignUpAuthorizeURL() {
+    try {
+      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async checkAuthByLine({ commit, dispatch }, { code }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/line', { code })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/twitter', {
+      oauth_token: oauthToken,
+      oauth_verifier: oauthVerifier
+    })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByFacebook({ commit, dispatch }, { code, state }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/facebook', { code, state })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
+  async checkAuthByYahoo({ commit, dispatch }, { code, state }) {
+    dispatch('initCognitoAuth')
+
+    const result = await this.$axios.$post('/login/yahoo', { code, state })
+    this.cognitoAuth.setTokens(result)
+
+    const hasUserId = result.has_user_id
+    const status = result.status
+
+    return { hasUserId, status }
+  },
   setSignUpAuthFlowCompletedPhoneNumberAuthModal({ commit }, { isShow }) {
     commit(types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL, { isShow })
   },
@@ -737,7 +795,7 @@ const actions = {
   },
   async getDistributedTokens({ commit }) {
     try {
-      let distributedTokens = {}
+      const distributedTokens = {}
       const result = await this.$axios.$get('/me/wallet/distributed_tokens')
       const formatNumber = 10 ** 18
       Object.keys(result).forEach((key) => {
@@ -759,7 +817,9 @@ const actions = {
   },
   async putFirstProcessLikedArticle({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_liked_article: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_liked_article'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_liked_article: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
@@ -771,7 +831,9 @@ const actions = {
   },
   async putFirstProcessTippedArticle({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_tipped_article: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_tipped_article'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_tipped_article: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
@@ -783,7 +845,9 @@ const actions = {
   },
   async putFirstProcessGotToken({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_got_token: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_got_token'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_got_token: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
@@ -795,12 +859,17 @@ const actions = {
   },
   async putFirstProcessCreatedArticle({ commit, state }) {
     try {
-      // await this.$axios.$put('/me/info/first_process', { is_created_article: true })
+      await this.$axios.$put('/me/info/first_experiences', {
+        user_first_experience: 'is_created_article'
+      })
       const currentUserInfo = { ...state.currentUserInfo, is_created_article: true }
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo })
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setMobileEditorHeaderPostArticleModal({ commit }, { isShow }) {
+    commit(types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL, { isShow })
   }
 }
 
@@ -1087,6 +1156,9 @@ const mutations = {
   },
   [types.SET_USER_ARTICLES_CURRENT_USER_ID](state, { userId }) {
     state.userArticlesCurrentUserId = userId
+  },
+  [types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL](state, { isShow }) {
+    state.mobileEditorHeaderPostArticleModal.isShow = isShow
   }
 }
 

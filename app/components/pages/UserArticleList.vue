@@ -5,9 +5,13 @@
     <no-ssr>
       <user-profile-nav v-if="isCurrentUser" />
     </no-ssr>
-    <user-article-card-list :articles="isCurrentUser ? publicArticles : userArticles"/>
-    <the-loader :isLoading="isCurrentUser ? hasPublicArticlesLastEvaluatedKey : hasUserArticlesLastEvaluatedKey"/>
-    <app-footer/>
+    <user-article-card-list :articles="isCurrentUser ? publicArticles : userArticles" />
+    <the-loader
+      :is-loading="
+        isCurrentUser ? hasPublicArticlesLastEvaluatedKey : hasUserArticlesLastEvaluatedKey
+      "
+    />
+    <app-footer />
   </div>
 </template>
 

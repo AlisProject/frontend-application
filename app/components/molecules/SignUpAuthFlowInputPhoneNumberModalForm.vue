@@ -9,26 +9,35 @@
         ご入力いただいた電話番号にSMSで認証コードを送らせていただきます※アカウントの不正利用を防ぐため、電話番号での認証を行ってください
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
-        <div class="signup-form-group" :class="{ 'error': hasPhoneNumberError }">
+        <div class="signup-form-group" :class="{ error: hasPhoneNumberError }">
           <label class="signup-form-label">電話番号</label>
           <input
+            ref="phoneNumber"
             class="signup-form-input"
             type="tel"
             placeholder="08012345678"
             maxlength="11"
             autofocus
-            ref="phoneNumber"
             @input="setPhoneNumber"
             @blur="showError('phoneNumber')"
-            @focus="resetError('phoneNumber')">
-          <p class="error-message" v-if="showErrorPhoneNumberNumeric">電話番号は数字で入力してください</p>
-          <p class="error-message" v-else-if="showErrorInvalidPhoneNember">電話番号は11文字で入力してください</p>
-          <p class="error-message" v-else-if="showErrorPhoneNumberJapanesePhoneNumber">現在日本国内の電話番号のみ利用できます</p>
+            @focus="resetError('phoneNumber')"
+          >
+          <p v-if="showErrorPhoneNumberNumeric" class="error-message">
+            電話番号は数字で入力してください
+          </p>
+          <p v-else-if="showErrorInvalidPhoneNember" class="error-message">
+            電話番号は11文字で入力してください
+          </p>
+          <p v-else-if="showErrorPhoneNumberJapanesePhoneNumber" class="error-message">
+            現在日本国内の電話番号のみ利用できます
+          </p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message">{{errorMessage}}</p>
+      <p class="error-message">
+        {{ errorMessage }}
+      </p>
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         次へ
       </app-button>
@@ -46,13 +55,13 @@ function japanesePhoneNumber(value) {
 }
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       errorMessage: ''
     }
-  },
-  components: {
-    AppButton
   },
   computed: {
     showErrorInvalidPhoneNember() {

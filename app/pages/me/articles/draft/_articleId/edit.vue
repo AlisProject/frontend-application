@@ -1,17 +1,17 @@
 <template>
-  <edit-draft-article/>
+  <edit-draft-article-v1 />
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import EditDraftArticle from '~/components/pages/EditDraftArticle'
+import EditDraftArticleV1 from '~/components/pages/EditDraftArticleV1'
 import head from '~/utils/editor-head'
 import { showEmbedTweet, getThumbnails, preventDropImageOnOGPContent } from '~/utils/article'
 
 export default {
   components: {
-    EditDraftArticle
+    EditDraftArticleV1
   },
   async beforeCreate() {
     const { articleId } = this.$route.params
