@@ -103,7 +103,7 @@ export default {
       await Promise.all([
         this.setCurrentUserInfo(),
         this.getUnreadNotification(),
-        this.checkPhoneNumberVerifiedAndGetUsersAlisToken()
+        this.getUsersAlisToken()
       ])
     } catch (error) {
       console.error(error)
@@ -178,11 +178,6 @@ export default {
         return
       }
       this.$router.push('/me/articles/new')
-    },
-    async checkPhoneNumberVerifiedAndGetUsersAlisToken() {
-      if (this.currentUser && this.currentUser.phoneNumberVerified) {
-        await this.getUsersAlisToken()
-      }
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
