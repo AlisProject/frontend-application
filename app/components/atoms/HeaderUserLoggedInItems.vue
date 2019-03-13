@@ -138,7 +138,7 @@ export default {
     },
     toggleMenu() {
       if (!this.isMenuShown) {
-        this.checkPhoneNumberVerifiedAndGetUsersAlisToken()
+        this.getUsersAlisToken()
       }
       this.isMenuShown = !this.isMenuShown
     },
