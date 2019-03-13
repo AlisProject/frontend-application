@@ -1,12 +1,10 @@
 <template>
   <div class="report-modal-content">
     <p class="confirm-text">
-      記事の編集はスマートフォンサイズの画面ではご利用になれません
+      この記事はスマートフォンでは編集できません
     </p>
     <p class="confirm-description">
-      スマートフォンのブラウザではALISの提供する 書き心地を提供することができないため記事の
-      作成・編集を行うことができません。大変恐縮 ですが、PCをご利用ください。また、アプリの
-      開発をお待ち頂けると幸いです。
+      モバイルエディタリリース前に作成された記事はスマートフォンでの編集を行うことができません。編集の際にはPCをご利用ください。
     </p>
     <app-button class="back-button" @click="closeModal">
       公開中記事一覧に戻る
