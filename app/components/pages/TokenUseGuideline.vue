@@ -5,7 +5,7 @@
       <h1 class="area-title">
         {{ title }}
       </h1>
-      <div class="area-content" v-html="$md.render(body)" />
+      <div class="area-content v1-content" v-html="$md.render(body)" />
     </div>
     <app-footer />
   </div>
