@@ -14,12 +14,12 @@
     <nuxt-link to="/privacy" class="link">
       プライバシーポリシー
     </nuxt-link>
-    <nuxt-link to="/users/ALIS-official" class="link">
+    <a href="/users/ALIS-official" class="link">
       公式アナウンス
-    </nuxt-link>
-    <nuxt-link to="/users/AB2" class="link">
+    </a>
+    <a href="/users/AB2" class="link">
       技術ブログ
-    </nuxt-link>
+    </a>
     <a href="https://github.com/AlisProject/api-docs" class="link" target="_blank">開発者向けAPI</a>
     <a href="https://alismedia.jp/ja/" class="link" target="_blank">運営会社</a>
   </footer>
