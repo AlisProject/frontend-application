@@ -165,7 +165,6 @@ const state = () => ({
     isShow: false
   },
   selectPayment: {
-    paymentType: 'free',
     price: '0',
     title: '',
     body: ''

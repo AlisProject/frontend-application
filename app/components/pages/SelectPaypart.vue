@@ -2,20 +2,14 @@
   <div :class="`select-paypart-container ${deviceType}`">
     <app-header />
     <select-paypart-header-nav />
-    <select-paypart-editor
-      :title="decodedTitle"
-      :update-article-title="updateArticleTitle"
-      :put-article-body="putDraftArticleBody"
-    />
+    <select-paypart-editor />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import SelectPaypartHeaderNav from '../molecules/SelectPaypartHeaderNav'
 import SelectPaypartEditor from '../organisms/SelectPaypartEditor'
-import { htmlDecode } from '~/utils/article'
 import { isIOS, isAndroid } from '~/utils/device'
 
 export default {
@@ -35,21 +29,6 @@ export default {
       return
     }
     if (isAndroid()) this.deviceType = 'android'
-  },
-  computed: {
-    decodedTitle() {
-      return htmlDecode(this.title)
-    },
-    ...mapGetters('article', ['articleId', 'title', 'body'])
-  },
-  methods: {
-    ...mapActions('article', ['putDraftArticleTitle', 'gotArticleData', 'putDraftArticleBody']),
-    async updateArticleTitle() {
-      if (!this.gotArticleData) return
-      const { title, articleId } = this
-      const articleTitle = { title }
-      await this.putDraftArticleTitle({ articleTitle, articleId })
-    }
   }
 }
 </script>
