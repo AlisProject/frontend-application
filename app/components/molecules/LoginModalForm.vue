@@ -62,9 +62,9 @@
         <a class="twitter-button" :href="twitterLoginAuthorizeURL">
           Twitterでログイン
         </a>
-        <a class="facebook-button" :href="facebookLoginAuthorizeURL">
+        <!-- <a class="facebook-button" :href="facebookLoginAuthorizeURL">
           Facebookでログイン
-        </a>
+        </a> -->
         <a class="yahoo-button" :href="yahooLoginAuthorizeURL">
           Yahoo!でログイン
         </a>
@@ -114,12 +114,12 @@ export default {
     ;[
       this.lineLoginAuthorizeURL,
       this.twitterLoginAuthorizeURL,
-      this.facebookLoginAuthorizeURL,
+      // this.facebookLoginAuthorizeURL,
       this.yahooLoginAuthorizeURL
     ] = await Promise.all([
       this.getLineLoginAuthorizeURL(),
       this.getTwitterLoginAuthorizeURL(),
-      this.getFacebookLoginAuthorizeURL(),
+      // this.getFacebookLoginAuthorizeURL(),
       this.getYahooLoginAuthorizeURL()
     ])
   },
@@ -385,7 +385,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 158px;
+  margin-top: 214px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;

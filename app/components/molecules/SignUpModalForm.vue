@@ -81,9 +81,9 @@
         <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
           Twitterではじめる
         </a>
-        <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
+        <!-- <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
           Facebookではじめる
-        </a>
+        </a> -->
         <a class="yahoo-button" :href="yahooSignUpAuthorizeURL">
           Yahoo!ではじめる
         </a>
@@ -138,12 +138,12 @@ export default {
     ;[
       this.lineSignUpAuthorizeURL,
       this.twitterSignUpAuthorizeURL,
-      this.facebookSignUpAuthorizeURL,
+      // this.facebookSignUpAuthorizeURL,
       this.yahooSignUpAuthorizeURL
     ] = await Promise.all([
       this.getLineSignUpAuthorizeURL(),
       this.getTwitterSignUpAuthorizeURL(),
-      this.getFacebookSignUpAuthorizeURL(),
+      // this.getFacebookSignUpAuthorizeURL(),
       this.getYahooSignUpAuthorizeURL()
     ])
   },
@@ -402,7 +402,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 158px;
+  margin-top: 214px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;
