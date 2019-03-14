@@ -12,8 +12,6 @@ import { mapGetters } from 'vuex'
 import { htmlDecode, showEmbed } from '~/utils/article'
 import { isMobile } from '~/utils/device'
 
-const PAYPART_WORDING = 'このラインより上のエリアが無料で表示されます'
-
 export default {
   computed: {
     decodedTitle() {
@@ -34,10 +32,7 @@ export default {
   methods: {
     addArea() {
       const [firstElement] = document.querySelectorAll('.area-content > *')
-      const p = document.createElement('p')
-      p.innerText = PAYPART_WORDING
-      p.classList.add('area')
-      document.querySelector('.area-content').insertBefore(p, firstElement.nextSibling)
+      this.insertPaywallAreaBeforeTargetElement(firstElement)
     },
     handleAddPaypartOnPc() {
       Array.from(document.querySelectorAll('.area-content > *'), (element) => {
@@ -49,17 +44,14 @@ export default {
           pb.addEventListener('click', () => {
             const area = document.querySelector('.area')
             if (area) area.parentNode.removeChild(area)
-            const p = document.createElement('p')
-            p.innerText = PAYPART_WORDING
-            p.classList.add('area')
             const areaBefore = document.querySelector('.areaBefore')
             areaBefore.parentNode.removeChild(areaBefore)
-            document.querySelector('.area-content').insertBefore(p, element.nextSibling)
+            this.insertPaywallAreaBeforeTargetElement(element)
           })
           if (
-            e.target.nextElementSibling &&
-            e.target.nextElementSibling.classList &&
-            Array.from(e.target.nextElementSibling.classList).includes('area')
+            e.target.nextSibling &&
+            e.target.nextSibling.classList &&
+            Array.from(e.target.nextSibling.classList).includes('area')
           ) {
             return
           }
@@ -72,10 +64,7 @@ export default {
           if (area) area.parentNode.removeChild(area)
           const areaBefore = document.querySelector('.areaBefore')
           if (areaBefore) areaBefore.parentNode.removeChild(areaBefore)
-          const p = document.createElement('p')
-          p.innerText = PAYPART_WORDING
-          p.classList.add('area')
-          document.querySelector('.area-content').insertBefore(p, element.nextSibling)
+          this.insertPaywallAreaBeforeTargetElement(element)
         })
       })
     },
@@ -84,12 +73,20 @@ export default {
         elm.addEventListener('touchstart', (element) => {
           const area = document.querySelector('.area')
           if (area) area.parentNode.removeChild(area)
-          const p = document.createElement('p')
-          p.innerText = PAYPART_WORDING
-          p.classList.add('area')
-          document.querySelector('.area-content').insertBefore(p, elm)
+          this.insertPaywallAreaBeforeTargetElement(elm)
         })
       })
+    },
+    createPaywallArea() {
+      const p = document.createElement('p')
+      p.innerText = 'このラインより上のエリアが無料で表示されます'
+      p.classList.add('area')
+      return p
+    },
+    insertPaywallAreaBeforeTargetElement(element) {
+      document
+        .querySelector('.area-content')
+        .insertBefore(this.createPaywallArea(), element.nextSibling)
     }
   }
 }

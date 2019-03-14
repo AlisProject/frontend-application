@@ -1,8 +1,7 @@
 <template>
   <div :class="`select-paypart-container ${deviceType}`">
-    <app-header v-if="deviceType === 'pc'" />
-    <mobile-editor-header v-else />
-    <select-paypart-header-nav type="draft-article" />
+    <app-header />
+    <select-paypart-header-nav />
     <select-paypart-editor
       :title="decodedTitle"
       :update-article-title="updateArticleTitle"
@@ -78,15 +77,8 @@ export default {
 @media screen and (max-width: 640px) {
   .select-paypart-container.ios,
   .select-paypart-container.android {
-    grid-template-rows: 66px 40px min-content min-content min-content;
+    grid-template-rows: 66px min-content min-content min-content min-content;
     grid-template-columns: 10px 1fr 10px;
-    /* prettier-ignore */
-    grid-template-areas:
-    "mobile-editor-header mobile-editor-header mobile-editor-header"
-    "nav                  nav                  nav                 "
-    "...                  ...                  ...                 "
-    "editor               editor               editor              "
-    "...                  ...                  ...                 ";
   }
 }
 </style>

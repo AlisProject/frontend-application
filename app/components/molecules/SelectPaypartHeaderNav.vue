@@ -1,9 +1,7 @@
 <template>
   <nav class="area-nav" :class="{ 'is-fixed': isFixed }">
     <div class="area-nav-inner">
-      <app-button
-        class="area-post-article"
-      >
+      <app-button class="area-post-article">
         公開する
       </app-button>
     </div>
@@ -53,12 +51,12 @@ export default {
   .area-nav-inner {
     display: grid;
     grid-area: nav-inner;
-    grid-template-columns: 70px 1fr 90px min-content;
+    grid-template-columns: 1fr min-content;
     margin: auto;
     width: 640px;
     /* prettier-ignore */
     grid-template-areas:
-      "... ... ... post-article";
+      "... post-article";
 
     .area-post-article {
       grid-area: post-article;
@@ -101,10 +99,30 @@ export default {
   }
 }
 
-.ios,
-.android {
+@media screen and (max-width: 640px) {
   .area-nav {
-    display: none;
+    background: #fff;
+    display: grid;
+    grid-area: nav;
+    height: 74px;
+    text-align: center;
+    transition: box-shadow 400ms ease;
+    width: 100%;
+    z-index: 2001;
+    /* prettier-ignore */
+    grid-template-areas:
+      "nav-inner";
+
+    .area-nav-inner {
+      display: grid;
+      grid-area: nav-inner;
+      grid-template-columns: 1fr min-content 12px;
+      margin: auto;
+      width: 100%;
+      /* prettier-ignore */
+      grid-template-areas:
+        "... post-article ...";
+    }
   }
 }
 </style>

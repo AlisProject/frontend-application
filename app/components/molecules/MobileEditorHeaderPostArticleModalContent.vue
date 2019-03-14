@@ -42,12 +42,49 @@
         3. タグの設定
       </h3>
       <tags-input-form @change-tag-validation-state="onChangeTagValidationState" />
+      <h3 class="headline">
+        4. 購入設定
+      </h3>
+      <div class="select-payment-box">
+        <input
+          class="payment-input"
+          type="radio"
+          value="free"
+          :checked="paymentType === 'free'"
+          @change="setPaymentType('free')"
+        >
+        <label class="payment-input-label" @click="setPaymentType('free')">
+          無料
+        </label>
+        <input
+          class="payment-input"
+          type="radio"
+          value="pay"
+          :checked="paymentType === 'pay'"
+          @change="setPaymentType('pay')"
+        >
+        <label class="payment-input-label" @click="setPaymentType('pay')">
+          有料
+        </label>
+        <div v-if="paymentType === 'pay'" class="token-amount-input-box">
+          <input
+            :value="price"
+            class="token-amount-input"
+            type="number"
+            @input="onInput"
+            @keydown.up.down.prevent
+          >
+          <span class="token-amount-input-unit">ALIS</span>
+          <br>
+          {{ errorMessage }}
+        </div>
+      </div>
       <app-button
         class="submit"
         :disabled="!publishable || isInvalidTag || publishingArticle"
         @click="publish"
       >
-        公開する
+        {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
       </app-button>
     </div>
   </div>
@@ -56,8 +93,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
+
+// const FORMAT_NUMBER = 10 ** 18
+const MAXIMUM_PRICE = '10000'
+const MINIMUM_PRICE = '1'
 
 export default {
   components: {
@@ -68,7 +110,10 @@ export default {
     return {
       publishingArticle: false,
       isThumbnailSelected: false,
-      isInvalidTag: false
+      isInvalidTag: false,
+      paymentType: 'free',
+      price: 1,
+      errorMessage: ''
     }
   },
   async created() {
@@ -90,13 +135,23 @@ export default {
 
         if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
-        const { articleId, title, body, topicType } = this
+        const { articleId, title, body, topicType, price } = this
         const hasTitle = title !== undefined && title !== null && title !== ''
         const hasBody = body !== '<p>&nbsp;</p>'
         if (!hasTitle) this.sendNotification({ text: 'タイトルを入力してください' })
         if (!hasBody) this.sendNotification({ text: '本文にテキストを入力してください' })
         if (topicType === null) this.sendNotification({ text: 'カテゴリを選択してください' })
         if (!hasTitle || !hasBody || topicType === null) {
+          this.publishingArticle = false
+          return
+        }
+
+        if (this.paymentType === 'pay') {
+          this.setSelectPaymentPrice({ price })
+          this.setSelectPaymentTitle({ title })
+          this.setSelectPaymentBody({ body })
+          this.setMobileEditorHeaderPostArticleModal({ isShow: false })
+          this.$router.push(`/me/articles/${this.$route.params.articleId}/paypart`)
           this.publishingArticle = false
           return
         }
@@ -154,6 +209,35 @@ export default {
     onChangeTagValidationState(isInvalid) {
       this.isInvalidTag = isInvalid
     },
+    setPaymentType(paymentType) {
+      this.paymentType = paymentType
+    },
+    onInput(event) {
+      try {
+        if (this.price === '') this.price = 0
+        this.price = event.target.value
+        const formattedPrice = new BigNumber(this.price)
+        const formattedMaxPrice = new BigNumber(MAXIMUM_PRICE)
+        const formattedMinPrice = new BigNumber(MINIMUM_PRICE)
+        const hasExceededMaxPrice = formattedPrice.isGreaterThan(formattedMaxPrice)
+        const hasNotExceededMinPrice = formattedPrice.isLessThan(formattedMinPrice)
+        if (hasExceededMaxPrice || hasNotExceededMinPrice) {
+          this.errorMessage = '販売価格は1〜10,000ALISまで設定できます'
+          return
+        }
+        const priceForUser = formattedPrice.toString(10)
+        // 小数点以下の桁数が10桁を超えているか確認
+        const isNotInputablePlaceAfterDecimalPoint =
+          priceForUser && priceForUser.includes('.') && priceForUser.split('.')[1].length > 10
+        if (isNotInputablePlaceAfterDecimalPoint) {
+          this.errorMessage = '小数点10桁までの範囲で入力してください'
+          return
+        }
+        this.errorMessage = ''
+      } catch (error) {
+        this.errorMessage = '数字で入力してください'
+      }
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -177,7 +261,10 @@ export default {
     ...mapActions('user', [
       'setFirstProcessModal',
       'setFirstProcessCreatedArticleModal',
-      'setMobileEditorHeaderPostArticleModal'
+      'setMobileEditorHeaderPostArticleModal',
+      'setSelectPaymentPrice',
+      'setSelectPaymentTitle',
+      'setSelectPaymentBody'
     ])
   },
   computed: {
@@ -197,7 +284,7 @@ export default {
       'topicType',
       'tags'
     ]),
-    ...mapGetters('user', ['currentUserInfo'])
+    ...mapGetters('user', ['currentUserInfo', 'selectPayment'])
   },
   watch: {
     suggestedThumbnails() {
@@ -382,6 +469,10 @@ export default {
         display: none;
       }
     }
+  }
+
+  .select-payment-box {
+    padding: 10px;
   }
 
   .submit {
