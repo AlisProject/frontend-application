@@ -163,6 +163,10 @@ const state = () => ({
   },
   mobileEditorHeaderPostArticleModal: {
     isShow: false
+  },
+  selectPayment: {
+    paymentType: 'free',
+    price: '0'
   }
 })
 
@@ -198,7 +202,8 @@ const getters = {
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
   distributedTokens: (state) => state.distributedTokens,
   firstProcessModal: (state) => state.firstProcessModal,
-  mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal
+  mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal,
+  selectPayment: (state) => state.selectPayment
 }
 
 const actions = {
