@@ -73,7 +73,7 @@
         <label class="payment-input-label" @click="setPaymentType('pay')">
           有料
         </label>
-        <div class="token-amount-input-box" v-if="paymentType === 'pay'">
+        <div v-if="paymentType === 'pay'" class="token-amount-input-box">
           <input
             :value="price"
             class="token-amount-input"
@@ -82,7 +82,7 @@
             @keydown.up.down.prevent
           >
           <span class="token-amount-input-unit">ALIS</span>
-          <br />
+          <br>
           {{ errorMessage }}
         </div>
       </div>
@@ -105,7 +105,7 @@ import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
 import { getThumbnails } from '~/utils/article'
 
-const FORMAT_NUMBER = 10 ** 18
+// const FORMAT_NUMBER = 10 ** 18
 const MAXIMUM_PRICE = '10000'
 const MINIMUM_PRICE = '1'
 
