@@ -13,7 +13,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
-import MobileEditorHeader from '../organisms/MobileEditorHeader'
 import SelectPaypartHeaderNav from '../molecules/SelectPaypartHeaderNav'
 import SelectPaypartEditor from '../organisms/SelectPaypartEditor'
 import { htmlDecode } from '~/utils/article'
@@ -22,7 +21,6 @@ import { isIOS, isAndroid } from '~/utils/device'
 export default {
   components: {
     AppHeader,
-    MobileEditorHeader,
     SelectPaypartHeaderNav,
     SelectPaypartEditor
   },
