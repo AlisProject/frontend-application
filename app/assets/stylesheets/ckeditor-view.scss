@@ -1,5 +1,6 @@
 .v2-content,
-.area-editor-container {
+.area-editor-container,
+.area-select-paypart-editor-container {
   .ck-content {
     * {
       &::selection {
@@ -204,9 +205,48 @@
   }
 }
 
+.area-select-paypart-editor-container {
+  .ck-content {
+    a,
+    p,
+    h2,
+    h3,
+    blockquote,
+    .image {
+      cursor: pointer;
+    }
+
+    p {
+      &.area {
+        align-items: center;
+        background: #0086cc;
+        color: #fff;
+        cursor: initial;
+        display: flex;
+        justify-content: center;
+        padding: 0.5em;
+      }
+
+      &.areaBefore {
+        align-items: center;
+        border: 2px dashed #e6e6e6;
+        display: flex;
+        justify-content: center;
+        opacity: 0.5;
+        padding: 0.5em;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 640px) {
   .v2-content,
-  .area-editor-container {
+  .area-editor-container,
+  .area-select-paypart-editor-container {
     .ck-content {
       p {
         font-size: 16px;

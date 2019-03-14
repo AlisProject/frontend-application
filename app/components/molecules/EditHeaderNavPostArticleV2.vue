@@ -91,7 +91,7 @@
         :disabled="!publishable || isInvalidTag || publishingArticle"
         @click="publish"
       >
-        公開する
+        {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
       </app-button>
     </div>
   </div>
@@ -160,7 +160,7 @@ export default {
 
         if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
-        const { articleId, title, body, topicType } = this
+        const { articleId, title, body, topicType, price } = this
         const hasTitle = title !== undefined && title !== null && title !== ''
         const hasBody = body !== '<p>&nbsp;</p>'
         if (!hasTitle) this.sendNotification({ text: 'タイトルを入力してください' })
@@ -172,7 +172,10 @@ export default {
         }
 
         if (this.paymentType === 'pay') {
-          console.log('pay')
+          this.setSelectPaymentPrice({ price })
+          this.setSelectPaymentTitle({ title })
+          this.setSelectPaymentBody({ body })
+          this.$router.push(`/me/articles/${this.$route.params.articleId}/paypart`)
           this.publishingArticle = false
           return
         }
@@ -307,7 +310,13 @@ export default {
       'resetArticleTopic',
       'setArticleTopic'
     ]),
-    ...mapActions('user', ['setFirstProcessModal', 'setFirstProcessCreatedArticleModal'])
+    ...mapActions('user', [
+      'setFirstProcessModal',
+      'setFirstProcessCreatedArticleModal',
+      'setSelectPaymentPrice',
+      'setSelectPaymentTitle',
+      'setSelectPaymentBody'
+    ])
   },
   computed: {
     publishable() {
@@ -541,6 +550,7 @@ export default {
     }
 
     .select-payment-box {
+      padding: 10px;
     }
 
     .submit {

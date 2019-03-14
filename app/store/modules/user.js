@@ -166,7 +166,9 @@ const state = () => ({
   },
   selectPayment: {
     paymentType: 'free',
-    price: '0'
+    price: '0',
+    title: '',
+    body: ''
   }
 })
 
@@ -875,6 +877,15 @@ const actions = {
   },
   setMobileEditorHeaderPostArticleModal({ commit }, { isShow }) {
     commit(types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL, { isShow })
+  },
+  setSelectPaymentPrice({ commit }, { price }) {
+    commit(types.SET_SELECT_PAYMENT_PRICE, { price })
+  },
+  setSelectPaymentTitle({ commit }, { title }) {
+    commit(types.SET_SELECT_PAYMENT_TITLE, { title })
+  },
+  setSelectPaymentBody({ commit }, { body }) {
+    commit(types.SET_SELECT_PAYMENT_BODY, { body })
   }
 }
 
@@ -1164,6 +1175,15 @@ const mutations = {
   },
   [types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL](state, { isShow }) {
     state.mobileEditorHeaderPostArticleModal.isShow = isShow
+  },
+  [types.SET_SELECT_PAYMENT_PRICE](state, { price }) {
+    state.selectPayment.price = price
+  },
+  [types.SET_SELECT_PAYMENT_TITLE](state, { title }) {
+    state.selectPayment.title = title
+  },
+  [types.SET_SELECT_PAYMENT_BODY](state, { body }) {
+    state.selectPayment.body = body
   }
 }
 
