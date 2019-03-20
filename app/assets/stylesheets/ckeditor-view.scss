@@ -239,6 +239,14 @@
 
       .image {
         margin: 20px 0;
+
+        &.image-style-align-left {
+          margin-right: 20px;
+        }
+
+        &.image-style-align-right {
+          margin-left: 20px;
+        }
       }
 
       .twitter-tweet {
