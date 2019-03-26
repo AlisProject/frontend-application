@@ -220,24 +220,24 @@
       &.area {
         align-items: center;
         background: #0086cc;
+        border: 1px solid #0086cc;
         color: #fff;
         cursor: initial;
         display: flex;
+        font-size: 12px;
         justify-content: center;
-        padding: 0.5em;
+        padding: 4px;
       }
 
       &.areaBefore {
         align-items: center;
-        border: 2px dashed #e6e6e6;
+        border: 1px dashed #cecece;
+        color: #cecece;
         display: flex;
+        font-size: 12px;
+        font-weight: bold;
         justify-content: center;
-        opacity: 0.5;
-        padding: 0.5em;
-
-        &:hover {
-          opacity: 1;
-        }
+        padding: 4px;
       }
     }
   }

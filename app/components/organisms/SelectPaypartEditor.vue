@@ -22,17 +22,36 @@ export default {
   async mounted() {
     showEmbed()
     await this.$nextTick()
-    this.addArea()
     if (isMobile()) {
-      this.handleAddPaypartOnSp()
+      this.addPaypartAreaBeforeBetweenEachElement()
     } else {
+      this.addPaypartArea()
       this.handleAddPaypartOnPc()
     }
   },
   methods: {
-    addArea() {
+    addPaypartArea() {
       const [firstElement] = document.querySelectorAll('.area-content > *')
       this.insertPaywallAreaBeforeTargetElement(firstElement)
+    },
+    addPaypartAreaBeforeBetweenEachElement() {
+      Array.from(document.querySelectorAll('.area-content > *'), (element) => {
+        const pb = document.createElement('p')
+        pb.addEventListener('touchstart', (event) => {
+          const isAreaBefore =
+            event.target.classList && Array.from(event.target.classList).includes('areaBefore')
+          if (isAreaBefore) {
+            const area = document.querySelector('.area')
+            if (area) this.changeAreaToAreaBefore(area)
+            this.changeAreaBeforeToArea(event.target)
+          }
+        })
+        pb.classList.add('areaBefore')
+        pb.innerText = 'ラインをこの場所に変更する'
+        document.querySelector('.area-content').insertBefore(pb, element.nextSibling)
+      })
+      const [firstAreaBeforeElement] = document.querySelectorAll('.area-content > .areaBefore')
+      this.changeAreaBeforeToArea(firstAreaBeforeElement)
     },
     handleAddPaypartOnPc() {
       Array.from(document.querySelectorAll('.area-content > *'), (element) => {
@@ -56,7 +75,7 @@ export default {
             return
           }
           pb.classList.add('areaBefore')
-          pb.innerText = 'ラインをこの場所に変更'
+          pb.innerText = 'ラインをこの場所に変更する'
           document.querySelector('.area-content').insertBefore(pb, element.nextSibling)
         })
         element.addEventListener('click', (e) => {
@@ -68,18 +87,19 @@ export default {
         })
       })
     },
-    handleAddPaypartOnSp() {
-      Array.from(document.querySelectorAll('.area-content > *'), (elm) => {
-        elm.addEventListener('touchstart', (element) => {
-          const area = document.querySelector('.area')
-          if (area) area.parentNode.removeChild(area)
-          this.insertPaywallAreaBeforeTargetElement(elm)
-        })
-      })
+    changeAreaToAreaBefore(element) {
+      element.classList.remove('area')
+      element.classList.add('areaBefore')
+      element.innerText = 'ラインをこの場所に変更する'
+    },
+    changeAreaBeforeToArea(element) {
+      element.classList.remove('areaBefore')
+      element.classList.add('area')
+      element.innerText = 'このラインより上のエリアが無料で表示'
     },
     createPaywallArea() {
       const p = document.createElement('p')
-      p.innerText = 'このラインより上のエリアが無料で表示されます'
+      p.innerText = 'このラインより上のエリアが無料で表示'
       p.classList.add('area')
       return p
     },
