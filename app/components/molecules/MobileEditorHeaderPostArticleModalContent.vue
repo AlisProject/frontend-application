@@ -43,45 +43,50 @@
       </h3>
       <tags-input-form @change-tag-validation-state="onChangeTagValidationState" />
       <h3 class="headline">
-        4. 購入設定
+        4. 販売設定
       </h3>
       <div class="select-payment-box">
-        <input
-          class="payment-input"
-          type="radio"
-          value="free"
-          :checked="paymentType === 'free'"
-          @change="setPaymentType('free')"
-        >
-        <label class="payment-input-label" @click="setPaymentType('free')">
-          無料
-        </label>
-        <input
-          class="payment-input"
-          type="radio"
-          value="pay"
-          :checked="paymentType === 'pay'"
-          @change="setPaymentType('pay')"
-        >
-        <label class="payment-input-label" @click="setPaymentType('pay')">
-          有料
-        </label>
-        <div v-if="paymentType === 'pay'" class="token-amount-input-box">
+        <div class="payment-input-box">
           <input
-            :value="price"
-            class="token-amount-input"
-            type="number"
-            @input="onInput"
-            @keydown.up.down.prevent
+            class="payment-input"
+            type="radio"
+            value="free"
+            :checked="paymentType === 'free'"
+            @change="setPaymentType('free')"
           >
-          <span class="token-amount-input-unit">ALIS</span>
-          <br>
-          {{ errorMessage }}
+          <label class="payment-input-label" @click="setPaymentType('free')">
+            無料
+          </label>
         </div>
+        <div class="payment-input-box">
+          <input
+            class="payment-input"
+            type="radio"
+            value="pay"
+            :checked="paymentType === 'pay'"
+            @change="setPaymentType('pay')"
+          >
+          <label class="payment-input-label" @click="setPaymentType('pay')">
+            有料
+          </label>
+        </div>
+      </div>
+      <div v-if="paymentType === 'pay'" class="token-amount-input-box">
+        <input
+          :value="price"
+          class="token-amount-input"
+          type="number"
+          @input="onInput"
+          @keydown.up.down.prevent
+        >
+        <span class="token-amount-input-unit">ALIS</span>
+        <span class="error-message">
+          {{ errorMessage }}
+        </span>
       </div>
       <app-button
         class="submit"
-        :disabled="!publishable || isInvalidTag || publishingArticle"
+        :disabled="!publishable || isInvalidTag || publishingArticle || hasPriceError"
         @click="publish"
       >
         {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
@@ -97,7 +102,6 @@ import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
 
-// const FORMAT_NUMBER = 10 ** 18
 const MAXIMUM_PRICE = '10000'
 const MINIMUM_PRICE = '1'
 
@@ -216,21 +220,25 @@ export default {
       try {
         if (this.price === '') this.price = 0
         this.price = event.target.value
+
         const formattedPrice = new BigNumber(this.price)
         const formattedMaxPrice = new BigNumber(MAXIMUM_PRICE)
         const formattedMinPrice = new BigNumber(MINIMUM_PRICE)
         const hasExceededMaxPrice = formattedPrice.isGreaterThan(formattedMaxPrice)
         const hasNotExceededMinPrice = formattedPrice.isLessThan(formattedMinPrice)
+
+        if (!formattedPrice.isInteger()) {
+          this.errorMessage = '整数で入力してください'
+          return
+        }
         if (hasExceededMaxPrice || hasNotExceededMinPrice) {
           this.errorMessage = '販売価格は1〜10,000ALISまで設定できます'
           return
         }
-        const priceForUser = formattedPrice.toString(10)
-        // 小数点以下の桁数が10桁を超えているか確認
-        const isNotInputablePlaceAfterDecimalPoint =
-          priceForUser && priceForUser.includes('.') && priceForUser.split('.')[1].length > 10
-        if (isNotInputablePlaceAfterDecimalPoint) {
-          this.errorMessage = '小数点10桁までの範囲で入力してください'
+        const isInteger = Number.isInteger(Number(this.price))
+
+        if (!isInteger) {
+          this.errorMessage = '整数で入力してください'
           return
         }
         this.errorMessage = ''
@@ -270,6 +278,9 @@ export default {
   computed: {
     publishable() {
       return (!this.isEditedTitle || !this.isEditedBody) && !this.isSaving
+    },
+    hasPriceError() {
+      return this.errorMessage !== ''
     },
     ...mapGetters('article', [
       'articleId',
@@ -335,16 +346,16 @@ export default {
   }
 
   .thumbnails {
-    height: 120px;
     margin-bottom: 10px;
     overflow-x: scroll;
     overflow-y: hidden;
     text-align: center;
     user-select: none;
     white-space: nowrap;
+    height: 100px;
 
     &::-webkit-scrollbar {
-      height: 40px;
+      height: 20px;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -352,8 +363,8 @@ export default {
       background: linear-gradient(
         0deg,
         transparent 0%,
-        transparent 75%,
-        #0086cc 75%,
+        transparent 70%,
+        #0086cc 70%,
         #0086cc 80%,
         transparent 80%,
         transparent 100%
@@ -419,7 +430,7 @@ export default {
 
   .article-type-select-box {
     box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     padding: 6px 8px;
     position: relative;
 
@@ -472,7 +483,107 @@ export default {
   }
 
   .select-payment-box {
-    padding: 10px;
+    display: flex;
+    flex-direction: row;
+
+    .payment-input-box {
+      color: #030303;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 14px;
+      min-height: 20px;
+
+      .payment-input {
+        opacity: 0;
+        position: absolute;
+
+        & + .payment-input-label {
+          cursor: pointer;
+          padding: 0 20px 0 30px;
+          position: relative;
+          line-height: 20px;
+          display: block;
+          width: 28px;
+
+          &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #0086cc;
+            border-radius: 50%;
+            box-sizing: border-box;
+          }
+        }
+
+        &:checked + .payment-input-label {
+          &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 12px;
+            height: 12px;
+            background: #0086cc;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+
+  .token-amount-input-box {
+    position: relative;
+
+    .token-amount-input {
+      appearance: none;
+      border: 0;
+      box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
+      box-sizing: border-box;
+      color: #030303;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 28px;
+      padding: 10px 40px 10px 12px;
+      width: 256px;
+      margin-bottom: 4px;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &:after {
+        content: 'ALIS';
+      }
+
+      &:focus {
+        outline: 0;
+      }
+    }
+
+    .token-amount-input-unit {
+      position: absolute;
+      color: #030303;
+      font-size: 10px;
+      font-weight: bold;
+      top: 19px;
+      right: 10px;
+    }
+  }
+
+  .error-message {
+    color: #f06273;
+    display: block;
+    font-size: 12px;
+    margin-bottom: 2px;
+    min-height: 26px;
+    text-align: left;
   }
 
   .submit {
