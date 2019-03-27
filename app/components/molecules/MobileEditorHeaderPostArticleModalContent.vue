@@ -155,7 +155,11 @@ export default {
           this.setSelectPaymentTitle({ title })
           this.setSelectPaymentBody({ body })
           this.setMobileEditorHeaderPostArticleModal({ isShow: false })
-          this.$router.push(`/me/articles/${this.$route.params.articleId}/paypart`)
+          if (location.href.includes('/me/articles/draft')) {
+            this.$router.push(`/me/articles/draft/${this.$route.params.articleId}/paypart`)
+          } else if (location.href.includes('/me/articles/public')) {
+            this.$router.push(`/me/articles/public/${this.$route.params.articleId}/paypart`)
+          }
           this.publishingArticle = false
           return
         }

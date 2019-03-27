@@ -148,7 +148,6 @@ export default {
     })
   },
   destroyed() {
-    this.resetArticleTopic()
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
@@ -179,7 +178,11 @@ export default {
           this.setSelectPaymentPrice({ price })
           this.setSelectPaymentTitle({ title })
           this.setSelectPaymentBody({ body })
-          this.$router.push(`/me/articles/${this.$route.params.articleId}/paypart`)
+          if (location.href.includes('/me/articles/draft')) {
+            this.$router.push(`/me/articles/draft/${this.$route.params.articleId}/paypart`)
+          } else if (location.href.includes('/me/articles/public')) {
+            this.$router.push(`/me/articles/public/${this.$route.params.articleId}/paypart`)
+          }
           this.publishingArticle = false
           return
         }

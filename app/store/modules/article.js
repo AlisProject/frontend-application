@@ -706,19 +706,35 @@ const actions = {
     commit(types.SET_ARTICLE_ID, { articleId })
     return articleId
   },
-  async publishDraftArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, {
+  async publishDraftArticleWithHeader(
+    { commit },
+    { articleId, topic, tags, eyeCatchUrl, price, paidBody }
+  ) {
+    const params = {
       topic,
       tags,
       eye_catch_url: eyeCatchUrl
-    })
+    }
+    if (price && paidBody) {
+      params.price = price
+      params.paidBody = paidBody
+    }
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, params)
   },
-  async republishPublicArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, {
+  async republishPublicArticleWithHeader(
+    { commit },
+    { articleId, topic, tags, eyeCatchUrl, price, paidBody }
+  ) {
+    const params = {
       topic,
       tags,
       eye_catch_url: eyeCatchUrl
-    })
+    }
+    if (price && paidBody) {
+      params.price = price
+      params.paidBody = paidBody
+    }
+    await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, params)
   }
 }
 
