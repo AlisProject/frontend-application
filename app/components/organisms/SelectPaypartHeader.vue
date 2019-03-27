@@ -4,25 +4,19 @@
       <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
     </nuxt-link>
     <span class="save-status">{{ saveStatus }}</span>
-    <button class="post-article" @click="showMobileEditorHeaderPostArticleModal">
-      公開する
-    </button>
-    <mobile-editor-header-post-article-modal v-if="mobileEditorHeaderPostArticleModal.isShow" />
-    <toast position="n" />
+    <select-paypart-publish-button class="post-article" />
   </header>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { Toast } from 'vuex-toast'
-import MobileEditorHeaderPostArticleModal from '../organisms/MobileEditorHeaderPostArticleModal'
+import SelectPaypartPublishButton from '../molecules/SelectPaypartPublishButton'
 import { isIOS, isAndroid } from '~/utils/device'
 import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
-    Toast,
-    MobileEditorHeaderPostArticleModal
+    SelectPaypartPublishButton
   },
   data() {
     return {
@@ -42,7 +36,7 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   computed: {
-    ...mapGetters('user', ['loggedIn', 'mobileEditorHeaderPostArticleModal']),
+    ...mapGetters('user', ['loggedIn']),
     ...mapGetters('article', ['saveStatus'])
   },
   methods: {
@@ -52,24 +46,11 @@ export default {
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },
-    showMobileEditorHeaderPostArticleModal() {
-      this.setThumbnails()
-      this.setMobileEditorHeaderPostArticleModal({ isShow: true })
-    },
-    setThumbnails() {
-      const images = Array.from(document.querySelectorAll('figure img'))
-      const thumbnails = getThumbnails(images)
-      this.updateSuggestedThumbnails({ thumbnails })
-      if (!thumbnails.includes(this.thumbnail)) {
-        this.updateThumbnail({ thumbnail: '' })
-      }
-    },
     handleScroll() {
       this.isFixed = window.scrollY >= 1
     },
     ...mapActions('presentation', ['setArticleListScrollHeight']),
-    ...mapActions('article', ['resetArticleData', 'updateSuggestedThumbnails', 'updateThumbnail']),
-    ...mapActions('user', ['setMobileEditorHeaderPostArticleModal'])
+    ...mapActions('article', ['resetArticleData'])
   }
 }
 </script>
@@ -162,6 +143,8 @@ export default {
     position: absolute;
     right: 12px;
     width: 60px;
+    box-shadow: none;
+    line-height: normal;
   }
 }
 </style>
