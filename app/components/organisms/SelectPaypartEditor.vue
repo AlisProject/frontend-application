@@ -25,8 +25,8 @@ export default {
     if (isMobile()) {
       this.addPaywallLineNextBetweenEachElement()
     } else {
-      this.addPaywallLine()
       this.handleAddPaywallLineOnPc()
+      this.addPaywallLine()
     }
   },
   methods: {
@@ -77,7 +77,7 @@ export default {
           if (
             e.target.nextSibling &&
             e.target.nextSibling.classList &&
-            Array.from(e.target.nextSibling.classList).includes('area')
+            Array.from(e.target.nextSibling.classList).includes('paywall-line')
           ) {
             return
           }
