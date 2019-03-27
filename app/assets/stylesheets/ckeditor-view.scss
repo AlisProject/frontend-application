@@ -217,7 +217,7 @@
     }
 
     p {
-      &.area {
+      &.paywall-line {
         align-items: center;
         background: #0086cc;
         border: 1px solid #0086cc;
@@ -229,7 +229,7 @@
         padding: 4px;
       }
 
-      &.areaBefore {
+      &.paywall-line-next {
         align-items: center;
         border: 1px dashed #cecece;
         color: #cecece;

@@ -23,49 +23,56 @@ export default {
     showEmbed()
     await this.$nextTick()
     if (isMobile()) {
-      this.addPaypartAreaBeforeBetweenEachElement()
+      this.addPaywallLineNextBetweenEachElement()
     } else {
-      this.addPaypartArea()
-      this.handleAddPaypartOnPc()
+      this.addPaywallLine()
+      this.handleAddPaywallLineOnPc()
     }
   },
   methods: {
-    addPaypartArea() {
+    addPaywallLine() {
       const [firstElement] = document.querySelectorAll('.area-content > *')
-      this.insertPaywallAreaBeforeTargetElement(firstElement)
+      this.insertPaywallLineBeforeTargetElement(firstElement)
     },
-    addPaypartAreaBeforeBetweenEachElement() {
+    addPaywallLineNextBetweenEachElement() {
       Array.from(document.querySelectorAll('.area-content > *'), (element) => {
-        const pb = document.createElement('p')
-        pb.addEventListener('touchstart', (event) => {
-          const isAreaBefore =
-            event.target.classList && Array.from(event.target.classList).includes('areaBefore')
-          if (isAreaBefore) {
-            const area = document.querySelector('.area')
-            if (area) this.changeAreaToAreaBefore(area)
-            this.changeAreaBeforeToArea(event.target)
+        const p = document.createElement('p')
+        // paywall-line-next をタップしたときに、既存の paywall-line を paywall-line-next に変更し
+        // タップされた paywall-line-next を paywall-line に変更する
+        p.addEventListener('touchstart', (event) => {
+          const isPaywallLineNext =
+            event.target.classList &&
+            Array.from(event.target.classList).includes('paywall-line-next')
+          if (isPaywallLineNext) {
+            const paywallLineElement = document.querySelector('.paywall-line')
+            if (paywallLineElement) this.changePaywallLineToPaywallLineNext(paywallLineElement)
+            this.changePaywallLineNextToPaywall(event.target)
           }
         })
-        pb.classList.add('areaBefore')
-        pb.innerText = 'ラインをこの場所に変更する'
-        document.querySelector('.area-content').insertBefore(pb, element.nextSibling)
+        p.classList.add('paywall-line-next')
+        p.innerText = 'ラインをこの場所に変更する'
+        document.querySelector('.area-content').insertBefore(p, element.nextSibling)
       })
-      const [firstAreaBeforeElement] = document.querySelectorAll('.area-content > .areaBefore')
-      this.changeAreaBeforeToArea(firstAreaBeforeElement)
+      const [firstPaywallLineNextElement] = document.querySelectorAll(
+        '.area-content > .paywall-line-next'
+      )
+      this.changePaywallLineNextToPaywall(firstPaywallLineNextElement)
     },
-    handleAddPaypartOnPc() {
+    handleAddPaywallLineOnPc() {
       Array.from(document.querySelectorAll('.area-content > *'), (element) => {
         element.addEventListener('mouseover', (e) => {
           if (e.target.nodeName === 'IMG') return
-          const areaBefore = document.querySelector('.areaBefore')
-          if (areaBefore) areaBefore.parentNode.removeChild(areaBefore)
-          const pb = document.createElement('p')
-          pb.addEventListener('click', () => {
-            const area = document.querySelector('.area')
-            if (area) area.parentNode.removeChild(area)
-            const areaBefore = document.querySelector('.areaBefore')
-            areaBefore.parentNode.removeChild(areaBefore)
-            this.insertPaywallAreaBeforeTargetElement(element)
+          const paywallLineNextElement = document.querySelector('.paywall-line-next')
+          if (paywallLineNextElement) {
+            paywallLineNextElement.parentNode.removeChild(paywallLineNextElement)
+          }
+          const p = document.createElement('p')
+          p.addEventListener('click', () => {
+            const paywallLineElement = document.querySelector('.paywall-line')
+            if (paywallLineElement) paywallLineElement.parentNode.removeChild(paywallLineElement)
+            const paywallLineNextElement = document.querySelector('.paywall-line-next')
+            paywallLineNextElement.parentNode.removeChild(paywallLineNextElement)
+            this.insertPaywallLineBeforeTargetElement(element)
           })
           if (
             e.target.nextSibling &&
@@ -74,39 +81,41 @@ export default {
           ) {
             return
           }
-          pb.classList.add('areaBefore')
-          pb.innerText = 'ラインをこの場所に変更する'
-          document.querySelector('.area-content').insertBefore(pb, element.nextSibling)
+          p.classList.add('paywall-line-next')
+          p.innerText = 'ラインをこの場所に変更する'
+          document.querySelector('.area-content').insertBefore(p, element.nextSibling)
         })
         element.addEventListener('click', (e) => {
-          const area = document.querySelector('.area')
-          if (area) area.parentNode.removeChild(area)
-          const areaBefore = document.querySelector('.areaBefore')
-          if (areaBefore) areaBefore.parentNode.removeChild(areaBefore)
-          this.insertPaywallAreaBeforeTargetElement(element)
+          const paywallLineElement = document.querySelector('.paywall-line')
+          if (paywallLineElement) paywallLineElement.parentNode.removeChild(paywallLineElement)
+          const paywallLineNextElement = document.querySelector('.paywall-line-next')
+          if (paywallLineNextElement) {
+            paywallLineNextElement.parentNode.removeChild(paywallLineNextElement)
+          }
+          this.insertPaywallLineBeforeTargetElement(element)
         })
       })
     },
-    changeAreaToAreaBefore(element) {
-      element.classList.remove('area')
-      element.classList.add('areaBefore')
+    changePaywallLineToPaywallLineNext(element) {
+      element.classList.remove('paywall-line')
+      element.classList.add('paywall-line-next')
       element.innerText = 'ラインをこの場所に変更する'
     },
-    changeAreaBeforeToArea(element) {
-      element.classList.remove('areaBefore')
-      element.classList.add('area')
+    changePaywallLineNextToPaywall(element) {
+      element.classList.remove('paywall-line-next')
+      element.classList.add('paywall-line')
       element.innerText = 'このラインより上のエリアが無料で表示'
+    },
+    insertPaywallLineBeforeTargetElement(element) {
+      document
+        .querySelector('.area-content')
+        .insertBefore(this.createPaywallArea(), element.nextSibling)
     },
     createPaywallArea() {
       const p = document.createElement('p')
       p.innerText = 'このラインより上のエリアが無料で表示'
-      p.classList.add('area')
+      p.classList.add('paywall-line')
       return p
-    },
-    insertPaywallAreaBeforeTargetElement(element) {
-      document
-        .querySelector('.area-content')
-        .insertBefore(this.createPaywallArea(), element.nextSibling)
     }
   }
 }
