@@ -37,11 +37,15 @@
         編集する
       </a>
     </template>
+    <div class="price-label" v-if="isPaidArticle">
+      有料：{{ formattedPrice }}ALIS
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import { BigNumber } from 'bignumber.js'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { isV2 } from '~/utils/article'
 
@@ -81,6 +85,14 @@ export default {
     },
     isV2Article() {
       return isV2(this.article)
+    },
+    isPaidArticle() {
+      return !!this.article.price
+    },
+    formattedPrice() {
+      const formatNumber = 10 ** 18
+      const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
+      return price
     }
   },
   mounted() {
@@ -238,6 +250,21 @@ export default {
     padding-left: 24px;
     text-decoration: none;
     margin-left: 20px;
+  }
+
+  .price-label {
+    align-items: center;
+    border-radius: 2px;
+    border: 1px solid #0086cc;
+    box-sizing: border-box;
+    color: #0086cc;
+    display: flex;
+    font-size: 12px;
+    font-weight: bold;
+    height: 24px;
+    margin: 0 0 0 auto;
+    padding: 0 6px;
+    text-align: right;
   }
 }
 

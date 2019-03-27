@@ -23,9 +23,15 @@ export default {
   async fetch({ store, params, error, redirect }) {
     try {
       const { articleId } = params
+      await store.dispatch('article/setPurchasedArticleIds')
+      const isPurchased = store.state.article.purchasedArticleIds.includes(articleId)
       const isCurrentUser =
         store.state.user.loggedIn && params.userId === store.state.user.currentUser.userId
-      const getArticleType = isCurrentUser ? 'getPublicArticleDetail' : 'getArticleDetail'
+      const getArticleType = isCurrentUser
+        ? 'getPublicArticleDetail'
+        : isPurchased
+          ? 'getPurchaedArticleDetail'
+          : 'getArticleDetail'
 
       await store.dispatch(`article/${getArticleType}`, { articleId })
       if (params.userId !== store.state.article.article.user_id) {

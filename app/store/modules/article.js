@@ -54,7 +54,8 @@ const state = () => ({
     articles: [],
     page: 1,
     isLastPage: false
-  }
+  },
+  purchasedArticleIds: []
 })
 
 const getters = {
@@ -96,7 +97,8 @@ const getters = {
   hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
   isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
   eyecatchArticles: (state) => state.eyecatchArticles,
-  recommendedArticles: (state) => state.recommendedArticles
+  recommendedArticles: (state) => state.recommendedArticles,
+  purchasedArticleIds: (state) => state.purchasedArticleIds
 }
 
 const actions = {
@@ -205,7 +207,16 @@ const actions = {
         dispatch('getArticleComments', { articleId })
       ])
       commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_ARTICLE_DETAIL, {
+        article: {
+          ...article,
+          userInfo,
+          alisToken,
+          comments,
+          price: articleId === '8ggDlqnNNPBL' ? '1000000000000000000' : null
+        }
+      })
+      // commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -735,6 +746,47 @@ const actions = {
       params.paidBody = paidBody
     }
     await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, params)
+  },
+  async setPurchasedArticleIds({ commit }) {
+    try {
+      // const { article_ids: articleIds } = await this.$axios.$get(
+      //   '/me/articles/purchased/article_ids'
+      // )
+      const articleIds = []
+      // const articleIds = ['8ggDlqnNNPBL']
+      commit(types.SET_PURCHASED_ARTICLE_IDS, { articleIds })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getPurchaedArticleDetail({ commit, dispatch }, { articleId }) {
+    try {
+      // const article = await this.$axios.$get(`/me/articles/purchased/${articleId}`)
+      const article = await this.$axios.$get(`/articles/${articleId}`)
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId }),
+        dispatch('getLikesCount', { articleId }),
+        dispatch('getArticleComments', { articleId })
+      ])
+      commit(types.SET_LIKES_COUNT, { likesCount })
+      commit(types.SET_ARTICLE_DETAIL, {
+        article: {
+          ...article,
+          userInfo,
+          alisToken,
+          comments,
+          price: '1000000000000000000',
+          body: `<p>無料<p>
+          <p class="paywall-line">このラインより上のエリアが無料で表示</p>
+          <p>有料</p>
+          `
+        }
+      })
+      // commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -962,6 +1014,9 @@ const mutations = {
   },
   [types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state) {
     state.articleCommentsLastEvaluatedKey = {}
+  },
+  [types.SET_PURCHASED_ARTICLE_IDS](state, { articleIds }) {
+    state.purchasedArticleIds = articleIds
   }
 }
 

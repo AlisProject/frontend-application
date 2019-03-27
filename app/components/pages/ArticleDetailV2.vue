@@ -1,7 +1,7 @@
 <template>
   <div class="article-container">
     <app-header />
-    <div class="area-article v2-content">
+    <div class="area-article v2-content" :class="{ 'is-paid-article': isPaidArticle }">
       <no-ssr>
         <article-header :article="article" :topic="topic" :is-current-user="isCurrentUser" />
       </no-ssr>
@@ -9,6 +9,9 @@
         {{ decodedTitle }}
       </h1>
       <div class="area-content ck-content" v-html="article.body" />
+      <no-ssr>
+        <article-detail-paypart v-if="isPaidArticle" :article="article" />
+      </no-ssr>
       <article-tags :tags="article.tags" />
       <article-footer-actions
         :article-id="article.article_id"
@@ -39,6 +42,7 @@ import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
 import ArticleTags from '../molecules/ArticleTags'
+import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
 import AppFooter from '../organisms/AppFooter'
@@ -53,6 +57,7 @@ export default {
     ArticleSubInfos,
     AuthorInfo,
     ArticleTags,
+    ArticleDetailPaypart,
     ArticleCommentForm,
     ArticleComments,
     AppFooter
@@ -82,6 +87,9 @@ export default {
     },
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
+    },
+    isPaidArticle() {
+      return !!this.article.price
     },
     ...mapGetters('article', ['likesCount', 'isLikedArticle']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
@@ -131,6 +139,19 @@ export default {
     'article-sub-infos'
     'footer-actions'
     'author-info   ';
+
+  &.is-paid-article {
+    /* prettier-ignore */
+    grid-template-areas:
+    'header        '
+    'title         '
+    'content       '
+    'paypart       '
+    'tags          '
+    'article-sub-infos'
+    'footer-actions'
+    'author-info   ';
+  }
 }
 
 .area-title {
@@ -182,6 +203,19 @@ export default {
       '...            article-sub-infos ...'
       '...            author-info       ...           '
       'footer-actions footer-actions    footer-actions';
+
+    &.is-paid-article {
+      /* prettier-ignore */
+      grid-template-areas:
+        'header         header            header        '
+        '...            title             ...           '
+        '...            content           ...           '
+        'paypart        paypart           paypart       '
+        '...            tags              ...           '
+        '...            article-sub-infos ...'
+        '...            author-info       ...           '
+        'footer-actions footer-actions    footer-actions';
+    }
   }
 
   .area-title {
