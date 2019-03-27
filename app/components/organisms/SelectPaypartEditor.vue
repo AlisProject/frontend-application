@@ -44,8 +44,7 @@ export default {
             event.target.classList &&
             Array.from(event.target.classList).includes('paywall-line-next')
           if (isPaywallLineNext) {
-            const paywallLineElement = document.querySelector('.paywall-line')
-            if (paywallLineElement) this.changePaywallLineToPaywallLineNext(paywallLineElement)
+            this.removePaywallLine()
             this.changePaywallLineNextToPaywall(event.target)
           }
         })
@@ -62,18 +61,15 @@ export default {
       Array.from(document.querySelectorAll('.area-content > *'), (element) => {
         element.addEventListener('mouseover', (e) => {
           if (e.target.nodeName === 'IMG') return
-          const paywallLineNextElement = document.querySelector('.paywall-line-next')
-          if (paywallLineNextElement) {
-            paywallLineNextElement.parentNode.removeChild(paywallLineNextElement)
-          }
+          this.removePaywallLineNext()
           const p = document.createElement('p')
           p.addEventListener('click', () => {
-            const paywallLineElement = document.querySelector('.paywall-line')
-            if (paywallLineElement) paywallLineElement.parentNode.removeChild(paywallLineElement)
-            const paywallLineNextElement = document.querySelector('.paywall-line-next')
-            paywallLineNextElement.parentNode.removeChild(paywallLineNextElement)
+            this.removePaywallLine()
+            this.removePaywallLineNext()
             this.insertPaywallLineBeforeTargetElement(element)
           })
+          // マウスオーバーされている要素の次の要素のチェックし、paywall-line なら
+          // 「ラインをこの場所に移動する」を表示しない
           if (
             e.target.nextSibling &&
             e.target.nextSibling.classList &&
@@ -86,12 +82,8 @@ export default {
           document.querySelector('.area-content').insertBefore(p, element.nextSibling)
         })
         element.addEventListener('click', (e) => {
-          const paywallLineElement = document.querySelector('.paywall-line')
-          if (paywallLineElement) paywallLineElement.parentNode.removeChild(paywallLineElement)
-          const paywallLineNextElement = document.querySelector('.paywall-line-next')
-          if (paywallLineNextElement) {
-            paywallLineNextElement.parentNode.removeChild(paywallLineNextElement)
-          }
+          this.removePaywallLine()
+          this.removePaywallLineNext()
           this.insertPaywallLineBeforeTargetElement(element)
         })
       })
@@ -105,6 +97,16 @@ export default {
       element.classList.remove('paywall-line-next')
       element.classList.add('paywall-line')
       element.innerText = 'このラインより上のエリアが無料で表示'
+    },
+    removePaywallLine() {
+      const paywallLineElement = document.querySelector('.paywall-line')
+      if (paywallLineElement) paywallLineElement.parentNode.removeChild(paywallLineElement)
+    },
+    removePaywallLineNext() {
+      const paywallLineNextElement = document.querySelector('.paywall-line-next')
+      if (paywallLineNextElement) {
+        paywallLineNextElement.parentNode.removeChild(paywallLineNextElement)
+      }
     },
     insertPaywallLineBeforeTargetElement(element) {
       document
