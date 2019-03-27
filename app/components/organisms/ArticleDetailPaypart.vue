@@ -28,7 +28,7 @@
 <script>
 import AppButton from '../atoms/AppButton'
 import { BigNumber } from 'bignumber.js'
-import { htmlDecode, showEmbed } from '~/utils/article'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -52,7 +52,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .area-article-detail-paypart-container {

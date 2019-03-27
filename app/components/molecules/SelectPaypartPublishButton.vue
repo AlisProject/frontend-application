@@ -75,7 +75,7 @@ export default {
           this.setFirstProcessModal({ isShow: true })
           this.setFirstProcessCreatedArticleModal({ isShow: true })
         }
-      } catch (error) {
+      } catch (e) {
         this.sendNotification({ text: '記事の公開に失敗しました', type: 'warning' })
         console.error(e)
       }
@@ -136,5 +136,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

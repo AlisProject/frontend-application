@@ -37,7 +37,7 @@
         編集する
       </a>
     </template>
-    <div class="price-label" v-if="isPaidArticle">
+    <div v-if="isPaidArticle" class="price-label">
       有料：{{ formattedPrice }}ALIS
     </div>
   </div>

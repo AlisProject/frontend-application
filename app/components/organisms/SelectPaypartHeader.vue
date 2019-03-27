@@ -12,7 +12,6 @@
 import { mapGetters, mapActions } from 'vuex'
 import SelectPaypartPublishButton from '../molecules/SelectPaypartPublishButton'
 import { isIOS, isAndroid } from '~/utils/device'
-import { getThumbnails } from '~/utils/article'
 
 export default {
   components: {
