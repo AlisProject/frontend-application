@@ -796,6 +796,21 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getArticlePrice({ commit }, { articleId }) {
+    try {
+      const { price } = await this.$axios.$get(`/articles/${articleId}/price`)
+      commit(types.UPDATE_ARTICLE_PRICE, { price })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async purchaseArticle({ commit }, { articleId, price }) {
+    try {
+      // await this.$axios.$post(`/me/articles/${articleId}/purchase`, { price })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1026,6 +1041,9 @@ const mutations = {
   },
   [types.SET_PURCHASED_ARTICLE_IDS](state, { articleIds }) {
     state.purchasedArticleIds = articleIds
+  },
+  [types.UPDATE_ARTICLE_PRICE](state, { price }) {
+    state.article.price = price
   }
 }
 

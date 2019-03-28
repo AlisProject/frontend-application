@@ -18,7 +18,7 @@
       <div class="price-label">
         有料：{{ formattedPrice }}ALIS
       </div>
-      <app-button class="purchase-button">
+      <app-button class="purchase-button" @click="showModal">
         記事を購入する
       </app-button>
     </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import AppButton from '../atoms/AppButton'
 import { BigNumber } from 'bignumber.js'
 import { htmlDecode } from '~/utils/article'
@@ -49,6 +50,12 @@ export default {
       const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
       return price
     }
+  },
+  methods: {
+    showModal() {
+      this.setConfirmPurchaseArticleModal({ isShow: true })
+    },
+    ...mapActions('user', ['setConfirmPurchaseArticleModal'])
   }
 }
 </script>

@@ -168,6 +168,9 @@ const state = () => ({
     price: '0',
     title: '',
     body: ''
+  },
+  confirmPurchaseArticleModal: {
+    isShow: false
   }
 })
 
@@ -204,7 +207,8 @@ const getters = {
   distributedTokens: (state) => state.distributedTokens,
   firstProcessModal: (state) => state.firstProcessModal,
   mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal,
-  selectPayment: (state) => state.selectPayment
+  selectPayment: (state) => state.selectPayment,
+  confirmPurchaseArticleModal: (state) => state.confirmPurchaseArticleModal
 }
 
 const actions = {
@@ -885,6 +889,9 @@ const actions = {
   },
   setSelectPaymentBody({ commit }, { body }) {
     commit(types.SET_SELECT_PAYMENT_BODY, { body })
+  },
+  setConfirmPurchaseArticleModal({ commit }, { isShow }) {
+    commit(types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL, { isShow })
   }
 }
 
@@ -1183,6 +1190,9 @@ const mutations = {
   },
   [types.SET_SELECT_PAYMENT_BODY](state, { body }) {
     state.selectPayment.body = body
+  },
+  [types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL](state, { isShow }) {
+    state.confirmPurchaseArticleModal.isShow = isShow
   }
 }
 
