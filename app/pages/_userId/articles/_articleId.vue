@@ -22,17 +22,21 @@ export default {
   },
   async fetch({ store, params, error, redirect }) {
     try {
-      const { articleId } = params
       await store.dispatch('article/setPurchasedArticleIds')
-      const isPurchased = store.state.article.purchasedArticleIds.includes(articleId)
-      const isCurrentUser =
-        store.state.user.loggedIn && params.userId === store.state.user.currentUser.userId
-      const getArticleType = isCurrentUser
-        ? 'getPublicArticleDetail'
-        : isPurchased
-          ? 'getPurchaedArticleDetail'
-          : 'getArticleDetail'
 
+      const { articleId } = params
+      const loggedIn = store.state.user.loggedIn
+      const isCurrentUser = loggedIn && params.userId === store.state.user.currentUser.userId
+      const isPurchased = loggedIn && store.state.article.purchasedArticleIds.includes(articleId)
+      let getArticleType = 'getArticleDetail'
+
+      if (loggedIn) {
+        if (isCurrentUser) {
+          getArticleType = 'getPublicArticleDetail'
+        } else if (isPurchased) {
+          getArticleType = 'getPurchaedArticleDetail'
+        }
+      }
       await store.dispatch(`article/${getArticleType}`, { articleId })
       if (params.userId !== store.state.article.article.user_id) {
         redirect(
@@ -66,6 +70,12 @@ export default {
       if (this.isCurrentUser && !this.$store.state.article.isFetchedPublicArticle) {
         await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
         this.$store.dispatch('article/setIsFetchedPublicArticle', { isFetched: true })
+      }
+
+      const isPurchased =
+        this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
+      if (isPurchased) {
+        await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
       }
     } else {
       this.setIsLikedArticle({ liked: false })

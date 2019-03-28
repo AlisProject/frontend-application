@@ -222,16 +222,7 @@ const actions = {
       dispatch('getArticleComments', { articleId })
     ])
     commit(types.SET_LIKES_COUNT, { likesCount })
-    commit(types.SET_ARTICLE_DETAIL, {
-      article: {
-        ...article,
-        userInfo,
-        alisToken,
-        comments,
-        price: articleId === '8ggDlqnNNPBL' ? '1000000000000000000' : null
-      }
-    })
-    // commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+    commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     commit(types.SET_ARTICLE_ID, { articleId })
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   },
