@@ -1,7 +1,7 @@
 <template>
   <div class="article-container">
     <app-header />
-    <div class="area-article v2-content" :class="{ 'is-paid-article': isPaidArticle }">
+    <div class="area-article v2-content" :class="{ 'is-show-paypart': isShowPaypart }">
       <no-ssr>
         <article-header :article="article" :topic="topic" :is-current-user="isCurrentUser" />
       </no-ssr>
@@ -10,7 +10,7 @@
       </h1>
       <div class="area-content ck-content" v-html="article.body" />
       <no-ssr>
-        <article-detail-paypart v-if="isPaidArticle" :article="article" />
+        <article-detail-paypart v-if="isShowPaypart" :article="article" />
       </no-ssr>
       <article-tags :tags="article.tags" />
       <article-footer-actions
@@ -91,10 +91,10 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    isPaidArticle() {
+    isShowPaypart() {
       return (
         !!this.article.price &&
-        this.purchasedArticleIds.includes(this.article.article_id) &&
+        !this.purchasedArticleIds.includes(this.article.article_id) &&
         !this.isCurrentUser
       )
     },
@@ -147,7 +147,7 @@ export default {
     'footer-actions'
     'author-info   ';
 
-  &.is-paid-article {
+  &.is-show-paypart {
     /* prettier-ignore */
     grid-template-areas:
     'header        '
@@ -211,7 +211,7 @@ export default {
       '...            author-info       ...           '
       'footer-actions footer-actions    footer-actions';
 
-    &.is-paid-article {
+    &.is-show-paypart {
       /* prettier-ignore */
       grid-template-areas:
         'header         header            header        '

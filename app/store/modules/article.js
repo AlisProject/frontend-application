@@ -761,8 +761,8 @@ const actions = {
       // const { article_ids: articleIds } = await this.$axios.$get(
       //   '/me/articles/purchased/article_ids'
       // )
-      // const articleIds = []
-      const articleIds = ['8ggDlqnNNPBL']
+      const articleIds = []
+      // const articleIds = ['8ggDlqnNNPBL']
       commit(types.SET_PURCHASED_ARTICLE_IDS, { articleIds })
     } catch (error) {
       return Promise.reject(error)
