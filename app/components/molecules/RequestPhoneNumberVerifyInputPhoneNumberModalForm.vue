@@ -77,6 +77,8 @@ export default {
           return 'ALISを贈るには'
         case 'articleReport':
           return '記事を報告するには'
+        case 'purchaseArticle':
+          return '記事を購入するためには'
         default:
           return ''
       }

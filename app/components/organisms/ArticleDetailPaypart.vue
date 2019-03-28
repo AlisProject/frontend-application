@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AppButton from '../atoms/AppButton'
 import { BigNumber } from 'bignumber.js'
 import { htmlDecode } from '~/utils/article'
@@ -49,13 +49,28 @@ export default {
       const formatNumber = 10 ** 18
       const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
       return price
-    }
+    },
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
     showModal() {
+      if (!this.loggedIn) {
+        this.setRequestLoginModal({ isShow: true, requestType: 'purchaseArticle' })
+        return
+      }
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'purchaseArticle' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
+      }
       this.setConfirmPurchaseArticleModal({ isShow: true })
     },
-    ...mapActions('user', ['setConfirmPurchaseArticleModal'])
+    ...mapActions('user', [
+      'setConfirmPurchaseArticleModal',
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+    ])
   }
 }
 </script>
