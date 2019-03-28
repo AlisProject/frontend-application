@@ -59,13 +59,14 @@ export default {
   grid-area: paypart;
 
   .paywall-line {
-    position: relative;
     display: inline-block;
-    padding: 0 120px;
-    text-align: center;
     font-size: 14px;
     font-weight: bold;
+    line-height: 1.5;
     margin-bottom: 30px;
+    padding: 0 120px;
+    position: relative;
+    text-align: center;
 
     &:before,
     &:after {

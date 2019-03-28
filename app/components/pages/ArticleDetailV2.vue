@@ -74,6 +74,9 @@ export default {
   },
   mounted() {
     showEmbed()
+    const paywallLine = document.querySelector('.paywall-line')
+    if (!paywallLine) return
+    paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
   },
   beforeDestroy() {
     this.resetArticleCommentsLastEvaluatedKey()
@@ -89,9 +92,13 @@ export default {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
     isPaidArticle() {
-      return !!this.article.price
+      return (
+        !!this.article.price &&
+        this.purchasedArticleIds.includes(this.article.article_id) &&
+        !this.isCurrentUser
+      )
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle']),
+    ...mapGetters('article', ['likesCount', 'isLikedArticle', 'purchasedArticleIds']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
