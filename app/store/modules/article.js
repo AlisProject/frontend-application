@@ -231,7 +231,16 @@ const actions = {
       dispatch('getArticleComments', { articleId })
     ])
     commit(types.SET_LIKES_COUNT, { likesCount })
-    commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+    commit(types.SET_ARTICLE_DETAIL, {
+      article: {
+        ...article,
+        userInfo,
+        alisToken,
+        comments,
+        price: articleId === '8ggDlqnNNPBL' ? '1000000000000000000' : null
+      }
+    })
+    // commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     commit(types.SET_ARTICLE_ID, { articleId })
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   },
@@ -752,8 +761,8 @@ const actions = {
       // const { article_ids: articleIds } = await this.$axios.$get(
       //   '/me/articles/purchased/article_ids'
       // )
-      const articleIds = []
-      // const articleIds = ['8ggDlqnNNPBL']
+      // const articleIds = []
+      const articleIds = ['8ggDlqnNNPBL']
       commit(types.SET_PURCHASED_ARTICLE_IDS, { articleIds })
     } catch (error) {
       return Promise.reject(error)

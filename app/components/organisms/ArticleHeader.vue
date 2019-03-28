@@ -3,41 +3,49 @@
     <span class="topic">{{ topic }}</span>
     <template v-if="isCurrentUser">
       <span class="article-status">(公開中)</span>
+      <div v-if="isPaidArticle" class="price-label">
+        有料：{{ formattedPrice }}ALIS
+      </div>
       <div class="article-button" @click="toggleArticlePopup">
         <div v-show="isArticlePopupShown" class="article-popup">
+          <nuxt-link
+            v-if="isV2Article"
+            class="article-popup-content"
+            :to="`/me/articles/public/v2/${article.article_id}/edit`"
+          >
+            編集する
+          </nuxt-link>
+          <a
+            v-else
+            class="article-popup-content"
+            :class="{ 'hide-article-popup-content': !isV2Article }"
+            :href="`/me/articles/public/${article.article_id}/edit`"
+          >
+            編集する
+          </a>
           <span
             class="article-popup-content unpublish-button"
             :class="{ 'show-unpublish-button': isV2Article }"
             @click="unpublish"
           >
-            記事を下書きに戻す
+            下書きに戻す
           </span>
+          <hr v-if="isV2Article" class="separate-line">
           <a
             class="article-popup-content"
             :href="twitterShareUrl"
             target="_blank"
-          >twitterでシェアする</a>
+          >Twitterでシェアする</a>
           <a
             class="article-popup-content"
             :href="facebookShareUrl"
             target="_blank"
-          >facebookでシェアする</a>
+          >Facebookでシェアする</a>
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
         </div>
       </div>
-      <nuxt-link
-        v-if="isV2Article"
-        class="edit-article"
-        :class="{ 'show-edit-article': isV2Article }"
-        :to="`/me/articles/public/v2/${article.article_id}/edit`"
-      >
-        編集する
-      </nuxt-link>
-      <a v-else class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`">
-        編集する
-      </a>
     </template>
-    <div v-if="isPaidArticle" class="price-label">
+    <div v-if="!isCurrentUser && isPaidArticle" class="price-label">
       有料：{{ formattedPrice }}ALIS
     </div>
   </div>
@@ -210,6 +218,7 @@ export default {
     position: relative;
     width: 24px;
     height: 26px;
+    margin-left: 8px;
 
     .article-popup {
       background-color: #ffffff;
@@ -220,7 +229,7 @@ export default {
       font-size: 14px;
       padding: 8px 16px;
       position: absolute;
-      left: -98px;
+      left: -190px;
       top: 24px;
       z-index: 1;
 
@@ -239,17 +248,11 @@ export default {
     }
   }
 
-  .edit-article {
-    background: url('~assets/images/sp/common/icon_editprofile.png') no-repeat;
-    background-size: 20px;
-    color: #0086cc;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.8;
-    padding-left: 24px;
-    text-decoration: none;
-    margin-left: 20px;
+  .separate-line {
+    border: none;
+    border-top: solid 1px #cecece;
+    height: 1px;
+    opacity: 0.3;
   }
 
   .price-label {
@@ -299,15 +302,11 @@ export default {
           &.show-unpublish-button {
             display: block;
           }
+
+          &.hide-article-popup-content {
+            display: none;
+          }
         }
-      }
-    }
-
-    .edit-article {
-      display: none;
-
-      &.show-edit-article {
-        display: block;
       }
     }
   }
