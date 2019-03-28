@@ -74,6 +74,10 @@ export default {
   },
   mounted() {
     showEmbed()
+    const paywallLine = document.querySelector('.paywall-line')
+    if (!paywallLine) return
+    paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
+    if (this.isPurchased) paywallLine.remove()
   },
   beforeDestroy() {
     this.resetArticleCommentsLastEvaluatedKey()

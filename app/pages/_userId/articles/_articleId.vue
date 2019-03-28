@@ -70,12 +70,19 @@ export default {
       if (this.isCurrentUser && !this.$store.state.article.isFetchedPublicArticle) {
         await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
         this.$store.dispatch('article/setIsFetchedPublicArticle', { isFetched: true })
+        const paywallLine = document.querySelector('.paywall-line')
+        if (paywallLine) {
+          paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
+        }
+        return
       }
 
       const isPurchased =
         this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
-      if (isPurchased) {
+      if (isPurchased && !this.isCurrentUser) {
         await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
+        const paywallLine = document.querySelector('.paywall-line')
+        if (paywallLine) paywallLine.remove()
       }
     } else {
       this.setIsLikedArticle({ liked: false })
