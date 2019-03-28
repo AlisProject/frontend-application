@@ -62,6 +62,7 @@ export default {
     display: inline-block;
     font-size: 14px;
     font-weight: bold;
+    letter-spacing: 0.8px;
     line-height: 1.5;
     margin-bottom: 30px;
     padding: 0 120px;
