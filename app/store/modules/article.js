@@ -207,16 +207,7 @@ const actions = {
         dispatch('getArticleComments', { articleId })
       ])
       commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, {
-        article: {
-          ...article,
-          userInfo,
-          alisToken,
-          comments,
-          price: articleId === '8ggDlqnNNPBL' ? '1000000000000000000' : null
-        }
-      })
-      // commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -770,8 +761,8 @@ const actions = {
   },
   async getPurchaedArticleDetail({ commit, dispatch }, { articleId }) {
     try {
-      // const article = await this.$axios.$get(`/me/articles/purchased/${articleId}`)
-      const article = await this.$axios.$get(`/articles/${articleId}`)
+      const article = await this.$axios.$get(`/me/articles/purchased/${articleId}`)
+      // const article = await this.$axios.$get(`/articles/${articleId}`)
       const [userInfo, alisToken, likesCount, comments] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
@@ -779,20 +770,7 @@ const actions = {
         dispatch('getArticleComments', { articleId })
       ])
       commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, {
-        article: {
-          ...article,
-          userInfo,
-          alisToken,
-          comments,
-          price: '1000000000000000000',
-          body: `<p>無料<p>
-          <p class="paywall-line">このラインより上のエリアが無料で表示</p>
-          <p>有料</p>
-          `
-        }
-      })
-      // commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -805,9 +783,12 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async purchaseArticle({ commit }, { articleId, price }) {
+  async purchaseArticle({ commit, state }, { articleId, price }) {
     try {
       // await this.$axios.$post(`/me/articles/${articleId}/purchase`, { price })
+      commit(types.SET_PURCHASED_ARTICLE_IDS, {
+        articleIds: [...state.purchasedArticleIds, articleId]
+      })
     } catch (error) {
       return Promise.reject(error)
     }
