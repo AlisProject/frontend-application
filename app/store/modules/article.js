@@ -55,7 +55,12 @@ const state = () => ({
     page: 1,
     isLastPage: false
   },
-  purchasedArticleIds: []
+  purchasedArticleIds: [],
+  purchasedArticles: {
+    hasLastEvaluatedKey: false,
+    lastEvaluatedKey: {},
+    articles: []
+  }
 })
 
 const getters = {
@@ -98,7 +103,8 @@ const getters = {
   isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
   eyecatchArticles: (state) => state.eyecatchArticles,
   recommendedArticles: (state) => state.recommendedArticles,
-  purchasedArticleIds: (state) => state.purchasedArticleIds
+  purchasedArticleIds: (state) => state.purchasedArticleIds,
+  purchasedArticles: (state) => state.purchasedArticles
 }
 
 const actions = {
@@ -783,6 +789,37 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getPurchasedArticles({ commit, dispatch, state }) {
+    if (!state.purchasedArticles.hasLastEvaluatedKey) {
+      try {
+        commit(types.SET_HAS_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
+        const {
+          article_id: articleId,
+          sort_key: sortKey
+        } = state.purchasedArticles.lastEvaluatedKey
+        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+          // '/me/articles/purchased',
+          '/me/articles/public',
+          { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
+        )
+        commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
+          lastEvaluatedKey: LastEvaluatedKey
+        })
+        const userInfo = await this.$axios.$get('/me/info')
+        const articlesWithData = await Promise.all(
+          articles.map(async (article) => {
+            const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+            return { ...article, userInfo, alisToken }
+          })
+        )
+        commit(types.SET_PURCHASED_ARTICLES, { articles: articlesWithData })
+      } catch (error) {
+        Promise.reject(error)
+      } finally {
+        commit(types.SET_HAS_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: false })
+      }
+    }
   }
 }
 
@@ -1016,6 +1053,15 @@ const mutations = {
   },
   [types.UPDATE_ARTICLE_PRICE](state, { price }) {
     state.article.price = price
+  },
+  [types.SET_HAS_PURCHASED_ARTICLES_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
+    state.purchasedArticles.hasLastEvaluatedKey = hasLastEvaluatedKey
+  },
+  [types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.purchasedArticles.lastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_PURCHASED_ARTICLES](state, { articles }) {
+    state.purchasedArticles.articles.push(...articles)
   }
 }
 
