@@ -399,6 +399,6 @@ export function showEmbed() {
 }
 
 export function getEyecatchUrlWithoutImageOptimizeParam(path) {
-  if (!path) return undefined
+  if (!path) return
   return path.endsWith('?d=800x2160') ? path.slice(0, -11) : path
 }
