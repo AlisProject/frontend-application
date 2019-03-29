@@ -224,7 +224,19 @@ export default {
 
 @media screen and (max-width: 320px) {
   .article-card-container {
-    grid-template-columns: 256px;
+    width: 300px;
+  }
+
+  .eye-catch-image-box {
+    width: 256px;
+  }
+
+  .title {
+    width: 256px;
+  }
+
+  .username {
+    width: 150px;
   }
 }
 </style>
