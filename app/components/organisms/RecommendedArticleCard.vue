@@ -149,7 +149,6 @@ export default {
   display: -webkit-box;
   font-size: 14px;
   font-weight: bold;
-  font-weight: bold;
   height: 48px;
   left: 22px;
   letter-spacing: 0.8px;
