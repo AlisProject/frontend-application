@@ -17,6 +17,9 @@
       >
       <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
     </div>
+    <span v-if="isPaidArticle" class="paid-article">
+      有料
+    </span>
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
@@ -76,6 +79,9 @@ export default {
       const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
       return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
     },
+    isPaidArticle() {
+      return !!this.article.price
+    },
     isV2Article() {
       return isV2(this.article)
     },
@@ -131,6 +137,20 @@ export default {
     width: 100%;
     height: 100%;
   }
+}
+
+.paid-article {
+  text-align: center;
+  color: #9e9e9e;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.6px;
+  padding: 4px;
+  box-sizing: border-box;
+  top: 152px;
+  background: #fff;
+  width: 40px;
+  left: 26px;
 }
 
 .title {

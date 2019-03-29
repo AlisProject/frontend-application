@@ -14,7 +14,7 @@
     <span class="topic">
       {{ topicDisplayName }}
     </span>
-    <span v-if="!isPaidArticle" class="paid-article">
+    <span v-if="isPaidArticle" class="paid-article">
       有料
     </span>
     <h2 class="title">
