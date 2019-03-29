@@ -44,8 +44,9 @@ export default {
             event.target.classList &&
             Array.from(event.target.classList).includes('paywall-line-next')
           if (isPaywallLineNext) {
-            this.removePaywallLine()
             this.changePaywallLineNextToPaywall(event.target)
+            const paywallLineElement = document.querySelector('.paywall-line')
+            if (paywallLineElement) this.changePaywallLineToPaywallLineNext(paywallLineElement)
           }
         })
         p.classList.add('paywall-line-next')
