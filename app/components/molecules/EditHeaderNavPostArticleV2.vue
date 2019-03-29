@@ -55,25 +55,27 @@
       <div class="select-payment-box">
         <div class="payment-input-box">
           <input
+            id="free"
             class="payment-input"
             type="radio"
             value="free"
             :checked="paymentType === 'free'"
             @change="setPaymentType('free')"
           >
-          <label class="payment-input-label" @click="setPaymentType('free')">
+          <label class="payment-input-label" for="free">
             無料
           </label>
         </div>
         <div class="payment-input-box">
           <input
+            id="pay"
             class="payment-input"
             type="radio"
             value="pay"
             :checked="paymentType === 'pay'"
             @change="setPaymentType('pay')"
           >
-          <label class="payment-input-label" @click="setPaymentType('pay')">
+          <label class="payment-input-label" for="pay">
             有料
           </label>
         </div>
