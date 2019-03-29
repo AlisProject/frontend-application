@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['loggedIn', 'mobileEditorHeaderPostArticleModal']),
-    ...mapGetters('article', ['saveStatus'])
+    ...mapGetters('article', ['saveStatus', 'thumbnail'])
   },
   methods: {
     resetData() {

@@ -5,7 +5,7 @@
   "author": "y-temp4 <y.temp4@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nuxt --config-file nuxt.config.development.js",
+    "dev": "cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.development.js",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",

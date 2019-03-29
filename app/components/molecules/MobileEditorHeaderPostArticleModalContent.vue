@@ -58,7 +58,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
-import { getThumbnails, getEyecatchUrlWithoutImageOptimizeParam } from '~/utils/article'
+import { getEyecatchUrlWithoutImageOptimizeParam } from '~/utils/article'
 
 export default {
   components: {
