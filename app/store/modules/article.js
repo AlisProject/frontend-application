@@ -1067,7 +1067,7 @@ const mutations = {
     state.purchasedArticles.articles.push(...articles)
   },
   [types.SET_ARTICLE_CURRENT_PRICE](state, { price }) {
-    state.currentPrice = price ? price : null
+    state.currentPrice = price || null
   }
 }
 
