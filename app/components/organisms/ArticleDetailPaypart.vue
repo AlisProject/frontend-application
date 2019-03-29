@@ -10,7 +10,7 @@
           class="eye-catch-image"
           src="~assets/images/pc/common/thumbnail_noimg.png"
         >
-        <img v-else class="eye-catch-image" :src="article.eye_catch_url">
+        <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
       </div>
       <h2 class="title">
         {{ decodedTitle }}
@@ -117,7 +117,7 @@ export default {
     border: 1px solid #e3e3e3;
     box-sizing: border-box;
     height: 332px;
-    padding: 20px;
+    padding: 20px 21px;
     text-decoration: none;
     width: 340px;
     margin: 0 auto 10px;
@@ -125,7 +125,7 @@ export default {
     .eye-catch-image-box {
       background: #fff;
       overflow: hidden;
-      width: 300px;
+      width: 296px;
       height: 148px;
       margin-bottom: 12px;
 
