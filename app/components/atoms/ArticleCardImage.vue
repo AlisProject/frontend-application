@@ -5,7 +5,7 @@
       class="article-image"
       src="~assets/images/pc/common/thumbnail_noimg.png"
     >
-    <img v-else class="article-image" :src="eyeCatchUrl">
+    <img v-else class="article-image" :src="`${eyeCatchUrl}?d=592x296`">
   </div>
 </template>
 

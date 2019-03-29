@@ -58,6 +58,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
+import { getEyecatchUrlWithoutImageOptimizeParam } from '~/utils/article'
 
 export default {
   components: {
@@ -145,7 +146,8 @@ export default {
     },
     selectThumbnail({ target }) {
       this.isThumbnailSelected = true
-      this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
+      const targetImage = getEyecatchUrlWithoutImageOptimizeParam(target.src)
+      this.updateThumbnail({ thumbnail: targetImage === this.thumbnail ? '' : targetImage })
     },
     handleChangeTopicType(event) {
       this.topic = event.target.value
