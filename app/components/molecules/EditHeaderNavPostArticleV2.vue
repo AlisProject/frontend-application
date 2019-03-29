@@ -140,6 +140,12 @@ export default {
     }
   },
   mounted() {
+    if (this.currentPrice) {
+      this.paymentType = 'pay'
+      const formatNumber = 10 ** 18
+      const currentPrice = new BigNumber(this.currentPrice).div(formatNumber).toString(10)
+      this.price = currentPrice
+    }
     this.listen(window, 'click', (event) => {
       // タグの ☓ ボタンを押したときにはポップアップを非表示にしない
       if (!this.$el.contains(event.target) && !event.target.classList.contains('ti-icon-close')) {
@@ -344,7 +350,8 @@ export default {
       'isEditedBody',
       'topics',
       'topicType',
-      'tags'
+      'tags',
+      'currentPrice'
     ]),
     ...mapGetters('user', ['currentUserInfo', 'selectPayment'])
   },

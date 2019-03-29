@@ -130,6 +130,14 @@ export default {
       })
     }
   },
+  mounted() {
+    if (this.currentPrice) {
+      this.paymentType = 'pay'
+      const formatNumber = 10 ** 18
+      const currentPrice = new BigNumber(this.currentPrice).div(formatNumber).toString(10)
+      this.price = currentPrice
+    }
+  },
   methods: {
     async publish() {
       try {
@@ -297,7 +305,8 @@ export default {
       'isEditedBody',
       'topics',
       'topicType',
-      'tags'
+      'tags',
+      'currentPrice'
     ]),
     ...mapGetters('user', ['currentUserInfo', 'selectPayment'])
   },

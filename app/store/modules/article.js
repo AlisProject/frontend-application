@@ -14,6 +14,7 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
+  currentPrice: null,
   suggestedThumbnails: [],
   thumbnail: '',
   isSaving: false,
@@ -104,7 +105,8 @@ const getters = {
   eyecatchArticles: (state) => state.eyecatchArticles,
   recommendedArticles: (state) => state.recommendedArticles,
   purchasedArticleIds: (state) => state.purchasedArticleIds,
-  purchasedArticles: (state) => state.purchasedArticles
+  purchasedArticles: (state) => state.purchasedArticles,
+  currentPrice: (state) => state.currentPrice
 }
 
 const actions = {
@@ -242,6 +244,7 @@ const actions = {
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
       commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
+      commit(types.SET_ARTICLE_CURRENT_PRICE, { price: article.price })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -1062,6 +1065,9 @@ const mutations = {
   },
   [types.SET_PURCHASED_ARTICLES](state, { articles }) {
     state.purchasedArticles.articles.push(...articles)
+  },
+  [types.SET_ARTICLE_CURRENT_PRICE](state, { price }) {
+    state.currentPrice = price ? price : null
   }
 }
 
