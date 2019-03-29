@@ -46,7 +46,8 @@ export default {
   },
   async mounted() {
     await this.getArticlePrice({ articleId: this.article.article_id })
-    if (window.innerWidth <= 320) document.querySelector('.title').style.marginTop = '40px'
+    const modalTitle = document.querySelector('.modal-body .title')
+    if (window.innerWidth <= 320 && modalTitle) modalTitle.style.marginTop = '40px'
   },
   computed: {
     decodedTitle() {
