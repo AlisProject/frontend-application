@@ -3,12 +3,6 @@
     class="recommended-article-card"
     :to="`/${article.user_id}/articles/${article.article_id}`"
   >
-    <span class="topic">
-      {{ topicDisplayName }}
-    </span>
-    <h2 class="title">
-      {{ decodedTitle }}
-    </h2>
     <div class="eye-catch-image-box">
       <img
         v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
@@ -17,14 +11,17 @@
       >
       <img v-else class="eye-catch-image" :src="article.eye_catch_url">
     </div>
+    <span class="topic">
+      {{ topicDisplayName }}
+    </span>
+    <span v-if="!isPaidArticle" class="paid-article">
+      有料
+    </span>
+    <h2 class="title">
+      {{ decodedTitle }}
+    </h2>
     <no-ssr>
       <nuxt-link :to="`/users/${article.user_id}`" class="article-data-box">
-        <img
-          v-if="article.userInfo.icon_image_url !== undefined"
-          class="profile-icon"
-          :src="article.userInfo.icon_image_url"
-        >
-        <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
         <span class="username">
           {{ decodedUsername }}
         </span>
@@ -77,6 +74,9 @@ export default {
       const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
       return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
     },
+    isPaidArticle() {
+      return !!this.article.price
+    },
     ...mapGetters('article', ['topics'])
   }
 }
@@ -86,36 +86,21 @@ export default {
 .recommended-article-card {
   @include cassette-shadow();
   border-radius: 4px;
-  height: 320px;
+  height: 296px;
   position: relative;
   text-decoration: none;
   width: 340px;
 }
 
-.topic,
 .eye-catch-image-box,
+.topic,
+.paid-article,
 .title,
 .article-data-box,
-.profile-icon,
 .username,
 .published-at,
 .token-amount {
   position: absolute;
-}
-
-.topic {
-  color: red;
-  height: 12px;
-  display: flex;
-  align-items: center;
-  color: #6e6e6e;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 0.6px;
-  border-left: 2px solid #0086cc;
-  padding-left: 6px;
-  top: 20px;
-  left: 22px;
 }
 
 .eye-catch-image-box {
@@ -123,7 +108,7 @@ export default {
   overflow: hidden;
   width: 296px;
   height: 148px;
-  top: 44px;
+  top: 24px;
   left: 22px;
 
   .eye-catch-image {
@@ -132,6 +117,29 @@ export default {
     width: 100%;
     height: 100%;
   }
+}
+
+.topic,
+.paid-article {
+  text-align: center;
+  color: #9e9e9e;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.6px;
+  padding: 4px;
+  box-sizing: border-box;
+  top: 152px;
+  background: #fff;
+}
+
+.topic {
+  width: 100px;
+  left: 26px;
+}
+
+.paid-article {
+  width: 40px;
+  left: 130px;
 }
 
 .title {
@@ -150,7 +158,7 @@ export default {
   overflow: hidden;
   text-decoration: none;
   text-overflow: ellipsis;
-  top: 204px;
+  top: 184px;
   width: 296px;
 }
 
@@ -158,16 +166,7 @@ export default {
   width: 220px;
   height: 46px;
   bottom: 14px;
-  left: 20px;
-}
-
-.profile-icon {
-  border-radius: 50%;
-  height: 36px;
-  width: 36px;
-  top: 5px;
-  left: 0;
-  object-fit: cover;
+  left: 22px;
 }
 
 .username,
@@ -180,18 +179,20 @@ export default {
 }
 
 .username {
-  left: 52px;
+  color: #9e9e9e;
+  font-weight: bold;
   overflow: hidden;
   text-decoration: none;
   text-overflow: ellipsis;
-  top: 8px;
+  top: 6px;
   white-space: nowrap;
   width: 168px;
 }
 
 .published-at {
-  bottom: 8px;
-  left: 52px;
+  color: #9e9e9e;
+  font-weight: bold;
+  bottom: 6px;
 }
 
 .token-amount {
