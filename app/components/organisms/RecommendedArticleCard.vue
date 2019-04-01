@@ -9,7 +9,7 @@
         class="eye-catch-image"
         src="~assets/images/pc/common/thumbnail_noimg.png"
       >
-      <img v-else class="eye-catch-image" :src="article.eye_catch_url">
+      <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
     </div>
     <span class="topic">
       {{ topicDisplayName }}

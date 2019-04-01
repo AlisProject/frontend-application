@@ -104,6 +104,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
+import { getEyecatchUrlWithoutImageOptimizeParam } from '~/utils/article'
 
 const MAXIMUM_PRICE = '10000'
 const MINIMUM_PRICE = '1'
@@ -219,7 +220,8 @@ export default {
     },
     selectThumbnail({ target }) {
       this.isThumbnailSelected = true
-      this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
+      const targetImage = getEyecatchUrlWithoutImageOptimizeParam(target.src)
+      this.updateThumbnail({ thumbnail: targetImage === this.thumbnail ? '' : targetImage })
     },
     handleChangeTopicType(event) {
       this.topic = event.target.value

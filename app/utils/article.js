@@ -34,7 +34,7 @@ export function createInsertPluginTemplateFromUrl(url) {
 export function getThumbnails(images) {
   return images
     .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
-    .map((img) => img.src)
+    .map((img) => getEyecatchUrlWithoutImageOptimizeParam(img.src))
 }
 
 export function getIframelyUrlTemplate(url) {
@@ -396,4 +396,9 @@ export function showEmbed() {
       element.innerHTML = getIframelyEmbedTemplate({ ...result })
     }
   })
+}
+
+export function getEyecatchUrlWithoutImageOptimizeParam(path) {
+  if (!path) return
+  return path.endsWith('?d=800x2160') ? path.slice(0, -11) : path
 }
