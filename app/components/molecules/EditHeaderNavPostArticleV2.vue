@@ -85,8 +85,9 @@
           :value="price"
           class="token-amount-input"
           type="number"
+          min="1"
+          max="10000"
           @input="onInput"
-          @keydown.up.down.prevent
         >
         <span class="token-amount-input-unit">ALIS</span>
         <span class="error-message">
@@ -279,7 +280,6 @@ export default {
     },
     onInput(event) {
       try {
-        if (this.price === '') this.price = 0
         this.price = event.target.value
 
         const formattedPrice = new BigNumber(this.price)
@@ -294,12 +294,6 @@ export default {
         }
         if (hasExceededMaxPrice || hasNotExceededMinPrice) {
           this.errorMessage = '販売価格は1〜10,000ALISまで設定できます'
-          return
-        }
-        const isInteger = Number.isInteger(Number(this.price))
-
-        if (!isInteger) {
-          this.errorMessage = '整数で入力してください'
           return
         }
         this.errorMessage = ''
