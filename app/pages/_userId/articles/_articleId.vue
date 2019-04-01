@@ -22,8 +22,7 @@ export default {
   },
   async fetch({ store, params, error, redirect }) {
     try {
-      await store.dispatch('article/setPurchasedArticleIds')
-
+      if (process.client) await store.dispatch('article/setPurchasedArticleIds')
       const { articleId } = params
       const loggedIn = store.state.user.loggedIn
       const isCurrentUser = loggedIn && params.userId === store.state.user.currentUser.userId
@@ -77,6 +76,7 @@ export default {
         return
       }
 
+      await this.$store.dispatch('article/setPurchasedArticleIds')
       const isPurchased =
         this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
       if (isPurchased && !this.isCurrentUser) {
