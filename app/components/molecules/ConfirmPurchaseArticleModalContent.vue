@@ -6,7 +6,7 @@
         class="eye-catch-image"
         src="~assets/images/pc/common/thumbnail_noimg.png"
       >
-      <img v-else class="eye-catch-image" :src="article.eye_catch_url">
+      <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
     </div>
     <h2 class="title">
       {{ decodedTitle }}
@@ -97,13 +97,13 @@ export default {
   align-items: center;
   display: flex;
   flex-flow: column nowrap;
-  width: 300px;
+  width: 296px;
 }
 
 .eye-catch-image-box {
   background: #fff;
   overflow: hidden;
-  width: 300px;
+  width: 296px;
   height: 148px;
   margin: 40px 0 12px;
 
@@ -155,7 +155,7 @@ export default {
   justify-content: space-between;
   margin-bottom: 20px;
   padding: 0 12px;
-  width: 300px;
+  width: 296px;
 }
 
 .confirm-text {
