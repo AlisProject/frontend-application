@@ -58,7 +58,6 @@ const state = () => ({
   },
   purchasedArticleIds: [],
   purchasedArticles: {
-    hasLastEvaluatedKey: false,
     lastEvaluatedKey: {},
     articles: []
   }
@@ -105,7 +104,12 @@ const getters = {
   eyecatchArticles: (state) => state.eyecatchArticles,
   recommendedArticles: (state) => state.recommendedArticles,
   purchasedArticleIds: (state) => state.purchasedArticleIds,
-  purchasedArticles: (state) => state.purchasedArticles,
+  purchasedArticles: (state) => {
+    return {
+      ...state.purchasedArticles,
+      hasLastEvaluatedKey: state.purchasedArticles.lastEvaluatedKey !== null
+    }
+  },
   currentPrice: (state) => state.currentPrice
 }
 
@@ -749,10 +753,10 @@ const actions = {
   },
   async setPurchasedArticleIds({ commit }) {
     try {
-      // const { article_ids: articleIds } = await this.$axios.$get(
-      //   '/me/articles/purchased/article_ids'
-      // )
-      const articleIds = []
+      const { article_ids: articleIds } = await this.$axios.$get(
+        '/me/articles/purchased/article_ids'
+      )
+      // const articleIds = []
       // const articleIds = ['8ggDlqnNNPBL']
       commit(types.SET_PURCHASED_ARTICLE_IDS, { articleIds })
     } catch (error) {
@@ -795,35 +799,31 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getPurchasedArticles({ commit, dispatch, state }) {
-    if (!state.purchasedArticles.hasLastEvaluatedKey) {
-      try {
-        commit(types.SET_HAS_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
-        const {
-          article_id: articleId,
-          sort_key: sortKey
-        } = state.purchasedArticles.lastEvaluatedKey
-        const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
-          // '/me/articles/purchased',
-          '/me/articles/public',
-          { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
-        )
-        commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
-          lastEvaluatedKey: LastEvaluatedKey
+  async getPurchasedArticles({ commit, dispatch, getters }) {
+    try {
+      if (!getters.purchasedArticles.hasLastEvaluatedKey) return
+      const {
+        article_id: articleId,
+        sort_key: sortKey
+      } = getters.purchasedArticles.lastEvaluatedKey
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+        '/me/articles/purchased',
+        // '/me/articles/public',
+        { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
+      )
+      commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || null
+      })
+      const userInfo = await this.$axios.$get('/me/info')
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
+          return { ...article, userInfo, alisToken }
         })
-        const userInfo = await this.$axios.$get('/me/info')
-        const articlesWithData = await Promise.all(
-          articles.map(async (article) => {
-            const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
-            return { ...article, userInfo, alisToken }
-          })
-        )
-        commit(types.SET_PURCHASED_ARTICLES, { articles: articlesWithData })
-      } catch (error) {
-        Promise.reject(error)
-      } finally {
-        commit(types.SET_HAS_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: false })
-      }
+      )
+      commit(types.SET_PURCHASED_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
     }
   }
 }
@@ -1058,9 +1058,6 @@ const mutations = {
   },
   [types.UPDATE_ARTICLE_PRICE](state, { price }) {
     state.article.price = price
-  },
-  [types.SET_HAS_PURCHASED_ARTICLES_LAST_EVALUATED_KEY](state, { hasLastEvaluatedKey }) {
-    state.purchasedArticles.hasLastEvaluatedKey = hasLastEvaluatedKey
   },
   [types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
     state.purchasedArticles.lastEvaluatedKey = lastEvaluatedKey
