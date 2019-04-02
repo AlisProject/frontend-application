@@ -1,5 +1,6 @@
 .v2-content,
-.area-editor-container {
+.area-editor-container,
+.area-select-paypart-editor-container {
   .ck-content {
     * {
       &::selection {
@@ -206,46 +207,14 @@
 
 @media screen and (max-width: 640px) {
   .v2-content,
-  .area-editor-container {
+  .area-editor-container,
+  .area-select-paypart-editor-container {
     .ck-content {
       p {
         font-size: 16px;
         letter-spacing: 0;
         line-height: 1.8;
         margin: 12px 0;
-
-        .br {
-          &:before {
-            content: '\A';
-            white-space: pre;
-          }
-        }
-
-        &.paywall-line {
-          color: #030303;
-          font-size: 14px;
-          font-weight: bold;
-          letter-spacing: 0.8px;
-          line-height: 1.5;
-          margin-bottom: 20px;
-          padding: 0;
-          text-align: center;
-
-          &:before,
-          &:after {
-            content: '.....';
-            top: 2px;
-            width: 80px;
-          }
-
-          &:before {
-            left: -10px;
-          }
-
-          &:after {
-            right: -10px;
-          }
-        }
       }
 
       h2 {
