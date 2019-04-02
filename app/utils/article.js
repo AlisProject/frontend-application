@@ -1,5 +1,6 @@
 /* global iframely */
 import { XmlEntities } from 'html-entities'
+import domino from 'domino'
 import axios from './axios'
 
 export function createInsertPluginTemplateFromUrl(url) {
@@ -34,7 +35,7 @@ export function createInsertPluginTemplateFromUrl(url) {
 export function getThumbnails(images) {
   return images
     .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
-    .map((img) => getEyecatchUrlWithoutImageOptimizeParam(img.src))
+    .map((img) => img.src)
 }
 
 export function getIframelyUrlTemplate(url) {
@@ -398,7 +399,10 @@ export function showEmbed() {
   })
 }
 
-export function getEyecatchUrlWithoutImageOptimizeParam(path) {
-  if (!path) return
-  return path.includes('?') ? path.split('?')[0] : path
+export function getBodyWithImageOptimizationParam(body) {
+  const dom = domino.createDocument(body, true)
+  Array.from(dom.querySelectorAll('body figure img'), (img) => {
+    img.src = `${img.src}?d=800x2160`
+  })
+  return dom.querySelector('body').innerHTML
 }

@@ -15,7 +15,7 @@
           :class="{ selected: img === thumbnail }"
           @click.prevent="selectThumbnail"
         >
-          <img :src="`${img}?d=160x160`" class="thumbnail">
+          <img :src="img" class="thumbnail">
         </div>
       </div>
       <h3 class="headline">
@@ -58,7 +58,6 @@ import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
-import { getEyecatchUrlWithoutImageOptimizeParam } from '~/utils/article'
 
 export default {
   components: {
@@ -146,8 +145,7 @@ export default {
     },
     selectThumbnail({ target }) {
       this.isThumbnailSelected = true
-      const targetImage = getEyecatchUrlWithoutImageOptimizeParam(target.src)
-      this.updateThumbnail({ thumbnail: targetImage === this.thumbnail ? '' : targetImage })
+      this.updateThumbnail({ thumbnail: target.src === this.thumbnail ? '' : target.src })
     },
     handleChangeTopicType(event) {
       this.topic = event.target.value
