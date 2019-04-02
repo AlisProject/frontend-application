@@ -63,7 +63,7 @@ export default {
   methods: {
     async purchase() {
       try {
-        await this.purchaseArticle({
+        const status = await this.purchaseArticle({
           articleId: this.article.article_id,
           price: this.article.price
         })
@@ -71,15 +71,22 @@ export default {
         window.scrollTo({
           top: 0
         })
-        this.sendNotification({
-          text: '記事を購入しました'
-        })
+        if (status === 'done' || status === 'doing') {
+          this.sendNotification({
+            text: `記事を購入しました${
+              status === 'doing' ? '。購入処理が完了するまで今しばらくお待ち下さい' : ''
+            }`
+          })
+          this.setConfirmPurchaseArticleModal({ isShow: false })
+        } else if (status === 'fail') {
+          this.errorMessage = '記事の購入に失敗しました'
+        }
       } catch (error) {
-        this.sendNotification({
-          text: '記事を購入しました。購入処理が完了するまで今しばらくお待ち下さい'
-        })
-      } finally {
-        this.setConfirmPurchaseArticleModal({ isShow: false })
+        if (error.response.data.message === 'Price was changed') {
+          this.errorMessage = '記事の価格が変更されました'
+        } else {
+          this.errorMessage = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
+        }
       }
     },
     ...mapActions({

@@ -785,10 +785,12 @@ const actions = {
   },
   async purchaseArticle({ commit, state }, { articleId, price }) {
     try {
-      // await this.$axios.$post(`/me/articles/${articleId}/purchase`, { price })
+      // const { status } = await this.$axios.$post(`/me/articles/${articleId}/purchase`, { price })
       commit(types.SET_PURCHASED_ARTICLE_IDS, {
         articleIds: [...state.purchasedArticleIds, articleId]
       })
+      // return 'done'
+      // return status
     } catch (error) {
       return Promise.reject(error)
     }
