@@ -61,7 +61,6 @@ export default {
     handleAddPaywallLineOnPc() {
       Array.from(document.querySelectorAll('.area-content > *'), (element) => {
         element.addEventListener('mouseover', (e) => {
-          if (e.target.nodeName === 'IMG') return
           this.removePaywallLineNext()
           const p = document.createElement('p')
           p.addEventListener('click', () => {
