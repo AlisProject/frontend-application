@@ -22,7 +22,7 @@
     <span class="error-message">
       {{ errorMessage }}
     </span>
-    <app-button class="purchase-button" @click="purchase">
+    <app-button class="purchase-button" :disabled="!isPurchasable" @click="purchase">
       購入する※取り消し不可
     </app-button>
   </div>
@@ -41,11 +41,14 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isPurchasable: true
     }
   },
   async mounted() {
     await this.getArticlePrice({ articleId: this.article.article_id })
+    this.isPurchasable = await this.checkIsPurchasable()
+    if (!this.isPurchasable) this.errorMessage = 'ALISが不足しています'
     const modalTitle = document.querySelector('.modal-body .title')
     if (window.innerWidth <= 320 && modalTitle) modalTitle.style.marginTop = '40px'
   },
@@ -89,11 +92,17 @@ export default {
         }
       }
     },
+    async checkIsPurchasable() {
+      const { result } = await this.getBalance()
+      const myBalance = new BigNumber(result, 16)
+      const articlePrice = new BigNumber(this.article.price)
+      return myBalance.isGreaterThanOrEqualTo(articlePrice)
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('article', ['getArticlePrice', 'purchaseArticle', 'getPurchaedArticleDetail']),
-    ...mapActions('user', ['setConfirmPurchaseArticleModal'])
+    ...mapActions('user', ['setConfirmPurchaseArticleModal', 'getBalance'])
   }
 }
 </script>

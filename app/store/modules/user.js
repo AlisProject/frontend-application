@@ -544,9 +544,17 @@ const actions = {
   setRequestLoginModal({ commit }, { isShow, requestType }) {
     commit(types.SET_REQUEST_LOGIN_MODAL, { isShow, requestType })
   },
-  async getUsersAlisToken({ commit }) {
+  async getBalance({ commit }) {
     try {
-      const { result } = await this.$axios.$get('/me/wallet/balance')
+      const result = await this.$axios.$get('/me/wallet/balance')
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getUsersAlisToken({ commit, dispatch }) {
+    try {
+      const { result } = await dispatch('getBalance')
       const formatNumber = 10 ** 18
       const alisToken = new BigNumber(result, 16).div(formatNumber).toString(10)
       commit(types.SET_USERS_ALIS_TOKEN, { alisToken })
