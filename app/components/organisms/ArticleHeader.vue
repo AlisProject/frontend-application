@@ -45,14 +45,19 @@
         </div>
       </div>
     </template>
-    <div v-if="!isCurrentUser && isPaidArticle" class="price-label">
-      有料：{{ formattedPrice }}ALIS
-    </div>
+    <template v-else>
+      <div v-if="isPaidArticle && !isPurchased" class="price-label">
+        有料：{{ formattedPrice }}ALIS
+      </div>
+      <div v-else class="purchased-label">
+        購入済
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { isV2 } from '~/utils/article'
@@ -97,11 +102,15 @@ export default {
     isPaidArticle() {
       return !!this.article.price
     },
+    isPurchased() {
+      return this.purchasedArticleIds.includes(this.article.article_id)
+    },
     formattedPrice() {
       const formatNumber = 10 ** 18
       const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
       return price
-    }
+    },
+    ...mapGetters('article', ['purchasedArticleIds'])
   },
   mounted() {
     this.listen(window, 'click', (event) => {
@@ -267,7 +276,20 @@ export default {
     height: 24px;
     margin: 0 0 0 auto;
     padding: 0 6px;
-    text-align: right;
+  }
+
+  .purchased-label {
+    align-items: center;
+    background: rgba(0, 134, 204, 0.3);
+    border-radius: 2px;
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    font-size: 12px;
+    font-weight: bold;
+    height: 24px;
+    margin: 0 0 0 auto;
+    padding: 0 6px;
   }
 }
 
