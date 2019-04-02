@@ -231,3 +231,82 @@ export default {
   }
 }
 </style>
+
+<style lang="scss">
+.v2-content {
+  .ck-content {
+    p {
+      &.paywall-line {
+        color: #030303;
+        position: relative;
+        padding: 0 120px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 30px;
+
+        &:before,
+        &:after {
+          content: '...........';
+          display: inline-block;
+          font-size: 14px;
+          height: 2px;
+          letter-spacing: 8px;
+          position: absolute;
+          top: -5px;
+          width: 140px;
+        }
+
+        &:before {
+          left: 0;
+        }
+
+        &:after {
+          right: -8px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .v2-content {
+    .ck-content {
+      p {
+        .br {
+          &:before {
+            content: '\A';
+            white-space: pre;
+          }
+        }
+
+        &.paywall-line {
+          color: #030303;
+          font-size: 14px;
+          font-weight: bold;
+          letter-spacing: 0.8px;
+          line-height: 1.5;
+          margin-bottom: 20px;
+          padding: 0;
+          text-align: center;
+
+          &:before,
+          &:after {
+            content: '.....';
+            top: 2px;
+            width: 80px;
+          }
+
+          &:before {
+            left: -10px;
+          }
+
+          &:after {
+            right: -10px;
+          }
+        }
+      }
+    }
+  }
+}
+</style>

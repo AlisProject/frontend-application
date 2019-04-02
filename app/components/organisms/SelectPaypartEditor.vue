@@ -178,3 +178,48 @@ export default {
   }
 }
 </style>
+
+<style lang="scss">
+.area-select-paypart-editor-container {
+  .ck-content {
+    a,
+    p,
+    h2,
+    h3,
+    blockquote,
+    .image {
+      cursor: pointer;
+    }
+
+    p {
+      &.paywall-line {
+        align-items: center;
+        background: #0086cc;
+        border: 1px solid #0086cc;
+        color: #fff;
+        cursor: initial;
+        display: flex;
+        font-size: 12px;
+        justify-content: center;
+        padding: 4px;
+
+        &:before,
+        &:after {
+          content: '';
+        }
+      }
+
+      &.paywall-line-next {
+        align-items: center;
+        border: 1px dashed #cecece;
+        color: #cecece;
+        display: flex;
+        font-size: 12px;
+        font-weight: bold;
+        justify-content: center;
+        padding: 4px;
+      }
+    }
+  }
+}
+</style>
