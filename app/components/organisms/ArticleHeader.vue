@@ -49,7 +49,7 @@
       <div v-if="isPaidArticle && !isPurchased" class="price-label">
         有料：{{ formattedPrice }}ALIS
       </div>
-      <div v-else class="purchased-label">
+      <div v-if="isPaidArticle && isPurchased" class="purchased-label">
         購入済
       </div>
     </template>
