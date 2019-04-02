@@ -17,7 +17,7 @@
     "test:coverage": "jest --config jest.config.js --no-cache --coverage"
   },
   "dependencies": {
-    "@alisproject/alis-editor": "^0.2.8",
+    "@alisproject/alis-editor": "^0.2.9",
     "@johmun/vue-tags-input": "^2.0.1",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/markdownit": "^1.2.3",
