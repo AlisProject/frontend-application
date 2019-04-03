@@ -75,15 +75,16 @@ export default {
           articleId: this.article.article_id,
           price: this.article.price
         })
-        await this.getPurchaedArticleDetail({ articleId: this.article.article_id })
-        window.scrollTo({
-          top: 0
-        })
-        if (status === 'done' || status === 'doing') {
+        if (status === 'done') {
+          this.sendNotification({ text: '記事を購入しました' })
+          await this.getPurchaedArticleDetail({ articleId: this.article.article_id })
+          window.scrollTo({
+            top: 0
+          })
+          this.setConfirmPurchaseArticleModal({ isShow: false })
+        } else if (status === 'doing') {
           this.sendNotification({
-            text: `記事を購入しました${
-              status === 'doing' ? '。購入処理の完了までしばらくお待ち下さい' : ''
-            }`
+            text: '記事を購入しました。購入処理の完了までしばらくお待ち下さい'
           })
           this.setConfirmPurchaseArticleModal({ isShow: false })
         } else if (status === 'fail') {
