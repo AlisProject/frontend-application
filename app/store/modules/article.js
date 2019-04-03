@@ -732,7 +732,7 @@ const actions = {
     }
     if (price && paidBody) {
       params.price = price
-      params.paidBody = paidBody
+      params.paid_body = paidBody
     }
     await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, params)
   },
@@ -747,7 +747,7 @@ const actions = {
     }
     if (price && paidBody) {
       params.price = price
-      params.paidBody = paidBody
+      params.paid_body = paidBody
     }
     await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, params)
   },

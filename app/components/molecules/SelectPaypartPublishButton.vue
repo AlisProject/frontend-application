@@ -38,7 +38,7 @@ export default {
         const body = this.getBody()
         const paidBody = this.getPaidBody()
         const formattedPrice = new BigNumber(this.selectPayment.price)
-        const price = formattedPrice.multipliedBy(FORMAT_NUMBER)
+        const price = formattedPrice.multipliedBy(FORMAT_NUMBER).toString(10)
         const articleTitle = { title }
         const articleBody = { body }
         // タグのデータ形式をAPIに適するように整形
