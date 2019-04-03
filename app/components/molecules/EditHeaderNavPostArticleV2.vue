@@ -157,6 +157,7 @@ export default {
     })
   },
   destroyed() {
+    this.resetCurrentPrice()
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
@@ -319,7 +320,8 @@ export default {
       'setIsSaving',
       'getTopics',
       'resetArticleTopic',
-      'setArticleTopic'
+      'setArticleTopic',
+      'resetCurrentPrice'
     ]),
     ...mapActions('user', [
       'setFirstProcessModal',

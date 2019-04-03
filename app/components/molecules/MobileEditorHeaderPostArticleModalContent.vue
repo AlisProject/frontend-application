@@ -142,6 +142,9 @@ export default {
       this.price = currentPrice
     }
   },
+  destroyed() {
+    this.resetCurrentPrice()
+  },
   methods: {
     async publish() {
       try {
@@ -274,7 +277,8 @@ export default {
       'setIsSaving',
       'getTopics',
       'resetArticleTopic',
-      'setArticleTopic'
+      'setArticleTopic',
+      'resetCurrentPrice'
     ]),
     ...mapActions('user', [
       'setFirstProcessModal',

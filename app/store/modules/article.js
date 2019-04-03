@@ -825,6 +825,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  resetCurrentPrice({ commit }) {
+    commit(types.SET_ARTICLE_CURRENT_PRICE, { price: null })
   }
 }
 
