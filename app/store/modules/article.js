@@ -199,7 +199,12 @@ const actions = {
   async getArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/articles/${articleId}`)
-      const body = getBodyWithImageOptimizationParam(article.body)
+      const body = getBodyWithImageOptimizationParam(
+        article.body,
+        process.env.DOMAIN,
+        article.user_id,
+        articleId
+      )
       const [userInfo, alisToken, likesCount, comments] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
@@ -217,7 +222,12 @@ const actions = {
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
     commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
-    const body = getBodyWithImageOptimizationParam(article.body)
+    const body = getBodyWithImageOptimizationParam(
+      article.body,
+      process.env.DOMAIN,
+      article.user_id,
+      articleId
+    )
     const [userInfo, alisToken, likesCount, comments] = await Promise.all([
       dispatch('getUserInfo', { userId: article.user_id }),
       dispatch('getAlisToken', { articleId }),

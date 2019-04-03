@@ -3065,10 +3065,6 @@ domhandler@^2.3.0:
   dependencies:
     domelementtype "1"
 
-domino@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/domino/-/domino-2.1.3.tgz#0ca1ad02cbd316ebe2e99e0ac9fb0010407d4601"
-
 domutils@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
