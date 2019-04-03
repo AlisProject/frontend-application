@@ -77,7 +77,7 @@ export default {
         if (status === 'done' || status === 'doing') {
           this.sendNotification({
             text: `記事を購入しました${
-              status === 'doing' ? '。購入処理が完了するまで今しばらくお待ち下さい' : ''
+              status === 'doing' ? '。購入処理の完了までしばらくお待ち下さい' : ''
             }`
           })
           this.setConfirmPurchaseArticleModal({ isShow: false })

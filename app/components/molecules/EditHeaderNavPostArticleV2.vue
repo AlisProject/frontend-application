@@ -294,7 +294,7 @@ export default {
           return
         }
         if (hasExceededMaxPrice || hasNotExceededMinPrice) {
-          this.errorMessage = '販売価格は1〜10,000ALISまで設定できます'
+          this.errorMessage = '10,000ALIS以内で設定してください'
           return
         }
         this.errorMessage = ''
