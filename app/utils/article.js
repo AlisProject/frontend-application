@@ -1,6 +1,5 @@
 /* global iframely */
 import { XmlEntities } from 'html-entities'
-import domino from 'domino'
 import axios from './axios'
 
 export function createInsertPluginTemplateFromUrl(url) {
@@ -399,10 +398,8 @@ export function showEmbed() {
   })
 }
 
-export function getBodyWithImageOptimizationParam(body) {
-  const dom = domino.createDocument(body, true)
-  Array.from(dom.querySelectorAll('body figure img'), (img) => {
-    img.src = `${img.src}?d=800x2160`
-  })
-  return dom.querySelector('body').innerHTML
+export function getBodyWithImageOptimizationParam(body, domain, userId, articleId) {
+  const pattern = String.raw`<(img( alt="")? src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png|gif))">`
+  const regexp = new RegExp(pattern, 'g')
+  return body.replace(regexp, '<$1?d=800x2160">')
 }
