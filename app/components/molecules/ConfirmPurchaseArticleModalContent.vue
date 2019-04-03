@@ -66,6 +66,11 @@ export default {
   methods: {
     async purchase() {
       try {
+        this.isPurchasable = await this.checkIsPurchasable()
+        if (!this.isPurchasable) {
+          this.errorMessage = 'ALISが不足しています'
+          return
+        }
         const status = await this.purchaseArticle({
           articleId: this.article.article_id,
           price: this.article.price
