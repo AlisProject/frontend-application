@@ -241,10 +241,12 @@ const actions = {
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/public/edit`)
+      // 有料記事本文に含まれる有料エリアを示すラインを削除
+      const body = article.body.replace(/<p class="paywall-line">.*?<\/p>/, '')
       if (article.eye_catch_url) {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
-      commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE, { article: { ...article, body } })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
       commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
