@@ -218,7 +218,6 @@ export default {
         font-weight: bold;
         justify-content: center;
         padding: 4px;
-        clear: both;
       }
     }
   }
