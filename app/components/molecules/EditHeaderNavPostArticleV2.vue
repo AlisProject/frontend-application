@@ -54,25 +54,13 @@
       </h3>
       <div class="select-payment-box">
         <div class="payment-input-box">
-          <input
-            id="free"
-            class="payment-input"
-            type="radio"
-            value="free"
-            v-model="paymentType"
-          >
+          <input id="free" v-model="paymentType" class="payment-input" type="radio" value="free">
           <label class="payment-input-label" for="free">
             無料
           </label>
         </div>
         <div class="payment-input-box">
-          <input
-            id="pay"
-            class="payment-input"
-            type="radio"
-            value="pay"
-            v-model="paymentType"
-          >
+          <input id="pay" v-model="paymentType" class="payment-input" type="radio" value="pay">
           <label class="payment-input-label" for="pay">
             有料
           </label>
@@ -92,11 +80,7 @@
           {{ errorMessage }}
         </span>
       </div>
-      <app-button
-        class="submit"
-        :disabled="!publishable"
-        @click="publish"
-      >
+      <app-button class="submit" :disabled="!publishable" @click="publish">
         {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
       </app-button>
     </div>
