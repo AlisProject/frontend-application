@@ -59,8 +59,7 @@
             class="payment-input"
             type="radio"
             value="free"
-            :checked="paymentType === 'free'"
-            @change="setPaymentType('free')"
+            v-model="paymentType"
           >
           <label class="payment-input-label" for="free">
             無料
@@ -72,8 +71,7 @@
             class="payment-input"
             type="radio"
             value="pay"
-            :checked="paymentType === 'pay'"
-            @change="setPaymentType('pay')"
+            v-model="paymentType"
           >
           <label class="payment-input-label" for="pay">
             有料
@@ -128,7 +126,7 @@ export default {
       isThumbnailSelected: false,
       isInvalidTag: false,
       paymentType: 'free',
-      price: 1,
+      price: '1',
       errorMessage: ''
     }
   },
@@ -274,9 +272,6 @@ export default {
       if (!thumbnails.includes(this.thumbnail)) {
         this.updateThumbnail({ thumbnail: '' })
       }
-    },
-    setPaymentType(paymentType) {
-      this.paymentType = paymentType
     },
     onInput(event) {
       try {
