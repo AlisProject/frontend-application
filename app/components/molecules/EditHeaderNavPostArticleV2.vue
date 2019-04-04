@@ -155,6 +155,7 @@ export default {
     })
   },
   destroyed() {
+    this.resetArticleTopic()
     this.resetCurrentPrice()
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
