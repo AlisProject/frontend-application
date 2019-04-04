@@ -29,7 +29,10 @@
     </template>
     <div v-if="notification.type === 'comment'" class="sub-icon comment" />
     <div v-if="notification.type === 'tip'" class="sub-icon tip" />
-    <div v-if="notification.type === 'tip_error' || notification.type === 'purchase_error'" class="tip-error-icon" />
+    <div
+      v-if="notification.type === 'tip_error' || notification.type === 'purchase_error'"
+      class="tip-error-icon"
+    />
   </div>
 </template>
 
