@@ -15,7 +15,9 @@
         notification.type === 'comment' ||
           notification.type === 'tip' ||
           notification.type === 'reply' ||
-          notification.type === 'thread'
+          notification.type === 'thread' ||
+          notification.type === 'purchase' ||
+          notification.type === 'purchased'
       "
     >
       <img
@@ -27,7 +29,7 @@
     </template>
     <div v-if="notification.type === 'comment'" class="sub-icon comment" />
     <div v-if="notification.type === 'tip'" class="sub-icon tip" />
-    <div v-if="notification.type === 'tip_error'" class="tip-error-icon" />
+    <div v-if="notification.type === 'tip_error' || notification.type === 'purchase_error'" class="tip-error-icon" />
   </div>
 </template>
 
