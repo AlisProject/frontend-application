@@ -81,6 +81,8 @@ export default {
           window.scrollTo({
             top: 0
           })
+          const paywallLine = document.querySelector('.paywall-line')
+          if (paywallLine) paywallLine.remove()
           this.setConfirmPurchaseArticleModal({ isShow: false })
         } else if (status === 'doing') {
           this.sendNotification({
