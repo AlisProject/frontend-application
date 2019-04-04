@@ -201,6 +201,7 @@ export default {
         font-size: 12px;
         justify-content: center;
         padding: 4px;
+        clear: both;
 
         &:before,
         &:after {
@@ -217,6 +218,7 @@ export default {
         font-weight: bold;
         justify-content: center;
         padding: 4px;
+        clear: both;
       }
     }
   }

@@ -244,6 +244,7 @@ export default {
         font-size: 14px;
         font-weight: bold;
         margin-bottom: 30px;
+        clear: both;
 
         &:before,
         &:after {
