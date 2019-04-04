@@ -890,14 +890,10 @@ const actions = {
   setMobileEditorHeaderPostArticleModal({ commit }, { isShow }) {
     commit(types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL, { isShow })
   },
-  setSelectPaymentPrice({ commit }, { price }) {
-    commit(types.SET_SELECT_PAYMENT_PRICE, { price })
-  },
-  setSelectPaymentTitle({ commit }, { title }) {
+  setSelectPayment({ commit }, { title, body, price }) {
     commit(types.SET_SELECT_PAYMENT_TITLE, { title })
-  },
-  setSelectPaymentBody({ commit }, { body }) {
     commit(types.SET_SELECT_PAYMENT_BODY, { body })
+    commit(types.SET_SELECT_PAYMENT_PRICE, { price })
   },
   setConfirmPurchaseArticleModal({ commit }, { isShow }) {
     commit(types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL, { isShow })

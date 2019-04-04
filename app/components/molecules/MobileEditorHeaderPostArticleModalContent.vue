@@ -89,7 +89,7 @@
       </div>
       <app-button
         class="submit"
-        :disabled="!publishable || isInvalidTag || publishingArticle || hasPriceError"
+        :disabled="!publishable"
         @click="publish"
       >
         {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
@@ -166,9 +166,7 @@ export default {
         }
 
         if (this.paymentType === 'pay') {
-          this.setSelectPaymentPrice({ price })
-          this.setSelectPaymentTitle({ title })
-          this.setSelectPaymentBody({ body })
+          this.setSelectPayment({ title, body, price })
           this.setMobileEditorHeaderPostArticleModal({ isShow: false })
           if (location.href.includes('/me/articles/draft')) {
             this.$router.push(`/me/articles/draft/${this.$route.params.articleId}/paypart`)
@@ -284,14 +282,18 @@ export default {
       'setFirstProcessModal',
       'setFirstProcessCreatedArticleModal',
       'setMobileEditorHeaderPostArticleModal',
-      'setSelectPaymentPrice',
-      'setSelectPaymentTitle',
-      'setSelectPaymentBody'
+      'setSelectPayment'
     ])
   },
   computed: {
     publishable() {
-      return (!this.isEditedTitle || !this.isEditedBody) && !this.isSaving
+      return (
+        (!this.isEditedTitle || !this.isEditedBody) &&
+        !this.isSaving &&
+        !this.isInvalidTag &&
+        !this.publishingArticle &&
+        !this.hasPriceError
+      )
     },
     hasPriceError() {
       return this.errorMessage !== ''
