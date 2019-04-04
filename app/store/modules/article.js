@@ -758,8 +758,6 @@ const actions = {
       const { article_ids: articleIds } = await this.$axios.$get(
         '/me/articles/purchased/article_ids'
       )
-      // const articleIds = []
-      // const articleIds = ['8ggDlqnNNPBL']
       commit(types.SET_PURCHASED_ARTICLE_IDS, { articleIds })
     } catch (error) {
       return Promise.reject(error)
@@ -768,7 +766,6 @@ const actions = {
   async getPurchaedArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/me/articles/purchased/${articleId}`)
-      // const article = await this.$axios.$get(`/articles/${articleId}`)
       const [userInfo, alisToken, likesCount, comments] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
@@ -791,12 +788,11 @@ const actions = {
   },
   async purchaseArticle({ commit, state }, { articleId, price }) {
     try {
-      // const { status } = await this.$axios.$post(`/me/articles/${articleId}/purchase`, { price })
+      const { status } = await this.$axios.$post(`/me/articles/${articleId}/purchase`, { price })
       commit(types.SET_PURCHASED_ARTICLE_IDS, {
         articleIds: [...state.purchasedArticleIds, articleId]
       })
-      // return 'done'
-      // return status
+      return status
     } catch (error) {
       return Promise.reject(error)
     }
@@ -810,7 +806,6 @@ const actions = {
       } = getters.purchasedArticles.lastEvaluatedKey
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
         '/me/articles/purchased',
-        // '/me/articles/public',
         { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
       )
       commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
