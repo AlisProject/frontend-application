@@ -84,6 +84,7 @@ export default {
     const { article } = this.$store.state.article
     const decodedArticleTitle = htmlDecode(article.title)
     const decodedArticleOverview = htmlDecode(article.overview)
+    const eyeCatchUrl = article.eye_catch_url ? `${article.eye_catch_url}?d=1200x630` : null
 
     return {
       title: decodedArticleTitle,
@@ -113,14 +114,12 @@ export default {
         {
           hid: `og:image`,
           property: 'og:image',
-          content:
-            article.eye_catch_url || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+          content: eyeCatchUrl || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
         },
         {
           hid: 'twitter:image',
           name: 'twitter:image',
-          content:
-            article.eye_catch_url || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+          content: eyeCatchUrl || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
         }
       ]
     }

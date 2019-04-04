@@ -1,5 +1,6 @@
 import { uniqBy } from 'lodash'
 import * as types from '../mutation-types'
+import { getBodyWithImageOptimizationParam } from '~/utils/article'
 
 const namespaced = true
 
@@ -198,6 +199,12 @@ const actions = {
   async getArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/articles/${articleId}`)
+      const body = getBodyWithImageOptimizationParam(
+        article.body,
+        process.env.DOMAIN,
+        article.user_id,
+        articleId
+      )
       const [userInfo, alisToken, likesCount, comments] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
@@ -205,7 +212,9 @@ const actions = {
         dispatch('getArticleComments', { articleId })
       ])
       commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_ARTICLE_DETAIL, {
+        article: { ...article, body, userInfo, alisToken, comments }
+      })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -213,6 +222,12 @@ const actions = {
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
     commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
+    const body = getBodyWithImageOptimizationParam(
+      article.body,
+      process.env.DOMAIN,
+      article.user_id,
+      articleId
+    )
     const [userInfo, alisToken, likesCount, comments] = await Promise.all([
       dispatch('getUserInfo', { userId: article.user_id }),
       dispatch('getAlisToken', { articleId }),
@@ -220,7 +235,9 @@ const actions = {
       dispatch('getArticleComments', { articleId })
     ])
     commit(types.SET_LIKES_COUNT, { likesCount })
-    commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+    commit(types.SET_ARTICLE_DETAIL, {
+      article: { ...article, body, userInfo, alisToken, comments }
+    })
     commit(types.SET_ARTICLE_ID, { articleId })
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   },

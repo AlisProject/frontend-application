@@ -397,3 +397,9 @@ export function showEmbed() {
     }
   })
 }
+
+export function getBodyWithImageOptimizationParam(body, domain, userId, articleId) {
+  const pattern = String.raw`<(img( alt="")? src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
+  const regexp = new RegExp(pattern, 'g')
+  return body.replace(regexp, '<$1?d=800x2160">')
+}

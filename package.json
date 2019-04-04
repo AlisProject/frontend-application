@@ -5,7 +5,7 @@
   "author": "y-temp4 <y.temp4@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nuxt --config-file nuxt.config.development.js",
+    "dev": "cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.development.js",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -17,7 +17,7 @@
     "test:coverage": "jest --config jest.config.js --no-cache --coverage"
   },
   "dependencies": {
-    "@alisproject/alis-editor": "^0.2.6",
+    "@alisproject/alis-editor": "^0.2.9",
     "@johmun/vue-tags-input": "^2.0.1",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/markdownit": "^1.2.3",
