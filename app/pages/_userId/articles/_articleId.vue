@@ -22,14 +22,14 @@ export default {
   },
   async fetch({ store, params, error, redirect }) {
     try {
-      if (process.client) await store.dispatch('article/setPurchasedArticleIds')
       const { articleId } = params
-      const loggedIn = store.state.user.loggedIn
-      const isCurrentUser = loggedIn && params.userId === store.state.user.currentUser.userId
-      const isPurchased = loggedIn && store.state.article.purchasedArticleIds.includes(articleId)
       let getArticleType = 'getArticleDetail'
+      if (process.client) {
+        await store.dispatch('article/setPurchasedArticleIds')
+        const loggedIn = store.state.user.loggedIn
+        const isCurrentUser = loggedIn && params.userId === store.state.user.currentUser.userId
+        const isPurchased = loggedIn && store.state.article.purchasedArticleIds.includes(articleId)
 
-      if (loggedIn) {
         if (isCurrentUser) {
           getArticleType = 'getPublicArticleDetail'
         } else if (isPurchased) {

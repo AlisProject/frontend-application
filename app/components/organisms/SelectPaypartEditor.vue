@@ -62,12 +62,6 @@ export default {
       Array.from(document.querySelectorAll('.area-content > *'), (element) => {
         element.addEventListener('mouseover', (e) => {
           this.removePaywallLineNext()
-          const p = document.createElement('p')
-          p.addEventListener('click', () => {
-            this.removePaywallLine()
-            this.removePaywallLineNext()
-            this.insertPaywallLineBeforeTargetElement(element)
-          })
           // マウスオーバーされている要素の次の要素のチェックし、paywall-line なら
           // 「ラインをこの場所に移動する」を表示しない
           if (
@@ -77,6 +71,12 @@ export default {
           ) {
             return
           }
+          const p = document.createElement('p')
+          p.addEventListener('click', () => {
+            this.removePaywallLine()
+            this.removePaywallLineNext()
+            this.insertPaywallLineBeforeTargetElement(element)
+          })
           p.classList.add('paywall-line-next')
           p.innerText = 'ラインをこの場所に変更する'
           document.querySelector('.area-content').insertBefore(p, element.nextSibling)
