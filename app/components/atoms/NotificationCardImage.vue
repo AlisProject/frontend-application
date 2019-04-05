@@ -16,7 +16,6 @@
           notification.type === 'tip' ||
           notification.type === 'reply' ||
           notification.type === 'thread' ||
-          notification.type === 'purchase' ||
           notification.type === 'purchased'
       "
     >
@@ -33,6 +32,11 @@
       v-if="notification.type === 'tip_error' || notification.type === 'purchase_error'"
       class="tip-error-icon"
     />
+    <img
+      v-if="notification.type === 'purchase'"
+      class="profile-icon"
+      src="~assets/images/pc/notification/icon_notification_check.png"
+    >
   </div>
 </template>
 

@@ -280,7 +280,7 @@ export default {
 
   .purchased-label {
     align-items: center;
-    background: rgba(0, 134, 204, 0.3);
+    background: #9e9e9e;
     border-radius: 2px;
     box-sizing: border-box;
     color: #fff;

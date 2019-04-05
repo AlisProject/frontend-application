@@ -520,7 +520,7 @@ const actions = {
             notification.type === 'purchased'
           ) {
             userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
-          } else if (notification.type === 'tip_error' || notification.type === 'purchase') {
+          } else if (notification.type === 'tip_error') {
             userInfo = await this.$axios.$get(`/users/${notification.article_user_id}/info`)
           }
           return { ...notification, userInfo }
