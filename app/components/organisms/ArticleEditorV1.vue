@@ -254,7 +254,6 @@ export default {
         this.setIsSaving({ isSaving: true })
         this.setIsEdited({ isEdited: false })
         this.setSaveStatus({ saveStatus: '保存中' })
-        if (this.articleId === '') await this.setArticleId()
 
         // Upload images
         try {
@@ -272,18 +271,6 @@ export default {
         console.error(error)
       } finally {
         this.updateArticleInterval = setTimeout(this.updateArticle, 2000)
-      }
-    },
-    async setArticleId() {
-      try {
-        const article = { title: '', body: '' }
-        await this.postNewArticle({ article })
-      } catch (error) {
-        this.sendNotification({
-          text: '記事の作成に失敗しました',
-          type: 'warning'
-        })
-        throw new Error('Post article failed.')
       }
     },
     onInputTitle() {
@@ -422,7 +409,6 @@ export default {
       'postArticleImage',
       'setRestrictEditArticleModal',
       'setIsSaving',
-      'postNewArticle',
       'setIsEdited',
       'setSaveStatus',
       'updateThumbnail'

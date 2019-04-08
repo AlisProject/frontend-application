@@ -274,10 +274,6 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async postNewArticle({ commit }, { article }) {
-    const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts', article)
-    commit(types.SET_ARTICLE_ID, { articleId })
-  },
   async putDraftArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/drafts`, article)
   },
