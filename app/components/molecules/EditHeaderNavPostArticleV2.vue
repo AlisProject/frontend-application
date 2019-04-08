@@ -49,12 +49,39 @@
         3. タグの設定
       </h3>
       <tags-input-form @change-tag-validation-state="onChangeTagValidationState" />
-      <app-button
-        class="submit"
-        :disabled="!publishable || isInvalidTag || publishingArticle"
-        @click="publish"
-      >
-        公開する
+      <h3 class="headline">
+        4. 販売設定
+      </h3>
+      <div class="select-payment-box">
+        <div class="payment-input-box">
+          <input id="free" v-model="paymentType" class="payment-input" type="radio" value="free">
+          <label class="payment-input-label" for="free">
+            無料
+          </label>
+        </div>
+        <div class="payment-input-box">
+          <input id="pay" v-model="paymentType" class="payment-input" type="radio" value="pay">
+          <label class="payment-input-label" for="pay">
+            有料
+          </label>
+        </div>
+      </div>
+      <div v-if="paymentType === 'pay'" class="token-amount-input-box">
+        <input
+          :value="price"
+          class="token-amount-input"
+          type="number"
+          min="1"
+          max="10000"
+          @input="onInput"
+        >
+        <span class="token-amount-input-unit">ALIS</span>
+        <span class="error-message">
+          {{ errorMessage }}
+        </span>
+      </div>
+      <app-button class="submit" :disabled="!publishable" @click="publish">
+        {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
       </app-button>
     </div>
   </div>
@@ -63,9 +90,13 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import TagsInputForm from '../molecules/TagsInputForm'
 import { getThumbnails } from '~/utils/article'
+
+const MAXIMUM_PRICE = '10000'
+const MINIMUM_PRICE = '1'
 
 export default {
   components: {
@@ -77,7 +108,10 @@ export default {
       publishingArticle: false,
       isPopupShown: false,
       isThumbnailSelected: false,
-      isInvalidTag: false
+      isInvalidTag: false,
+      paymentType: 'free',
+      price: '1',
+      errorMessage: ''
     }
   },
   async created() {
@@ -91,6 +125,12 @@ export default {
     }
   },
   mounted() {
+    if (this.currentPrice) {
+      this.paymentType = 'pay'
+      const formatNumber = 10 ** 18
+      const currentPrice = new BigNumber(this.currentPrice).div(formatNumber).toString(10)
+      this.price = currentPrice
+    }
     this.listen(window, 'click', (event) => {
       // タグの ☓ ボタンを押したときにはポップアップを非表示にしない
       if (!this.$el.contains(event.target) && !event.target.classList.contains('ti-icon-close')) {
@@ -99,7 +139,7 @@ export default {
     })
   },
   destroyed() {
-    this.resetArticleTopic()
+    this.resetCurrentPrice()
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
@@ -115,13 +155,24 @@ export default {
 
         if (!this.publishable || this.isInvalidTag) return
         this.publishingArticle = true
-        const { articleId, title, body, topicType } = this
+        const { articleId, title, body, topicType, price } = this
         const hasTitle = title !== undefined && title !== null && title !== ''
         const hasBody = body !== '<p>&nbsp;</p>'
         if (!hasTitle) this.sendNotification({ text: 'タイトルを入力してください' })
         if (!hasBody) this.sendNotification({ text: '本文にテキストを入力してください' })
         if (topicType === null) this.sendNotification({ text: 'カテゴリを選択してください' })
         if (!hasTitle || !hasBody || topicType === null) {
+          this.publishingArticle = false
+          return
+        }
+
+        if (this.paymentType === 'pay') {
+          this.setSelectPayment({ title, body, price })
+          if (location.href.includes('/me/articles/draft')) {
+            this.$router.push(`/me/articles/draft/${this.$route.params.articleId}/paypart`)
+          } else if (location.href.includes('/me/articles/public')) {
+            this.$router.push(`/me/articles/public/${this.$route.params.articleId}/paypart`)
+          }
           this.publishingArticle = false
           return
         }
@@ -205,6 +256,29 @@ export default {
         this.updateThumbnail({ thumbnail: '' })
       }
     },
+    onInput(event) {
+      try {
+        this.price = event.target.value
+
+        const formattedPrice = new BigNumber(this.price)
+        const formattedMaxPrice = new BigNumber(MAXIMUM_PRICE)
+        const formattedMinPrice = new BigNumber(MINIMUM_PRICE)
+        const hasExceededMaxPrice = formattedPrice.isGreaterThan(formattedMaxPrice)
+        const hasNotExceededMinPrice = formattedPrice.isLessThan(formattedMinPrice)
+
+        if (!formattedPrice.isInteger()) {
+          this.errorMessage = '整数で入力してください'
+          return
+        }
+        if (hasExceededMaxPrice || hasNotExceededMinPrice) {
+          this.errorMessage = '10,000ALIS以内で設定してください'
+          return
+        }
+        this.errorMessage = ''
+      } catch (error) {
+        this.errorMessage = '数字で入力してください'
+      }
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -222,13 +296,27 @@ export default {
       'setIsSaving',
       'getTopics',
       'resetArticleTopic',
-      'setArticleTopic'
+      'setArticleTopic',
+      'resetCurrentPrice'
     ]),
-    ...mapActions('user', ['setFirstProcessModal', 'setFirstProcessCreatedArticleModal'])
+    ...mapActions('user', [
+      'setFirstProcessModal',
+      'setFirstProcessCreatedArticleModal',
+      'setSelectPayment'
+    ])
   },
   computed: {
     publishable() {
-      return (!this.isEditedTitle || !this.isEditedBody) && !this.isSaving
+      return (
+        (!this.isEditedTitle || !this.isEditedBody) &&
+        !this.isSaving &&
+        !this.isInvalidTag &&
+        !this.publishingArticle &&
+        !this.hasPriceError
+      )
+    },
+    hasPriceError() {
+      return this.errorMessage !== ''
     },
     ...mapGetters('article', [
       'articleId',
@@ -241,9 +329,10 @@ export default {
       'isEditedBody',
       'topics',
       'topicType',
-      'tags'
+      'tags',
+      'currentPrice'
     ]),
-    ...mapGetters('user', ['currentUserInfo'])
+    ...mapGetters('user', ['currentUserInfo', 'selectPayment'])
   },
   watch: {
     suggestedThumbnails() {
@@ -328,10 +417,10 @@ export default {
       white-space: nowrap;
       margin-bottom: 10px;
       user-select: none;
-      height: 120px;
+      height: 100px;
 
       &::-webkit-scrollbar {
-        height: 40px;
+        height: 20px;
       }
 
       &::-webkit-scrollbar-thumb {
@@ -339,8 +428,8 @@ export default {
         background: linear-gradient(
           0deg,
           transparent 0%,
-          transparent 75%,
-          #0086cc 75%,
+          transparent 70%,
+          #0086cc 70%,
           #0086cc 80%,
           transparent 80%,
           transparent 100%
@@ -405,7 +494,7 @@ export default {
 
     .article-type-select-box {
       box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       padding: 6px 8px;
       position: relative;
 
@@ -455,6 +544,110 @@ export default {
           display: none;
         }
       }
+    }
+
+    .select-payment-box {
+      display: flex;
+      flex-direction: row;
+
+      .payment-input-box {
+        color: #030303;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 14px;
+        min-height: 20px;
+
+        .payment-input {
+          opacity: 0;
+          position: absolute;
+
+          & + .payment-input-label {
+            cursor: pointer;
+            padding: 0 20px 0 30px;
+            position: relative;
+            line-height: 20px;
+            display: block;
+            width: 28px;
+
+            &::before {
+              content: '';
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 20px;
+              height: 20px;
+              border: 1px solid #0086cc;
+              border-radius: 50%;
+              box-sizing: border-box;
+            }
+          }
+
+          &:checked + .payment-input-label {
+            &::after {
+              content: '';
+              display: block;
+              position: absolute;
+              top: 4px;
+              left: 4px;
+              width: 12px;
+              height: 12px;
+              background: #0086cc;
+              border-radius: 50%;
+            }
+          }
+        }
+      }
+    }
+
+    .token-amount-input-box {
+      position: relative;
+
+      .token-amount-input {
+        appearance: none;
+        border: 0;
+        box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
+        box-sizing: border-box;
+        color: #030303;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 28px;
+        padding: 10px 40px 10px 12px;
+        width: 256px;
+        margin-bottom: 4px;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        &:after {
+          content: 'ALIS';
+        }
+
+        &:focus {
+          outline: 0;
+        }
+      }
+
+      .token-amount-input-unit {
+        position: absolute;
+        color: #030303;
+        font-size: 10px;
+        font-weight: bold;
+        top: 19px;
+        right: 10px;
+      }
+    }
+
+    .error-message {
+      color: #f06273;
+      display: block;
+      font-size: 12px;
+      margin-bottom: 2px;
+      min-height: 26px;
+      text-align: left;
     }
 
     .submit {

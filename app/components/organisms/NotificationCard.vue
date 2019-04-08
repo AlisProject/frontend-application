@@ -1,7 +1,7 @@
 <template>
   <section>
     <nuxt-link
-      v-if="notification.type === 'tip'"
+      v-if="notification.type === 'tip' || notification.type === 'purchased'"
       :to="`/users/${notification.acted_user_id}`"
       class="notification-card-container"
     >
@@ -43,6 +43,8 @@ export default {
     articlePath() {
       switch (this.notification.type) {
         case 'tip_error':
+        case 'purchase':
+        case 'purchase_error':
           return `/${this.notification.article_user_id}/articles/${this.notification.article_id}`
         case 'comment':
           // 記事のコメント欄に遷移する（#article-comments）

@@ -163,6 +163,14 @@ const state = () => ({
   },
   mobileEditorHeaderPostArticleModal: {
     isShow: false
+  },
+  selectPayment: {
+    price: '0',
+    title: '',
+    body: ''
+  },
+  confirmPurchaseArticleModal: {
+    isShow: false
   }
 })
 
@@ -198,7 +206,9 @@ const getters = {
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
   distributedTokens: (state) => state.distributedTokens,
   firstProcessModal: (state) => state.firstProcessModal,
-  mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal
+  mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal,
+  selectPayment: (state) => state.selectPayment,
+  confirmPurchaseArticleModal: (state) => state.confirmPurchaseArticleModal
 }
 
 const actions = {
@@ -506,7 +516,8 @@ const actions = {
             notification.type === 'comment' ||
             notification.type === 'tip' ||
             notification.type === 'reply' ||
-            notification.type === 'thread'
+            notification.type === 'thread' ||
+            notification.type === 'purchased'
           ) {
             userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
           } else if (notification.type === 'tip_error') {
@@ -534,9 +545,17 @@ const actions = {
   setRequestLoginModal({ commit }, { isShow, requestType }) {
     commit(types.SET_REQUEST_LOGIN_MODAL, { isShow, requestType })
   },
-  async getUsersAlisToken({ commit }) {
+  async getBalance({ commit }) {
     try {
-      const { result } = await this.$axios.$get('/me/wallet/balance')
+      const result = await this.$axios.$get('/me/wallet/balance')
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getUsersAlisToken({ commit, dispatch }) {
+    try {
+      const { result } = await dispatch('getBalance')
       const formatNumber = 10 ** 18
       const alisToken = new BigNumber(result, 16).div(formatNumber).toString(10)
       commit(types.SET_USERS_ALIS_TOKEN, { alisToken })
@@ -870,6 +889,14 @@ const actions = {
   },
   setMobileEditorHeaderPostArticleModal({ commit }, { isShow }) {
     commit(types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL, { isShow })
+  },
+  setSelectPayment({ commit }, { title, body, price }) {
+    commit(types.SET_SELECT_PAYMENT_TITLE, { title })
+    commit(types.SET_SELECT_PAYMENT_BODY, { body })
+    commit(types.SET_SELECT_PAYMENT_PRICE, { price })
+  },
+  setConfirmPurchaseArticleModal({ commit }, { isShow }) {
+    commit(types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL, { isShow })
   }
 }
 
@@ -1159,6 +1186,18 @@ const mutations = {
   },
   [types.SET_MOBILE_EDITOR_HEADER_POST_ARTICLE_MODAL](state, { isShow }) {
     state.mobileEditorHeaderPostArticleModal.isShow = isShow
+  },
+  [types.SET_SELECT_PAYMENT_PRICE](state, { price }) {
+    state.selectPayment.price = price
+  },
+  [types.SET_SELECT_PAYMENT_TITLE](state, { title }) {
+    state.selectPayment.title = title
+  },
+  [types.SET_SELECT_PAYMENT_BODY](state, { body }) {
+    state.selectPayment.body = body
+  },
+  [types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL](state, { isShow }) {
+    state.confirmPurchaseArticleModal.isShow = isShow
   }
 }
 

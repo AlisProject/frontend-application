@@ -9,10 +9,10 @@
   background-color: #0086cc;
   background-position-x: -2px;
   background-position-y: -2px;
-  background-size: 344px 674px;
+  background-size: 344px 626px;
   border-radius: 4px;
   box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.7);
-  height: 670px;
+  height: 622px;
   transition: box-shadow 400ms ease;
   width: 340px;
 

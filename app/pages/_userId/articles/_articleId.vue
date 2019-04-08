@@ -23,10 +23,19 @@ export default {
   async fetch({ store, params, error, redirect }) {
     try {
       const { articleId } = params
-      const isCurrentUser =
-        store.state.user.loggedIn && params.userId === store.state.user.currentUser.userId
-      const getArticleType = isCurrentUser ? 'getPublicArticleDetail' : 'getArticleDetail'
+      let getArticleType = 'getArticleDetail'
+      if (process.client) {
+        await store.dispatch('article/setPurchasedArticleIds')
+        const loggedIn = store.state.user.loggedIn
+        const isCurrentUser = loggedIn && params.userId === store.state.user.currentUser.userId
+        const isPurchased = loggedIn && store.state.article.purchasedArticleIds.includes(articleId)
 
+        if (isCurrentUser) {
+          getArticleType = 'getPublicArticleDetail'
+        } else if (isPurchased) {
+          getArticleType = 'getPurchaedArticleDetail'
+        }
+      }
       await store.dispatch(`article/${getArticleType}`, { articleId })
       if (params.userId !== store.state.article.article.user_id) {
         redirect(
@@ -60,6 +69,24 @@ export default {
       if (this.isCurrentUser && !this.$store.state.article.isFetchedPublicArticle) {
         await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
         this.$store.dispatch('article/setIsFetchedPublicArticle', { isFetched: true })
+        const paywallLine = document.querySelector('.paywall-line')
+        if (paywallLine) {
+          paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
+        }
+        return
+      }
+
+      await this.$store.dispatch('article/setPurchasedArticleIds')
+      const isPurchased =
+        this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
+      if (
+        isPurchased &&
+        !this.isCurrentUser &&
+        !this.$store.state.article.isFetchedPurchasedArticle
+      ) {
+        await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
+        const paywallLine = document.querySelector('.paywall-line')
+        if (paywallLine) paywallLine.remove()
       }
     } else {
       this.setIsLikedArticle({ liked: false })

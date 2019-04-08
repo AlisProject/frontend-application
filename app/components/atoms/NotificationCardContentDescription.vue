@@ -24,6 +24,17 @@
   <p v-else-if="notification.type === 'announce'" class="area-description">
     {{ notification.announce_body }}
   </p>
+  <p v-else-if="notification.type === 'purchase'" class="area-description">
+    <span class="gray-darker">{{ articlePriceForUser }}ALIS</span>で<span
+      class="gray-darker"
+    >記事を購入</span>しました。"{{ decodedArticleTitle }}"
+  </p>
+  <p v-else-if="notification.type === 'purchased'" class="area-description">
+    <span class="gray-darker">{{ decodedUserDisplayName }}</span>が<span class="gray-darker">あなたの記事を購入</span>しました。"{{ decodedArticleTitle }}"
+  </p>
+  <p v-else-if="notification.type === 'purchase_error'" class="area-description">
+    <span class="gray-darker">記事の購入</span>に<span class="gray-darker">失敗</span>しました。<span class="gray-darker">再度購入</span>してください。"{{ decodedArticleTitle }}"
+  </p>
 </template>
 
 <script>
@@ -41,6 +52,10 @@ export default {
     tipTokenAmountForUser() {
       const formatNumber = 10 ** 18
       return new BigNumber(this.notification.tip_value).div(formatNumber).toString(10)
+    },
+    articlePriceForUser() {
+      const formatNumber = 10 ** 18
+      return new BigNumber(this.notification.price).div(formatNumber).toString(10)
     },
     decodedArticleTitle() {
       return htmlDecode(this.notification.article_title)

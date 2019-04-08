@@ -3,45 +3,62 @@
     <span class="topic">{{ topic }}</span>
     <template v-if="isCurrentUser">
       <span class="article-status">(公開中)</span>
+      <div v-if="isPaidArticle" class="price-label">
+        有料：{{ formattedPrice }}ALIS
+      </div>
       <div class="article-button" @click="toggleArticlePopup">
         <div v-show="isArticlePopupShown" class="article-popup">
+          <nuxt-link
+            v-if="isV2Article"
+            class="article-popup-content"
+            :to="`/me/articles/public/v2/${article.article_id}/edit`"
+          >
+            編集する
+          </nuxt-link>
+          <a
+            v-else
+            class="article-popup-content"
+            :class="{ 'hide-article-popup-content': !isV2Article }"
+            :href="`/me/articles/public/${article.article_id}/edit`"
+          >
+            編集する
+          </a>
           <span
             class="article-popup-content unpublish-button"
             :class="{ 'show-unpublish-button': isV2Article }"
             @click="unpublish"
           >
-            記事を下書きに戻す
+            下書きに戻す
           </span>
+          <hr v-if="isV2Article" class="separate-line">
           <a
             class="article-popup-content"
             :href="twitterShareUrl"
             target="_blank"
-          >twitterでシェアする</a>
+          >Twitterでシェアする</a>
           <a
             class="article-popup-content"
             :href="facebookShareUrl"
             target="_blank"
-          >facebookでシェアする</a>
+          >Facebookでシェアする</a>
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
         </div>
       </div>
-      <nuxt-link
-        v-if="isV2Article"
-        class="edit-article"
-        :class="{ 'show-edit-article': isV2Article }"
-        :to="`/me/articles/public/v2/${article.article_id}/edit`"
-      >
-        編集する
-      </nuxt-link>
-      <a v-else class="edit-article" :href="`/me/articles/public/${article.article_id}/edit`">
-        編集する
-      </a>
+    </template>
+    <template v-else>
+      <div v-if="isPaidArticle && !isPurchased" class="price-label">
+        有料：{{ formattedPrice }}ALIS
+      </div>
+      <div v-if="isPaidArticle && isPurchased" class="purchased-label">
+        購入済
+      </div>
     </template>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { BigNumber } from 'bignumber.js'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { isV2 } from '~/utils/article'
 
@@ -81,7 +98,19 @@ export default {
     },
     isV2Article() {
       return isV2(this.article)
-    }
+    },
+    isPaidArticle() {
+      return !!this.article.price
+    },
+    isPurchased() {
+      return this.purchasedArticleIds.includes(this.article.article_id)
+    },
+    formattedPrice() {
+      const formatNumber = 10 ** 18
+      const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
+      return price
+    },
+    ...mapGetters('article', ['purchasedArticleIds'])
   },
   mounted() {
     this.listen(window, 'click', (event) => {
@@ -198,6 +227,7 @@ export default {
     position: relative;
     width: 24px;
     height: 26px;
+    margin-left: 8px;
 
     .article-popup {
       background-color: #ffffff;
@@ -208,7 +238,7 @@ export default {
       font-size: 14px;
       padding: 8px 16px;
       position: absolute;
-      left: -98px;
+      left: -190px;
       top: 24px;
       z-index: 1;
 
@@ -227,17 +257,39 @@ export default {
     }
   }
 
-  .edit-article {
-    background: url('~assets/images/sp/common/icon_editprofile.png') no-repeat;
-    background-size: 20px;
+  .separate-line {
+    border: none;
+    border-top: solid 1px #cecece;
+    height: 1px;
+    opacity: 0.3;
+  }
+
+  .price-label {
+    align-items: center;
+    border-radius: 2px;
+    border: 1px solid #0086cc;
+    box-sizing: border-box;
     color: #0086cc;
-    cursor: pointer;
+    display: flex;
     font-size: 12px;
-    font-weight: 500;
-    line-height: 1.8;
-    padding-left: 24px;
-    text-decoration: none;
-    margin-left: 20px;
+    font-weight: bold;
+    height: 24px;
+    margin: 0 0 0 auto;
+    padding: 0 6px;
+  }
+
+  .purchased-label {
+    align-items: center;
+    background: #9e9e9e;
+    border-radius: 2px;
+    box-sizing: border-box;
+    color: #fff;
+    display: flex;
+    font-size: 12px;
+    font-weight: bold;
+    height: 24px;
+    margin: 0 0 0 auto;
+    padding: 0 6px;
   }
 }
 
@@ -272,15 +324,11 @@ export default {
           &.show-unpublish-button {
             display: block;
           }
+
+          &.hide-article-popup-content {
+            display: none;
+          }
         }
-      }
-    }
-
-    .edit-article {
-      display: none;
-
-      &.show-edit-article {
-        display: block;
       }
     }
   }
