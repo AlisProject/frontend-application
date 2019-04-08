@@ -10,7 +10,8 @@
         <p class="description">
           現在ALISへ入金を行うにはトランザクションの生成が必要なためMETAMASKが必要となります。METAMASKを利用可能なブラウザにインストールしてから入金を行ってください。
         </p>
-        <img src="~assets/images/pc/common/metamask.png" alt="METAMASK" class="metamask">
+        <img src="~assets/images/pc/common/metamask-fox.svg" alt="METAMASK" class="metamask">
+        <span class="metamask-tm">METAMASK<sup class="sup">TM</sup></span>
         <app-button>
           <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
             METAMASKをインストールする
@@ -326,7 +327,22 @@ export default {
   align-items: center;
 
   .metamask {
-    width: 120px;
+    width: 130px;
+    margin: 10px 0 0;
+  }
+
+  .metamask-tm {
+    color: #75787b;
+    font-family: Helvetica;
+    font-size: 16px;
+    letter-spacing: 0.38px;
+    margin-bottom: 30px;
+    text-align: center;
+
+    .sup {
+      font-size: 10px;
+      top: -0.8em;
+    }
   }
 }
 
