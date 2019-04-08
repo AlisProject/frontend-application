@@ -132,6 +132,9 @@ module.exports = {
     REGION: process.env.REGION,
     USER_POOL_ID: process.env.USER_POOL_ID,
     CLIENT_ID: process.env.CLIENT_ID,
-    DOMAIN: process.env.DOMAIN
+    DOMAIN: process.env.DOMAIN,
+    PUBLIC_CHAIN_BRIDGE_ADDRESS: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
+    PUBLIC_CHAIN_TOKEN_ADDRESS: process.env.PUBLIC_CHAIN_TOKEN_ADDRESS,
+    PUBLIC_CHAIN_END_POINT: process.env.PUBLIC_CHAIN_END_POINT
   }
 }

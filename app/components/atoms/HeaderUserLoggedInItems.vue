@@ -54,6 +54,11 @@
             マイページ
           </nuxt-link>
         </li>
+        <li v-if="!isMobile()" class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/wallet/deposit">
+            ウォレット
+          </nuxt-link>
+        </li>
         <!-- <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
             獲得ALIS詳細
@@ -96,11 +101,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
+import { isMobile } from '~/utils/device'
 
 export default {
   data() {
     return {
-      isMenuShown: false
+      isMenuShown: false,
+      isMobile
     }
   },
   async mounted() {
