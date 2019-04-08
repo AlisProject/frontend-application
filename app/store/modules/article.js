@@ -60,7 +60,8 @@ const state = () => ({
   purchasedArticles: {
     lastEvaluatedKey: {},
     articles: []
-  }
+  },
+  isFetchedPurchasedArticle: false
 })
 
 const getters = {
@@ -110,7 +111,8 @@ const getters = {
       hasLastEvaluatedKey: state.purchasedArticles.lastEvaluatedKey !== null
     }
   },
-  currentPrice: (state) => state.currentPrice
+  currentPrice: (state) => state.currentPrice,
+  isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle
 }
 
 const actions = {
@@ -774,6 +776,7 @@ const actions = {
       ])
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_IS_FETCHED_PURCHASED_ARTICLE, { isFetched: true })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -1067,6 +1070,9 @@ const mutations = {
   },
   [types.SET_ARTICLE_CURRENT_PRICE](state, { price }) {
     state.currentPrice = price || null
+  },
+  [types.SET_IS_FETCHED_PURCHASED_ARTICLE](state, { isFetched }) {
+    state.isFetchedPurchasedArticle = isFetched
   }
 }
 

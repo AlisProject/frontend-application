@@ -79,7 +79,11 @@ export default {
       await this.$store.dispatch('article/setPurchasedArticleIds')
       const isPurchased =
         this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
-      if (isPurchased && !this.isCurrentUser) {
+      if (
+        isPurchased &&
+        !this.isCurrentUser &&
+        !this.$store.state.article.isFetchedPurchasedArticle
+      ) {
         await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
         const paywallLine = document.querySelector('.paywall-line')
         if (paywallLine) paywallLine.remove()
