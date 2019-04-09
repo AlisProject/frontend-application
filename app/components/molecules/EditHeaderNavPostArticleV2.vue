@@ -316,7 +316,7 @@ export default {
       )
     },
     hasPriceError() {
-      return this.errorMessage !== ''
+      return this.paymentType === 'pay' && this.errorMessage !== ''
     },
     ...mapGetters('article', [
       'articleId',
