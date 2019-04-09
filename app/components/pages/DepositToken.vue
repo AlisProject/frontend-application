@@ -258,7 +258,10 @@ export default {
           return
         }
         const amountWei = window.web3.utils.toBN(window.web3.utils.toWei(this.balance))
-        if (amountWei > this.bridgeInfo.maxSingleRelayAmount) {
+        if (
+          amountWei < this.bridgeInfo.minSingleRelayAmount ||
+          amountWei > this.bridgeInfo.maxSingleRelayAmount
+        ) {
           this.errorMessage = '10,000ALIS以内で設定してください'
           return
         }
