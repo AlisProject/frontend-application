@@ -123,7 +123,6 @@ export default {
       try {
         let web3js = window.web3
         if (!web3js) {
-          console.log(111)
           web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_END_POINT))
         }
         const data = await web3js.eth.call({
@@ -271,7 +270,6 @@ export default {
         }
         this.errorMessage = ''
       } catch (error) {
-        console.log(error)
         this.errorMessage = '数値で入力してください'
       }
     },
@@ -391,7 +389,6 @@ export default {
     box-sizing: border-box;
     color: #030303;
     font-size: 14px;
-    font-weight: bold;
     line-height: 28px;
     padding: 10px 40px 10px 12px;
     width: 400px;
@@ -401,10 +398,6 @@ export default {
     &::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
-    }
-
-    &:after {
-      content: 'ALIS';
     }
 
     &:focus {
@@ -427,7 +420,7 @@ export default {
     font-size: 12px;
     margin-bottom: 2px;
     min-height: 26px;
-    text-align: left;
+    text-align: right;
     width: 100%;
   }
 }
