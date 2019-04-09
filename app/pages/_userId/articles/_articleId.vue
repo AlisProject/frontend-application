@@ -25,8 +25,8 @@ export default {
       const { articleId } = params
       let getArticleType = 'getArticleDetail'
       if (process.client) {
-        await store.dispatch('article/setPurchasedArticleIds')
         const loggedIn = store.state.user.loggedIn
+        if (loggedIn) await store.dispatch('article/setPurchasedArticleIds')
         const isCurrentUser = loggedIn && params.userId === store.state.user.currentUser.userId
         const isPurchased = loggedIn && store.state.article.purchasedArticleIds.includes(articleId)
 
