@@ -540,7 +540,6 @@ export default {
       box-sizing: border-box;
       color: #030303;
       font-size: 14px;
-      font-weight: bold;
       line-height: 28px;
       padding: 10px 40px 10px 12px;
       width: 256px;

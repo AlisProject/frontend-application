@@ -80,7 +80,12 @@
           {{ errorMessage }}
         </span>
       </div>
-      <app-button class="submit" :disabled="!publishable" @click="publish">
+      <app-button
+        class="submit"
+        :class="{ pay: paymentType === 'pay' }"
+        :disabled="!publishable"
+        @click="publish"
+      >
         {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
       </app-button>
     </div>
@@ -494,7 +499,7 @@ export default {
 
     .article-type-select-box {
       box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       padding: 6px 8px;
       position: relative;
 
@@ -610,7 +615,6 @@ export default {
         box-sizing: border-box;
         color: #030303;
         font-size: 14px;
-        font-weight: bold;
         line-height: 28px;
         padding: 10px 40px 10px 12px;
         width: 256px;
@@ -646,12 +650,16 @@ export default {
       display: block;
       font-size: 12px;
       margin-bottom: 2px;
-      min-height: 26px;
+      min-height: 38px;
       text-align: left;
     }
 
     .submit {
-      margin: 0 auto;
+      margin: 26px auto 0;
+
+      &.pay {
+        margin-top: 0;
+      }
     }
   }
 }
