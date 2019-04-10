@@ -22,7 +22,11 @@
     <span class="error-message">
       {{ errorMessage }}
     </span>
-    <app-button class="purchase-button" :disabled="!isPurchasable || isProcessing" @click="purchase">
+    <app-button
+      class="purchase-button"
+      :disabled="!isPurchasable || isProcessing"
+      @click="purchase"
+    >
       購入する※取り消し不可
     </app-button>
   </div>
