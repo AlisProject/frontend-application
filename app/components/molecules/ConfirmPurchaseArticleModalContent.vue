@@ -37,7 +37,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import { BigNumber } from 'bignumber.js'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, showEmbed } from '~/utils/article'
 
 export default {
   components: {
@@ -89,6 +89,7 @@ export default {
           window.scrollTo({
             top: 0
           })
+          showEmbed()
           const paywallLine = document.querySelector('.paywall-line')
           if (paywallLine) paywallLine.remove()
           this.setConfirmPurchaseArticleModal({ isShow: false })
