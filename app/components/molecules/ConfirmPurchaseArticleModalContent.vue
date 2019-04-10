@@ -22,7 +22,11 @@
     <span class="error-message">
       {{ errorMessage }}
     </span>
-    <app-button class="purchase-button" :disabled="!isPurchasable" @click="purchase">
+    <app-button
+      class="purchase-button"
+      :disabled="!isPurchasable || isProcessing"
+      @click="purchase"
+    >
       購入する※取り消し不可
     </app-button>
   </div>
@@ -42,7 +46,8 @@ export default {
   data() {
     return {
       errorMessage: '',
-      isPurchasable: true
+      isPurchasable: true,
+      isProcessing: false
     }
   },
   async mounted() {
@@ -66,9 +71,12 @@ export default {
   methods: {
     async purchase() {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
         this.isPurchasable = await this.checkIsPurchasable()
         if (!this.isPurchasable) {
           this.errorMessage = 'ALISが不足しています'
+          this.isProcessing = false
           return
         }
         const status = await this.purchaseArticle({
@@ -98,6 +106,8 @@ export default {
         } else {
           this.errorMessage = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
         }
+      } finally {
+        this.isProcessing = false
       }
     },
     async checkIsPurchasable() {
