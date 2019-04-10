@@ -603,7 +603,7 @@ export default {
   }
 
   .submit {
-    margin: 0 auto 30px;
+    margin: 0 auto 70px;
   }
 }
 
