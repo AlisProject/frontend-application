@@ -7,7 +7,7 @@ import { mapGetters, mapActions } from 'vuex'
 import BlankPage from '~/components/pages/BlankPage'
 import ArticleDetailV1 from '~/components/pages/ArticleDetailV1'
 import ArticleDetailV2 from '~/components/pages/ArticleDetailV2'
-import { htmlDecode, isV2 } from '~/utils/article'
+import { htmlDecode, isV2, showEmbed } from '~/utils/article'
 
 export default {
   components: {
@@ -87,6 +87,7 @@ export default {
         await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
         const paywallLine = document.querySelector('.paywall-line')
         if (paywallLine) paywallLine.remove()
+        showEmbed()
       }
     } else {
       this.setIsLikedArticle({ liked: false })
