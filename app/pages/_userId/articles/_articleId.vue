@@ -73,6 +73,7 @@ export default {
         if (paywallLine) {
           paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
         }
+        showEmbed()
         return
       }
 
