@@ -7,7 +7,7 @@
       </div>
     </nav>
     <div class="area-purchased-articles">
-      <p v-if="purchasedArticles.articles.length === 0" class="no-result-message">
+      <p v-if="!hasPurchasedArticle" class="no-result-message">
         購入済みの記事が存在しません。
       </p>
       <search-article-card-list :articles="purchasedArticles.articles" />
@@ -38,6 +38,11 @@ export default {
     }
   },
   computed: {
+    hasPurchasedArticle() {
+      return (
+        this.purchasedArticles.hasLastEvaluatedKey || this.purchasedArticles.articles.length !== 0
+      )
+    },
     ...mapGetters('article', ['purchasedArticles'])
   },
   mounted() {

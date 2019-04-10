@@ -824,9 +824,6 @@ const actions = {
         '/me/articles/purchased',
         { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
       )
-      commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
-        lastEvaluatedKey: LastEvaluatedKey || null
-      })
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const [userInfo, alisToken] = await Promise.all([
@@ -836,6 +833,9 @@ const actions = {
           return { ...article, userInfo, alisToken }
         })
       )
+      commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || null
+      })
       commit(types.SET_PURCHASED_ARTICLES, { articles: articlesWithData })
     } catch (error) {
       return Promise.reject(error)
