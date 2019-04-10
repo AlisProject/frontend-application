@@ -73,7 +73,7 @@
           {{ errorMessage }}
         </span>
       </div>
-      <app-button class="submit" :disabled="!publishable" @click="publish">
+      <app-button class="submit" :disabled="!publishable || hasPriceError" @click="publish">
         {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
       </app-button>
     </div>
@@ -268,12 +268,11 @@ export default {
         (!this.isEditedTitle || !this.isEditedBody) &&
         !this.isSaving &&
         !this.isInvalidTag &&
-        !this.publishingArticle &&
-        !this.hasPriceError
+        !this.publishingArticle
       )
     },
     hasPriceError() {
-      return this.errorMessage !== ''
+      return this.paymentType === 'pay' && this.errorMessage !== ''
     },
     ...mapGetters('article', [
       'articleId',

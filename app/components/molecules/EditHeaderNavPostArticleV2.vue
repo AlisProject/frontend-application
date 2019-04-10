@@ -83,7 +83,7 @@
       <app-button
         class="submit"
         :class="{ pay: paymentType === 'pay' }"
-        :disabled="!publishable"
+        :disabled="!publishable || hasPriceError"
         @click="publish"
       >
         {{ paymentType === 'pay' ? '有料エリアを設定する' : '公開する' }}
@@ -316,8 +316,7 @@ export default {
         (!this.isEditedTitle || !this.isEditedBody) &&
         !this.isSaving &&
         !this.isInvalidTag &&
-        !this.publishingArticle &&
-        !this.hasPriceError
+        !this.publishingArticle
       )
     },
     hasPriceError() {
