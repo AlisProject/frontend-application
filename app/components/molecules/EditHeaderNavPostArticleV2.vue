@@ -66,6 +66,14 @@
           </label>
         </div>
       </div>
+      <span v-if="paymentType === 'pay'" class="description">
+        販売金額の10%が<a
+          href="https://intercom.help/alismedia/%E3%81%9D%E3%81%AE%E4%BB%96-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/%E3%83%90%E3%83%BC%E3%83%B3%E3%81%A8%E3%81%AF"
+          class="link"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >バーン</a>されます
+      </span>
       <div v-if="paymentType === 'pay'" class="token-amount-input-box">
         <input
           :value="price"
@@ -601,6 +609,22 @@ export default {
             }
           }
         }
+      }
+    }
+
+    .description {
+      color: #6e6e6e;
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+      text-align: left;
+
+      .link {
+        color: #0086cc;
+        font-size: 12px;
+        text-decoration: none;
       }
     }
 
