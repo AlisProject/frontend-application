@@ -327,7 +327,7 @@ export default {
       }
 
       &:last-child {
-        margin-top: 40px;
+        margin-top: 30px;
       }
 
       .reset-link-style {
