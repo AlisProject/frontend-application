@@ -132,8 +132,8 @@ export default {
         return {
           relayPaused: parseInt(data.slice(-256, -192), 16) > 0,
           minSingleRelayAmount: web3js.utils.toBN('0x' + data.slice(-192, -128)),
-          maxSingleRelayAmount: web3js.utils.toBN('0x' + data.slice(-128, -64)),
-          relayFee: web3js.utils.toBN('0x' + data.slice(-64))
+          maxSingleRelayAmount: web3js.utils.toBN('0x' + data.slice(-128, -64))
+          // relayFee: web3js.utils.toBN('0x' + data.slice(-64))
         }
       } catch (error) {
         console.error(error)
