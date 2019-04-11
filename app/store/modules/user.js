@@ -171,6 +171,53 @@ const state = () => ({
   },
   confirmPurchaseArticleModal: {
     isShow: false
+  },
+  // TODO: mock を削除
+  withdrawalDetails: [
+    {
+      // 入金完了
+      transactionId: '0',
+      finished: true,
+      recipient: '0x0000000000000000000000000000000000000000',
+      amount: 1000000000000000000,
+      fee: 0,
+      timestamp: 1554900000,
+      isDeposit: true
+    },
+    {
+      // 出金完了
+      transactionId: '1',
+      finished: true,
+      recipient: '0x0000000000000000000000000000000000000001',
+      amount: 20000000000000000000,
+      fee: 100000000000000000000,
+      timestamp: 1554900001,
+      isDeposit: false
+    },
+    {
+      // 入金処理中
+      transactionId: '2',
+      finished: false,
+      recipient: '0x0000000000000000000000000000000000000002',
+      amount: 300000000000000000000,
+      fee: 0,
+      timestamp: 1554900002,
+      isDeposit: true
+    },
+    {
+      // 出金処理中
+      transactionId: '3',
+      finished: false,
+      recipient: '0x0000000000000000000000000000000000000003',
+      amount: 4000000000000000000000,
+      fee: 100000000000000000000,
+      timestamp: 1554900003,
+      isDeposit: false
+    }
+  ],
+  withdrawalDetailModal: {
+    isShow: false,
+    transactionId: ''
   }
 })
 
@@ -208,7 +255,17 @@ const getters = {
   firstProcessModal: (state) => state.firstProcessModal,
   mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal,
   selectPayment: (state) => state.selectPayment,
-  confirmPurchaseArticleModal: (state) => state.confirmPurchaseArticleModal
+  confirmPurchaseArticleModal: (state) => state.confirmPurchaseArticleModal,
+  withdrawalDetails: (state) => state.withdrawalDetails,
+  withdrawalDetailModal: (state) => {
+    return {
+      ...state.withdrawalDetailModal,
+      withdrawalDetail: state.withdrawalDetails.find(
+        (withdrawalDetail) =>
+          withdrawalDetail.transactionId === state.withdrawalDetailModal.transactionId
+      )
+    }
+  }
 }
 
 const actions = {
@@ -897,6 +954,9 @@ const actions = {
   },
   setConfirmPurchaseArticleModal({ commit }, { isShow }) {
     commit(types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL, { isShow })
+  },
+  setWithdrawalDetailModal({ commit }, { isShow, transactionId }) {
+    commit(types.SET_WITHDRAWAL_DETAIL_MODAL, { isShow, transactionId })
   }
 }
 
@@ -1198,6 +1258,10 @@ const mutations = {
   },
   [types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL](state, { isShow }) {
     state.confirmPurchaseArticleModal.isShow = isShow
+  },
+  [types.SET_WITHDRAWAL_DETAIL_MODAL](state, { isShow, transactionId }) {
+    state.withdrawalDetailModal.isShow = isShow
+    state.withdrawalDetailModal.transactionId = transactionId
   }
 }
 
