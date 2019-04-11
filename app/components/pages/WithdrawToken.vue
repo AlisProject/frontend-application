@@ -42,12 +42,12 @@
         <app-button
           class="withdraw-button"
           :disabled="!isWithdrawable"
-          @click="handleClickWithdrawConfirm"
+          @click="handleClickConfirmWithdraw"
         >
           出金内容を確認する
         </app-button>
       </div>
-      <div v-if="isConfirmPage && !relayPaused" class="withdraw-confirm-box">
+      <div v-if="isConfirmPage && !relayPaused" class="confirm-withdraw-box">
         <h2 class="title mb20">
           出金内容を確認してください
         </h2>
@@ -213,7 +213,7 @@ export default {
         this.amountErrorMessage = '数字で入力してください'
       }
     },
-    handleClickWithdrawConfirm() {
+    handleClickConfirmWithdraw() {
       if (!this.isWithdrawable) return
       this.isConfirmPage = true
     },
@@ -256,7 +256,7 @@ export default {
 }
 
 .withdraw-box,
-.withdraw-confirm-box {
+.confirm-withdraw-box {
   display: flex;
   flex-direction: column;
   align-items: center;
