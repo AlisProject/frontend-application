@@ -152,7 +152,7 @@ export default {
   min-height: 100vh;
 
   &.is-show-guide {
-    grid-template-rows: 100px minmax(50px, min-content) auto 700px minmax(100px, 1fr) 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) auto 652px minmax(100px, 1fr) 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header                 app-header"

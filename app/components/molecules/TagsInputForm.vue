@@ -199,8 +199,8 @@ export default {
   color: #f06273;
   display: block;
   font-size: 12px;
-  margin-bottom: 22px;
-  min-height: 14px;
+  margin-bottom: 2px;
+  min-height: 26px;
   text-align: left;
 }
 </style>

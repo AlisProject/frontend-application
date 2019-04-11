@@ -60,6 +60,11 @@
           </nuxt-link>
         </li> -->
         <li class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/articles/purchased">
+            購入した記事
+          </nuxt-link>
+        </li>
+        <li class="menu-link">
           <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="menu-link-inner">
             ALISの使い方
           </nuxt-link>

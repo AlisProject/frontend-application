@@ -35,7 +35,7 @@ export default {
   grid-area: article-card-list;
   grid-gap: 30px;
   grid-template-columns: repeat(2, 340px);
-  grid-template-rows: repeat(auto-fill, 340px);
+  grid-template-rows: repeat(auto-fill, 326px);
 }
 
 @media screen and (max-width: 920px) {

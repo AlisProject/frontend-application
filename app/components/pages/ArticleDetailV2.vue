@@ -1,7 +1,7 @@
 <template>
   <div class="article-container">
     <app-header />
-    <div class="area-article v2-content">
+    <div class="area-article v2-content" :class="{ 'is-show-paypart': isShowPaypart }">
       <no-ssr>
         <article-header :article="article" :topic="topic" :is-current-user="isCurrentUser" />
       </no-ssr>
@@ -9,6 +9,9 @@
         {{ decodedTitle }}
       </h1>
       <div class="area-content ck-content" v-html="article.body" />
+      <no-ssr>
+        <article-detail-paypart v-if="isShowPaypart" :article="article" />
+      </no-ssr>
       <article-tags :tags="article.tags" />
       <article-footer-actions
         :article-id="article.article_id"
@@ -39,6 +42,7 @@ import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
 import ArticleTags from '../molecules/ArticleTags'
+import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
 import AppFooter from '../organisms/AppFooter'
@@ -53,6 +57,7 @@ export default {
     ArticleSubInfos,
     AuthorInfo,
     ArticleTags,
+    ArticleDetailPaypart,
     ArticleCommentForm,
     ArticleComments,
     AppFooter
@@ -69,6 +74,10 @@ export default {
   },
   mounted() {
     showEmbed()
+    const paywallLine = document.querySelector('.paywall-line')
+    if (!paywallLine) return
+    paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
+    if (this.isPurchased) paywallLine.remove()
   },
   beforeDestroy() {
     this.resetArticleCommentsLastEvaluatedKey()
@@ -83,7 +92,13 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle']),
+    isPurchased() {
+      return this.purchasedArticleIds.includes(this.article.article_id)
+    },
+    isShowPaypart() {
+      return !!this.article.price && !this.isPurchased && !this.isCurrentUser
+    },
+    ...mapGetters('article', ['likesCount', 'isLikedArticle', 'purchasedArticleIds']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
@@ -131,6 +146,19 @@ export default {
     'article-sub-infos'
     'footer-actions'
     'author-info   ';
+
+  &.is-show-paypart {
+    /* prettier-ignore */
+    grid-template-areas:
+    'header        '
+    'title         '
+    'content       '
+    'paypart       '
+    'tags          '
+    'article-sub-infos'
+    'footer-actions'
+    'author-info   ';
+  }
 }
 
 .area-title {
@@ -182,11 +210,104 @@ export default {
       '...            article-sub-infos ...'
       '...            author-info       ...           '
       'footer-actions footer-actions    footer-actions';
+
+    &.is-show-paypart {
+      /* prettier-ignore */
+      grid-template-areas:
+        'header         header            header        '
+        '...            title             ...           '
+        '...            content           ...           '
+        'paypart        paypart           paypart       '
+        '...            tags              ...           '
+        '...            article-sub-infos ...'
+        '...            author-info       ...           '
+        'footer-actions footer-actions    footer-actions';
+    }
   }
 
   .area-title {
     font-size: 20px;
     margin: 6px 0 -6px;
+  }
+}
+</style>
+
+<style lang="scss">
+.v2-content {
+  .ck-content {
+    p {
+      &.paywall-line {
+        color: #030303;
+        position: relative;
+        padding: 0 120px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 30px;
+        clear: both;
+
+        &:before,
+        &:after {
+          content: '...........';
+          display: inline-block;
+          font-size: 14px;
+          height: 2px;
+          letter-spacing: 8px;
+          position: absolute;
+          top: -5px;
+          width: 140px;
+        }
+
+        &:before {
+          left: 0;
+        }
+
+        &:after {
+          right: -8px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .v2-content {
+    .ck-content {
+      p {
+        .br {
+          &:before {
+            content: '\A';
+            white-space: pre;
+          }
+        }
+
+        &.paywall-line {
+          color: #030303;
+          font-size: 14px;
+          font-weight: bold;
+          letter-spacing: 0.8px;
+          line-height: 1.5;
+          margin-bottom: 20px;
+          padding: 0;
+          text-align: center;
+
+          &:before,
+          &:after {
+            content: '.....';
+            top: 2px;
+            width: 80px;
+          }
+
+          &:before {
+            left: -10px;
+          }
+
+          &:after {
+            right: -10px;
+          }
+        }
+      }
+    }
   }
 }
 </style>

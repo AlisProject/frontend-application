@@ -1,5 +1,6 @@
 .v2-content,
-.area-editor-container {
+.area-editor-container,
+.area-select-paypart-editor-container {
   .ck-content {
     * {
       &::selection {
@@ -206,7 +207,8 @@
 
 @media screen and (max-width: 640px) {
   .v2-content,
-  .area-editor-container {
+  .area-editor-container,
+  .area-select-paypart-editor-container {
     .ck-content {
       p {
         font-size: 16px;

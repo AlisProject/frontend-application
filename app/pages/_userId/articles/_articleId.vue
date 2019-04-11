@@ -7,7 +7,7 @@ import { mapGetters, mapActions } from 'vuex'
 import BlankPage from '~/components/pages/BlankPage'
 import ArticleDetailV1 from '~/components/pages/ArticleDetailV1'
 import ArticleDetailV2 from '~/components/pages/ArticleDetailV2'
-import { htmlDecode, isV2 } from '~/utils/article'
+import { htmlDecode, isV2, showEmbed } from '~/utils/article'
 
 export default {
   components: {
@@ -23,10 +23,19 @@ export default {
   async fetch({ store, params, error, redirect }) {
     try {
       const { articleId } = params
-      const isCurrentUser =
-        store.state.user.loggedIn && params.userId === store.state.user.currentUser.userId
-      const getArticleType = isCurrentUser ? 'getPublicArticleDetail' : 'getArticleDetail'
+      let getArticleType = 'getArticleDetail'
+      if (process.client) {
+        const loggedIn = store.state.user.loggedIn
+        if (loggedIn) await store.dispatch('article/setPurchasedArticleIds')
+        const isCurrentUser = loggedIn && params.userId === store.state.user.currentUser.userId
+        const isPurchased = loggedIn && store.state.article.purchasedArticleIds.includes(articleId)
 
+        if (isCurrentUser) {
+          getArticleType = 'getPublicArticleDetail'
+        } else if (isPurchased) {
+          getArticleType = 'getPurchaedArticleDetail'
+        }
+      }
       await store.dispatch(`article/${getArticleType}`, { articleId })
       if (params.userId !== store.state.article.article.user_id) {
         redirect(
@@ -60,6 +69,26 @@ export default {
       if (this.isCurrentUser && !this.$store.state.article.isFetchedPublicArticle) {
         await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
         this.$store.dispatch('article/setIsFetchedPublicArticle', { isFetched: true })
+        const paywallLine = document.querySelector('.paywall-line')
+        if (paywallLine) {
+          paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
+        }
+        showEmbed()
+        return
+      }
+
+      await this.$store.dispatch('article/setPurchasedArticleIds')
+      const isPurchased =
+        this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
+      if (
+        isPurchased &&
+        !this.isCurrentUser &&
+        !this.$store.state.article.isFetchedPurchasedArticle
+      ) {
+        await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
+        const paywallLine = document.querySelector('.paywall-line')
+        if (paywallLine) paywallLine.remove()
+        showEmbed()
       }
     } else {
       this.setIsLikedArticle({ liked: false })

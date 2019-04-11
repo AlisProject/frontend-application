@@ -15,6 +15,7 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
+  currentPrice: null,
   suggestedThumbnails: [],
   thumbnail: '',
   isSaving: false,
@@ -55,7 +56,13 @@ const state = () => ({
     articles: [],
     page: 1,
     isLastPage: false
-  }
+  },
+  purchasedArticleIds: [],
+  purchasedArticles: {
+    lastEvaluatedKey: {},
+    articles: []
+  },
+  isFetchedPurchasedArticle: false
 })
 
 const getters = {
@@ -97,7 +104,16 @@ const getters = {
   hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
   isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
   eyecatchArticles: (state) => state.eyecatchArticles,
-  recommendedArticles: (state) => state.recommendedArticles
+  recommendedArticles: (state) => state.recommendedArticles,
+  purchasedArticleIds: (state) => state.purchasedArticleIds,
+  purchasedArticles: (state) => {
+    return {
+      ...state.purchasedArticles,
+      hasLastEvaluatedKey: state.purchasedArticles.lastEvaluatedKey !== null
+    }
+  },
+  currentPrice: (state) => state.currentPrice,
+  isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle
 }
 
 const actions = {
@@ -185,10 +201,11 @@ const actions = {
   async getEditDraftArticle({ commit }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/drafts`)
+      const body = article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
-      commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE, { article: { ...article, body } })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
       commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
@@ -244,20 +261,19 @@ const actions = {
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/public/edit`)
+      // 有料記事本文に含まれる有料エリアを示すラインを削除
+      const body = article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
-      commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE, { article: { ...article, body } })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
       commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
+      commit(types.SET_ARTICLE_CURRENT_PRICE, { price: article.price })
     } catch (error) {
       return Promise.reject(error)
     }
-  },
-  async postNewArticle({ commit }, { article }) {
-    const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts', article)
-    commit(types.SET_ARTICLE_ID, { articleId })
   },
   async putDraftArticle({ commit }, { article, articleId }) {
     await this.$axios.$put(`/me/articles/${articleId}/drafts`, article)
@@ -723,19 +739,111 @@ const actions = {
     commit(types.SET_ARTICLE_ID, { articleId })
     return articleId
   },
-  async publishDraftArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, {
+  async publishDraftArticleWithHeader(
+    { commit },
+    { articleId, topic, tags, eyeCatchUrl, price, paidBody }
+  ) {
+    const params = {
       topic,
       tags,
       eye_catch_url: eyeCatchUrl
-    })
+    }
+    if (price && paidBody) {
+      params.price = price
+      params.paid_body = paidBody
+    }
+    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish_with_header`, params)
   },
-  async republishPublicArticleWithHeader({ commit }, { articleId, topic, tags, eyeCatchUrl }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, {
+  async republishPublicArticleWithHeader(
+    { commit },
+    { articleId, topic, tags, eyeCatchUrl, price, paidBody }
+  ) {
+    const params = {
       topic,
       tags,
       eye_catch_url: eyeCatchUrl
-    })
+    }
+    if (price && paidBody) {
+      params.price = price
+      params.paid_body = paidBody
+    }
+    await this.$axios.$put(`/me/articles/${articleId}/public/republish_with_header`, params)
+  },
+  async setPurchasedArticleIds({ commit }) {
+    try {
+      const { article_ids: articleIds } = await this.$axios.$get(
+        '/me/articles/purchased/article_ids'
+      )
+      commit(types.SET_PURCHASED_ARTICLE_IDS, { articleIds })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getPurchaedArticleDetail({ commit, dispatch }, { articleId }) {
+    try {
+      const article = await this.$axios.$get(`/me/articles/purchased/${articleId}`)
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId }),
+        dispatch('getLikesCount', { articleId }),
+        dispatch('getArticleComments', { articleId })
+      ])
+      commit(types.SET_LIKES_COUNT, { likesCount })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_IS_FETCHED_PURCHASED_ARTICLE, { isFetched: true })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getArticlePrice({ commit }, { articleId }) {
+    try {
+      const { price } = await this.$axios.$get(`/articles/${articleId}/price`)
+      commit(types.UPDATE_ARTICLE_PRICE, { price })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async purchaseArticle({ commit, state }, { articleId, price }) {
+    try {
+      const { status } = await this.$axios.$post(`/me/articles/${articleId}/purchase`, { price })
+      commit(types.SET_PURCHASED_ARTICLE_IDS, {
+        articleIds: [...state.purchasedArticleIds, articleId]
+      })
+      return status
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getPurchasedArticles({ commit, dispatch, getters }) {
+    try {
+      if (!getters.purchasedArticles.hasLastEvaluatedKey) return
+      const {
+        article_id: articleId,
+        sort_key: sortKey
+      } = getters.purchasedArticles.lastEvaluatedKey
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+        '/me/articles/purchased',
+        { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
+      )
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || null
+      })
+      commit(types.SET_PURCHASED_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetCurrentPrice({ commit }) {
+    commit(types.SET_ARTICLE_CURRENT_PRICE, { price: null })
   }
 }
 
@@ -963,6 +1071,24 @@ const mutations = {
   },
   [types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state) {
     state.articleCommentsLastEvaluatedKey = {}
+  },
+  [types.SET_PURCHASED_ARTICLE_IDS](state, { articleIds }) {
+    state.purchasedArticleIds = articleIds
+  },
+  [types.UPDATE_ARTICLE_PRICE](state, { price }) {
+    state.article.price = price
+  },
+  [types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.purchasedArticles.lastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_PURCHASED_ARTICLES](state, { articles }) {
+    state.purchasedArticles.articles.push(...articles)
+  },
+  [types.SET_ARTICLE_CURRENT_PRICE](state, { price }) {
+    state.currentPrice = price || null
+  },
+  [types.SET_IS_FETCHED_PURCHASED_ARTICLE](state, { isFetched }) {
+    state.isFetchedPurchasedArticle = isFetched
   }
 }
 
