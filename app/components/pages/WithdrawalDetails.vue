@@ -10,6 +10,7 @@
         <div class="withdrawal-details">
           <div
             v-for="(withdrawalDetail, i) in withdrawalDetails"
+            :key="withdrawalDetail.txHash"
             class="withdrawal-detail"
             @click="showWithdrawalDetailModal(i)"
           >
@@ -64,10 +65,11 @@ export default {
     }
   },
   async mounted() {
+    const { privateEthAddress } = this.currentUser
     // TODO: applyRelayEvents, applyRelayTimestamp, relayEvents を取得するためのAPIを叩く
     const [depositHistory, withdrawHistory] = await Promise.all([
-      this.getDepositHistory(this.currentUser.privateEthAddress),
-      this.getWithdrawHistory(this.currentUser.privateEthAddress)
+      this.getDepositHistory(privateEthAddress),
+      this.getWithdrawHistory(privateEthAddress)
     ])
     const withdrawalDetails = [...depositHistory, ...withdrawHistory]
     this.setWithdrawalDetails({ withdrawalDetails })
@@ -150,15 +152,9 @@ export default {
           continue
         }
 
-        history.push({
-          finished: completedRelayTxHashs.has(parsedRelayEvent.txHash),
-          recipient: parsedRelayEvent.recipient,
-          sender: parsedRelayEvent.sender,
-          amount: parsedRelayEvent.amount,
-          fee: parsedRelayEvent.fee,
-          timestamp: parsedRelayEvent.timestamp,
-          isDeposit
-        })
+        const finished = completedRelayTxHashs.has(parsedRelayEvent.txHash)
+
+        history.push({ ...parsedRelayEvent, finished, isDeposit })
       }
 
       return history
@@ -170,8 +166,7 @@ export default {
         amount: parseInt(relayEvent.data.slice(2, 66), 16),
         fee: parseInt(relayEvent.data.slice(66, 130), 16),
         timestamp: parseInt(relayEvent.data.slice(130, 194), 16),
-        txHash: relayEvent.transactionHash,
-        blockNumber: relayEvent.blockNumber
+        txHash: relayEvent.transactionHash
       }
     },
     _parseApplyRelayEvent(applyRelayEvent) {
