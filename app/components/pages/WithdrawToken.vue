@@ -8,9 +8,7 @@
           出金内容を入力してください
         </h2>
         <div class="address-input-box">
-          <div class="label">
-            宛先
-          </div>
+          <div class="label" v-text="'宛先'" />
           <input
             :value="address"
             class="address-input"
@@ -24,9 +22,7 @@
           </span>
         </div>
         <div class="token-amount-input-box">
-          <div class="label">
-            出金額
-          </div>
+          <div class="label" v-text="'出金額'" />
           <span class="ownwd-balance-box">
             保有ALIS：<span class="ownwd-balance">{{ formattedAlisToken }} ALIS</span>
           </span>
@@ -62,29 +58,21 @@
         <p class="description">
           以下の内容で間違えがないか、必ずご確認ください※間違えて出金したALISは返還できかねます
         </p>
-        <div class="label">
-          宛先
-        </div>
+        <div class="label" v-text="'宛先'" />
         <div class="confirm-input">
           {{ address }}
         </div>
-        <div class="label">
-          出金額
-        </div>
+        <div class="label" v-text="'出金額'" />
         <div class="confirm-input">
           {{ amount }}
           <span class="unit">ALIS</span>
         </div>
-        <div class="label">
-          手数料
-        </div>
+        <div class="label" v-text="'手数料'" />
         <div class="confirm-input">
           {{ commission }}
           <span class="unit">ALIS</span>
         </div>
-        <div class="label">
-          合計額（出金額+手数料）
-        </div>
+        <div class="label" v-text="'合計額（出金額+手数料）'" />
         <div class="confirm-input">
           {{ totalAmount }}
           <span class="unit">ALIS</span>
