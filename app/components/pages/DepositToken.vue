@@ -133,14 +133,27 @@ export default {
         if (!web3js) {
           web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_END_POINT))
         }
-        const data = await web3js.eth.call({
+        const minSingleRelayAmountPromise = web3js.eth.call({
           to: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
-          data: '0xc0da1e68'
+          data: '0x9f29ffdf'
         })
+        const maxSingleRelayAmountPromise = web3js.eth.call({
+          to: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
+          data: '0x34f89513'
+        })
+        const relayPausedPromise = web3js.eth.call({
+          to: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
+          data: '0x69a08a26'
+        })
+        const [minSingleRelayAmount, maxSingleRelayAmount, relayPaused] = await Promise.all([
+          minSingleRelayAmountPromise,
+          maxSingleRelayAmountPromise,
+          relayPausedPromise
+        ])
         return {
-          relayPaused: parseInt(data.slice(-256, -192), 16) > 0,
-          minSingleRelayAmount: '0x' + data.slice(-192, -128),
-          maxSingleRelayAmount: '0x' + data.slice(-128, -64)
+          minSingleRelayAmount,
+          maxSingleRelayAmount,
+          relayPaused: parseInt(relayPaused, 16) > 0
         }
       } catch (error) {
         console.error(error)
