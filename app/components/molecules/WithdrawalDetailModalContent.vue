@@ -40,8 +40,12 @@
     </template>
     <div v-if="!withdrawalDetail.finished" class="not-finished-description">
       {{ withdrawalDetail.isDeposit | showPaymentType }}の処理が24時間経過後も完了しない場合は<br>
-      <!-- TODO: リンクを追加 -->
-      <a href="#" target="_blank" rel="noopener noreferrer" class="link">こちら</a>からお問い合わせください
+      <a
+        href="https://intercom.help/alismedia"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link"
+      >こちら</a>からお問い合わせください
     </div>
     <button class="close-button" @click="closeModal">
       もどる
