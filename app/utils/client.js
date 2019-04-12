@@ -4,7 +4,9 @@ export function isPageScrollable() {
 }
 
 export function isScrollBottom() {
+  const downloadBarHeight = 50
   const isScrollBottom =
-    window.innerHeight + Math.ceil(window.pageYOffset) >= document.body.offsetHeight
+    window.innerHeight + Math.ceil(window.pageYOffset) >=
+    document.body.offsetHeight - downloadBarHeight
   return isScrollBottom
 }
