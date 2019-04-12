@@ -135,7 +135,7 @@ export default {
     _createHistory(relayEvents, applyRelayEvents, applyRelayTimestamp, isDeposit) {
       // 完了済みのRelayトランザクションのハッシュ値をセットに保持
       const completedRelayTxHashs = new Set()
-      for (applyRelayEvent of applyRelayEvents) {
+      for (const applyRelayEvent of applyRelayEvents) {
         const parsedApplyRelayEvent = this._parseApplyRelayEvent(applyRelayEvent)
         completedRelayTxHashs.add(parsedApplyRelayEvent.relayTxHash)
       }
