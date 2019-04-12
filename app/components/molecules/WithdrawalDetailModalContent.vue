@@ -17,10 +17,10 @@
       }}{{ withdrawalDetail.finished | showProcessType }}
     </div>
     <div class="label">
-      宛先
+      {{ withdrawalDetail.isDeposit ? '差出人' : '宛先' }}
     </div>
     <div class="confirm-input">
-      {{ withdrawalDetail.recipient }}
+      {{ withdrawalDetail.isDeposit ? withdrawalDetail.sender : withdrawalDetail.recipient }}
     </div>
     <div class="label">
       {{ withdrawalDetail.isDeposit | showPaymentType }}額

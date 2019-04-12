@@ -177,7 +177,8 @@ const state = () => ({
     {
       // 入金完了
       finished: true,
-      recipient: '0x0000000000000000000000000000000000000000',
+      recipient: '0x00000000000000000000000000000000000000r0',
+      sender: '0x00000000000000000000000000000000000000s0',
       amount: 1000000000000000000,
       fee: 0,
       timestamp: 1554900000,
@@ -186,7 +187,8 @@ const state = () => ({
     {
       // 出金完了
       finished: true,
-      recipient: '0x0000000000000000000000000000000000000001',
+      recipient: '0x00000000000000000000000000000000000000r1',
+      sender: '0x00000000000000000000000000000000000000s1',
       amount: 20000000000000000000,
       fee: 100000000000000000000,
       timestamp: 1554900001,
@@ -195,7 +197,8 @@ const state = () => ({
     {
       // 入金処理中
       finished: false,
-      recipient: '0x0000000000000000000000000000000000000002',
+      recipient: '0x00000000000000000000000000000000000000r2',
+      sender: '0x00000000000000000000000000000000000000s2',
       amount: 300000000000000000000,
       fee: 0,
       timestamp: 1554900002,
@@ -204,7 +207,8 @@ const state = () => ({
     {
       // 出金処理中
       finished: false,
-      recipient: '0x0000000000000000000000000000000000000003',
+      recipient: '0x00000000000000000000000000000000000000r3',
+      sender: '0x00000000000000000000000000000000000000s3',
       amount: 4000000000000000000000,
       fee: 100000000000000000000,
       timestamp: 1554900003,
@@ -252,7 +256,7 @@ const getters = {
   mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal,
   selectPayment: (state) => state.selectPayment,
   confirmPurchaseArticleModal: (state) => state.confirmPurchaseArticleModal,
-  withdrawalDetails: (state) => state.withdrawalDetails,
+  withdrawalDetails: (state) => state.withdrawalDetails.sort((a, b) => b.timestamp - a.timestamp),
   withdrawalDetailModal: (state) => {
     return {
       ...state.withdrawalDetailModal,
@@ -950,6 +954,9 @@ const actions = {
   },
   setWithdrawalDetailModal({ commit }, { isShow, index }) {
     commit(types.SET_WITHDRAWAL_DETAIL_MODAL, { isShow, index })
+  },
+  setWithdrawalDetails({ commit }, { withdrawalDetails }) {
+    commit(types.SET_WITHDRAWAL_DETAILS, { withdrawalDetails })
   }
 }
 
@@ -1255,6 +1262,9 @@ const mutations = {
   [types.SET_WITHDRAWAL_DETAIL_MODAL](state, { isShow, index }) {
     state.withdrawalDetailModal.isShow = isShow
     state.withdrawalDetailModal.index = index
+  },
+  [types.SET_WITHDRAWAL_DETAILS](state, { withdrawalDetails }) {
+    state.withdrawalDetails = withdrawalDetails
   }
 }
 

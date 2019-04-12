@@ -39,12 +39,17 @@
 </template>
 
 <script>
+import Web3 from 'web3'
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppFooter from '../organisms/AppFooter'
 import { formatDateWithTime } from '~/utils/format'
 import { showPaymentType, showProcessType, showFormattedAmount } from '~/utils/wallet'
+
+const HISTORY_DAYS = 14
+const PUBLIC_CHAIN_AVERAGE_BLOCK_TIME = 30
+const PRIVATE_CHAIN_AVERAGE_BLOCK_TIME = 30
 
 export default {
   components: {
@@ -58,14 +63,126 @@ export default {
       hasWithdrawalDetails: true
     }
   },
+  async mounted() {
+    // TODO: applyRelayEvents, applyRelayTimestamp, relayEvents を取得するためのAPIを叩く
+    const [depositHistory, withdrawHistory] = await Promise.all([
+      this.getDepositHistory(this.currentUser.privateEthAddress),
+      this.getWithdrawHistory(this.currentUser.privateEthAddress)
+    ])
+    const withdrawalDetails = [...depositHistory, ...withdrawHistory]
+    this.setWithdrawalDetails({ withdrawalDetails })
+  },
   computed: {
-    ...mapGetters('user', ['withdrawalDetails'])
+    ...mapGetters('user', ['currentUser', 'withdrawalDetails'])
   },
   methods: {
+    async getDepositHistory(privateChainUserAddress) {
+      const web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_END_POINT))
+
+      // パブリックチェーン側のRelayイベントを取得
+      const relayBlockDiff = Math.ceil(
+        (HISTORY_DAYS * 24 * 60 * 60) / PUBLIC_CHAIN_AVERAGE_BLOCK_TIME
+      )
+      const relayBlockNum = await web3js.eth.getBlockNumber()
+      const relayFromBlockNum = relayBlockNum - relayBlockDiff
+      const relayEvents = await web3js.eth.getPastLogs({
+        topics: [
+          web3js.utils.sha3('Relay(address,address,uint256,uint256,uint256)'),
+          null,
+          '0x' + '0'.repeat(24) + privateChainUserAddress.slice(2, 42).toLowerCase()
+        ],
+        address: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
+        fromBlock: '0x' + Math.max(relayFromBlockNum, 1).toString(16),
+        toBlock: 'latest'
+      })
+
+      // API経由でプライベートチェーン側のApplyRelayイベントとタイムスタンプを取得
+      const applyRelayEvents = [] // TODO:
+      const applyRelayTimestamp = 1 // TODO:
+
+      return this._createHistory(relayEvents, applyRelayEvents, applyRelayTimestamp, true)
+    },
+    async getWithdrawHistory(privateChainUserAddress) {
+      const web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_END_POINT))
+
+      // API経由でプライベートチェーン側のRelayイベントを取得
+      const relayEvents = [] // TODO:
+
+      // パブリックチェーン側のApplyRelayイベントの取得
+      const applyRelayBlockDiff = Math.ceil(
+        (HISTORY_DAYS * 24 * 60 * 60) / PRIVATE_CHAIN_AVERAGE_BLOCK_TIME
+      )
+      const applyRelayBlockNum = await web3js.eth.getBlockNumber()
+      const applyRelayFromBlockNum = applyRelayBlockNum - applyRelayBlockDiff
+      const applyRelayEvents = await web3js.eth.getPastLogs({
+        topics: [
+          web3js.utils.sha3('ApplyRelay(address,address,uint256,bytes32)'),
+          '0x' + '0'.repeat(24) + privateChainUserAddress.slice(2, 42).toLowerCase()
+        ],
+        address: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
+        fromBlock: '0x' + Math.max(applyRelayFromBlockNum, 1).toString(16),
+        toBlock: 'latest'
+      })
+      const applyRelayFromBlock = await web3js.eth.getBlock(applyRelayFromBlockNum)
+
+      return this._createHistory(
+        relayEvents,
+        applyRelayEvents,
+        applyRelayFromBlock.timestamp,
+        false
+      )
+    },
+    _createHistory(relayEvents, applyRelayEvents, applyRelayTimestamp, isDeposit) {
+      // 完了済みのRelayトランザクションのハッシュ値をセットに保持
+      const completedRelayTxHashs = new Set()
+      for (applyRelayEvent of applyRelayEvents) {
+        const parsedApplyRelayEvent = this._parseApplyRelayEvent(applyRelayEvent)
+        completedRelayTxHashs.add(parsedApplyRelayEvent.relayTxHash)
+      }
+
+      // 履歴の生成
+      const history = []
+      for (const relayEvent of relayEvents) {
+        const parsedRelayEvent = this._parseRelayEvent(relayEvent)
+
+        // ApplyRelayイベントを取得した開始ブロックの日時より古いRelayイベントは無視する
+        if (parsedRelayEvent.timestamp < applyRelayTimestamp) {
+          continue
+        }
+
+        history.push({
+          finished: completedRelayTxHashs.has(parsedRelayEvent.txHash),
+          recipient: parsedRelayEvent.recipient,
+          sender: parsedRelayEvent.sender,
+          amount: parsedRelayEvent.amount,
+          fee: parsedRelayEvent.fee,
+          timestamp: parsedRelayEvent.timestamp,
+          isDeposit
+        })
+      }
+
+      return history
+    },
+    _parseRelayEvent(relayEvent) {
+      return {
+        sender: '0x' + relayEvent.topics[1].slice(-40),
+        recipient: '0x' + relayEvent.topics[2].slice(-40),
+        amount: parseInt(relayEvent.data.slice(2, 66), 16),
+        fee: parseInt(relayEvent.data.slice(66, 130), 16),
+        timestamp: parseInt(relayEvent.data.slice(130, 194), 16),
+        txHash: relayEvent.transactionHash,
+        blockNumber: relayEvent.blockNumber
+      }
+    },
+    _parseApplyRelayEvent(applyRelayEvent) {
+      return {
+        relayTxHash: '0x' + applyRelayEvent.data.slice(66, 66 + 64)
+      }
+    },
     showWithdrawalDetailModal(index) {
       this.setWithdrawalDetailModal({ isShow: true, index })
     },
-    ...mapActions('user', ['setWithdrawalDetailModal'])
+    ...mapActions('user', ['setWithdrawalDetails', 'setWithdrawalDetailModal'])
   },
   filters: {
     formatDateWithTime,
