@@ -209,6 +209,7 @@ export default {
       this.isConfirmPage = true
     },
     handleClickWithdraw() {
+      // TODO: APIコールによる出金処理を追加
       this.sendNotification({
         text: '出金を受け付けました'
       })
@@ -217,7 +218,6 @@ export default {
       this.isConfirmPage = false
     },
     handleClickBack() {
-      // TODO: APIコールによる出金処理を追加
       this.isConfirmPage = false
     },
     ...mapActions({
