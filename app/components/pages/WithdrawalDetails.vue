@@ -9,9 +9,9 @@
         </p>
         <div class="withdrawal-details">
           <div
-            v-for="withdrawalDetail in withdrawalDetails"
+            v-for="(withdrawalDetail, i) in withdrawalDetails"
             class="withdrawal-detail"
-            @click="showWithdrawalDetailModal(withdrawalDetail.transactionId)"
+            @click="showWithdrawalDetailModal(i)"
           >
             <div class="timestamp">
               {{ withdrawalDetail.timestamp | formatDateWithTime }}
@@ -62,8 +62,8 @@ export default {
     ...mapGetters('user', ['withdrawalDetails'])
   },
   methods: {
-    showWithdrawalDetailModal(transactionId) {
-      this.setWithdrawalDetailModal({ isShow: true, transactionId })
+    showWithdrawalDetailModal(index) {
+      this.setWithdrawalDetailModal({ isShow: true, index })
     },
     ...mapActions('user', ['setWithdrawalDetailModal'])
   },
