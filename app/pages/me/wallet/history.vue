@@ -4,10 +4,14 @@
 
 <script>
 import WithdrawalDetails from '~/components/pages/WithdrawalDetails'
+import { isMobile } from '~/utils/device'
 
 export default {
   components: {
     WithdrawalDetails
+  },
+  mounted() {
+    if (isMobile()) this.$router.replace('/')
   }
 }
 </script>
