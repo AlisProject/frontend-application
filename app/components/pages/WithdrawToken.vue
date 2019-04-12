@@ -193,13 +193,15 @@ export default {
           return
         }
         const formattedMaxTokenAmount = new BigNumber(MAXIMUM_WITHDRAWABLE_TOKEN_AMOUNT)
-        const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThan(
+        const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThanOrEqualTo(
           formattedMaxTokenAmount
         )
         const formattedMinTokenAmount = new BigNumber(MINIMUM_WITHDRAWABLE_TOKEN_AMOUNT)
-        const isLessThanMinTipToken = formattedTipTokenAmount.isLessThan(formattedMinTokenAmount)
+        const isLessThanMinTipToken = formattedTipTokenAmount.isLessThanOrEqualTo(
+          formattedMinTokenAmount
+        )
         if (hasExceededMaxTipToken || isLessThanMinTipToken) {
-          this.amountErrorMessage = '一度に出金できるALISは10,000ALIS未満となります'
+          this.amountErrorMessage = '一度に出金できるALISは10,000ALIS以下となります'
           return
         }
         const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
