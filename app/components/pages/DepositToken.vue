@@ -27,13 +27,12 @@
             入金額
           </div>
           <input
-            :value="balance"
+            :value="amount"
             class="token-amount-input"
             :class="{ error: errorMessage }"
             type="number"
             placeholder="1000"
             min="1"
-            max="10000"
             @input="onInput"
           >
           <span class="token-amount-input-unit">ALIS</span>
@@ -44,7 +43,7 @@
         <p class="description">
           入金はMETAMASKで処理が行われます
         </p>
-        <app-button class="deposit-button" @click="handleClickDeposit">
+        <app-button class="deposit-button" :disabled="!isDepositable" @click="handleClickDeposit">
           入金する
         </app-button>
       </div>
@@ -65,10 +64,14 @@
 import Web3 from 'web3'
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { BigNumber } from 'bignumber.js'
 import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
+import { addDigitSeparator, checkDecimalPoint } from '~/utils/wallet'
+
+const formatNumber = 10 ** 18
 
 export default {
   components: {
@@ -82,7 +85,7 @@ export default {
       isMetaMaskInstalled: false,
       isLoggedInToMetaMask: false,
       errorMessage: '',
-      balance: null,
+      amount: null,
       bridgeInfo: null,
       relayPaused: false
     }
@@ -92,6 +95,9 @@ export default {
     if (this.isMetaMaskInstalled) await this.initMetaMaskAndBridge()
   },
   computed: {
+    isDepositable() {
+      return this.amount !== null && this.amount !== '' && this.errorMessage === ''
+    },
     ...mapGetters('user', ['currentUser'])
   },
   methods: {
@@ -133,9 +139,8 @@ export default {
         })
         return {
           relayPaused: parseInt(data.slice(-256, -192), 16) > 0,
-          minSingleRelayAmount: web3js.utils.toBN('0x' + data.slice(-192, -128)),
-          maxSingleRelayAmount: web3js.utils.toBN('0x' + data.slice(-128, -64))
-          // relayFee: web3js.utils.toBN('0x' + data.slice(-64))
+          minSingleRelayAmount: '0x' + data.slice(-192, -128),
+          maxSingleRelayAmount: '0x' + data.slice(-128, -64)
         }
       } catch (error) {
         console.error(error)
@@ -253,21 +258,40 @@ export default {
     },
     onInput(event) {
       try {
-        this.balance = event.target.value
-        if (this.balance === '') {
+        this.amount = event.target.value
+        if (this.amount === '') {
           this.errorMessage = ''
           return
         }
-        const amountWei = window.web3.utils.toBN(window.web3.utils.toWei(this.balance))
-        if (
-          amountWei < this.bridgeInfo.minSingleRelayAmount ||
-          amountWei > this.bridgeInfo.maxSingleRelayAmount
-        ) {
-          this.errorMessage = '10,000ALIS以内で設定してください'
+        const formattedAmount = new BigNumber(this.amount)
+        // 小数点以下の桁数が3桁を超えているか確認
+        const isNotInputablePlaceAfterDecimalPoint = checkDecimalPoint(
+          formattedAmount.toString(10),
+          3
+        )
+        if (isNotInputablePlaceAfterDecimalPoint) {
+          this.errorMessage = '小数点3桁までの範囲で入力してください'
           return
         }
-        if (amountWei.mod(window.web3.utils.toBN(window.web3.utils.toWei('0.001'))) > 0) {
-          this.errorMessage = '入金額は小数点第3桁まで入力可能です'
+        const formattedMaxSingleRelayAmount = new BigNumber(
+          this.bridgeInfo.maxSingleRelayAmount,
+          16
+        ).div(formatNumber)
+        const hasExceededMaxSingleRelayAmount = formattedAmount.isGreaterThan(
+          formattedMaxSingleRelayAmount
+        )
+        const formattedMinSingleRelayAmount = new BigNumber(
+          this.bridgeInfo.minSingleRelayAmount,
+          16
+        ).div(formatNumber)
+        const isLessThanMinSingleRelayAmount = formattedAmount.isLessThan(
+          formattedMinSingleRelayAmount
+        )
+        const maxSingleRelayAmountForUser = addDigitSeparator(
+          formattedMaxSingleRelayAmount.toString()
+        )
+        if (hasExceededMaxSingleRelayAmount || isLessThanMinSingleRelayAmount) {
+          this.errorMessage = `${maxSingleRelayAmountForUser}ALIS以内で設定してください`
           return
         }
         this.errorMessage = ''
@@ -278,16 +302,12 @@ export default {
     async handleClickDeposit() {
       if (!this.isLoggedInToMetaMask) await this.initMetaMaskAndBridge()
       if (this.errorMessage !== '') return
-      if (this.balance === '' || this.balance === null) {
-        this.errorMessage = '数値で入力してください'
-        return
-      }
-      const amountWei = window.web3.utils.toBN(window.web3.utils.toWei(this.balance))
+      const amountWei = window.web3.utils.toBN(window.web3.utils.toWei(this.amount))
       const recipient = this.currentUser.privateEthAddress
       this.deposit(recipient, amountWei)
         .then(() => {
           this.sendNotification({
-            text: '入金のトランザクションを発行しました。詳細はMETAMASKでご確認ください。'
+            text: '入金のトランザクションを発行しました。詳細はMETAMASKでご確認ください'
           })
         })
         .catch((e) => {

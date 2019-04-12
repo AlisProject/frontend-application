@@ -17,7 +17,8 @@
             :class="{ error: addressErrorMessage }"
             type="text"
             placeholder="0x98105Ee422f3d690C612..."
-            @input="onInputAddress">
+            @input="onInputAddress"
+          >
           <span class="error-message">
             {{ addressErrorMessage }}
           </span>
@@ -36,7 +37,6 @@
             type="number"
             placeholder="1000"
             min="1"
-            max="10000"
             @input="onInputAmount"
           >
           <span class="token-amount-input-unit">ALIS</span>
@@ -117,7 +117,9 @@ import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
+import { checkDecimalPoint } from '~/utils/wallet'
 
+// TODO: API経由で値を取得
 const MAXIMUM_WITHDRAWABLE_TOKEN_AMOUNT = '10000'
 const MINIMUM_WITHDRAWABLE_TOKEN_AMOUNT = '0.001'
 
@@ -184,40 +186,31 @@ export default {
           return
         }
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
-        const formattedTipTokenAmount = new BigNumber(this.amount)
-        if (formattedTipTokenAmount.isEqualTo(0)) {
-          this.amountErrorMessage = '出金するALISを入力してください'
-          return
-        }
-        const tipTokenAmountForUser = formattedTipTokenAmount.toString(10)
-        // 小数点以下の桁数が10桁を超えているか確認
-        const isNotInputablePlaceAfterDecimalPoint =
-          tipTokenAmountForUser &&
-          tipTokenAmountForUser.includes('.') &&
-          tipTokenAmountForUser.split('.')[1].length > 3
-
+        const formattedAmount = new BigNumber(this.amount)
+        // 小数点以下の桁数が3桁を超えているか確認
+        const isNotInputablePlaceAfterDecimalPoint = checkDecimalPoint(
+          formattedAmount.toString(10),
+          3
+        )
         if (isNotInputablePlaceAfterDecimalPoint) {
           this.amountErrorMessage = '小数点3桁までの範囲で入力してください'
           return
         }
         const formattedMaxTokenAmount = new BigNumber(MAXIMUM_WITHDRAWABLE_TOKEN_AMOUNT)
-        const hasExceededMaxTipToken = formattedTipTokenAmount.isGreaterThanOrEqualTo(
+        const hasExceededMaxSingleRelayAmount = formattedAmount.isGreaterThan(
           formattedMaxTokenAmount
         )
         const formattedMinTokenAmount = new BigNumber(MINIMUM_WITHDRAWABLE_TOKEN_AMOUNT)
-        const isLessThanMinTipToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-          formattedMinTokenAmount
-        )
-        if (hasExceededMaxTipToken || isLessThanMinTipToken) {
+        const isLessThanMinSingleRelayAmount = formattedAmount.isLessThan(formattedMinTokenAmount)
+        if (hasExceededMaxSingleRelayAmount || isLessThanMinSingleRelayAmount) {
           this.amountErrorMessage = '一度に出金できるALISは10,000ALIS以下となります'
           return
         }
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
-        if (!isAddableToken) {
+        const hasExceededAmount = formattedAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
+        if (!hasExceededAmount) {
           this.amountErrorMessage = 'ALISが不足しています'
           return
         }
-
         this.amountErrorMessage = ''
       } catch (error) {
         this.amountErrorMessage = '数字で入力してください'
