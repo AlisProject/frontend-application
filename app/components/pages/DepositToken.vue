@@ -29,7 +29,9 @@
           <input
             :value="balance"
             class="token-amount-input"
+            :class="{ error: errorMessage }"
             type="number"
+            placeholder="1000"
             min="1"
             max="10000"
             @input="onInput"
@@ -391,7 +393,7 @@ export default {
     line-height: 28px;
     padding: 10px 40px 10px 12px;
     width: 400px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
@@ -399,8 +401,16 @@ export default {
       margin: 0;
     }
 
+    &::-webkit-input-placeholder {
+      color: #cecece;
+    }
+
     &:focus {
       outline: 0;
+    }
+
+    &.error {
+      box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
     }
   }
 
@@ -409,7 +419,7 @@ export default {
     color: #030303;
     font-size: 10px;
     font-weight: bold;
-    bottom: 48px;
+    bottom: 52px;
     right: 10px;
   }
 

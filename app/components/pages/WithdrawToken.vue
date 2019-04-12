@@ -11,7 +11,13 @@
           <div class="label">
             宛先
           </div>
-          <input :value="address" class="address-input" type="text" @input="onInputAddress">
+          <input
+            :value="address"
+            class="address-input"
+            :class="{ error: addressErrorMessage }"
+            type="text"
+            placeholder="0x98105Ee422f3d690C612..."
+            @input="onInputAddress">
           <span class="error-message">
             {{ addressErrorMessage }}
           </span>
@@ -26,7 +32,9 @@
           <input
             :value="amount"
             class="token-amount-input"
+            :class="{ error: amountErrorMessage }"
             type="number"
+            placeholder="1000"
             min="1"
             max="10000"
             @input="onInputAmount"
@@ -287,7 +295,7 @@ export default {
   .ownwd-balance-box {
     position: absolute;
     right: 0;
-    bottom: 80px;
+    bottom: 84px;
     font-size: 12px;
     color: #6e6e6e;
 
@@ -306,7 +314,7 @@ export default {
     line-height: 28px;
     padding: 10px 40px 10px 12px;
     width: 400px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 
     &::-webkit-inner-spin-button,
     &::-webkit-outer-spin-button {
@@ -314,8 +322,16 @@ export default {
       margin: 0;
     }
 
+    &::-webkit-input-placeholder {
+      color: #cecece;
+    }
+
     &:focus {
       outline: 0;
+    }
+
+    &.error {
+      box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
     }
   }
 
@@ -324,7 +340,7 @@ export default {
     color: #030303;
     font-size: 10px;
     font-weight: bold;
-    bottom: 39px;
+    bottom: 43px;
     right: 10px;
   }
 }
@@ -348,7 +364,7 @@ export default {
   line-height: 28px;
   padding: 10px 12px;
   width: 400px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 
   &::-webkit-inner-spin-button,
   &::-webkit-outer-spin-button {
@@ -356,8 +372,16 @@ export default {
     margin: 0;
   }
 
+  &::-webkit-input-placeholder {
+    color: #cecece;
+  }
+
   &:focus {
     outline: 0;
+  }
+
+  &.error {
+    box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
   }
 }
 
