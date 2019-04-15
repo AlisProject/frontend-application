@@ -1,5 +1,5 @@
 <template>
-  <button class="app-button" :disabled="disabled" @click="callback($event)">
+  <button class="app-button" :class="type" :disabled="disabled" @click="callback($event)">
     <slot />
   </button>
 </template>
@@ -10,6 +10,12 @@ export default {
     disabled: {
       type: Boolean,
       required: false
+    },
+    type: {
+      type: String,
+      validator(val) {
+        return ['secondary'].includes(val)
+      }
     }
   },
   methods: {
@@ -70,6 +76,32 @@ export default {
     display: block;
     text-decoration: none;
     width: 100%;
+  }
+
+  &.secondary {
+    background: #fff;
+    box-shadow: none;
+    border: 1px solid #0086cc;
+    color: #0086cc;
+
+    &:hover,
+    &:focus {
+      background: #fff;
+    }
+
+    &[disabled] {
+      box-shadow: none;
+      color: #0086cc;
+
+      &:hover,
+      &:focus {
+        background: #fff;
+      }
+    }
+
+    a {
+      color: #0086cc;
+    }
   }
 }
 </style>

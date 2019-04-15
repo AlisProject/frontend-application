@@ -10,7 +10,7 @@
           トップに戻る
         </nuxt-link>
       </app-button>
-      <app-button class="close" @click="close">
+      <app-button class="close" type="secondary" @click="close">
         閉じる
       </app-button>
     </div>
@@ -78,16 +78,7 @@ export default {
 
   .close {
     margin: 20px 0 60px;
-    background: #fff;
-    border: 1px solid #0086cc;
-    color: #0086cc;
     font-weight: bold;
-    box-shadow: none;
-
-    &:hover,
-    &:focus {
-      background: #fff;
-    }
   }
 }
 
