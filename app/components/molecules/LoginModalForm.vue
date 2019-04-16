@@ -6,33 +6,23 @@
     <div class="modal-body">
       <div v-show="isSelectedEmailAuth" class="email-auth" :class="{ isSelectedEmailAuth }">
         <form class="signup-form" @keypress.enter="onSubmit">
-          <div class="signup-form-group" :class="{ error: hasUserIdOrEmailError }">
-            <label class="signup-form-label">ユーザーID または メールアドレス</label>
-            <input
-              ref="userIdOrEmail"
-              class="signup-form-input"
-              type="text"
-              placeholder="alis@example.com"
-              @input="setUserIdOrEmail"
-              @blur="showError('userIdOrEmail')"
-              @focus="resetError('userIdOrEmail')"
-            >
-          </div>
-          <div class="signup-form-group" :class="{ error: hasPasswordError }">
-            <label class="signup-form-label">パスワード※半角英数字8文字以上</label>
-            <input
-              ref="password"
-              class="signup-form-input"
-              type="password"
-              placeholder="●●●●●●●●"
-              @input="setPassword"
-              @blur="showError('password')"
-              @focus="resetError('password')"
-            >
-            <p v-if="showErrorInvalidPassword" class="error-message">
-              パスワードは8文字以上で入力してください
-            </p>
-          </div>
+          <form-group
+            label="ユーザーID または メールアドレス"
+            :inputAttrs="{ type: 'text', placeholder: 'alis@example.com' }"
+            :hasError="hasUserIdOrEmailError"
+            @input="setUserIdOrEmail"
+            @blur="showError('userIdOrEmail')"
+            @focus="resetError('userIdOrEmail')"
+          />
+          <form-group
+            label="パスワード※半角英数字8文字以上"
+            :inputAttrs="{ ref: 'password', type: 'password', placeholder: '●●●●●●●●' }"
+            :hasError="hasPasswordError"
+            :errorMessage="showErrorInvalidPassword ? 'パスワードは8文字以上で入力してください' : ''"
+            @input="setPassword"
+            @blur="showError('password')"
+            @focus="resetError('password')"
+          />
         </form>
         <div class="modal-footer">
           <p class="error-message">
@@ -94,10 +84,12 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
+import FormGroup from '../organisms/FormGroup'
 
 export default {
   components: {
-    AppButton
+    AppButton,
+    FormGroup
   },
   data() {
     return {
@@ -274,56 +266,6 @@ export default {
 .signup-form {
   margin: 60px auto 0;
   width: 100%;
-
-  &-group {
-    position: relative;
-  }
-
-  &-label {
-    color: #030303;
-    font-size: 14px;
-    line-height: 2.4;
-  }
-
-  &-input {
-    appearance: none;
-    box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
-    border: none;
-    border-radius: 0;
-    box-sizing: border-box;
-    margin-bottom: 40px;
-    padding: 12px;
-    width: 100%;
-
-    &::-webkit-input-placeholder {
-      padding: 3px;
-      color: #cecece;
-      font-size: 14px;
-      letter-spacing: 0.05em;
-    }
-
-    &:focus {
-      outline: 0;
-    }
-  }
-
-  .error-message {
-    bottom: 20px;
-    margin: 0;
-    color: #f06273;
-    font-size: 12px;
-    position: absolute;
-    width: 100%;
-    text-align: right;
-  }
-
-  .error {
-    .signup-form {
-      &-input {
-        box-shadow: 0 0 16px 0 rgba(240, 98, 115, 0.5);
-      }
-    }
-  }
 }
 
 .modal-footer {
