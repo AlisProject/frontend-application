@@ -49,47 +49,54 @@ export default {
 <style lang="scss" scoped>
 .form-group {
   position: relative;
+}
 
-  .label {
-    color: #030303;
+.label {
+  color: #030303;
+  font-size: 14px;
+  line-height: 2.4;
+}
+
+.input {
+  appearance: none;
+  box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
+  border: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  margin-bottom: 40px;
+  padding: 12px;
+  width: 100%;
+
+  &::-webkit-input-placeholder {
+    padding: 3px;
+    color: #cecece;
     font-size: 14px;
-    line-height: 2.4;
+    letter-spacing: 0.05em;
   }
 
+  &:focus {
+    outline: 0;
+  }
+
+  &.error {
+    box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
+  }
+}
+
+.error-message {
+  bottom: 20px;
+  margin: 0;
+  color: #f06273;
+  font-size: 12px;
+  position: absolute;
+  width: 100%;
+  text-align: right;
+}
+
+/* for SignUpModalForm */
+.user-id-form {
   .input {
-    appearance: none;
-    box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
-    border: none;
-    border-radius: 0;
-    box-sizing: border-box;
-    margin-bottom: 40px;
-    padding: 12px;
-    width: 100%;
-
-    &::-webkit-input-placeholder {
-      padding: 3px;
-      color: #cecece;
-      font-size: 14px;
-      letter-spacing: 0.05em;
-    }
-
-    &:focus {
-      outline: 0;
-    }
-
-    &.error {
-      box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
-    }
-  }
-
-  .error-message {
-    bottom: 20px;
-    margin: 0;
-    color: #f06273;
-    font-size: 12px;
-    position: absolute;
-    width: 100%;
-    text-align: right;
+    margin-bottom: 60px;
   }
 }
 </style>

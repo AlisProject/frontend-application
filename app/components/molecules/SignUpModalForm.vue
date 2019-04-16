@@ -285,12 +285,6 @@ export default {
   width: 100%;
   position: relative;
 
-  .user-id-form {
-    .input {
-      margin-bottom: 60px;
-    }
-  }
-
   .warning {
     position: absolute;
     color: #6e6e6e;
