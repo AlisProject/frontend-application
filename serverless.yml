@@ -59,6 +59,9 @@ functions:
       BASE_URL: ${env:BASE_URL}
       REGION: ${env:REGION}
       DOMAIN: ${env:DOMAIN}
+      PUBLIC_CHAIN_BRIDGE_ADDRESS: ${ssm:${env:ALIS_APP_ID}ssmPublicChainBridgeAddress}
+      PUBLIC_CHAIN_TOKEN_ADDRESS: ${ssm:${env:ALIS_APP_ID}ssmPublicChainTokenAddress}
+      PUBLIC_CHAIN_END_POINT: ${ssm:${env:ALIS_APP_ID}ssmPublicChainEndPoint}
     events:
       - http:
           path: '/'
