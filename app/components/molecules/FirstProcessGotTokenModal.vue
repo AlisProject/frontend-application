@@ -8,7 +8,7 @@
       <app-button class="submit" @click="submit">
         記事を作成する
       </app-button>
-      <app-button class="close" @click="close">
+      <app-button class="close" type="secondary" @click="close">
         閉じる
       </app-button>
     </div>
@@ -76,16 +76,7 @@ export default {
 
   .close {
     margin: 20px 0 60px;
-    background: #fff;
-    border: 1px solid #0086cc;
-    color: #0086cc;
     font-weight: bold;
-    box-shadow: none;
-
-    &:hover,
-    &:focus {
-      background: #fff;
-    }
   }
 }
 
