@@ -87,7 +87,7 @@ export default {
   data() {
     return {
       isMetaMaskInstalled: false,
-      isLoggedInToMetaMask: false,
+      isApprovedOfMetaMask: false,
       errorMessage: '',
       amount: null,
       bridgeInfo: null,
@@ -110,12 +110,14 @@ export default {
       return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask
     },
     async initMetaMaskAndBridge() {
-      await this.loginToMetaMask().catch((e) => {
-        this.sendNotification({
-          text: 'MetaMaskのログインに失敗しました',
-          type: 'warning'
+      await this.approveOfMetaMask()
+        .then(() => (this.isApprovedOfMetaMask = true))
+        .catch((e) => {
+          this.sendNotification({
+            text: 'MetaMaskのログインに失敗しました',
+            type: 'warning'
+          })
         })
-      })
       this.bridgeInfo = await this.getBridgeInformation().catch((e) =>
         this.sendNotification({
           text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
@@ -124,7 +126,7 @@ export default {
       )
       this.relayPaused = this.bridgeInfo.relayPaused
     },
-    async loginToMetaMask() {
+    async approveOfMetaMask() {
       if (!this.isMetaMaskInstalled) {
         throw new Error('MetaMask is not installed.')
       }
@@ -316,7 +318,7 @@ export default {
     },
     async handleClickDeposit() {
       try {
-        if (!this.isLoggedInToMetaMask) await this.initMetaMaskAndBridge()
+        if (!this.isApprovedOfMetaMask) await this.initMetaMaskAndBridge()
         if (this.isProcessing || this.errorMessage !== '') return
         this.isProcessing = true
         const amountWei = window.web3.utils.toBN(window.web3.utils.toWei(this.amount))
