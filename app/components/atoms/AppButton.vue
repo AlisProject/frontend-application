@@ -1,6 +1,6 @@
 <template>
   <button class="app-button" :class="type" :disabled="disabled" @click="callback($event)">
-    <slot />
+    <i v-if="isLoading" class="fa fa-spinner fa-pulse fa-fw" /><slot />
   </button>
 </template>
 
@@ -16,6 +16,10 @@ export default {
       validator(val) {
         return ['secondary'].includes(val)
       }
+    },
+    isLoading: {
+      type: Boolean,
+      required: false
     }
   },
   methods: {

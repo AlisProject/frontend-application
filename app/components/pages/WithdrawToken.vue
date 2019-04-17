@@ -80,7 +80,7 @@
         <span class="withdraw-error-message">
           {{ errorMessage }}
         </span>
-        <app-button class="withdraw-button" :disabled="isProcessing" @click="handleClickWithdraw">
+        <app-button class="withdraw-button" :disabled="isProcessing" :isLoading="isProcessing" @click="handleClickWithdraw">
           出金する※取り消し不可
         </app-button>
         <app-button class="back-button" type="secondary" @click="handleClickBack">
@@ -249,7 +249,6 @@ export default {
           this.errorMessage = 'ALISが不足しています'
           return
         }
-        return
         await this.postTokenSend({ recipientEthAddress, sendValue })
         this.sendNotification({ text: '出金を受け付けました' })
         this.amount = null
