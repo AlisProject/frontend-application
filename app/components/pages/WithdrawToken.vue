@@ -80,9 +80,9 @@
         <app-button class="withdraw-button" :disabled="isProcessing" @click="handleClickWithdraw">
           出金する※取り消し不可
         </app-button>
-        <button class="back-button" @click="handleClickBack">
+        <app-button class="back-button" type="secondary" @click="handleClickBack">
           戻る
-        </button>
+        </app-button>
       </div>
       <div v-if="relayPaused" class="relay-paused-box">
         <h2 class="title">
@@ -437,16 +437,7 @@ export default {
 }
 
 .back-button {
-  background-color: #fff;
-  border-radius: 30px;
-  border: 1px solid #0086cc;
-  box-shadow: none;
-  color: #0086cc;
-  cursor: pointer;
-  display: block;
-  height: 37px;
   margin: 20px auto;
-  width: 256px;
 }
 
 .relay-paused-box {
