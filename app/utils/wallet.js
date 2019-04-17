@@ -23,7 +23,7 @@ export function addDigitSeparator(str) {
   return num
 }
 
-export function checkDecimalPoint(amount = '', decimalPoint = 0) {
+export function isOverDecimalPoint(amount = '', decimalPoint = 0) {
   // 小数点以下の桁数が {decimalPoint} 桁を超えているか確認し、
   // 超えている場合は true を返す
   // 例）amount を 0.001、decimalPoint を 3 にすると false 、

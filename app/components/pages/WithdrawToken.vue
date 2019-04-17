@@ -105,7 +105,7 @@ import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
-import { addDigitSeparator, checkDecimalPoint } from '~/utils/wallet'
+import { addDigitSeparator, isOverDecimalPoint } from '~/utils/wallet'
 
 const formatNumber = 10 ** 18
 
@@ -188,7 +188,7 @@ export default {
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedAmount = new BigNumber(this.amount)
         // 小数点以下の桁数が3桁を超えているか確認
-        const isNotInputablePlaceAfterDecimalPoint = checkDecimalPoint(
+        const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(
           formattedAmount.toString(10),
           3
         )
