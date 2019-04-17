@@ -80,7 +80,12 @@
         <span class="withdraw-error-message">
           {{ errorMessage }}
         </span>
-        <app-button class="withdraw-button" :disabled="isProcessing" :isLoading="isProcessing" @click="handleClickWithdraw">
+        <app-button
+          class="withdraw-button"
+          :disabled="isProcessing"
+          :isLoading="isProcessing"
+          @click="handleClickWithdraw"
+        >
           出金する※取り消し不可
         </app-button>
         <app-button class="back-button" type="secondary" @click="handleClickBack">
