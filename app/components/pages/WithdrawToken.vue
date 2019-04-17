@@ -77,6 +77,9 @@
           {{ totalAmount }}
           <span class="unit">ALIS</span>
         </div>
+        <span class="withdraw-error-message">
+          {{ errorMessage }}
+        </span>
         <app-button class="withdraw-button" :disabled="isProcessing" @click="handleClickWithdraw">
           出金する※取り消し不可
         </app-button>
@@ -122,6 +125,7 @@ export default {
       amount: null,
       addressErrorMessage: '',
       amountErrorMessage: '',
+      errorMessage: '',
       isConfirmPage: false,
       maxSingleRelayAmount: null,
       minSingleRelayAmount: null,
@@ -218,7 +222,9 @@ export default {
           this.amountErrorMessage = `${minSingleRelayAmountForUser}以上${maxSingleRelayAmountForUser}以下で入力してください`
           return
         }
-        const hasExceededAmount = formattedAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
+        const hasExceededAmount = formattedAmount
+          .plus(this.relayFee)
+          .isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!hasExceededAmount) {
           this.amountErrorMessage = 'ALISが不足しています'
           return
@@ -238,6 +244,12 @@ export default {
         this.isProcessing = true
         const recipientEthAddress = this.address
         const sendValue = new BigNumber(this.totalAmount).multipliedBy(formatNumber).toString(10)
+        const hasExceededAmount = await this.checkIsWithdrawable(this.totalAmount)
+        if (!hasExceededAmount) {
+          this.errorMessage = 'ALISが不足しています'
+          return
+        }
+        return
         await this.postTokenSend({ recipientEthAddress, sendValue })
         this.sendNotification({ text: '出金を受け付けました' })
         this.amount = null
@@ -252,13 +264,18 @@ export default {
         this.isProcessing = false
       }
     },
+    async checkIsWithdrawable(amount) {
+      const { result } = await this.getBalance()
+      const myBalance = new BigNumber(result, 16).div(formatNumber)
+      return myBalance.isGreaterThanOrEqualTo(amount)
+    },
     handleClickBack() {
       this.isConfirmPage = false
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['getBridgeInformation', 'postTokenSend'])
+    ...mapActions('user', ['getBridgeInformation', 'postTokenSend', 'getBalance'])
   }
 }
 </script>
@@ -412,8 +429,15 @@ export default {
   width: 100%;
 }
 
+.withdraw-error-message {
+  color: #f06273;
+  font-size: 12px;
+  margin-top: 26px;
+  min-height: 14px;
+}
+
 .withdraw-button {
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 .mb20 {
