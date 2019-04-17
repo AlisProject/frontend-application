@@ -172,49 +172,7 @@ const state = () => ({
   confirmPurchaseArticleModal: {
     isShow: false
   },
-  // TODO: mock を削除
-  withdrawalDetails: [
-    {
-      // 入金完了
-      finished: true,
-      recipient: '0x00000000000000000000000000000000000000r0',
-      sender: '0x00000000000000000000000000000000000000s0',
-      amount: 1000000000000000000,
-      fee: 0,
-      timestamp: 1554900000,
-      isDeposit: true
-    },
-    {
-      // 出金完了
-      finished: true,
-      recipient: '0x00000000000000000000000000000000000000r1',
-      sender: '0x00000000000000000000000000000000000000s1',
-      amount: 20000000000000000000,
-      fee: 100000000000000000000,
-      timestamp: 1554900001,
-      isDeposit: false
-    },
-    {
-      // 入金処理中
-      finished: false,
-      recipient: '0x00000000000000000000000000000000000000r2',
-      sender: '0x00000000000000000000000000000000000000s2',
-      amount: 300000000000000000000,
-      fee: 0,
-      timestamp: 1554900002,
-      isDeposit: true
-    },
-    {
-      // 出金処理中
-      finished: false,
-      recipient: '0x00000000000000000000000000000000000000r3',
-      sender: '0x00000000000000000000000000000000000000s3',
-      amount: 4000000000000000000000,
-      fee: 100000000000000000000,
-      timestamp: 1554900003,
-      isDeposit: false
-    }
-  ],
+  withdrawalDetails: [],
   withdrawalDetailModal: {
     isShow: false,
     index: ''
@@ -957,6 +915,33 @@ const actions = {
   },
   setWithdrawalDetails({ commit }, { withdrawalDetails }) {
     commit(types.SET_WITHDRAWAL_DETAILS, { withdrawalDetails })
+  },
+  async getBridgeInformation({ commit }) {
+    try {
+      const result = await this.$axios.$get('/wallet/bridge_information')
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async postTokenSend({ commit }, { recipientEthAddress, sendValue }) {
+    try {
+      const result = await this.$axios.$post('/me/wallet/token/send', {
+        recipient_eth_address: recipientEthAddress,
+        send_value: sendValue
+      })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getTokenHistories({ commit }) {
+    try {
+      const result = await this.$axios.$get('/me/wallet/token/histories')
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 

@@ -8,6 +8,7 @@
           入出金履歴では直近の入金と出金の履歴をご覧いただけます
         </p>
         <div class="withdrawal-details">
+          <the-loader :isLoading="isLoading" />
           <div
             v-for="(withdrawalDetail, i) in withdrawalDetails"
             :key="withdrawalDetail.txHash"
@@ -42,9 +43,11 @@
 <script>
 import Web3 from 'web3'
 import { mapGetters, mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppFooter from '../organisms/AppFooter'
+import TheLoader from '../atoms/TheLoader'
 import { formatDateWithTime } from '~/utils/format'
 import { showPaymentType, showProcessType, showFormattedAmount } from '~/utils/wallet'
 
@@ -56,23 +59,42 @@ export default {
   components: {
     AppHeader,
     WalletNav,
-    AppFooter
+    AppFooter,
+    TheLoader
   },
   data() {
     return {
-      // TODO: mounted時に withdrawalDetails から値の更新を行う
-      hasWithdrawalDetails: true
+      timestamp: null,
+      relayEvents: null,
+      applyRelayEvents: null,
+      hasWithdrawalDetails: true,
+      isLoading: true
     }
   },
   async mounted() {
-    const { privateEthAddress } = this.currentUser
-    // TODO: applyRelayEvents, applyRelayTimestamp, relayEvents を取得するためのAPIを叩く
-    const [depositHistory, withdrawHistory] = await Promise.all([
-      this.getDepositHistory(privateEthAddress),
-      this.getWithdrawHistory(privateEthAddress)
-    ])
-    const withdrawalDetails = [...depositHistory, ...withdrawHistory]
-    this.setWithdrawalDetails({ withdrawalDetails })
+    try {
+      // すでに入出金履歴を取得している場合はローディングアイコンを表示しない
+      if (this.withdrawalDetails.length > 0) this.isLoading = false
+      const { privateEthAddress } = this.currentUser
+      const result = await this.getTokenHistories()
+      this.timestamp = result.timestamp
+      this.relayEvents = result.relay_events
+      this.applyRelayEvents = result.apply_relay_events
+      const [depositHistory, withdrawHistory] = await Promise.all([
+        this.getDepositHistory(privateEthAddress),
+        this.getWithdrawHistory(privateEthAddress)
+      ])
+      const withdrawalDetails = [...depositHistory, ...withdrawHistory]
+      this.setWithdrawalDetails({ withdrawalDetails })
+      this.hasWithdrawalDetails = withdrawalDetails.length > 0
+    } catch (error) {
+      this.sendNotification({
+        text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+        type: 'warning'
+      })
+    } finally {
+      this.isLoading = false
+    }
   },
   computed: {
     ...mapGetters('user', ['currentUser', 'withdrawalDetails'])
@@ -99,8 +121,8 @@ export default {
       })
 
       // API経由でプライベートチェーン側のApplyRelayイベントとタイムスタンプを取得
-      const applyRelayEvents = [] // TODO:
-      const applyRelayTimestamp = 1 // TODO:
+      const applyRelayEvents = this.applyRelayEvents
+      const applyRelayTimestamp = this.timestamp
 
       return this._createHistory(relayEvents, applyRelayEvents, applyRelayTimestamp, true)
     },
@@ -108,7 +130,7 @@ export default {
       const web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_END_POINT))
 
       // API経由でプライベートチェーン側のRelayイベントを取得
-      const relayEvents = [] // TODO:
+      const relayEvents = this.relayEvents
 
       // パブリックチェーン側のApplyRelayイベントの取得
       const applyRelayBlockDiff = Math.ceil(
@@ -177,7 +199,10 @@ export default {
     showWithdrawalDetailModal(index) {
       this.setWithdrawalDetailModal({ isShow: true, index })
     },
-    ...mapActions('user', ['setWithdrawalDetails', 'setWithdrawalDetailModal'])
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('user', ['setWithdrawalDetails', 'setWithdrawalDetailModal', 'getTokenHistories'])
   },
   filters: {
     formatDateWithTime,

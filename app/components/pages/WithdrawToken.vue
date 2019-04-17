@@ -41,7 +41,7 @@
           </span>
         </div>
         <p class="description">
-          上記の金額に加えて{{ commission }}ALISの手数料が発生します
+          上記の金額に加えて{{ relayFee }}ALISの手数料が発生します
         </p>
         <app-button
           class="withdraw-button"
@@ -69,7 +69,7 @@
         </div>
         <div class="label" v-text="'手数料'" />
         <div class="confirm-input">
-          {{ commission }}
+          {{ relayFee }}
           <span class="unit">ALIS</span>
         </div>
         <div class="label" v-text="'合計額（出金額+手数料）'" />
@@ -77,7 +77,7 @@
           {{ totalAmount }}
           <span class="unit">ALIS</span>
         </div>
-        <app-button class="withdraw-button" @click="handleClickWithdraw">
+        <app-button class="withdraw-button" :disabled="isProcessing" @click="handleClickWithdraw">
           出金する※取り消し不可
         </app-button>
         <button class="back-button" @click="handleClickBack">
@@ -105,11 +105,9 @@ import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
-import { checkDecimalPoint } from '~/utils/wallet'
+import { addDigitSeparator, checkDecimalPoint } from '~/utils/wallet'
 
-// TODO: API経由で値を取得
-const MAXIMUM_WITHDRAWABLE_TOKEN_AMOUNT = '10000'
-const MINIMUM_WITHDRAWABLE_TOKEN_AMOUNT = '0.001'
+const formatNumber = 10 ** 18
 
 export default {
   components: {
@@ -125,13 +123,26 @@ export default {
       addressErrorMessage: '',
       amountErrorMessage: '',
       isConfirmPage: false,
-      commission: 100,
-      relayPaused: false
+      maxSingleRelayAmount: null,
+      minSingleRelayAmount: null,
+      relayFee: null,
+      relayPaused: false,
+      isProcessing: false
     }
   },
-  mounted() {
-    // TODO: APIコールによる確認を追加
-    // this.relayPaused = true
+  async mounted() {
+    try {
+      const result = await this.getBridgeInformation()
+      this.maxSingleRelayAmount = result.max_single_relay_amount
+      this.minSingleRelayAmount = result.min_single_relay_amount
+      this.relayFee = new BigNumber(result.relay_fee).div(formatNumber)
+      this.relayPaused = parseInt(result.relay_paused, 16) > 0
+    } catch (error) {
+      this.sendNotification({
+        text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+        type: 'warning'
+      })
+    }
   },
   computed: {
     formattedAlisToken() {
@@ -147,8 +158,9 @@ export default {
       )
     },
     totalAmount() {
-      // TODO: より厳密に価格の加算を行う
-      return this.commission + Number(this.amount)
+      const relayFee = new BigNumber(this.relayFee)
+      const amount = new BigNumber(this.amount)
+      return relayFee.plus(amount)
     },
     ...mapGetters('user', ['alisToken'])
   },
@@ -161,7 +173,7 @@ export default {
       }
       const addressPattern = /^0x[0-9a-fA-F]{40}$/
       if (!addressPattern.test(this.address)) {
-        this.addressErrorMessage = '不正なアドレスです'
+        this.addressErrorMessage = 'アドレスの形式が正しくありません'
         return
       }
       this.addressErrorMessage = ''
@@ -184,14 +196,26 @@ export default {
           this.amountErrorMessage = '小数点3桁までの範囲で入力してください'
           return
         }
-        const formattedMaxTokenAmount = new BigNumber(MAXIMUM_WITHDRAWABLE_TOKEN_AMOUNT)
-        const hasExceededMaxSingleRelayAmount = formattedAmount.isGreaterThan(
-          formattedMaxTokenAmount
+        const formattedMaxSingleRelayAmount = new BigNumber(this.maxSingleRelayAmount, 16).div(
+          formatNumber
         )
-        const formattedMinTokenAmount = new BigNumber(MINIMUM_WITHDRAWABLE_TOKEN_AMOUNT)
-        const isLessThanMinSingleRelayAmount = formattedAmount.isLessThan(formattedMinTokenAmount)
+        const hasExceededMaxSingleRelayAmount = formattedAmount.isGreaterThan(
+          formattedMaxSingleRelayAmount
+        )
+        const formattedMinSingleRelayAmount = new BigNumber(this.minSingleRelayAmount, 16).div(
+          formatNumber
+        )
+        const isLessThanMinSingleRelayAmount = formattedAmount.isLessThan(
+          formattedMinSingleRelayAmount
+        )
+        const maxSingleRelayAmountForUser = addDigitSeparator(
+          formattedMaxSingleRelayAmount.toString()
+        )
+        const minSingleRelayAmountForUser = addDigitSeparator(
+          formattedMinSingleRelayAmount.toString()
+        )
         if (hasExceededMaxSingleRelayAmount || isLessThanMinSingleRelayAmount) {
-          this.amountErrorMessage = '一度に出金できるALISは10,000ALIS以下となります'
+          this.amountErrorMessage = `${minSingleRelayAmountForUser}以上${maxSingleRelayAmountForUser}以下で入力してください`
           return
         }
         const hasExceededAmount = formattedAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
@@ -208,21 +232,33 @@ export default {
       if (!this.isWithdrawable) return
       this.isConfirmPage = true
     },
-    handleClickWithdraw() {
-      // TODO: APIコールによる出金処理を追加
-      this.sendNotification({
-        text: '出金を受け付けました'
-      })
-      this.amount = null
-      this.address = ''
-      this.isConfirmPage = false
+    async handleClickWithdraw() {
+      try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+        const recipientEthAddress = this.address
+        const sendValue = new BigNumber(this.totalAmount).multipliedBy(formatNumber).toString(10)
+        await this.postTokenSend({ recipientEthAddress, sendValue })
+        this.sendNotification({ text: '出金を受け付けました' })
+        this.amount = null
+        this.address = ''
+        this.isConfirmPage = false
+      } catch (error) {
+        this.sendNotification({
+          text: '出金のトランザクション発行に失敗しました',
+          type: 'warning'
+        })
+      } finally {
+        this.isProcessing = false
+      }
     },
     handleClickBack() {
       this.isConfirmPage = false
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
-    })
+    }),
+    ...mapActions('user', ['getBridgeInformation', 'postTokenSend'])
   }
 }
 </script>

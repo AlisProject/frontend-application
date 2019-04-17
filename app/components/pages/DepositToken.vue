@@ -43,7 +43,11 @@
         <p class="description">
           入金はMETAMASKで処理が行われます
         </p>
-        <app-button class="deposit-button" :disabled="!isDepositable" @click="handleClickDeposit">
+        <app-button
+          class="deposit-button"
+          :disabled="!isDepositable || isProcessing"
+          @click="handleClickDeposit"
+        >
           入金する
         </app-button>
       </div>
@@ -87,7 +91,8 @@ export default {
       errorMessage: '',
       amount: null,
       bridgeInfo: null,
-      relayPaused: false
+      relayPaused: false,
+      isProcessing: false
     }
   },
   async mounted() {
@@ -113,7 +118,7 @@ export default {
       })
       this.bridgeInfo = await this.getBridgeInformation().catch((e) =>
         this.sendNotification({
-          text: 'ブリッジ情報の取得に失敗しました',
+          text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
           type: 'warning'
         })
       )
@@ -301,7 +306,7 @@ export default {
           formattedMaxSingleRelayAmount.toString()
         )
         if (hasExceededMaxSingleRelayAmount || isLessThanMinSingleRelayAmount) {
-          this.errorMessage = `${maxSingleRelayAmountForUser}ALIS以内で設定してください`
+          this.errorMessage = `${maxSingleRelayAmountForUser}ALIS以内で入力してください`
           return
         }
         this.errorMessage = ''
@@ -310,22 +315,24 @@ export default {
       }
     },
     async handleClickDeposit() {
-      if (!this.isLoggedInToMetaMask) await this.initMetaMaskAndBridge()
-      if (this.errorMessage !== '') return
-      const amountWei = window.web3.utils.toBN(window.web3.utils.toWei(this.amount))
-      const recipient = this.currentUser.privateEthAddress
-      this.deposit(recipient, amountWei)
-        .then(() => {
-          this.sendNotification({
-            text: '入金のトランザクションを発行しました。詳細はMETAMASKでご確認ください'
-          })
+      try {
+        if (!this.isLoggedInToMetaMask) await this.initMetaMaskAndBridge()
+        if (this.isProcessing || this.errorMessage !== '') return
+        this.isProcessing = true
+        const amountWei = window.web3.utils.toBN(window.web3.utils.toWei(this.amount))
+        const recipient = this.currentUser.privateEthAddress
+        await this.deposit(recipient, amountWei)
+        this.sendNotification({
+          text: '入金のトランザクションを発行しました。詳細はMETAMASKでご確認ください'
         })
-        .catch((e) => {
-          this.sendNotification({
-            text: 'トランザクション発行に失敗しました',
-            type: 'warning'
-          })
+      } catch (error) {
+        this.sendNotification({
+          text: '入金のトランザクション発行に失敗しました',
+          type: 'warning'
         })
+      } finally {
+        this.isProcessing = false
+      }
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
