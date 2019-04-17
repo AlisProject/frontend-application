@@ -114,7 +114,7 @@ export default {
         .then(() => (this.isApprovedOfMetaMask = true))
         .catch((e) => {
           this.sendNotification({
-            text: 'MetaMaskのログインに失敗しました',
+            text: 'MetaMaskの承認に失敗しました',
             type: 'warning'
           })
         })
