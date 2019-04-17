@@ -30,6 +30,11 @@ export default {
       'setRequestPhoneNumberVerifyModal',
       'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ])
+  },
+  head() {
+    return {
+      title: '出金'
+    }
   }
 }
 </script>

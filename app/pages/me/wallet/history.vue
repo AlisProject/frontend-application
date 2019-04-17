@@ -12,6 +12,11 @@ export default {
   },
   mounted() {
     if (isMobile()) this.$router.replace('/')
+  },
+  head() {
+    return {
+      title: '入出金履歴'
+    }
   }
 }
 </script>
