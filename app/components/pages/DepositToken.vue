@@ -136,7 +136,9 @@ export default {
     },
     async getBridgeInformation() {
       try {
-        const web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_END_POINT))
+        const web3js = new Web3(
+          new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL)
+        )
         const minSingleRelayAmountPromise = web3js.eth.call({
           to: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
           data: '0x9f29ffdf'
@@ -185,7 +187,7 @@ export default {
             params: [
               {
                 from: account,
-                to: process.env.PUBLIC_CHAIN_TOKEN_ADDRESS,
+                to: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
                 gas: '0x' + (5500000).toString(16),
                 data:
                   '0x095ea7b3' +
@@ -205,7 +207,7 @@ export default {
           params: [
             {
               from: account,
-              to: process.env.PUBLIC_CHAIN_TOKEN_ADDRESS,
+              to: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
               gas: '0x' + (5500000).toString(16),
               data:
                 '0x095ea7b3' +
@@ -237,7 +239,7 @@ export default {
     },
     async _getAllowance(account) {
       const amountHex = await window.web3.eth.call({
-        to: process.env.PUBLIC_CHAIN_TOKEN_ADDRESS,
+        to: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
         data:
           '0xdd62ed3e' +
           '0'.repeat(24) +
