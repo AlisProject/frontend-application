@@ -29,6 +29,15 @@ export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
 # see: https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html
 export NUXT_API_GATEWAY_NAME=${ALIS_APP_ID}
 
+# パブリックチェーンにデプロイされたブリッジコントラクトのアドレス
+export PUBLIC_CHAIN_BRIDGE_ADDRESS=0x0000000000000000000000000000000000000000
+
+# パブリックチェーンにデプロイされたALISトークンのアドレス
+export PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS=0x1111111111111111111111111111111111111111
+
+# パブリックチェーン操作用URL
+export PUBLIC_CHAIN_OPERATION_URL=https://XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
 # --- AWS ---
 
 ## aws-cli
