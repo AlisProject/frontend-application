@@ -56,6 +56,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
+import { isOverDecimalPoint } from '~/utils/wallet'
 
 const FORMAT_NUMBER = 10 ** 18
 const MAXIMUM_TIPPABLE_TOKEN_AMOUNT = '999.9999999999'
@@ -168,10 +169,7 @@ export default {
         const tipTokenAmountForUser = formattedTipTokenAmount.toString(10)
 
         // 小数点以下の桁数が10桁を超えているか確認
-        const isNotInputablePlaceAfterDecimalPoint =
-          tipTokenAmountForUser &&
-          tipTokenAmountForUser.includes('.') &&
-          tipTokenAmountForUser.split('.')[1].length > 10
+        const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(tipTokenAmountForUser, 10)
 
         if (isNotInputablePlaceAfterDecimalPoint) {
           this.errorMessage = '小数点10桁までの範囲で入力してください'

@@ -35,10 +35,6 @@ export default {
       rel: 'stylesheet',
       href:
         'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/css/medium-editor-insert-plugin.min.css'
-    },
-    {
-      rel: 'stylesheet',
-      href: 'https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'
     }
   ]
 }

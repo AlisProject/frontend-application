@@ -35,9 +35,10 @@ export default class CognitoSDK {
         const { username: userId } = session.accessToken.payload
         const {
           email_verified: emailVerified,
-          phone_number_verified: phoneNumberVerified
+          phone_number_verified: phoneNumberVerified,
+          'custom:private_eth_address': privateEthAddress
         } = session.idToken.payload
-        resolve({ userId, emailVerified, phoneNumberVerified })
+        resolve({ userId, emailVerified, phoneNumberVerified, privateEthAddress })
       })
     })
   }

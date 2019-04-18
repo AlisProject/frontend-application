@@ -27,3 +27,10 @@ export function formatDateFromNow(date) {
     .startOf('minute')
     .fromNow()
 }
+
+export function formatDateWithJapaneseStyle(date) {
+  return dayjs
+    .unix(date)
+    .locale('ja')
+    .format('YYYY年MM月DD日 HH:mm')
+}

@@ -70,7 +70,8 @@ export default {
       'tipFlowModal',
       'currentUserInfo',
       'mobileEditorHeaderPostArticleModal',
-      'confirmPurchaseArticleModal'
+      'confirmPurchaseArticleModal',
+      'withdrawalDetailModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -175,6 +176,9 @@ export default {
       if (this.confirmPurchaseArticleModal.isShow) {
         this.setConfirmPurchaseArticleModal({ isShow: false })
       }
+      if (this.withdrawalDetailModal.isShow) {
+        this.setWithdrawalDetailModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -206,7 +210,8 @@ export default {
       'setFirstProcessGotTokeneModal',
       'setFirstProcessCreatedArticleModal',
       'setMobileEditorHeaderPostArticleModal',
-      'setConfirmPurchaseArticleModal'
+      'setConfirmPurchaseArticleModal',
+      'setWithdrawalDetailModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
