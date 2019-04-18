@@ -1,7 +1,7 @@
 # frontend-application
 [![CircleCI](https://circleci.com/gh/AlisProject/frontend-application.svg?style=svg)](https://circleci.com/gh/AlisProject/frontend-application)
 
-# Prerequisite 
+# Prerequisite
 - ndenv
 - yarn
 - serverless
@@ -18,7 +18,7 @@ vi .envrc # edit
 direnv allow
 ```
 
-Also, you should edit `nuxt.config.development.js`.
+Also, you should use variables in `.envrc.sample.develop`.
 
 # Build and deployment
 
