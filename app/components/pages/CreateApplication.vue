@@ -8,46 +8,46 @@
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ error: false }">
           <label class="signup-form-label">クライアント名</label>
-          <input
-            class="signup-form-input"
-            type="text"
-            placeholder=""
-            @input=""
-            @blur=""
-            @focus=""
-          >
-          <p v-if="" class="error-message">
-          </p>
+          <input class="signup-form-input" type="text" placeholder="">
+          <p class="error-message" />
         </div>
         <div class="signup-form-group" :class="{ error: false }">
           <label class="signup-form-label">クライアントの説明※任意</label>
-          <input
-            class="signup-form-input"
-            type="text"
-            placeholder=""
-            @input=""
-            @blur=""
-            @focus=""
-          >
-          <p v-if="" class="error-message">
-          </p>
+          <input class="signup-form-input" type="text" placeholder="">
+          <p class="error-message" />
         </div>
-        <div class="label">クライアントタイプ</div>
+        <div class="label">
+          クライアントタイプ
+        </div>
         <div class="select-client-box">
           <div class="client-input-box">
-            <input id="serverside" v-model="clientType" class="client-input" type="radio" value="serverside">
+            <input
+              id="serverside"
+              v-model="clientType"
+              class="client-input"
+              type="radio"
+              value="serverside"
+            >
             <label class="client-input-label" for="serverside">
               サーバーサイドアプリ
             </label>
           </div>
           <div class="client-input-box">
-            <input id="native" v-model="clientType" class="client-input" type="radio" value="native">
+            <input
+              id="native"
+              v-model="clientType"
+              class="client-input"
+              type="radio"
+              value="native"
+            >
             <label class="client-input-label" for="native">
               ネイティブアプリ
             </label>
           </div>
         </div>
-        <div class="label">リダイレクトURI</div>
+        <div class="label">
+          リダイレクトURI
+        </div>
         <div class="tags-input-form">
           <no-ssr>
             <vue-tags-input
@@ -70,7 +70,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
