@@ -216,7 +216,27 @@ const state = () => ({
       tlsClientCertificateBoundAccessTokens: true,
       tokenAuthMethod: 'tokenAuthMethod'
     }
-  ]
+  ],
+  // TODO: モックを削除
+  application: {
+    applicationType: 'WEB',
+    clientId: 12345,
+    authTimeRequired: true,
+    clientIdAliasEnabled: true,
+    clientName: 'test-client-web',
+    clientSecret: '12345abcde',
+    createdAt: 100000000000000,
+    defaultMaxAge: 100,
+    description: 'description test',
+    developer: 'test developer',
+    idTokenSignAlg: 'idTokenSignAlg',
+    modifiedAt: 100000000000000,
+    number: 1,
+    redirect_urls: ['https://example.com/1', 'https://example.com/2'],
+    subjectType: 'subjectType',
+    tlsClientCertificateBoundAccessTokens: true,
+    tokenAuthMethod: 'tokenAuthMethod'
+  }
 })
 
 const getters = {
@@ -261,7 +281,8 @@ const getters = {
       withdrawalDetail: state.withdrawalDetails[state.withdrawalDetailModal.index]
     }
   },
-  applications: (state) => state.applications
+  applications: (state) => state.applications,
+  application: (state) => state.application
 }
 
 const actions = {
