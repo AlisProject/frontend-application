@@ -60,8 +60,8 @@ functions:
       REGION: ${env:REGION}
       DOMAIN: ${env:DOMAIN}
       PUBLIC_CHAIN_BRIDGE_ADDRESS: ${ssm:${env:ALIS_APP_ID}ssmPublicChainBridgeAddress}
-      PUBLIC_CHAIN_TOKEN_ADDRESS: ${ssm:${env:ALIS_APP_ID}ssmPublicChainTokenAddress}
-      PUBLIC_CHAIN_END_POINT: ${ssm:${env:ALIS_APP_ID}ssmPublicChainEndPoint}
+      PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS: ${ssm:${env:ALIS_APP_ID}ssmPublicChainAlisTokenAddress}
+      PUBLIC_CHAIN_OPERATION_URL: ${ssm:${env:ALIS_APP_ID}ssmPublicChainOperationUrl}
     events:
       - http:
           path: '/'
