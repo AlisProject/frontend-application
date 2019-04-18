@@ -18,6 +18,8 @@ vi .envrc # edit
 direnv allow
 ```
 
+Also, you should edit `nuxt.config.development.js`.
+
 # Build and deployment
 
 ## Install dependencies
