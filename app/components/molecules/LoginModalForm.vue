@@ -18,7 +18,9 @@
             label="パスワード※半角英数字8文字以上"
             :inputAttrs="{ ref: 'password', type: 'password', placeholder: '●●●●●●●●' }"
             :hasError="hasPasswordError"
-            :errorMessage="showErrorInvalidPassword ? 'パスワードは8文字以上で入力してください' : ''"
+            :errorMessage="
+              showErrorInvalidPassword ? 'パスワードは8文字以上で入力してください' : ''
+            "
             @input="setPassword"
             @blur="showError('password')"
             @focus="resetError('password')"

@@ -11,7 +11,13 @@
             class="user-id-form"
             :inputAttrs="{ ref: 'userId', type: 'text', placeholder: 'taro', maxlength: '30' }"
             :hasError="hasUserIdError"
-            :errorMessage="showErrorUserId ? '半角英数字と-（ハイフン）のみご利用下さい' : showErrorUserIdMinLength ? '3文字以上の英数字で入力してください' :''"
+            :errorMessage="
+              showErrorUserId
+                ? '半角英数字と-（ハイフン）のみご利用下さい'
+                : showErrorUserIdMinLength
+                  ? '3文字以上の英数字で入力してください'
+                  : ''
+            "
             @input="setUserId"
             @blur="showError('userId')"
             @focus="resetError('userId')"
@@ -21,7 +27,12 @@
           </span>
           <form-group
             label="メールアドレス"
-            :inputAttrs="{ ref: 'email', type: 'email', placeholder: 'alis@example.com', maxlength: '256' }"
+            :inputAttrs="{
+              ref: 'email',
+              type: 'email',
+              placeholder: 'alis@example.com',
+              maxlength: '256'
+            }"
             :hasError="hasEmailError"
             :errorMessage="showErrorInvalidEmail ? 'メールアドレスの形式が正しくありません' : ''"
             @input="setEmail"
@@ -32,7 +43,9 @@
             label="パスワード※半角英数字8文字以上 "
             :inputAttrs="{ ref: 'password', type: 'password', placeholder: '●●●●●●●●' }"
             :hasError="hasPasswordError"
-            :errorMessage="showErrorInvalidPassword ? 'パスワードは8文字以上で入力してください' : ''"
+            :errorMessage="
+              showErrorInvalidPassword ? 'パスワードは8文字以上で入力してください' : ''
+            "
             @input="setPassword"
             @blur="showError('password')"
             @focus="resetError('password')"
