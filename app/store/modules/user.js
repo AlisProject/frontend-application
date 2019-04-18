@@ -176,7 +176,47 @@ const state = () => ({
   withdrawalDetailModal: {
     isShow: false,
     index: ''
-  }
+  },
+  // TODO: モックを削除
+  applications: [
+    {
+      applicationType: 'WEB',
+      clientId: 12345,
+      authTimeRequired: true,
+      clientIdAliasEnabled: true,
+      clientName: 'test-client-web',
+      clientSecret: '12345abcde',
+      createdAt: 100000000000000,
+      defaultMaxAge: 100,
+      description: 'description test',
+      developer: 'test developer',
+      idTokenSignAlg: 'idTokenSignAlg',
+      modifiedAt: 100000000000000,
+      number: 1,
+      redirect_urls: ['https://example.com/1', 'https://example.com/2'],
+      subjectType: 'subjectType',
+      tlsClientCertificateBoundAccessTokens: true,
+      tokenAuthMethod: 'tokenAuthMethod'
+    },
+    {
+      applicationType: 'NATIVE',
+      clientId: 12346,
+      authTimeRequired: true,
+      clientIdAliasEnabled: true,
+      clientName: 'test-client-native',
+      createdAt: 100000000000000,
+      defaultMaxAge: 100,
+      description: 'description test',
+      developer: 'test developer',
+      idTokenSignAlg: 'idTokenSignAlg',
+      modifiedAt: 100000000000000,
+      number: 1,
+      redirect_urls: ['https://example.com/1', 'https://example.com/2'],
+      subjectType: 'subjectType',
+      tlsClientCertificateBoundAccessTokens: true,
+      tokenAuthMethod: 'tokenAuthMethod'
+    }
+  ]
 })
 
 const getters = {
@@ -220,7 +260,8 @@ const getters = {
       ...state.withdrawalDetailModal,
       withdrawalDetail: state.withdrawalDetails[state.withdrawalDetailModal.index]
     }
-  }
+  },
+  applications: (state) => state.applications
 }
 
 const actions = {

@@ -5,8 +5,18 @@
       <h1 class="title">
         登録中のアプリケーション一覧
       </h1>
-      <app-button class="submit-button">
-        <nuxt-link to="/me/settings/applications/new">
+      <div class="applications">
+        <nuxt-link
+          v-for="application in applications"
+          :key="application.clientId"
+          class="application"
+          :to="`/me/settings/applications/${application.clientId}/edit`"
+        >
+          クライアント名：<span class="client-name">{{ application.clientName }}</span>
+        </nuxt-link>
+      </div>
+      <app-button class="submit-button" :disabled="!isRegisterable">
+        <nuxt-link to="/me/settings/applications/new" :event="!isRegisterable ? '' : 'click'">
           アプリケーションを登録する
         </nuxt-link>
       </app-button>
@@ -16,6 +26,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
@@ -25,6 +36,12 @@ export default {
     AppHeader,
     AppButton,
     AppFooter
+  },
+  computed: {
+    isRegisterable() {
+      return this.applications.length < 5
+    },
+    ...mapGetters('user', ['applications'])
   }
 }
 </script>
@@ -47,7 +64,6 @@ export default {
   grid-area: applications;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .title {
@@ -56,6 +72,30 @@ export default {
   font-weight: 500;
   letter-spacing: 5px;
   text-align: center;
+}
+
+.applications {
+  width: 100%;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.application {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  color: #030303;
+  font-size: 14px;
+  margin-bottom: 12px;
+  padding: 12px;
+  text-decoration: none;
+  width: 100%;
+}
+
+.client-name {
+  color: #6e6e6e;
 }
 
 .submit-button {
