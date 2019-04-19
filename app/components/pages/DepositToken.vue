@@ -136,9 +136,10 @@ export default {
     },
     async getBridgeInformation() {
       try {
-        const web3js = new Web3(
-          new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL)
-        )
+        let web3js = window.web3
+        if (!web3js) {
+          web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL))
+        }
         const minSingleRelayAmountPromise = web3js.eth.call({
           to: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
           data: '0x9f29ffdf'
