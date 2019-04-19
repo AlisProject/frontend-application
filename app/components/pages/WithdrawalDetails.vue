@@ -73,6 +73,8 @@ export default {
   },
   async mounted() {
     try {
+      const isMetaMaskInstalled = this.checkIsMetaMaskInstalled()
+      if (isMetaMaskInstalled) window.web3 = new Web3(window.ethereum)
       // すでに入出金履歴を取得している場合はローディングアイコンを表示しない
       if (this.withdrawalDetails.length > 0) this.isLoading = false
       const { privateEthAddress } = this.currentUser
@@ -100,10 +102,14 @@ export default {
     ...mapGetters('user', ['currentUser', 'withdrawalDetails'])
   },
   methods: {
+    checkIsMetaMaskInstalled() {
+      return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask
+    },
     async getDepositHistory(privateChainUserAddress) {
-      const web3js = new Web3(
-        new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL)
-      )
+      let web3js = window.web3
+      if (!web3js) {
+        web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL))
+      }
       // パブリックチェーン側のRelayイベントを取得
       const relayBlockDiff = Math.ceil(
         (HISTORY_DAYS * 24 * 60 * 60) / PUBLIC_CHAIN_AVERAGE_BLOCK_TIME
@@ -128,9 +134,10 @@ export default {
       return this._createHistory(relayEvents, applyRelayEvents, applyRelayTimestamp, true)
     },
     async getWithdrawHistory(privateChainUserAddress) {
-      const web3js = new Web3(
-        new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL)
-      )
+      let web3js = window.web3
+      if (!web3js) {
+        web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL))
+      }
       // API経由でプライベートチェーン側のRelayイベントを取得
       const relayEvents = this.relayEvents
 
