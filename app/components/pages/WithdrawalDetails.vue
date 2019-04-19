@@ -73,6 +73,8 @@ export default {
   },
   async mounted() {
     try {
+      // 未ログインユーザーにはログインを促すモーダルを表示するため後続の処理を行わない
+      if (!this.loggedIn) return
       const isMetaMaskInstalled = this.checkIsMetaMaskInstalled()
       if (isMetaMaskInstalled) window.web3 = new Web3(window.ethereum)
       // すでに入出金履歴を取得している場合はローディングアイコンを表示しない
@@ -99,7 +101,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUser', 'withdrawalDetails'])
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'withdrawalDetails'])
   },
   methods: {
     checkIsMetaMaskInstalled() {
