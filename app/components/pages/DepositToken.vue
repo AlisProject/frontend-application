@@ -3,62 +3,65 @@
     <app-header />
     <wallet-nav selected="deposit" />
     <div class="area-deposit">
-      <div v-if="!isMetaMaskInstalled" class="request-install-metamask">
-        <h2 class="title">
-          入金にはMETAMASKのインストールが必要です
-        </h2>
-        <p class="description">
-          現在ALISへ入金を行うにはトランザクションの生成が必要なためMETAMASKが必要となります。METAMASKを利用可能なブラウザにインストールしてから入金を行ってください。
-        </p>
-        <img src="~assets/images/pc/common/metamask-fox.svg" alt="METAMASK" class="metamask">
-        <span class="metamask-tm">METAMASK<sup class="sup">TM</sup></span>
-        <app-button>
-          <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
-            METAMASKをインストールする
-          </a>
-        </app-button>
-      </div>
-      <div v-if="isMetaMaskInstalled && !relayPaused" class="deposit-box">
-        <h2 class="title">
-          入金額を入力してください
-        </h2>
-        <div class="token-amount-input-box">
-          <div class="label">
-            入金額
-          </div>
-          <input
-            :value="amount"
-            class="token-amount-input"
-            :class="{ error: errorMessage }"
-            type="number"
-            placeholder="1000"
-            min="1"
-            @input="onInput"
-          >
-          <span class="token-amount-input-unit">ALIS</span>
-          <span class="error-message">
-            {{ errorMessage }}
-          </span>
+      <the-loader v-if="isLoading" :isLoading="isLoading" />
+      <template v-else>
+        <div v-if="!isMetaMaskInstalled" class="request-install-metamask">
+          <h2 class="title">
+            入金にはMETAMASKのインストールが必要です
+          </h2>
+          <p class="description">
+            現在ALISへ入金を行うにはトランザクションの生成が必要なためMETAMASKが必要となります。METAMASKを利用可能なブラウザにインストールしてから入金を行ってください。
+          </p>
+          <img src="~assets/images/pc/common/metamask-fox.svg" alt="METAMASK" class="metamask">
+          <span class="metamask-tm">METAMASK<sup class="sup">TM</sup></span>
+          <app-button>
+            <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
+              METAMASKをインストールする
+            </a>
+          </app-button>
         </div>
-        <p class="description">
-          入金はMETAMASKで処理が行われます
-        </p>
-        <app-button
-          class="deposit-button"
-          :disabled="!isDepositable || isProcessing"
-          @click="handleClickDeposit"
-        >
-          入金する
-        </app-button>
-      </div>
-      <div v-if="isMetaMaskInstalled && relayPaused" class="relay-paused-box">
-        <h2 class="title">
-          現在、入金の機能を一時的に停止しております
-        </h2>
-        <p class="description">
-          入金機能の再開までしばらくお待ち下さい
-        </p>
-      </div>
+        <div v-if="isMetaMaskInstalled && !relayPaused" class="deposit-box">
+          <h2 class="title">
+            入金額を入力してください
+          </h2>
+          <div class="token-amount-input-box">
+            <div class="label">
+              入金額
+            </div>
+            <input
+              :value="amount"
+              class="token-amount-input"
+              :class="{ error: errorMessage }"
+              type="number"
+              placeholder="1000"
+              min="1"
+              @input="onInput"
+            >
+            <span class="token-amount-input-unit">ALIS</span>
+            <span class="error-message">
+              {{ errorMessage }}
+            </span>
+          </div>
+          <p class="description">
+            入金はMETAMASKで処理が行われます
+          </p>
+          <app-button
+            class="deposit-button"
+            :disabled="!isDepositable || isProcessing"
+            @click="handleClickDeposit"
+          >
+            入金する
+          </app-button>
+        </div>
+        <div v-if="isMetaMaskInstalled && relayPaused" class="relay-paused-box">
+          <h2 class="title">
+            現在、入金の機能を一時的に停止しております
+          </h2>
+          <p class="description">
+            入金機能の再開までしばらくお待ち下さい
+          </p>
+        </div>
+      </template>
     </div>
     <app-footer />
   </div>
@@ -71,6 +74,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
 import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
+import TheLoader from '../atoms/TheLoader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
 import { addDigitSeparator, isOverDecimalPoint } from '~/utils/wallet'
@@ -81,12 +85,14 @@ export default {
   components: {
     AppHeader,
     WalletNav,
+    TheLoader,
     AppButton,
     AppFooter
   },
   data() {
     return {
-      isMetaMaskInstalled: false,
+      isLoading: true,
+      isMetaMaskInstalled: true,
       isApprovedOfMetaMask: false,
       errorMessage: '',
       amount: null,
@@ -97,6 +103,7 @@ export default {
   },
   async mounted() {
     this.isMetaMaskInstalled = this.checkIsMetaMaskInstalled()
+    this.isLoading = false
     if (this.isMetaMaskInstalled) await this.initMetaMaskAndBridge()
   },
   computed: {
