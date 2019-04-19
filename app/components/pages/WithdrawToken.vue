@@ -205,9 +205,9 @@ export default {
           this.amountErrorMessage = '小数点3桁までの範囲で入力してください'
           return
         }
-        const formattedMaxSingleRelayAmount = new BigNumber(this.maxSingleRelayAmount, 16).div(
-          formatNumber
-        )
+        const formattedMaxSingleRelayAmount = new BigNumber(this.maxSingleRelayAmount, 16)
+          .div(formatNumber)
+          .minus(this.relayFee)
         const hasExceededMaxSingleRelayAmount = formattedAmount.isGreaterThan(
           formattedMaxSingleRelayAmount
         )
