@@ -101,11 +101,9 @@ export default {
   },
   methods: {
     async getDepositHistory(privateChainUserAddress) {
-      let web3js = window.web3
-      if (!web3js) {
-        web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL))
-      }
-
+      const web3js = new Web3(
+        new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL)
+      )
       // パブリックチェーン側のRelayイベントを取得
       const relayBlockDiff = Math.ceil(
         (HISTORY_DAYS * 24 * 60 * 60) / PUBLIC_CHAIN_AVERAGE_BLOCK_TIME
@@ -130,11 +128,9 @@ export default {
       return this._createHistory(relayEvents, applyRelayEvents, applyRelayTimestamp, true)
     },
     async getWithdrawHistory(privateChainUserAddress) {
-      let web3js = window.web3
-      if (!web3js) {
-        web3js = new Web3(new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL))
-      }
-
+      const web3js = new Web3(
+        new Web3.providers.HttpProvider(process.env.PUBLIC_CHAIN_OPERATION_URL)
+      )
       // API経由でプライベートチェーン側のRelayイベントを取得
       const relayEvents = this.relayEvents
 
