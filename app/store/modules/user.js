@@ -1004,6 +1004,19 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },  
+  async postApplication({ commit }, { name, description, applicationType, redirectUrls }) {
+    try {
+      // TODO: APIを呼び出す
+      // await this.$axios.$post('/me/applications', {
+      //   name,
+      //   description,
+      //   application_type: applicationType,
+      //   redirect_urls: redirectUrls
+      // })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
