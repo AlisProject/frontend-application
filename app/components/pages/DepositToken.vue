@@ -318,7 +318,7 @@ export default {
           formattedMaxSingleRelayAmount.toString()
         )
         if (hasExceededMaxSingleRelayAmount || isLessThanMinSingleRelayAmount) {
-          this.errorMessage = `${maxSingleRelayAmountForUser}ALIS以内で入力してください`
+          this.errorMessage = `${maxSingleRelayAmountForUser}ALIS以内の有効な数値で入力してください`
           return
         }
         this.errorMessage = ''
