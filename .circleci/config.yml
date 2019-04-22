@@ -19,7 +19,7 @@ jobs:
           command: |
             sudo npm install -g yarn@1.6.0
 
-      - run: sudo yarn install --pure-lockfile
+      - run: yarn install --frozen-lockfile
 
       - save_cache:
           paths:
