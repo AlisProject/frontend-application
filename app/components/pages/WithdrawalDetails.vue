@@ -23,8 +23,12 @@
               }}{{ withdrawalDetail.finished | showProcessType }}
             </div>
             <div class="amount" :class="{ 'is-deposit': withdrawalDetail.isDeposit }">
-              {{ withdrawalDetail.isDeposit ? '+' : '-'
-              }}{{ withdrawalDetail.amount | showFormattedAmount }}
+              <template v-if="withdrawalDetail.isDeposit">
+                +{{ withdrawalDetail.amount | showFormattedAmount }}
+              </template>
+              <template v-else>
+                -{{ withdrawalDetail.amount | addFee(withdrawalDetail.fee) | showFormattedAmount }}
+              </template>
             </div>
             <div class="unit">
               ALIS
@@ -44,6 +48,7 @@
 import Web3 from 'web3'
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { BigNumber } from 'bignumber.js'
 import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppFooter from '../organisms/AppFooter'
@@ -219,7 +224,10 @@ export default {
     formatDateWithTime,
     showPaymentType,
     showProcessType,
-    showFormattedAmount
+    showFormattedAmount,
+    addFee(amount, fee) {
+      return new BigNumber(amount).plus(new BigNumber(fee))
+    }
   }
 }
 </script>
