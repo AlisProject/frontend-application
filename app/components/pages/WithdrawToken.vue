@@ -274,6 +274,7 @@ export default {
       return myBalance.isGreaterThanOrEqualTo(amount)
     },
     handleClickBack() {
+      this.errorMessage = ''
       this.isConfirmPage = false
     },
     ...mapActions({
