@@ -102,6 +102,8 @@ export default {
     }
   },
   async mounted() {
+    // 未ログインユーザーにはログインを促すモーダルを表示するため後続の処理を行わない
+    if (!this.loggedIn) return
     this.isMetaMaskInstalled = this.checkIsMetaMaskInstalled()
     this.isLoading = false
     if (this.isMetaMaskInstalled) await this.initMetaMaskAndBridge()
@@ -110,7 +112,7 @@ export default {
     isDepositable() {
       return this.amount !== null && this.amount !== '' && this.errorMessage === ''
     },
-    ...mapGetters('user', ['currentUser'])
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
     checkIsMetaMaskInstalled() {
