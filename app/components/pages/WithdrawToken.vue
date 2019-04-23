@@ -274,7 +274,7 @@ export default {
             new BigNumber(process.env.DAILY_LIMIT_TOKEN_SEND_VALUE).div(formatNumber).toString(10)
           )
           this.sendNotification({
-            text: `一日の出金上限額である${dailyLimit}ALISを超えたため、出金できませんでした`,
+            text: `一日の出金上限額である${dailyLimit}ALIS（手数料含む）を超えたため、出金できませんでした`,
             type: 'warning'
           })
         } else {
