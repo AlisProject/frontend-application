@@ -254,8 +254,14 @@ export default {
           this.errorMessage = 'ALISが不足しています'
           return
         }
-        await this.postTokenSend({ recipientEthAddress, sendValue })
-        this.sendNotification({ text: '出金を受け付けました' })
+        const isCompleted = await this.postTokenSend({ recipientEthAddress, sendValue })
+        if (isCompleted) {
+          this.sendNotification({ text: '出金を受け付けました' })
+        } else {
+          this.sendNotification({
+            text: '出金を受け付けました。出金処理の完了までしばらくお待ち下さい'
+          })
+        }
         this.amount = null
         this.address = ''
         this.isConfirmPage = false
