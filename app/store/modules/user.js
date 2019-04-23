@@ -1004,7 +1004,7 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
-  },  
+  },
   async postApplication({ commit }, { name, description, applicationType, redirectUrls }) {
     try {
       // TODO: APIを呼び出す
