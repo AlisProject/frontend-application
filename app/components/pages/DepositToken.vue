@@ -291,6 +291,11 @@ export default {
           return
         }
         const formattedAmount = new BigNumber(this.amount)
+        const isLessThanOrEqualToZero = formattedAmount.isLessThanOrEqualTo(0)
+        if (isLessThanOrEqualToZero) {
+          this.errorMessage = '入力内容を確認してください'
+          return
+        }
         // 小数点以下の桁数が3桁を超えているか確認
         const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(
           formattedAmount.toString(10),
