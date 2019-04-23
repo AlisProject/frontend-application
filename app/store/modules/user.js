@@ -930,7 +930,7 @@ const actions = {
         recipient_eth_address: recipientEthAddress,
         send_value: sendValue
       })
-      return result
+      return result.is_completed
     } catch (error) {
       return Promise.reject(error)
     }
