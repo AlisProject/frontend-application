@@ -56,7 +56,7 @@ import TheLoader from '../atoms/TheLoader'
 import { formatDateWithTime } from '~/utils/format'
 import { showPaymentType, showProcessType, showFormattedAmount } from '~/utils/wallet'
 
-const HISTORY_DAYS = 14
+const HISTORY_DAYS = 30
 const PUBLIC_CHAIN_AVERAGE_BLOCK_TIME = 30
 const PRIVATE_CHAIN_AVERAGE_BLOCK_TIME = 30
 

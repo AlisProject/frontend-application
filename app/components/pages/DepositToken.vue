@@ -198,7 +198,7 @@ export default {
               {
                 from: account,
                 to: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
-                gas: '0x' + (5500000).toString(16),
+                gas: '0x' + (150000).toString(16),
                 data:
                   '0x095ea7b3' +
                   '0'.repeat(24) +
@@ -218,7 +218,7 @@ export default {
             {
               from: account,
               to: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
-              gas: '0x' + (5500000).toString(16),
+              gas: '0x' + (150000).toString(16),
               data:
                 '0x095ea7b3' +
                 '0'.repeat(24) +
@@ -237,7 +237,7 @@ export default {
           {
             from: account,
             to: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
-            gas: '0x' + (5500000).toString(16),
+            gas: '0x' + (150000).toString(16),
             data: '0xeeec0e24' + '0'.repeat(24) + recipient.slice(2) + hexAmount
           }
         ],
