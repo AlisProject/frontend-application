@@ -40,25 +40,25 @@
         <div class="select-client-box">
           <div class="client-input-box">
             <input
-              id="serverside"
+              id="WEB"
               v-model="clientType"
               class="client-input"
               type="radio"
-              value="serverside"
+              value="WEB"
             >
-            <label class="client-input-label" for="serverside">
+            <label class="client-input-label" for="WEB">
               サーバーサイドアプリ
             </label>
           </div>
           <div class="client-input-box">
             <input
-              id="native"
+              id="NATIVE"
               v-model="clientType"
               class="client-input"
               type="radio"
-              value="native"
+              value="NATIVE"
             >
-            <label class="client-input-label" for="native">
+            <label class="client-input-label" for="NATIVE">
               ネイティブアプリ
             </label>
           </div>
@@ -94,6 +94,7 @@
 
 <script>
 import { required, maxLength } from 'vuelidate/lib/validators'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import urlRegex from 'url-regex'
 import { mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
@@ -108,7 +109,7 @@ export default {
   },
   data() {
     return {
-      clientType: 'serverside',
+      clientType: 'WEB',
       clientName: '',
       description: '',
       formError: {
@@ -175,6 +176,8 @@ export default {
           urls: redirectUrls
         } = this
         await this.postApplication({ name, description, applicationType, redirectUrls })
+        this.sendNotification({ text: 'アプリケーションを保存しました' })
+        this.$router.push('/me/settings/applications')
       } catch (error) {
         console.error(error)
       } finally {
@@ -189,6 +192,9 @@ export default {
       this.$v[type].$reset()
       this.formError[type] = false
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', ['postApplication'])
   },
   watch: {
