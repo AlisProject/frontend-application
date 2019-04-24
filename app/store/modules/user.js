@@ -217,26 +217,7 @@ const state = () => ({
       tokenAuthMethod: 'tokenAuthMethod'
     }
   ],
-  // TODO: モックを削除
-  application: {
-    applicationType: 'WEB',
-    clientId: 12345,
-    authTimeRequired: true,
-    clientIdAliasEnabled: true,
-    clientName: 'test-client-web',
-    clientSecret: '12345abcde',
-    createdAt: 100000000000000,
-    defaultMaxAge: 100,
-    description: 'description test',
-    developer: 'test developer',
-    idTokenSignAlg: 'idTokenSignAlg',
-    modifiedAt: 100000000000000,
-    number: 1,
-    redirect_urls: ['https://example.com/1', 'https://example.com/2'],
-    subjectType: 'subjectType',
-    tlsClientCertificateBoundAccessTokens: true,
-    tokenAuthMethod: 'tokenAuthMethod'
-  }
+  application: {}
 })
 
 const getters = {
@@ -1017,6 +998,56 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getApplication({ commit }, { clientId }) {
+    try {
+      // TODO: APIを呼び出す
+      // const application = await this.$axios.$get(`/me/applications/${clientId}`)
+      // TODO: モックを削除
+      const application = {
+        applicationType: 'WEB',
+        clientId: 12345,
+        authTimeRequired: true,
+        clientIdAliasEnabled: true,
+        clientName: 'test-client-web',
+        clientSecret: '12345abcde',
+        createdAt: 100000000000000,
+        defaultMaxAge: 100,
+        description: 'description test',
+        developer: 'test developer',
+        idTokenSignAlg: 'idTokenSignAlg',
+        modifiedAt: 100000000000000,
+        number: 1,
+        redirect_urls: ['https://example.com/1', 'https://example.com/2'],
+        subjectType: 'subjectType',
+        tlsClientCertificateBoundAccessTokens: true,
+        tokenAuthMethod: 'tokenAuthMethod'
+      }
+      commit(types.SET_APPLICATION, { application })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async updateApplication({ commit }, { name, description, applicationType, redirectUrls }) {
+    try {
+      // TODO: APIを呼び出す
+      // await this.$axios.$put(`/me/applications/${clientId}`, {
+      //   name,
+      //   description,
+      //   application_type: applicationType,
+      //   redirect_urls: redirectUrls
+      // })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async deleteApplication({ commit }, { clientId }) {
+    try {
+      // TODO: APIを呼び出す
+      // await this.$axios.$delete(`/me/applications/${clientId}`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1325,6 +1356,9 @@ const mutations = {
   },
   [types.SET_WITHDRAWAL_DETAILS](state, { withdrawalDetails }) {
     state.withdrawalDetails = withdrawalDetails
+  },
+  [types.SET_APPLICATION](state, { application }) {
+    state.application = application
   }
 }
 

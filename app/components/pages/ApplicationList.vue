@@ -5,6 +5,7 @@
       <h1 class="title">
         登録中のアプリケーション一覧
       </h1>
+      <!-- TODO: アプリケーションが一つもない場合の画面作成 -->
       <div class="applications">
         <nuxt-link
           v-for="application in applications"

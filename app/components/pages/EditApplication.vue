@@ -6,29 +6,45 @@
         アプリケーションを編集する
       </h1>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
-        <div class="label">
-          Client ID
-        </div>
+        <div class="label" v-text="'Client ID'" />
         <div class="not-editable-input">
           {{ application.clientId }}
         </div>
         <template v-if="application.clientSecret">
-          <div class="label">
-            Client Secret
-          </div>
+          <div class="label" v-text="'Client Secret'" />
           <div class="not-editable-input">
             {{ application.clientSecret }}
           </div>
         </template>
-        <div class="signup-form-group" :class="{ error: false }">
+        <div class="signup-form-group" :class="{ error: hasClientName }">
           <label class="signup-form-label">クライアント名</label>
-          <input class="signup-form-input" type="text" placeholder="">
-          <p class="error-message" />
+          <!-- TODO: プレースホルダーを設定 -->
+          <input
+            v-model="clientName"
+            class="signup-form-input"
+            type="text"
+            placeholder=""
+            @blur="showError('clientName')"
+            @focus="resetError('clientName')"
+          >
+          <p v-if="showErrorClientNameMaxLength" class="error-message">
+            80文字以内で入力してください
+          </p>
         </div>
-        <div class="signup-form-group" :class="{ error: false }">
+        <div class="signup-form-group" :class="{ error: hasDescription }">
           <label class="signup-form-label">クライアントの説明※任意</label>
-          <input class="signup-form-input" type="text" placeholder="">
-          <p class="error-message" />
+          <!-- TODO: プレースホルダーを設定 -->
+          <input
+            v-model="description"
+            class="signup-form-input"
+            type="text"
+            placeholder=""
+            @blur="showError('description')"
+            @focus="resetError('description')"
+          >
+          <p v-if="showErrorDescriptionMaxLength" class="error-message">
+            180文字以内で入力してください
+          </p>
         </div>
         <div class="label">
           クライアントタイプ
@@ -46,16 +62,30 @@
               :tags="urls"
               :max-tags="5"
               placeholder=""
-              :autocomplete-always-open="true"
+              :class="{ 'ti-invalid-tag': isInvalidUrl }"
               :separators="['　']"
+              @before-adding-tag="checkUrls"
+              @tags-changed="handleUrlsChanged"
             />
           </no-ssr>
+          <span class="error-message b-20">
+            {{ errorMessage }}
+          </span>
         </div>
       </form>
-      <app-button class="save-button">
+      <app-button
+        class="save-button"
+        :disabled="invalidSubmit || isProcessingSave"
+        @click="onSubmitSave"
+      >
         保存する
       </app-button>
-      <app-button type="secondary" class="delete-button">
+      <app-button
+        type="secondary"
+        class="delete-button"
+        :disabled="isProcessingDelete"
+        @click="onSubmitDelete"
+      >
         削除する
       </app-button>
     </div>
@@ -64,7 +94,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { required, maxLength } from 'vuelidate/lib/validators'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import urlRegex from 'url-regex'
+import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
@@ -75,12 +108,147 @@ export default {
     AppButton,
     AppFooter
   },
+  data() {
+    return {
+      clientName: '',
+      description: '',
+      formError: {
+        clientName: false,
+        description: false
+      },
+      isInvalidUrl: false,
+      isProcessingSave: false,
+      isProcessingDelete: false,
+      errorMessage: '',
+      url: '',
+      urls: []
+    }
+  },
+  async mounted() {
+    const { clientId } = this.$route.params
+    await this.getApplication({ clientId })
+    this.clientName = this.application.clientName
+    this.description = this.application.description
+    this.urls = this.application.redirect_urls.map((url) => {
+      return {
+        text: url,
+        tiClasses: ['ti-valid']
+      }
+    })
+  },
   computed: {
+    showErrorClientNameMaxLength() {
+      return this.formError.clientName && !this.$v.clientName.maxLength
+    },
+    showErrorDescriptionMaxLength() {
+      return this.formError.description && !this.$v.description.maxLength
+    },
+    invalid() {
+      return this.$v.$invalid
+    },
+    invalidSubmit() {
+      return this.$v.$invalid || this.urls.length === 0
+    },
+    hasClientName() {
+      return this.formError.clientName && this.$v.clientName.$error
+    },
+    hasDescription() {
+      return this.formError.description && this.$v.description.$error
+    },
     ...mapGetters('user', ['application'])
+  },
+  methods: {
+    checkUrls({ tag: addingUrl, addTag }) {
+      const isInvalidUrl = this.checkIsInvalidUrl(addingUrl)
+      // 追加できないURLがある場合はURLを追加せず、アラートを表示する
+      if (isInvalidUrl) {
+        this.errorMessage = 'URLの形式が正しくありません'
+        this.isInvalidUrl = true
+        return
+      }
+      addTag()
+    },
+    checkIsInvalidUrl({ text: url }) {
+      if (url === '') return false
+      const isInvalidUrl = !urlRegex({ exact: true }).test(url)
+      return isInvalidUrl
+    },
+    focusToTagInputForm() {
+      document.querySelector('.ti-new-tag-input').focus()
+    },
+    handleUrlsChanged(urls) {
+      this.urls = urls
+    },
+    async onSubmitSave() {
+      try {
+        if (this.invalidSubmit || this.isProcessingSave) return
+        this.isProcessingSave = true
+        const { clientName: name, description, clientType: applicationType } = this
+        const redirectUrls = this.urls.map((url) => url.text)
+        await this.updateApplication({ name, description, applicationType, redirectUrls })
+        this.sendNotification({ text: 'アプリケーションを更新しました' })
+        this.$router.push('/me/settings/applications')
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.isProcessingSave = false
+      }
+    },
+    async onSubmitDelete() {
+      const isOk = confirm('削除してもよろしいですか？')
+      if (!isOk) return
+      try {
+        if (this.isProcessingDelete) return
+        this.isProcessingDelete = true
+        const { clientId } = this.$route.params
+        await this.deleteApplication({ clientId })
+        this.sendNotification({ text: 'アプリケーションを削除しました' })
+        this.$router.push('/me/settings/applications')
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.isProcessingDelete = false
+      }
+    },
+    showError(type) {
+      this.$v[type].$touch()
+      this.formError[type] = true
+    },
+    resetError(type) {
+      this.$v[type].$reset()
+      this.formError[type] = false
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('user', ['getApplication', 'updateApplication', 'deleteApplication'])
   },
   filters: {
     showApplicationType(type) {
       return type === 'WEB' ? 'サーバーサイドアプリ' : 'ネイティブアプリ'
+    }
+  },
+  watch: {
+    url() {
+      this.isInvalidUrl = false
+      this.errorMessage = ''
+
+      const addingUrl = { text: this.url }
+      const isInvalidUrl = this.checkIsInvalidUrl(addingUrl)
+
+      if (isInvalidUrl) {
+        this.errorMessage = 'URLの形式が正しくありません'
+        this.isInvalidUrl = true
+      }
+    }
+  },
+  validations: {
+    clientName: {
+      required,
+      maxLength: maxLength(80)
+    },
+    description: {
+      maxLength: maxLength(180)
     }
   }
 }
@@ -161,6 +329,10 @@ export default {
     text-align: right;
   }
 
+  .b-20 {
+    bottom: -20px;
+  }
+
   .error {
     .signup-form {
       &-input {
@@ -196,64 +368,73 @@ export default {
 </style>
 
 <style lang="scss">
-.tags-input-form {
-  .vue-tags-input {
-    box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
+.edit-application-container {
+  .tags-input-form {
+    cursor: text;
+    position: relative;
 
-    .ti-input {
-      border: none;
+    .vue-tags-input {
+      box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
+
+      .ti-input {
+        border: none;
+      }
+
+      &.invalid-tag .ti-new-tag-input-wrapper input {
+        color: #f06273;
+      }
+
+      &.hide-autocomplete-items .ti-autocomplete {
+        display: none;
+      }
+
+      .ti-autocomplete {
+        display: none;
+      }
+
+      &.ti-invalid-tag {
+        box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
+      }
     }
 
-    &.invalid-tag .ti-new-tag-input-wrapper input {
-      color: #f06273;
-    }
+    .ti-tags {
+      .ti-new-tag-input-wrapper {
+        font-size: 12px;
+        margin: 4px;
 
-    &.hide-autocomplete-items .ti-autocomplete {
-      display: none;
-    }
+        input {
+          &::-webkit-input-placeholder {
+            color: #cecece;
+          }
 
-    .ti-autocomplete {
-      border: none;
-    }
-  }
+          &::-moz-placeholder {
+            color: #cecece;
+          }
+        }
+      }
 
-  .ti-tags {
-    .ti-new-tag-input-wrapper {
-      font-size: 12px;
-      margin: 4px;
+      .ti-tag {
+        border-radius: 4px;
+        font-size: 12px;
+        margin: 4px;
+        padding: 6px 5px 6px 8px;
+        word-break: break-word;
 
-      input {
-        &::-webkit-input-placeholder {
-          color: #cecece;
+        .ti-content {
+          color: #030303;
         }
 
-        &::-moz-placeholder {
-          color: #cecece;
+        &.ti-valid {
+          background-color: #f0f0f0;
         }
-      }
-    }
 
-    .ti-tag {
-      border-radius: 4px;
-      font-size: 12px;
-      margin: 4px;
-      padding: 6px 5px 6px 8px;
-      word-break: break-word;
+        &.ti-tag.ti-deletion-mark {
+          background-color: #e0e0e0;
+        }
 
-      .ti-content {
-        color: #030303;
-      }
-
-      &.ti-valid {
-        background-color: #f0f0f0;
-      }
-
-      &.ti-tag.ti-deletion-mark {
-        background-color: #e0e0e0;
-      }
-
-      .ti-icon-close {
-        color: #030303;
+        .ti-icon-close {
+          color: #030303;
+        }
       }
     }
   }

@@ -8,6 +8,7 @@
       <form class="signup-form" @keypress.enter.prevent>
         <div class="signup-form-group" :class="{ error: hasClientName }">
           <label class="signup-form-label">クライアント名</label>
+          <!-- TODO: プレースホルダーを設定 -->
           <input
             v-model="clientName"
             class="signup-form-input"
@@ -22,6 +23,7 @@
         </div>
         <div class="signup-form-group" :class="{ error: hasDescription }">
           <label class="signup-form-label">クライアントの説明※任意</label>
+          <!-- TODO: プレースホルダーを設定 -->
           <input
             v-model="description"
             class="signup-form-input"
@@ -39,13 +41,7 @@
         </div>
         <div class="select-client-box">
           <div class="client-input-box">
-            <input
-              id="WEB"
-              v-model="clientType"
-              class="client-input"
-              type="radio"
-              value="WEB"
-            >
+            <input id="WEB" v-model="clientType" class="client-input" type="radio" value="WEB">
             <label class="client-input-label" for="WEB">
               サーバーサイドアプリ
             </label>
@@ -146,7 +142,7 @@ export default {
   methods: {
     checkUrls({ tag: addingUrl, addTag }) {
       const isInvalidUrl = this.checkIsInvalidUrl(addingUrl)
-      // 追加できないタグがある場合はURLを追加せず、アラートを表示する
+      // 追加できないURLがある場合はURLを追加せず、アラートを表示する
       if (isInvalidUrl) {
         this.errorMessage = 'URLの形式が正しくありません'
         this.isInvalidUrl = true
@@ -169,12 +165,8 @@ export default {
       try {
         if (this.invalidSubmit || this.isProcessing) return
         this.isProcessing = true
-        const {
-          clientName: name,
-          description,
-          clientType: applicationType,
-          urls: redirectUrls
-        } = this
+        const { clientName: name, description, clientType: applicationType } = this
+        const redirectUrls = this.urls.map((url) => url.text)
         await this.postApplication({ name, description, applicationType, redirectUrls })
         this.sendNotification({ text: 'アプリケーションを保存しました' })
         this.$router.push('/me/settings/applications')
@@ -199,7 +191,6 @@ export default {
   },
   watch: {
     url() {
-      // 入力中のタグを編集したとき、エラーを消しタグの色を黒色にもどす
       this.isInvalidUrl = false
       this.errorMessage = ''
 
@@ -407,6 +398,10 @@ export default {
 
       .ti-autocomplete {
         display: none;
+      }
+
+      &.ti-invalid-tag {
+        box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
       }
     }
 
