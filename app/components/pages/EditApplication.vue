@@ -55,23 +55,10 @@
         <div class="label">
           リダイレクトURI
         </div>
-        <div class="tags-input-form">
-          <no-ssr>
-            <vue-tags-input
-              v-model="url"
-              :tags="urls"
-              :max-tags="5"
-              placeholder=""
-              :class="{ 'ti-invalid-tag': isInvalidUrl }"
-              :separators="['　']"
-              @before-adding-tag="checkUrls"
-              @tags-changed="handleUrlsChanged"
-            />
-          </no-ssr>
-          <span class="error-message b-20">
-            {{ errorMessage }}
-          </span>
-        </div>
+        <urls-input-form
+          :initialUrls="application.redirect_urls"
+          @handle-change-urls="handleChangeUrls"
+        />
       </form>
       <app-button
         class="save-button"
@@ -96,15 +83,16 @@
 <script>
 import { required, maxLength } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
-import urlRegex from 'url-regex'
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
+import UrlsInputForm from '../organisms/UrlsInputForm'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
 
 export default {
   components: {
     AppHeader,
+    UrlsInputForm,
     AppButton,
     AppFooter
   },
@@ -116,15 +104,12 @@ export default {
         clientName: false,
         description: false
       },
-      isInvalidUrl: false,
       isProcessingSave: false,
       isProcessingDelete: false,
-      errorMessage: '',
-      url: '',
       urls: []
     }
   },
-  async mounted() {
+  async created() {
     const { clientId } = this.$route.params
     await this.getApplication({ clientId })
     this.clientName = this.application.clientName
@@ -158,25 +143,7 @@ export default {
     ...mapGetters('user', ['application'])
   },
   methods: {
-    checkUrls({ tag: addingUrl, addTag }) {
-      const isInvalidUrl = this.checkIsInvalidUrl(addingUrl)
-      // 追加できないURLがある場合はURLを追加せず、アラートを表示する
-      if (isInvalidUrl) {
-        this.errorMessage = 'URLの形式が正しくありません'
-        this.isInvalidUrl = true
-        return
-      }
-      addTag()
-    },
-    checkIsInvalidUrl({ text: url }) {
-      if (url === '') return false
-      const isInvalidUrl = !urlRegex({ exact: true }).test(url)
-      return isInvalidUrl
-    },
-    focusToTagInputForm() {
-      document.querySelector('.ti-new-tag-input').focus()
-    },
-    handleUrlsChanged(urls) {
+    handleChangeUrls(urls) {
       this.urls = urls
     },
     async onSubmitSave() {
@@ -226,20 +193,6 @@ export default {
   filters: {
     showApplicationType(type) {
       return type === 'WEB' ? 'サーバーサイドアプリ' : 'ネイティブアプリ'
-    }
-  },
-  watch: {
-    url() {
-      this.isInvalidUrl = false
-      this.errorMessage = ''
-
-      const addingUrl = { text: this.url }
-      const isInvalidUrl = this.checkIsInvalidUrl(addingUrl)
-
-      if (isInvalidUrl) {
-        this.errorMessage = 'URLの形式が正しくありません'
-        this.isInvalidUrl = true
-      }
     }
   },
   validations: {
@@ -329,10 +282,6 @@ export default {
     text-align: right;
   }
 
-  .b-20 {
-    bottom: -20px;
-  }
-
   .error {
     .signup-form {
       &-input {
@@ -364,79 +313,5 @@ export default {
 
 .delete-button {
   margin: 20px 0 60px;
-}
-</style>
-
-<style lang="scss">
-.edit-application-container {
-  .tags-input-form {
-    cursor: text;
-    position: relative;
-
-    .vue-tags-input {
-      box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
-
-      .ti-input {
-        border: none;
-      }
-
-      &.invalid-tag .ti-new-tag-input-wrapper input {
-        color: #f06273;
-      }
-
-      &.hide-autocomplete-items .ti-autocomplete {
-        display: none;
-      }
-
-      .ti-autocomplete {
-        display: none;
-      }
-
-      &.ti-invalid-tag {
-        box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
-      }
-    }
-
-    .ti-tags {
-      .ti-new-tag-input-wrapper {
-        font-size: 12px;
-        margin: 4px;
-
-        input {
-          &::-webkit-input-placeholder {
-            color: #cecece;
-          }
-
-          &::-moz-placeholder {
-            color: #cecece;
-          }
-        }
-      }
-
-      .ti-tag {
-        border-radius: 4px;
-        font-size: 12px;
-        margin: 4px;
-        padding: 6px 5px 6px 8px;
-        word-break: break-word;
-
-        .ti-content {
-          color: #030303;
-        }
-
-        &.ti-valid {
-          background-color: #f0f0f0;
-        }
-
-        &.ti-tag.ti-deletion-mark {
-          background-color: #e0e0e0;
-        }
-
-        .ti-icon-close {
-          color: #030303;
-        }
-      }
-    }
-  }
 }
 </style>
