@@ -217,7 +217,22 @@ const state = () => ({
       tokenAuthMethod: 'tokenAuthMethod'
     }
   ],
-  application: {}
+  application: {},
+  // TODO: モックを削除
+  connectedApplications: [
+    {
+      clientId: 12345,
+      clientName: 'test-client-web',
+      createdAt: 1000000000,
+      description: 'description test'
+    },
+    {
+      clientId: 12346,
+      clientName: 'test-client-native',
+      createdAt: 1000000000,
+      description: 'ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ'
+    }
+  ]
 })
 
 const getters = {
@@ -263,7 +278,8 @@ const getters = {
     }
   },
   applications: (state) => state.applications,
-  application: (state) => state.application
+  application: (state) => state.application,
+  connectedApplications: (state) => state.connectedApplications
 }
 
 const actions = {
