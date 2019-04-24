@@ -80,6 +80,7 @@ import AppFooter from '../organisms/AppFooter'
 import { addDigitSeparator, isOverDecimalPoint } from '~/utils/wallet'
 
 const formatNumber = 10 ** 18
+const GAS = 150000
 
 export default {
   components: {
@@ -198,7 +199,7 @@ export default {
               {
                 from: account,
                 to: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
-                gas: '0x' + (150000).toString(16),
+                gas: '0x' + GAS.toString(16),
                 data:
                   '0x095ea7b3' +
                   '0'.repeat(24) +
@@ -218,7 +219,7 @@ export default {
             {
               from: account,
               to: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
-              gas: '0x' + (150000).toString(16),
+              gas: '0x' + GAS.toString(16),
               data:
                 '0x095ea7b3' +
                 '0'.repeat(24) +
@@ -237,7 +238,7 @@ export default {
           {
             from: account,
             to: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
-            gas: '0x' + (150000).toString(16),
+            gas: '0x' + GAS.toString(16),
             data: '0xeeec0e24' + '0'.repeat(24) + recipient.slice(2) + hexAmount
           }
         ],

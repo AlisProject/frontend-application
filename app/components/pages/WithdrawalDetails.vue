@@ -57,8 +57,7 @@ import { formatDateWithTime } from '~/utils/format'
 import { showPaymentType, showProcessType, showFormattedAmount } from '~/utils/wallet'
 
 const HISTORY_DAYS = 30
-const PUBLIC_CHAIN_AVERAGE_BLOCK_TIME = 30
-const PRIVATE_CHAIN_AVERAGE_BLOCK_TIME = 30
+const PUBLIC_CHAIN_AVERAGE_BLOCK_TIME = 13
 
 export default {
   components: {
@@ -150,7 +149,7 @@ export default {
 
       // パブリックチェーン側のApplyRelayイベントの取得
       const applyRelayBlockDiff = Math.ceil(
-        (HISTORY_DAYS * 24 * 60 * 60) / PRIVATE_CHAIN_AVERAGE_BLOCK_TIME
+        (HISTORY_DAYS * 24 * 60 * 60) / PUBLIC_CHAIN_AVERAGE_BLOCK_TIME
       )
       const applyRelayBlockNum = await web3js.eth.getBlockNumber()
       const applyRelayFromBlockNum = applyRelayBlockNum - applyRelayBlockDiff
