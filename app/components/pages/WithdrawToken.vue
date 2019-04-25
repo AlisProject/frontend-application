@@ -34,6 +34,7 @@
             placeholder="1000"
             min="1"
             @input="onInputAmount"
+            @keydown.69.prevent
           >
           <span class="token-amount-input-unit">ALIS</span>
           <span class="error-message">
