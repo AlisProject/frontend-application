@@ -81,6 +81,7 @@ export default {
   font-weight: 500;
   letter-spacing: 5px;
   text-align: center;
+  margin: 10px 0 0;
 }
 
 .applications {
@@ -135,5 +136,40 @@ export default {
   text-align: center;
   width: 96px;
   margin: 24px 0 0 48px;
+}
+
+@media screen and (max-width: 640px) {
+  .connected-application-list-container {
+    grid-template-rows: 100px auto min-content;
+    grid-template-columns: 20px 1fr 20px;
+  }
+
+  .application {
+    flex-direction: column;
+  }
+
+  .app-info {
+    width: 100%;
+  }
+
+  .delete-button {
+    margin: 24px 0 0 auto;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .connected-application-list-container {
+    grid-template-rows: 66px auto min-content;
+  }
+
+  .applications {
+    margin-top: 40px;
+  }
+
+  .title {
+    font-size: 14px;
+    letter-spacing: 0.8px;
+    margin: 10px 0 0;
+  }
 }
 </style>
