@@ -1,3 +1,4 @@
+const path = require('path')
 const axiosRetry = require('axios-retry')
 
 module.exports = {
@@ -123,6 +124,9 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+      // web3 の読み込みサイズを減らすために利用
+      // 参考：https://github.com/ethereum/web3-examples/blob/9b9538ae553d8b42544a76ebee5622e6c3a067e5/starters/webpack/webpack.config.js
+      config.resolve.alias['bn.js'] = path.resolve(__dirname, 'node_modules/bn.js')
     }
   },
   css: [
