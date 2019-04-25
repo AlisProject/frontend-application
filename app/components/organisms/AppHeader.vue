@@ -29,40 +29,25 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
-import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
-import SignUpModal from '../organisms/SignUpModal'
-import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
-import LoginModal from '../organisms/LoginModal'
-import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
-import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
-import RequestLoginModal from '../organisms/RequestLoginModal'
-import TipModal from '../organisms/TipModal'
-import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
-import UserReportModal from '../organisms/UserReportModal'
-import ArticleReportModal from '../organisms/ArticleReportModal'
-import FirstProcessModal from '../organisms/FirstProcessModal'
-import ConfirmPurchaseArticleModal from '../organisms/ConfirmPurchaseArticleModal'
-import WithdrawalDetailModal from '../organisms/WithdrawalDetailModal'
 
 export default {
   components: {
-    HeaderSessionLinks,
-    HeaderUserLoggedInItems,
-    SignUpModal,
-    SignUpAuthFlowModal,
-    LoginModal,
-    RestrictEditArticleModal,
-    ProfileSettingsModal,
-    RequestLoginModal,
-    TipModal,
-    Toast,
-    RequestPhoneNumberVerifyModal,
-    UserReportModal,
-    ArticleReportModal,
-    FirstProcessModal,
-    ConfirmPurchaseArticleModal,
-    WithdrawalDetailModal
+    HeaderSessionLinks: () => import('../atoms/HeaderSessionLinks'),
+    HeaderUserLoggedInItems: () => import('../atoms/HeaderUserLoggedInItems'),
+    SignUpModal: () => import('../organisms/SignUpModal'),
+    SignUpAuthFlowModal: () => import('../organisms/SignUpAuthFlowModal'),
+    LoginModal: () => import('../organisms/LoginModal'),
+    RestrictEditArticleModal: () => import('../organisms/RestrictEditArticleModal'),
+    ProfileSettingsModal: () => import('../organisms/ProfileSettingsModal'),
+    RequestLoginModal: () => import('../organisms/RequestLoginModal'),
+    TipModal: () => import('../organisms/TipModal'),
+    RequestPhoneNumberVerifyModal: () => import('../organisms/RequestPhoneNumberVerifyModal'),
+    UserReportModal: () => import('../organisms/UserReportModal'),
+    ArticleReportModal: () => import('../organisms/ArticleReportModal'),
+    FirstProcessModal: () => import('../organisms/FirstProcessModal'),
+    ConfirmPurchaseArticleModal: () => import('../organisms/ConfirmPurchaseArticleModal'),
+    WithdrawalDetailModal: () => import('../organisms/WithdrawalDetailModal'),
+    Toast
   },
   computed: {
     ...mapGetters('user', [
