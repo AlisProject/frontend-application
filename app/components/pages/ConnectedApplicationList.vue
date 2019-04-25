@@ -23,7 +23,7 @@
               {{ application.createdAt | formatDate }}
             </div>
           </div>
-          <app-button type="secondary" class="delete-button">
+          <app-button type="secondary" class="delete-button" :disabled="isProcessing" @click="handleDelete">
             削除する
           </app-button>
         </div>
@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
@@ -46,8 +47,32 @@ export default {
     AppButton,
     AppFooter
   },
+  data() {
+    return {
+      isProcessing: false
+    }
+  },
   computed: {
     ...mapGetters('user', ['connectedApplications'])
+  },
+  methods: {
+    async handleDelete() {
+      const isOk = confirm('削除してもよろしいですか？')
+      if (!isOk) return
+      try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+        // TODO: 連携アプリケーションを削除するAPIを呼び出す
+        this.sendNotification({ text: 'アプリケーションを削除しました' })
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.isProcessing = false
+      }
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    })
   },
   filters: {
     formatDate

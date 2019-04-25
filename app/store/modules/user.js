@@ -224,11 +224,13 @@ const state = () => ({
       clientId: 12345,
       clientName: 'test-client-web',
       createdAt: 1000000000,
-      description: 'description test'
+      description: ''
+      // description: 'description test'
     },
     {
       clientId: 12346,
-      clientName: 'test-client-native',
+      clientName:
+        'ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
       createdAt: 1000000000,
       description:
         'ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ'
