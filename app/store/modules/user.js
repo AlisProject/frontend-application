@@ -1,8 +1,8 @@
-import { uniqBy } from 'lodash'
 import { BigNumber } from 'bignumber.js'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
 import CognitoAuthSDK from '~/utils/cognito-auth-sdk'
+import { uniqBy } from '~/utils/lodash'
 
 const namespaced = true
 

@@ -31,7 +31,6 @@
     "chart.js": "^2.7.3",
     "dayjs": "^1.8.9",
     "express": "^4.16.4",
-    "lodash": "^4.17.11",
     "medium-editor": "^5.23.3",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.4.5",

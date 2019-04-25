@@ -1,6 +1,6 @@
-import { uniqBy } from 'lodash'
 import * as types from '../mutation-types'
 import { getBodyWithImageOptimizationParam } from '~/utils/article'
+import { uniqBy } from '~/utils/lodash'
 
 const namespaced = true
 
