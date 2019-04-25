@@ -267,15 +267,18 @@ export default {
         this.address = ''
         this.isConfirmPage = false
       } catch (error) {
-        if (
-          error.response.data.message ===
-          'Invalid parameter: Token withdrawal limit has been exceeded.'
-        ) {
+        const message = error.response.data.message
+        if (message === 'Invalid parameter: Token withdrawal limit has been exceeded.') {
           const dailyLimit = addDigitSeparator(
             new BigNumber(process.env.DAILY_LIMIT_TOKEN_SEND_VALUE).div(formatNumber).toString(10)
           )
           this.sendNotification({
             text: `一日の出金上限額である${dailyLimit}ALIS（手数料含む）を超えたため、出金できませんでした`,
+            type: 'warning'
+          })
+        } else if (message === 'Invalid parameter: send_value') {
+          this.sendNotification({
+            text: 'エラーが発生しました。入力内容を確認してください',
             type: 'warning'
           })
         } else {
