@@ -303,10 +303,7 @@ export default {
           return
         }
         // 小数点以下の桁数が3桁を超えているか確認
-        const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(
-          formattedAmount.toString(10),
-          3
-        )
+        const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(this.amount, 3)
         if (isNotInputablePlaceAfterDecimalPoint) {
           this.errorMessage = '小数点3桁までの範囲で入力してください'
           return
