@@ -75,6 +75,9 @@
           min="1"
           max="10000"
           @input="onInput"
+          @keydown.69.prevent
+          @keydown.187.prevent
+          @keydown.189.prevent
         >
         <span class="token-amount-input-unit">ALIS</span>
         <span class="error-message">
