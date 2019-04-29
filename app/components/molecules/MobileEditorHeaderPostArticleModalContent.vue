@@ -234,7 +234,7 @@ export default {
           return
         }
         if (hasExceededMaxPrice || hasNotExceededMinPrice) {
-          this.errorMessage = '10,000ALIS以内で設定してください'
+          this.errorMessage = '10,000ALIS以内で入力してください'
           return
         }
         this.errorMessage = ''

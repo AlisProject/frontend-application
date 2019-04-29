@@ -6,7 +6,7 @@
     <span class="description">
       贈り先へ届くまでしばらくお待ち下さい
     </span>
-    <app-button class="close-button" @click="closeModal">
+    <app-button class="close-button" type="secondary" @click="closeModal">
       閉じる
     </app-button>
   </div>

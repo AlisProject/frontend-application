@@ -19,7 +19,7 @@ jobs:
           command: |
             sudo npm install -g yarn@1.6.0
 
-      - run: sudo yarn install --pure-lockfile
+      - run: yarn install --frozen-lockfile
 
       - save_cache:
           paths:
@@ -43,6 +43,9 @@ jobs:
       - run:
           name: deploy
           command: |
-            sudo apt-get -y -qq install awscli
+            sudo apt-get install python2.7-dev
+            curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+            sudo python get-pip.py
+            sudo pip install awscli
             sudo npm install -g serverless
             ./deploy.sh

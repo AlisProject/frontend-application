@@ -13,6 +13,7 @@ module.exports = {
     'arrow-parens': 'off',
     'no-console': 'off',
     'no-irregular-whitespace': 'off',
+    'prefer-promise-reject-errors': 'off',
     'require-await': 'off',
     'space-before-function-paren': 'off',
     'vue/attribute-hyphenation': 'off',

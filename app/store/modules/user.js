@@ -171,6 +171,11 @@ const state = () => ({
   },
   confirmPurchaseArticleModal: {
     isShow: false
+  },
+  withdrawalDetails: [],
+  withdrawalDetailModal: {
+    isShow: false,
+    index: ''
   }
 })
 
@@ -208,7 +213,14 @@ const getters = {
   firstProcessModal: (state) => state.firstProcessModal,
   mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal,
   selectPayment: (state) => state.selectPayment,
-  confirmPurchaseArticleModal: (state) => state.confirmPurchaseArticleModal
+  confirmPurchaseArticleModal: (state) => state.confirmPurchaseArticleModal,
+  withdrawalDetails: (state) => state.withdrawalDetails.sort((a, b) => b.timestamp - a.timestamp),
+  withdrawalDetailModal: (state) => {
+    return {
+      ...state.withdrawalDetailModal,
+      withdrawalDetail: state.withdrawalDetails[state.withdrawalDetailModal.index]
+    }
+  }
 }
 
 const actions = {
@@ -897,6 +909,39 @@ const actions = {
   },
   setConfirmPurchaseArticleModal({ commit }, { isShow }) {
     commit(types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL, { isShow })
+  },
+  setWithdrawalDetailModal({ commit }, { isShow, index }) {
+    commit(types.SET_WITHDRAWAL_DETAIL_MODAL, { isShow, index })
+  },
+  setWithdrawalDetails({ commit }, { withdrawalDetails }) {
+    commit(types.SET_WITHDRAWAL_DETAILS, { withdrawalDetails })
+  },
+  async getBridgeInformation({ commit }) {
+    try {
+      const result = await this.$axios.$get('/wallet/bridge_information')
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async postTokenSend({ commit }, { recipientEthAddress, sendValue }) {
+    try {
+      const result = await this.$axios.$post('/me/wallet/token/send', {
+        recipient_eth_address: recipientEthAddress,
+        send_value: sendValue
+      })
+      return result.is_completed
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getTokenHistories({ commit }) {
+    try {
+      const result = await this.$axios.$get('/me/wallet/token/histories')
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1198,6 +1243,13 @@ const mutations = {
   },
   [types.SET_CONFIRM_PURCHASE_ARTICLE_MODAL](state, { isShow }) {
     state.confirmPurchaseArticleModal.isShow = isShow
+  },
+  [types.SET_WITHDRAWAL_DETAIL_MODAL](state, { isShow, index }) {
+    state.withdrawalDetailModal.isShow = isShow
+    state.withdrawalDetailModal.index = index
+  },
+  [types.SET_WITHDRAWAL_DETAILS](state, { withdrawalDetails }) {
+    state.withdrawalDetails = withdrawalDetails
   }
 }
 
