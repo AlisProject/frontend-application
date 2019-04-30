@@ -2,6 +2,7 @@
   <div class="top-page" :class="{ 'is-show-guide': isShowGuide }">
     <app-header />
     <default-header-nav class="default-header-nav" />
+    <new-topic-candidates />
     <eyecatch-article-card-list :articles="eyecatchArticles" class="eyecatch-article-card-list" />
     <recommended-article-card-list
       :articles="eyecatchArticles.filter((article) => article !== null)"
@@ -22,6 +23,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
+import NewTopicCandidates from '../organisms/NewTopicCandidates'
 import EyecatchArticleCardList from '../organisms/EyecatchArticleCardList'
 import RecommendedArticleCardList from '../organisms/RecommendedArticleCardList'
 import HowToUseImage from '../organisms/HowToUseImage'
@@ -34,6 +36,7 @@ export default {
   components: {
     AppHeader,
     DefaultHeaderNav,
+    NewTopicCandidates,
     EyecatchArticleCardList,
     RecommendedArticleCardList,
     HowToUseImage,
@@ -141,6 +144,7 @@ export default {
   grid-template-areas:
     "app-header app-header                 app-header                 app-header"
     "nav        nav                        nav                        nav       "
+    "...        candidates                 candidates                 ...       "
     "...        eyecatch-article-card-list eyecatch-article-card-list ...       "
     "...        article-card-list          article-card-list          ...       "
     "...        article-card-list          article-card-list          ...       "
@@ -148,15 +152,16 @@ export default {
     "app-footer app-footer                 app-footer                 app-footer";
 
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
+  grid-template-rows: 100px minmax(50px, min-content) 50px auto auto 1fr 75px 75px;
   min-height: 100vh;
 
   &.is-show-guide {
-    grid-template-rows: 100px minmax(50px, min-content) auto 652px minmax(100px, 1fr) 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) 50px auto 652px minmax(100px, 1fr) 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header                 app-header"
       "nav        nav                        nav                        nav       "
+      "...        candidates                 candidates                 ...       "
       "...        eyecatch-article-card-list eyecatch-article-card-list ...       "
       "...        article-card-list          how-to-use-image           ...       "
       "...        article-card-list          sub-footer                 ...       "
@@ -204,22 +209,24 @@ export default {
 @media screen and (max-width: 1296px) {
   .top-page {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px minmax(50px, min-content) auto 1fr 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) 50px auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                 app-header"
       "nav        nav                        nav       "
+      "...        candidates                 ...       "
       "...        eyecatch-article-card-list ...       "
       "...        article-card-list          ...       "
       "...        loader                     ...       "
       "app-footer app-footer                 app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
+      grid-template-rows: 100px minmax(50px, min-content) 50px auto auto 1fr 75px 75px;
       /* prettier-ignore */
       grid-template-areas:
         "app-header app-header                 app-header"
         "nav        nav                        nav       "
+        "...        candidates                 ...       "
         "...        eyecatch-article-card-list ...       "
         "...        how-to-use-image           ...       "
         "...        article-card-list          ...       "
@@ -244,11 +251,12 @@ export default {
 @media screen and (max-width: 920px) {
   .top-page {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 80px auto 1fr 75px 75px;
+    grid-template-rows: 100px 80px 50px auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
       "nav        nav                           nav       "
+      "candidates candidates                    candidates"
       "...        eyecatch-article-card-list-sp ...       "
       "...        article-card-list             ...       "
       "...        loader                        ...       "
@@ -259,6 +267,7 @@ export default {
       grid-template-areas:
         "app-header app-header                    app-header"
         "nav        nav                           nav       "
+        "candidates candidates                    candidates"
         "...        how-to-use-image              ...       "
         "...        eyecatch-article-card-list-sp ...       "
         "...        article-card-list             ...       "
@@ -280,11 +289,12 @@ export default {
 
 @media screen and (max-width: 550px) {
   .top-page {
-    grid-template-rows: 66px minmax(50px, min-content) auto 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) 36px auto 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header       app-header                    app-header"
       "nav              nav                           nav       "
+      "candidates       candidates                    candidates"
       "...              eyecatch-article-card-list-sp ...       "
       "...              article-card-list             ...       "
       "...              loader                        ...       "
@@ -292,15 +302,16 @@ export default {
     grid-gap: 0;
 
     &.is-show-guide {
-      grid-template-rows: 66px minmax(50px, min-content) auto auto 1fr 75px min-content;
+      grid-template-rows: 66px minmax(50px, min-content) 44px auto auto 1fr 75px min-content;
       /* prettier-ignore */
       grid-template-areas:
-        "app-header       app-header                    app-header"
-        "nav              nav                           nav       "
+        "app-header       app-header                    app-header      "
+        "nav              nav                           nav             "
+        "candidates       candidates                    candidates      "
         "how-to-use-image how-to-use-image              how-to-use-image"
-        "...              eyecatch-article-card-list-sp ...       "
-        "...              article-card-list             ...       "
-        "...              loader                        ...       "
+        "...              eyecatch-article-card-list-sp ...             "
+        "...              article-card-list             ...             "
+        "...              loader                        ...             "
         "app-footer       app-footer                    app-footer";
 
       .how-to-use-image {
