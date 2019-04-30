@@ -20,34 +20,15 @@ package:
     - LICENSE
     - README.md
     - package.json
+    - yarn-error.log
     - yarn.lock
-    - node_modules/@alisproject/dist/AlisEditor.common.js*
-    - node_modules/@alisproject/dist/AlisEditor.umd.js*
-    - node_modules/prettier-eslint/**
-    - node_modules/babel**/**
-    - node_modules/caniuse-db/**
-    - node_modules/prettier/**
-    - node_modules/yargs/**
-    - node_modules/typescript/**
-    - node_modules/postcss**/**
-    - node_modules/cssnano/**
-    - node_modules/xxhashjs/**
-    - node_modules/jschardet/**
-    - node_modules/inquirer/**
     - node_modules/**/*.md
     - node_modules/**/bin/**
   include:
     - app/static/part.js
     - server/**
-    - configs/**
     - nuxt.config.js
     - .nuxt/**
-    - node_modules/postcss/**
-    - node_modules/postcss-cssnext/**
-    - node_modules/postcss-import/**
-    - node_modules/postcss-import-resolver/**
-    - node_modules/postcss-loader/**
-    - node_modules/postcss-url/**
 
 functions:
   handler:
