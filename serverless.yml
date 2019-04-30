@@ -22,8 +22,6 @@ package:
     - package.json
     - yarn-error.log
     - yarn.lock
-    - node_modules/**/*.md
-    - node_modules/**/bin/**
   include:
     - app/static/part.js
     - server/**
