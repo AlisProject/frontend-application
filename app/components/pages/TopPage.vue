@@ -182,7 +182,7 @@ export default {
   }
 
   .default-header-nav {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .how-to-use-image,
