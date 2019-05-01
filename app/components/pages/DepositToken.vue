@@ -106,7 +106,7 @@ export default {
       bridgeInfo: null,
       relayPaused: false,
       isProcessing: false,
-      networkType: 'main'
+      networkType: this.isProduction ? 'main' : 'ropsten'
     }
   },
   async mounted() {
@@ -117,7 +117,6 @@ export default {
     if (this.isMetaMaskInstalled) {
       try {
         await this.initMetaMaskAndBridge()
-        // TODO: プロダクション環境でのみメインネットを利用するように修正
         this.networkType = await window.web3.eth.net.getNetworkType()
       } catch (error) {
         console.error(error)
@@ -126,7 +125,11 @@ export default {
   },
   computed: {
     isMainNet() {
-      return this.networkType === 'main'
+      const targetNetworkType = this.isProduction ? 'main' : 'ropsten'
+      return this.networkType === targetNetworkType
+    },
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
     },
     isDepositable() {
       return this.amount !== null && this.amount !== '' && this.errorMessage === ''
