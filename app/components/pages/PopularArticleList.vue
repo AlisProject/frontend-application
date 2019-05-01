@@ -2,6 +2,7 @@
   <div class="popular-article-list-container">
     <app-header />
     <default-header-nav />
+    <new-topic-candidates />
     <article-type-select-nav />
     <article-card-list :articles="popularArticles" />
     <the-loader :is-loading="!isLastPage" />
@@ -13,6 +14,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
+import NewTopicCandidates from '../organisms/NewTopicCandidates'
 import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
@@ -23,6 +25,7 @@ export default {
   components: {
     AppHeader,
     DefaultHeaderNav,
+    NewTopicCandidates,
     ArticleTypeSelectNav,
     ArticleCardList,
     TheLoader,
@@ -116,14 +119,15 @@ export default {
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header              app-header              app-header"
-    "nav                     nav                     nav       "
+    "app-header              app-header              app-header             "
+    "nav                     nav                     nav                    "
+    "...                     candidates              ...                    "
     "article-type-select-nav article-type-select-nav article-type-select-nav"
-    "...                     article-card-list       ...       "
-    "...                     loader                  ...       "
-    "app-footer              app-footer              app-footer";
+    "...                     article-card-list       ...                    "
+    "...                     loader                  ...                    "
+    "app-footer              app-footer              app-footer             ";
   grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px auto 84px 1fr 75px 75px;
+  grid-template-rows: 100px auto 40px 84px 1fr 75px 75px;
   min-height: 100vh;
 }
 
@@ -136,6 +140,15 @@ export default {
 @media screen and (max-width: 1296px) {
   .popular-article-list-container {
     grid-template-columns: 1fr 710px 1fr;
+    /* prettier-ignore */
+    grid-template-areas:
+      "app-header              app-header              app-header             "
+      "nav                     nav                     nav                    "
+      "candidates              candidates              candidates             "
+      "article-type-select-nav article-type-select-nav article-type-select-nav"
+      "...                     article-card-list       ...                    "
+      "...                     loader                  ...                    "
+      "app-footer              app-footer              app-footer             ";
   }
 }
 
@@ -147,7 +160,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .popular-article-list-container {
-    grid-template-rows: 66px minmax(62px, min-content) 60px 1fr 75px min-content;
+    grid-template-rows: 66px minmax(62px, min-content) 30px 60px 1fr 75px min-content;
     grid-template-columns: 1fr 340px 1fr;
   }
 }
