@@ -7,14 +7,19 @@
       </h1>
       <!-- TODO: アプリケーションが一つもない場合の画面作成 -->
       <div class="applications">
-        <nuxt-link
-          v-for="application in applications"
-          :key="application.clientId"
-          class="application"
-          :to="`/me/settings/applications/${application.clientId}/edit`"
-        >
-          クライアント名：<span class="client-name">{{ application.clientName }}</span>
-        </nuxt-link>
+        <template v-if="hasApplication">
+          <nuxt-link
+            v-for="application in applications"
+            :key="application.clientId"
+            class="application"
+            :to="`/me/settings/applications/${application.clientId}/edit`"
+          >
+            クライアント名：<span class="client-name">{{ application.clientName }}</span>
+          </nuxt-link>
+        </template>
+        <p v-else class="no-application">
+          登録中のアプリケーションがありません
+        </p>
       </div>
       <app-button class="submit-button" :disabled="!isRegisterable">
         <nuxt-link to="/me/settings/applications/new" :event="!isRegisterable ? '' : 'click'">
@@ -41,6 +46,9 @@ export default {
   computed: {
     isRegisterable() {
       return this.applications.length < 5
+    },
+    hasApplication() {
+      return this.applications.length > 0
     },
     ...mapGetters('user', ['applications'])
   }
@@ -93,6 +101,15 @@ export default {
   padding: 12px;
   text-decoration: none;
   width: 100%;
+}
+
+.no-application {
+  color: #030303;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
 .client-name {

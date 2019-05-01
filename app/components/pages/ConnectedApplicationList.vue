@@ -7,26 +7,36 @@
       </h1>
       <!-- TODO: アプリケーションが一つもない場合の画面作成 -->
       <div class="applications">
-        <div
-          v-for="application in connectedApplications"
-          :key="application.clientId"
-          class="application"
-        >
-          <div class="app-info">
-            <div class="client-name">
-              {{ application.clientName }}
+        <template v-if="hasApplication">
+          <div
+            v-for="application in connectedApplications"
+            :key="application.clientId"
+            class="application"
+          >
+            <div class="app-info">
+              <div class="client-name">
+                {{ application.clientName }}
+              </div>
+              <div class="description">
+                {{ application.description }}
+              </div>
+              <div class="created-at">
+                {{ application.createdAt | formatDate }}
+              </div>
             </div>
-            <div class="description">
-              {{ application.description }}
-            </div>
-            <div class="created-at">
-              {{ application.createdAt | formatDate }}
-            </div>
+            <app-button
+              type="secondary"
+              class="delete-button"
+              :disabled="isProcessing"
+              @click="handleDelete"
+            >
+              削除する
+            </app-button>
           </div>
-          <app-button type="secondary" class="delete-button" :disabled="isProcessing" @click="handleDelete">
-            削除する
-          </app-button>
-        </div>
+        </template>
+        <p v-else class="no-application">
+          連携中のアプリケーションがありません
+        </p>
       </div>
     </div>
     <app-footer />
@@ -53,6 +63,9 @@ export default {
     }
   },
   computed: {
+    hasApplication() {
+      return this.connectedApplications.length > 0
+    },
     ...mapGetters('user', ['connectedApplications'])
   },
   methods: {
@@ -161,6 +174,14 @@ export default {
   text-align: center;
   width: 96px;
   margin: 24px 0 0 48px;
+}
+
+.no-application {
+  color: #030303;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  text-align: center;
 }
 
 @media screen and (max-width: 640px) {
