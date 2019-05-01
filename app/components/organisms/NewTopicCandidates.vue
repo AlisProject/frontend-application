@@ -1,7 +1,7 @@
 <template>
   <div class="area-new-topic-candidates-container">
     <nuxt-link class="description" to="/ALIS-official/articles/3gp6oLqr5ZLj">
-      新カテゴリー候補  <span class="tooltip" />
+      新カテゴリー候補 <span class="tooltip" />
     </nuxt-link>
     <nuxt-link class="link" to="/tag/music">
       音楽
