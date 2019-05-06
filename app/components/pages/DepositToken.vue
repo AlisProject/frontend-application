@@ -20,10 +20,10 @@
             </a>
           </app-button>
         </div>
-        <p v-if="isMetaMaskInstalled && !relayPaused && !isMainNet" class="title">
+        <p v-if="isMetaMaskInstalled && !relayPaused && !isTargetNetwork" class="title">
           Ethereumメインネットワークのみご利用できます。MetaMaskの設定をご確認ください。
         </p>
-        <div v-if="isMetaMaskInstalled && !relayPaused && isMainNet" class="deposit-box">
+        <div v-if="isMetaMaskInstalled && !relayPaused && isTargetNetwork" class="deposit-box">
           <h2 class="title">
             入金額を入力してください
           </h2>
@@ -124,7 +124,7 @@ export default {
     }
   },
   computed: {
-    isMainNet() {
+    isTargetNetwork() {
       const targetNetworkType = this.isProduction ? 'main' : 'ropsten'
       return this.networkType === targetNetworkType
     },
