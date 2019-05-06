@@ -11,7 +11,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}
             - v1-dependencies-
 
       - run:
@@ -24,7 +24,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}
 
       - run: yarn lint
       - run:
