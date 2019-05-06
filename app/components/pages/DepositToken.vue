@@ -20,7 +20,10 @@
             </a>
           </app-button>
         </div>
-        <div v-if="isMetaMaskInstalled && !relayPaused" class="deposit-box">
+        <p v-if="isMetaMaskInstalled && !relayPaused && !isTargetNetwork" class="title">
+          Ethereumメインネットワークのみご利用できます。MetaMaskの設定をご確認ください。
+        </p>
+        <div v-if="isMetaMaskInstalled && !relayPaused && isTargetNetwork" class="deposit-box">
           <h2 class="title">
             入金額を入力してください
           </h2>
@@ -102,7 +105,8 @@ export default {
       amount: null,
       bridgeInfo: null,
       relayPaused: false,
-      isProcessing: false
+      isProcessing: false,
+      networkType: this.isProduction ? 'main' : 'ropsten'
     }
   },
   async mounted() {
@@ -110,9 +114,23 @@ export default {
     if (!this.loggedIn) return
     this.isMetaMaskInstalled = this.checkIsMetaMaskInstalled()
     this.isLoading = false
-    if (this.isMetaMaskInstalled) await this.initMetaMaskAndBridge()
+    if (this.isMetaMaskInstalled) {
+      try {
+        await this.initMetaMaskAndBridge()
+        this.networkType = await window.web3.eth.net.getNetworkType()
+      } catch (error) {
+        console.error(error)
+      }
+    }
   },
   computed: {
+    isTargetNetwork() {
+      const targetNetworkType = this.isProduction ? 'main' : 'ropsten'
+      return this.networkType === targetNetworkType
+    },
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
+    },
     isDepositable() {
       return this.amount !== null && this.amount !== '' && this.errorMessage === ''
     },
