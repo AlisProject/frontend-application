@@ -28,6 +28,21 @@ package:
     - nuxt.config.js
     - .nuxt/**
 
+plugins:
+  - serverless-plugin-aws-alerts
+
+custom:
+  # serverless-plugin-aws-alerts
+  alerts:
+    stages:
+      - alis
+      - staging
+    topics:
+      alarm: "arn:aws:sns:ap-northeast-1:879243243508:AlarmToSlack"
+    definitions:
+      functionErrors:
+        treatMissingData: notBreaching
+
 functions:
   handler:
     handler: server/handler.handler
@@ -44,3 +59,5 @@ functions:
       - http:
           path: '{proxy+}'
           method: get
+    alarms:
+      - functionErrors
