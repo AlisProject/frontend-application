@@ -204,6 +204,7 @@ const actions = {
       // "/me/articles/drafts/article_id" への POST で記事が作成された直後、その記事データには body カラムがないため、
       // article.body.replace がエラーとなってしまう。
       // そこで、article.body の存在確認を行ってから article.body.replace の処理を行っている。
+      // また、article.body.replace は有料記事本文に含まれる有料エリアを示すラインを削除する処理である。
       const body =
         article.body && article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
