@@ -201,7 +201,11 @@ const actions = {
   async getEditDraftArticle({ commit }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/me/articles/${articleId}/drafts`)
-      const body = article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
+      // "/me/articles/drafts/article_id" への POST で記事が作成された直後、その記事データには body カラムがないため、
+      // article.body.replace がエラーとなってしまう。
+      // そこで、article.body の存在確認を行ってから article.body.replace の処理を行っている。
+      const body =
+        article.body && article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
