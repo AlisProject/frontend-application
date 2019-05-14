@@ -3,14 +3,23 @@
     <nuxt-link class="description" to="/ALIS-official/articles/3gp6oLqr5ZLj">
       新カテゴリー候補 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/music">
-      音楽
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/beauty">
+    <nuxt-link class="link" to="/tag/%E3%83%93%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3">
       ビューティ
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/gosyuin">
-      神仏・御朱印
+    <nuxt-link class="link" to="/tag/%E9%9F%B3%E6%A5%BD">
+      音楽
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/ALIS">
+      ALIS
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E6%81%8B%E6%84%9B%E3%83%BB%E5%87%BA%E4%BC%9A%E3%81%84">
+      恋愛・出会い
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E7%A5%9E%E4%BB%8F">
+      神仏
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E6%95%99%E8%82%B2%E3%83%BB%E5%AD%90%E8%82%B2%E3%81%A6">
+      教育・子育て
     </nuxt-link>
   </div>
 </template>
@@ -20,6 +29,7 @@
   grid-area: candidates;
   display: flex;
   overflow-x: scroll;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
