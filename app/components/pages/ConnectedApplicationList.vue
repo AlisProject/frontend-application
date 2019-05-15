@@ -5,7 +5,6 @@
       <h1 class="title">
         連携中のアプリケーション一覧
       </h1>
-      <!-- TODO: アプリケーションが一つもない場合の画面作成 -->
       <div class="applications">
         <template v-if="hasApplication">
           <div

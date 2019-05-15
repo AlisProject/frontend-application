@@ -18,7 +18,6 @@
         </template>
         <div class="signup-form-group" :class="{ error: hasClientName }">
           <label class="signup-form-label">クライアント名</label>
-          <!-- TODO: プレースホルダーを設定 -->
           <input
             v-model="clientName"
             class="signup-form-input"
@@ -33,7 +32,6 @@
         </div>
         <div class="signup-form-group" :class="{ error: hasDescription }">
           <label class="signup-form-label">クライアントの説明※任意</label>
-          <!-- TODO: プレースホルダーを設定 -->
           <input
             v-model="description"
             class="signup-form-input"
