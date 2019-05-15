@@ -71,7 +71,7 @@
         </li>
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/settings/sessions">
-            アプリケーション一覧
+            連携中のアプリケーション
           </nuxt-link>
         </li>
         <li class="menu-link">
@@ -317,14 +317,14 @@ export default {
 
   .menu-links {
     list-style: none;
-    margin: 30px 0;
+    margin: 30px 0 10px;
     padding: 0;
 
     .menu-link {
       cursor: pointer;
       font-size: 14px;
       font-weight: 500;
-      letter-spacing: 1px;
+      letter-spacing: 0;
       white-space: nowrap;
 
       &:hover {
@@ -349,7 +349,7 @@ export default {
         display: block;
         height: 24px;
         line-height: 24px;
-        padding: 10px 64px;
+        padding: 10px 40px;
         text-decoration: none;
 
         &:visited {
@@ -469,6 +469,10 @@ export default {
   .menu {
     .menu-links {
       .menu-link {
+        .menu-link-inner {
+          padding: 8px 40px;
+        }
+
         &:last-child {
           margin-top: 0;
         }

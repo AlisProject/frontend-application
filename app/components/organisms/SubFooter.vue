@@ -21,10 +21,10 @@
       技術ブログ
     </nuxt-link>
     <a href="https://github.com/AlisProject/api-docs" class="link" target="_blank">開発者向けAPI</a>
-    <a href="https://alismedia.jp/ja/" class="link" target="_blank">運営会社</a>
     <nuxt-link v-if="isPc" to="/me/settings/applications" class="link">
       アプリケーション
     </nuxt-link>
+    <a href="https://alismedia.jp/ja/" class="link" target="_blank">運営会社</a>
   </footer>
 </template>
 
