@@ -2,14 +2,14 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        出金用認証コードを入力してください
+        認証コードを入力してください
       </p>
       <p class="description">
-        登録いただいていてる電話番号へSMSを送らせていただきました。SMSに記載の6桁の出金用認証コードを以下に入力し、出金を完了させてください。
+        登録いただいていてる電話番号へSMSを送らせていただきました。SMSに記載の6桁の認証コードを以下に入力し、出金を完了させてください。
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
         <div class="signup-form-group" :class="{ error: hasAuthCodeError }">
-          <label class="signup-form-label">出金用認証コード</label>
+          <label class="signup-form-label">認証コード</label>
           <input
             class="signup-form-input"
             type="text"

@@ -1,5 +1,5 @@
 <template>
-  <app-modal title="出金用認証コードの確認">
+  <app-modal title="認証コードの確認">
     <div slot="modal-content">
       <input-withdraw-auth-code-modal-form />
     </div>
