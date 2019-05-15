@@ -53,10 +53,7 @@
         <div class="label">
           リダイレクトURI
         </div>
-        <urls-input-form
-          :initialUrls="urls"
-          @handle-change-urls="handleChangeUrls"
-        />
+        <urls-input-form :initialUrls="urls" @handle-change-urls="handleChangeUrls" />
       </form>
       <app-button
         class="save-button"
