@@ -248,7 +248,7 @@ export default {
     },
     async showModal() {
       try {
-        await this.postWithdrawAuthCode()
+        await this.sendConfirm()
         this.setInputWithdrawAuthCodeModal({ isShow: true })
         const { address, totalAmount } = this
         this.setInputWithdrawAuthCodeModalValues({ address, totalAmount })
@@ -273,7 +273,7 @@ export default {
       'getBalance',
       'setInputWithdrawAuthCodeModal',
       'setInputWithdrawAuthCodeModalValues',
-      'postWithdrawAuthCode'
+      'sendConfirm'
     ])
   }
 }

@@ -930,13 +930,13 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async postTokenSend({ commit }, { recipientEthAddress, sendValue, accessToken, code }) {
+  async postTokenSend({ commit }, { recipientEthAddress, sendValue, accessToken, pinCode }) {
     try {
       const result = await this.$axios.$post('/me/wallet/token/send', {
         recipient_eth_address: recipientEthAddress,
         send_value: sendValue,
         access_token: accessToken,
-        code
+        pin_code: pinCode
       })
       return result.is_completed
     } catch (error) {
@@ -947,15 +947,6 @@ const actions = {
     try {
       const result = await this.$axios.$get('/me/wallet/token/histories')
       return result
-    } catch (error) {
-      return Promise.reject(error)
-    }
-  },
-  async postWithdrawAuthCode({ commit }) {
-    try {
-      // TODO: APIをコール
-      // const result = await this.$axios.$post('')
-      // return result
     } catch (error) {
       return Promise.reject(error)
     }

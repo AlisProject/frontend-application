@@ -106,7 +106,7 @@ export default {
     },
     async onSubmit() {
       if (this.invalidSubmit) return
-      const { authCode: code } = this
+      const pinCode = this.authCode
       const { address: recipientEthAddress, totalAmount } = this.inputWithdrawAuthCodeModal
       const accessToken = this.getAccessToken()
       try {
@@ -122,7 +122,7 @@ export default {
           recipientEthAddress,
           sendValue,
           accessToken,
-          code
+          pinCode
         })
         if (isCompleted) {
           this.sendNotification({ text: '出金を受け付けました' })
