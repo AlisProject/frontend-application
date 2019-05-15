@@ -83,6 +83,9 @@ export default {
       // URL の個数を判定し同じ場合は emit しない
       if (newUrls.length === oldUrls.length) return
       this.$emit('handle-change-urls', this.urls)
+    },
+    initialUrls(urls) {
+      this.urls = urls
     }
   }
 }

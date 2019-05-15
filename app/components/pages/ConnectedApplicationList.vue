@@ -28,7 +28,7 @@
               type="secondary"
               class="delete-button"
               :disabled="isProcessing"
-              @click="handleDelete"
+              @click="handleDelete(application.clientId)"
             >
               削除する
             </app-button>
@@ -69,13 +69,13 @@ export default {
     ...mapGetters('user', ['connectedApplications'])
   },
   methods: {
-    async handleDelete() {
+    async handleDelete(clientId) {
       const isOk = confirm('削除してもよろしいですか？')
       if (!isOk) return
       try {
         if (this.isProcessing) return
         this.isProcessing = true
-        // TODO: 連携アプリケーションを削除するAPIを呼び出す
+        await this.deleteConnectedApplication({ clientId })
         this.sendNotification({ text: 'アプリケーションを削除しました' })
       } catch (error) {
         console.error(error)
@@ -85,7 +85,8 @@ export default {
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
-    })
+    }),
+    ...mapActions('user', ['deleteConnectedApplication'])
   },
   filters: {
     formatDate

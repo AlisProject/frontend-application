@@ -8,6 +8,9 @@ import ConnectedApplicationList from '~/components/pages/ConnectedApplicationLis
 export default {
   components: {
     ConnectedApplicationList
+  },
+  async mounted() {
+    await this.$store.dispatch('user/getConnectedApplications')
   }
 }
 </script>

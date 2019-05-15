@@ -10,8 +10,9 @@ export default {
   components: {
     ApplicationList
   },
-  mounted() {
+  async mounted() {
     if (isMobile()) this.$router.replace('/')
+    await this.$store.dispatch('user/getApplications')
   }
 }
 </script>

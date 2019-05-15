@@ -56,7 +56,7 @@
           リダイレクトURI
         </div>
         <urls-input-form
-          :initialUrls="application.redirect_urls"
+          :initialUrls="urls"
           @handle-change-urls="handleChangeUrls"
         />
       </form>
@@ -109,12 +109,12 @@ export default {
       urls: []
     }
   },
-  async created() {
+  async mounted() {
     const { clientId } = this.$route.params
     await this.getApplication({ clientId })
     this.clientName = this.application.clientName
     this.description = this.application.description
-    this.urls = this.application.redirect_urls.map((url) => {
+    this.urls = this.application.redirectUris.map((url) => {
       return {
         text: url,
         tiClasses: ['ti-valid']
@@ -150,9 +150,10 @@ export default {
       try {
         if (this.invalidSubmit || this.isProcessingSave) return
         this.isProcessingSave = true
+        const { clientId } = this.$route.params
         const { clientName: name, description, clientType: applicationType } = this
         const redirectUrls = this.urls.map((url) => url.text)
-        await this.updateApplication({ name, description, applicationType, redirectUrls })
+        await this.updateApplication({ clientId, name, description, applicationType, redirectUrls })
         this.sendNotification({ text: 'アプリケーションを更新しました' })
         this.$router.push('/me/settings/applications')
       } catch (error) {
@@ -305,6 +306,7 @@ export default {
   font-size: 14px;
   border-radius: 4px;
   margin-bottom: 40px;
+  word-break: break-all;
 }
 
 .save-button {

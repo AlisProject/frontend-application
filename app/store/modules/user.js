@@ -177,65 +177,9 @@ const state = () => ({
     isShow: false,
     index: ''
   },
-  // TODO: モックを削除
-  applications: [
-    {
-      applicationType: 'WEB',
-      clientId: 12345,
-      authTimeRequired: true,
-      clientIdAliasEnabled: true,
-      clientName: 'test-client-web',
-      clientSecret: '12345abcde',
-      createdAt: 100000000000000,
-      defaultMaxAge: 100,
-      description: 'description test',
-      developer: 'test developer',
-      idTokenSignAlg: 'idTokenSignAlg',
-      modifiedAt: 100000000000000,
-      number: 1,
-      redirect_urls: ['https://example.com/1', 'https://example.com/2'],
-      subjectType: 'subjectType',
-      tlsClientCertificateBoundAccessTokens: true,
-      tokenAuthMethod: 'tokenAuthMethod'
-    },
-    {
-      applicationType: 'NATIVE',
-      clientId: 12346,
-      authTimeRequired: true,
-      clientIdAliasEnabled: true,
-      clientName: 'test-client-native',
-      createdAt: 100000000000000,
-      defaultMaxAge: 100,
-      description: 'description test',
-      developer: 'test developer',
-      idTokenSignAlg: 'idTokenSignAlg',
-      modifiedAt: 100000000000000,
-      number: 1,
-      redirect_urls: ['https://example.com/1', 'https://example.com/2'],
-      subjectType: 'subjectType',
-      tlsClientCertificateBoundAccessTokens: true,
-      tokenAuthMethod: 'tokenAuthMethod'
-    }
-  ],
+  applications: [],
   application: {},
-  // TODO: モックを削除
-  connectedApplications: [
-    {
-      clientId: 12345,
-      clientName: 'test-client-web',
-      createdAt: 1000000000,
-      description: ''
-      // description: 'description test'
-    },
-    {
-      clientId: 12346,
-      clientName:
-        'ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
-      createdAt: 1000000000,
-      description:
-        'ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ'
-    }
-  ]
+  connectedApplications: []
 })
 
 const getters = {
@@ -1005,65 +949,68 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getApplications({ commit }) {
+    try {
+      const result = await this.$axios.$get('/me/applications')
+      commit(types.SET_APPLICATIONS, { applications: result.clients || [] })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async postApplication({ commit }, { name, description, applicationType, redirectUrls }) {
     try {
-      // TODO: APIを呼び出す
-      // await this.$axios.$post('/me/applications', {
-      //   name,
-      //   description,
-      //   application_type: applicationType,
-      //   redirect_urls: redirectUrls
-      // })
+      await this.$axios.$post('/me/applications', {
+        name,
+        description,
+        application_type: applicationType,
+        redirect_urls: redirectUrls
+      })
     } catch (error) {
       return Promise.reject(error)
     }
   },
   async getApplication({ commit }, { clientId }) {
     try {
-      // TODO: APIを呼び出す
-      // const application = await this.$axios.$get(`/me/applications/${clientId}`)
-      // TODO: モックを削除
-      const application = {
-        applicationType: 'WEB',
-        clientId: 12345,
-        authTimeRequired: true,
-        clientIdAliasEnabled: true,
-        clientName: 'test-client-web',
-        clientSecret: '12345abcde',
-        createdAt: 100000000000000,
-        defaultMaxAge: 100,
-        description: 'description test',
-        developer: 'test developer',
-        idTokenSignAlg: 'idTokenSignAlg',
-        modifiedAt: 100000000000000,
-        number: 1,
-        redirect_urls: ['https://example.com/1', 'https://example.com/2'],
-        subjectType: 'subjectType',
-        tlsClientCertificateBoundAccessTokens: true,
-        tokenAuthMethod: 'tokenAuthMethod'
-      }
+      const application = await this.$axios.$get(`/me/applications/${clientId}`)
       commit(types.SET_APPLICATION, { application })
     } catch (error) {
       return Promise.reject(error)
     }
   },
-  async updateApplication({ commit }, { name, description, applicationType, redirectUrls }) {
+  async updateApplication(
+    { commit },
+    { clientId, name, description, applicationType, redirectUrls }
+  ) {
     try {
-      // TODO: APIを呼び出す
-      // await this.$axios.$put(`/me/applications/${clientId}`, {
-      //   name,
-      //   description,
-      //   application_type: applicationType,
-      //   redirect_urls: redirectUrls
-      // })
+      await this.$axios.$put(`/me/applications/${clientId}`, {
+        name,
+        description,
+        application_type: applicationType,
+        redirect_urls: redirectUrls
+      })
     } catch (error) {
       return Promise.reject(error)
     }
   },
   async deleteApplication({ commit }, { clientId }) {
     try {
-      // TODO: APIを呼び出す
-      // await this.$axios.$delete(`/me/applications/${clientId}`)
+      await this.$axios.$delete(`/me/applications/${clientId}`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getConnectedApplications({ commit }) {
+    try {
+      const applications = await this.$axios.$get('/me/allowed_applications')
+      commit(types.SET_CONNECTED_APPLICATIONS, { applications })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async deleteConnectedApplication({ commit }, { clientId }) {
+    try {
+      await this.$axios.$delete('/me/allowed_applications', { data: { client_id: clientId } })
+      commit(types.DELETE_CONNECTED_APPLICATION, { clientId })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -1376,8 +1323,19 @@ const mutations = {
   [types.SET_WITHDRAWAL_DETAILS](state, { withdrawalDetails }) {
     state.withdrawalDetails = withdrawalDetails
   },
+  [types.SET_APPLICATIONS](state, { applications }) {
+    state.applications = applications
+  },
   [types.SET_APPLICATION](state, { application }) {
     state.application = application
+  },
+  [types.SET_CONNECTED_APPLICATIONS](state, { applications }) {
+    state.connectedApplications = applications
+  },
+  [types.DELETE_CONNECTED_APPLICATION](state, { clientId }) {
+    state.connectedApplications = state.connectedApplications.filter((application) => {
+      return application.clientId !== clientId
+    })
   }
 }
 
