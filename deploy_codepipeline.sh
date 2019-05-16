@@ -25,15 +25,3 @@ aws cloudformation deploy \
     NuxtApiGatewayName=${NUXT_API_GATEWAY_NAME} \
   --capabilities CAPABILITY_IAM \
   --no-fail-on-empty-changeset
-
-
-
-
-
-
-
-
-
-
-
-
