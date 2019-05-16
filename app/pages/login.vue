@@ -4,13 +4,22 @@
 
 <script>
 import TopPage from '~/components/pages/TopPage'
+import { setOAuthParams, removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {
     TopPage
   },
-  async fetch({ store, error }) {
+  async fetch({ store, error, from = {} }) {
     try {
+      if (process.client) {
+        if (from.name === 'oauth-authenticate') {
+          setOAuthParams(from.query)
+        } else {
+          removeOAuthParams()
+        }
+      }
+
       store.dispatch('user/setLoginModal', { showLoginModal: true })
 
       await store.dispatch('article/getTopics')

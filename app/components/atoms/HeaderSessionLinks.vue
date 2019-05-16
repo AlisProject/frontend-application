@@ -17,6 +17,7 @@
 <script>
 import { mapActions } from 'vuex'
 import AppButton from '../atoms/AppButton'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {

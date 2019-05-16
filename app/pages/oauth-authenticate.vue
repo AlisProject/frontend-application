@@ -9,6 +9,22 @@ export default {
   components: {
     OauthAuthenticate
   },
+  mounted() {
+    const { loggedIn, currentUser } = this.$store.state.user
+    if (loggedIn) {
+      if (!currentUser.phoneNumberVerified) {
+        this.$store.dispatch('user/setRequestPhoneNumberVerifyModal', {
+          isShow: true,
+          requestType: 'provideInfo'
+        })
+        this.$store.dispatch('user/setRequestPhoneNumberVerifyInputPhoneNumberModal', {
+          isShow: true
+        })
+      }
+    } else {
+      this.$router.push('/login')
+    }
+  },
   head: {
     title: 'アプリケーション認証',
     meta: [

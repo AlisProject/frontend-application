@@ -148,6 +148,12 @@ export default {
       }
       if (this.requestPhoneNumberVerifyModal.isShow) {
         this.setRequestPhoneNumberVerifyModal({ isShow: false })
+
+        // アプリケーションの認可画面でモーダルを閉じた場合は、電話番号認証を行っていないため、
+        // 「アクセスを許可する」ボタンを押させないためにトップページに遷移する。
+        if (this.$route.name === 'oauth-authenticate') {
+          this.$router.replace('/')
+        }
       }
       if (this.userReportModal.isShow) {
         this.setUserReportModal({ isShow: false })
