@@ -128,7 +128,7 @@ Resources:
             Value: !Ref Branch
           - Name: ALIS_APP_ID
             Value: !Ref AlisAppId
-          - Name: region
+          - Name: REGION
             Value: !Ref region
           - Name: USER_POOL_ID
             Value: !Ref UserPoolId
@@ -136,7 +136,7 @@ Resources:
             Value: !Ref ClientId
           - Name: DIST_S3_BUCKET_NAME
             Value: !Ref DistS3BucketName
-          - Name: domain
+          - Name: DOMAIN
             Value: !Ref domain
           - Name: BASE_URL
             Value: !Ref BaseUrl
