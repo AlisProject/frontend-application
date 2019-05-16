@@ -54,7 +54,7 @@ yarn generate
 
 # AWS CodePipeline for deployment
 
-1. [Get GitHub access token](https://github.com/settings/tokens)を取得
+1. [Get GitHub access token](https://github.com/settings/tokens)
 1. `direnv edit`
 1. Deploy CloudFormation stack.
 
