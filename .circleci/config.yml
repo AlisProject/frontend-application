@@ -43,9 +43,5 @@ jobs:
       - run:
           name: deploy
           command: |
-            sudo apt-get install python2.7-dev
-            curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-            sudo python get-pip.py
-            sudo pip install awscli
-            sudo npm install -g serverless
-            ./deploy.sh
+            sudo ./deploy_via_ci.sh
+
