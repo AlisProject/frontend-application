@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -40,8 +40,40 @@ jobs:
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
 
+  deploy:
+    docker:
+      - image: circleci/node:8.10.0-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: setup yarn
+          command: |
+            sudo npm install -g yarn@1.6.0
+
+      - run: yarn install --frozen-lockfile
+
       - run:
           name: deploy
           command: |
-            sudo ./deploy_via_ci.sh
+            if [ $ALIS_APP_ID ]; then
+              sudo ./deploy_via_ci.sh
+            fi
 
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                # ステージング環境、本番環境へのデプロイはCodeBuildに委ねる
+                - develop
+                - master
