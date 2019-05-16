@@ -1,6 +1,7 @@
 <template>
   <nav class="area-nav">
     <div class="area-nav-links" @scroll="handleHorizontalScroll">
+      <div class="margin-left-content" />
       <nuxt-link to="/" class="nav-link area-topic0">
         <span class="topic-display-name">
           オススメ
@@ -21,6 +22,7 @@
           {{ topic.display_name }}
         </span>
       </nuxt-link>
+      <div class="margin-right-content" />
     </div>
   </nav>
 </template>
@@ -151,8 +153,8 @@ $topicCount: 10;
     box-shadow: 0 0 12px 0 rgba(192, 192, 192, 0.7);
     /* prettier-ignore */
     grid-template-areas:
-      '... nav-links ...';
-    grid-template-columns: 1fr auto 1fr;
+      'nav-links';
+    grid-template-columns: auto;
 
     .nav-link {
       height: 28px;
@@ -184,10 +186,10 @@ $topicCount: 10;
   grid-area: nav-links;
   display: grid;
   grid-column-gap: 13px;
-  grid-template-columns: repeat($topicCount, 96px);
+  grid-template-columns: 0 repeat($topicCount, 96px) 0;
   /* prettier-ignore */
   grid-template-areas:
-    "topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9";
+    "margin-left-content topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9 margin-right-content";
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 
@@ -273,14 +275,22 @@ $topicCount: 10;
   }
 }
 
+.margin-left-content,
+.margin-right-content {
+  width: 1px;
+}
+
+.margin-left-content {
+  grid-area: margin-left-content;
+}
+
+.margin-right-content {
+  grid-area: margin-right-content;
+}
+
 @media screen and (max-width: 1080px) {
   .area-nav {
     justify-self: flex-start;
-    padding-left: 12px;
-
-    &.is-fixed {
-      padding-left: 12px;
-    }
   }
 }
 
@@ -303,8 +313,8 @@ $topicCount: 10;
     grid-gap: 12px;
     /* prettier-ignore */
     grid-template-areas:
-      '... nav-links ...';
-    grid-template-columns: 0 auto 0;
+      'nav-links';
+    grid-template-columns: auto;
     max-width: 100%;
     margin-bottom: 0;
     padding: 0;
@@ -321,6 +331,15 @@ $topicCount: 10;
   .area-nav-links {
     padding: 0;
     grid-gap: 6px;
+    /* prettier-ignore */
+    grid-template-areas:
+      "margin-left-content topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9 margin-right-content";
+    grid-template-columns: 6px repeat($topicCount, 96px) 6px;
+  }
+
+  .margin-left-content,
+  .margin-right-content {
+    width: 7px;
   }
 }
 </style>
