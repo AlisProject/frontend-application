@@ -15,11 +15,9 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: setup yarn
+          name: Install dependencies
           command: |
-            sudo npm install -g yarn@1.6.0
-
-      - run: yarn install --frozen-lockfile
+            sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
 
       - save_cache:
           paths:
@@ -50,11 +48,9 @@ jobs:
       - checkout
 
       - run:
-          name: setup yarn
+          name: Install dependencies
           command: |
-            sudo npm install -g yarn@1.6.0
-
-      - run: yarn install --frozen-lockfile
+            sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
 
       - run:
           name: deploy
