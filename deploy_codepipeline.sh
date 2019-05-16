@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-target=
-if [ $1 ] ; then
-  target="${1}-"
-fi
-
 DEPLOY_BUCKET_NAME=${ALIS_APP_ID}-frontend-codepipeline-deploy-bucket
 
 aws cloudformation deploy \
