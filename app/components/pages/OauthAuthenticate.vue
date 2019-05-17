@@ -40,11 +40,13 @@
         ・メールアドレス、パスワード、電話番号<br>
         ・ウォレットの入出金情報
       </p>
-      <app-button class="allow-button">
+      <app-button class="allow-button" @click="allowAccess">
         アクセスを許可する
       </app-button>
       <app-button type="secondary" class="cancel-button">
-        キャンセル
+        <nuxt-link to="/">
+          キャンセル
+        </nuxt-link>
       </app-button>
     </div>
     <app-footer />
@@ -52,6 +54,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
@@ -66,6 +69,44 @@ export default {
     isWrite() {
       return this.$route.query.scope === 'write'
     }
+  },
+  methods: {
+    async allowAccess() {
+      try {
+        const {
+          call_back_url: callBackUrl,
+          client_id: clientId,
+          code_challenge: codeChallenge,
+          scope
+        } = this.$route.query
+        const data = {
+          response_type: 'code',
+          client_id: clientId,
+          redirect_uri: callBackUrl,
+          scope: `openid ${scope}`,
+          code_challenge: codeChallenge,
+          code_challenge_method: 'S256'
+        }
+        const params = new URLSearchParams(data)
+        const idToken = this.getIdToken()
+        const response = await this.postOAuthAuthorization({ idToken, params })
+        // TODO: responseから取得したURLにリダイレクトする処理を追加
+        console.log(response)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    getIdToken() {
+      const clientId = process.env.CLIENT_ID
+      const currentUser = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${clientId}.LastAuthUser`
+      )
+      const idToken = localStorage.getItem(
+        `CognitoIdentityServiceProvider.${clientId}.${currentUser}.idToken`
+      )
+      return idToken
+    },
+    ...mapActions('user', ['postOAuthAuthorization'])
   }
 }
 </script>

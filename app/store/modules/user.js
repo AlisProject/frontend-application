@@ -1016,6 +1016,19 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async postOAuthAuthorization({ commit }, { idToken, params }) {
+    try {
+      const response = await this.$axios.$post('/oauth2/authorization', params, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          'content-type': 'application/x-www-form-urlencoded'
+        }
+      })
+      return response
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
