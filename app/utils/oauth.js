@@ -1,7 +1,7 @@
 const LOCALSTRAGE_OAUTH_PARAMS_KEY = 'OAuthParams'
 
 export function setOAuthParams(query) {
-  if (typeof query !== 'object') {
+  if (Object.prototype.toString.call(query) !== '[object Object]') {
     throw new TypeError('query must be object.')
   }
   localStorage.setItem(LOCALSTRAGE_OAUTH_PARAMS_KEY, JSON.stringify(query))
