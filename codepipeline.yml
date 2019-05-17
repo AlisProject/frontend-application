@@ -32,7 +32,7 @@ Parameters:
     Description: Image used for CodeBuild project.
   ApprovalEmailAddress:
     Type: String
-  region:
+  Region:
     Type: String
   UserPoolId:
     Type: String
