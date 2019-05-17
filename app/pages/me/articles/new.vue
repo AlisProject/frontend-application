@@ -23,7 +23,7 @@ export default {
     // 下書き記事の最新記事を確認し、v2 の空記事だった場合はその記事を利用する
     // 空記事でなかった場合は新しく記事を作成する
 
-    const { Items: articles } = await this.$axios.$get('/me/articles/drafts', {
+    const { Items: articles } = await this.$axios.$get('/api/me/articles/drafts', {
       params: { limit: 1 }
     })
     // 下書き記事が存在しない場合は、記事を作成する
