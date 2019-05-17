@@ -40,7 +40,7 @@ Parameters:
     Type: String
   DistS3BucketName:
     Type: String
-  domain:
+  Domain:
     Type: String
   BaseUrl:
     Type: String
