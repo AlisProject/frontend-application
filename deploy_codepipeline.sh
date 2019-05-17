@@ -10,7 +10,7 @@ aws cloudformation deploy \
     GitHubToken=${GITHUB_TOKEN} \
     ApprovalEmailAddress=${APPROVAL_EMAIL_ADDRESS} \
     AlisAppId=${ALIS_APP_ID} \
-    region=${REGION} \
+    Region=${REGION} \
     UserPoolId=${USER_POOL_ID} \
     ClientId=${CLIENT_ID} \
     DistS3BucketName=${DIST_S3_BUCKET_NAME} \
