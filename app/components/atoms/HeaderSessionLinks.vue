@@ -34,9 +34,11 @@ export default {
     },
     showSignUpModal() {
       this.setSignUpModal({ showSignUpModal: true })
+      removeOAuthParams()
     },
     showLoginModal() {
       this.setLoginModal({ showLoginModal: true })
+      removeOAuthParams()
     },
     ...mapActions('user', [
       'setSignUpModal',

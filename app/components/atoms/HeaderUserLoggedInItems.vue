@@ -107,6 +107,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
 import { isMobile } from '~/utils/device'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   data() {
@@ -175,6 +176,7 @@ export default {
     },
     logoutUser() {
       try {
+        removeOAuthParams()
         this.logout()
         location.href = '/'
         this.sendNotification({ text: 'ログアウトしました' })
