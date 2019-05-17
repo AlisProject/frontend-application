@@ -129,7 +129,7 @@ Resources:
           - Name: ALIS_APP_ID
             Value: !Ref AlisAppId
           - Name: REGION
-            Value: !Ref region
+            Value: !Ref Region
           - Name: USER_POOL_ID
             Value: !Ref UserPoolId
           - Name: CLIENT_ID
