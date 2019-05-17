@@ -137,7 +137,7 @@ Resources:
           - Name: DIST_S3_BUCKET_NAME
             Value: !Ref DistS3BucketName
           - Name: DOMAIN
-            Value: !Ref domain
+            Value: !Ref Domain
           - Name: BASE_URL
             Value: !Ref BaseUrl
           - Name: IFRAMELY_API_KEY
