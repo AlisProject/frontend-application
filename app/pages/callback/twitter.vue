@@ -6,6 +6,7 @@
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import TopPage from '~/components/pages/TopPage'
+import { getOAuthParams, removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {
@@ -36,7 +37,14 @@ export default {
         return
       }
       await this.$store.dispatch('user/getUserSession')
-      if (status === 'login') return
+      if (status === 'login') {
+        const oauthParams = getOAuthParams()
+        if (oauthParams) {
+          this.$router.push({ path: 'oauth-authenticate', query: { ...oauthParams } })
+          removeOAuthParams()
+        }
+        return
+      }
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
       this.$store.dispatch('user/setSignUpAuthFlowInputPhoneNumberModal', {
         isSignUpAuthFlowInputPhoneNumberModal: true
