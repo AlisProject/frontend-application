@@ -14,7 +14,7 @@ aws cloudformation deploy \
     UserPoolId=${USER_POOL_ID} \
     ClientId=${CLIENT_ID} \
     DistS3BucketName=${DIST_S3_BUCKET_NAME} \
-    domain=${DOMAIN} \
+    Domain=${DOMAIN} \
     BaseUrl=${BASE_URL} \
     IframelyApiKey=${IFRAMELY_API_KEY} \
     NuxtApiGatewayName=${NUXT_API_GATEWAY_NAME} \
