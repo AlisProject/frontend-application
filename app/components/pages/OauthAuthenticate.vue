@@ -55,6 +55,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
@@ -92,7 +93,10 @@ export default {
         const response = await this.postOAuthAuthorization({ idToken, params })
         location.href = response.redirect_uri
       } catch (error) {
-        console.error(error)
+        this.sendNotification({
+          text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+          type: 'warning'
+        })
       }
     },
     getIdToken() {
@@ -105,6 +109,9 @@ export default {
       )
       return idToken
     },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
     ...mapActions('user', ['postOAuthAuthorization'])
   }
 }
