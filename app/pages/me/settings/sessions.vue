@@ -11,6 +11,21 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('user/getConnectedApplications')
+  },
+  head: {
+    title: '連携中のアプリケーション一覧',
+    meta: [
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: '連携中のアプリケーション一覧 | ALIS'
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: '連携中のアプリケーション一覧'
+      }
+    ]
   }
 }
 </script>

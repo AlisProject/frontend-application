@@ -12,6 +12,21 @@ export default {
   },
   mounted() {
     if (isMobile()) this.$router.replace('/')
+  },
+  head: {
+    title: 'アプリケーションの編集',
+    meta: [
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: 'アプリケーションの編集 | ALIS'
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: 'アプリケーションの編集'
+      }
+    ]
   }
 }
 </script>
