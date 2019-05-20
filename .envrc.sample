@@ -24,7 +24,7 @@ export DOMAIN=${ALIS_APP_ID}example.com
 
 # ALIS Serverless aplicationにより生成されたAWS API Gatewayの情報
 # see: https://github.com/AlisProject/serverless-application
-export BASE_URL=https://${ALIS_APP_ID}example.com/api
+export BASE_URL=https://${ALIS_APP_ID}example.com
 
 # Iframely API KEY
 export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
