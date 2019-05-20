@@ -20,7 +20,9 @@
                 {{ application.description }}
               </div>
               <div class="created-at">
-                {{ application.createdAt | formatDate }}
+                <!-- createdAt はミリセカンドで返ってくるので 1000 で割っている -->
+                <!-- 参考：https://docs.authlete.com/#service -->
+                {{ (application.createdAt / 1000) | formatDate }}
               </div>
             </div>
             <app-button
