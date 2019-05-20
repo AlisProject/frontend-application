@@ -31,6 +31,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   props: {
@@ -112,6 +113,7 @@ export default {
         this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
         this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
         if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
+          removeOAuthParams()
           await this.logout()
         }
       }
