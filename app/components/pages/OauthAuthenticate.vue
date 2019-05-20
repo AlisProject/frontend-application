@@ -90,8 +90,7 @@ export default {
         const params = new URLSearchParams(data)
         const idToken = this.getIdToken()
         const response = await this.postOAuthAuthorization({ idToken, params })
-        // TODO: responseから取得したURLにリダイレクトする処理を追加
-        console.log(response)
+        location.href = response.redirect_uri
       } catch (error) {
         console.error(error)
       }
