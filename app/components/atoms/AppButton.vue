@@ -73,6 +73,10 @@ export default {
     &:focus {
       background: #0086cc;
     }
+
+    a {
+      cursor: default;
+    }
   }
 
   a {
@@ -100,6 +104,10 @@ export default {
       &:hover,
       &:focus {
         background: #fff;
+      }
+
+      a {
+        cursor: default;
       }
     }
 
