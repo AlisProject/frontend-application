@@ -57,6 +57,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {
@@ -71,6 +72,7 @@ export default {
     }
   },
   async mounted() {
+    removeOAuthParams()
     try {
       const { clientName, description } = await this.getApplication({
         clientId: this.$route.query.client_id
