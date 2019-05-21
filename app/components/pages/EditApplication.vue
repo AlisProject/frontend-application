@@ -106,7 +106,7 @@ export default {
   },
   async mounted() {
     const { clientId } = this.$route.params
-    await this.getApplication({ clientId })
+    await this.getMeApplication({ clientId })
     this.clientName = this.application.clientName
     this.description = this.application.description
     this.urls = this.application.redirectUris.map((url) => {
@@ -184,7 +184,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['getApplication', 'updateApplication', 'deleteApplication'])
+    ...mapActions('user', ['getMeApplication', 'updateApplication', 'deleteApplication'])
   },
   filters: {
     showApplicationType(type) {

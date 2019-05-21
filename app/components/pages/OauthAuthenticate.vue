@@ -8,16 +8,14 @@
       <h2 class="sub-title">
         クライアント名
       </h2>
-      <!-- TODO: APIから取得 -->
       <p class="description">
-        ほげほげほげほげほげほげほげほげほほげほげほげほげほげほげほ..
+        {{ clientName }}
       </p>
-      <h2 class="sub-title">
+      <h2 v-if="hasDescription" class="sub-title">
         クライアントの説明
       </h2>
-      <!-- TODO: APIから取得し、なかった場合の処理を確認（「なし」と表示するなど） -->
       <p class="description mb40">
-        ほげほげほげほげほげほげほげほげほほげほげほげほげほげほげほげほげほげほげほほげほげほげほげほげほげほげほげほげほげほげほほげほげほげほげほげほげほげほげほげほげほげほほげほげほげほげほげほげほげほげほ..
+        {{ description }}
       </p>
       <h2 class="sub-title">
         このアプリケーションは次の情報について、取得{{
@@ -66,9 +64,29 @@ export default {
     AppButton,
     AppFooter
   },
+  data() {
+    return {
+      clientName: '',
+      description: ''
+    }
+  },
+  async mounted() {
+    try {
+      const { clientName, description } = await this.getApplication({
+        clientId: this.$route.query.client_id
+      })
+      this.clientName = clientName
+      this.description = description
+    } catch (error) {
+      console.error(error)
+    }
+  },
   computed: {
     isWrite() {
       return this.$route.query.scope === 'write'
+    },
+    hasDescription() {
+      return this.description !== ''
     }
   },
   methods: {
@@ -112,7 +130,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['postOAuthAuthorization'])
+    ...mapActions('user', ['postOAuthAuthorization', 'getApplication'])
   }
 }
 </script>

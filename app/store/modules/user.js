@@ -971,7 +971,7 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getApplication({ commit }, { clientId }) {
+  async getMeApplication({ commit }, { clientId }) {
     try {
       const application = await this.$axios.$get(`/api/me/applications/${clientId}`)
       commit(types.SET_APPLICATION, { application })
@@ -1026,6 +1026,14 @@ const actions = {
         }
       })
       return response
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getApplication({ commit }, { clientId }) {
+    try {
+      const application = await this.$axios.$get(`/api/applications/${clientId}`)
+      return application
     } catch (error) {
       return Promise.reject(error)
     }
