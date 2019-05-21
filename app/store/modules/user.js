@@ -179,7 +179,8 @@ const state = () => ({
   },
   applications: [],
   application: {},
-  connectedApplications: []
+  connectedApplications: [],
+  shouldDeleteOAuthParams: false
 })
 
 const getters = {
@@ -1037,6 +1038,9 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setShouldDeleteOAuthParams({ commit }, { shouldDelete }) {
+    commit(types.SET_SHOULD_DELETE_OAUTH_PARAMS, { shouldDelete })
   }
 }
 
@@ -1359,6 +1363,9 @@ const mutations = {
     state.connectedApplications = state.connectedApplications.filter((application) => {
       return application.clientId !== clientId
     })
+  },
+  [types.SET_SHOULD_DELETE_OAUTH_PARAMS](state, { shouldDelete }) {
+    state.shouldDeleteOAuthParams = shouldDelete
   }
 }
 
