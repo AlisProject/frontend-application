@@ -1,6 +1,12 @@
 <template>
   <div class="area-article-card-list-container">
-    <recommended-article-card v-for="article in articles" :key="article.id" :article="article" />
+    <recommended-article-card
+      v-for="(article, i) in articles"
+      :key="article.id"
+      :article="article"
+      :isTipRanking="isTipRanking"
+      :order="`${i + 1}`"
+    />
   </div>
 </template>
 
@@ -15,6 +21,11 @@ export default {
     articles: {
       type: Array,
       required: true
+    },
+    isTipRanking: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }

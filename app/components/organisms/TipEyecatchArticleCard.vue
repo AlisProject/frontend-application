@@ -1,27 +1,22 @@
 <template>
   <nuxt-link
-    class="recommended-article-card"
+    class="tip-eyecatch-article-card"
+    :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
+    :style="{ background: `url(${eyeCatchImagePath}) center center / cover no-repeat` }"
   >
     <img
-      v-if="isTipRanking"
-      :src="require(`~/assets/images/pc/article/m_ribbon_${order}.png`)"
+      :src="require(`~/assets/images/pc/article/m_ribbon_${order.replace('eyecatch', '')}.png`)"
       class="ribbon"
     >
-    <div class="eye-catch-image-box">
-      <img
-        v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
-        class="eye-catch-image"
-        src="~assets/images/pc/common/thumbnail_noimg.png"
-      >
-      <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
+    <div class="article-subdata-box">
+      <div class="label">
+        {{ topicDisplayName }}
+      </div>
+      <div v-if="isPaidArticle" class="label">
+        有料
+      </div>
     </div>
-    <span class="topic">
-      {{ topicDisplayName }}
-    </span>
-    <span v-if="isPaidArticle" class="paid-article">
-      有料
-    </span>
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
@@ -53,14 +48,9 @@ export default {
       type: Object,
       required: true
     },
-    isTipRanking: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     order: {
       type: String,
-      required: false
+      required: true
     }
   },
   computed: {
@@ -76,9 +66,17 @@ export default {
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
     },
+    eyeCatchImagePath() {
+      return this.article.eye_catch_url !== null || this.article.eye_catch_url !== undefined
+        ? `${this.article.eye_catch_url}?d=${this.order === 'eyecatch1' ? '1420x824' : '680x382'}`
+        : require('~/assets/images/pc/common/thumbnail_noimg.png')
+    },
     topicDisplayName() {
       const topic = this.topics.find((topic) => topic.name === this.article.topic)
       return topic.display_name
+    },
+    isPaidArticle() {
+      return !!this.article.price
     },
     formattedTokenAmount() {
       const tokenAmount = this.article.alisToken
@@ -88,137 +86,145 @@ export default {
       const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
       return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
     },
-    isPaidArticle() {
-      return !!this.article.price
-    },
     ...mapGetters('article', ['topics'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.recommended-article-card {
+.tip-eyecatch-article-card {
   @include cassette-shadow();
   border-radius: 4px;
-  height: 296px;
   position: relative;
   text-decoration: none;
-  width: 340px;
-}
 
-.ribbon,
-.eye-catch-image-box,
-.topic,
-.paid-article,
-.title,
-.article-data-box,
-.username,
-.published-at,
-.token-amount {
-  position: absolute;
-}
+  &:before {
+    content: '';
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
+  }
 
-.ribbon {
-  width: 108px;
-  right: -8px;
-  top: -8px;
-  z-index: 1;
-}
+  &.eyecatch1 {
+    grid-area: eyecatch1;
+    width: 710px;
+    height: 412px;
+  }
 
-.eye-catch-image-box {
-  background: #fff;
-  overflow: hidden;
-  width: 296px;
-  height: 148px;
-  top: 24px;
-  left: 22px;
+  &.eyecatch2 {
+    grid-area: eyecatch2;
+  }
 
-  .eye-catch-image {
-    max-width: 100%;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+  &.eyecatch3 {
+    grid-area: eyecatch3;
+  }
+
+  &.eyecatch2,
+  &.eyecatch3 {
+    width: 340px;
+    height: 191px;
+  }
+
+  .ribbon {
+    width: 108px;
+    position: absolute;
+    right: -8px;
+    top: -8px;
   }
 }
 
-.topic,
-.paid-article {
-  text-align: center;
-  color: #9e9e9e;
+.article-subdata-box {
+  bottom: 124px;
+  display: flex;
+  left: 20px;
+  position: absolute;
+}
+
+.label {
+  align-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
   font-size: 12px;
   font-weight: bold;
-  letter-spacing: 0.6px;
-  padding: 4px;
-  box-sizing: border-box;
-  top: 152px;
-  background: #fff;
-}
-
-.topic {
-  width: 100px;
-  left: 26px;
-}
-
-.paid-article {
-  width: 40px;
-  left: 130px;
+  margin-right: 8px;
+  padding: 4px 8px;
 }
 
 .title {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  color: #555555;
+  bottom: 60px;
+  color: #fff;
   display: -webkit-box;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: bold;
-  height: 48px;
-  left: 22px;
-  letter-spacing: 0.8px;
-  line-height: 1.714;
+  grid-area: title;
+  height: 60px;
+  left: 20px;
+  letter-spacing: 1px;
+  line-height: 1.5;
   margin: 0;
   overflow: hidden;
+  position: absolute;
   text-decoration: none;
   text-overflow: ellipsis;
-  top: 184px;
-  width: 296px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.eyecatch1 {
+  .title {
+    width: 492px;
+  }
+}
+
+.eyecatch2,
+.eyecatch3 {
+  .title {
+    width: 300px;
+  }
 }
 
 .article-data-box {
-  width: 220px;
+  bottom: 10px;
   height: 46px;
-  bottom: 14px;
-  left: 22px;
+  left: 20px;
+  position: absolute;
+  width: 220px;
 }
 
 .username,
 .published-at,
 .token-amount {
-  color: #6e6e6e;
+  color: #ffffff;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.8px;
+  position: absolute;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
 }
 
 .username {
-  color: #9e9e9e;
-  font-weight: bold;
   overflow: hidden;
   text-decoration: none;
   text-overflow: ellipsis;
   top: 6px;
   white-space: nowrap;
-  width: 168px;
+  width: 190px;
 }
 
 .published-at {
-  color: #9e9e9e;
-  font-weight: bold;
   bottom: 6px;
 }
 
 .token-amount {
   align-items: center;
-  background: url('~assets/images/pc/common/icon_token_cassette.png') no-repeat;
+  background: url('~assets/images/pc/common/icon_logo_white.png') no-repeat;
   background-size: 18px;
   bottom: 0;
   display: flex;
@@ -227,24 +233,6 @@ export default {
   letter-spacing: 0.8px;
   padding: 0 0 0 22px;
   right: 20px;
-  bottom: 20px;
-}
-
-@media screen and (max-width: 320px) {
-  .recommended-article-card {
-    width: 300px;
-  }
-
-  .eye-catch-image-box {
-    width: 256px;
-  }
-
-  .title {
-    width: 256px;
-  }
-
-  .username {
-    width: 150px;
-  }
+  bottom: 14px;
 }
 </style>
