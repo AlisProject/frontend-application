@@ -103,14 +103,20 @@
 }
 
 @media screen and (max-width: 920px) {
-  .top-page .description {
-    margin: 0 20px 0 12px;
+  .top-page,
+  .tip-ranking-container {
+    .description {
+      margin: 0 20px 0 12px;
+    }
   }
 }
 
 @media screen and (max-width: 550px) {
-  .top-page .area-new-topic-candidates-container {
-    padding-top: 20px;
+  .top-page,
+  .tip-ranking-container {
+    .area-new-topic-candidates-container {
+      padding-top: 20px;
+    }
   }
 
   .popular-article-list-container,
