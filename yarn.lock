@@ -5870,7 +5870,7 @@ lodash.uniqueid@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/lodash.uniqueid/-/lodash.uniqueid-4.0.1.tgz#3268f26a7c88e4f4b1758d679271814e31fa5b26"
 
-lodash@4.x, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@~4.17.10:
+lodash@4.x, lodash@^4.0.0, lodash@^4.15.0, lodash@^4.16.6, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@~4.17.10:
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
 
@@ -8344,6 +8344,13 @@ serve-static@1.13.2, serve-static@^1.13.2:
 server-destroy@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/server-destroy/-/server-destroy-1.0.1.tgz#f13bf928e42b9c3e79383e61cc3998b5d14e6cdd"
+
+serverless-plugin-aws-alerts@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/serverless-plugin-aws-alerts/-/serverless-plugin-aws-alerts-1.2.4.tgz#df0958acf128298aa069dd38e134b0104c3d2f44"
+  integrity sha1-3wlYrPEoKYqgad044TSwEEw9L0Q=
+  dependencies:
+    lodash "^4.16.6"
 
 servify@^0.1.12:
   version "0.1.12"

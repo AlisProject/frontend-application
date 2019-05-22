@@ -51,3 +51,17 @@ yarn start
 ```bash
 yarn generate
 ```
+
+# AWS CodePipeline for deployment
+
+1. [Get GitHub access token](https://github.com/settings/tokens)
+1. `direnv edit`
+1. Deploy CloudFormation stack.
+
+```bash
+# Create S3 deploying bucket.
+aws s3 mb s3://${ALIS_APP_ID}-frontend-codepipeline-deploy-bucket
+
+# deploy
+./deploy_codepipeline.sh
+``` 

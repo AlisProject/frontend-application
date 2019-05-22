@@ -4,6 +4,10 @@
 ## すべてのサブシステムで同じ値を使う必要がある
 export ALIS_APP_ID=alis
 
+
+## ********** ここの値を追加・変更する場合、CodePipelineへの追加も必要な場合があるので注意 **********
+
+
 # AWSのリージョン
 export REGION=ap-northeast-1
 
@@ -28,6 +32,15 @@ export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
 # API Gateway name for Nuxt
 # see: https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html
 export NUXT_API_GATEWAY_NAME=${ALIS_APP_ID}
+
+
+# --- Codepipeline ---
+# デプロイ自動化の設定に利用。通常は設定不要
+export GITHUB_TOKEN=123...
+
+# 自動デプロイ承認用メールの送り先。通常は設定不要
+export APPROVAL_EMAIL_ADDRESS=foo@example.com
+
 
 # --- AWS ---
 
