@@ -99,14 +99,14 @@ export default {
 .values {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 70px;
+  justify-content: space-around;
+  height: 78px;
   margin-right: 8px;
 }
 
 .icons,
 .titles {
-  height: 96px;
+  height: 106px;
 }
 
 .icon {
