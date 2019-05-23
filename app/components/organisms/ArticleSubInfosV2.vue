@@ -36,8 +36,7 @@
           <img :class="`user-icon rank${i + 1}`" :src="`${supporter.icon_image_url}?d=48x48`">
         </nuxt-link>
       </div>
-      <!-- TODO: パスを修正 -->
-      <nuxt-link class="link" to="/">
+      <nuxt-link class="link" :to="`/${articleUserId}/articles/${articleId}/supporters`">
         もっと見る
       </nuxt-link>
     </div>
@@ -45,11 +44,20 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import { formatDate } from '~/utils/format'
 
 export default {
   props: {
+    articleId: {
+      type: String,
+      required: true
+    },
+    articleUserId: {
+      type: String,
+      required: true
+    },
     publishedAt: {
       type: Number,
       required: true
@@ -57,73 +65,6 @@ export default {
     tokenAmount: {
       type: Number,
       required: true
-    }
-  },
-  data() {
-    return {
-      // TODO: モックを削除
-      supporters: [
-        {
-          user_id: 'test_user_id_1',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_2',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_3',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_4',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_5',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_6',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_7',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_8',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_9',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        },
-        {
-          user_id: 'test_user_id_10',
-          user_display_name: 'test_user_display_name',
-          icon_image_url:
-            'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-        }
-      ]
     }
   },
   computed: {
@@ -136,7 +77,8 @@ export default {
       const formatNumber = 10 ** 18
       const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
       return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    }
+    },
+    ...mapGetters('article', ['supporters'])
   }
 }
 </script>

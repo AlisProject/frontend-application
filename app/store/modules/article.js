@@ -62,7 +62,70 @@ const state = () => ({
     lastEvaluatedKey: {},
     articles: []
   },
-  isFetchedPurchasedArticle: false
+  isFetchedPurchasedArticle: false,
+  // TODO: モックを削除
+  supporters: [
+    {
+      user_id: 'test_user_id_1',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_2',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_3',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_4',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_5',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_6',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_7',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_8',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_9',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    },
+    {
+      user_id: 'test_user_id_10',
+      user_display_name: 'test_user_display_name',
+      icon_image_url:
+        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
+    }
+  ]
 })
 
 const getters = {
@@ -113,7 +176,8 @@ const getters = {
     }
   },
   currentPrice: (state) => state.currentPrice,
-  isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle
+  isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle,
+  supporters: (state) => state.supporters
 }
 
 const actions = {

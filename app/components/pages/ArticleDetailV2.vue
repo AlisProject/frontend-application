@@ -24,7 +24,12 @@
         :likes-count="likesCount"
         :is-liked-article="isLikedArticle"
       />
-      <article-sub-infos-v2 :published-at="publishedAt" :token-amount="article.alisToken" />
+      <article-sub-infos-v2
+        :articleId="article.article_id"
+        :articleUserId="article.user_id"
+        :publishedAt="publishedAt"
+        :tokenAmount="article.alisToken"
+      />
       <author-info :user="article.userInfo" />
     </div>
     <article-comments :comments="article.comments" />
