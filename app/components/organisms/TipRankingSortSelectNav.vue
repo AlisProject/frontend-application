@@ -1,17 +1,9 @@
 <template>
   <div class="area-tip-ranking-sort-select-nav">
-    <nuxt-link
-      class="nav-link"
-      :class="{ selected: isSortedByDate }"
-      :to="datePath"
-    >
+    <nuxt-link class="nav-link" :class="{ selected: isSortedByDate }" :to="datePath">
       日時
     </nuxt-link>
-    <nuxt-link
-      class="nav-link"
-      :class="{ selected: isSortedByTotal }"
-      :to="totalPath"
-    >
+    <nuxt-link class="nav-link" :class="{ selected: isSortedByTotal }" :to="totalPath">
       総合
     </nuxt-link>
   </div>
