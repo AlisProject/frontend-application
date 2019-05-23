@@ -32,9 +32,7 @@
     </no-ssr>
     <div class="token-info">
       <div class="icons">
-        <!-- TODO: 解像度の高い画像に変更 -->
         <img class="icon" src="~assets/images/pc/common/icon_catset_like_white.png">
-        <!-- TODO: 解像度の高い画像に変更 -->
         <img class="icon" src="~assets/images/pc/common/icon_catset_tip_white.png">
       </div>
       <div class="amounts">
