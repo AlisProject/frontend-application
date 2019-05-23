@@ -30,9 +30,23 @@
         </span>
       </nuxt-link>
     </no-ssr>
-    <span class="token-amount">
-      {{ formattedTokenAmount }}
-    </span>
+    <div class="token-info">
+      <div class="icons">
+        <!-- TODO: 解像度の高い画像に変更 -->
+        <img class="icon" src="~assets/images/pc/common/icon_catset_like_white.png">
+        <!-- TODO: 解像度の高い画像に変更 -->
+        <img class="icon" src="~assets/images/pc/common/icon_catset_tip_white.png">
+      </div>
+      <div class="amounts">
+        <!-- TODO: いいねによるトークン獲得のロジックを追加 -->
+        <span class="like-token-amount">
+          {{ formattedTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+        <span class="tip-token-amount">
+          {{ formattedTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+      </div>
+    </div>
   </nuxt-link>
 </template>
 
@@ -199,14 +213,20 @@ export default {
 }
 
 .username,
-.published-at,
-.token-amount {
+.published-at {
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.8px;
   position: absolute;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+.like-token-amount,
+.tip-token-amount {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
 }
 
 .username {
@@ -222,17 +242,26 @@ export default {
   bottom: 6px;
 }
 
-.token-amount {
-  align-items: center;
-  background: url('~assets/images/pc/common/icon_logo_white.png') no-repeat;
-  background-size: 18px;
-  bottom: 0;
-  display: flex;
-  height: 18px;
-  margin: 0;
-  letter-spacing: 0.8px;
-  padding: 0 0 0 22px;
+.token-info {
+  position: absolute;
+  bottom: 20px;
   right: 20px;
-  bottom: 14px;
+  display: flex;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  margin-right: 4px;
+}
+
+.icon {
+  width: 16px;
+}
+
+.amounts {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 </style>
