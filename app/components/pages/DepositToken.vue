@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import Web3 from 'web3'
+/* global Web3 */
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
@@ -106,14 +106,13 @@ export default {
       bridgeInfo: null,
       relayPaused: false,
       isProcessing: false,
-      networkType: this.isProduction ? 'main' : 'ropsten'
+      networkType: 'main'
     }
   },
   async mounted() {
     // 未ログインユーザーにはログインを促すモーダルを表示するため後続の処理を行わない
     if (!this.loggedIn) return
     this.isMetaMaskInstalled = this.checkIsMetaMaskInstalled()
-    this.isLoading = false
     if (this.isMetaMaskInstalled) {
       try {
         await this.initMetaMaskAndBridge()
@@ -122,6 +121,7 @@ export default {
         console.error(error)
       }
     }
+    this.isLoading = false
   },
   computed: {
     isTargetNetwork() {
