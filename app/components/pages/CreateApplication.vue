@@ -135,7 +135,10 @@ export default {
         this.sendNotification({ text: 'アプリケーションを保存しました' })
         this.$router.push('/me/settings/applications')
       } catch (error) {
-        console.error(error)
+        this.sendNotification({
+          text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+          type: 'warning'
+        })
       } finally {
         this.isProcessing = false
       }
