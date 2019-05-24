@@ -12,16 +12,9 @@ export default {
   },
   async fetch({ store, error, from = {} }) {
     try {
-      // 認可画面からの遷移の場合、クエリ文字列の値をローカルストレージに保存する。
-      // そうでなかった場合はローカルストレージに保存された値を消したいが、fetch 時には
-      // ローカルストレージにアクセスできないため、このコンポーネントの
-      // mounted で消す処理を行うためのフラグを true にしている。
-      if (process.client && from.name === 'oauth-authenticate') {
-        setOAuthParams(from.query)
-      } else {
-        store.dispatch('user/setShouldDeleteOAuthParams', { shouldDelete: true })
-      }
-
+      // from の値は mounted 時に取得できない。
+      // そのため、mounted 時に使うために Vuex の state に値を保持する
+      store.dispatch('user/setLoginFrom', { from })
       store.dispatch('user/setLoginModal', { showLoginModal: true })
 
       await store.dispatch('article/getTopics')
@@ -36,9 +29,11 @@ export default {
     }
   },
   mounted() {
-    if (this.$store.state.user.shouldDeleteOAuthParams) {
+    const from = this.$store.state.user.loginFrom
+    if (from.name === 'oauth-authenticate') {
+      setOAuthParams(from.query)
+    } else {
       removeOAuthParams()
-      this.$store.dispatch('user/setShouldDeleteOAuthParams', { shouldDelete: false })
     }
   },
   head: {

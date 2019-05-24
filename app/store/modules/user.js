@@ -180,7 +180,7 @@ const state = () => ({
   applications: [],
   application: {},
   connectedApplications: [],
-  shouldDeleteOAuthParams: false
+  loginFrom: {}
 })
 
 const getters = {
@@ -1039,8 +1039,8 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  setShouldDeleteOAuthParams({ commit }, { shouldDelete }) {
-    commit(types.SET_SHOULD_DELETE_OAUTH_PARAMS, { shouldDelete })
+  setLoginFrom({ commit }, { from }) {
+    commit(types.SET_LOGIN_FROM, { from })
   }
 }
 
@@ -1364,8 +1364,8 @@ const mutations = {
       return application.clientId !== clientId
     })
   },
-  [types.SET_SHOULD_DELETE_OAUTH_PARAMS](state, { shouldDelete }) {
-    state.shouldDeleteOAuthParams = shouldDelete
+  [types.SET_LOGIN_FROM](state, { from }) {
+    state.loginFrom = from
   }
 }
 
