@@ -8,7 +8,6 @@
         投げ銭によるオススメ
       </div>
     </div>
-    <tip-ranking-sort-select-nav />
     <!-- TODO: eyecatchArticles を 投げ銭ランキングのデータに変更 -->
     <tip-eyecatch-article-card-list
       :articles="eyecatchArticles"
@@ -34,7 +33,6 @@ import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import NewTopicCandidates from '../organisms/NewTopicCandidates'
-import TipRankingSortSelectNav from '../organisms/TipRankingSortSelectNav'
 import TipEyecatchArticleCardList from '../organisms/TipEyecatchArticleCardList'
 import RecommendedArticleCardList from '../organisms/RecommendedArticleCardList'
 import TheLoader from '../atoms/TheLoader'
@@ -46,7 +44,6 @@ export default {
     AppHeader,
     DefaultHeaderNav,
     NewTopicCandidates,
-    TipRankingSortSelectNav,
     TipEyecatchArticleCardList,
     RecommendedArticleCardList,
     TheLoader,
@@ -137,7 +134,7 @@ export default {
     "nav        nav                            nav                            nav       "
     "...        candidates                     candidates                     ...       "
     "...        recommended-tip-ranking        recommended-tip-ranking        ...       "
-    "...        tip-ranking-sort-select-nav    tip-ranking-sort-select-nav    ...       "
+    "...        ...                            ...                            ...       "
     "...        tip-eyecatch-article-card-list tip-eyecatch-article-card-list ...       "
     "...        article-card-list              article-card-list              ...       "
     "...        article-card-list              article-card-list              ...       "
@@ -145,7 +142,7 @@ export default {
     "app-footer app-footer                     app-footer                     app-footer";
 
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px minmax(50px, min-content) 50px 26px 90px auto auto 1fr 75px 75px;
+  grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto auto 1fr 75px 75px;
   min-height: 100vh;
 
   .default-header-nav {
@@ -179,14 +176,14 @@ export default {
 @media screen and (max-width: 1296px) {
   .tip-ranking-container {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px minmax(50px, min-content) 50px 26px 90px auto 1fr 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                     app-header"
       "nav        nav                            nav       "
       "...        candidates                     ...       "
       "...        recommended-tip-ranking        ...       "
-      "...        tip-ranking-sort-select-nav    ...       "
+      "...        ...                            ...       "
       "...        tip-eyecatch-article-card-list ...       "
       "...        article-card-list              ...       "
       "...        loader                         ...       "
@@ -201,14 +198,14 @@ export default {
 @media screen and (max-width: 920px) {
   .tip-ranking-container {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 80px 50px 26px 90px auto 1fr 75px minmax(75px, min-content);
+    grid-template-rows: 100px 80px 50px 26px 30px auto 1fr 75px minmax(75px, min-content);
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
       "nav        nav                           nav       "
       "candidates candidates                    candidates"
       "...        recommended-tip-ranking       ...       "
-      "...        tip-ranking-sort-select-nav   ...       "
+      "...        ...                           ...       "
       "...        eyecatch-article-card-list-sp ...       "
       "...        article-card-list             ...       "
       "...        loader                        ...       "
@@ -228,7 +225,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .tip-ranking-container {
-    grid-template-rows: 66px minmax(50px, min-content) 36px 30px 26px 90px auto 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) 36px 30px 26px 30px auto 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
@@ -236,7 +233,7 @@ export default {
       "candidates candidates                    candidates"
       "...        ...                           ...       "
       "...        recommended-tip-ranking       ...       "
-      "...        tip-ranking-sort-select-nav   ...       "
+      "...        ...                           ...       "
       "...        eyecatch-article-card-list-sp ...       "
       "...        article-card-list             ...       "
       "...        loader                        ...       "
