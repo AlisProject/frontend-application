@@ -80,14 +80,11 @@
           {{ totalAmount }}
           <span class="unit">ALIS</span>
         </div>
-        <span class="withdraw-error-message">
-          {{ errorMessage }}
-        </span>
         <app-button
           class="withdraw-button"
           :disabled="isProcessing"
           :isLoading="isProcessing"
-          @click="handleClickWithdraw"
+          @click="showModal"
         >
           出金する※取り消し不可
         </app-button>
@@ -133,7 +130,6 @@ export default {
       amount: null,
       addressErrorMessage: '',
       amountErrorMessage: '',
-      errorMessage: '',
       isConfirmPage: false,
       maxSingleRelayAmount: null,
       minSingleRelayAmount: null,
@@ -143,6 +139,10 @@ export default {
     }
   },
   async mounted() {
+    // 出金用認証コードを入力するモーダルで利用
+    this.$root.$on('resetWithdrawTokenComponentState', () => {
+      this.resetWithdrawTokenComponentState()
+    })
     try {
       const result = await this.getBridgeInformation()
       this.maxSingleRelayAmount = result.max_single_relay_amount
@@ -243,66 +243,38 @@ export default {
       if (!this.isWithdrawable) return
       this.isConfirmPage = true
     },
-    async handleClickWithdraw() {
+    handleClickBack() {
+      this.isConfirmPage = false
+    },
+    async showModal() {
       try {
-        if (this.isProcessing) return
-        this.isProcessing = true
-        const recipientEthAddress = this.address
-        const sendValue = new BigNumber(this.totalAmount).multipliedBy(formatNumber).toString(10)
-        const hasExceededAmount = await this.checkIsWithdrawable(this.totalAmount)
-        if (!hasExceededAmount) {
-          this.errorMessage = 'ALISが不足しています'
-          return
-        }
-        const isCompleted = await this.postTokenSend({ recipientEthAddress, sendValue })
-        if (isCompleted) {
-          this.sendNotification({ text: '出金を受け付けました' })
-        } else {
-          this.sendNotification({
-            text: '出金を受け付けました。出金処理の完了までしばらくお待ち下さい'
-          })
-        }
-        this.amount = null
-        this.address = ''
-        this.isConfirmPage = false
+        await this.sendConfirm()
+        this.setInputWithdrawAuthCodeModal({ isShow: true })
+        const { address, totalAmount } = this
+        this.setInputWithdrawAuthCodeModalValues({ address, totalAmount })
       } catch (error) {
-        const message = error.response.data.message
-        if (message === 'Invalid parameter: Token withdrawal limit has been exceeded.') {
-          const dailyLimit = addDigitSeparator(
-            new BigNumber(process.env.DAILY_LIMIT_TOKEN_SEND_VALUE).div(formatNumber).toString(10)
-          )
-          this.sendNotification({
-            text: `一日の出金上限額である${dailyLimit}ALIS（手数料含む）を超えたため、出金できませんでした`,
-            type: 'warning'
-          })
-        } else if (message === 'Invalid parameter: send_value') {
-          this.sendNotification({
-            text: 'エラーが発生しました。入力内容を確認してください',
-            type: 'warning'
-          })
-        } else {
-          this.sendNotification({
-            text: '出金のトランザクション発行に失敗しました',
-            type: 'warning'
-          })
-        }
-      } finally {
-        this.isProcessing = false
+        this.sendNotification({
+          text: '出金用認証コードの送信に失敗しました。しばらく時間を置いて再度お試しください',
+          type: 'warning'
+        })
       }
     },
-    async checkIsWithdrawable(amount) {
-      const { result } = await this.getBalance()
-      const myBalance = new BigNumber(result, 16).div(formatNumber)
-      return myBalance.isGreaterThanOrEqualTo(amount)
-    },
-    handleClickBack() {
-      this.errorMessage = ''
+    resetWithdrawTokenComponentState() {
+      this.amount = null
+      this.address = ''
       this.isConfirmPage = false
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['getBridgeInformation', 'postTokenSend', 'getBalance'])
+    ...mapActions('user', [
+      'getBridgeInformation',
+      'postTokenSend',
+      'getBalance',
+      'setInputWithdrawAuthCodeModal',
+      'setInputWithdrawAuthCodeModalValues',
+      'sendConfirm'
+    ])
   }
 }
 </script>
@@ -456,15 +428,8 @@ export default {
   width: 100%;
 }
 
-.withdraw-error-message {
-  color: #f06273;
-  font-size: 12px;
-  margin-top: 26px;
-  min-height: 14px;
-}
-
 .withdraw-button {
-  margin-top: 10px;
+  margin-top: 50px;
 }
 
 .mb20 {
