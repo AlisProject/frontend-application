@@ -57,6 +57,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import loadImage from 'blueimp-load-image'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
+import { getOAuthParams, removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {
@@ -184,6 +185,14 @@ export default {
           this.setSignUpAuthFlowProfileSettingsModal({
             isSignUpAuthFlowProfileSettingsModal: false
           })
+          // ユーザー登録を行っていない状態でアプリケーションの認可画面を開き、ユーザー登録を行った場合、
+          // ユーザー登録完了のモーダルは表示せずプロフィール編集完了後に認可画面に遷移させる。
+          const oauthParams = getOAuthParams()
+          if (oauthParams) {
+            this.$router.push({ path: 'oauth-authenticate', query: { ...oauthParams } })
+            removeOAuthParams()
+            return
+          }
           if (this.currentUser.phoneNumberVerified) {
             this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
           } else {
