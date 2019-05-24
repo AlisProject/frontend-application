@@ -108,7 +108,7 @@ export default {
       if (this.invalidSubmit) return
       const pinCode = this.authCode
       const { address: recipientEthAddress, totalAmount } = this.inputWithdrawAuthCodeModal
-      const accessToken = this.getAccessToken()
+      const accessToken = await this.getAccessToken()
       try {
         if (this.isProcessing) return
         this.isProcessing = true
@@ -145,14 +145,9 @@ export default {
       const myBalance = new BigNumber(result, 16).div(formatNumber)
       return myBalance.isGreaterThanOrEqualTo(amount)
     },
-    getAccessToken() {
-      const currentUser = localStorage.getItem(
-        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
-      )
-      const accessToken = localStorage.getItem(
-        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.${currentUser}.accessToken`
-      )
-      return accessToken
+    async getAccessToken() {
+      const session = await this.refreshUserSession()
+      return session.accessToken.jwtToken
     },
     getNotificationTextFromErrorMessage(errorMessage) {
       switch (errorMessage) {
@@ -174,7 +169,8 @@ export default {
       'setInputWithdrawAuthCodeModal',
       'setInputWithdrawAuthCodeModalValues',
       'postTokenSend',
-      'getBalance'
+      'getBalance',
+      'refreshUserSession'
     ])
   }
 }
