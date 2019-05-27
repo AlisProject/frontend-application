@@ -27,7 +27,7 @@
             @focus="resetError('clientName')"
           >
           <p v-if="showErrorClientNameMaxLength" class="error-message">
-            80文字以内で入力してください
+            クライアント名は80文字以内で入力してください
           </p>
         </div>
         <div class="signup-form-group" :class="{ error: hasDescription }">
@@ -41,7 +41,7 @@
             @focus="resetError('description')"
           >
           <p v-if="showErrorDescriptionMaxLength" class="error-message">
-            180文字以内で入力してください
+            クライアントの説明は180文字以内で入力してください
           </p>
         </div>
         <div class="label">
