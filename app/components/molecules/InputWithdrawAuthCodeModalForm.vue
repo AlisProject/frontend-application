@@ -157,6 +157,10 @@ export default {
           )
           return `一日の出金上限額である${dailyLimit}ALIS（手数料含む）を超えたため、出金できませんでした`
         case 'Invalid parameter: send_value':
+        case 'Invalid parameter: Access token is invalid':
+        case 'Invalid parameter: Pin code is invalid':
+        case 'Invalid parameter: Pin code is expired':
+        case 'Invalid parameter: Verification limit is exceeded':
           return 'エラーが発生しました。入力内容を確認してください'
         default:
           return '出金のトランザクション発行に失敗しました'
