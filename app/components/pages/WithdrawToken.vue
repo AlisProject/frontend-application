@@ -248,6 +248,8 @@ export default {
     },
     async showModal() {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
         await this.sendConfirm()
         this.setInputWithdrawAuthCodeModal({ isShow: true })
         const { address, totalAmount } = this
@@ -257,6 +259,8 @@ export default {
           text: '出金用認証コードの送信に失敗しました。しばらく時間を置いて再度お試しください',
           type: 'warning'
         })
+      } finally {
+        this.isProcessing = false
       }
     },
     resetWithdrawTokenComponentState() {
