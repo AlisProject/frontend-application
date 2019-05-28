@@ -181,7 +181,11 @@ const state = () => ({
     isShow: false,
     address: '',
     totalAmount: null
-  }
+  },
+  applications: [],
+  application: {},
+  connectedApplications: [],
+  loginFrom: {}
 })
 
 const getters = {
@@ -226,7 +230,10 @@ const getters = {
       withdrawalDetail: state.withdrawalDetails[state.withdrawalDetailModal.index]
     }
   },
-  inputWithdrawAuthCodeModal: (state) => state.inputWithdrawAuthCodeModal
+  inputWithdrawAuthCodeModal: (state) => state.inputWithdrawAuthCodeModal,
+  applications: (state) => state.applications,
+  application: (state) => state.application,
+  connectedApplications: (state) => state.connectedApplications
 }
 
 const actions = {
@@ -443,7 +450,7 @@ const actions = {
     commit(types.SET_LOGGED_IN, { loggedIn })
   },
   async putUserInfo({ commit }, { userDisplayName, selfIntroduction }) {
-    await this.$axios.$put('/me/info', {
+    await this.$axios.$put('/api/me/info', {
       user_display_name: userDisplayName,
       self_introduction: selfIntroduction
     })
@@ -453,7 +460,7 @@ const actions = {
       const config = {
         headers: { 'content-type': imageContentType }
       }
-      const result = await this.$axios.$post('/me/info/icon', { icon_image: iconImage }, config)
+      const result = await this.$axios.$post('/api/me/info/icon', { icon_image: iconImage }, config)
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -467,7 +474,7 @@ const actions = {
   },
   async setCurrentUserInfo({ commit }) {
     try {
-      const result = await this.$axios.$get('/me/info')
+      const result = await this.$axios.$get('/api/me/info')
       commit(types.SET_CURRENT_USER_INFO, { currentUserInfo: result })
     } catch (error) {
       Promise.reject(error)
@@ -478,7 +485,7 @@ const actions = {
   },
   async setUserInfo({ commit }, { userId }) {
     try {
-      const result = await this.$axios.$get(`/users/${userId}/info`)
+      const result = await this.$axios.$get(`/api/users/${userId}/info`)
       commit(types.SET_USER_INFO, { userInfo: result })
       return result
     } catch (error) {
@@ -494,7 +501,7 @@ const actions = {
       await dispatch('setUserInfo', { userId })
       const { userInfo } = state
       const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
-        `/users/${userInfo.user_id}/articles/public`,
+        `/api/users/${userInfo.user_id}/articles/public`,
         { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
       )
       commit(types.SET_USER_ARTICLES_LAST_EVALUATED_KEY, {
@@ -503,7 +510,7 @@ const actions = {
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           const { alis_token: alisToken } = await this.$axios.$get(
-            `/articles/${article.article_id}/alistoken`
+            `/api/articles/${article.article_id}/alistoken`
           )
           return { ...article, userInfo, alisToken }
         })
@@ -523,7 +530,7 @@ const actions = {
       } = state.notificationsLastEvaluatedKey
 
       const { Items: notifications, LastEvaluatedKey } = await this.$axios.$get(
-        '/me/notifications',
+        '/api/me/notifications',
         { params: { limit: 10, notification_id: notificationId, sort_key: sortKey } }
       )
 
@@ -537,9 +544,9 @@ const actions = {
             notification.type === 'thread' ||
             notification.type === 'purchased'
           ) {
-            userInfo = await this.$axios.$get(`/users/${notification.acted_user_id}/info`)
+            userInfo = await this.$axios.$get(`/api/users/${notification.acted_user_id}/info`)
           } else if (notification.type === 'tip_error') {
-            userInfo = await this.$axios.$get(`/users/${notification.article_user_id}/info`)
+            userInfo = await this.$axios.$get(`/api/users/${notification.article_user_id}/info`)
           }
           return { ...notification, userInfo }
         })
@@ -565,7 +572,7 @@ const actions = {
   },
   async getBalance({ commit }) {
     try {
-      const result = await this.$axios.$get('/me/wallet/balance')
+      const result = await this.$axios.$get('/api/me/wallet/balance')
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -583,7 +590,7 @@ const actions = {
   },
   async getUnreadNotification({ commit }) {
     try {
-      const { unread } = await this.$axios.$get('/me/unread_notification_managers')
+      const { unread } = await this.$axios.$get('/api/me/unread_notification_managers')
       commit(types.SET_UNREAD_NOTIFICATION, { unread })
     } catch (error) {
       return Promise.reject(error)
@@ -591,7 +598,7 @@ const actions = {
   },
   async putUnreadNotification({ commit }) {
     try {
-      const result = await this.$axios.$put('/me/unread_notification_managers')
+      const result = await this.$axios.$put('/api/me/unread_notification_managers')
       const unread = false
       commit(types.SET_UNREAD_NOTIFICATION, { unread })
       return result
@@ -603,7 +610,7 @@ const actions = {
     if (state.searchUsers.isFetching) return
     commit(types.SET_SEARCH_USERS_IS_FETCHING, { isFetching: true })
     const limit = 10
-    const users = await this.$axios.$get('/search/users', {
+    const users = await this.$axios.$get('/api/search/users', {
       params: { limit, query, page: state.searchUsers.page }
     })
     commit(types.SET_SEARCH_USERS_IS_FETCHING, { isFetching: false })
@@ -642,7 +649,7 @@ const actions = {
   },
   async postTipToken({ commit }, { tipValue, articleId }) {
     try {
-      await this.$axios.$post('/me/wallet/tip', { tip_value: tipValue, article_id: articleId })
+      await this.$axios.$post('/api/me/wallet/tip', { tip_value: tipValue, article_id: articleId })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -670,7 +677,7 @@ const actions = {
       const externalProviderUserId = localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       )
-      const result = await this.$axios.$post('/me/external_provider_user', {
+      const result = await this.$axios.$post('/api/me/external_provider_user', {
         user_id: userId
       })
 
@@ -713,7 +720,9 @@ const actions = {
   },
   async getLineLoginAuthorizeURL() {
     try {
-      const { callback_url: callbackUrl } = await this.$axios.$get('/login/line/authorization_url')
+      const { callback_url: callbackUrl } = await this.$axios.$get(
+        '/api/login/line/authorization_url'
+      )
       return callbackUrl
     } catch (error) {
       return Promise.reject(error)
@@ -721,7 +730,7 @@ const actions = {
   },
   async getTwitterLoginAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get('/login/twitter/authorization_url')
+      const { url } = await this.$axios.$get('/api/login/twitter/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -729,7 +738,7 @@ const actions = {
   },
   async getFacebookLoginAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      const { url } = await this.$axios.$get('/api/login/facebook/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -737,7 +746,7 @@ const actions = {
   },
   async getYahooLoginAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
+      const { url } = await this.$axios.$get('/api/login/yahoo/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -746,7 +755,7 @@ const actions = {
   async getLineSignUpAuthorizeURL() {
     try {
       const { callback_url: callbackUrl } = await this.$axios.$get(
-        '/sign_up/line/authorization_url'
+        '/api/sign_up/line/authorization_url'
       )
       return callbackUrl
     } catch (error) {
@@ -755,7 +764,7 @@ const actions = {
   },
   async getTwitterSignUpAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get('/login/twitter/authorization_url')
+      const { url } = await this.$axios.$get('/api/login/twitter/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -763,7 +772,7 @@ const actions = {
   },
   async getFacebookSignUpAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get('/login/facebook/authorization_url')
+      const { url } = await this.$axios.$get('/api/login/facebook/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -771,7 +780,7 @@ const actions = {
   },
   async getYahooSignUpAuthorizeURL() {
     try {
-      const { url } = await this.$axios.$get('/login/yahoo/authorization_url')
+      const { url } = await this.$axios.$get('/api/login/yahoo/authorization_url')
       return url
     } catch (error) {
       return Promise.reject(error)
@@ -780,7 +789,7 @@ const actions = {
   async checkAuthByLine({ commit, dispatch }, { code }) {
     dispatch('initCognitoAuth')
 
-    const result = await this.$axios.$post('/login/line', { code })
+    const result = await this.$axios.$post('/api/login/line', { code })
     this.cognitoAuth.setTokens(result)
 
     const hasUserId = result.has_user_id
@@ -791,7 +800,7 @@ const actions = {
   async checkAuthByTwitter({ commit, dispatch }, { oauthToken, oauthVerifier }) {
     dispatch('initCognitoAuth')
 
-    const result = await this.$axios.$post('/login/twitter', {
+    const result = await this.$axios.$post('/api/login/twitter', {
       oauth_token: oauthToken,
       oauth_verifier: oauthVerifier
     })
@@ -805,7 +814,7 @@ const actions = {
   async checkAuthByFacebook({ commit, dispatch }, { code, state }) {
     dispatch('initCognitoAuth')
 
-    const result = await this.$axios.$post('/login/facebook', { code, state })
+    const result = await this.$axios.$post('/api/login/facebook', { code, state })
     this.cognitoAuth.setTokens(result)
 
     const hasUserId = result.has_user_id
@@ -816,7 +825,7 @@ const actions = {
   async checkAuthByYahoo({ commit, dispatch }, { code, state }) {
     dispatch('initCognitoAuth')
 
-    const result = await this.$axios.$post('/login/yahoo', { code, state })
+    const result = await this.$axios.$post('/api/login/yahoo', { code, state })
     this.cognitoAuth.setTokens(result)
 
     const hasUserId = result.has_user_id
@@ -833,7 +842,7 @@ const actions = {
   async getDistributedTokens({ commit }) {
     try {
       const distributedTokens = {}
-      const result = await this.$axios.$get('/me/wallet/distributed_tokens')
+      const result = await this.$axios.$get('/api/me/wallet/distributed_tokens')
       const formatNumber = 10 ** 18
       Object.keys(result).forEach((key) => {
         distributedTokens[key] = new BigNumber(result[key], 10)
@@ -854,7 +863,7 @@ const actions = {
   },
   async putFirstProcessLikedArticle({ commit, state }) {
     try {
-      await this.$axios.$put('/me/info/first_experiences', {
+      await this.$axios.$put('/api/me/info/first_experiences', {
         user_first_experience: 'is_liked_article'
       })
       const currentUserInfo = { ...state.currentUserInfo, is_liked_article: true }
@@ -868,7 +877,7 @@ const actions = {
   },
   async putFirstProcessTippedArticle({ commit, state }) {
     try {
-      await this.$axios.$put('/me/info/first_experiences', {
+      await this.$axios.$put('/api/me/info/first_experiences', {
         user_first_experience: 'is_tipped_article'
       })
       const currentUserInfo = { ...state.currentUserInfo, is_tipped_article: true }
@@ -882,7 +891,7 @@ const actions = {
   },
   async putFirstProcessGotToken({ commit, state }) {
     try {
-      await this.$axios.$put('/me/info/first_experiences', {
+      await this.$axios.$put('/api/me/info/first_experiences', {
         user_first_experience: 'is_got_token'
       })
       const currentUserInfo = { ...state.currentUserInfo, is_got_token: true }
@@ -896,7 +905,7 @@ const actions = {
   },
   async putFirstProcessCreatedArticle({ commit, state }) {
     try {
-      await this.$axios.$put('/me/info/first_experiences', {
+      await this.$axios.$put('/api/me/info/first_experiences', {
         user_first_experience: 'is_created_article'
       })
       const currentUserInfo = { ...state.currentUserInfo, is_created_article: true }
@@ -924,7 +933,7 @@ const actions = {
   },
   async getBridgeInformation({ commit }) {
     try {
-      const result = await this.$axios.$get('/wallet/bridge_information')
+      const result = await this.$axios.$get('/api/wallet/bridge_information')
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -932,7 +941,7 @@ const actions = {
   },
   async postTokenSend({ commit }, { recipientEthAddress, sendValue, accessToken, pinCode }) {
     try {
-      const result = await this.$axios.$post('/me/wallet/token/send', {
+      const result = await this.$axios.$post('/api/me/wallet/token/send', {
         recipient_eth_address: recipientEthAddress,
         send_value: sendValue,
         access_token: accessToken,
@@ -945,7 +954,7 @@ const actions = {
   },
   async getTokenHistories({ commit }) {
     try {
-      const result = await this.$axios.$get('/me/wallet/token/histories')
+      const result = await this.$axios.$get('/api/me/wallet/token/histories')
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -956,6 +965,96 @@ const actions = {
   },
   setInputWithdrawAuthCodeModalValues({ commit }, { address, totalAmount }) {
     commit(types.SET_INPUT_WITHDRAW_AUTH_CODE_MODAL_VALUES, { address, totalAmount })
+  },
+  async getApplications({ commit }) {
+    try {
+      const result = await this.$axios.$get('/api/me/applications')
+      commit(types.SET_APPLICATIONS, { applications: result.clients || [] })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async postApplication({ commit }, { name, description, applicationType, redirectUrls }) {
+    try {
+      await this.$axios.$post('/api/me/applications', {
+        name,
+        description,
+        application_type: applicationType,
+        redirect_urls: redirectUrls
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getMeApplication({ commit }, { clientId }) {
+    try {
+      const application = await this.$axios.$get(`/api/me/applications/${clientId}`)
+      commit(types.SET_APPLICATION, { application })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async updateApplication(
+    { commit },
+    { clientId, name, description, applicationType, redirectUrls }
+  ) {
+    try {
+      await this.$axios.$put(`/api/me/applications/${clientId}`, {
+        name,
+        description,
+        application_type: applicationType,
+        redirect_urls: redirectUrls
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async deleteApplication({ commit }, { clientId }) {
+    try {
+      await this.$axios.$delete(`/api/me/applications/${clientId}`)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getConnectedApplications({ commit }) {
+    try {
+      const applications = await this.$axios.$get('/api/me/allowed_applications')
+      commit(types.SET_CONNECTED_APPLICATIONS, { applications })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async deleteConnectedApplication({ commit }, { clientId }) {
+    try {
+      await this.$axios.$delete('/api/me/allowed_applications', { data: { client_id: clientId } })
+      commit(types.DELETE_CONNECTED_APPLICATION, { clientId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async postOAuthAuthorization({ commit }, { idToken, params }) {
+    try {
+      const response = await this.$axios.$post('/oauth2/authorization', params, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          'content-type': 'application/x-www-form-urlencoded'
+        }
+      })
+      return response
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getApplication({ commit }, { clientId }) {
+    try {
+      const application = await this.$axios.$get(`/api/applications/${clientId}`)
+      return application
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setLoginFrom({ commit }, { from }) {
+    commit(types.SET_LOGIN_FROM, { from })
   }
 }
 
@@ -1271,6 +1370,23 @@ const mutations = {
   [types.SET_INPUT_WITHDRAW_AUTH_CODE_MODAL_VALUES](state, { address, totalAmount }) {
     state.inputWithdrawAuthCodeModal.address = address
     state.inputWithdrawAuthCodeModal.totalAmount = totalAmount
+  },
+  [types.SET_APPLICATIONS](state, { applications }) {
+    state.applications = applications
+  },
+  [types.SET_APPLICATION](state, { application }) {
+    state.application = application
+  },
+  [types.SET_CONNECTED_APPLICATIONS](state, { applications }) {
+    state.connectedApplications = applications
+  },
+  [types.DELETE_CONNECTED_APPLICATION](state, { clientId }) {
+    state.connectedApplications = state.connectedApplications.filter((application) => {
+      return application.clientId !== clientId
+    })
+  },
+  [types.SET_LOGIN_FROM](state, { from }) {
+    state.loginFrom = from
   }
 }
 

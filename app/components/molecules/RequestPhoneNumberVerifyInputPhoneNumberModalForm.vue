@@ -83,6 +83,8 @@ export default {
           return '入金するためには'
         case 'withdrawToken':
           return '出金するためには'
+        case 'provideInfo':
+          return '認証を行うためには'
         default:
           return ''
       }

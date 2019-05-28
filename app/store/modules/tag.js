@@ -20,7 +20,7 @@ const actions = {
       if (state.searchTags.isFetching) return
       commit(types.SET_SEARCH_TAGS_IS_FETCHING, { isFetching: true })
       const limit = 5
-      const tags = await this.$axios.$get('/search/tags', {
+      const tags = await this.$axios.$get('/api/search/tags', {
         params: { limit, query, page: state.searchTags.page }
       })
       commit(types.SET_SEARCH_TAGS, { tags })
