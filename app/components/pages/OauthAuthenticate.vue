@@ -95,7 +95,7 @@ export default {
     async allowAccess() {
       try {
         const {
-          call_back_url: callBackUrl,
+          redirect_uri: redirectUri,
           client_id: clientId,
           code_challenge: codeChallenge,
           scope
@@ -103,7 +103,7 @@ export default {
         const data = {
           response_type: 'code',
           client_id: clientId,
-          redirect_uri: callBackUrl,
+          redirect_uri: redirectUri,
           scope: `openid ${scope}`,
           code_challenge: codeChallenge,
           code_challenge_method: 'S256'
