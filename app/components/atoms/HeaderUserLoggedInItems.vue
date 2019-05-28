@@ -74,6 +74,11 @@
             連携中のアプリケーション
           </nuxt-link>
         </li>
+        <li v-if="!isMobile()" class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/settings/applications">
+            登録中のアプリケーション
+          </nuxt-link>
+        </li>
         <li class="menu-link">
           <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="menu-link-inner">
             ALISの使い方
