@@ -72,7 +72,8 @@ export default {
       'currentUserInfo',
       'mobileEditorHeaderPostArticleModal',
       'confirmPurchaseArticleModal',
-      'withdrawalDetailModal'
+      'withdrawalDetailModal',
+      'inputWithdrawAuthCodeModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -187,6 +188,9 @@ export default {
       if (this.withdrawalDetailModal.isShow) {
         this.setWithdrawalDetailModal({ isShow: false })
       }
+      if (this.inputWithdrawAuthCodeModal.isShow) {
+        this.setInputWithdrawAuthCodeModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -219,7 +223,8 @@ export default {
       'setFirstProcessCreatedArticleModal',
       'setMobileEditorHeaderPostArticleModal',
       'setConfirmPurchaseArticleModal',
-      'setWithdrawalDetailModal'
+      'setWithdrawalDetailModal',
+      'setInputWithdrawAuthCodeModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

@@ -177,6 +177,11 @@ const state = () => ({
     isShow: false,
     index: ''
   },
+  inputWithdrawAuthCodeModal: {
+    isShow: false,
+    address: '',
+    totalAmount: null
+  },
   applications: [],
   application: {},
   connectedApplications: [],
@@ -225,6 +230,7 @@ const getters = {
       withdrawalDetail: state.withdrawalDetails[state.withdrawalDetailModal.index]
     }
   },
+  inputWithdrawAuthCodeModal: (state) => state.inputWithdrawAuthCodeModal,
   applications: (state) => state.applications,
   application: (state) => state.application,
   connectedApplications: (state) => state.connectedApplications
@@ -933,11 +939,13 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async postTokenSend({ commit }, { recipientEthAddress, sendValue }) {
+  async postTokenSend({ commit }, { recipientEthAddress, sendValue, accessToken, pinCode }) {
     try {
       const result = await this.$axios.$post('/api/me/wallet/token/send', {
         recipient_eth_address: recipientEthAddress,
-        send_value: sendValue
+        send_value: sendValue,
+        access_token: accessToken,
+        pin_code: pinCode
       })
       return result.is_completed
     } catch (error) {
@@ -951,6 +959,12 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  setInputWithdrawAuthCodeModal({ commit }, { isShow }) {
+    commit(types.SET_INPUT_WITHDRAW_AUTH_CODE_MODAL, { isShow })
+  },
+  setInputWithdrawAuthCodeModalValues({ commit }, { address, totalAmount }) {
+    commit(types.SET_INPUT_WITHDRAW_AUTH_CODE_MODAL_VALUES, { address, totalAmount })
   },
   async getApplications({ commit }) {
     try {
@@ -1349,6 +1363,13 @@ const mutations = {
   },
   [types.SET_WITHDRAWAL_DETAILS](state, { withdrawalDetails }) {
     state.withdrawalDetails = withdrawalDetails
+  },
+  [types.SET_INPUT_WITHDRAW_AUTH_CODE_MODAL](state, { isShow }) {
+    state.inputWithdrawAuthCodeModal.isShow = isShow
+  },
+  [types.SET_INPUT_WITHDRAW_AUTH_CODE_MODAL_VALUES](state, { address, totalAmount }) {
+    state.inputWithdrawAuthCodeModal.address = address
+    state.inputWithdrawAuthCodeModal.totalAmount = totalAmount
   },
   [types.SET_APPLICATIONS](state, { applications }) {
     state.applications = applications
