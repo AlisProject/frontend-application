@@ -8,22 +8,20 @@
         投げ銭によるオススメ
       </div>
     </div>
-    <!-- TODO: eyecatchArticles を 投げ銭ランキングのデータに変更 -->
     <tip-eyecatch-article-card-list
-      :articles="eyecatchArticles"
+      :articles="tipEyecatchArticles"
       class="tip-eyecatch-article-card-list"
     />
-    <!-- TODO: eyecatchArticles を 投げ銭ランキングのデータに変更 -->
     <recommended-article-card-list
-      :articles="eyecatchArticles.filter((article) => article !== null)"
+      :articles="tipEyecatchArticles"
       :isTipRanking="true"
       class="eyecatch-article-card-list-sp"
     />
     <recommended-article-card-list
-      :articles="recommendedArticles.articles"
+      :articles="tipRankingArticles.articles"
       class="recommended-article-card-list"
     />
-    <the-loader :is-loading="!recommendedArticles.isLastPage" />
+    <the-loader :isLoading="!tipRankingArticles.isLastPage" />
     <app-footer class="app-footer" />
   </div>
 </template>
@@ -55,13 +53,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['eyecatchArticles', 'recommendedArticles']),
-    ...mapGetters('user', ['loggedIn', 'currentUser']),
-    ...mapGetters('presentation', ['articleListScrollHeight'])
+    ...mapGetters('article', ['tipEyecatchArticles', 'tipRankingArticles'])
   },
   async mounted() {
-    if (!this.loggedIn) this.isShowGuide = true
-
     window.addEventListener('scroll', this.infiniteScroll)
 
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
@@ -69,18 +63,14 @@ export default {
 
     // 画面の高さに合っているかをスクロールできるかどうかで判定
     if (!isPageScrollable(this.$el)) {
-      if (this.recommendedArticles.isLastPage || this.recommendedArticles.articles.length === 0) {
+      if (this.tipRankingArticles.isLastPage || this.tipRankingArticles.articles.length === 0) {
         return
       }
-      await this.getRecommendedArticles()
-    }
-    if (this.articleListScrollHeight) {
-      this.$el.scrollTop = this.articleListScrollHeight
+      await this.getTipRankingArticles()
     }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.infiniteScroll)
-    this.setArticleListScrollHeight({ scrollHeight: this.$el.scrollTop })
   },
   methods: {
     async infiniteScroll(event) {
@@ -88,23 +78,17 @@ export default {
       try {
         this.isFetchingArticles = true
 
-        if (this.recommendedArticles.isLastPage || !isScrollBottom()) return
+        if (this.tipRankingArticles.isLastPage || !isScrollBottom()) return
 
-        await this.getRecommendedArticles()
+        await this.getTipRankingArticles()
       } finally {
         this.isFetchingArticles = false
       }
     },
-    ...mapActions('article', ['getRecommendedArticles']),
-    ...mapActions('user', [
-      'setRequestLoginModal',
-      'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
-    ]),
-    ...mapActions('presentation', ['setArticleListScrollHeight'])
+    ...mapActions('article', ['getTipRankingArticles'])
   },
   watch: {
-    async 'recommendedArticles.articles'() {
+    async 'tipRankingArticles.articles'() {
       // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態なるため、
       // 画面の高さに合うまで要素を取得する。
 
@@ -113,12 +97,12 @@ export default {
       // 画面の高さに合っているかをスクロールできるかどうかで判定
       if (
         isPageScrollable(this.$el) ||
-        this.recommendedArticles.isLastPage ||
-        this.recommendedArticles.articles.length === 0
+        this.tipRankingArticles.isLastPage ||
+        this.tipRankingArticles.articles.length === 0
       ) {
         return
       }
-      await this.getRecommendedArticles()
+      await this.getTipRankingArticles()
     }
   }
 }

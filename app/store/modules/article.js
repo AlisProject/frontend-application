@@ -64,6 +64,11 @@ const state = () => ({
     articles: []
   },
   isFetchedPurchasedArticle: false,
+  tipRankingArticles: {
+    articles: [],
+    page: 1,
+    isLastPage: false
+  },
   // TODO: モックを削除
   supporters: [
     {
@@ -189,6 +194,17 @@ const getters = {
   },
   currentPrice: (state) => state.currentPrice,
   isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle,
+  tipRankingArticles: (state) => {
+    const tipRankingArticles = [...state.tipRankingArticles.articles]
+    const removeTargetArticleIds = state.tipEyecatchArticles.map((article) => article.article_id)
+    const filteredTipRankingArticles = tipRankingArticles.filter((tipRankingArticle) => {
+      return !removeTargetArticleIds.includes(tipRankingArticle.article_id)
+    })
+    return {
+      ...state.tipRankingArticles,
+      articles: filteredTipRankingArticles
+    }
+  },
   supporters: (state) => state.supporters
 }
 
@@ -952,6 +968,30 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getTipRankingArticles({ commit, state, dispatch }) {
+    try {
+      const limit = 12
+      const { Items: articles } = await this.$axios.$get('/api/articles/tip_ranking', {
+        params: { limit, page: state.tipRankingArticles.page }
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TIP_RANKING_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_TIP_RANKING_ARTICLES_PAGE, { page: state.tipRankingArticles.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_TIP_RANKING_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1095,6 +1135,11 @@ const mutations = {
       page: 1,
       isLastPage: false
     }
+    state.tipRankingArticles = {
+      articles: [],
+      page: 1,
+      isLastPage: false
+    }
   },
   [types.SET_ARTICLE_TYPE](state, { articleType }) {
     state.articleType = articleType
@@ -1201,6 +1246,15 @@ const mutations = {
   },
   [types.SET_TIP_EYECATCH_ARTICLES](state, { articles }) {
     state.tipEyecatchArticles = articles
+  },
+  [types.SET_TIP_RANKING_ARTICLES](state, { articles }) {
+    state.tipRankingArticles.articles.push(...articles)
+  },
+  [types.SET_TIP_RANKING_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.tipRankingArticles.isLastPage = isLastPage
+  },
+  [types.SET_TIP_RANKING_ARTICLES_PAGE](state, { page }) {
+    state.tipRankingArticles.page = page
   }
 }
 

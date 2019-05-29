@@ -7,7 +7,7 @@
       <div class="label">
         投げ銭によるオススメ
       </div>
-      <nuxt-link class="more-link-pc" to="/articles/ranking/tip?sort=date">
+      <nuxt-link class="more-link-pc" to="/articles/ranking/tip">
         もっと見る
       </nuxt-link>
     </div>
@@ -26,7 +26,7 @@
       class="eyecatch-article-card-list-sp"
     />
     <div class="area-more-link">
-      <nuxt-link class="more-link-sp" to="/articles/ranking/tip?sort=date">
+      <nuxt-link class="more-link-sp" to="/articles/ranking/tip">
         もっと見る ＞
       </nuxt-link>
     </div>

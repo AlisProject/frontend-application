@@ -10,7 +10,6 @@ export default {
     TipRanking
   },
   async fetch({ store, query, from = {}, error }) {
-    // TODO: 正規の記事データの取得処理を追加
     try {
       if (from.name === 'articles-recent' || from.name === 'articles-popular') {
         store.dispatch('article/resetArticleData')
@@ -18,8 +17,8 @@ export default {
 
       await store.dispatch('article/getTopics')
       await Promise.all([
-        store.dispatch('article/getEyecatchArticles'),
-        store.dispatch('article/getRecommendedArticles')
+        store.dispatch('article/getTipEyecatchArticles'),
+        store.dispatch('article/getTipRankingArticles')
       ])
     } catch (e) {
       error({ statusCode: 404 })
