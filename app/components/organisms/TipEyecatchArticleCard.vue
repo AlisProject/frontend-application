@@ -36,12 +36,11 @@
         <img class="icon" src="~assets/images/pc/common/icon_catset_tip_white.png">
       </div>
       <div class="amounts">
-        <!-- TODO: いいねによるトークン獲得のロジックを追加 -->
         <span class="like-token-amount">
-          {{ formattedTokenAmount }} <span class="unit">ALIS</span>
+          {{ formattedLikeTokenAmount }} <span class="unit">ALIS</span>
         </span>
         <span class="tip-token-amount">
-          {{ formattedTokenAmount }} <span class="unit">ALIS</span>
+          {{ formattedTipTokenAmount }} <span class="unit">ALIS</span>
         </span>
       </div>
     </div>
@@ -90,12 +89,19 @@ export default {
     isPaidArticle() {
       return !!this.article.price
     },
-    formattedTokenAmount() {
+    formattedLikeTokenAmount() {
       const tokenAmount = this.article.alisToken
       if (tokenAmount === undefined) return
       const stringTokenAmount = tokenAmount.toString()
       const formatNumber = 10 ** 18
       const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
+      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
+    },
+    formattedTipTokenAmount() {
+      let tipValue = this.article.tip_value
+      if (tipValue === undefined) tipValue = 0
+      const formatNumber = 10 ** 18
+      const alisToken = new BigNumber(tipValue).div(formatNumber)
       return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
     },
     ...mapGetters('article', ['topics'])
@@ -225,6 +231,7 @@ export default {
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.8px;
+  text-align: right;
 }
 
 .username {
