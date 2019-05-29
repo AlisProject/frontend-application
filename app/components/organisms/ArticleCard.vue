@@ -45,10 +45,10 @@
       </div>
       <div class="amounts">
         <span class="like-token-amount">
-          {{ formattedLikeTokenAmount }} <span class="unit">ALIS</span>
+          {{ article.alisToken | formatTokenAmount }} <span class="unit">ALIS</span>
         </span>
         <span class="tip-token-amount">
-          {{ formattedTipTokenAmount }} <span class="unit">ALIS</span>
+          {{ article.tip_value | formatTokenAmount }} <span class="unit">ALIS</span>
         </span>
       </div>
     </div>
@@ -56,8 +56,7 @@
 </template>
 
 <script>
-import { BigNumber } from 'bignumber.js'
-import { isV2, htmlDecode } from '~/utils/article'
+import { isV2, htmlDecode, formatTokenAmount } from '~/utils/article'
 import { formatDate } from '~/utils/format'
 
 export default {
@@ -82,21 +81,6 @@ export default {
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
     },
-    formattedLikeTokenAmount() {
-      const tokenAmount = this.article.alisToken
-      if (tokenAmount === undefined) return
-      const stringTokenAmount = tokenAmount.toString()
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    },
-    formattedTipTokenAmount() {
-      let tipValue = this.article.tip_value
-      if (tipValue === undefined) tipValue = 0
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(tipValue).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    },
     isPaidArticle() {
       return !!this.article.price
     },
@@ -116,6 +100,9 @@ export default {
       }
       return link
     }
+  },
+  filters: {
+    formatTokenAmount
   }
 }
 </script>

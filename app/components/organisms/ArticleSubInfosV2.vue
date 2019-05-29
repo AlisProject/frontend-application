@@ -20,8 +20,8 @@
       </div>
       <div class="values">
         <span class="value">{{ formattedPublishedAt }}</span>
-        <span class="value">{{ formattedLikeTokenAmount }} ALIS</span>
-        <span class="value">{{ formattedTipTokenAmount }} ALIS</span>
+        <span class="value">{{ article.alisToken | formatTokenAmount }} ALIS</span>
+        <span class="value">{{ article.tip_value | formatTokenAmount }} ALIS</span>
       </div>
     </div>
     <div class="supporters-wrapper">
@@ -44,8 +44,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { BigNumber } from 'bignumber.js'
 import { formatDate } from '~/utils/format'
+import { formatTokenAmount } from '~/utils/article'
 
 export default {
   props: {
@@ -62,22 +62,10 @@ export default {
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
     },
-    formattedLikeTokenAmount() {
-      const tokenAmount = this.article.alisToken
-      if (tokenAmount === undefined) return
-      const stringTokenAmount = tokenAmount.toString()
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    },
-    formattedTipTokenAmount() {
-      let tipValue = this.article.tip_value
-      if (tipValue === undefined) tipValue = 0
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(tipValue).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    },
     ...mapGetters('article', ['supporters'])
+  },
+  filters: {
+    formatTokenAmount
   }
 }
 </script>
