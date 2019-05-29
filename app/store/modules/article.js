@@ -52,6 +52,7 @@ const state = () => ({
   },
   isFetchedPublicArticle: false,
   eyecatchArticles: [],
+  tipEyecatchArticles: [],
   recommendedArticles: {
     articles: [],
     page: 1,
@@ -167,7 +168,18 @@ const getters = {
   hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
   isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
   eyecatchArticles: (state) => state.eyecatchArticles,
-  recommendedArticles: (state) => state.recommendedArticles,
+  tipEyecatchArticles: (state) => state.tipEyecatchArticles,
+  recommendedArticles: (state) => {
+    const recommendedArticles = [...state.recommendedArticles.articles]
+    const removeTargetArticleIds = state.tipEyecatchArticles.map((article) => article.article_id)
+    const filteredRecommendedArticles = recommendedArticles.filter((recommendedArticle) => {
+      return !removeTargetArticleIds.includes(recommendedArticle.article_id)
+    })
+    return {
+      ...state.recommendedArticles,
+      articles: filteredRecommendedArticles
+    }
+  },
   purchasedArticleIds: (state) => state.purchasedArticleIds,
   purchasedArticles: (state) => {
     return {
@@ -920,6 +932,26 @@ const actions = {
   },
   resetCurrentPrice({ commit }) {
     commit(types.SET_ARTICLE_CURRENT_PRICE, { price: null })
+  },
+  async getTipEyecatchArticles({ commit, dispatch }) {
+    try {
+      const { Items: articles } = await this.$axios.$get('/api/articles/tip_ranking', {
+        params: { limit: 3 }
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          if (article === null) return null
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TIP_EYECATCH_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1057,6 +1089,7 @@ const mutations = {
     state.page = 1
     state.isLastPage = false
     state.eyecatchArticles = []
+    state.tipEyecatchArticles = []
     state.recommendedArticles = {
       articles: [],
       page: 1,
@@ -1165,6 +1198,9 @@ const mutations = {
   },
   [types.SET_IS_FETCHED_PURCHASED_ARTICLE](state, { isFetched }) {
     state.isFetchedPurchasedArticle = isFetched
+  },
+  [types.SET_TIP_EYECATCH_ARTICLES](state, { articles }) {
+    state.tipEyecatchArticles = articles
   }
 }
 

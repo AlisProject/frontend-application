@@ -79,7 +79,7 @@ export default {
       return formatDate(this.publishedAt)
     },
     eyeCatchImagePath() {
-      return this.article.eye_catch_url !== null || this.article.eye_catch_url !== undefined
+      return this.article.eye_catch_url !== null && this.article.eye_catch_url !== undefined
         ? `${this.article.eye_catch_url}?d=${this.order === 'eyecatch1' ? '1420x824' : '680x382'}`
         : require('~/assets/images/pc/common/thumbnail_noimg.png')
     },

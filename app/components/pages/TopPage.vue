@@ -11,9 +11,8 @@
         もっと見る
       </nuxt-link>
     </div>
-    <!-- TODO: eyecatchArticles を 投げ銭ランキングのデータに変更 -->
     <tip-eyecatch-article-card-list
-      :articles="eyecatchArticles"
+      :articles="tipEyecatchArticles"
       class="tip-eyecatch-article-card-list"
     />
     <div class="area-recommended-like-ranking">
@@ -21,9 +20,8 @@
         いいねによるオススメ
       </div>
     </div>
-    <!-- TODO: eyecatchArticles を 投げ銭ランキングのデータに変更 -->
     <recommended-article-card-list
-      :articles="eyecatchArticles.filter((article) => article !== null)"
+      :articles="tipEyecatchArticles"
       :isTipRanking="true"
       class="eyecatch-article-card-list-sp"
     />
@@ -75,7 +73,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['eyecatchArticles', 'recommendedArticles']),
+    ...mapGetters('article', ['tipEyecatchArticles', 'recommendedArticles']),
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
