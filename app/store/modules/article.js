@@ -69,69 +69,7 @@ const state = () => ({
     page: 1,
     isLastPage: false
   },
-  // TODO: モックを削除
-  supporters: [
-    {
-      user_id: 'test_user_id_1',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_2',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_3',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_4',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_5',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_6',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_7',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_8',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_9',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    },
-    {
-      user_id: 'test_user_id_10',
-      user_display_name: 'test_user_display_name',
-      icon_image_url:
-        'https://alis.to/d/api/info_icon/AB2/icon/53e53d08-2501-4586-99c2-ef16cf6242c5.png'
-    }
-  ]
+  supporters: []
 })
 
 const getters = {
@@ -992,6 +930,14 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async getArticleSupporters({ commit }, { articleId }) {
+    try {
+      const { Items: supporters } = await this.$axios.$get(`/api/articles/${articleId}/supporters`)
+      commit(types.SET_ARTICLE_SUPPORTERS, { supporters })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1255,6 +1201,9 @@ const mutations = {
   },
   [types.SET_TIP_RANKING_ARTICLES_PAGE](state, { page }) {
     state.tipRankingArticles.page = page
+  },
+  [types.SET_ARTICLE_SUPPORTERS](state, { supporters }) {
+    state.supporters = supporters
   }
 }
 

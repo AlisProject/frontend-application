@@ -25,10 +25,8 @@
         :is-liked-article="isLikedArticle"
       />
       <article-sub-infos-v2
-        :articleId="article.article_id"
-        :articleUserId="article.user_id"
+        :article="article"
         :publishedAt="publishedAt"
-        :tokenAmount="article.alisToken"
       />
       <author-info :user="article.userInfo" />
     </div>

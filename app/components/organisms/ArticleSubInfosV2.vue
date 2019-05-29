@@ -20,9 +20,8 @@
       </div>
       <div class="values">
         <span class="value">{{ formattedPublishedAt }}</span>
-        <!-- TODO: いいねによるトークン獲得のロジックを追加 -->
-        <span class="value">{{ formattedTokenAmount }} ALIS</span>
-        <span class="value">{{ formattedTokenAmount }} ALIS</span>
+        <span class="value">{{ formattedLikeTokenAmount }} ALIS</span>
+        <span class="value">{{ formattedTipTokenAmount }} ALIS</span>
       </div>
     </div>
     <div class="supporters-wrapper">
@@ -36,7 +35,7 @@
           <img :class="`user-icon rank${i + 1}`" :src="`${supporter.icon_image_url}?d=48x48`">
         </nuxt-link>
       </div>
-      <nuxt-link class="link" :to="`/${articleUserId}/articles/${articleId}/supporters`">
+      <nuxt-link class="link" :to="`/${article.user_id}/articles/${article.article_id}/supporters`">
         もっと見る
       </nuxt-link>
     </div>
@@ -50,19 +49,11 @@ import { formatDate } from '~/utils/format'
 
 export default {
   props: {
-    articleId: {
-      type: String,
-      required: true
-    },
-    articleUserId: {
-      type: String,
+    article: {
+      type: Object,
       required: true
     },
     publishedAt: {
-      type: Number,
-      required: true
-    },
-    tokenAmount: {
       type: Number,
       required: true
     }
@@ -71,11 +62,19 @@ export default {
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
     },
-    formattedTokenAmount() {
-      if (this.tokenAmount === undefined) return
-      const stringTokenAmount = this.tokenAmount.toString()
+    formattedLikeTokenAmount() {
+      const tokenAmount = this.article.alisToken
+      if (tokenAmount === undefined) return
+      const stringTokenAmount = tokenAmount.toString()
       const formatNumber = 10 ** 18
       const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
+      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
+    },
+    formattedTipTokenAmount() {
+      let tipValue = this.article.tip_value
+      if (tipValue === undefined) tipValue = 0
+      const formatNumber = 10 ** 18
+      const alisToken = new BigNumber(tipValue).div(formatNumber)
       return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
     },
     ...mapGetters('article', ['supporters'])
