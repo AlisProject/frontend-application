@@ -1,11 +1,7 @@
 <template>
   <div class="area-tip-eyecatch-article-card-list">
     <template v-for="(article, i) in articles">
-      <tip-eyecatch-article-card
-        :key="article.id"
-        :article="article"
-        :order="`eyecatch${i + 1}`"
-      />
+      <tip-eyecatch-article-card :key="article.id" :article="article" :order="`eyecatch${i + 1}`" />
     </template>
   </div>
 </template>

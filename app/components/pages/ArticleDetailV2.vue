@@ -24,10 +24,7 @@
         :likes-count="likesCount"
         :is-liked-article="isLikedArticle"
       />
-      <article-sub-infos-v2
-        :article="article"
-        :publishedAt="publishedAt"
-      />
+      <article-sub-infos-v2 :article="article" :publishedAt="publishedAt" />
       <author-info :user="article.userInfo" />
     </div>
     <article-comments :comments="article.comments" />

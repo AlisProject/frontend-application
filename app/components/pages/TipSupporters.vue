@@ -11,9 +11,18 @@
         :to="`/users/${supporter.user_id}`"
         class="supporter"
       >
-        <img :class="`user-icon rank${i + 1}`" :src="`${supporter.icon_image_url}?d=48x48`">
+        <img
+          v-if="supporter.icon_image_url"
+          :class="`user-icon rank${i + 1}`"
+          :src="`${supporter.icon_image_url}?d=48x48`"
+        >
+        <img
+          v-else
+          :class="`user-icon rank${i + 1}`"
+          src="~assets/images/pc/common/icon_user_noimg.png"
+        >
         <div class="name">
-          {{ supporter.user_display_name }}
+          {{ supporter.user_display_name | htmlDecode }}
         </div>
         <div class="user-id">
           @{{ supporter.user_id }}
@@ -28,6 +37,7 @@
 import { mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import AppFooter from '../organisms/AppFooter'
+import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -36,6 +46,9 @@ export default {
   },
   computed: {
     ...mapGetters('article', ['supporters'])
+  },
+  filters: {
+    htmlDecode
   }
 }
 </script>
@@ -47,7 +60,7 @@ export default {
   /* prettier-ignore */
   grid-template-areas:
     "app-header app-header app-header"
-    "...        supporters  ...       "
+    "...        supporters ...       "
     "app-footer app-footer app-footer";
   grid-template-columns: 1fr 400px 1fr;
   grid-template-rows: 100px auto minmax(75px, min-content);
