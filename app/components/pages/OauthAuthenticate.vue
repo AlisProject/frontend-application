@@ -104,7 +104,7 @@ export default {
           response_type: 'code',
           client_id: clientId,
           redirect_uri: redirectUri,
-          scope: `openid ${scope}`,
+          scope: this.getScope(scope),
           code_challenge: codeChallenge,
           code_challenge_method: 'S256'
         }
@@ -128,6 +128,13 @@ export default {
         `CognitoIdentityServiceProvider.${clientId}.${currentUser}.idToken`
       )
       return idToken
+    },
+    getScope(scope) {
+      if (scope === 'write') {
+        return 'openid read write'
+      } else {
+        return 'openid read'
+      }
     },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
