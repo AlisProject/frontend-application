@@ -80,7 +80,14 @@ export default {
       this.clientName = clientName
       this.description = description
     } catch (error) {
-      console.error(error)
+      const status = error.response.status
+      if (status === 404) {
+        this.sendNotification({
+          text: 'アプリケーションが存在しません',
+          type: 'warning'
+        })
+        this.$router.replace('/')
+      }
     }
   },
   computed: {
