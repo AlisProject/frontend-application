@@ -32,7 +32,9 @@ export default {
       return
     }
     const latestDraftArticleId = articles[0].article_id
-    const latestDraftArticle = await this.$axios.$get(`/me/articles/${latestDraftArticleId}/drafts`)
+    const latestDraftArticle = await this.$axios.$get(
+      `/api/me/articles/${latestDraftArticleId}/drafts`
+    )
     const { title = null, body = null } = latestDraftArticle
     const isLatestDraftArticleEmpty = title === null && body === '<p>&nbsp;</p>'
     if (isLatestDraftArticleEmpty && isV2(latestDraftArticle)) {

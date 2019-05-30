@@ -506,7 +506,7 @@ const actions = {
   },
   async deleteArticleComment({ commit }, { commentId }) {
     try {
-      await this.$axios.$delete(`/me/comments/${commentId}`)
+      await this.$axios.$delete(`/api/me/comments/${commentId}`)
       commit(types.DELETE_ARTICLE_COMMENT, { commentId })
     } catch (error) {
       return Promise.reject(error)
@@ -681,7 +681,7 @@ const actions = {
   },
   async deleteArticleReplyComment({ commit }, { commentId, parentId }) {
     try {
-      await this.$axios.$delete(`/me/comments/${commentId}`)
+      await this.$axios.$delete(`/api/me/comments/${commentId}`)
       commit(types.DELETE_ARTICLE_REPLY_COMMENT, { commentId, parentId })
     } catch (error) {
       return Promise.reject(error)
