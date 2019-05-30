@@ -35,7 +35,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
-import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
