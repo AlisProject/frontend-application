@@ -3,15 +3,19 @@
     <div class="article-sub-infos">
       <div class="icons">
         <img class="icon" src="~assets/images/pc/article/icon_article_date.png">
-        <img class="icon mt3" src="~assets/images/pc/article/icon_article_like.png">
+        <img class="icon" src="~assets/images/pc/article/icon_article_like.png">
         <img class="icon" src="~assets/images/pc/article/icon_article_tip.png">
-        <img class="icon" src="~assets/images/pc/article/icon_article_supporter.png">
+        <img
+          class="icon"
+          :class="{ 'visibility-hidden': !hasSupporter }"
+          src="~assets/images/pc/article/icon_article_supporter.png"
+        >
       </div>
       <div class="titles">
         <span class="title">公開日</span>
         <span class="title">いいねによる獲得</span>
         <span class="title">投げ銭による獲得</span>
-        <span class="title">サポーター</span>
+        <span class="title" :class="{ 'visibility-hidden': !hasSupporter }">サポーター</span>
       </div>
       <div class="separators">
         <span class="separator">:</span>
@@ -25,9 +29,9 @@
       </div>
     </div>
     <div class="supporters-wrapper">
-      <div class="supporters">
+      <div v-if="hasSupporter" class="supporters">
         <nuxt-link
-          v-for="(supporter, i) in supporters"
+          v-for="(supporter, i) in filter10Supporters"
           :key="supporter.user_id"
           :to="`/users/${supporter.user_id}`"
           class="supporter"
@@ -35,7 +39,11 @@
           <img :class="`user-icon rank${i + 1}`" :src="`${supporter.icon_image_url}?d=48x48`">
         </nuxt-link>
       </div>
-      <nuxt-link class="link" :to="`/${article.user_id}/articles/${article.article_id}/supporters`">
+      <nuxt-link
+        class="link"
+        :class="{ 'is-show': hasOver10Supporters }"
+        :to="`/${article.user_id}/articles/${article.article_id}/supporters`"
+      >
         もっと見る
       </nuxt-link>
     </div>
@@ -61,6 +69,15 @@ export default {
   computed: {
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
+    },
+    filter10Supporters() {
+      return this.supporters.slice(0, 10)
+    },
+    hasSupporter() {
+      return this.supporters.length > 0
+    },
+    hasOver10Supporters() {
+      return this.supporters.length >= 10
     },
     ...mapGetters('article', ['supporters'])
   },
@@ -100,8 +117,8 @@ export default {
   width: 20px;
 }
 
-.mt3 {
-  margin-top: 3px;
+.visibility-hidden {
+  visibility: hidden;
 }
 
 .title,
@@ -174,6 +191,11 @@ export default {
   position: absolute;
   top: 22px;
   left: 440px;
+  display: none;
+}
+
+.is-show {
+  display: block;
 }
 
 @media screen and (max-width: 640px) {
