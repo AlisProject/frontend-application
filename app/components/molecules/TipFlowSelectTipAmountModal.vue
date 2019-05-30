@@ -33,12 +33,7 @@
       <span class="token-amount-input-unit">ALIS</span>
     </div>
     <div class="burn-description">
-      ※贈ったALISの10%が<a
-        href="https://intercom.help/alismedia/%E3%81%9D%E3%81%AE%E4%BB%96-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/%E3%83%90%E3%83%BC%E3%83%B3%E3%81%A8%E3%81%AF"
-        class="link"
-        target="_blank"
-        rel="noopener noreferrer nofollow"
-      >バーン</a>されます
+      ※10%が手数料として別途必要となります
     </div>
     <div class="select-unit-box">
       <div
@@ -124,9 +119,10 @@ export default {
         const formattedAmount = new BigNumber(amount)
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-          formattedAlisTokenAmount.minus(formattedAmount)
-        )
+        const fee = formattedTipTokenAmount.multipliedBy(0.1)
+        const isAddableToken = formattedTipTokenAmount
+          .plus(fee)
+          .isLessThanOrEqualTo(formattedAlisTokenAmount.minus(formattedAmount))
 
         if (!isAddableToken) {
           this.errorMessage = 'ALISが不足しています'
@@ -153,7 +149,10 @@ export default {
       try {
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
+        const fee = formattedTipTokenAmount.multipliedBy(0.1)
+        const isAddableToken = formattedTipTokenAmount
+          .plus(fee)
+          .isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!isAddableToken) {
           this.errorMessage = 'ALISが不足しています'
           return
@@ -313,12 +312,6 @@ export default {
     width: 400px;
     text-align: right;
     margin: 10px 0 0;
-
-    .link {
-      color: #0086cc;
-      font-size: 12px;
-      text-decoration: none;
-    }
   }
 
   .select-unit-box {
