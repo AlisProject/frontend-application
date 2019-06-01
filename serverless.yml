@@ -8,6 +8,8 @@ provider:
   runtime: nodejs8.10
   region: ${env:REGION}
   stage: prod
+  logs:
+    restApi: true
 
 package:
   excludeDevDependencies: true
