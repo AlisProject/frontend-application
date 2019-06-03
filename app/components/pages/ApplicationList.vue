@@ -6,6 +6,14 @@
         登録中のアプリケーション一覧
       </h1>
       <div class="applications">
+        <p class="description">
+          OAuthを利用した開発については<a
+            class="link"
+            href="https://alisproject.github.io/oauth2/getting-start/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >利用までの流れ</a>をご確認ください。
+        </p>
         <template v-if="hasApplication">
           <nuxt-link
             v-for="application in applications"
@@ -84,9 +92,25 @@ export default {
 
 .applications {
   width: 100%;
-  margin-top: 60px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
+}
+
+.description {
+  color: #6e6e6e;
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.link {
+  color: #0086cc;
+  text-decoration: none;
 }
 
 .application {
