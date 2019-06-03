@@ -25,14 +25,13 @@
                 {{ (application.createdAt / 1000) | formatDate }}
               </div>
             </div>
-            <app-button
-              type="secondary"
+            <button
               class="delete-button"
               :disabled="isProcessing"
               @click="handleDelete(application.clientId)"
             >
               削除する
-            </app-button>
+            </button>
           </div>
         </template>
         <p v-else class="no-application">
@@ -48,14 +47,12 @@
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
-import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
 import { formatDate } from '~/utils/format'
 
 export default {
   components: {
     AppHeader,
-    AppButton,
     AppFooter
   },
   data() {
@@ -151,6 +148,7 @@ export default {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 8px;
+  word-break: break-word;
 }
 
 .description {
@@ -158,6 +156,7 @@ export default {
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 4px;
+  word-break: break-word;
 }
 
 .created-at {
@@ -167,15 +166,20 @@ export default {
 }
 
 .delete-button {
+  background: #fff;
   border-radius: 4px;
-  color: #fff;
+  border: 1px solid #0086cc;
+  box-shadow: none;
+  color: #0086cc;
+  cursor: pointer;
   font-size: 14px;
   font-weight: bold;
   height: 34px;
-  line-height: 2.5;
+  line-height: 2.4;
+  margin: 24px 0 0 48px;
+  outline: none;
   text-align: center;
   width: 96px;
-  margin: 24px 0 0 48px;
 }
 
 .no-application {
