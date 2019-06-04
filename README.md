@@ -18,7 +18,7 @@ vi .envrc # edit
 direnv allow
 ```
 
-Also, you should use variables in `.envrc.sample.develop`.
+Also, you should use variables in `.envrc.sample.develop` when you are developing.
 
 # Build and deployment
 
