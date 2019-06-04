@@ -9,7 +9,7 @@
         <p class="description">
           OAuthを利用した開発については<a
             class="link"
-            href="https://alisproject.github.io/oauth2/getting-start/"
+            href="https://alisproject.github.io/oauth2/"
             target="_blank"
             rel="noopener noreferrer"
           >利用までの流れ</a>をご確認ください。
