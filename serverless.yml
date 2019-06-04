@@ -32,6 +32,7 @@ package:
 
 plugins:
   - serverless-plugin-aws-alerts
+  - serverless-prune-plugin
 
 custom:
   # serverless-plugin-aws-alerts
@@ -44,6 +45,10 @@ custom:
     definitions:
       functionErrors:
         treatMissingData: notBreaching
+  # serverless-prune-plugin
+  prune:
+    automatic: true
+    number: 3
 
 functions:
   handler:
