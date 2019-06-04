@@ -78,6 +78,9 @@ export default {
         this.isInvalidUrl = true
       }
     },
+    isInvalidUrl() {
+      this.$emit('change-url-validation-state', this.isInvalidUrl)
+    },
     urls(newUrls, oldUrls) {
       // URL がゼロの状態でバックスペースを押したときも watch が発火するため、
       // URL の個数を判定し同じ場合は emit しない
