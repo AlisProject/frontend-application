@@ -60,7 +60,11 @@
         <div class="label">
           リダイレクトURI
         </div>
-        <urls-input-form :initialUrls="urls" @handle-change-urls="handleChangeUrls" />
+        <urls-input-form
+          :initialUrls="urls"
+          @handle-change-urls="handleChangeUrls"
+          @change-url-validation-state="onChangeUrlValidationState"
+        />
       </form>
       <app-button class="save-button" :disabled="invalidSubmit || isProcessing" @click="onSubmit">
         保存する
@@ -108,11 +112,8 @@ export default {
     showErrorDescriptionMaxLength() {
       return this.formError.description && !this.$v.description.maxLength
     },
-    invalid() {
-      return this.$v.$invalid
-    },
     invalidSubmit() {
-      return this.$v.$invalid || this.urls.length === 0
+      return this.$v.$invalid || this.urls.length === 0 || this.isInvalidUrl
     },
     hasClientName() {
       return this.formError.clientName && this.$v.clientName.$error
@@ -142,6 +143,9 @@ export default {
       } finally {
         this.isProcessing = false
       }
+    },
+    onChangeUrlValidationState(isInvalid) {
+      this.isInvalidUrl = isInvalid
     },
     showError(type) {
       this.$v[type].$touch()
