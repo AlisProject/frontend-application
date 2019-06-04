@@ -19,11 +19,6 @@
               <div class="description">
                 {{ application.description }}
               </div>
-              <div class="created-at">
-                <!-- createdAt はミリセカンドで返ってくるので 1000 で割っている -->
-                <!-- 参考：https://docs.authlete.com/#service -->
-                {{ (application.createdAt / 1000) | formatDate }}
-              </div>
             </div>
             <button
               class="delete-button"
@@ -48,7 +43,6 @@ import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '../organisms/AppHeader'
 import AppFooter from '../organisms/AppFooter'
-import { formatDate } from '~/utils/format'
 
 export default {
   components: {
@@ -85,9 +79,6 @@ export default {
       sendNotification: ADD_TOAST_MESSAGE
     }),
     ...mapActions('user', ['deleteConnectedApplication'])
-  },
-  filters: {
-    formatDate
   }
 }
 </script>
@@ -157,12 +148,6 @@ export default {
   line-height: 1.5;
   margin-bottom: 4px;
   word-break: break-word;
-}
-
-.created-at {
-  color: #6e6e6e;
-  font-size: 14px;
-  line-height: 1.5;
 }
 
 .delete-button {
