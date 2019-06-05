@@ -6,21 +6,14 @@
         :tags="urls"
         :max-tags="5"
         placeholder=""
-        :class="{ 'ti-invalid-tag': isInvalidUrl }"
         :separators="['　']"
-        @before-adding-tag="checkUrls"
         @tags-changed="handleUrlsChanged"
       />
     </no-ssr>
-    <span class="error-message">
-      {{ errorMessage }}
-    </span>
   </div>
 </template>
 
 <script>
-import urlRegex from 'url-regex'
-
 export default {
   props: {
     initialUrls: {
@@ -31,8 +24,6 @@ export default {
   },
   data() {
     return {
-      isInvalidUrl: false,
-      errorMessage: '',
       url: '',
       urls: this.initialUrls.map((url) => {
         return {
@@ -43,21 +34,6 @@ export default {
     }
   },
   methods: {
-    checkUrls({ tag: addingUrl, addTag }) {
-      const isInvalidUrl = this.checkIsInvalidUrl(addingUrl)
-      // 追加できないURLがある場合はURLを追加せず、アラートを表示する
-      if (isInvalidUrl) {
-        this.errorMessage = 'URLの形式が正しくありません'
-        this.isInvalidUrl = true
-        return
-      }
-      addTag()
-    },
-    checkIsInvalidUrl({ text: url }) {
-      if (url === '') return false
-      const isInvalidUrl = !urlRegex({ exact: true }).test(url)
-      return isInvalidUrl
-    },
     focusToTagInputForm() {
       document.querySelector('.ti-new-tag-input').focus()
     },
@@ -66,21 +42,6 @@ export default {
     }
   },
   watch: {
-    url() {
-      this.isInvalidUrl = false
-      this.errorMessage = ''
-
-      const addingUrl = { text: this.url }
-      const isInvalidUrl = this.checkIsInvalidUrl(addingUrl)
-
-      if (isInvalidUrl) {
-        this.errorMessage = 'URLの形式が正しくありません'
-        this.isInvalidUrl = true
-      }
-    },
-    isInvalidUrl() {
-      this.$emit('change-url-validation-state', this.isInvalidUrl)
-    },
     urls(newUrls, oldUrls) {
       // URL がゼロの状態でバックスペースを押したときも watch が発火するため、
       // URL の個数を判定し同じ場合は emit しない
@@ -93,19 +54,6 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.error-message {
-  bottom: 20px;
-  margin: 0;
-  color: #f06273;
-  font-size: 12px;
-  position: absolute;
-  width: 100%;
-  text-align: right;
-  bottom: -20px;
-}
-</style>
 
 <style lang="scss">
 /* vue-tags-input は scoped で CSS を定義できず、他の vue-tags-input を呼び出しているコンポーネントと
