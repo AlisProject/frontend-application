@@ -111,7 +111,14 @@ const getters = {
   hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
   isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
   eyecatchArticles: (state) => state.eyecatchArticles,
-  tipEyecatchArticles: (state) => state.tipEyecatchArticles,
+  tipEyecatchArticles: (state) => {
+    const tipEyecatchArticles = [...state.tipEyecatchArticles]
+    const articleCount = tipEyecatchArticles.length
+    const fillCount = 3 - articleCount
+    // 投げ銭ランキングのアイキャッチ表示枠で、記事が3件未満のときは変わりの画像を表示する必要があるため、
+    // 画像の表示枠を null で埋めている。
+    return [...tipEyecatchArticles, ...new Array(fillCount).fill(null)]
+  },
   recommendedArticles: (state) => {
     const recommendedArticles = [...state.recommendedArticles.articles]
     const removeTargetArticleIds = state.tipEyecatchArticles.map((article) => article.article_id)
