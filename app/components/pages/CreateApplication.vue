@@ -60,11 +60,7 @@
         <div class="label">
           リダイレクトURI
         </div>
-        <urls-input-form
-          :initialUrls="urls"
-          @handle-change-urls="handleChangeUrls"
-          @change-url-validation-state="onChangeUrlValidationState"
-        />
+        <urls-input-form :initialUrls="urls" @handle-change-urls="handleChangeUrls" />
       </form>
       <app-button class="save-button" :disabled="invalidSubmit || isProcessing" @click="onSubmit">
         保存する
@@ -99,7 +95,6 @@ export default {
         clientName: false,
         description: false
       },
-      isInvalidUrl: false,
       isProcessing: false,
       errorMessage: '',
       urls: []
@@ -113,7 +108,7 @@ export default {
       return this.formError.description && !this.$v.description.maxLength
     },
     invalidSubmit() {
-      return this.$v.$invalid || this.urls.length === 0 || this.isInvalidUrl
+      return this.$v.$invalid || this.urls.length === 0
     },
     hasClientName() {
       return this.formError.clientName && this.$v.clientName.$error
@@ -136,16 +131,21 @@ export default {
         this.sendNotification({ text: 'アプリケーションを保存しました' })
         this.$router.push('/me/settings/applications')
       } catch (error) {
-        this.sendNotification({
-          text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
-          type: 'warning'
-        })
+        const statusCode = error.response.status
+        if (statusCode >= 400 && statusCode < 500) {
+          this.sendNotification({
+            text: '登録に失敗しました。入力内容をご確認ください',
+            type: 'warning'
+          })
+        } else if (statusCode <= 500) {
+          this.sendNotification({
+            text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+            type: 'warning'
+          })
+        }
       } finally {
         this.isProcessing = false
       }
-    },
-    onChangeUrlValidationState(isInvalid) {
-      this.isInvalidUrl = isInvalid
     },
     showError(type) {
       this.$v[type].$touch()
