@@ -1,7 +1,7 @@
 service:
   name: ${env:NUXT_API_GATEWAY_NAME}
 
-frameworkVersion: '>=1.26.1'
+frameworkVersion: '>=1.44.1'
 
 provider:
   name: aws
