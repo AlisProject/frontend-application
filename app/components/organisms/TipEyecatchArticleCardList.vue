@@ -1,17 +1,25 @@
 <template>
   <div class="area-tip-eyecatch-article-card-list">
     <template v-for="(article, i) in articles">
-      <tip-eyecatch-article-card :key="article.id" :article="article" :order="`eyecatch${i + 1}`" />
+      <tip-eyecatch-article-card
+        v-if="article !== null"
+        :key="article.id"
+        :article="article"
+        :order="`eyecatch${i + 1}`"
+      />
+      <eyecatch-alternative-image v-else :order="`eyecatch${i + 1}`" />
     </template>
   </div>
 </template>
 
 <script>
 import TipEyecatchArticleCard from '../organisms/TipEyecatchArticleCard'
+import EyecatchAlternativeImage from '../atoms/EyecatchAlternativeImage'
 
 export default {
   components: {
-    TipEyecatchArticleCard
+    TipEyecatchArticleCard,
+    EyecatchAlternativeImage
   },
   props: {
     articles: {
