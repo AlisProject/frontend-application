@@ -10,7 +10,7 @@
         <div class="not-editable-input">
           {{ application.clientId }}
         </div>
-        <template v-if="application.clientSecret">
+        <template v-if="application.applicationType === 'WEB'">
           <div class="label" v-text="'Client Secret'" />
           <div class="not-editable-input">
             {{ application.clientSecret }}
