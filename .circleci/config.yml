@@ -50,7 +50,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
+            if [ $ALIS_APP_ID ]; then
+              sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
+            fi
 
       - run:
           name: deploy
