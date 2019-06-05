@@ -7,26 +7,20 @@
       以下の内容をご確認の上、ALISを贈るボタンを押してください
       ※操作の取り消しはできませんのでご注意ください
     </span>
-    <img
-      v-if="article.userInfo.icon_image_url !== undefined"
-      class="author-icon"
-      :src="article.userInfo.icon_image_url"
-      :alt="imageCaption"
-    >
-    <img
-      v-else
-      class="author-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
-      :alt="imageCaption"
-    >
-    <span class="user-display-name">
-      {{ decodedUserDisplayName }}
-    </span>
-    <span class="user-id"> @{{ article.userInfo.user_id }} </span>
-    <div class="triangle-mark" />
-    <div class="token-amount-input-box">
-      <span class="token-amount-input">{{ tipTokenAmountForUser }}</span>
-      <span class="token-amount-input-unit">ALIS</span>
+    <div class="label" v-text="'贈る量'" />
+    <div class="confirm-input">
+      {{ tipTokenAmountForUser }}
+      <span class="unit">ALIS</span>
+    </div>
+    <div class="label" v-text="'手数料'" />
+    <div class="confirm-input">
+      {{ tipTokenAmountFeeForUser }}
+      <span class="unit">ALIS</span>
+    </div>
+    <div class="label" v-text="'総額'" />
+    <div class="confirm-input">
+      {{ totalTokenAmount }}
+      <span class="unit">ALIS</span>
     </div>
     <span class="error-message">
       {{ errorMessage }}
@@ -41,7 +35,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
-import { htmlDecode } from '~/utils/article'
 
 export default {
   components: {
@@ -57,11 +50,13 @@ export default {
       const formatNumber = 10 ** 18
       return new BigNumber(this.tipTokenAmount).div(formatNumber).toString(10)
     },
-    imageCaption() {
-      return `${this.article.userInfo.user_display_name}'s icon'`
+    tipTokenAmountFeeForUser() {
+      return new BigNumber(this.tipTokenAmountForUser).multipliedBy(0.1).toString(10)
     },
-    decodedUserDisplayName() {
-      return htmlDecode(this.article.userInfo.user_display_name)
+    totalTokenAmount() {
+      return new BigNumber(this.tipTokenAmountForUser)
+        .plus(this.tipTokenAmountFeeForUser)
+        .toString(10)
     },
     ...mapGetters('user', ['tipTokenAmount', 'alisToken']),
     ...mapGetters('article', ['article'])
@@ -73,8 +68,9 @@ export default {
 
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmountForUser)
         const formattedAlisToken = new BigNumber(this.alisToken)
-
-        if (formattedAlisToken.isLessThan(formattedTipTokenAmount)) {
+        const fee = formattedTipTokenAmount.multipliedBy(0.1)
+        const isShortOfToken = formattedAlisToken.plus(fee).isLessThan(formattedTipTokenAmount)
+        if (isShortOfToken) {
           this.errorMessage = 'ALISが不足しています'
           return
         }
@@ -120,58 +116,32 @@ export default {
     font-weight: 500;
     letter-spacing: 0.8px;
     line-height: 1.5;
-    margin-top: 22px;
+    margin: 22px 0 30px;
     width: 254px;
   }
 
-  .author-icon {
-    border-radius: 50%;
-    height: 80px;
-    margin-top: 40px;
-    width: 80px;
-    object-fit: cover;
-  }
-
-  .user-display-name {
+  .label {
     color: #030303;
     font-size: 14px;
+    font-weight: 500;
     letter-spacing: 0.8px;
-    margin-top: 16px;
+    margin: 20px 0 10px;
+    width: 400px;
   }
 
-  .user-id {
-    color: #6e6e6e;
-    font-size: 12px;
-    letter-spacing: 0.8px;
-    margin-top: 4px;
-  }
+  .confirm-input {
+    border-radius: 4px;
+    background-color: rgba(0, 134, 204, 0.05);
+    padding: 12px;
+    color: #030303;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    width: 400px;
+    box-sizing: border-box;
 
-  .triangle-mark {
-    border-color: transparent transparent rgb(178, 218, 239) transparent;
-    border-style: solid;
-    border-width: 0 16px 20px 16px;
-    height: 0;
-    margin-top: 20px;
-    width: 0;
-  }
-
-  .token-amount-input-box {
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-
-    .token-amount-input {
-      color: #0086cc;
-      font-size: 24px;
-      font-weight: bold;
-      text-align: right;
-      margin-right: 4px;
-    }
-
-    .token-amount-input-unit {
-      color: #0086cc;
-      font-size: 10px;
-      font-weight: bold;
+    .unit {
+      float: right;
     }
   }
 
@@ -198,7 +168,12 @@ export default {
     .description {
       color: #6e6e6e;
       font-size: 12px;
-      margin-top: 30px;
+      margin: 30px 0;
+    }
+
+    .label,
+    .confirm-input {
+      width: 300px;
     }
   }
 }

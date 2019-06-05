@@ -4,14 +4,14 @@
       公開日：<span class="published-at">{{ formattedPublishedAt }}</span>
     </div>
     <div class="article-sub-info">
-      獲得ALIS：<span class="token-amount">{{ formattedTokenAmount }}</span>
+      獲得ALIS：<span class="token-amount">{{ tokenAmount | formatTokenAmount }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { BigNumber } from 'bignumber.js'
 import { formatDate } from '~/utils/format'
+import { formatTokenAmount } from '~/utils/article'
 
 export default {
   props: {
@@ -27,14 +27,10 @@ export default {
   computed: {
     formattedPublishedAt() {
       return formatDate(this.publishedAt)
-    },
-    formattedTokenAmount() {
-      if (this.tokenAmount === undefined) return
-      const stringTokenAmount = this.tokenAmount.toString()
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
     }
+  },
+  filters: {
+    formatTokenAmount
   }
 }
 </script>

@@ -32,6 +32,9 @@
       >
       <span class="token-amount-input-unit">ALIS</span>
     </div>
+    <div class="burn-description">
+      ※10%が手数料として別途必要となります
+    </div>
     <div class="select-unit-box">
       <div
         v-for="unit in orderedUnitList"
@@ -116,9 +119,10 @@ export default {
         const formattedAmount = new BigNumber(amount)
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-          formattedAlisTokenAmount.minus(formattedAmount)
-        )
+        const fee = formattedTipTokenAmount.multipliedBy(0.1)
+        const isAddableToken = formattedTipTokenAmount
+          .plus(fee)
+          .isLessThanOrEqualTo(formattedAlisTokenAmount.minus(formattedAmount))
 
         if (!isAddableToken) {
           this.errorMessage = 'ALISが不足しています'
@@ -145,7 +149,10 @@ export default {
       try {
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
+        const fee = formattedTipTokenAmount.multipliedBy(0.1)
+        const isAddableToken = formattedTipTokenAmount
+          .plus(fee)
+          .isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!isAddableToken) {
           this.errorMessage = 'ALISが不足しています'
           return
@@ -299,10 +306,18 @@ export default {
     }
   }
 
+  .burn-description {
+    color: #6e6e6e;
+    font-size: 12px;
+    width: 400px;
+    text-align: right;
+    margin: 10px 0 0;
+  }
+
   .select-unit-box {
     display: flex;
     justify-content: space-around;
-    margin: 24px auto 0;
+    margin: 40px auto 0;
     text-align: center;
     width: 220px;
 
@@ -365,6 +380,14 @@ export default {
       color: #6e6e6e;
       font-size: 12px;
       margin-top: 30px;
+    }
+
+    .burn-description {
+      width: 255px;
+    }
+
+    .select-unit-box {
+      margin: 30px auto 0;
     }
 
     .token-amount-input-box {
