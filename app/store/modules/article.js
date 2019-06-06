@@ -245,7 +245,7 @@ const actions = {
   },
   async getArticleRandom({ commit, dispatch }) {
     try {
-      const article = await this.$axios.$get(`/api/articles/random`)
+      const article = await this.$axios.$get(`/labo/n/random`)
       const body = getBodyWithImageOptimizationParam(
         article.body,
         process.env.DOMAIN,
