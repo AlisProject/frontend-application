@@ -36,7 +36,16 @@
           :to="`/users/${supporter.user_id}`"
           class="supporter"
         >
-          <img :class="`user-icon rank${i + 1}`" :src="`${supporter.icon_image_url}?d=48x48`">
+          <img
+            v-if="supporter.icon_image_url"
+            :class="`user-icon rank${i + 1}`"
+            :src="`${supporter.icon_image_url}?d=48x48`"
+          >
+          <img
+            v-else
+            :class="`user-icon rank${i + 1}`"
+            src="~assets/images/pc/common/icon_user_noimg.png"
+          >
         </nuxt-link>
       </div>
       <nuxt-link
