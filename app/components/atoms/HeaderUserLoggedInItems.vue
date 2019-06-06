@@ -70,6 +70,16 @@
           </nuxt-link>
         </li>
         <li class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/settings/sessions">
+            連携中のアプリケーション
+          </nuxt-link>
+        </li>
+        <li v-if="!isMobile()" class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/settings/applications">
+            登録中のアプリケーション
+          </nuxt-link>
+        </li>
+        <li class="menu-link">
           <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="menu-link-inner">
             ALISの使い方
           </nuxt-link>
@@ -102,6 +112,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
 import { isMobile } from '~/utils/device'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   data() {
@@ -170,6 +181,7 @@ export default {
     },
     logoutUser() {
       try {
+        removeOAuthParams()
         this.logout()
         location.href = '/'
         this.sendNotification({ text: 'ログアウトしました' })
@@ -312,14 +324,14 @@ export default {
 
   .menu-links {
     list-style: none;
-    margin: 30px 0;
+    margin: 30px 0 10px;
     padding: 0;
 
     .menu-link {
       cursor: pointer;
       font-size: 14px;
       font-weight: 500;
-      letter-spacing: 1px;
+      letter-spacing: 0;
       white-space: nowrap;
 
       &:hover {
@@ -344,7 +356,7 @@ export default {
         display: block;
         height: 24px;
         line-height: 24px;
-        padding: 10px 64px;
+        padding: 10px 40px;
         text-decoration: none;
 
         &:visited {
@@ -464,6 +476,10 @@ export default {
   .menu {
     .menu-links {
       .menu-link {
+        .menu-link-inner {
+          padding: 8px 40px;
+        }
+
         &:last-child {
           margin-top: 0;
         }

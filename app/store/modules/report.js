@@ -99,7 +99,7 @@ const actions = {
         free_text: freeText
       }
       if (originURL !== null) params.origin_url = originURL
-      await this.$axios.$post(`/me/users/${userId}/fraud`, params)
+      await this.$axios.$post(`/api/me/users/${userId}/fraud`, params)
     } catch (error) {
       return Promise.reject(error)
     }
@@ -147,7 +147,7 @@ const actions = {
         free_text: freeText
       }
       if (originURL !== null) params.origin_url = originURL
-      await this.$axios.$post(`/me/articles/${articleId}/fraud`, params)
+      await this.$axios.$post(`/api/me/articles/${articleId}/fraud`, params)
     } catch (error) {
       return Promise.reject(error)
     }

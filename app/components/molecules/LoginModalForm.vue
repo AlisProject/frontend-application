@@ -94,6 +94,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
+import { getOAuthParams, removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {
@@ -196,6 +197,12 @@ export default {
         this.$refs.userIdOrEmail.value = ''
         this.$refs.password.value = ''
         this.resetPassword()
+
+        const oauthParams = getOAuthParams()
+        if (oauthParams) {
+          this.$router.push({ path: 'oauth-authenticate', query: { ...oauthParams } })
+          removeOAuthParams()
+        }
       } catch (error) {
         let errorMessage = ''
         switch (error.code) {
