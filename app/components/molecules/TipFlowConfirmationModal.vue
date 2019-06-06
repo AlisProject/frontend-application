@@ -25,7 +25,12 @@
     <span class="error-message">
       {{ errorMessage }}
     </span>
-    <app-button class="send-token-button" @click="moveToCompletedPage">
+    <app-button
+      class="send-token-button"
+      :disabled="isProcessing"
+      :isLoading="isProcessing"
+      @click="moveToCompletedPage"
+    >
       ALISを贈る
     </app-button>
   </div>
@@ -42,7 +47,8 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -64,6 +70,9 @@ export default {
   methods: {
     async moveToCompletedPage() {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
+
         await this.getUsersAlisToken()
 
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmountForUser)
@@ -81,6 +90,8 @@ export default {
       } catch (error) {
         this.errorMessage = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
         return
+      } finally {
+        this.isProcessing = false
       }
       this.setTipFlowConfirmationModal({ isShow: false })
       this.setTipFlowCompletedModal({ isShow: true })
