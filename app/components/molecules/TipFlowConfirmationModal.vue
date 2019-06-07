@@ -12,12 +12,12 @@
       {{ tipTokenAmountForUser }}
       <span class="unit">ALIS</span>
     </div>
-    <div class="label" v-text="'手数料'" />
+    <div class="label" v-text="'バーンされる量'" />
     <div class="confirm-input">
       {{ tipTokenAmountFeeForUser }}
       <span class="unit">ALIS</span>
     </div>
-    <div class="label" v-text="'総額'" />
+    <div class="label" v-text="'総ALIS'" />
     <div class="confirm-input">
       {{ totalTokenAmount }}
       <span class="unit">ALIS</span>

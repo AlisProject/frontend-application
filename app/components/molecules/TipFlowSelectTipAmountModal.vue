@@ -33,7 +33,12 @@
       <span class="token-amount-input-unit">ALIS</span>
     </div>
     <div class="burn-description">
-      ※10%が手数料として別途必要となります
+      ※贈ったALISの10%が<a
+          href="https://intercom.help/alismedia/%E3%81%9D%E3%81%AE%E4%BB%96-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/%E3%83%90%E3%83%BC%E3%83%B3%E3%81%A8%E3%81%AF"
+          class="link"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >バーン</a>されます
     </div>
     <div class="select-unit-box">
       <div
@@ -312,6 +317,12 @@ export default {
     width: 400px;
     text-align: right;
     margin: 10px 0 0;
+
+    .link {
+      color: #0086cc;
+      font-size: 12px;
+      text-decoration: none;
+    }
   }
 
   .select-unit-box {
