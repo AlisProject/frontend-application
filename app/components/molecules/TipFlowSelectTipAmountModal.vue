@@ -34,11 +34,11 @@
     </div>
     <div class="burn-description">
       ※贈ったALISの10%が<a
-          href="https://intercom.help/alismedia/%E3%81%9D%E3%81%AE%E4%BB%96-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/%E3%83%90%E3%83%BC%E3%83%B3%E3%81%A8%E3%81%AF"
-          class="link"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >バーン</a>されます
+        href="https://intercom.help/alismedia/%E3%81%9D%E3%81%AE%E4%BB%96-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/%E3%83%90%E3%83%BC%E3%83%B3%E3%81%A8%E3%81%AF"
+        class="link"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >バーン</a>されます
     </div>
     <div class="select-unit-box">
       <div
