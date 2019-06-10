@@ -1,8 +1,5 @@
 <template>
-  <app-modal
-    :title="title"
-    @close="resetStates"
-    :showModalContent="showSignUpModal">
+  <app-modal :title="title" :show-modal-content="showSignUpModal" @close="resetStates">
     <div slot="modal-content">
       <sign-up-modal-form v-if="beforeSendMail" />
       <sign-up-modal-sent-mail v-else />

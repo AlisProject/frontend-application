@@ -1,28 +1,42 @@
 <template>
   <div class="area-notification-card-image">
     <img
+      v-if="notification.type === 'like'"
       class="profile-icon"
       src="~assets/images/pc/common/icon_like.png"
-      v-if="notification.type === 'like'">
+    >
+    <img
+      v-else-if="notification.type === 'announce'"
+      class="profile-icon"
+      src="~assets/images/pc/notification/icon_announce.png"
+    >
     <template
-      v-if="notification.type === 'comment' ||
-            notification.type === 'tip' ||
-            notification.type === 'reply' ||
-            notification.type === 'thread'">
+      v-if="
+        notification.type === 'comment' ||
+          notification.type === 'tip' ||
+          notification.type === 'reply' ||
+          notification.type === 'thread' ||
+          notification.type === 'purchased'
+      "
+    >
       <img
+        v-if="notification.userInfo.icon_image_url"
         class="profile-icon"
         :src="notification.userInfo.icon_image_url"
-        v-if="notification.userInfo.icon_image_url">
-      <img
-        class="profile-icon"
-        src="~assets/images/pc/common/icon_user_noimg.png"
-        v-else>
+      >
+      <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
     </template>
-    <div class="sub-icon comment" v-if="notification.type === 'comment'" />
-    <div class="sub-icon tip" v-if="notification.type === 'tip'" />
+    <div v-if="notification.type === 'comment'" class="sub-icon comment" />
+    <div v-if="notification.type === 'tip'" class="sub-icon tip" />
     <div
+      v-if="notification.type === 'tip_error' || notification.type === 'purchase_error'"
       class="tip-error-icon"
-      v-if="notification.type === 'tip_error'"/>
+    />
+    <img
+      v-if="notification.type === 'purchase'"
+      class="profile-icon"
+      src="~assets/images/pc/notification/icon_notification_check.png"
+    >
   </div>
 </template>
 
@@ -53,6 +67,7 @@ export default {
     cursor: pointer;
     height: 40px;
     width: 40px;
+    object-fit: cover;
   }
 
   .sub-icon {

@@ -1,5 +1,5 @@
 <template>
-  <token-use-guideline/>
+  <token-use-guideline />
 </template>
 
 <script>

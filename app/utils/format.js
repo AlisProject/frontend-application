@@ -1,20 +1,36 @@
-import moment from 'moment'
+import dayjs from 'dayjs'
+import 'dayjs/locale/ja'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(relativeTime)
+dayjs.extend(LocalizedFormat)
 
 export function formatDate(date) {
-  return moment(date, 'X')
+  return dayjs
+    .unix(date)
     .locale('ja')
     .format('L')
 }
 
 export function formatDateWithTime(date) {
-  return moment(date, 'X')
+  return dayjs
+    .unix(date)
     .locale('ja')
     .format('YYYY/MM/DD HH:mm')
 }
 
 export function formatDateFromNow(date) {
-  return moment(date, 'X')
+  return dayjs
+    .unix(date)
     .locale('ja')
     .startOf('minute')
     .fromNow()
+}
+
+export function formatDateWithJapaneseStyle(date) {
+  return dayjs
+    .unix(date)
+    .locale('ja')
+    .format('YYYY年MM月DD日 HH:mm')
 }

@@ -1,48 +1,92 @@
 <template>
-  <div class="create-article-container">
-    <app-header />
-    <edit-header-nav type="draft-article" />
-    <article-editor :putArticle="putArticle"/>
+  <div :class="`create-article-container ${deviceType}`">
+    <app-header v-if="deviceType === 'pc'" />
+    <mobile-editor-header v-else />
+    <edit-header-nav-v2 type="draft-article" />
+    <article-editor-v2
+      :title="decodedTitle"
+      :update-article-title="updateArticleTitle"
+      :put-article-body="putDraftArticleBody"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
-import EditHeaderNav from '../molecules/EditHeaderNav'
-import ArticleEditor from '../atoms/ArticleEditor'
+import MobileEditorHeader from '../organisms/MobileEditorHeader'
+import EditHeaderNavV2 from '../molecules/EditHeaderNavV2'
+import ArticleEditorV2 from '../organisms/ArticleEditorV2'
+import { htmlDecode } from '~/utils/article'
+import { isIOS, isAndroid } from '~/utils/device'
 
 export default {
   components: {
     AppHeader,
-    EditHeaderNav,
-    ArticleEditor
+    MobileEditorHeader,
+    EditHeaderNavV2,
+    ArticleEditorV2
+  },
+  data() {
+    return {
+      deviceType: 'pc'
+    }
+  },
+  mounted() {
+    if (isIOS()) {
+      this.deviceType = 'ios'
+      return
+    }
+    if (isAndroid()) this.deviceType = 'android'
   },
   computed: {
+    decodedTitle() {
+      return htmlDecode(this.title)
+    },
     ...mapGetters('article', ['articleId', 'title', 'body'])
   },
   methods: {
-    ...mapActions('article', ['putDraftArticle']),
-    async putArticle() {
-      const { title, body, articleId } = this
-      const article = { title, body }
-      await this.putDraftArticle({ article, articleId })
+    ...mapActions('article', ['putDraftArticleTitle', 'gotArticleData', 'putDraftArticleBody']),
+    async updateArticleTitle() {
+      if (!this.gotArticleData) return
+      const { title, articleId } = this
+      const articleTitle = { title }
+      await this.putDraftArticleTitle({ articleTitle, articleId })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.create-article-container {
-  display: grid;
-  grid-template-rows: 100px 40px 50px 650px 75px;
-  grid-template-columns: 1fr 640px 1fr;
-  /* prettier-ignore */
-  grid-template-areas:
-    "app-header  app-header app-header"
-    "nav         nav        nav       "
-    "...         ...        ...       "
-    "...         editor     ...       "
-    "...         ...        ...       ";
+.pc,
+.ios,
+.android {
+  &.create-article-container {
+    display: grid;
+    grid-template-rows: 100px 74px 50px 650px 75px;
+    grid-template-columns: 1fr 640px 1fr;
+    /* prettier-ignore */
+    grid-template-areas:
+      "app-header app-header app-header"
+      "nav        nav        nav       "
+      "...        ...        ...       "
+      "...        editor     ...       "
+      "...        ...        ...       ";
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .create-article-container.ios,
+  .create-article-container.android {
+    grid-template-rows: 66px 40px min-content min-content min-content;
+    grid-template-columns: 10px 1fr 10px;
+    /* prettier-ignore */
+    grid-template-areas:
+    "mobile-editor-header mobile-editor-header mobile-editor-header"
+    "nav                  nav                  nav                 "
+    "...                  ...                  ...                 "
+    "editor               editor               editor              "
+    "...                  ...                  ...                 ";
+  }
 }
 </style>

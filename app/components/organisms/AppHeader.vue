@@ -5,22 +5,25 @@
     </nuxt-link>
     <no-ssr>
       <div class="session-items">
-        <header-session-links v-if="!loggedIn"/>
+        <header-session-links v-if="!loggedIn" />
         <header-user-logged-in-items v-else />
       </div>
     </no-ssr>
-    <sign-up-modal v-if="showSignUpModal"/>
-    <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal"/>
-    <login-modal v-if="showLoginModal"/>
-    <profile-settings-modal v-if="showProfileSettingsModal"/>
-    <restrict-edit-article-modal v-if="showRestrictEditArticleModal"/>
-    <request-login-modal v-if="requestLoginModal.isShow"/>
-    <tip-modal v-if="showTipModal"/>
-    <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow"/>
-    <user-report-modal v-if="userReportModal.isShow"/>
-    <article-report-modal v-if="articleReportModal.isShow"/>
-    <first-process-modal v-if="firstProcessModal.isShow"/>
-    <toast position="n"/>
+    <sign-up-modal v-if="showSignUpModal" />
+    <sign-up-auth-flow-modal v-if="showSignUpAuthFlowModal" />
+    <login-modal v-if="showLoginModal" />
+    <profile-settings-modal v-if="showProfileSettingsModal" />
+    <restrict-edit-article-modal v-if="showRestrictEditArticleModal" />
+    <request-login-modal v-if="requestLoginModal.isShow" />
+    <tip-modal v-if="showTipModal" />
+    <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow" />
+    <user-report-modal v-if="userReportModal.isShow" />
+    <article-report-modal v-if="articleReportModal.isShow" />
+    <first-process-modal v-if="firstProcessModal.isShow" />
+    <confirm-purchase-article-modal v-if="confirmPurchaseArticleModal.isShow" />
+    <withdrawal-detail-modal v-if="withdrawalDetailModal.isShow" />
+    <input-withdraw-auth-code-modal v-if="inputWithdrawAuthCodeModal.isShow" />
+    <toast position="n" />
   </header>
 </template>
 
@@ -40,6 +43,9 @@ import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerify
 import UserReportModal from '../organisms/UserReportModal'
 import ArticleReportModal from '../organisms/ArticleReportModal'
 import FirstProcessModal from '../organisms/FirstProcessModal'
+import ConfirmPurchaseArticleModal from '../organisms/ConfirmPurchaseArticleModal'
+import WithdrawalDetailModal from '../organisms/WithdrawalDetailModal'
+import InputWithdrawAuthCodeModal from '../organisms/InputWithdrawAuthCodeModal'
 
 export default {
   components: {
@@ -56,7 +62,10 @@ export default {
     RequestPhoneNumberVerifyModal,
     UserReportModal,
     ArticleReportModal,
-    FirstProcessModal
+    FirstProcessModal,
+    ConfirmPurchaseArticleModal,
+    WithdrawalDetailModal,
+    InputWithdrawAuthCodeModal
   },
   computed: {
     ...mapGetters('user', [
@@ -69,7 +78,10 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
-      'firstProcessModal'
+      'firstProcessModal',
+      'confirmPurchaseArticleModal',
+      'withdrawalDetailModal',
+      'inputWithdrawAuthCodeModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -85,7 +97,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .area-app-header-container {
@@ -125,8 +136,9 @@ export default {
   }
 
   .logo-link {
-    position: absolute;
     left: 0;
+    padding: 12px 0;
+    position: absolute;
 
     .logo {
       width: auto;

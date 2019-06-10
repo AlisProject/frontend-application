@@ -1,18 +1,26 @@
 <template>
   <section>
     <nuxt-link
+      v-if="notification.type === 'tip' || notification.type === 'purchased'"
       :to="`/users/${notification.acted_user_id}`"
       class="notification-card-container"
-      v-if="notification.type === 'tip'">
-      <notification-card-image :notification="notification"/>
-      <notification-card-content :notification="notification"/>
+    >
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
     </nuxt-link>
-    <nuxt-link
-      :to="articlePath"
+    <a
+      v-else-if="notification.type === 'announce'"
+      :href="notification.announce_url"
+      target="_blank"
+      rel="noopener"
       class="notification-card-container"
-      v-else>
-      <notification-card-image :notification="notification"/>
-      <notification-card-content :notification="notification"/>
+    >
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
+    </a>
+    <nuxt-link v-else :to="articlePath" class="notification-card-container">
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
     </nuxt-link>
   </section>
 </template>
@@ -22,25 +30,31 @@ import NotificationCardImage from '../atoms/NotificationCardImage'
 import NotificationCardContent from '../molecules/NotificationCardContent'
 
 export default {
+  components: {
+    NotificationCardImage,
+    NotificationCardContent
+  },
   props: {
     notification: {
       type: Object
     }
   },
-  components: {
-    NotificationCardImage,
-    NotificationCardContent
-  },
   computed: {
     articlePath() {
       switch (this.notification.type) {
         case 'tip_error':
+        case 'purchase':
+        case 'purchase_error':
           return `/${this.notification.article_user_id}/articles/${this.notification.article_id}`
         case 'comment':
+          // 記事のコメント欄に遷移する（#article-comments）
+          return `/${this.notification.user_id}/articles/${
+            this.notification.article_id
+          }/#article-comments`
         case 'reply':
         case 'thread':
           // 記事のコメント欄に遷移する（#article-comments）
-          return `/${this.notification.user_id}/articles/${
+          return `/${this.notification.article_user_id}/articles/${
             this.notification.article_id
           }/#article-comments`
         default:

@@ -1,5 +1,5 @@
 <template>
-  <user-article-list/>
+  <user-article-list />
 </template>
 
 <script>
@@ -10,7 +10,16 @@ export default {
   components: {
     UserArticleList
   },
-  async fetch({ store, params, error }) {
+  async fetch({ store, params, from = {}, error }) {
+    // ユーザー記事の初期化
+    // 記事から遷移してきた場合は、スクロール位置を保持させたいので初期化はしない。
+    if (
+      from.name !== 'userId-articles-articleId' ||
+      store.state.user.userArticlesCurrentUserId !== params.userId
+    ) {
+      store.dispatch('user/resetUserArticles')
+      store.dispatch('user/resetUserArticlesLastEvaluatedKey')
+    }
     await store.dispatch('user/setUserInfo', { userId: params.userId })
   },
   async mounted() {
@@ -23,10 +32,6 @@ export default {
     } catch (error) {
       this.$root.error({ statusCode: 404 })
     }
-  },
-  beforeDestroy() {
-    this.$store.dispatch('user/resetUserArticles')
-    this.$store.dispatch('user/resetUserArticlesLastEvaluatedKey')
   },
   computed: {
     isCurrentUser() {

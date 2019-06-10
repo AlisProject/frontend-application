@@ -6,7 +6,7 @@
     <span class="description">
       贈り先へ届くまでしばらくお待ち下さい
     </span>
-    <app-button class="close-button" @click="closeModal">
+    <app-button class="close-button" type="secondary" @click="closeModal">
       閉じる
     </app-button>
   </div>
@@ -27,10 +27,10 @@ export default {
     closeModal() {
       this.setTipModal({ showTipModal: false })
       this.setTipFlowCompletedModal({ isShow: false })
-      // if (!this.currentUserInfo.is_tipped_article) {
-      //   this.setFirstProcessModal({ isShow: true })
-      //   this.setFirstProcessTippedArticleModal({ isShow: true })
-      // }
+      if (!this.currentUserInfo.is_tipped_article) {
+        this.setFirstProcessModal({ isShow: true })
+        this.setFirstProcessTippedArticleModal({ isShow: true })
+      }
     },
     ...mapActions('user', [
       'setTipModal',

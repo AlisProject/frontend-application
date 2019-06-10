@@ -1,8 +1,8 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:8.9.4-browsers
+      - image: circleci/node:8.10.0-browsers
 
     working_directory: ~/repo
 
@@ -11,15 +11,18 @@ jobs:
 
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
+            - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}
+            - v1-dependencies-
 
-      - run: yarn install
+      - run:
+          name: Install dependencies
+          command: |
+            sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}
 
       - run: yarn lint
       - run:
@@ -35,10 +38,40 @@ jobs:
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
 
+  deploy:
+    docker:
+      - image: circleci/node:8.10.0-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            if [ $ALIS_APP_ID ]; then
+              sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
+            fi
+
       - run:
           name: deploy
           command: |
-            sudo apt-get -y -qq install awscli
-            sudo npm install -g serverless
-            ./deploy.sh
+            if [ $ALIS_APP_ID ]; then
+              sudo ./deploy_via_ci.sh
+            fi
 
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore:
+                # ステージング環境、本番環境へのデプロイはCodeBuildに委ねる
+                - develop
+                - master

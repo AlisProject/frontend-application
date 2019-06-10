@@ -3,39 +3,38 @@
     class="eyecatch-article-card"
     :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
-    :style="{ 'background': `url(${eyeCatchImagePath}) center center / cover no-repeat` }" >
+    :style="{ background: `url(${eyeCatchImagePath}) center center / cover no-repeat` }"
+  >
+    <div class="article-subdata-box">
+      <div class="label">
+        {{ topicDisplayName }}
+      </div>
+      <div v-if="isPaidArticle" class="label">
+        有料
+      </div>
+    </div>
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
     <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="profile-icon-box">
-        <img
-          class="profile-icon"
-          :src="article.userInfo.icon_image_url"
-          v-if="article.userInfo.icon_image_url !== undefined">
-        <img
-          class="profile-icon"
-          src="~assets/images/pc/common/icon_user_noimg.png"
-          v-else>
+      <nuxt-link :to="`/users/${article.user_id}`" class="article-data-box">
+        <span class="username">
+          {{ decodedUsername }}
+        </span>
+        <span class="published-at">
+          {{ formattedPublishedAt }}
+        </span>
       </nuxt-link>
     </no-ssr>
-    <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="username">
-        {{ decodedUsername }}
-      </nuxt-link>
-    </no-ssr>
-    <span class="published-at">
-      {{ formattedPublishedAt }}
-    </span>
     <span class="token-amount">
-      {{ formattedTokenAmount }}
+      {{ article.alisToken | formatTokenAmount }}
     </span>
   </nuxt-link>
 </template>
 
 <script>
-import { BigNumber } from 'bignumber.js'
-import { htmlDecode } from '~/utils/article'
+import { mapGetters } from 'vuex'
+import { htmlDecode, formatTokenAmount } from '~/utils/article'
 import { formatDate } from '~/utils/format'
 
 export default {
@@ -63,18 +62,21 @@ export default {
       return formatDate(this.publishedAt)
     },
     eyeCatchImagePath() {
-      return this.article.eye_catch_url !== null
-        ? this.article.eye_catch_url
+      return this.article.eye_catch_url !== null && this.article.eye_catch_url !== undefined
+        ? `${this.article.eye_catch_url}?d=${this.order === 'eyecatch1' ? '1420x824' : '680x382'}`
         : require('~/assets/images/pc/common/thumbnail_noimg.png')
     },
-    formattedTokenAmount() {
-      const tokenAmount = this.article.alisToken
-      if (tokenAmount === undefined) return
-      const stringTokenAmount = tokenAmount.toString()
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    }
+    topicDisplayName() {
+      const topic = this.topics.find((topic) => topic.name === this.article.topic)
+      return topic.display_name
+    },
+    isPaidArticle() {
+      return !!this.article.price
+    },
+    ...mapGetters('article', ['topics'])
+  },
+  filters: {
+    formatTokenAmount
   }
 }
 </script>
@@ -94,16 +96,13 @@ export default {
     right: 0;
     bottom: 0;
     left: 0;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
   }
 
   &.eyecatch1 {
     grid-area: eyecatch1;
     width: 710px;
     height: 412px;
-
-    &:before {
-      background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
-    }
   }
 
   &.eyecatch2 {
@@ -118,20 +117,39 @@ export default {
   &.eyecatch3 {
     width: 340px;
     height: 191px;
-
-    &:before {
-      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
-    }
   }
+}
+
+.article-subdata-box {
+  bottom: 124px;
+  display: flex;
+  left: 20px;
+  position: absolute;
+}
+
+.label {
+  align-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  color: #fff;
+  display: flex;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 8px;
+  padding: 4px 8px;
 }
 
 .title {
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  bottom: 60px;
   color: #fff;
   display: -webkit-box;
   font-size: 20px;
   font-weight: bold;
   grid-area: title;
+  height: 60px;
+  left: 20px;
   letter-spacing: 1px;
   line-height: 1.5;
   margin: 0;
@@ -144,9 +162,6 @@ export default {
 
 .eyecatch1 {
   .title {
-    -webkit-line-clamp: 2;
-    bottom: 80px;
-    left: 20px;
     width: 492px;
   }
 }
@@ -154,24 +169,16 @@ export default {
 .eyecatch2,
 .eyecatch3 {
   .title {
-    -webkit-line-clamp: 3;
-    left: 20px;
-    top: 20px;
     width: 300px;
   }
 }
 
-.profile-icon-box {
-  bottom: 20px;
-  height: 36px;
+.article-data-box {
+  bottom: 10px;
+  height: 46px;
   left: 20px;
   position: absolute;
-
-  .profile-icon {
-    border-radius: 50%;
-    height: 36px;
-    width: 36px;
-  }
+  width: 220px;
 }
 
 .username,
@@ -186,18 +193,16 @@ export default {
 }
 
 .username {
-  bottom: 40px;
-  left: 72px;
   overflow: hidden;
+  text-decoration: none;
   text-overflow: ellipsis;
+  top: 6px;
   white-space: nowrap;
   width: 190px;
-  text-decoration: none;
 }
 
 .published-at {
-  bottom: 22px;
-  left: 72px;
+  bottom: 6px;
 }
 
 .token-amount {
@@ -211,6 +216,6 @@ export default {
   letter-spacing: 0.8px;
   padding: 0 0 0 22px;
   right: 20px;
-  bottom: 20px;
+  bottom: 14px;
 }
 </style>

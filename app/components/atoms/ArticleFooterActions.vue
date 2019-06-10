@@ -4,17 +4,12 @@
       <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
     </div>
     <no-ssr>
-      <div class="action area-tip" @click="tip" v-if="!isMyArticle"/>
+      <div v-if="!isMyArticle" class="action area-tip" @click="tip" />
     </no-ssr>
-    <div class="sub-action area-share" @click="toggleSharePopup">
-      <div class="share-popup" v-show="isSharePopupShown">
-        <a class="share-twitter" target="_blank">
-          Twitterでシェアする
-        </a>
-      </div>
-    </div>
+    <a class="sub-action area-share-twitter" target="_blank" />
+    <a class="sub-action area-share-facebook" target="_blank" />
     <div class="sub-action area-etc" @click="toggleEtcPopup">
-      <div class="etc-popup" v-show="isEtcPopupShown">
+      <div v-show="isEtcPopupShown" class="etc-popup">
         <span class="report" @click="showPopupReportModal">
           報告する
         </span>
@@ -28,12 +23,6 @@ import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
-  data() {
-    return {
-      isEtcPopupShown: false,
-      isSharePopupShown: false
-    }
-  },
   props: {
     articleId: {
       type: String,
@@ -52,24 +41,31 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      isEtcPopupShown: false
+    }
+  },
   mounted() {
     this.listen(window, 'click', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeEtcPopup()
-        this.closeSharePopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
       if (!this.$el.contains(event.target)) {
         this.closeEtcPopup()
-        this.closeSharePopup()
       }
     })
     this.$el.querySelector(
-      '.share-twitter'
+      '.area-share-twitter'
     ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
       location.href
     )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
+
+    this.$el.querySelector(
+      '.area-share-facebook'
+    ).href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`
   },
   destroyed() {
     if (this._eventRemovers) {
@@ -93,17 +89,9 @@ export default {
   methods: {
     toggleEtcPopup() {
       this.isEtcPopupShown = !this.isEtcPopupShown
-      if (this.isSharePopupShown) this.closeSharePopup()
-    },
-    toggleSharePopup() {
-      this.isSharePopupShown = !this.isSharePopupShown
-      if (this.isEtcPopupShown) this.closeEtcPopup()
     },
     closeEtcPopup() {
       this.isEtcPopupShown = false
-    },
-    closeSharePopup() {
-      this.isSharePopupShown = false
     },
     showPopupReportModal() {
       if (this.loggedIn) {
@@ -135,10 +123,10 @@ export default {
             type: 'warning'
           })
         }
-        // if (!this.currentUserInfo.is_liked_article) {
-        //   this.setFirstProcessModal({ isShow: true })
-        //   this.setFirstProcessLikedArticleModal({ isShow: true })
-        // }
+        if (!this.currentUserInfo.is_liked_article) {
+          this.setFirstProcessModal({ isShow: true })
+          this.setFirstProcessLikedArticleModal({ isShow: true })
+        }
       } else {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleLike' })
       }
@@ -190,11 +178,11 @@ export default {
   display: grid;
   grid-area: footer-actions;
   grid-template-rows: 52px;
-  grid-template-columns: repeat(2, 52px) 1fr repeat(2, 40px);
+  grid-template-columns: repeat(2, 52px) 1fr repeat(3, 40px);
   grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
-    'like tip ... share etc';
+    'like tip ... share-twitter share-facebook etc';
   align-items: center;
 
   .action {
@@ -203,6 +191,7 @@ export default {
   }
 
   .sub-action {
+    box-shadow: 0 3px 16px 0 rgba(0, 0, 0, 0.25);
     height: 40px;
     width: 40px;
   }
@@ -261,41 +250,25 @@ export default {
     border-radius: 50%;
   }
 
-  .area-share {
-    grid-area: share;
-    background: #fff url('~assets/images/pc/article/icon_share.png') no-repeat;
+  .area-share-twitter {
+    grid-area: share-twitter;
+    background: #fff url('~assets/images/pc/article/icon_share_twitter.png') no-repeat;
+    background-position-x: 9px;
+    background-position-y: 9px;
+  }
+
+  .area-share-facebook {
+    grid-area: share-facebook;
+    background: #fff url('~assets/images/pc/article/icon_share_facebook.png') no-repeat;
     background-position: 8px;
+  }
+
+  .area-share-twitter,
+  .area-share-facebook {
     background-size: 24px;
     border-radius: 50%;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
     position: relative;
     cursor: pointer;
-
-    .share-popup {
-      background: url('~assets/images/pc/article/icon_twitter.png') no-repeat;
-      background-color: #ffffff;
-      background-size: 22px;
-      background-position-x: 16px;
-      background-position-y: 12px;
-      border-radius: 4px;
-      box-shadow: 0 4px 10px 0 rgba(192, 192, 192, 0.5);
-      cursor: default;
-      box-sizing: border-box;
-      font-size: 14px;
-      padding: 12px 12px 12px 48px;
-      position: absolute;
-      right: 0;
-      top: 48px;
-      width: 200px;
-      z-index: 1;
-
-      .share-twitter {
-        cursor: pointer;
-        color: #585858;
-        text-decoration: none;
-        user-select: none;
-      }
-    }
   }
 
   .area-etc {
@@ -304,7 +277,6 @@ export default {
     background-position: 8px;
     background-size: 24px;
     border-radius: 50%;
-    box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
     position: relative;
 
@@ -334,10 +306,11 @@ export default {
   .area-footer-actions {
     background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
     position: relative;
-    grid-template-columns: 0 repeat(2, 40px) 1fr repeat(2, 40px) 0;
+    grid-template-columns: 10px 40px 0 40px 1fr repeat(3, 40px) 10px;
     /* prettier-ignore */
     grid-template-areas:
-      '... like tip ... share etc ...';
+      '... like ... tip ... share-twitter share-facebook etc ...';
+    grid-column-gap: 10px;
 
     &:after {
       bottom: 26px;

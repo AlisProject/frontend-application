@@ -1,87 +1,111 @@
 <template>
   <div>
-    <h1 class="title" v-if="isSelectedEmailAuth">新規登録</h1>
+    <h1 v-if="isSelectedEmailAuth" class="title">
+      新規登録
+    </h1>
     <div class="modal-body">
-      <div class="email-auth" v-show="isSelectedEmailAuth" :class="{ isSelectedEmailAuth }">
+      <div v-show="isSelectedEmailAuth" class="email-auth" :class="{ isSelectedEmailAuth }">
         <form class="signup-form" @keypress.enter.prevent="onSubmit">
-          <div class="signup-form-group" :class="{ 'error': hasUserIdError }">
+          <div class="signup-form-group" :class="{ error: hasUserIdError }">
             <label class="signup-form-label">ユーザーID※半角英数字3文字以上</label>
             <input
+              ref="userId"
               class="signup-form-input"
               type="text"
               placeholder="taro"
               maxlength="30"
-              ref="userId"
               @input="setUserId"
               @blur="showError('userId')"
-              @focus="resetError('userId')">
-            <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">半角英数字と-（ハイフン）のみご利用下さい</p>
-            <p class="error-message" v-if="showErrorUserIdMinLength && showErrorUserId">3文字以上の英数字で入力してください</p>
+              @focus="resetError('userId')"
+            >
+            <p v-if="showErrorUserId && !showErrorUserIdMinLength" class="error-message">
+              半角英数字と-（ハイフン）のみご利用下さい
+            </p>
+            <p v-if="showErrorUserIdMinLength && showErrorUserId" class="error-message">
+              3文字以上の英数字で入力してください
+            </p>
           </div>
-          <div class="signup-form-group" :class="{ 'error': hasEmailError }">
+          <div class="signup-form-group" :class="{ error: hasEmailError }">
             <label class="signup-form-label">メールアドレス</label>
             <input
+              ref="email"
               class="signup-form-input"
               type="email"
               placeholder="alis@example.com"
               maxlength="256"
-              ref="email"
               @input="setEmail"
               @blur="showError('email')"
-              @focus="resetError('email')">
-            <p class="error-message" v-if="showErrorInvalidEmail">メールアドレスの形式が正しくありません</p>
+              @focus="resetError('email')"
+            >
+            <p v-if="showErrorInvalidEmail" class="error-message">
+              メールアドレスの形式が正しくありません
+            </p>
           </div>
-          <div class="signup-form-group" :class="{ 'error': hasPasswordError }">
+          <div class="signup-form-group" :class="{ error: hasPasswordError }">
             <label class="signup-form-label">パスワード※半角英数字8文字以上</label>
             <input
+              ref="password"
               class="signup-form-input"
               type="password"
               placeholder="●●●●●●●●"
-              ref="password"
               @input="setPassword"
               @blur="showError('password')"
-              @focus="resetError('password')">
-            <p class="error-message" v-if="showErrorInvalidPassword">パスワードは8文字以上で入力してください</p>
+              @focus="resetError('password')"
+            >
+            <p v-if="showErrorInvalidPassword" class="error-message">
+              パスワードは8文字以上で入力してください
+            </p>
           </div>
         </form>
         <div class="modal-footer">
-          <p class="error-message">{{ errorMessage }}</p>
+          <p class="error-message">
+            {{ errorMessage }}
+          </p>
           <p class="agreement-confirmation">
-            <nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・
-            <nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意して
+            <nuxt-link to="/terms" target="_blank">
+              利用規約
+            </nuxt-link>・
+            <nuxt-link to="/privacy" target="_blank">
+              プライバシーポリシー
+            </nuxt-link>に同意して
           </p>
           <app-button class="registration-button" :disabled="invalidSubmit" @click="onSubmit">
             登録する
           </app-button>
         </div>
       </div>
-      <div class="external-provider-auth" v-show="!isSelectedEmailAuth">
+      <div v-show="!isSelectedEmailAuth" class="external-provider-auth">
         <a class="line-button" :href="lineSignUpAuthorizeURL">
           LINEではじめる
         </a>
         <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
-          twitterではじめる
+          Twitterではじめる
         </a>
-        <p
-          class="for-email-signup"
-          @click="showEmailAuth">
+        <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
+          Facebookではじめる
+        </a>
+        <a class="yahoo-button" :href="yahooSignUpAuthorizeURL">
+          Yahoo!ではじめる
+        </a>
+        <p class="for-email-signup" @click="showEmailAuth">
           メールではじめる
         </p>
         <p class="agreement-confirmation">
-          上記を押した場合、<nuxt-link to="/terms" target="_blank">利用規約</nuxt-link>・<nuxt-link to="/privacy" target="_blank">プライバシーポリシー</nuxt-link>に同意したものとみなします
+          上記を押した場合、<nuxt-link to="/terms" target="_blank">
+            利用規約
+          </nuxt-link>・<nuxt-link to="/privacy" target="_blank">
+            プライバシーポリシー
+          </nuxt-link>に同意したものとみなします
         </p>
         <p class="external-provider-confirmation">
           ※外部サービス上でALISを使っていることは表示されません
         </p>
       </div>
     </div>
-    <div
-      class="for-login-user"
-      @click="transitToLogin"
-      v-if="!isSelectedEmailAuth">
+    <div v-if="!isSelectedEmailAuth" class="for-login-user" @click="transitToLogin">
       ログインされる方は<span class="link-sp">こちら</span>
     </div>
-    <div class="for-login-user-sp" v-else>
+    <div v-else class="for-login-user-sp">
       ログインの方は<span class="for-login-user-link" @click="transitToLogin">こちら</span>
     </div>
   </div>
@@ -91,26 +115,38 @@
 import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, email } from 'vuelidate/lib/validators'
 import AppButton from '../atoms/AppButton'
+import { removeOAuthParams } from '~/utils/oauth'
 
 function userId(value) {
   return Boolean(value.match(/^(?!.*--)[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]$/))
 }
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       errorMessage: '',
       lineSignUpAuthorizeURL: null,
       twitterSignUpAuthorizeURL: null,
+      facebookSignUpAuthorizeURL: null,
+      yahooSignUpAuthorizeURL: null,
       isSelectedEmailAuth: false
     }
   },
   async mounted() {
-    this.lineSignUpAuthorizeURL = await this.getLineSignUpAuthorizeURL()
-    this.twitterSignUpAuthorizeURL = await this.getTwitterSignUpAuthorizeURL()
-  },
-  components: {
-    AppButton
+    ;[
+      this.lineSignUpAuthorizeURL,
+      this.twitterSignUpAuthorizeURL,
+      this.facebookSignUpAuthorizeURL,
+      this.yahooSignUpAuthorizeURL
+    ] = await Promise.all([
+      this.getLineSignUpAuthorizeURL(),
+      this.getTwitterSignUpAuthorizeURL(),
+      this.getFacebookSignUpAuthorizeURL(),
+      this.getYahooSignUpAuthorizeURL()
+    ])
   },
   computed: {
     showErrorUserIdMinLength() {
@@ -185,6 +221,7 @@ export default {
     transitToLogin() {
       this.setSignUpModal({ showSignUpModal: false })
       this.setLoginModal({ showLoginModal: true })
+      removeOAuthParams()
     },
     showEmailAuth() {
       this.isSelectedEmailAuth = true
@@ -224,7 +261,9 @@ export default {
       'setLoginModal',
       'resetPassword',
       'getLineSignUpAuthorizeURL',
-      'getTwitterSignUpAuthorizeURL'
+      'getTwitterSignUpAuthorizeURL',
+      'getFacebookSignUpAuthorizeURL',
+      'getYahooSignUpAuthorizeURL'
     ])
   }
 }
@@ -365,7 +404,7 @@ export default {
 }
 
 .line-button {
-  margin-top: 270px;
+  margin-top: 158px;
   background: url('~assets/images/pc/common/icon_line.png') no-repeat;
   background-color: #00c300;
   background-size: 24px;
@@ -380,6 +419,25 @@ export default {
   background-size: 20px;
   background-position: 26px 10px;
   @include external-provider-button();
+}
+
+.facebook-button {
+  margin: 20px 0 0;
+  background: url('~assets/images/pc/common/icon_btn_facebook.png') no-repeat;
+  background-color: #425eac;
+  background-size: 22px;
+  background-position: 25px 7px;
+  @include external-provider-button();
+}
+
+.yahoo-button {
+  margin: 20px 0 0;
+  background: url('~assets/images/pc/common/icon_btn_yahoo.png') no-repeat;
+  background-color: #fff;
+  background-size: 22px;
+  background-position: 26px 8px;
+  @include external-provider-button();
+  color: #030303;
 }
 
 .for-email-signup {
@@ -447,7 +505,7 @@ export default {
   }
 
   .line-button {
-    margin-top: 370px;
+    margin-top: 258px;
   }
 
   .for-login-user {

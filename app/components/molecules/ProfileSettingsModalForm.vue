@@ -4,41 +4,41 @@
       <form class="signup-form" @submit.prevent>
         <div class="upload-img-section">
           <img
-            class="upload-img"
             v-if="currentUserInfo.icon_image_url !== undefined"
-            :src="currentUserInfo.icon_image_url" />
-          <img
             class="upload-img"
-            v-else-if="uploadedImage"
-            :src="uploadedImage" />
-          <div class="upload-img-dammy" v-else />
+            :src="currentUserInfo.icon_image_url"
+          >
+          <img v-else-if="uploadedImage" class="upload-img" :src="uploadedImage">
+          <img v-else src="~assets/images/pc/common/icon_user_noimg.png" class="upload-img">
           <label class="upload-btn">
-            <img class="btn-pic" src="~/assets/images/pc/common/icon_profile_img.png" alt="upload">
+            <img class="btn-pic" src="~assets/images/pc/common/icon_profile_img.png" alt="upload">
             <input class="upload-img-input" type="file" accept="image/*" @change="onFileChange">
           </label>
         </div>
-        <div class="signup-form-group" :class="{ 'error': hasUserDisplayNameError }">
+        <div class="signup-form-group" :class="{ error: hasUserDisplayNameError }">
           <label class="signup-form-label">ユーザー名</label>
           <input
+            v-model="userDisplayName"
             class="signup-form-input"
             type="text"
             minlength="1"
             maxlength="30"
             placeholder="田中太郎"
-            v-model="userDisplayName"
             @input="setUserDisplayName($event.target.value)"
             @blur="showError('userDisplayName')"
-            @focus="resetError('userDisplayName')">
+            @focus="resetError('userDisplayName')"
+          >
           <label class="signup-form-label">自己紹介</label>
         </div>
         <div class="signup-form-group">
           <textarea
+            v-model="selfIntroduction"
             class="signup-form-textarea"
             type="text"
             placeholder="100文字以内でご入力ください"
             maxlength="100"
-            v-model="selfIntroduction"
-            @input="setSelfIntroduction($event.target.value)"/>
+            @input="setSelfIntroduction($event.target.value)"
+          />
         </div>
       </form>
     </div>
@@ -54,19 +54,21 @@
 import { mapActions, mapGetters } from 'vuex'
 import { required } from 'vuelidate/lib/validators'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import loadImage from 'blueimp-load-image'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
+import { getOAuthParams, removeOAuthParams } from '~/utils/oauth'
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       userDisplayName: '',
       selfIntroduction: '',
       uploadedImage: ''
     }
-  },
-  components: {
-    AppButton
   },
   async created() {
     await this.setCurrentUserInfo()
@@ -113,37 +115,48 @@ export default {
         alert('画像は4.5MBまでアップロード可能です')
         return
       }
-      const reader = new FileReader()
-      reader.onload = async (e) => {
-        try {
-          const base64Image = e.target.result
-          const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
-          const imageContentType = base64Image.substring(
-            base64Image.match(':').index + 1,
-            base64Image.match(';').index
-          )
-          await this.postUserIcon({ iconImage: base64Hash, imageContentType })
-          await this.setCurrentUserInfo()
-          this.uploadedImage = base64Image
-        } catch (error) {
-          const toastMessage = document.querySelector('.toast')
-          const modalMask = document.querySelector('.modal-mask')
-          const modalMaskZIndex = Number(
-            window.getComputedStyle(modalMask).getPropertyValue('z-index')
-          )
-          const originalToastZIndex = toastMessage.style.zIndex
-          toastMessage.style.zIndex = modalMaskZIndex + 1
-          this.sendNotification({
-            text: '画像のアップロードに失敗しました',
-            type: 'warning'
-          })
-          setTimeout(() => {
-            toastMessage.style.zIndex = originalToastZIndex
-          }, 2500)
-          console.error(error)
+
+      loadImage.parseMetaData(file, (data) => {
+        const options = {
+          canvas: true
         }
-      }
-      reader.readAsDataURL(file)
+        if (data.exif) {
+          options.orientation = data.exif.get('Orientation')
+        }
+        loadImage(
+          file,
+          async (canvas) => {
+            try {
+              const base64Image = canvas.toDataURL(file.type)
+              const base64Hash = base64Image.substring(base64Image.match(',').index + 1)
+              const imageContentType = base64Image.substring(
+                base64Image.match(':').index + 1,
+                base64Image.match(';').index
+              )
+              await this.postUserIcon({ iconImage: base64Hash, imageContentType })
+              await this.setCurrentUserInfo()
+              this.uploadedImage = base64Image
+            } catch (error) {
+              const toastMessage = document.querySelector('.toast')
+              const modalMask = document.querySelector('.modal-mask')
+              const modalMaskZIndex = Number(
+                window.getComputedStyle(modalMask).getPropertyValue('z-index')
+              )
+              const originalToastZIndex = toastMessage.style.zIndex
+              toastMessage.style.zIndex = modalMaskZIndex + 1
+              this.sendNotification({
+                text: '画像のアップロードに失敗しました',
+                type: 'warning'
+              })
+              setTimeout(() => {
+                toastMessage.style.zIndex = originalToastZIndex
+              }, 2500)
+              console.error(error)
+            }
+          },
+          options
+        )
+      })
     },
     setUserDisplayName(userDisplayName) {
       this.setProfileSettingsUserDisplayName({ userDisplayName })
@@ -172,6 +185,14 @@ export default {
           this.setSignUpAuthFlowProfileSettingsModal({
             isSignUpAuthFlowProfileSettingsModal: false
           })
+          // ユーザー登録を行っていない状態でアプリケーションの認可画面を開き、ユーザー登録を行った場合、
+          // ユーザー登録完了のモーダルは表示せずプロフィール編集完了後に認可画面に遷移させる。
+          const oauthParams = getOAuthParams()
+          if (oauthParams) {
+            this.$router.push({ path: 'oauth-authenticate', query: { ...oauthParams } })
+            removeOAuthParams()
+            return
+          }
           if (this.currentUser.phoneNumberVerified) {
             this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: true })
           } else {
@@ -223,17 +244,12 @@ export default {
       margin: 0 auto 30px;
 
       .upload-img {
-        width: 120px;
-        height: 120px;
         border-radius: 50%;
+        border: 1px solid #d8d8d8;
+        box-sizing: border-box;
+        height: 120px;
         object-fit: cover;
-      }
-
-      .upload-img-dammy {
         width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: #d8d8d8;
       }
 
       .upload-btn {
@@ -322,8 +338,22 @@ export default {
     .signup-form {
       max-width: 256px;
 
+      .upload-img-section {
+        width: 100px;
+        margin: 0 auto 20px;
+
+        .upload-img {
+          width: 100px;
+          height: 100px;
+        }
+      }
+
+      &-input {
+        margin-bottom: 20px;
+      }
+
       &-textarea {
-        height: 8em;
+        margin-bottom: 20px;
       }
     }
   }

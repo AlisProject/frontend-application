@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt/>
+    <nuxt />
   </div>
 </template>
 
@@ -9,11 +9,17 @@ import { mapGetters } from 'vuex'
 
 export default {
   mounted() {
+    // セルフXSS対策
+    this.warnSelfXss()
+
     const userId =
       localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
       ) || ''
-    const isExternalProviderUserId = userId.startsWith('LINE-') || userId.startsWith('Twitter-')
+    const externalProviderUserIdPrefix = ['LINE-', 'Twitter-', 'Facebook-', 'Yahoo-']
+    const isExternalProviderUserId = externalProviderUserIdPrefix.some((prefix) =>
+      userId.startsWith(prefix)
+    )
 
     if (isExternalProviderUserId) {
       this.$store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: true })
@@ -28,6 +34,19 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['loggedIn'])
+  },
+  methods: {
+    warnSelfXss() {
+      if (process.env.NODE_ENV !== 'development') {
+        const style = `font-size: 1.2rem; line-height: 1.5; font-family: 'Yu Gothic', sans-serif;`
+        console.log('%c警告：', 'font-size: 1.7rem; color: red;')
+        console.log(
+          '%cこれは開発者向けのブラウザ機能です。ここに何かをコピー・貼り付けするように言われた場合、それは第三者があなたのALISアカウントへのアクセスを得るための不正行為である危険性があります。',
+          style
+        )
+        console.log('%cよくわからないコードは入力したり貼り付けたりしないでください。', style)
+      }
+    }
   },
   watch: {
     $route() {

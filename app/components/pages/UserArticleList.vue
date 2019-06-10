@@ -5,9 +5,13 @@
     <no-ssr>
       <user-profile-nav v-if="isCurrentUser" />
     </no-ssr>
-    <user-article-card-list :articles="isCurrentUser ? publicArticles : userArticles"/>
-    <the-loader :isLoading="isCurrentUser ? hasPublicArticlesLastEvaluatedKey : hasUserArticlesLastEvaluatedKey"/>
-    <app-footer/>
+    <user-article-card-list :articles="isCurrentUser ? publicArticles : userArticles" />
+    <the-loader
+      :is-loading="
+        isCurrentUser ? hasPublicArticlesLastEvaluatedKey : hasUserArticlesLastEvaluatedKey
+      "
+    />
+    <app-footer />
   </div>
 </template>
 
@@ -143,7 +147,7 @@ export default {
 @media screen and (max-width: 550px) {
   .user-article-list-container {
     background: #fff;
-    grid-template-columns: 1fr 350px 1fr;
+    grid-template-columns: 1fr 340px 1fr;
     grid-template-rows: 66px min-content auto 1fr 75px min-content;
     grid-row-gap: 20px;
     /* prettier-ignore */

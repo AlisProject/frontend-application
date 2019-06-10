@@ -2,15 +2,15 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        アカウント登録が<span class="br"/>完了しました。<br>
-        ALISのはじめ方を<span class="br"/>確認しましょう。
+        アカウント登録が<span class="br" />完了しました。<br>
+        ALISのはじめ方を<span class="br" />確認しましょう。
       </p>
-      <app-button class="submit" @click="submit">
+      <app-button class="submit" @click="close">
         <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B">
           はじめ方をみる
         </nuxt-link>
       </app-button>
-      <app-button class="close" @click="close">
+      <app-button class="close" type="secondary" @click="close">
         閉じる
       </app-button>
     </div>
@@ -26,7 +26,6 @@ export default {
     AppButton
   },
   methods: {
-    submit() {},
     close() {
       this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
       this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
@@ -55,32 +54,23 @@ export default {
   background-position-x: center;
   margin: -50px -30px 0;
   height: 100%;
-}
 
-.description {
-  color: #030303;
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: 1.37px;
-  line-height: 1.5;
-  margin: 260px 0 0;
-}
+  .description {
+    color: #030303;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1.37px;
+    line-height: 1.5;
+    margin: 260px 0 0;
+  }
 
-.submit {
-  margin: 40px 0 0;
-}
+  .submit {
+    margin: 40px 0 0;
+  }
 
-.close {
-  margin: 20px 0 60px;
-  background: #fff;
-  border: 1px solid #0086cc;
-  color: #0086cc;
-  font-weight: bold;
-  box-shadow: none;
-
-  &:hover,
-  &:focus {
-    background: #fff;
+  .close {
+    margin: 20px 0 60px;
+    font-weight: bold;
   }
 }
 
@@ -94,27 +84,26 @@ export default {
 
   .wrapper {
     background-size: auto 320px;
-  }
 
-  .description {
-    margin: 340px 0 0;
-    width: 328px;
+    .description {
+      font-size: 20px;
+      margin: 340px 0 0;
+    }
+
+    .submit {
+      margin: 30px 0 0;
+    }
   }
 }
 
 @media screen and (max-width: 320px) {
   .wrapper {
-    background-size: auto 274px;
-  }
+    background-size: auto 240px;
 
-  .description {
-    margin: 290px 0 0;
-    width: 288px;
-    font-size: 20px;
-  }
-
-  .submit {
-    margin: 30px 0 0;
+    .description {
+      margin: 260px 0 0;
+      font-size: 18px;
+    }
   }
 }
 </style>

@@ -1,21 +1,43 @@
 <template>
   <div class="top-page" :class="{ 'is-show-guide': isShowGuide }">
     <app-header />
-    <default-header-nav class="default-header-nav"/>
-    <eyecatch-article-card-list
-      :articles="eyecatchArticles"
-      class="eyecatch-article-card-list"/>
+    <default-header-nav class="default-header-nav" />
+    <new-topic-candidates />
+    <div class="area-recommended-tip-ranking">
+      <div class="label">
+        投げ銭によるオススメ
+      </div>
+      <nuxt-link class="more-link-pc" to="/articles/ranking/tip">
+        もっと見る
+      </nuxt-link>
+    </div>
+    <tip-eyecatch-article-card-list
+      :articles="tipEyecatchArticles"
+      class="tip-eyecatch-article-card-list"
+    />
+    <div class="area-recommended-like-ranking">
+      <div class="label">
+        いいねによるオススメ
+      </div>
+    </div>
     <recommended-article-card-list
-      :articles="eyecatchArticles.filter(article => article !== null)"
-      class="eyecatch-article-card-list-sp"/>
+      :articles="tipEyecatchArticles"
+      :isTipRanking="true"
+      class="eyecatch-article-card-list-sp"
+    />
+    <div class="area-more-link">
+      <nuxt-link class="more-link-sp" to="/articles/ranking/tip">
+        もっと見る ＞
+      </nuxt-link>
+    </div>
     <recommended-article-card-list
       :articles="recommendedArticles.articles"
-      class="recommended-article-card-list"/>
+      class="recommended-article-card-list"
+    />
     <how-to-use-image class="how-to-use-image" />
     <sub-footer class="sub-footer" />
-    <create-new-article-button class="is-fixed-button" @click="moveToNewArticlePage"/>
-    <the-loader :isLoading="!recommendedArticles.isLastPage"/>
-    <app-footer class="app-footer"/>
+    <the-loader :is-loading="!recommendedArticles.isLastPage" />
+    <app-footer class="app-footer" />
   </div>
 </template>
 
@@ -23,11 +45,11 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
-import EyecatchArticleCardList from '../organisms/EyecatchArticleCardList'
+import NewTopicCandidates from '../organisms/NewTopicCandidates'
+import TipEyecatchArticleCardList from '../organisms/TipEyecatchArticleCardList'
 import RecommendedArticleCardList from '../organisms/RecommendedArticleCardList'
 import HowToUseImage from '../organisms/HowToUseImage'
 import SubFooter from '../organisms/SubFooter'
-import CreateNewArticleButton from '../atoms/CreateNewArticleButton'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -36,11 +58,11 @@ export default {
   components: {
     AppHeader,
     DefaultHeaderNav,
-    EyecatchArticleCardList,
+    NewTopicCandidates,
+    TipEyecatchArticleCardList,
     RecommendedArticleCardList,
     HowToUseImage,
     SubFooter,
-    CreateNewArticleButton,
     TheLoader,
     AppFooter
   },
@@ -51,7 +73,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('article', ['eyecatchArticles', 'recommendedArticles']),
+    ...mapGetters('article', ['tipEyecatchArticles', 'recommendedArticles']),
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
@@ -142,28 +164,40 @@ export default {
   grid-column-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header app-header                 app-header                 app-header"
-    "nav        nav                        nav                        nav       "
-    "...        eyecatch-article-card-list eyecatch-article-card-list ...       "
-    "...        article-card-list          article-card-list          ...       "
-    "...        article-card-list          article-card-list          ...       "
-    "...        loader                     loader                     ...       "
-    "app-footer app-footer                 app-footer                 app-footer";
+    "app-header app-header                     app-header                     app-header"
+    "nav        nav                            nav                            nav       "
+    "...        candidates                     candidates                     ...       "
+    "...        recommended-tip-ranking        recommended-tip-ranking        ...       "
+    "...        ...                            ...                            ...       "
+    "...        tip-eyecatch-article-card-list tip-eyecatch-article-card-list ...       "
+    "...        recommended-like-ranking       recommended-like-ranking       ...       "
+    "...        ...                            ...                            ...       "
+    "...        article-card-list              article-card-list              ...       "
+    "...        article-card-list              article-card-list              ...       "
+    "...        loader                         loader                         ...       "
+    "app-footer app-footer                     app-footer                     app-footer";
 
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
+  grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px auto 1fr 75px 75px;
   min-height: 100vh;
 
   &.is-show-guide {
-    grid-template-rows: 100px minmax(50px, min-content) auto 700px minmax(100px, 1fr) 75px 75px;
+    grid-template-rows:
+      100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px 652px minmax(100px, 1fr)
+      75px 75px;
     /* prettier-ignore */
     grid-template-areas:
-      "app-header app-header                 app-header                 app-header"
-      "nav        nav                        nav                        nav       "
-      "...        eyecatch-article-card-list eyecatch-article-card-list ...       "
-      "...        article-card-list          how-to-use-image           ...       "
-      "...        article-card-list          sub-footer                 ...       "
-      "...        loader                     loader                     ...       ";
+      "app-header app-header                     app-header                     app-header"
+      "nav        nav                            nav                            nav       "
+      "...        candidates                     candidates                     ...       "
+      "...        recommended-tip-ranking        recommended-tip-ranking        ...       "
+      "...        ...                            ...                            ...       "
+      "...        tip-eyecatch-article-card-list tip-eyecatch-article-card-list ...       "
+      "...        recommended-like-ranking       recommended-like-ranking       ...       "
+      "...        ...                            ...                            ...       "
+      "...        article-card-list              how-to-use-image               ...       "
+      "...        article-card-list              sub-footer                     ...       "
+      "...        loader                         loader                         ...       ";
 
     .how-to-use-image,
     .sub-footer {
@@ -180,7 +214,7 @@ export default {
   }
 
   .default-header-nav {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   .how-to-use-image,
@@ -188,7 +222,7 @@ export default {
     display: none;
   }
 
-  .eyecatch-article-card-list {
+  .tip-eyecatch-article-card-list {
     margin-bottom: 30px;
   }
 
@@ -196,6 +230,42 @@ export default {
     display: none;
     grid-area: eyecatch-article-card-list-sp;
   }
+}
+
+.area-recommended-tip-ranking {
+  grid-area: recommended-tip-ranking;
+  border-bottom: 1px solid rgba(#cecece, 0.3);
+  display: flex;
+  justify-content: space-between;
+}
+
+.label {
+  color: #333333;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #6e6e6e;
+}
+
+.more-link-pc {
+  color: #6e6e6e;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.area-more-link {
+  display: none;
+}
+
+.more-link-sp {
+  display: none;
+}
+
+.area-recommended-like-ranking {
+  grid-area: recommended-like-ranking;
+  border-bottom: 1px solid rgba(#cecece, 0.3);
+  display: flex;
+  justify-content: space-between;
 }
 
 .is-fixed-button {
@@ -207,27 +277,37 @@ export default {
 @media screen and (max-width: 1296px) {
   .top-page {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px minmax(50px, min-content) auto 1fr 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
-      "app-header app-header                 app-header"
-      "nav        nav                        nav       "
-      "...        eyecatch-article-card-list ...       "
-      "...        article-card-list          ...       "
-      "...        loader                     ...       "
-      "app-footer app-footer                 app-footer";
+      "app-header app-header                     app-header"
+      "nav        nav                            nav       "
+      "...        candidates                     ...       "
+      "...        recommended-tip-ranking        ...       "
+      "...        ...                            ...       "
+      "...        tip-eyecatch-article-card-list ...       "
+      "...        recommended-like-ranking       ...       "
+      "...        ...                            ...       "
+      "...        article-card-list              ...       "
+      "...        loader                         ...       "
+      "app-footer app-footer                     app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px minmax(50px, min-content) auto auto 1fr 75px 75px;
+      grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px auto 1fr 75px 75px;
       /* prettier-ignore */
       grid-template-areas:
-        "app-header app-header                 app-header"
-        "nav        nav                        nav       "
-        "...        eyecatch-article-card-list ...       "
-        "...        how-to-use-image           ...       "
-        "...        article-card-list          ...       "
-        "...        loader                     ...       "
-        "app-footer app-footer                 app-footer";
+        "app-header app-header                     app-header"
+        "nav        nav                            nav       "
+        "...        candidates                     ...       "
+        "...        recommended-tip-ranking        ...       "
+        "...        ...                            ...       "
+        "...        tip-eyecatch-article-card-list ...       "
+        "...        recommended-like-ranking       ...       "
+        "...        ...                            ...       "
+        "...        how-to-use-image               ...       "
+        "...        article-card-list              ...       "
+        "...        loader                         ...       "
+        "app-footer app-footer                     app-footer";
 
       .sub-footer {
         display: none;
@@ -247,23 +327,42 @@ export default {
 @media screen and (max-width: 920px) {
   .top-page {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 80px auto 1fr 75px 75px;
+    grid-template-rows: 100px 80px 50px 26px 30px auto 60px 26px 30px 1fr 75px minmax(
+        75px,
+        min-content
+      );
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
       "nav        nav                           nav       "
+      "candidates candidates                    candidates"
+      "...        recommended-tip-ranking       ...       "
+      "...        ...                           ...       "
       "...        eyecatch-article-card-list-sp ...       "
+      "...        more-link                     ...       "
+      "...        recommended-like-ranking      ...       "
+      "...        ...                           ...       "
       "...        article-card-list             ...       "
       "...        loader                        ...       "
       "app-footer app-footer                    app-footer";
 
     &.is-show-guide {
+      grid-template-rows: 100px 80px 50px auto 26px 30px auto 60px 26px 30px 1fr 75px minmax(
+          75px,
+          min-content
+        );
       /* prettier-ignore */
       grid-template-areas:
         "app-header app-header                    app-header"
         "nav        nav                           nav       "
+        "candidates candidates                    candidates"
         "...        how-to-use-image              ...       "
+        "...        recommended-tip-ranking       ...       "
+        "...        ...                           ...       "
         "...        eyecatch-article-card-list-sp ...       "
+        "...        more-link                     ...       "
+        "...        recommended-like-ranking      ...       "
+        "...        ...                           ...       "
         "...        article-card-list             ...       "
         "...        loader                        ...       "
         "app-footer app-footer                    app-footer";
@@ -272,39 +371,68 @@ export default {
     .eyecatch-article-card-list-sp {
       display: grid;
       grid-area: eyecatch-article-card-list-sp;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    .eyecatch-article-card-list {
+    .tip-eyecatch-article-card-list {
       display: none;
     }
+  }
+
+  .area-more-link {
+    grid-area: more-link;
+    display: block;
+  }
+
+  .more-link-pc {
+    display: none;
+  }
+
+  .more-link-sp {
+    display: block;
+    color: #6e6e6e;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: right;
   }
 }
 
 @media screen and (max-width: 550px) {
   .top-page {
-    grid-template-rows: 66px minmax(50px, min-content) auto 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) 36px 30px 26px auto 60px 26px 30px 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
-      "app-header       app-header                    app-header"
-      "nav              nav                           nav       "
-      "...              eyecatch-article-card-list-sp ...       "
-      "...              article-card-list             ...       "
-      "...              loader                        ...       "
-      "app-footer       app-footer                    app-footer";
+      "app-header app-header                    app-header"
+      "nav        nav                           nav       "
+      "candidates candidates                    candidates"
+      "...        ...                           ...       "
+      "...        recommended-tip-ranking       ...       "
+      "...        eyecatch-article-card-list-sp ...       "
+      "...        more-link                     ...       "
+      "...        recommended-like-ranking      ...       "
+      "...        ...                           ...       "
+      "...        article-card-list             ...       "
+      "...        loader                        ...       "
+      "app-footer app-footer                    app-footer";
     grid-gap: 0;
 
     &.is-show-guide {
-      grid-template-rows: 66px minmax(50px, min-content) auto auto 1fr 75px min-content;
+      grid-template-rows: 66px minmax(50px, min-content) 44px auto 30px 26px auto 60px 26px 30px 1fr 75px min-content;
       /* prettier-ignore */
       grid-template-areas:
-        "app-header       app-header                    app-header"
-        "nav              nav                           nav       "
+        "app-header       app-header                    app-header      "
+        "nav              nav                           nav             "
+        "candidates       candidates                    candidates      "
         "how-to-use-image how-to-use-image              how-to-use-image"
-        "...              eyecatch-article-card-list-sp ...       "
-        "...              article-card-list             ...       "
-        "...              loader                        ...       "
-        "app-footer       app-footer                    app-footer";
+        "...              ...                           ...             "
+        "...              recommended-tip-ranking       ...             "
+        "...              eyecatch-article-card-list-sp ...             "
+        "...              more-link                     ...             "
+        "...              recommended-like-ranking      ...             "
+        "...              ...                           ...             "
+        "...              article-card-list             ...             "
+        "...              loader                        ...             "
+        "app-footer       app-footer                    app-footer      ";
 
       .how-to-use-image {
         margin: 12px 0 0;
@@ -315,13 +443,8 @@ export default {
       margin-bottom: 0;
     }
 
-    .eyecatch-article-card-list-sp,
-    .recommended-article-card-list {
-      margin-top: 24px;
-    }
-
     .eyecatch-article-card-list-sp {
-      margin-bottom: 0;
+      margin-top: 24px;
     }
   }
 }

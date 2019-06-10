@@ -2,28 +2,35 @@
   <div>
     <div class="modal-body">
       <p class="announce">
-        ユーザーIDを入力して<span class="br"/>登録を完了してください
+        ユーザーIDを入力して<span class="br" />登録を完了してください
       </p>
       <form class="signup-form" @keypress.enter.prevent="onSubmit">
-        <div class="signup-form-group" :class="{ 'error': hasUserIdError }">
+        <div class="signup-form-group" :class="{ error: hasUserIdError }">
           <label class="signup-form-label">ユーザーID</label>
           <input
+            ref="userId"
             class="signup-form-input"
             type="text"
             placeholder="半角英数字3文字以上"
             maxlength="30"
             autofocus
-            ref="userId"
             @input="setUserId"
             @blur="showError('userId')"
-            @focus="resetError('userId')">
-          <p class="error-message" v-if="showErrorUserId && !showErrorUserIdMinLength">半角英数字と-（ハイフン）のみ利用できます</p>
-          <p class="error-message" v-if="showErrorUserIdMinLength && showErrorUserId">3文字以上の英数字で入力してください</p>
+            @focus="resetError('userId')"
+          >
+          <p v-if="showErrorUserId && !showErrorUserIdMinLength" class="error-message">
+            半角英数字と-（ハイフン）のみ利用できます
+          </p>
+          <p v-if="showErrorUserIdMinLength && showErrorUserId" class="error-message">
+            3文字以上の英数字で入力してください
+          </p>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <p class="error-message">{{ errorMessage }}</p>
+      <p class="error-message">
+        {{ errorMessage }}
+      </p>
       <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
         登録を完了する
       </app-button>
@@ -41,13 +48,13 @@ function userId(value) {
 }
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       errorMessage: ''
     }
-  },
-  components: {
-    AppButton
   },
   computed: {
     showErrorUserIdMinLength() {
@@ -104,6 +111,7 @@ export default {
 
       try {
         await this.postUserId({ userId })
+        await this.refreshUserSession()
         await this.getUserSession()
         this.setSignUpAuthFlowInputUserIdModal({ isShow: false })
         this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
@@ -128,7 +136,8 @@ export default {
       'postUserId',
       'setSignUpAuthFlowInputUserIdModal',
       'setSignUpAuthFlowInputPhoneNumberModal',
-      'getUserSession'
+      'getUserSession',
+      'refreshUserSession'
     ])
   }
 }

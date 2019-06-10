@@ -1,16 +1,23 @@
 <template>
   <div class="session">
-    <nuxt-link to="/search?context=article" @click.native="resetSearchStates">
+    <nuxt-link
+      class="search-icon-box"
+      to="/search?context=article"
+      @click.native="resetSearchStates"
+    >
       <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="search">
     </nuxt-link>
     <span class="login" @click="showLoginModal">ログイン</span>
-    <app-button class="sign-up" @click="showSignUpModal">新規登録</app-button>
+    <app-button class="sign-up" @click="showSignUpModal">
+      新規登録
+    </app-button>
   </div>
 </template>
 
 <script>
-import AppButton from '../atoms/AppButton'
 import { mapActions } from 'vuex'
+import AppButton from '../atoms/AppButton'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {
@@ -30,6 +37,7 @@ export default {
     },
     showLoginModal() {
       this.setLoginModal({ showLoginModal: true })
+      removeOAuthParams()
     },
     ...mapActions('user', [
       'setSignUpModal',
@@ -47,17 +55,24 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
 .session {
   grid-area: session;
   align-items: center;
   display: flex;
 
-  .search-icon {
+  .search-icon-box {
+    align-items: center;
     cursor: pointer;
-    margin-right: 40px;
-    width: 24px;
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    margin-right: 32px;
+    width: 40px;
+
+    .search-icon {
+      width: 24px;
+    }
   }
 
   .login {
@@ -86,10 +101,13 @@ export default {
 
 @mixin spStyles() {
   .session {
-    .search-icon {
-      display: block;
-      margin-right: 20px;
-      width: 16px;
+    .search-icon-box {
+      margin-right: 8px;
+
+      .search-icon {
+        display: block;
+        width: 16px;
+      }
     }
 
     .login {

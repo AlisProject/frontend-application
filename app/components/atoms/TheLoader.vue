@@ -1,7 +1,9 @@
 <template>
   <div class="area-loader">
     <no-ssr>
-      <div class="loader" v-if="isLoading">Loading...</div>
+      <div v-if="isLoading" class="loader">
+        Loading...
+      </div>
     </no-ssr>
   </div>
 </template>

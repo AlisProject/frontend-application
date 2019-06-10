@@ -1,5 +1,5 @@
 const get = {
-  '/users/potato4d/info': {
+  '/api/users/potato4d/info': {
     user_display_name: 'potato4d',
     user_id: 'potato4d',
     self_introduction: 'Frontend technical adviser of ALISMedia.',

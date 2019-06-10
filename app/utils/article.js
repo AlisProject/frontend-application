@@ -1,6 +1,7 @@
 /* global iframely */
-import axios from './axios'
 import { XmlEntities } from 'html-entities'
+import { BigNumber } from 'bignumber.js'
+import axios from './axios'
 
 export function createInsertPluginTemplateFromUrl(url) {
   // This method returns DOM string like this.
@@ -343,4 +344,70 @@ export function resizeTextarea({ targetElement, height, lineHeight, defaultHeigh
       }
     }
   })
+}
+
+export function isV2(article = {}) {
+  if (article.version === undefined) return false
+  const isV2 = article.version >= 2 && article.version < 3
+  return isV2
+}
+
+export function showEmbed() {
+  document.querySelectorAll('oembed[url]').forEach(async (element) => {
+    const url = element.attributes.url.value
+
+    const isTwitterResource =
+      url === 'https://twitter.com' || url.startsWith('https://twitter.com/')
+    const isTweet = isTwitterResource && url.split('/')[4] === 'status'
+    const isGistResource = url.startsWith('https://gist.github.com/')
+    const isYouTubeResource = isYouTubeVideoURL(url)
+    const isFacebookResource = isFacebookPostURL(url)
+    const isInstagramResource = isInstagramURL(url)
+    let result
+
+    try {
+      result = (await getResourceFromIframely(isTwitterResource ? 'oembed' : 'iframely', url)).data
+    } catch (error) {
+      console.error(error)
+      return
+    }
+
+    if (
+      isTweet ||
+      isGistResource ||
+      isYouTubeResource ||
+      isFacebookResource ||
+      isInstagramResource
+    ) {
+      iframely.load(element, url)
+      return
+    }
+
+    if (isTwitterResource) {
+      const { title, description } = result
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
+
+      element.innerHTML = getTwitterProfileTemplate({ ...result })
+    } else {
+      const { title, description } = result.meta
+      const hasTitleOrDescription = title !== undefined || description !== undefined
+      if (!hasTitleOrDescription) return
+
+      element.innerHTML = getIframelyEmbedTemplate({ ...result })
+    }
+  })
+}
+
+export function getBodyWithImageOptimizationParam(body, domain, userId, articleId) {
+  const pattern = String.raw`<(img( alt="")? src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
+  const regexp = new RegExp(pattern, 'g')
+  return body.replace(regexp, '<$1?d=800x2160">')
+}
+
+export function formatTokenAmount(tokenAmount = 0) {
+  const stringTokenAmount = tokenAmount.toString()
+  const formatNumber = 10 ** 18
+  const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
+  return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
 }

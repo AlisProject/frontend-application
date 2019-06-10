@@ -2,13 +2,15 @@
   <div class="modal-body">
     <div class="wrapper">
       <p class="description">
-        アカウント登録が<span class="br"/>完了しました。<br>
-        記事を書いたりいいねをして<span class="br"/>ALISを獲得しましょう。
+        アカウント登録が<span class="br" />完了しました。<br>
+        記事を書いたりいいねをして<span class="br" />ALISを獲得しましょう。
       </p>
-      <app-button class="submit" @click="submit">
-        記事を作成する
+      <app-button class="submit" @click.native="close">
+        <nuxt-link to="/me/articles/new">
+          記事を作成する
+        </nuxt-link>
       </app-button>
-      <app-button class="close" @click="close">
+      <app-button class="close" type="secondary" @click="close">
         閉じる
       </app-button>
     </div>
@@ -24,9 +26,6 @@ export default {
     AppButton
   },
   methods: {
-    submit() {
-      location.href = '/me/articles/new'
-    },
     close() {
       this.setSignUpAuthFlowModal({ showSignUpAuthFlowModal: false })
       this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
@@ -71,16 +70,7 @@ export default {
 
   .close {
     margin: 20px 0 60px;
-    background: #fff;
-    border: 1px solid #0086cc;
-    color: #0086cc;
     font-weight: bold;
-    box-shadow: none;
-
-    &:hover,
-    &:focus {
-      background: #fff;
-    }
   }
 }
 
@@ -96,28 +86,27 @@ export default {
     background-size: auto 320px;
 
     .description {
-      margin: 340px 0 20px;
-      width: 328px;
+      font-size: 20px;
+      margin: 340px 0 0;
     }
 
     .submit {
-      display: none;
+      margin: 30px 0 0;
+    }
+
+    .close {
+      margin: 10px 0 60px;
     }
   }
 }
 
 @media screen and (max-width: 320px) {
   .wrapper {
-    background-size: auto 274px;
+    background-size: auto 240px;
 
     .description {
-      margin: 290px 0 20px;
-      width: 288px;
-      font-size: 20px;
-    }
-
-    .submit {
-      margin: 30px 0 0;
+      margin: 260px 0 0;
+      font-size: 18px;
     }
   }
 }

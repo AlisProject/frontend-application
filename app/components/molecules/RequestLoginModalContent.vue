@@ -3,16 +3,12 @@
     <div class="wrapper">
       <p class="description">
         {{ confirmText }}<br>
-        新規登録・ログインを<span class="br"/>行いましょう
+        新規登録・ログイン<span class="br" />しましょう
       </p>
-      <app-button
-        @click="showSignUpModal"
-        class="signup-button">
+      <app-button class="signup-button" @click="showSignUpModal">
         新規登録する
       </app-button>
-      <app-button
-        @click="showLoginModal"
-        class="login-button">
+      <app-button class="login-button" @click="showLoginModal">
         ログインする
       </app-button>
     </div>
@@ -22,6 +18,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import AppButton from '../atoms/AppButton'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   components: {
@@ -31,17 +28,19 @@ export default {
     confirmText() {
       switch (this.requestLoginModal.requestType) {
         case 'articleCreate':
-          return '記事の作成を行うため、'
+          return '記事の作成を行うために'
         case 'articleLike':
-          return '記事へいいねを行うため、'
+          return '記事へいいねを行うために'
         case 'articleComment':
-          return '記事へのコメントを行うため、'
+          return '記事へのコメントを行うために'
         case 'articleCommentLike':
-          return 'コメントへいいねを行うため、'
+          return 'コメントへいいねを行うために'
         case 'articleTip':
-          return 'ALISを贈るため、'
+          return 'ALISを贈るために'
         case 'articleReport':
-          return '記事を報告するため、'
+          return '記事を報告するために'
+        case 'purchaseArticle':
+          return '記事を購入するために'
         default:
           return ''
       }
@@ -56,6 +55,7 @@ export default {
     showLoginModal() {
       this.setRequestLoginModal({ isShow: false })
       this.setLoginModal({ showLoginModal: true })
+      removeOAuthParams()
     },
     ...mapActions('user', ['setSignUpModal', 'setLoginModal', 'setRequestLoginModal'])
   }
@@ -110,24 +110,23 @@ export default {
   }
 
   .description {
+    font-size: 20px;
     margin: 340px 0 0;
-    width: 328px;
+  }
+
+  .signup-button {
+    margin: 30px auto 0;
   }
 }
 
 @media screen and (max-width: 320px) {
   .wrapper {
-    background-size: auto 274px;
+    background-size: auto 240px;
   }
 
   .description {
-    margin: 290px 0 0;
-    width: 288px;
-    font-size: 20px;
-  }
-
-  .signup-button {
-    margin: 30px auto 0;
+    font-size: 18px;
+    margin: 260px 0 0;
   }
 }
 </style>

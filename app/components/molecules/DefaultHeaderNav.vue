@@ -1,9 +1,7 @@
 <template>
   <nav class="area-nav">
     <div class="area-nav-links" @scroll="handleHorizontalScroll">
-      <nuxt-link
-        to="/"
-        class="nav-link area-topic0">
+      <nuxt-link to="/" class="nav-link area-topic0">
         <span class="topic-display-name">
           オススメ
         </span>
@@ -14,10 +12,13 @@
         :data-topic="topic.name"
         :style="`background-image: url(${topicImages[topic.name]})`"
         :to="to(topic.name)"
-        :class="`nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`"
-        @click.native="resetData">
+        :class="
+          `nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`
+        "
+        @click.native="resetData"
+      >
         <span class="topic-display-name">
-          {{topic.display_name}}
+          {{ topic.display_name }}
         </span>
       </nuxt-link>
     </div>
@@ -244,6 +245,13 @@ $topicCount: 10;
     &:before {
       background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
     }
+
+    &.area-topic0 {
+      &:before {
+        background-position-x: 20px;
+        background-position-y: 5px;
+      }
+    }
   }
 
   &.area-topic0 {
@@ -253,8 +261,8 @@ $topicCount: 10;
       background-image: none;
       background: url('~assets/images/pc/topic/icon_category_recomend.png') no-repeat;
       background-size: 48px;
-      background-position-x: 20px;
-      background-position-y: 5px;
+      background-position-x: 22px;
+      background-position-y: 7px;
     }
   }
 }
@@ -305,7 +313,7 @@ $topicCount: 10;
       padding-left: 0;
 
       @supports (-webkit-overflow-scrolling: touch) {
-        padding: 16px 0 0 0;
+        padding: 10px 0;
       }
     }
   }

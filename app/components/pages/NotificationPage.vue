@@ -1,10 +1,12 @@
 <template>
   <div class="notification-list-container">
     <app-header />
-    <h1 class="area-title">{{ title }}</h1>
-    <notification-card-list :notifications="notifications"/>
-    <the-loader :isLoading="hasNotificationsLastEvaluatedKey"/>
-    <app-footer/>
+    <h1 class="area-title">
+      {{ title }}
+    </h1>
+    <notification-card-list :notifications="notifications" />
+    <the-loader :is-loading="hasNotificationsLastEvaluatedKey" />
+    <app-footer />
   </div>
 </template>
 
@@ -27,7 +29,15 @@ export default {
     title() {
       return 'お知らせ'
     },
-    ...mapGetters('user', ['notifications', 'hasNotificationsLastEvaluatedKey', 'currentUserInfo']),
+    hasToken() {
+      return this.alisToken !== '0'
+    },
+    ...mapGetters('user', [
+      'notifications',
+      'hasNotificationsLastEvaluatedKey',
+      'currentUserInfo',
+      'alisToken'
+    ]),
     ...mapGetters('presentation', ['notificationListScrollHeight'])
   },
   mounted() {
@@ -37,10 +47,10 @@ export default {
       this.$el.scrollTop = this.notificationListScrollHeight
     }
 
-    // if (!this.currentUserInfo.is_got_token) {
-    //   this.setFirstProcessModal({ isShow: true })
-    //   this.setFirstProcessGotTokeneModal({ isShow: true })
-    // }
+    if (this.hasToken && !this.currentUserInfo.is_got_token) {
+      this.setFirstProcessModal({ isShow: true })
+      this.setFirstProcessGotTokeneModal({ isShow: true })
+    }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.infiniteScroll)
@@ -119,7 +129,7 @@ export default {
 @media screen and (max-width: 640px) {
   .notification-list-container {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 40px 1fr 75px min-content;
+    grid-template-rows: 66px 40px 1fr 75px min-content;
   }
 
   .area-title {

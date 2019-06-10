@@ -5,7 +5,7 @@ export default async ({ $axios, store, env }) => {
   } catch (e) {}
 
   $axios.onRequest(async (req) => {
-    if (req.url.startsWith('/me/')) {
+    if (req.url.startsWith('/api/me/')) {
       try {
         await store.dispatch('user/getUserSession')
         const currentUser = localStorage.getItem(
@@ -14,7 +14,7 @@ export default async ({ $axios, store, env }) => {
         const token = localStorage.getItem(
           `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
         )
-        req.headers.common['Authorization'] = token
+        req.headers.common.Authorization = token
       } catch (e) {}
     }
     return req

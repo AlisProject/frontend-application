@@ -1,53 +1,60 @@
 <template>
   <nuxt-link
     class="recommended-article-card"
-    :to="`/${article.user_id}/articles/${article.article_id}`">
+    :to="`/${article.user_id}/articles/${article.article_id}`"
+  >
+    <img
+      v-if="isTipRanking"
+      :src="require(`~/assets/images/pc/article/m_ribbon_${order}.png`)"
+      class="ribbon"
+    >
+    <div class="eye-catch-image-box">
+      <img
+        v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
+        class="eye-catch-image"
+        src="~assets/images/pc/common/thumbnail_noimg.png"
+      >
+      <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
+    </div>
     <span class="topic">
       {{ topicDisplayName }}
+    </span>
+    <span v-if="isPaidArticle" class="paid-article">
+      有料
     </span>
     <h2 class="title">
       {{ decodedTitle }}
     </h2>
-    <div class="eye-catch-image-box">
-      <img
-        class="eye-catch-image"
-        src="~assets/images/pc/common/thumbnail_noimg.png"
-        v-if="article.eye_catch_url === null">
-      <img
-        class="eye-catch-image"
-        :src="article.eye_catch_url"
-        v-else>
+    <no-ssr>
+      <nuxt-link :to="`/users/${article.user_id}`" class="article-data-box">
+        <span class="username">
+          {{ decodedUsername }}
+        </span>
+        <span class="published-at">
+          {{ formattedPublishedAt }}
+        </span>
+      </nuxt-link>
+    </no-ssr>
+    <div class="token-info">
+      <div class="icons">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_like.png">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_tip.png">
+      </div>
+      <div class="amounts">
+        <span class="like-token-amount">
+          {{ article.alisToken | formatTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+        <span class="tip-token-amount">
+          {{ article.tip_value | formatTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+      </div>
     </div>
-    <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="profile-icon-box">
-        <img
-          class="profile-icon"
-          :src="article.userInfo.icon_image_url"
-          v-if="article.userInfo.icon_image_url !== undefined">
-        <img
-          class="profile-icon"
-          src="~assets/images/pc/common/icon_user_noimg.png"
-          v-else>
-      </nuxt-link>
-    </no-ssr>
-    <no-ssr>
-      <nuxt-link :to="`/users/${article.user_id}`" class="username">
-        {{ decodedUsername }}
-      </nuxt-link>
-    </no-ssr>
-    <span class="published-at">
-      {{ formattedPublishedAt }}
-    </span>
-    <span class="token-amount">
-      {{ formattedTokenAmount }}
-    </span>
   </nuxt-link>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { BigNumber } from 'bignumber.js'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, formatTokenAmount } from '~/utils/article'
 import { formatDate } from '~/utils/format'
 
 export default {
@@ -55,6 +62,15 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    isTipRanking: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    order: {
+      type: String,
+      required: false
     }
   },
   computed: {
@@ -74,15 +90,13 @@ export default {
       const topic = this.topics.find((topic) => topic.name === this.article.topic)
       return topic.display_name
     },
-    formattedTokenAmount() {
-      const tokenAmount = this.article.alisToken
-      if (tokenAmount === undefined) return
-      const stringTokenAmount = tokenAmount.toString()
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
+    isPaidArticle() {
+      return !!this.article.price
     },
     ...mapGetters('article', ['topics'])
+  },
+  filters: {
+    formatTokenAmount
   }
 }
 </script>
@@ -91,35 +105,29 @@ export default {
 .recommended-article-card {
   @include cassette-shadow();
   border-radius: 4px;
-  height: 320px;
+  height: 296px;
   position: relative;
   text-decoration: none;
   width: 340px;
 }
 
-.topic,
+.ribbon,
 .eye-catch-image-box,
+.topic,
+.paid-article,
 .title,
-.profile-icon-box,
+.article-data-box,
 .username,
 .published-at,
-.token-amount {
+.token-info {
   position: absolute;
 }
 
-.topic {
-  color: red;
-  height: 12px;
-  display: flex;
-  align-items: center;
-  color: #6e6e6e;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 0.6px;
-  border-left: 2px solid #0086cc;
-  padding-left: 6px;
-  top: 20px;
-  left: 22px;
+.ribbon {
+  width: 108px;
+  right: -8px;
+  top: -8px;
+  z-index: 1;
 }
 
 .eye-catch-image-box {
@@ -127,7 +135,7 @@ export default {
   overflow: hidden;
   width: 296px;
   height: 148px;
-  top: 44px;
+  top: 24px;
   left: 22px;
 
   .eye-catch-image {
@@ -138,13 +146,35 @@ export default {
   }
 }
 
+.topic,
+.paid-article {
+  text-align: center;
+  color: #9e9e9e;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.6px;
+  padding: 4px;
+  box-sizing: border-box;
+  top: 152px;
+  background: #fff;
+}
+
+.topic {
+  width: 100px;
+  left: 26px;
+}
+
+.paid-article {
+  width: 40px;
+  left: 130px;
+}
+
 .title {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   color: #555555;
   display: -webkit-box;
   font-size: 14px;
-  font-weight: bold;
   font-weight: bold;
   height: 48px;
   left: 22px;
@@ -154,58 +184,77 @@ export default {
   overflow: hidden;
   text-decoration: none;
   text-overflow: ellipsis;
-  top: 204px;
+  top: 184px;
   width: 296px;
 }
 
-.profile-icon-box {
-  height: 36px;
-  bottom: 20px;
-  left: 20px;
-
-  .profile-icon {
-    border-radius: 50%;
-    height: 36px;
-    width: 36px;
-  }
+.article-data-box {
+  width: 220px;
+  height: 46px;
+  bottom: 14px;
+  left: 22px;
 }
 
 .username,
-.published-at,
-.token-amount {
+.published-at {
   color: #6e6e6e;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.8px;
 }
 
+.like-token-amount,
+.tip-token-amount {
+  color: #333333;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: right;
+}
+
 .username {
-  bottom: 40px;
-  left: 72px;
+  color: #9e9e9e;
+  font-weight: bold;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 190px;
   text-decoration: none;
+  text-overflow: ellipsis;
+  top: 6px;
+  white-space: nowrap;
+  width: 168px;
 }
 
 .published-at {
-  bottom: 22px;
-  left: 72px;
+  color: #9e9e9e;
+  font-weight: bold;
+  bottom: 6px;
 }
 
-.token-amount {
-  align-items: center;
-  background: url('~assets/images/pc/common/icon_token_cassette.png') no-repeat;
-  background-size: 18px;
-  bottom: 0;
-  display: flex;
-  height: 18px;
-  margin: 0;
-  letter-spacing: 0.8px;
-  padding: 0 0 0 22px;
-  right: 20px;
+.token-info {
   bottom: 20px;
+  right: 20px;
+  display: flex;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  margin-right: 4px;
+}
+
+.icon {
+  width: 16px;
+}
+
+.amounts {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.unit {
+  color: #333333;
+  font-size: 8px;
+  font-weight: bold;
+  padding: 2px 0 0 0;
 }
 
 @media screen and (max-width: 320px) {

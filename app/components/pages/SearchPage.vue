@@ -1,74 +1,77 @@
 <template>
   <div class="search-page-container">
-    <app-header/>
-    <form @submit.prevent="search" class="area-search">
+    <app-header />
+    <form class="area-search" @submit.prevent="search">
       <input
+        ref="searchInput"
+        v-model.trim="inputText"
         type="text"
         class="form-input"
         required
         placeholder="ALIS内で検索する"
         maxlength="150"
-        v-model.trim="inputText"
-        ref="searchInput"
       >
       <img
-        @click="onClickSearch"
         class="search-icon"
-        :class="{ 'disabled': inputText === '' }"
+        :class="{ disabled: inputText === '' }"
         src="~assets/images/pc/common/icon_search.png"
+        @click="onClickSearch"
       >
     </form>
-    <nav class="area-nav" v-if="showNav">
+    <nav v-if="showNav" class="area-nav">
       <nuxt-link
-        :to="{ path: '/search', query: { context: 'article', q: query }}"
+        :to="{ path: '/search', query: { context: 'article', q: query } }"
         class="nav-link"
-        :class="{ 'selected': searchContentType === 'article' }"
-      >記事</nuxt-link>
+        :class="{ selected: searchContentType === 'article' }"
+      >
+        記事
+      </nuxt-link>
       <nuxt-link
-        :to="{ path: '/search', query: { context: 'tag', q: query }}"
+        :to="{ path: '/search', query: { context: 'tag', q: query } }"
         class="nav-link"
-        :class="{ 'selected': searchContentType === 'tag' }"
-      >タグ</nuxt-link>
+        :class="{ selected: searchContentType === 'tag' }"
+      >
+        タグ
+      </nuxt-link>
       <nuxt-link
-        :to="{ path: '/search', query: { context: 'user', q: query }}"
+        :to="{ path: '/search', query: { context: 'user', q: query } }"
         class="nav-link"
-        :class="{ 'selected': searchContentType === 'user' }"
-      >ユーザー</nuxt-link>
+        :class="{ selected: searchContentType === 'user' }"
+      >
+        ユーザー
+      </nuxt-link>
     </nav>
     <div class="area-search-result">
       <no-ssr>
         <div v-if="searchContentType === 'article'">
-          <p
-            class="no-result-message"
-            v-if="searchArticles.articles.length === 0"
-          >{{ searchArticles.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}</p>
-          <search-article-card-list :articles="searchArticles.articles" v-else/>
+          <p v-if="searchArticles.articles.length === 0" class="no-result-message">
+            {{ searchArticles.isFetching || !showNav ? '' : '該当する検索結果が存在しません。' }}
+          </p>
+          <search-article-card-list v-else :articles="searchArticles.articles" />
         </div>
         <div v-else-if="searchContentType === 'tag'">
-          <p
-            class="no-result-message"
-            v-if="searchTags.tags.length === 0"
-          >{{ searchTags.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}</p>
-          <search-tags :tags="searchTags.tags" v-else/>
+          <p v-if="searchTags.tags.length === 0" class="no-result-message">
+            {{ searchTags.isFetching || !showNav ? '' : '該当する検索結果が存在しません。' }}
+          </p>
+          <search-tags v-else :tags="searchTags.tags" />
         </div>
         <div v-else-if="searchContentType === 'user'">
-          <p
-            class="no-result-message"
-            v-if="searchUsers.users.length === 0"
-          >{{ searchUsers.isFetching || !showNav ? '' : '該当する検索結果が存在しません。'}}</p>
-          <search-user-card-list :users="searchUsers.users" v-else/>
+          <p v-if="searchUsers.users.length === 0" class="no-result-message">
+            {{ searchUsers.isFetching || !showNav ? '' : '該当する検索結果が存在しません。' }}
+          </p>
+          <search-user-card-list v-else :users="searchUsers.users" />
         </div>
       </no-ssr>
     </div>
     <the-loader
-      :isLoading="showNav && !searchArticles.isLastPage"
       v-if="searchContentType === 'article'"
+      :is-loading="showNav && !searchArticles.isLastPage"
     />
     <the-loader
-      :isLoading="showNav && !searchUsers.isLastPage"
       v-else-if="searchContentType === 'user'"
+      :is-loading="showNav && !searchUsers.isLastPage"
     />
-    <app-footer/>
+    <app-footer />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 # frontend-application
 [![CircleCI](https://circleci.com/gh/AlisProject/frontend-application.svg?style=svg)](https://circleci.com/gh/AlisProject/frontend-application)
 
-# Prerequisite 
+# Prerequisite
 - ndenv
 - yarn
 - serverless
@@ -17,6 +17,8 @@ vi .envrc # edit
 # allow
 direnv allow
 ```
+
+Also, you should use variables in `.envrc.sample.develop` when you are developing.
 
 # Build and deployment
 
@@ -49,3 +51,17 @@ yarn start
 ```bash
 yarn generate
 ```
+
+# AWS CodePipeline for deployment
+
+1. [Get GitHub access token](https://github.com/settings/tokens)
+1. `direnv edit`
+1. Deploy CloudFormation stack.
+
+```bash
+# Create S3 deploying bucket.
+aws s3 mb s3://${ALIS_APP_ID}-frontend-codepipeline-deploy-bucket
+
+# deploy
+./deploy_codepipeline.sh
+``` 

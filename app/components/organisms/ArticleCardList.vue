@@ -2,9 +2,10 @@
   <div class="area-article-card-list-container">
     <article-card
       v-for="article in articles"
-      :article="article"
       :key="article.id"
-      :linkTo="linkTo"/>
+      :article="article"
+      :link-to="linkTo"
+    />
   </div>
 </template>
 
@@ -25,7 +26,7 @@ export default {
   grid-area: article-card-list;
   grid-gap: 30px;
   grid-template-columns: repeat(3, 340px);
-  grid-template-rows: repeat(auto-fill, 340px);
+  grid-template-rows: repeat(auto-fill, 326px);
 }
 
 @media screen and (max-width: 1296px) {

@@ -2,11 +2,12 @@
   <div class="area-article-comment-reply-comments">
     <article-comment-reply-comment
       v-for="replyComment in replies"
-      :replyComment="replyComment"
-      :articleCommentReplyFormBoxPosition="articleCommentReplyFormBoxPosition"
+      :key="replyComment.comment_id"
+      :reply-comment="replyComment"
+      :article-comment-reply-form-box-position="articleCommentReplyFormBoxPosition"
+      :reply-info="replyInfo"
       @handle-reply="handleReply"
-      :replyInfo="replyInfo"
-      :key="replyComment.comment_id" />
+    />
   </div>
 </template>
 
@@ -14,6 +15,9 @@
 import ArticleCommentReplyComment from '../organisms/ArticleCommentReplyComment'
 
 export default {
+  components: {
+    ArticleCommentReplyComment
+  },
   props: {
     replies: {
       type: Array,
@@ -27,9 +31,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  components: {
-    ArticleCommentReplyComment
   },
   methods: {
     handleReply(replyInfo, isShowReplyTarget) {

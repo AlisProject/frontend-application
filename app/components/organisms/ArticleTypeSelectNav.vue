@@ -2,16 +2,18 @@
   <div class="area-article-type-select-nav">
     <nuxt-link
       class="nav-link"
-      :class="{ 'selected': isPopularArticles }"
+      :class="{ selected: isPopularArticles }"
+      :to="moveToPoplarArticles"
       @click="handleClickPopularArticlePath"
-      :to="moveToPoplarArticles">
+    >
       人気記事
     </nuxt-link>
     <nuxt-link
       class="nav-link"
-      :class="{ 'selected': isNewArticles }"
+      :class="{ selected: isNewArticles }"
+      :to="moveToNewArticles"
       @click="handleClickNewArticlePath"
-      :to="moveToNewArticles">
+    >
       新着記事
     </nuxt-link>
   </div>

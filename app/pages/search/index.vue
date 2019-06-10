@@ -1,7 +1,5 @@
 <template>
-  <no-ssr>
-    <search-page/>
-  </no-ssr>
+  <search-page />
 </template>
 
 <script>

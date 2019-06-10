@@ -1,5 +1,9 @@
 <template>
-  <app-modal :title="title" :showModalContent="showSignUpAuthFlowModal" :isShowCloseModalButton="isShowCloseModalButton">
+  <app-modal
+    :title="title"
+    :show-modal-content="showSignUpAuthFlowModal"
+    :is-show-close-modal-button="isShowCloseModalButton"
+  >
     <div slot="modal-content">
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
@@ -7,7 +11,9 @@
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
       <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
-      <sign-up-auth-flow-not-completed-phone-number-auth-modal v-if="isNotCompletedPhoneNumberAuthModal" />
+      <sign-up-auth-flow-not-completed-phone-number-auth-modal
+        v-if="isNotCompletedPhoneNumberAuthModal"
+      />
     </div>
   </app-modal>
 </template>

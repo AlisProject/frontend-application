@@ -1,13 +1,15 @@
 service:
   name: ${env:NUXT_API_GATEWAY_NAME}
 
-frameworkVersion: ">=1.26.1"
+frameworkVersion: '>=1.26.1'
 
 provider:
   name: aws
   runtime: nodejs8.10
   region: ${env:REGION}
   stage: prod
+  logs:
+    restApi: true
 
 package:
   excludeDevDependencies: true
@@ -15,34 +17,33 @@ package:
     - .**
     - .**/*
     - app/**
+    - tests/**
+    - coverage/**
     - LICENSE
     - README.md
     - package.json
+    - yarn-error.log
     - yarn.lock
-    - node_modules/prettier-eslint/**
-    - node_modules/babel**/**
-    - node_modules/caniuse-db/**
-    - node_modules/caniuse-lite/**
-    - node_modules/prettier/**
-    - node_modules/yargs/**
-    - node_modules/typescript/**
-    - node_modules/postcss**/**
-    - node_modules/cssnano/**
-    - node_modules/xxhashjs/**
-    - node_modules/jschardet/**
-    - node_modules/**/*.md
-    - node_modules/**/bin/**
   include:
     - app/static/part.js
     - server/**
-    - configs/**
     - nuxt.config.js
-    - node_modules/postcss/**
-    - node_modules/postcss-cssnext/**
-    - node_modules/postcss-import/**
-    - node_modules/postcss-import-resolver/**
-    - node_modules/postcss-loader/**
-    - node_modules/postcss-url/**
+    - .nuxt/**
+
+plugins:
+  - serverless-plugin-aws-alerts
+
+custom:
+  # serverless-plugin-aws-alerts
+  alerts:
+    stages:
+      - alis
+      - staging
+    topics:
+      alarm: "arn:aws:sns:ap-northeast-1:879243243508:AlarmToSlack"
+    definitions:
+      functionErrors:
+        treatMissingData: notBreaching
 
 functions:
   handler:
@@ -60,3 +61,5 @@ functions:
       - http:
           path: '{proxy+}'
           method: get
+    alarms:
+      - functionErrors

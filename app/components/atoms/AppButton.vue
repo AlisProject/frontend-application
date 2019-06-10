@@ -1,6 +1,6 @@
 <template>
-  <button class="app-button" :disabled="disabled" @click="callback($event)">
-    <slot />
+  <button class="app-button" :class="type" :disabled="disabled" @click="callback($event)">
+    <i v-if="isLoading" class="fa fa-spinner fa-pulse fa-fw" /><slot />
   </button>
 </template>
 
@@ -8,6 +8,16 @@
 export default {
   props: {
     disabled: {
+      type: Boolean,
+      required: false
+    },
+    type: {
+      type: String,
+      validator(val) {
+        return ['secondary'].includes(val)
+      }
+    },
+    isLoading: {
       type: Boolean,
       required: false
     }
@@ -63,6 +73,10 @@ export default {
     &:focus {
       background: #0086cc;
     }
+
+    a {
+      cursor: default;
+    }
   }
 
   a {
@@ -70,6 +84,36 @@ export default {
     display: block;
     text-decoration: none;
     width: 100%;
+  }
+
+  &.secondary {
+    background: #fff;
+    box-shadow: none;
+    border: 1px solid #0086cc;
+    color: #0086cc;
+
+    &:hover,
+    &:focus {
+      background: #fff;
+    }
+
+    &[disabled] {
+      box-shadow: none;
+      color: #0086cc;
+
+      &:hover,
+      &:focus {
+        background: #fff;
+      }
+
+      a {
+        cursor: default;
+      }
+    }
+
+    a {
+      color: #0086cc;
+    }
   }
 }
 </style>

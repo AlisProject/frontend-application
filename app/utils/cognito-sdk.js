@@ -5,7 +5,8 @@ import {
   CognitoUserAttribute,
   CognitoRefreshToken
 } from 'amazon-cognito-identity-js'
-import { config, CognitoIdentityServiceProvider } from 'aws-sdk'
+import AWS from 'aws-sdk/global'
+import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
 export default class CognitoSDK {
   constructor() {
@@ -14,7 +15,7 @@ export default class CognitoSDK {
       ClientId: process.env.CLIENT_ID
     }
     this.userPool = new CognitoUserPool(this.poolData)
-    config.region = process.env.REGION
+    AWS.config.region = process.env.REGION
   }
 
   getUserSession() {
@@ -34,9 +35,10 @@ export default class CognitoSDK {
         const { username: userId } = session.accessToken.payload
         const {
           email_verified: emailVerified,
-          phone_number_verified: phoneNumberVerified
+          phone_number_verified: phoneNumberVerified,
+          'custom:private_eth_address': privateEthAddress
         } = session.idToken.payload
-        resolve({ userId, emailVerified, phoneNumberVerified })
+        resolve({ userId, emailVerified, phoneNumberVerified, privateEthAddress })
       })
     })
   }

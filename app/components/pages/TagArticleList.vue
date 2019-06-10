@@ -10,13 +10,13 @@
       </span>
     </div>
     <div class="area-tag-articles">
-      <p class="no-result-message" v-if="tagArticles.articles.length === 0">
+      <p v-if="tagArticles.articles.length === 0" class="no-result-message">
         該当する記事が存在しません。
       </p>
-      <search-article-card-list :articles="tagArticles.articles" v-else/>
+      <search-article-card-list v-else :articles="tagArticles.articles" />
     </div>
-    <the-loader :isLoading="!tagArticles.isLastPage"/>
-    <app-footer/>
+    <the-loader :is-loading="!tagArticles.isLastPage" />
+    <app-footer />
   </div>
 </template>
 
@@ -34,11 +34,6 @@ export default {
     SearchArticleCardList,
     TheLoader,
     AppFooter
-  },
-  data() {
-    return {
-      isFetchingData: false
-    }
   },
   computed: {
     ...mapGetters('article', ['tagArticles']),
@@ -65,17 +60,10 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      if (this.isFetchingData) return
-      try {
-        this.isFetchingData = true
+      const isLastPage = this.tagArticles.isLastPage
+      if (isLastPage || !isScrollBottom()) return
 
-        const isLastPage = this.tagArticles.isLastPage
-        if (isLastPage || !isScrollBottom()) return
-
-        await this.getTagArticles({ tag: this.$route.params.tag })
-      } finally {
-        this.isFetchingData = false
-      }
+      await this.getTagArticles({ tag: this.$route.params.tag })
     },
     ...mapActions('article', ['getTagArticles']),
     ...mapActions('presentation', ['setTagArticlesScrollHeight'])
@@ -101,7 +89,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss" scoped>
 .tag-article-list {

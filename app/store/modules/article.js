@@ -1,5 +1,6 @@
 import { uniqBy } from 'lodash'
 import * as types from '../mutation-types'
+import { getBodyWithImageOptimizationParam } from '~/utils/article'
 
 const namespaced = true
 
@@ -14,6 +15,7 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
+  currentPrice: null,
   suggestedThumbnails: [],
   thumbnail: '',
   isSaving: false,
@@ -22,6 +24,8 @@ const state = () => ({
   draftArticlesLastEvaluatedKey: {},
   hasPublicArticlesLastEvaluatedKey: false,
   isEdited: false,
+  isEditedTitle: false,
+  isEditedBody: false,
   saveStatus: '',
   articleCommentsLastEvaluatedKey: {},
   articleCommentLikedCommentIds: [],
@@ -43,15 +47,29 @@ const state = () => ({
     currentTag: '',
     articles: [],
     page: 1,
-    isLastPage: false
+    isLastPage: false,
+    isFetching: false
   },
   isFetchedPublicArticle: false,
   eyecatchArticles: [],
+  tipEyecatchArticles: [],
   recommendedArticles: {
     articles: [],
     page: 1,
     isLastPage: false
-  }
+  },
+  purchasedArticleIds: [],
+  purchasedArticles: {
+    lastEvaluatedKey: {},
+    articles: []
+  },
+  isFetchedPurchasedArticle: false,
+  tipRankingArticles: {
+    articles: [],
+    page: 1,
+    isLastPage: false
+  },
+  supporters: []
 })
 
 const getters = {
@@ -63,7 +81,7 @@ const getters = {
   articleId: (state) => state.articleId,
   title: (state) => state.title,
   body: (state) => state.body,
-  suggestedThumbnails: (state) => state.suggestedThumbnails,
+  suggestedThumbnails: (state) => Array.from(new Set(state.suggestedThumbnails)),
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
   gotArticleData: (state) => state.gotArticleData,
@@ -73,6 +91,8 @@ const getters = {
   likesCount: (state) => state.likesCount,
   isLikedArticle: (state) => state.isLikedArticle,
   isEdited: (state) => state.isEdited,
+  isEditedTitle: (state) => state.isEditedTitle,
+  isEditedBody: (state) => state.isEditedBody,
   saveStatus: (state) => state.saveStatus,
   articleCommentsLastEvaluatedKey: (state) => state.articleCommentsLastEvaluatedKey,
   hasArticleCommentsLastEvaluatedKey: (state) =>
@@ -91,7 +111,46 @@ const getters = {
   hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
   isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
   eyecatchArticles: (state) => state.eyecatchArticles,
-  recommendedArticles: (state) => state.recommendedArticles
+  tipEyecatchArticles: (state) => {
+    const tipEyecatchArticles = [...state.tipEyecatchArticles]
+    const articleCount = tipEyecatchArticles.length
+    const fillCount = 3 - articleCount
+    // 投げ銭ランキングのアイキャッチ表示枠で、記事が3件未満のときは変わりの画像を表示する必要があるため、
+    // 画像の表示枠を null で埋めている。
+    return [...tipEyecatchArticles, ...new Array(fillCount).fill(null)]
+  },
+  recommendedArticles: (state) => {
+    const recommendedArticles = [...state.recommendedArticles.articles]
+    const removeTargetArticleIds = state.tipEyecatchArticles.map((article) => article.article_id)
+    const filteredRecommendedArticles = recommendedArticles.filter((recommendedArticle) => {
+      return !removeTargetArticleIds.includes(recommendedArticle.article_id)
+    })
+    return {
+      ...state.recommendedArticles,
+      articles: filteredRecommendedArticles
+    }
+  },
+  purchasedArticleIds: (state) => state.purchasedArticleIds,
+  purchasedArticles: (state) => {
+    return {
+      ...state.purchasedArticles,
+      hasLastEvaluatedKey: state.purchasedArticles.lastEvaluatedKey !== null
+    }
+  },
+  currentPrice: (state) => state.currentPrice,
+  isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle,
+  tipRankingArticles: (state) => {
+    const tipRankingArticles = [...state.tipRankingArticles.articles]
+    const removeTargetArticleIds = state.tipEyecatchArticles.map((article) => article.article_id)
+    const filteredTipRankingArticles = tipRankingArticles.filter((tipRankingArticle) => {
+      return !removeTargetArticleIds.includes(tipRankingArticle.article_id)
+    })
+    return {
+      ...state.tipRankingArticles,
+      articles: filteredTipRankingArticles
+    }
+  },
+  supporters: (state) => state.supporters
 }
 
 const actions = {
@@ -99,7 +158,7 @@ const actions = {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
       const limit = 12
-      const { Items: articles } = await this.$axios.$get('/articles/popular', {
+      const { Items: articles } = await this.$axios.$get('/api/articles/popular', {
         params: { topic, limit, page: state.page }
       })
       const articlesWithData = await Promise.all(
@@ -129,7 +188,7 @@ const actions = {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
       const limit = 12
-      const { Items: articles } = await this.$axios.$get('/articles/recent', {
+      const { Items: articles } = await this.$axios.$get('/api/articles/recent', {
         params: { topic, limit, page: state.page }
       })
       const articlesWithData = await Promise.all(
@@ -156,12 +215,14 @@ const actions = {
     }
   },
   async getUserInfo({ commit }, { userId }) {
-    const userInfo = await this.$axios.$get(`/users/${userId}/info`)
+    const userInfo = await this.$axios.$get(`/api/users/${userId}/info`)
     return userInfo
   },
   async getAlisToken({ commit }, { articleId }) {
     try {
-      const { alis_token: alisToken } = await this.$axios.$get(`/articles/${articleId}/alistoken`)
+      const { alis_token: alisToken } = await this.$axios.$get(
+        `/api/articles/${articleId}/alistoken`
+      )
       return alisToken
     } catch (error) {
       console.error(error)
@@ -169,20 +230,26 @@ const actions = {
     }
   },
   async getLikesCount({ commit }, { articleId }) {
-    const { count: likesCount } = await this.$axios.$get(`/articles/${articleId}/likes`)
+    const { count: likesCount } = await this.$axios.$get(`/api/articles/${articleId}/likes`)
     return likesCount
   },
   async getEditArticle({ commit }, { articleId }) {
-    const article = await this.$axios.$get(`/articles/${articleId}`)
+    const article = await this.$axios.$get(`/api/articles/${articleId}`)
     commit(types.SET_ARTICLE, { article })
   },
   async getEditDraftArticle({ commit }, { articleId }) {
     try {
-      const article = await this.$axios.$get(`/me/articles/${articleId}/drafts`)
+      const article = await this.$axios.$get(`/api/me/articles/${articleId}/drafts`)
+      // "/me/articles/drafts/article_id" への POST で記事が作成された直後、その記事データには body カラムがないため、
+      // article.body.replace がエラーとなってしまう。
+      // そこで、article.body の存在確認を行ってから article.body.replace の処理を行っている。
+      // また、article.body.replace は有料記事本文に含まれる有料エリアを示すラインを削除する処理である。
+      const body =
+        article.body && article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
-      commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE, { article: { ...article, body } })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
       commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
@@ -192,7 +259,13 @@ const actions = {
   },
   async getArticleDetail({ commit, dispatch }, { articleId }) {
     try {
-      const article = await this.$axios.$get(`/articles/${articleId}`)
+      const article = await this.$axios.$get(`/api/articles/${articleId}`)
+      const body = getBodyWithImageOptimizationParam(
+        article.body,
+        process.env.DOMAIN,
+        article.user_id,
+        articleId
+      )
       const [userInfo, alisToken, likesCount, comments] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
@@ -200,13 +273,22 @@ const actions = {
         dispatch('getArticleComments', { articleId })
       ])
       commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_ARTICLE_DETAIL, {
+        article: { ...article, body, userInfo, alisToken, comments }
+      })
     } catch (error) {
       return Promise.reject(error)
     }
   },
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
-    const article = await this.$axios.$get(`/me/articles/${articleId}/public`)
+    const article = await this.$axios.$get(`/api/me/articles/${articleId}/public`)
+    commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
+    const body = getBodyWithImageOptimizationParam(
+      article.body,
+      process.env.DOMAIN,
+      article.user_id,
+      articleId
+    )
     const [userInfo, alisToken, likesCount, comments] = await Promise.all([
       dispatch('getUserInfo', { userId: article.user_id }),
       dispatch('getAlisToken', { articleId }),
@@ -214,36 +296,37 @@ const actions = {
       dispatch('getArticleComments', { articleId })
     ])
     commit(types.SET_LIKES_COUNT, { likesCount })
-    commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+    commit(types.SET_ARTICLE_DETAIL, {
+      article: { ...article, body, userInfo, alisToken, comments }
+    })
     commit(types.SET_ARTICLE_ID, { articleId })
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   },
   async getEditPublicArticleDetail({ commit }, { articleId }) {
     try {
-      const article = await this.$axios.$get(`/me/articles/${articleId}/public/edit`)
+      const article = await this.$axios.$get(`/api/me/articles/${articleId}/public/edit`)
+      // 有料記事本文に含まれる有料エリアを示すラインを削除
+      const body = article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
         commit(types.UPDATE_THUMBNAIL, { thumbnail: article.eye_catch_url })
       }
-      commit(types.SET_ARTICLE, { article })
+      commit(types.SET_ARTICLE, { article: { ...article, body } })
       commit(types.SET_ARTICLE_ID, { articleId })
       commit(types.SET_ARTICLE_TOPIC, { topicType: article.topic })
       commit(types.SET_ARTICLE_TAGS, { tags: article.tags })
+      commit(types.SET_ARTICLE_CURRENT_PRICE, { price: article.price })
     } catch (error) {
       return Promise.reject(error)
     }
   },
-  async postNewArticle({ commit }, { article }) {
-    const { article_id: articleId } = await this.$axios.$post('/me/articles/drafts', article)
-    commit(types.SET_ARTICLE_ID, { articleId })
-  },
   async putDraftArticle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts`, article)
+    await this.$axios.$put(`/api/me/articles/${articleId}/drafts`, article)
   },
   async putPublicArticle({ commit }, { article, articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public`, article)
+    await this.$axios.$put(`/api/me/articles/${articleId}/public`, article)
   },
   async getLikesCountOfArticle({ commit }, { articleId }) {
-    const { likes_count: likesCount } = await this.$axios.$get(`/articles/${articleId}/like`)
+    const { likes_count: likesCount } = await this.$axios.$get(`/api/articles/${articleId}/like`)
     commit(types.SET_LIKES_COUNT, { likesCount })
   },
   async getPublicArticles({ commit, dispatch, state }) {
@@ -252,11 +335,11 @@ const actions = {
         commit(types.SET_HAS_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { hasLastEvaluatedKey: true })
         const { article_id: articleId, sort_key: sortKey } = state.publicArticlesLastEvaluatedKey
         const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
-          '/me/articles/public',
+          '/api/me/articles/public',
           { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
         )
         commit(types.SET_PUBLIC_ARTICLES_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })
-        const userInfo = await this.$axios.$get('/me/info')
+        const userInfo = await this.$axios.$get('/api/me/info')
         const articlesWithData = await Promise.all(
           articles.map(async (article) => {
             const alisToken = await dispatch('getAlisToken', { articleId: article.article_id })
@@ -275,13 +358,16 @@ const actions = {
     if (!getters.hasDraftArticlesLastEvaluatedKey) return
     try {
       const { article_id: articleId, sort_key: sortKey } = getters.draftArticlesLastEvaluatedKey
-      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get('/me/articles/drafts', {
-        params: { limit: 12, article_id: articleId, sort_key: sortKey }
-      })
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+        '/api/me/articles/drafts',
+        {
+          params: { limit: 12, article_id: articleId, sort_key: sortKey }
+        }
+      )
       commit(types.SET_DRAFT_ARTICLES_LAST_EVALUATED_KEY, {
         lastEvaluatedKey: LastEvaluatedKey || null
       })
-      const userInfo = await this.$axios.$get('/me/info')
+      const userInfo = await this.$axios.$get('/api/me/info')
       const articlesWithData = articles.map((article) => {
         return { ...article, userInfo }
       })
@@ -291,13 +377,13 @@ const actions = {
     }
   },
   async publishDraftArticle({ commit }, { articleId, topic, tags }) {
-    await this.$axios.$put(`/me/articles/${articleId}/drafts/publish`, { topic, tags })
+    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/publish`, { topic, tags })
   },
   async republishPublicArticle({ commit }, { articleId, topic, tags }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/republish`, { topic, tags })
+    await this.$axios.$put(`/api/me/articles/${articleId}/public/republish`, { topic, tags })
   },
   async unpublishPublicArticle({ commit }, { articleId }) {
-    await this.$axios.$put(`/me/articles/${articleId}/public/unpublish`)
+    await this.$axios.$put(`/api/me/articles/${articleId}/public/unpublish`)
   },
   updateTitle({ commit }, { title }) {
     commit(types.UPDATE_TITLE, { title })
@@ -323,7 +409,7 @@ const actions = {
         headers: { 'content-type': imageContentType }
       }
       const result = await this.$axios.$post(
-        `/me/articles/${articleId}/images`,
+        `/api/me/articles/${articleId}/images`,
         { article_image: articleImage },
         config
       )
@@ -336,11 +422,11 @@ const actions = {
     commit(types.SET_GOT_ARTICLE_DATA, { gotArticleData })
   },
   postPv({ commit }, { articleId }) {
-    this.$axios.$post(`/me/articles/${articleId}/pv`)
+    this.$axios.$post(`/api/me/articles/${articleId}/pv`)
   },
   async postLike({ commit, state }, { articleId }) {
     try {
-      await this.$axios.$post(`/me/articles/${articleId}/like`)
+      await this.$axios.$post(`/api/me/articles/${articleId}/like`)
       commit(types.SET_LIKES_COUNT, { likesCount: state.likesCount + 1 })
     } catch (error) {
       return Promise.reject(error)
@@ -348,7 +434,7 @@ const actions = {
   },
   async getIsLikedArticle({ commit }, { articleId }) {
     try {
-      const { liked } = await this.$axios.$get(`/me/articles/${articleId}/like`)
+      const { liked } = await this.$axios.$get(`/api/me/articles/${articleId}/like`)
       commit(types.SET_IS_LIKED_ARTICLE, { liked })
       return liked
     } catch (error) {
@@ -361,13 +447,19 @@ const actions = {
   setIsEdited({ commit }, { isEdited }) {
     commit(types.SET_IS_EDITED, { isEdited })
   },
+  setIsEditedTitle({ commit }, { isEditedTitle }) {
+    commit(types.SET_IS_EDITED_TITLE, { isEditedTitle })
+  },
+  setIsEditedBody({ commit }, { isEditedBody }) {
+    commit(types.SET_IS_EDITED_BODY, { isEditedBody })
+  },
   setSaveStatus({ commit }, { saveStatus }) {
     commit(types.SET_SAVE_STATUS, { saveStatus })
   },
   async postArticleComment({ commit }, { articleId, text }) {
     try {
       const { comment_id: commentId } = await this.$axios.$post(
-        `/me/articles/${articleId}/comments`,
+        `/api/me/articles/${articleId}/comments`,
         { text }
       )
       return commentId
@@ -391,7 +483,7 @@ const actions = {
       const params = commentId && sortKey ? paramsWithKeys : { limit: 5 }
 
       const { Items: comments, LastEvaluatedKey } = await this.$axios.$get(
-        `/articles/${articleId}/comments`,
+        `/api/articles/${articleId}/comments`,
         { params }
       )
       commit(types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY, {
@@ -444,14 +536,14 @@ const actions = {
   },
   async postCommentLike({ commit }, { commentId }) {
     try {
-      await this.$axios.$post(`/me/comments/${commentId}/likes`)
+      await this.$axios.$post(`/api/me/comments/${commentId}/likes`)
     } catch (error) {
       return Promise.reject(error)
     }
   },
   async deleteArticleComment({ commit }, { commentId }) {
     try {
-      await this.$axios.$delete(`/me/comments/${commentId}`)
+      await this.$axios.$delete(`/api/me/comments/${commentId}`)
       commit(types.DELETE_ARTICLE_COMMENT, { commentId })
     } catch (error) {
       return Promise.reject(error)
@@ -475,7 +567,7 @@ const actions = {
   async getIsLikedArticleCommentIds({ commit }, { articleId }) {
     try {
       const { comment_ids: commentIds } = await this.$axios.$get(
-        `/me/articles/${articleId}/comments/likes`
+        `/api/me/articles/${articleId}/comments/likes`
       )
       commit(types.SET_ARTICLE_COMMENT_LIKED_COMMENT_IDS, { commentIds })
       return commentIds
@@ -485,7 +577,7 @@ const actions = {
   },
   async getArticleCommentLikesCount({ commit }, { commentId }) {
     try {
-      const { count: likesCount } = await this.$axios.$get(`/comments/${commentId}/likes`)
+      const { count: likesCount } = await this.$axios.$get(`/api/comments/${commentId}/likes`)
       return likesCount
     } catch (error) {
       return Promise.reject(error)
@@ -506,7 +598,7 @@ const actions = {
     if (state.searchArticles.isFetching) return
     commit(types.SET_SEARCH_ARTICLES_IS_FETCHING, { isFetching: true })
     const limit = 12
-    const articles = await this.$axios.$get('/search/articles', {
+    const articles = await this.$axios.$get('/api/search/articles', {
       params: { limit, query, page: state.searchArticles.page }
     })
     const articlesWithData = await Promise.all(
@@ -536,7 +628,7 @@ const actions = {
   },
   async getTopics({ commit }) {
     try {
-      const topics = await this.$axios.$get('/topics')
+      const topics = await this.$axios.$get('/api/topics')
       commit(types.SET_TOPICS, { topics })
     } catch (error) {
       return Promise.reject(error)
@@ -561,24 +653,32 @@ const actions = {
     commit(types.UPDATE_TAGS, { tags })
   },
   async getTagArticles({ commit, dispatch, state }, { tag }) {
-    commit(types.SET_TAG_ARTICLES_CURRENT_TAG, { tag })
-    const limit = 12
-    const articles = await this.$axios.$get('/search/articles', {
-      params: { limit, tag, page: state.tagArticles.page }
-    })
-    const articlesWithData = await Promise.all(
-      articles.map(async (article) => {
-        const [userInfo, alisToken] = await Promise.all([
-          dispatch('getUserInfo', { userId: article.user_id }),
-          dispatch('getAlisToken', { articleId: article.article_id })
-        ])
-        return { ...article, userInfo, alisToken }
+    if (state.tagArticles.isFetching) return
+    try {
+      commit(types.SET_TAG_ARTICLES_CURRENT_TAG, { tag })
+      commit(types.SET_IS_FETCHING_TAG_ARTICLES, { isFetching: true })
+      const limit = 12
+      const articles = await this.$axios.$get('/api/search/articles', {
+        params: { limit, tag, page: state.tagArticles.page }
       })
-    )
-    commit(types.SET_TAG_ARTICLES, { articles: articlesWithData })
-    commit(types.SET_TAG_ARTICLES_PAGE, { page: state.tagArticles.page + 1 })
-    if (articles.length < limit) {
-      commit(types.SET_TAG_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TAG_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_TAG_ARTICLES_PAGE, { page: state.tagArticles.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_TAG_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    } finally {
+      commit(types.SET_IS_FETCHING_TAG_ARTICLES, { isFetching: false })
     }
   },
   resetTagArticlesData({ commit }) {
@@ -587,7 +687,7 @@ const actions = {
   async postArticleReplyComment({ commit }, { articleId, text, parentId, replyedUserId }) {
     try {
       const { comment_id: commentId } = await this.$axios.$post(
-        `/me/articles/${articleId}/comments/reply`,
+        `/api/me/articles/${articleId}/comments/reply`,
         { text, parent_id: parentId, replyed_user_id: replyedUserId }
       )
       return commentId
@@ -618,7 +718,7 @@ const actions = {
   },
   async deleteArticleReplyComment({ commit }, { commentId, parentId }) {
     try {
-      await this.$axios.$delete(`/me/comments/${commentId}`)
+      await this.$axios.$delete(`/api/me/comments/${commentId}`)
       commit(types.DELETE_ARTICLE_REPLY_COMMENT, { commentId, parentId })
     } catch (error) {
       return Promise.reject(error)
@@ -629,7 +729,7 @@ const actions = {
   },
   async getEyecatchArticles({ commit, dispatch }) {
     try {
-      const { Items: articles } = await this.$axios.$get('/articles/eyecatch')
+      const { Items: articles } = await this.$axios.$get('/api/articles/eyecatch')
       const articlesWithData = await Promise.all(
         articles.map(async (article) => {
           if (article === null) return null
@@ -648,7 +748,7 @@ const actions = {
   async getRecommendedArticles({ commit, state, dispatch }) {
     try {
       const limit = 12
-      const { Items: articles } = await this.$axios.$get('/articles/recommended', {
+      const { Items: articles } = await this.$axios.$get('/api/articles/recommended', {
         params: { limit, page: state.recommendedArticles.page }
       })
       const articlesWithData = await Promise.all(
@@ -665,6 +765,183 @@ const actions = {
       if (articles.length < limit) {
         commit(types.SET_RECOMMENDED_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
       }
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async putDraftArticleTitle({ commit }, { articleTitle, articleId }) {
+    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/title`, articleTitle)
+  },
+  async putPublicArticleTitle({ commit }, { articleTitle, articleId }) {
+    await this.$axios.$put(`/api/me/articles/${articleId}/public/title`, articleTitle)
+  },
+  async putDraftArticleBody({ commit }, { articleBody, articleId }) {
+    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/body`, articleBody)
+  },
+  async putPublicArticleBody({ commit }, { articleBody, articleId }) {
+    await this.$axios.$put(`/api/me/articles/${articleId}/public/body`, articleBody)
+  },
+  async postNewArticleId({ commit }) {
+    const { article_id: articleId } = await this.$axios.$post('/api/me/articles/drafts/article_id')
+    commit(types.SET_ARTICLE_ID, { articleId })
+    return articleId
+  },
+  async publishDraftArticleWithHeader(
+    { commit },
+    { articleId, topic, tags, eyeCatchUrl, price, paidBody }
+  ) {
+    const params = {
+      topic,
+      tags,
+      eye_catch_url: eyeCatchUrl
+    }
+    if (price && paidBody) {
+      params.price = price
+      params.paid_body = paidBody
+    }
+    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/publish_with_header`, params)
+  },
+  async republishPublicArticleWithHeader(
+    { commit },
+    { articleId, topic, tags, eyeCatchUrl, price, paidBody }
+  ) {
+    const params = {
+      topic,
+      tags,
+      eye_catch_url: eyeCatchUrl
+    }
+    if (price && paidBody) {
+      params.price = price
+      params.paid_body = paidBody
+    }
+    await this.$axios.$put(`/api/me/articles/${articleId}/public/republish_with_header`, params)
+  },
+  async setPurchasedArticleIds({ commit }) {
+    try {
+      const { article_ids: articleIds } = await this.$axios.$get(
+        '/api/me/articles/purchased/article_ids'
+      )
+      commit(types.SET_PURCHASED_ARTICLE_IDS, { articleIds })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getPurchaedArticleDetail({ commit, dispatch }, { articleId }) {
+    try {
+      const article = await this.$axios.$get(`/api/me/articles/purchased/${articleId}`)
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId }),
+        dispatch('getLikesCount', { articleId }),
+        dispatch('getArticleComments', { articleId })
+      ])
+      commit(types.SET_LIKES_COUNT, { likesCount })
+      commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
+      commit(types.SET_IS_FETCHED_PURCHASED_ARTICLE, { isFetched: true })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getArticlePrice({ commit }, { articleId }) {
+    try {
+      const { price } = await this.$axios.$get(`/api/articles/${articleId}/price`)
+      commit(types.UPDATE_ARTICLE_PRICE, { price })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async purchaseArticle({ commit, state }, { articleId, price }) {
+    try {
+      const { status } = await this.$axios.$post(`/api/me/articles/${articleId}/purchase`, {
+        price
+      })
+      commit(types.SET_PURCHASED_ARTICLE_IDS, {
+        articleIds: [...state.purchasedArticleIds, articleId]
+      })
+      return status
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getPurchasedArticles({ commit, dispatch, getters }) {
+    try {
+      if (!getters.purchasedArticles.hasLastEvaluatedKey) return
+      const {
+        article_id: articleId,
+        sort_key: sortKey
+      } = getters.purchasedArticles.lastEvaluatedKey
+      const { Items: articles, LastEvaluatedKey } = await this.$axios.$get(
+        '/api/me/articles/purchased',
+        { params: { limit: 12, article_id: articleId, sort_key: sortKey } }
+      )
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY, {
+        lastEvaluatedKey: LastEvaluatedKey || null
+      })
+      commit(types.SET_PURCHASED_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetCurrentPrice({ commit }) {
+    commit(types.SET_ARTICLE_CURRENT_PRICE, { price: null })
+  },
+  async getTipEyecatchArticles({ commit, dispatch }) {
+    try {
+      const { Items: articles } = await this.$axios.$get('/api/articles/tip_ranking', {
+        params: { limit: 3 }
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          if (article === null) return null
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TIP_EYECATCH_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getTipRankingArticles({ commit, state, dispatch }) {
+    try {
+      const limit = 12
+      const { Items: articles } = await this.$axios.$get('/api/articles/tip_ranking', {
+        params: { limit, page: state.tipRankingArticles.page }
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TIP_RANKING_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_TIP_RANKING_ARTICLES_PAGE, { page: state.tipRankingArticles.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_TIP_RANKING_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getArticleSupporters({ commit }, { articleId }) {
+    try {
+      const { Items: supporters } = await this.$axios.$get(`/api/articles/${articleId}/supporters`)
+      commit(types.SET_ARTICLE_SUPPORTERS, { supporters })
     } catch (error) {
       return Promise.reject(error)
     }
@@ -736,6 +1013,12 @@ const mutations = {
   [types.SET_IS_EDITED](state, { isEdited }) {
     state.isEdited = isEdited
   },
+  [types.SET_IS_EDITED_TITLE](state, { isEditedTitle }) {
+    state.isEditedTitle = isEditedTitle
+  },
+  [types.SET_IS_EDITED_BODY](state, { isEditedBody }) {
+    state.isEditedBody = isEditedBody
+  },
   [types.SET_SAVE_STATUS](state, { saveStatus }) {
     state.saveStatus = saveStatus
   },
@@ -799,7 +1082,13 @@ const mutations = {
     state.page = 1
     state.isLastPage = false
     state.eyecatchArticles = []
+    state.tipEyecatchArticles = []
     state.recommendedArticles = {
+      articles: [],
+      page: 1,
+      isLastPage: false
+    }
+    state.tipRankingArticles = {
       articles: [],
       page: 1,
       isLastPage: false
@@ -826,10 +1115,10 @@ const mutations = {
   },
   [types.SET_ARTICLE_TAGS](state, { tags = [] }) {
     // vue-tags-input の形式に適するようにタグを整形
-    const formattedTags = tags.map((tag) => {
+    const formattedTags = (tags || []).map((tag) => {
       return {
         text: tag,
-        tiClasses: ['valid']
+        tiClasses: ['ti-valid']
       }
     })
     state.tags = formattedTags
@@ -883,6 +1172,45 @@ const mutations = {
   },
   [types.SET_RECOMMENDED_ARTICLES_PAGE](state, { page }) {
     state.recommendedArticles.page = page
+  },
+  [types.SET_IS_FETCHING_TAG_ARTICLES](state, { isFetching }) {
+    state.tagArticles.isFetching = isFetching
+  },
+  [types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state) {
+    state.articleCommentsLastEvaluatedKey = {}
+  },
+  [types.SET_PURCHASED_ARTICLE_IDS](state, { articleIds }) {
+    state.purchasedArticleIds = articleIds
+  },
+  [types.UPDATE_ARTICLE_PRICE](state, { price }) {
+    state.article.price = price
+  },
+  [types.SET_PURCHASED_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
+    state.purchasedArticles.lastEvaluatedKey = lastEvaluatedKey
+  },
+  [types.SET_PURCHASED_ARTICLES](state, { articles }) {
+    state.purchasedArticles.articles.push(...articles)
+  },
+  [types.SET_ARTICLE_CURRENT_PRICE](state, { price }) {
+    state.currentPrice = price || null
+  },
+  [types.SET_IS_FETCHED_PURCHASED_ARTICLE](state, { isFetched }) {
+    state.isFetchedPurchasedArticle = isFetched
+  },
+  [types.SET_TIP_EYECATCH_ARTICLES](state, { articles }) {
+    state.tipEyecatchArticles = articles
+  },
+  [types.SET_TIP_RANKING_ARTICLES](state, { articles }) {
+    state.tipRankingArticles.articles.push(...articles)
+  },
+  [types.SET_TIP_RANKING_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.tipRankingArticles.isLastPage = isLastPage
+  },
+  [types.SET_TIP_RANKING_ARTICLES_PAGE](state, { page }) {
+    state.tipRankingArticles.page = page
+  },
+  [types.SET_ARTICLE_SUPPORTERS](state, { supporters }) {
+    state.supporters = supporters
   }
 }
 

@@ -3,9 +3,9 @@
     <app-header />
     <user-article-list-user-info :user="userInfo" />
     <user-profile-nav />
-    <user-article-card-list :articles="draftArticles" :linkTo="'draft'"/>
-    <the-loader :isLoading="hasDraftArticlesLastEvaluatedKey"/>
-    <app-footer/>
+    <user-article-card-list :articles="draftArticles" :link-to="'draft'" />
+    <the-loader :is-loading="hasDraftArticlesLastEvaluatedKey" />
+    <app-footer />
   </div>
 </template>
 
@@ -112,7 +112,7 @@ export default {
 @media screen and (max-width: 550px) {
   .draft-article-list-container {
     background: #fff;
-    grid-template-columns: 1fr 350px 1fr;
+    grid-template-columns: 1fr 340px 1fr;
     grid-template-rows: 66px min-content auto 1fr 75px min-content;
     grid-row-gap: 20px;
     /* prettier-ignore */

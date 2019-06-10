@@ -1,5 +1,5 @@
 <template>
-  <app-modal :title="title" :showModalContent="requestPhoneNumberVerifyModal.isShow">
+  <app-modal :title="title" :show-modal-content="requestPhoneNumberVerifyModal.isShow">
     <div slot="modal-content">
       <request-phone-number-verify-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
       <request-phone-number-verify-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
