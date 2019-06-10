@@ -22,6 +22,7 @@
     <first-process-modal v-if="firstProcessModal.isShow" />
     <confirm-purchase-article-modal v-if="confirmPurchaseArticleModal.isShow" />
     <withdrawal-detail-modal v-if="withdrawalDetailModal.isShow" />
+    <input-withdraw-auth-code-modal v-if="inputWithdrawAuthCodeModal.isShow" />
     <toast position="n" />
   </header>
 </template>
@@ -47,6 +48,7 @@ export default {
     FirstProcessModal: () => import('../organisms/FirstProcessModal'),
     ConfirmPurchaseArticleModal: () => import('../organisms/ConfirmPurchaseArticleModal'),
     WithdrawalDetailModal: () => import('../organisms/WithdrawalDetailModal'),
+    InputWithdrawAuthCodeModal: () => import('../organisms/InputWithdrawAuthCodeModal'),
     Toast
   },
   computed: {
@@ -62,7 +64,8 @@ export default {
       'requestPhoneNumberVerifyModal',
       'firstProcessModal',
       'confirmPurchaseArticleModal',
-      'withdrawalDetailModal'
+      'withdrawalDetailModal',
+      'inputWithdrawAuthCodeModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },

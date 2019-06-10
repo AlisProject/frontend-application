@@ -7,9 +7,9 @@
       <app-button class="report-button" @click="report">
         報告する
       </app-button>
-      <button class="close-button" type="secondary" @click="closeModal">
+      <app-button class="close-button" type="secondary" @click="closeModal">
         閉じる
-      </button>
+      </app-button>
     </div>
   </div>
 </template>

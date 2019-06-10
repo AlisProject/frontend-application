@@ -36,7 +36,10 @@ export default {
           getArticleType = 'getPurchaedArticleDetail'
         }
       }
-      await store.dispatch(`article/${getArticleType}`, { articleId })
+      await Promise.all([
+        store.dispatch(`article/${getArticleType}`, { articleId }),
+        store.dispatch('article/getArticleSupporters', { articleId })
+      ])
       if (params.userId !== store.state.article.article.user_id) {
         redirect(
           `/${store.state.article.article.user_id}/articles/${

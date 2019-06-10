@@ -9,6 +9,11 @@ module.exports = {
       {
         src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`,
         async: true
+      },
+      {
+        // web3 を npm から追加すると、インポート時に SSR で落ちるようになってしまうため、CDN から読み込んでいる。
+        src: '//cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js',
+        defer: true
       }
     ],
     title: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア',
@@ -140,6 +145,7 @@ module.exports = {
     PUBLIC_CHAIN_BRIDGE_ADDRESS: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
     PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
     PUBLIC_CHAIN_OPERATION_URL: process.env.PUBLIC_CHAIN_OPERATION_URL,
-    DAILY_LIMIT_TOKEN_SEND_VALUE: process.env.DAILY_LIMIT_TOKEN_SEND_VALUE
+    DAILY_LIMIT_TOKEN_SEND_VALUE: process.env.DAILY_LIMIT_TOKEN_SEND_VALUE,
+    ALIS_APP_ID: process.env.ALIS_APP_ID
   }
 }

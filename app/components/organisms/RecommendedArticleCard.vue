@@ -3,6 +3,11 @@
     class="recommended-article-card"
     :to="`/${article.user_id}/articles/${article.article_id}`"
   >
+    <img
+      v-if="isTipRanking"
+      :src="require(`~/assets/images/pc/article/m_ribbon_${order}.png`)"
+      class="ribbon"
+    >
     <div class="eye-catch-image-box">
       <img
         v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
@@ -30,16 +35,26 @@
         </span>
       </nuxt-link>
     </no-ssr>
-    <span class="token-amount">
-      {{ formattedTokenAmount }}
-    </span>
+    <div class="token-info">
+      <div class="icons">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_like.png">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_tip.png">
+      </div>
+      <div class="amounts">
+        <span class="like-token-amount">
+          {{ article.alisToken | formatTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+        <span class="tip-token-amount">
+          {{ article.tip_value | formatTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+      </div>
+    </div>
   </nuxt-link>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { BigNumber } from 'bignumber.js'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, formatTokenAmount } from '~/utils/article'
 import { formatDate } from '~/utils/format'
 
 export default {
@@ -47,6 +62,15 @@ export default {
     article: {
       type: Object,
       required: true
+    },
+    isTipRanking: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    order: {
+      type: String,
+      required: false
     }
   },
   computed: {
@@ -66,18 +90,13 @@ export default {
       const topic = this.topics.find((topic) => topic.name === this.article.topic)
       return topic.display_name
     },
-    formattedTokenAmount() {
-      const tokenAmount = this.article.alisToken
-      if (tokenAmount === undefined) return
-      const stringTokenAmount = tokenAmount.toString()
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    },
     isPaidArticle() {
       return !!this.article.price
     },
     ...mapGetters('article', ['topics'])
+  },
+  filters: {
+    formatTokenAmount
   }
 }
 </script>
@@ -92,6 +111,7 @@ export default {
   width: 340px;
 }
 
+.ribbon,
 .eye-catch-image-box,
 .topic,
 .paid-article,
@@ -99,8 +119,15 @@ export default {
 .article-data-box,
 .username,
 .published-at,
-.token-amount {
+.token-info {
   position: absolute;
+}
+
+.ribbon {
+  width: 108px;
+  right: -8px;
+  top: -8px;
+  z-index: 1;
 }
 
 .eye-catch-image-box {
@@ -169,12 +196,19 @@ export default {
 }
 
 .username,
-.published-at,
-.token-amount {
+.published-at {
   color: #6e6e6e;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.8px;
+}
+
+.like-token-amount,
+.tip-token-amount {
+  color: #333333;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: right;
 }
 
 .username {
@@ -194,18 +228,33 @@ export default {
   bottom: 6px;
 }
 
-.token-amount {
-  align-items: center;
-  background: url('~assets/images/pc/common/icon_token_cassette.png') no-repeat;
-  background-size: 18px;
-  bottom: 0;
-  display: flex;
-  height: 18px;
-  margin: 0;
-  letter-spacing: 0.8px;
-  padding: 0 0 0 22px;
-  right: 20px;
+.token-info {
   bottom: 20px;
+  right: 20px;
+  display: flex;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  margin-right: 4px;
+}
+
+.icon {
+  width: 16px;
+}
+
+.amounts {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.unit {
+  color: #333333;
+  font-size: 8px;
+  font-weight: bold;
+  padding: 2px 0 0 0;
 }
 
 @media screen and (max-width: 320px) {

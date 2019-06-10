@@ -24,7 +24,7 @@
         :likes-count="likesCount"
         :is-liked-article="isLikedArticle"
       />
-      <article-sub-infos :published-at="publishedAt" :token-amount="article.alisToken" />
+      <article-sub-infos-v2 :article="article" :publishedAt="publishedAt" />
       <author-info :user="article.userInfo" />
     </div>
     <article-comments :comments="article.comments" />
@@ -39,7 +39,7 @@ import AppHeader from '../organisms/AppHeader'
 import ArticleHeader from '../organisms/ArticleHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
-import ArticleSubInfos from '../atoms/ArticleSubInfos'
+import ArticleSubInfosV2 from '../organisms/ArticleSubInfosV2'
 import AuthorInfo from '../atoms/AuthorInfo'
 import ArticleTags from '../molecules/ArticleTags'
 import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
@@ -54,7 +54,7 @@ export default {
     ArticleHeader,
     ArticleFooterActions,
     ArticleSideActions,
-    ArticleSubInfos,
+    ArticleSubInfosV2,
     AuthorInfo,
     ArticleTags,
     ArticleDetailPaypart,

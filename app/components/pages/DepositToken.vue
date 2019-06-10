@@ -20,7 +20,10 @@
             </a>
           </app-button>
         </div>
-        <div v-if="isMetaMaskInstalled && !relayPaused" class="deposit-box">
+        <p v-if="isMetaMaskInstalled && !relayPaused && !isTargetNetwork" class="title">
+          Ethereumメインネットワークのみご利用できます。MetaMaskの設定をご確認ください。
+        </p>
+        <div v-if="isMetaMaskInstalled && !relayPaused && isTargetNetwork" class="deposit-box">
           <h2 class="title">
             入金額を入力してください
           </h2>
@@ -37,6 +40,8 @@
               min="1"
               @input="onInput"
               @keydown.69.prevent
+              @keydown.187.prevent
+              @keydown.189.prevent
             >
             <span class="token-amount-input-unit">ALIS</span>
             <span class="error-message">
@@ -69,7 +74,7 @@
 </template>
 
 <script>
-import Web3 from 'web3'
+/* global Web3 */
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
@@ -100,17 +105,32 @@ export default {
       amount: null,
       bridgeInfo: null,
       relayPaused: false,
-      isProcessing: false
+      isProcessing: false,
+      networkType: 'main'
     }
   },
   async mounted() {
     // 未ログインユーザーにはログインを促すモーダルを表示するため後続の処理を行わない
     if (!this.loggedIn) return
     this.isMetaMaskInstalled = this.checkIsMetaMaskInstalled()
+    if (this.isMetaMaskInstalled) {
+      try {
+        await this.initMetaMaskAndBridge()
+        this.networkType = await window.web3.eth.net.getNetworkType()
+      } catch (error) {
+        console.error(error)
+      }
+    }
     this.isLoading = false
-    if (this.isMetaMaskInstalled) await this.initMetaMaskAndBridge()
   },
   computed: {
+    isTargetNetwork() {
+      const targetNetworkType = this.isProduction ? 'main' : 'ropsten'
+      return this.networkType === targetNetworkType
+    },
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
+    },
     isDepositable() {
       return this.amount !== null && this.amount !== '' && this.errorMessage === ''
     },
@@ -301,10 +321,7 @@ export default {
           return
         }
         // 小数点以下の桁数が3桁を超えているか確認
-        const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(
-          formattedAmount.toString(10),
-          3
-        )
+        const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(this.amount, 3)
         if (isNotInputablePlaceAfterDecimalPoint) {
           this.errorMessage = '小数点3桁までの範囲で入力してください'
           return
