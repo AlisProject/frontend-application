@@ -31,6 +31,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   props: {
@@ -70,7 +71,9 @@ export default {
       'tipFlowModal',
       'currentUserInfo',
       'mobileEditorHeaderPostArticleModal',
-      'confirmPurchaseArticleModal'
+      'confirmPurchaseArticleModal',
+      'withdrawalDetailModal',
+      'inputWithdrawAuthCodeModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -111,6 +114,7 @@ export default {
         this.setSignUpAuthFlowCompletedPhoneNumberAuthModal({ isShow: false })
         this.setSignUpAuthFlowNotCompletedPhoneNumberAuthModal({ isShow: false })
         if (this.signUpAuthFlowModal.isLoginModal || this.signUpAuthFlowModal.isInputUserIdModal) {
+          removeOAuthParams()
           await this.logout()
         }
       }
@@ -147,6 +151,12 @@ export default {
       }
       if (this.requestPhoneNumberVerifyModal.isShow) {
         this.setRequestPhoneNumberVerifyModal({ isShow: false })
+
+        // アプリケーションの認可画面でモーダルを閉じた場合は、電話番号認証を行っていないため、
+        // 「アクセスを許可する」ボタンを押させないためにトップページに遷移する。
+        if (this.$route.name === 'oauth-authenticate') {
+          this.$router.replace('/')
+        }
       }
       if (this.userReportModal.isShow) {
         this.setUserReportModal({ isShow: false })
@@ -174,6 +184,12 @@ export default {
       }
       if (this.confirmPurchaseArticleModal.isShow) {
         this.setConfirmPurchaseArticleModal({ isShow: false })
+      }
+      if (this.withdrawalDetailModal.isShow) {
+        this.setWithdrawalDetailModal({ isShow: false })
+      }
+      if (this.inputWithdrawAuthCodeModal.isShow) {
+        this.setInputWithdrawAuthCodeModal({ isShow: false })
       }
       this.$emit('close')
       this.resetPassword()
@@ -206,7 +222,9 @@ export default {
       'setFirstProcessGotTokeneModal',
       'setFirstProcessCreatedArticleModal',
       'setMobileEditorHeaderPostArticleModal',
-      'setConfirmPurchaseArticleModal'
+      'setConfirmPurchaseArticleModal',
+      'setWithdrawalDetailModal',
+      'setInputWithdrawAuthCodeModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

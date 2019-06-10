@@ -20,7 +20,7 @@ export default {
 
       await store.dispatch('article/getTopics')
       await Promise.all([
-        store.dispatch('article/getEyecatchArticles'),
+        store.dispatch('article/getTipEyecatchArticles'),
         store.dispatch('article/getRecommendedArticles')
       ])
     } catch (e) {

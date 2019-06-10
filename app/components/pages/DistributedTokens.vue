@@ -61,6 +61,7 @@ import Chart from 'chart.js'
 import AppHeader from '../organisms/AppHeader'
 import AppFooter from '../organisms/AppFooter'
 import DoughnutChart from '~/utils/doughnut-chart'
+import { addDigitSeparator } from '~/utils/wallet'
 
 export default {
   components: {
@@ -141,15 +142,7 @@ export default {
     ...mapGetters('user', ['distributedTokens'])
   },
   methods: {
-    addDigitSeparator(str) {
-      let num = String(str).replace(/,/g, '')
-      let tmpNum = ''
-      while (num !== tmpNum) {
-        tmpNum = num
-        num = num.replace(/^(-?\d+)(\d{3})/, '$1,$2')
-      }
-      return num
-    },
+    addDigitSeparator,
     getRate(num, totalAmount) {
       return Math.floor((num / totalAmount) * 100) || 0
     }

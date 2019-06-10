@@ -1,0 +1,13 @@
+version: 0.2
+
+phases:
+  install:
+    run-as: root
+    commands:
+      - npm install -g yarn@1.6.0
+      - yarn install --frozen-lockfile
+  build:
+    run-as: root
+    commands:
+      - chmod 755 ./*.sh
+      - ./deploy_via_ci.sh

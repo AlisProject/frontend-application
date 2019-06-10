@@ -32,6 +32,14 @@
       >
       <span class="token-amount-input-unit">ALIS</span>
     </div>
+    <div class="burn-description">
+      ※贈ったALISの10%が<a
+        href="https://intercom.help/alismedia/%E3%81%9D%E3%81%AE%E4%BB%96-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/%E3%83%90%E3%83%BC%E3%83%B3%E3%81%A8%E3%81%AF"
+        class="link"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >バーン</a>されます
+    </div>
     <div class="select-unit-box">
       <div
         v-for="unit in orderedUnitList"
@@ -56,6 +64,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
+import { isOverDecimalPoint } from '~/utils/wallet'
 
 const FORMAT_NUMBER = 10 ** 18
 const MAXIMUM_TIPPABLE_TOKEN_AMOUNT = '999.9999999999'
@@ -115,9 +124,10 @@ export default {
         const formattedAmount = new BigNumber(amount)
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(
-          formattedAlisTokenAmount.minus(formattedAmount)
-        )
+        const fee = formattedTipTokenAmount.multipliedBy(0.1)
+        const isAddableToken = formattedTipTokenAmount
+          .plus(fee)
+          .isLessThanOrEqualTo(formattedAlisTokenAmount.minus(formattedAmount))
 
         if (!isAddableToken) {
           this.errorMessage = 'ALISが不足しています'
@@ -144,7 +154,10 @@ export default {
       try {
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
-        const isAddableToken = formattedTipTokenAmount.isLessThanOrEqualTo(formattedAlisTokenAmount)
+        const fee = formattedTipTokenAmount.multipliedBy(0.1)
+        const isAddableToken = formattedTipTokenAmount
+          .plus(fee)
+          .isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!isAddableToken) {
           this.errorMessage = 'ALISが不足しています'
           return
@@ -168,10 +181,7 @@ export default {
         const tipTokenAmountForUser = formattedTipTokenAmount.toString(10)
 
         // 小数点以下の桁数が10桁を超えているか確認
-        const isNotInputablePlaceAfterDecimalPoint =
-          tipTokenAmountForUser &&
-          tipTokenAmountForUser.includes('.') &&
-          tipTokenAmountForUser.split('.')[1].length > 10
+        const isNotInputablePlaceAfterDecimalPoint = isOverDecimalPoint(tipTokenAmountForUser, 10)
 
         if (isNotInputablePlaceAfterDecimalPoint) {
           this.errorMessage = '小数点10桁までの範囲で入力してください'
@@ -301,10 +311,24 @@ export default {
     }
   }
 
+  .burn-description {
+    color: #6e6e6e;
+    font-size: 12px;
+    width: 400px;
+    text-align: right;
+    margin: 10px 0 0;
+
+    .link {
+      color: #0086cc;
+      font-size: 12px;
+      text-decoration: none;
+    }
+  }
+
   .select-unit-box {
     display: flex;
     justify-content: space-around;
-    margin: 24px auto 0;
+    margin: 40px auto 0;
     text-align: center;
     width: 220px;
 
@@ -367,6 +391,14 @@ export default {
       color: #6e6e6e;
       font-size: 12px;
       margin-top: 30px;
+    }
+
+    .burn-description {
+      width: 255px;
+    }
+
+    .select-unit-box {
+      margin: 30px auto 0;
     }
 
     .token-amount-input-box {

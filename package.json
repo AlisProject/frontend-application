@@ -66,6 +66,7 @@
     "prettier-eslint": "^8.8.2",
     "prettier-eslint-cli": "^4.7.1",
     "sass-loader": "^7.1.0",
+    "serverless-plugin-aws-alerts": "^1.2.4",
     "vue-jest": "^3.0.3"
   }
 }

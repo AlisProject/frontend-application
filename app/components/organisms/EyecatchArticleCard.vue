@@ -27,15 +27,14 @@
       </nuxt-link>
     </no-ssr>
     <span class="token-amount">
-      {{ formattedTokenAmount }}
+      {{ article.alisToken | formatTokenAmount }}
     </span>
   </nuxt-link>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { BigNumber } from 'bignumber.js'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, formatTokenAmount } from '~/utils/article'
 import { formatDate } from '~/utils/format'
 
 export default {
@@ -63,7 +62,7 @@ export default {
       return formatDate(this.publishedAt)
     },
     eyeCatchImagePath() {
-      return this.article.eye_catch_url !== null || this.article.eye_catch_url !== undefined
+      return this.article.eye_catch_url !== null && this.article.eye_catch_url !== undefined
         ? `${this.article.eye_catch_url}?d=${this.order === 'eyecatch1' ? '1420x824' : '680x382'}`
         : require('~/assets/images/pc/common/thumbnail_noimg.png')
     },
@@ -74,15 +73,10 @@ export default {
     isPaidArticle() {
       return !!this.article.price
     },
-    formattedTokenAmount() {
-      const tokenAmount = this.article.alisToken
-      if (tokenAmount === undefined) return
-      const stringTokenAmount = tokenAmount.toString()
-      const formatNumber = 10 ** 18
-      const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
-      return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
-    },
     ...mapGetters('article', ['topics'])
+  },
+  filters: {
+    formatTokenAmount
   }
 }
 </script>

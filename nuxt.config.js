@@ -9,6 +9,11 @@ module.exports = {
       {
         src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`,
         async: true
+      },
+      {
+        // web3 を npm から追加すると、インポート時に SSR で落ちるようになってしまうため、CDN から読み込んでいる。
+        src: '//cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js',
+        defer: true
       }
     ],
     title: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア',
@@ -58,7 +63,11 @@ module.exports = {
         sizes: '192x192',
         href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png`
       },
-      { rel: 'shortcut icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` }
+      { rel: 'shortcut icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` },
+      {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+      }
     ]
   },
   /*
@@ -132,6 +141,11 @@ module.exports = {
     REGION: process.env.REGION,
     USER_POOL_ID: process.env.USER_POOL_ID,
     CLIENT_ID: process.env.CLIENT_ID,
-    DOMAIN: process.env.DOMAIN
+    DOMAIN: process.env.DOMAIN,
+    PUBLIC_CHAIN_BRIDGE_ADDRESS: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
+    PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
+    PUBLIC_CHAIN_OPERATION_URL: process.env.PUBLIC_CHAIN_OPERATION_URL,
+    DAILY_LIMIT_TOKEN_SEND_VALUE: process.env.DAILY_LIMIT_TOKEN_SEND_VALUE,
+    ALIS_APP_ID: process.env.ALIS_APP_ID
   }
 }

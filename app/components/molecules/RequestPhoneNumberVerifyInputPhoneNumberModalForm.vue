@@ -79,6 +79,12 @@ export default {
           return '記事を報告するには'
         case 'purchaseArticle':
           return '記事を購入するためには'
+        case 'depositToken':
+          return '入金するためには'
+        case 'withdrawToken':
+          return '出金するためには'
+        case 'provideInfo':
+          return '認証を行うためには'
         default:
           return ''
       }

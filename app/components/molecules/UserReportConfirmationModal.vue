@@ -7,9 +7,9 @@
       <app-button class="report-button" @click="report">
         報告する
       </app-button>
-      <button class="close-button" @click="closeModal">
+      <app-button class="close-button" type="secondary" @click="closeModal">
         閉じる
-      </button>
+      </app-button>
     </div>
   </div>
 </template>
@@ -79,15 +79,7 @@ export default {
 }
 
 .close-button {
-  background-color: #fff;
-  border-radius: 30px;
-  border: 1px solid #0086cc;
-  color: #0086cc;
-  cursor: pointer;
-  display: block;
-  height: 37px;
   margin: 20px auto 100px;
-  width: 256px;
 }
 
 @media screen and (max-width: 550px) {

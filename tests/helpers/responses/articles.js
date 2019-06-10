@@ -1,5 +1,5 @@
 const get = {
-  '/articles/1/like': {
+  '/api/articles/1/like': {
     likes_count: 10
   }
 }

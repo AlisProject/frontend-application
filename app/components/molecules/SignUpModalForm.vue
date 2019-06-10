@@ -110,6 +110,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { required, minLength, email } from 'vuelidate/lib/validators'
 import AppButton from '../atoms/AppButton'
 import FormGroup from '../organisms/FormGroup'
+import { removeOAuthParams } from '~/utils/oauth'
 
 function userId(value) {
   return Boolean(value.match(/^(?!.*--)[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]$/))
@@ -216,6 +217,7 @@ export default {
     transitToLogin() {
       this.setSignUpModal({ showSignUpModal: false })
       this.setLoginModal({ showLoginModal: true })
+      removeOAuthParams()
     },
     showEmailAuth() {
       this.isSelectedEmailAuth = true

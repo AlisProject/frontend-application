@@ -54,6 +54,11 @@
             マイページ
           </nuxt-link>
         </li>
+        <li v-if="!isMobile()" class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/wallet/deposit">
+            ウォレット
+          </nuxt-link>
+        </li>
         <!-- <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
             獲得ALIS詳細
@@ -62,6 +67,16 @@
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/articles/purchased">
             購入した記事
+          </nuxt-link>
+        </li>
+        <li class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/settings/sessions">
+            連携中のアプリケーション
+          </nuxt-link>
+        </li>
+        <li v-if="!isMobile()" class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/me/settings/applications">
+            登録中のアプリケーション
           </nuxt-link>
         </li>
         <li class="menu-link">
@@ -96,11 +111,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
+import { isMobile } from '~/utils/device'
+import { removeOAuthParams } from '~/utils/oauth'
 
 export default {
   data() {
     return {
-      isMenuShown: false
+      isMenuShown: false,
+      isMobile
     }
   },
   async mounted() {
@@ -163,6 +181,7 @@ export default {
     },
     logoutUser() {
       try {
+        removeOAuthParams()
         this.logout()
         location.href = '/'
         this.sendNotification({ text: 'ログアウトしました' })
@@ -305,14 +324,14 @@ export default {
 
   .menu-links {
     list-style: none;
-    margin: 30px 0;
+    margin: 30px 0 10px;
     padding: 0;
 
     .menu-link {
       cursor: pointer;
       font-size: 14px;
       font-weight: 500;
-      letter-spacing: 1px;
+      letter-spacing: 0;
       white-space: nowrap;
 
       &:hover {
@@ -320,7 +339,7 @@ export default {
       }
 
       &:last-child {
-        margin-top: 40px;
+        margin-top: 30px;
       }
 
       .reset-link-style {
@@ -337,7 +356,7 @@ export default {
         display: block;
         height: 24px;
         line-height: 24px;
-        padding: 10px 64px;
+        padding: 10px 40px;
         text-decoration: none;
 
         &:visited {
@@ -457,6 +476,10 @@ export default {
   .menu {
     .menu-links {
       .menu-link {
+        .menu-link-inner {
+          padding: 8px 40px;
+        }
+
         &:last-child {
           margin-top: 0;
         }

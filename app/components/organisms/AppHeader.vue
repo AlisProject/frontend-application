@@ -21,6 +21,8 @@
     <article-report-modal v-if="articleReportModal.isShow" />
     <first-process-modal v-if="firstProcessModal.isShow" />
     <confirm-purchase-article-modal v-if="confirmPurchaseArticleModal.isShow" />
+    <withdrawal-detail-modal v-if="withdrawalDetailModal.isShow" />
+    <input-withdraw-auth-code-modal v-if="inputWithdrawAuthCodeModal.isShow" />
     <toast position="n" />
   </header>
 </template>
@@ -42,6 +44,8 @@ import UserReportModal from '../organisms/UserReportModal'
 import ArticleReportModal from '../organisms/ArticleReportModal'
 import FirstProcessModal from '../organisms/FirstProcessModal'
 import ConfirmPurchaseArticleModal from '../organisms/ConfirmPurchaseArticleModal'
+import WithdrawalDetailModal from '../organisms/WithdrawalDetailModal'
+import InputWithdrawAuthCodeModal from '../organisms/InputWithdrawAuthCodeModal'
 
 export default {
   components: {
@@ -59,7 +63,9 @@ export default {
     UserReportModal,
     ArticleReportModal,
     FirstProcessModal,
-    ConfirmPurchaseArticleModal
+    ConfirmPurchaseArticleModal,
+    WithdrawalDetailModal,
+    InputWithdrawAuthCodeModal
   },
   computed: {
     ...mapGetters('user', [
@@ -73,7 +79,9 @@ export default {
       'showTipModal',
       'requestPhoneNumberVerifyModal',
       'firstProcessModal',
-      'confirmPurchaseArticleModal'
+      'confirmPurchaseArticleModal',
+      'withdrawalDetailModal',
+      'inputWithdrawAuthCodeModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
