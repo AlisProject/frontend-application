@@ -1838,6 +1838,10 @@ bluebird@^3.1.1, bluebird@^3.5.1, bluebird@^3.5.3:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
 
+bluebird@^3.4.7:
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.5.tgz#a8d0afd73251effbbd5fe384a77d73003c17a71f"
+
 blueimp-load-image@^2.20.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-2.20.1.tgz#8cf677f3cd0368548bf0108997ba09ea2e331c1b"
@@ -7794,6 +7798,12 @@ serverless-plugin-aws-alerts@^1.2.4:
   resolved "https://registry.yarnpkg.com/serverless-plugin-aws-alerts/-/serverless-plugin-aws-alerts-1.2.4.tgz#df0958acf128298aa069dd38e134b0104c3d2f44"
   dependencies:
     lodash "^4.16.6"
+
+serverless-prune-plugin@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/serverless-prune-plugin/-/serverless-prune-plugin-1.3.2.tgz#eef0ecc1a43dfa8d7116a7e7fe291d792aaf59ad"
+  dependencies:
+    bluebird "^3.4.7"
 
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
