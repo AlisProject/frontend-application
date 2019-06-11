@@ -1,10 +1,14 @@
 <template>
   <nuxt-link
-    class="eyecatch-article-card"
+    class="tip-eyecatch-article-card"
     :class="order"
     :to="`/${article.user_id}/articles/${article.article_id}`"
     :style="{ background: `url(${eyeCatchImagePath}) center center / cover no-repeat` }"
   >
+    <img
+      :src="require(`~/assets/images/pc/article/m_ribbon_${order.replace('eyecatch', '')}.png`)"
+      class="ribbon"
+    >
     <div class="article-subdata-box">
       <div class="label">
         {{ topicDisplayName }}
@@ -26,9 +30,20 @@
         </span>
       </nuxt-link>
     </no-ssr>
-    <span class="token-amount">
-      {{ article.alisToken | formatTokenAmount }}
-    </span>
+    <div class="token-info">
+      <div class="icons">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_like_white.png">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_tip_white.png">
+      </div>
+      <div class="amounts">
+        <span class="like-token-amount">
+          {{ article.alisToken | formatTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+        <span class="tip-token-amount">
+          {{ article.tip_value | formatTokenAmount }} <span class="unit">ALIS</span>
+        </span>
+      </div>
+    </div>
   </nuxt-link>
 </template>
 
@@ -82,7 +97,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.eyecatch-article-card {
+.tip-eyecatch-article-card {
   @include cassette-shadow();
   border-radius: 4px;
   position: relative;
@@ -117,6 +132,13 @@ export default {
   &.eyecatch3 {
     width: 340px;
     height: 191px;
+  }
+
+  .ribbon {
+    width: 108px;
+    position: absolute;
+    right: -8px;
+    top: -8px;
   }
 }
 
@@ -182,14 +204,21 @@ export default {
 }
 
 .username,
-.published-at,
-.token-amount {
+.published-at {
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.8px;
   position: absolute;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+.like-token-amount,
+.tip-token-amount {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  text-align: right;
 }
 
 .username {
@@ -205,17 +234,26 @@ export default {
   bottom: 6px;
 }
 
-.token-amount {
-  align-items: center;
-  background: url('~assets/images/pc/common/icon_logo_white.png') no-repeat;
-  background-size: 18px;
-  bottom: 0;
-  display: flex;
-  height: 18px;
-  margin: 0;
-  letter-spacing: 0.8px;
-  padding: 0 0 0 22px;
+.token-info {
+  position: absolute;
+  bottom: 20px;
   right: 20px;
-  bottom: 14px;
+  display: flex;
+}
+
+.icons {
+  display: flex;
+  flex-direction: column;
+  margin-right: 4px;
+}
+
+.icon {
+  width: 16px;
+}
+
+.amounts {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 </style>

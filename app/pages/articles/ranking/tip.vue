@@ -1,19 +1,16 @@
 <template>
-  <top-page />
+  <tip-ranking />
 </template>
 
 <script>
-import TopPage from '~/components/pages/TopPage'
+import TipRanking from '~/components/pages/TipRanking'
 
 export default {
   components: {
-    TopPage
+    TipRanking
   },
   async fetch({ store, query, from = {}, error }) {
     try {
-      // アイキャッチ・オススメ記事の初期化
-      // オススメ記事への切り替えを行った場合のみ記事データの初期化を行う。
-      // 記事から遷移してきた場合は、スクロール位置を保持させたいので初期化はしない。
       if (from.name === 'articles-recent' || from.name === 'articles-popular') {
         store.dispatch('article/resetArticleData')
       }
@@ -21,16 +18,26 @@ export default {
       await store.dispatch('article/getTopics')
       await Promise.all([
         store.dispatch('article/getTipEyecatchArticles'),
-        store.dispatch('article/getRecommendedArticles')
+        store.dispatch('article/getTipRankingArticles')
       ])
     } catch (e) {
       error({ statusCode: 404 })
     }
   },
-  head() {
-    return {
-      titleTemplate: ''
-    }
+  head: {
+    title: '投げ銭ランキング',
+    meta: [
+      {
+        hid: 'og:title',
+        property: 'og:title',
+        content: '投げ銭ランキング | ALIS'
+      },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: '投げ銭ランキング'
+      }
+    ]
   }
 }
 </script>
