@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/node:8.10.0-browsers
+      - image: circleci/node:10.15.3-browsers
 
     working_directory: ~/repo
 
@@ -40,7 +40,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:8.10.0-browsers
+      - image: circleci/node:10.15.3-browsers
 
     working_directory: ~/repo
 
