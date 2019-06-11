@@ -48,6 +48,11 @@ export default {
       }
     }
   },
+  watch: {
+    $route() {
+      this.$root.$emit('closeModal')
+    }
+  },
   head() {
     return {
       meta: [
