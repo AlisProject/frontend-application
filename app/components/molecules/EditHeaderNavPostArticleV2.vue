@@ -156,6 +156,7 @@ export default {
   },
   destroyed() {
     this.resetCurrentPrice()
+    this.updateTags({ tags: [] })
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
@@ -313,7 +314,8 @@ export default {
       'getTopics',
       'resetArticleTopic',
       'setArticleTopic',
-      'resetCurrentPrice'
+      'resetCurrentPrice',
+      'updateTags'
     ]),
     ...mapActions('user', [
       'setFirstProcessModal',
