@@ -39,7 +39,7 @@
           <img
             v-if="supporter.icon_image_url"
             :class="`user-icon rank${i + 1}`"
-            :src="`${supporter.icon_image_url}?d=48x48`"
+            :src="supporter.icon_image_url | addOptimizeParamToImageUrl('48x48')"
           >
           <img
             v-else
@@ -62,7 +62,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { formatDate } from '~/utils/format'
-import { formatTokenAmount } from '~/utils/article'
+import { formatTokenAmount, addOptimizeParamToImageUrl } from '~/utils/article'
 
 export default {
   props: {
@@ -91,7 +91,8 @@ export default {
     ...mapGetters('article', ['supporters'])
   },
   filters: {
-    formatTokenAmount
+    formatTokenAmount,
+    addOptimizeParamToImageUrl
   }
 }
 </script>

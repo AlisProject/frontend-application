@@ -14,7 +14,7 @@
         <img
           v-if="supporter.icon_image_url"
           :class="`user-icon rank${i + 1}`"
-          :src="`${supporter.icon_image_url}?d=48x48`"
+          :src="supporter.icon_image_url | addOptimizeParamToImageUrl('48x48')"
         >
         <img
           v-else
@@ -37,7 +37,7 @@
 import { mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import AppFooter from '../organisms/AppFooter'
-import { htmlDecode } from '~/utils/article'
+import { htmlDecode, addOptimizeParamToImageUrl } from '~/utils/article'
 
 export default {
   components: {
@@ -48,7 +48,8 @@ export default {
     ...mapGetters('article', ['supporters'])
   },
   filters: {
-    htmlDecode
+    htmlDecode,
+    addOptimizeParamToImageUrl
   }
 }
 </script>

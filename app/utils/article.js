@@ -411,3 +411,9 @@ export function formatTokenAmount(tokenAmount = 0) {
   const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
   return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
 }
+
+export function addOptimizeParamToImageUrl(url = '', param = '200x200') {
+  const targetImageTypes = ['png', 'jpg', 'jpeg']
+  const isTargetImage = targetImageTypes.some((imageType) => url.endsWith(imageType))
+  return isTargetImage ? `${url}?d=${param}` : url
+}
