@@ -1,5 +1,6 @@
 /* global iframely */
 import { XmlEntities } from 'html-entities'
+import { BigNumber } from 'bignumber.js'
 import axios from './axios'
 
 export function createInsertPluginTemplateFromUrl(url) {
@@ -402,4 +403,11 @@ export function getBodyWithImageOptimizationParam(body, domain, userId, articleI
   const pattern = String.raw`<(img( alt="")? src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
   const regexp = new RegExp(pattern, 'g')
   return body.replace(regexp, '<$1?d=800x2160">')
+}
+
+export function formatTokenAmount(tokenAmount = 0) {
+  const stringTokenAmount = tokenAmount.toString()
+  const formatNumber = 10 ** 18
+  const alisToken = new BigNumber(stringTokenAmount).div(formatNumber)
+  return alisToken > 999 ? (alisToken / 1000).toFixed(2, 1) + 'k' : alisToken.toFixed(2, 1)
 }

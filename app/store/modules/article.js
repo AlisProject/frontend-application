@@ -52,6 +52,7 @@ const state = () => ({
   },
   isFetchedPublicArticle: false,
   eyecatchArticles: [],
+  tipEyecatchArticles: [],
   recommendedArticles: {
     articles: [],
     page: 1,
@@ -62,7 +63,13 @@ const state = () => ({
     lastEvaluatedKey: {},
     articles: []
   },
-  isFetchedPurchasedArticle: false
+  isFetchedPurchasedArticle: false,
+  tipRankingArticles: {
+    articles: [],
+    page: 1,
+    isLastPage: false
+  },
+  supporters: []
 })
 
 const getters = {
@@ -104,7 +111,25 @@ const getters = {
   hasPublicArticlesLastEvaluatedKey: (state) => state.hasPublicArticlesLastEvaluatedKey,
   isFetchedPublicArticle: (state) => state.isFetchedPublicArticle,
   eyecatchArticles: (state) => state.eyecatchArticles,
-  recommendedArticles: (state) => state.recommendedArticles,
+  tipEyecatchArticles: (state) => {
+    const tipEyecatchArticles = [...state.tipEyecatchArticles]
+    const articleCount = tipEyecatchArticles.length
+    const fillCount = 3 - articleCount
+    // 投げ銭ランキングのアイキャッチ表示枠で、記事が3件未満のときは変わりの画像を表示する必要があるため、
+    // 画像の表示枠を null で埋めている。
+    return [...tipEyecatchArticles, ...new Array(fillCount).fill(null)]
+  },
+  recommendedArticles: (state) => {
+    const recommendedArticles = [...state.recommendedArticles.articles]
+    const removeTargetArticleIds = state.tipEyecatchArticles.map((article) => article.article_id)
+    const filteredRecommendedArticles = recommendedArticles.filter((recommendedArticle) => {
+      return !removeTargetArticleIds.includes(recommendedArticle.article_id)
+    })
+    return {
+      ...state.recommendedArticles,
+      articles: filteredRecommendedArticles
+    }
+  },
   purchasedArticleIds: (state) => state.purchasedArticleIds,
   purchasedArticles: (state) => {
     return {
@@ -113,7 +138,19 @@ const getters = {
     }
   },
   currentPrice: (state) => state.currentPrice,
-  isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle
+  isFetchedPurchasedArticle: (state) => state.isFetchedPurchasedArticle,
+  tipRankingArticles: (state) => {
+    const tipRankingArticles = [...state.tipRankingArticles.articles]
+    const removeTargetArticleIds = state.tipEyecatchArticles.map((article) => article.article_id)
+    const filteredTipRankingArticles = tipRankingArticles.filter((tipRankingArticle) => {
+      return !removeTargetArticleIds.includes(tipRankingArticle.article_id)
+    })
+    return {
+      ...state.tipRankingArticles,
+      articles: filteredTipRankingArticles
+    }
+  },
+  supporters: (state) => state.supporters
 }
 
 const actions = {
@@ -856,6 +893,58 @@ const actions = {
   },
   resetCurrentPrice({ commit }) {
     commit(types.SET_ARTICLE_CURRENT_PRICE, { price: null })
+  },
+  async getTipEyecatchArticles({ commit, dispatch }) {
+    try {
+      const { Items: articles } = await this.$axios.$get('/api/articles/tip_ranking', {
+        params: { limit: 3 }
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          if (article === null) return null
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TIP_EYECATCH_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getTipRankingArticles({ commit, state, dispatch }) {
+    try {
+      const limit = 12
+      const { Items: articles } = await this.$axios.$get('/api/articles/tip_ranking', {
+        params: { limit, page: state.tipRankingArticles.page }
+      })
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TIP_RANKING_ARTICLES, { articles: articlesWithData })
+      commit(types.SET_TIP_RANKING_ARTICLES_PAGE, { page: state.tipRankingArticles.page + 1 })
+      if (articles.length < limit) {
+        commit(types.SET_TIP_RANKING_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getArticleSupporters({ commit }, { articleId }) {
+    try {
+      const { Items: supporters } = await this.$axios.$get(`/api/articles/${articleId}/supporters`)
+      commit(types.SET_ARTICLE_SUPPORTERS, { supporters })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -993,7 +1082,13 @@ const mutations = {
     state.page = 1
     state.isLastPage = false
     state.eyecatchArticles = []
+    state.tipEyecatchArticles = []
     state.recommendedArticles = {
+      articles: [],
+      page: 1,
+      isLastPage: false
+    }
+    state.tipRankingArticles = {
       articles: [],
       page: 1,
       isLastPage: false
@@ -1101,6 +1196,21 @@ const mutations = {
   },
   [types.SET_IS_FETCHED_PURCHASED_ARTICLE](state, { isFetched }) {
     state.isFetchedPurchasedArticle = isFetched
+  },
+  [types.SET_TIP_EYECATCH_ARTICLES](state, { articles }) {
+    state.tipEyecatchArticles = articles
+  },
+  [types.SET_TIP_RANKING_ARTICLES](state, { articles }) {
+    state.tipRankingArticles.articles.push(...articles)
+  },
+  [types.SET_TIP_RANKING_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.tipRankingArticles.isLastPage = isLastPage
+  },
+  [types.SET_TIP_RANKING_ARTICLES_PAGE](state, { page }) {
+    state.tipRankingArticles.page = page
+  },
+  [types.SET_ARTICLE_SUPPORTERS](state, { supporters }) {
+    state.supporters = supporters
   }
 }
 
