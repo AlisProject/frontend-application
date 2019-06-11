@@ -59,14 +59,21 @@
             ウォレット
           </nuxt-link>
         </li>
-        <!-- <li class="menu-link">
-          <nuxt-link class="menu-link-inner" to="/me/wallet/distributed_tokens">
-            獲得ALIS詳細
-          </nuxt-link>
-        </li> -->
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/me/articles/purchased">
             購入した記事
+          </nuxt-link>
+        </li>
+        <hr class="hr">
+        <li class="menu-link">
+          <!-- TODO: リンクを修正 -->
+          <nuxt-link class="menu-link-inner" to="#">
+            ALIS Market
+          </nuxt-link>
+        </li>
+        <li class="menu-link">
+          <nuxt-link class="menu-link-inner" to="/tag/ALIS参加募集企画">
+            # ALIS参加募集企画
           </nuxt-link>
         </li>
         <li class="menu-link">
@@ -79,10 +86,21 @@
             登録中のアプリケーション
           </nuxt-link>
         </li>
+        <hr class="hr">
         <li class="menu-link">
           <nuxt-link to="/ALIS-official/articles/3reY5BgBEZ8B" class="menu-link-inner">
             ALISの使い方
           </nuxt-link>
+        </li>
+        <li class="menu-link">
+          <a
+            href="https://intercom.help/alismedia"
+            class="menu-link-inner"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+          >
+            よくある質問・問い合わせ
+          </a>
         </li>
         <li class="menu-link" @click="logoutUser">
           <span class="menu-link-inner">
@@ -90,18 +108,6 @@
           </span>
         </li>
       </ul>
-      <nuxt-link class="banner-planning-box" to="/tag/ALIS参加募集企画">
-        <img
-          class="banner-planning pc"
-          src="~assets/images/pc/common/banner_planning.png"
-          alt="ALIS参加募集企画"
-        >
-        <img
-          class="banner-planning sp"
-          src="~assets/images/sp/common/banner_planning.png"
-          alt="ALIS参加募集企画"
-        >
-      </nuxt-link>
     </div>
     <div v-show="isMenuShown" class="cover" @click="closeMenu" />
   </div>
@@ -284,7 +290,7 @@ export default {
   .background-user-image-box {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    height: 180px;
+    height: 70px;
     overflow: hidden;
     position: relative;
     text-align: center;
@@ -293,7 +299,7 @@ export default {
     .background-user-image {
       filter: blur(10px);
       height: auto;
-      margin: -40px -10px 0 -10px;
+      margin: -100px -10px 0 -10px;
       width: 270px;
     }
   }
@@ -301,45 +307,41 @@ export default {
   .profile-image {
     border-radius: 50%;
     box-shadow: 0 0 16px 0 rgba(192, 192, 192, 0.5);
-    height: 80px;
+    height: 50px;
     object-fit: cover;
     position: absolute;
-    right: 85px;
-    top: 40px;
-    width: 80px;
+    right: 185px;
+    top: 10px;
+    width: 50px;
   }
 
   .alis-token-amount {
     color: #fff;
     font-size: 20px;
     font-weight: 500;
-    left: 0;
     margin-top: 10px;
     position: absolute;
     right: 0;
     text-align: center;
     text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
-    top: 130px;
+    top: 14px;
+    width: 180px;
   }
 
   .menu-links {
     list-style: none;
-    margin: 30px 0 10px;
+    margin: 10px 0;
     padding: 0;
 
     .menu-link {
       cursor: pointer;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
       letter-spacing: 0;
       white-space: nowrap;
 
       &:hover {
         background-color: rgba(0, 135, 240, 0.2);
-      }
-
-      &:last-child {
-        margin-top: 30px;
       }
 
       .reset-link-style {
@@ -356,7 +358,7 @@ export default {
         display: block;
         height: 24px;
         line-height: 24px;
-        padding: 10px 40px;
+        padding: 8px 40px;
         text-decoration: none;
 
         &:visited {
@@ -366,21 +368,10 @@ export default {
     }
   }
 
-  .banner-planning-box {
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    display: block;
-    height: 60px;
-    overflow: hidden;
-
-    .banner-planning {
-      height: auto;
-      width: 100%;
-
-      &.sp {
-        display: none;
-      }
-    }
+  .hr {
+    border: none;
+    height: 1px;
+    background-color: #dedede;
   }
 }
 
@@ -429,23 +420,8 @@ export default {
 
     .background-user-image-box {
       border-radius: 0;
-      height: 180px;
       overflow: hidden;
       text-align: center;
-    }
-
-    .banner-planning-box {
-      margin: 16px;
-
-      .banner-planning {
-        &.sp {
-          display: block;
-        }
-
-        &.pc {
-          display: none;
-        }
-      }
     }
   }
 
