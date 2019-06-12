@@ -1,7 +1,7 @@
 <template>
   <nav class="area-nav">
     <div class="area-nav-links" @scroll="handleHorizontalScroll">
-      <nuxt-link to="/" class="nav-link area-topic0">
+      <nuxt-link to="/" class="nav-link area-topic0" @click.native="resetArticleData">
         <span class="topic-display-name">
           オススメ
         </span>
