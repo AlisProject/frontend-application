@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  async created() {
+  async mounted() {
     const { code, user } = this.$route.query
     try {
       const result = await this.$store.dispatch('user/confirmEmail', { code, user })
