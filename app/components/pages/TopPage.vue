@@ -2,7 +2,6 @@
   <div class="top-page" :class="{ 'is-show-guide': isShowGuide }">
     <app-header />
     <default-header-nav class="default-header-nav" />
-    <new-topic-candidates />
     <div class="area-recommended-tip-ranking">
       <div class="label">
         投げ銭によるオススメ
@@ -45,7 +44,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
-import NewTopicCandidates from '../organisms/NewTopicCandidates'
 import TipEyecatchArticleCardList from '../organisms/TipEyecatchArticleCardList'
 import RecommendedArticleCardList from '../organisms/RecommendedArticleCardList'
 import HowToUseImage from '../organisms/HowToUseImage'
@@ -58,7 +56,6 @@ export default {
   components: {
     AppHeader,
     DefaultHeaderNav,
-    NewTopicCandidates,
     TipEyecatchArticleCardList,
     RecommendedArticleCardList,
     HowToUseImage,
@@ -166,7 +163,6 @@ export default {
   grid-template-areas:
     "app-header app-header                     app-header                     app-header"
     "nav        nav                            nav                            nav       "
-    "...        candidates                     candidates                     ...       "
     "...        recommended-tip-ranking        recommended-tip-ranking        ...       "
     "...        ...                            ...                            ...       "
     "...        tip-eyecatch-article-card-list tip-eyecatch-article-card-list ...       "
@@ -178,18 +174,17 @@ export default {
     "app-footer app-footer                     app-footer                     app-footer";
 
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px auto 1fr 75px 75px;
+  grid-template-rows: 100px minmax(50px, min-content) 26px 30px auto 26px 30px auto 1fr 75px 75px;
   min-height: 100vh;
 
   &.is-show-guide {
     grid-template-rows:
-      100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px 652px minmax(100px, 1fr)
+      100px minmax(50px, min-content) 26px 30px auto 26px 30px 652px minmax(100px, 1fr)
       75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                     app-header                     app-header"
       "nav        nav                            nav                            nav       "
-      "...        candidates                     candidates                     ...       "
       "...        recommended-tip-ranking        recommended-tip-ranking        ...       "
       "...        ...                            ...                            ...       "
       "...        tip-eyecatch-article-card-list tip-eyecatch-article-card-list ...       "
@@ -214,7 +209,7 @@ export default {
   }
 
   .default-header-nav {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
 
   .how-to-use-image,
@@ -277,12 +272,11 @@ export default {
 @media screen and (max-width: 1296px) {
   .top-page {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px 1fr 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) 26px 30px auto 26px 30px 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                     app-header"
       "nav        nav                            nav       "
-      "...        candidates                     ...       "
       "...        recommended-tip-ranking        ...       "
       "...        ...                            ...       "
       "...        tip-eyecatch-article-card-list ...       "
@@ -293,12 +287,11 @@ export default {
       "app-footer app-footer                     app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px auto 1fr 75px 75px;
+      grid-template-rows: 100px minmax(50px, min-content) 26px 30px auto 26px 30px auto 1fr 75px 75px;
       /* prettier-ignore */
       grid-template-areas:
         "app-header app-header                     app-header"
         "nav        nav                            nav       "
-        "...        candidates                     ...       "
         "...        recommended-tip-ranking        ...       "
         "...        ...                            ...       "
         "...        tip-eyecatch-article-card-list ...       "
@@ -327,15 +320,11 @@ export default {
 @media screen and (max-width: 920px) {
   .top-page {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 80px 50px 26px 30px auto 60px 26px 30px 1fr 75px minmax(
-        75px,
-        min-content
-      );
+    grid-template-rows: 100px 80px 26px 30px auto 60px 26px 30px 1fr 75px minmax(75px, min-content);
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
       "nav        nav                           nav       "
-      "candidates candidates                    candidates"
       "...        recommended-tip-ranking       ...       "
       "...        ...                           ...       "
       "...        eyecatch-article-card-list-sp ...       "
@@ -347,7 +336,7 @@ export default {
       "app-footer app-footer                    app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px 80px 50px auto 26px 30px auto 60px 26px 30px 1fr 75px minmax(
+      grid-template-rows: 100px 80px auto 26px 30px auto 60px 26px 30px 1fr 75px minmax(
           75px,
           min-content
         );
@@ -355,7 +344,6 @@ export default {
       grid-template-areas:
         "app-header app-header                    app-header"
         "nav        nav                           nav       "
-        "candidates candidates                    candidates"
         "...        how-to-use-image              ...       "
         "...        recommended-tip-ranking       ...       "
         "...        ...                           ...       "
@@ -399,12 +387,11 @@ export default {
 
 @media screen and (max-width: 550px) {
   .top-page {
-    grid-template-rows: 66px minmax(50px, min-content) 36px 30px 26px auto 60px 26px 30px 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) 30px 26px auto 60px 26px 30px 1fr 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
       "nav        nav                           nav       "
-      "candidates candidates                    candidates"
       "...        ...                           ...       "
       "...        recommended-tip-ranking       ...       "
       "...        eyecatch-article-card-list-sp ...       "
@@ -417,12 +404,11 @@ export default {
     grid-gap: 0;
 
     &.is-show-guide {
-      grid-template-rows: 66px minmax(50px, min-content) 44px auto 30px 26px auto 60px 26px 30px 1fr 75px min-content;
+      grid-template-rows: 66px minmax(50px, min-content) auto 30px 26px auto 60px 26px 30px 1fr 75px min-content;
       /* prettier-ignore */
       grid-template-areas:
         "app-header       app-header                    app-header      "
         "nav              nav                           nav             "
-        "candidates       candidates                    candidates      "
         "how-to-use-image how-to-use-image              how-to-use-image"
         "...              ...                           ...             "
         "...              recommended-tip-ranking       ...             "
