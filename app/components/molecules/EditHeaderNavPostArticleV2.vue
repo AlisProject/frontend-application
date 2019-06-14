@@ -148,8 +148,14 @@ export default {
       this.price = currentPrice
     }
     this.listen(window, 'click', (event) => {
-      // タグの ☓ ボタンを押したときにはポップアップを非表示にしない
-      if (!this.$el.contains(event.target) && !event.target.classList.contains('ti-icon-close')) {
+      // タグの ☓ ボタンやオートコンプリートのタグを押したときにはポップアップを非表示にしない
+      const isClickedTagRemoveButton = event.target.classList.contains('ti-icon-close')
+      const isClickedAutocompletedTag = event.target.classList.value === ''
+      if (
+        !this.$el.contains(event.target) &&
+        !isClickedTagRemoveButton &&
+        !isClickedAutocompletedTag
+      ) {
         this.closePopup()
       }
     })
