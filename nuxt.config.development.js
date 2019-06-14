@@ -7,7 +7,8 @@ nuxtConfig.axios = {
 
 nuxtConfig.proxy = {
   '/api': process.env.BASE_URL,
-  '/oauth2': process.env.BASE_URL
+  '/oauth2': process.env.BASE_URL,
+  '/labo': process.env.BASE_URL
 }
 
 module.exports = nuxtConfig
