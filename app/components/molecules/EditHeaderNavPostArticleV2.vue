@@ -186,7 +186,7 @@ export default {
         if (this.paymentType === 'pay') {
           this.setSelectPayment({ title, body, price })
           if (location.href.includes('/me/articles/draft')) {
-            this.$router.push(`/me/articles/draft/${this.$route.params.articleId}/paypart`)
+            this.$router.push(`/me/articles/draft/${this.articleId}/paypart`)
           } else if (location.href.includes('/me/articles/public')) {
             this.$router.push(`/me/articles/public/${this.$route.params.articleId}/paypart`)
           }
