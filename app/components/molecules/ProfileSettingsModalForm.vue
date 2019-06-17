@@ -43,7 +43,7 @@
       </form>
     </div>
     <div class="modal-footer">
-      <app-button class="submit-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button class="submit-button" :disabled="isProcessing || invalidSubmit" @click="onSubmit">
         完了する
       </app-button>
     </div>
@@ -67,7 +67,8 @@ export default {
     return {
       userDisplayName: '',
       selfIntroduction: '',
-      uploadedImage: ''
+      uploadedImage: '',
+      isProcessing: false
     }
   },
   async created() {
@@ -173,10 +174,11 @@ export default {
       this.hideProfileSettingsError({ type })
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
-      const { userDisplayName, selfIntroduction } = this.profileSettingsModal.formData
-      const formattedSelfIntroduction = selfIntroduction.replace(/\r?\n/g, '')
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
+        const { userDisplayName, selfIntroduction } = this.profileSettingsModal.formData
+        const formattedSelfIntroduction = selfIntroduction.replace(/\r?\n/g, '')
         await this.putUserInfo({ userDisplayName, selfIntroduction: formattedSelfIntroduction })
         await this.setCurrentUserInfo()
 
@@ -207,6 +209,8 @@ export default {
       } catch (error) {
         this.sendNotification({ text: 'プロフィールを変更できませんでした', type: 'warning' })
         console.error(error)
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions({
