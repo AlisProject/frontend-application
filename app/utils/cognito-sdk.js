@@ -15,7 +15,7 @@ export default class CognitoSDK {
       ClientId: process.env.CLIENT_ID
     }
     this.userPool = new CognitoUserPool(this.poolData)
-    AWS.config.region = process.env.REGION
+    AWS.config.region = process.env.AWS_DEFAULT_REGION
   }
 
   getUserSession() {

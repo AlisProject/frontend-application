@@ -32,7 +32,7 @@ Parameters:
     Description: Image used for CodeBuild project.
   ApprovalEmailAddress:
     Type: String
-  Region:
+  AwsDefaultRegion:
     Type: String
   UserPoolId:
     Type: String
@@ -128,8 +128,8 @@ Resources:
             Value: !Ref Branch
           - Name: ALIS_APP_ID
             Value: !Ref AlisAppId
-          - Name: REGION
-            Value: !Ref Region
+          - Name: AWS_DEFAULT_REGION
+            Value: !Ref AwsDefaultRegion
           - Name: USER_POOL_ID
             Value: !Ref UserPoolId
           - Name: CLIENT_ID
