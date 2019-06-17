@@ -30,22 +30,23 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import { Toast } from 'vuex-toast'
-import HeaderSessionLinks from '../atoms/HeaderSessionLinks'
-import HeaderUserLoggedInItems from '../atoms/HeaderUserLoggedInItems'
-import SignUpModal from '../organisms/SignUpModal'
-import SignUpAuthFlowModal from '../organisms/SignUpAuthFlowModal'
-import LoginModal from '../organisms/LoginModal'
-import RestrictEditArticleModal from '../organisms/RestrictEditArticleModal'
-import ProfileSettingsModal from '../organisms/ProfileSettingsModal'
-import RequestLoginModal from '../organisms/RequestLoginModal'
-import TipModal from '../organisms/TipModal'
-import RequestPhoneNumberVerifyModal from '../organisms/RequestPhoneNumberVerifyModal'
-import UserReportModal from '../organisms/UserReportModal'
-import ArticleReportModal from '../organisms/ArticleReportModal'
-import FirstProcessModal from '../organisms/FirstProcessModal'
-import ConfirmPurchaseArticleModal from '../organisms/ConfirmPurchaseArticleModal'
-import WithdrawalDetailModal from '../organisms/WithdrawalDetailModal'
-import InputWithdrawAuthCodeModal from '../organisms/InputWithdrawAuthCodeModal'
+
+const HeaderSessionLinks = () => import('../atoms/HeaderSessionLinks')
+const HeaderUserLoggedInItems = () => import('../atoms/HeaderUserLoggedInItems')
+const SignUpModal = () => import('../organisms/SignUpModal')
+const SignUpAuthFlowModal = () => import('../organisms/SignUpAuthFlowModal')
+const LoginModal = () => import('../organisms/LoginModal')
+const RestrictEditArticleModal = () => import('../organisms/RestrictEditArticleModal')
+const ProfileSettingsModal = () => import('../organisms/ProfileSettingsModal')
+const RequestLoginModal = () => import('../organisms/RequestLoginModal')
+const TipModal = () => import('../organisms/TipModal')
+const RequestPhoneNumberVerifyModal = () => import('../organisms/RequestPhoneNumberVerifyModal')
+const UserReportModal = () => import('../organisms/UserReportModal')
+const ArticleReportModal = () => import('../organisms/ArticleReportModal')
+const FirstProcessModal = () => import('../organisms/FirstProcessModal')
+const ConfirmPurchaseArticleModal = () => import('../organisms/ConfirmPurchaseArticleModal')
+const WithdrawalDetailModal = () => import('../organisms/WithdrawalDetailModal')
+const InputWithdrawAuthCodeModal = () => import('../organisms/InputWithdrawAuthCodeModal')
 
 export default {
   components: {

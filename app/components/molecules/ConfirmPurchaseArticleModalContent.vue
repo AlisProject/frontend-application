@@ -24,6 +24,7 @@
     </span>
     <app-button
       class="purchase-button"
+      :isLoading="isProcessing"
       :disabled="!isPurchasable || isProcessing"
       @click="purchase"
     >

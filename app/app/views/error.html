@@ -1,74 +1,88 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Server error</title>
-    <meta charset="utf-8">
-    <meta content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name=viewport>
+    <meta charset="utf-8" />
+    <meta
+      content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"
+      name="viewport"
+    />
     <style>
-        .page-500-container {
-            background-position: center bottom;
-            background-size: 600px;
-            height: calc(100vh - 100px);
-            text-align: center;
-            width: 100%;
-        }
+      body {
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-family: 'Yu Gothic', YuGothic, 'Helvetica Neue', Helvetica, Arial, 游ゴシック体,
+          '游ゴシック', 'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ Pro W3',
+          'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'MS ゴシック', 'MS Gothic', sans-serif;
+      }
 
-        .logo {
-            width: 100%;
-        }
+      .page-500-container {
+        background-position: center bottom;
+        background-size: 600px;
+        height: calc(100vh - 100px);
+        text-align: center;
+        width: 100%;
+      }
 
+      .logo {
+        width: 100%;
+      }
+
+      .logo img {
+        display: block;
+        margin: 0 auto;
+        padding: 30px;
+        width: 94px;
+      }
+
+      .title {
+        color: #030303;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+        margin: 20px 30px 0;
+      }
+
+      .description {
+        color: #6e6e6e;
+        font-size: 12px;
+        line-height: 18px;
+        margin: 38px 0 0;
+      }
+
+      .to-top-button {
+        margin: 50vh auto 60px;
+      }
+
+      @media screen and (max-width: 550px) {
         .logo img {
-            display: block;
-            margin: 0 auto;
-            padding: 30px;
-            width: 94px;
+          padding: 10px;
         }
-
-        .title {
-            color: #030303;
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 24px;
-            margin: 20px 30px 0;
-        }
-
-        .description {
-            color: #6e6e6e;
-            font-size: 12px;
-            line-height: 18px;
-            margin: 38px 0 0;
-        }
-
-        .to-top-button {
-            margin: 50vh auto 60px;
-        }
-
-        @media screen and (max-width: 550px) {
-            .logo img {
-                padding: 10px
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <a href="/" class="logo">
-        <img src="/d/nuxt/dist/header_logo_original.png" alt="logo">
+      <img src="/d/nuxt/dist/header_logo_original.png" alt="logo" />
     </a>
     <div class="page-500-container">
-        <h1 class="title">
-            システムエラーが発生しました。<br> お手数ですが、時間をおいて再度お試しください。
-        </h1>
-        <p class="description">
-            障害が発生している場合はツイッターにて状況を配信させていただきます。
-        </p>
-        <a class="twitter-timeline" data-width="380" data-height="500" href="https://twitter.com/ALIS_media?ref_src=twsrc%5Etfw">
-            Tweets by ALIS_media
-        </a>
-        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <h1 class="title">
+        システムエラーが発生しました。<br />
+        お手数ですが、時間をおいて再度お試しください。
+      </h1>
+      <p class="description">
+        障害が発生している場合はツイッターにて状況を配信させていただきます。
+      </p>
+      <a
+        class="twitter-timeline"
+        data-width="380"
+        data-height="500"
+        href="https://twitter.com/ALIS_media?ref_src=twsrc%5Etfw"
+      >
+        Tweets by ALIS_media
+      </a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
-    </div>
-</body>
-
+  </body>
 </html>
