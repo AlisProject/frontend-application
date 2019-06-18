@@ -66,8 +66,7 @@
         </li>
         <hr class="hr">
         <li class="menu-link">
-          <!-- TODO: リンクを修正 -->
-          <nuxt-link class="menu-link-inner" to="#">
+          <nuxt-link to="/ALIS-official/articles/3bNWJXZjRGYE" class="menu-link-inner">
             ALIS Market
           </nuxt-link>
         </li>
