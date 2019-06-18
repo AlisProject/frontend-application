@@ -31,7 +31,11 @@
       <p class="error-message">
         {{ errorMessage }}
       </p>
-      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button
+        class="to-next-step-button"
+        :disabled="isProcessing || invalidSubmit"
+        @click="onSubmit"
+      >
         登録を完了する
       </app-button>
     </div>
@@ -53,7 +57,8 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -106,10 +111,11 @@ export default {
       this.hideSignUpAuthFlowInputUserIdError({ type })
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
-      const { userId } = this.signUpAuthFlowModal.inputUserId.formData
-
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
+        const { userId } = this.signUpAuthFlowModal.inputUserId.formData
+
         await this.postUserId({ userId })
         await this.refreshUserSession()
         await this.getUserSession()
@@ -127,6 +133,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions('user', [

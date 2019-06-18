@@ -4,7 +4,7 @@
       <p class="confirm-text">
         本当に報告しますか？
       </p>
-      <app-button class="report-button" @click="report">
+      <app-button class="report-button" :disabled="isProcessing" @click="report">
         報告する
       </app-button>
       <app-button class="close-button" type="secondary" @click="closeModal">
@@ -23,12 +23,19 @@ export default {
   components: {
     AppButton
   },
+  data() {
+    return {
+      isProcessing: false
+    }
+  },
   computed: {
     ...mapGetters('report', ['articleReportModal'])
   },
   methods: {
     async report() {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
         const { articleId } = this.$route.params
         const { reason } = this.articleReportModal.selectReason.formData
         const { originURL, freeText } = this.articleReportModal.inputFreeText.formData
@@ -40,6 +47,8 @@ export default {
           text = 'すでに報告済みです'
         }
         this.sendNotification({ text, type: 'warning' })
+      } finally {
+        this.isProcessing = false
       }
       this.setArticleReportConfirmationModal({ isShow: false })
       this.setArticleReportModal({ isShow: false })

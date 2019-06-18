@@ -38,7 +38,11 @@
       <p class="error-message">
         {{ errorMessage }}
       </p>
-      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button
+        class="to-next-step-button"
+        :disabled="isProcessing || invalidSubmit"
+        @click="onSubmit"
+      >
         次へ
       </app-button>
     </div>
@@ -60,7 +64,8 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -128,11 +133,12 @@ export default {
       this.hideSignUpAuthFlowInputPhoneNumberError({ type })
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
-      const { userIdOrEmail } = this.signUpAuthFlowModal.login.formData
-      const { phoneNumber } = this.signUpAuthFlowModal.inputPhoneNumber.formData
-
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
+        const { userIdOrEmail } = this.signUpAuthFlowModal.login.formData
+        const { phoneNumber } = this.signUpAuthFlowModal.inputPhoneNumber.formData
+
         await this.updatePhoneNumber({
           userId: userIdOrEmail,
           phoneNumber: `+81${phoneNumber.slice(1)}`
@@ -154,6 +160,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     skip() {

@@ -1,5 +1,5 @@
 <template>
-  <app-button @click="publish">
+  <app-button :disabled="isProcessing" @click="publish">
     公開する
   </app-button>
 </template>
@@ -15,6 +15,11 @@ const FORMAT_NUMBER = 10 ** 18
 export default {
   components: {
     AppButton
+  },
+  data() {
+    return {
+      isProcessing: false
+    }
   },
   computed: {
     ...mapGetters('article', [
@@ -34,6 +39,8 @@ export default {
     },
     async publish() {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
         const { articleId, title, topicType } = this
         const body = this.getBody()
         const paidBody = this.getPaidBody()
@@ -78,6 +85,12 @@ export default {
       } catch (e) {
         this.sendNotification({ text: '記事の公開に失敗しました', type: 'warning' })
         console.error(e)
+      } finally {
+        // this.$router.push でのページ遷移中は公開するボタンを押せてしまうので、
+        // false にするタイミングを少しずらしている。
+        setTimeout(() => {
+          this.isProcessing = false
+        }, 1000)
       }
     },
     getBody() {

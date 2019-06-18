@@ -117,7 +117,7 @@ export default {
       this.$v.requestPhoneNumberVerifyModal.inputAuthCode.formData[type].$reset()
       this.hideRequestPhoneNumberVerifyInputAuthCodeError({ type })
     },
-    async onSubmit() {
+    onSubmit() {
       if (this.invalidSubmit) return
       this.setUserReportSelectReasonModal({ isShow: false })
       this.setUserReportInputFreeTextModal({ isShow: true })

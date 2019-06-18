@@ -125,9 +125,17 @@ const getters = {
     const filteredRecommendedArticles = recommendedArticles.filter((recommendedArticle) => {
       return !removeTargetArticleIds.includes(recommendedArticle.article_id)
     })
+    // 表示する記事のグリットがずれないようにするため、表示する記事を 6 の倍数にしている。
+    const removeCount = filteredRecommendedArticles.length % 6
+    const removedArticles =
+      removeCount === 0
+        ? [...filteredRecommendedArticles]
+        : [...filteredRecommendedArticles.slice(0, -removeCount)]
     return {
       ...state.recommendedArticles,
-      articles: filteredRecommendedArticles
+      // 最後のページではグリットに関係なくすべての記事を表示したいため、
+      // そのまま filteredRecommendedArticles を表示している。
+      articles: state.recommendedArticles.isLastPage ? filteredRecommendedArticles : removedArticles
     }
   },
   purchasedArticleIds: (state) => state.purchasedArticleIds,
@@ -1082,7 +1090,6 @@ const mutations = {
     state.page = 1
     state.isLastPage = false
     state.eyecatchArticles = []
-    state.tipEyecatchArticles = []
     state.recommendedArticles = {
       articles: [],
       page: 1,

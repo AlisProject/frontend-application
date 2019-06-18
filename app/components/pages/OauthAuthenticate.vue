@@ -38,7 +38,7 @@
         ・メールアドレス、パスワード、電話番号<br>
         ・ウォレットの入出金情報
       </p>
-      <app-button class="allow-button" @click="allowAccess">
+      <app-button class="allow-button" :disabled="isProcessing" @click="allowAccess">
         アクセスを許可する
       </app-button>
       <app-button type="secondary" class="cancel-button">
@@ -68,7 +68,8 @@ export default {
   data() {
     return {
       clientName: '',
-      description: ''
+      description: '',
+      isProcessing: false
     }
   },
   async mounted() {
@@ -101,6 +102,8 @@ export default {
   methods: {
     async allowAccess() {
       try {
+        if (this.isProcessing) return
+        this.isProcessing = true
         const {
           redirect_uri: redirectUri,
           client_id: clientId,
@@ -124,6 +127,8 @@ export default {
           text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
           type: 'warning'
         })
+      } finally {
+        this.isProcessing = false
       }
     },
     getIdToken() {
