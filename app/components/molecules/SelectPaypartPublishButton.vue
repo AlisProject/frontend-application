@@ -86,7 +86,11 @@ export default {
         this.sendNotification({ text: '記事の公開に失敗しました', type: 'warning' })
         console.error(e)
       } finally {
-        this.isProcessing = false
+        // this.$router.push でのページ遷移中は公開するボタンを押せてしまうので、
+        // false にするタイミングを少しずらしている。
+        setTimeout(() => {
+          this.isProcessing = false
+        }, 1000)
       }
     },
     getBody() {
