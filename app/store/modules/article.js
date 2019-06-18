@@ -1090,7 +1090,6 @@ const mutations = {
     state.page = 1
     state.isLastPage = false
     state.eyecatchArticles = []
-    state.tipEyecatchArticles = []
     state.recommendedArticles = {
       articles: [],
       page: 1,
