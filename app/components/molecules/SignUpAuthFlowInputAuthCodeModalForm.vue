@@ -33,7 +33,11 @@
       <p class="error-message">
         {{ errorMessage }}
       </p>
-      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button
+        class="to-next-step-button"
+        :disabled="isProcessing || invalidSubmit"
+        @click="onSubmit"
+      >
         認証コードを送信する
       </app-button>
       <p class="back-to-input-phone-number">
@@ -54,7 +58,8 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -115,9 +120,11 @@ export default {
       this.hideSignUpAuthFlowInputAuthCodeError({ type })
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
-      const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
+
+        const { authCode: code } = this.signUpAuthFlowModal.inputAuthCode.formData
         await this.verifySMSCode({ code })
         await this.refreshUserSession()
         this.setSignUpAuthFlowInputAuthCodeModal({
@@ -134,6 +141,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     backToInputPhoneNumber() {

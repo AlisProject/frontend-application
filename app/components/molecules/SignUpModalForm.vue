@@ -63,7 +63,11 @@
               プライバシーポリシー
             </nuxt-link>に同意して
           </p>
-          <app-button class="registration-button" :disabled="invalidSubmit" @click="onSubmit">
+          <app-button
+            class="registration-button"
+            :disabled="isProcessing || invalidSubmit"
+            @click="onSubmit"
+          >
             登録する
           </app-button>
         </div>
@@ -128,7 +132,8 @@ export default {
       twitterSignUpAuthorizeURL: null,
       facebookSignUpAuthorizeURL: null,
       yahooSignUpAuthorizeURL: null,
-      isSelectedEmailAuth: false
+      isSelectedEmailAuth: false,
+      isProcessing: false
     }
   },
   async mounted() {
@@ -223,9 +228,10 @@ export default {
       this.isSelectedEmailAuth = true
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
-      const { userId, email, password } = this.signUpModal.formData
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
+        const { userId, email, password } = this.signUpModal.formData
         await this.register({ userId, email, password })
         this.setSentMail({ sentMail: true })
         this.$refs.userId.value = ''
@@ -243,6 +249,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions('user', [

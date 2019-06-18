@@ -37,7 +37,11 @@
       <p class="error-message">
         {{ errorMessage }}
       </p>
-      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button
+        class="to-next-step-button"
+        :disabled="isProcessing || invalidSubmit"
+        @click="onSubmit"
+      >
         次へ
       </app-button>
     </div>
@@ -59,7 +63,8 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -154,10 +159,11 @@ export default {
       this.hideRequestPhoneNumberVerifyInputPhoneNumberError({ type })
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
-      const { phoneNumber } = this.requestPhoneNumberVerifyModal.inputPhoneNumber.formData
-
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
+        const { phoneNumber } = this.requestPhoneNumberVerifyModal.inputPhoneNumber.formData
+
         await this.updatePhoneNumber({ phoneNumber: `+81${phoneNumber.slice(1)}` })
         await this.sendConfirm()
 
@@ -172,6 +178,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions('user', [
