@@ -209,11 +209,22 @@ export default class CognitoSDK {
           let errorMessage = ''
           switch (err.code) {
             case 'UserNotFoundException':
-              errorMessage = 'ユーザーが存在しません'
+              errorMessage = '存在しないユーザーです。入力内容をご確認ください'
               break
             case 'LimitExceededException':
               errorMessage =
                 'パスワード再設定の試行回数が上限に達しました。時間を置いて再度お試しください'
+              break
+            case 'UserLambdaValidationException':
+              const pattern = /^.*external provider's user can not execute\.$/
+              if (pattern.test(err.message)) {
+                errorMessage =
+                  'このユーザーは Twitter、Facebook 等の他サービスと連携しており、' +
+                  '当サービスではパスワード忘れの対応を行うことができません。' +
+                  '連携頂いている該当サービスよりご対応ください'
+              } else {
+                errorMessage = 'エラーが発生しました。入力内容をご確認ください'
+              }
               break
             default:
               errorMessage = 'エラーが発生しました。入力内容をご確認ください'
