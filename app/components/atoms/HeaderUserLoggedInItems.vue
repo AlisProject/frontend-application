@@ -72,7 +72,7 @@
         </li>
         <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/tag/ALIS参加募集企画">
-            # ALIS参加募集企画
+            ALIS参加募集企画
           </nuxt-link>
         </li>
         <li class="menu-link">
