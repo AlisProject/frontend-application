@@ -20,7 +20,7 @@
     <nuxt-link to="/users/AB2" class="link">
       技術ブログ
     </nuxt-link>
-    <a href="https://github.com/AlisProject/api-docs" class="link" target="_blank">開発者向けAPI</a>
+    <a href="https://github.com/AlisProject/api-docs" class="link" target="_blank">API</a>
     <a href="https://alismedia.jp/ja/" class="link" target="_blank">運営会社</a>
   </footer>
 </template>
