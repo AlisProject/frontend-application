@@ -288,29 +288,6 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getArticleRandom({ commit, dispatch }) {
-    try {
-      const article = await this.$axios.$get(`/labo/n/random`)
-      const body = getBodyWithImageOptimizationParam(
-        article.body,
-        process.env.DOMAIN,
-        article.user_id,
-        article.article_id
-      )
-      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
-        dispatch('getUserInfo', { userId: article.user_id }),
-        dispatch('getAlisToken', { articleId: article.article_id }),
-        dispatch('getLikesCount', { articleId: article.article_id }),
-        dispatch('getArticleComments', { articleId: article.article_id })
-      ])
-      commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, {
-        article: { ...article, body, userInfo, alisToken, comments }
-      })
-    } catch (error) {
-      return Promise.reject(error)
-    }
-  },
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/api/me/articles/${articleId}/public`)
     commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
@@ -973,6 +950,32 @@ const actions = {
     try {
       const { Items: supporters } = await this.$axios.$get(`/api/articles/${articleId}/supporters`)
       commit(types.SET_ARTICLE_SUPPORTERS, { supporters })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+
+  // Laboリソース
+
+  async getLaboNArticleRandom({ commit, dispatch }) {
+    try {
+      const article = await this.$axios.$get(`/laboratory/labo/n/random`)
+      const body = getBodyWithImageOptimizationParam(
+        article.body,
+        process.env.DOMAIN,
+        article.user_id,
+        article.article_id
+      )
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId: article.article_id }),
+        dispatch('getLikesCount', { articleId: article.article_id }),
+        dispatch('getArticleComments', { articleId: article.article_id })
+      ])
+      commit(types.SET_LIKES_COUNT, { likesCount })
+      commit(types.SET_ARTICLE_DETAIL, {
+        article: { ...article, body, userInfo, alisToken, comments }
+      })
     } catch (error) {
       return Promise.reject(error)
     }

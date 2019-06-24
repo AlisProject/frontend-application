@@ -12,21 +12,18 @@ export default {
   },
   async fetch({ store, query, from = {}, error }) {
     try {
-      await store.dispatch('article/getArticleRandom')
+      await store.dispatch('article/getLaboNArticleRandom')
 
       await store.dispatch('article/getTopics')
       store.dispatch('article/setTopicDisplayName', {
         topicName: store.state.article.article.topic
       })
     } catch (e) {
+      console.log(e)
       error({ statusCode: 404 })
     }
   },
   computed: {
-    isCurrentUser() {
-      return this.loggedIn && this.$route.params.userId === this.currentUser.userId
-    },
-    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['article', 'topicDisplayName'])
   }
 }
