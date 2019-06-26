@@ -2,7 +2,7 @@
 [![CircleCI](https://circleci.com/gh/AlisProject/frontend-application.svg?style=svg)](https://circleci.com/gh/AlisProject/frontend-application)
 
 # Prerequisite
-- ndenv
+- nodenv
 - yarn
 - serverless
 - aws cli
@@ -25,7 +25,7 @@ Also, you should use variables in `.envrc.sample.develop` when you are developin
 ## Install dependencies
 ```bash
 # install dependencies
-ndenv install
+nodenv install
 yarn
 ```
 
