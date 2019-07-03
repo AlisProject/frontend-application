@@ -953,6 +953,32 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  // Laboリソース
+
+  async getLaboNArticleRandom({ commit, dispatch }) {
+    try {
+      const article = await this.$axios.$get(`/laboratory/labo/n/random`)
+      const body = getBodyWithImageOptimizationParam(
+        article.body,
+        process.env.DOMAIN,
+        article.user_id,
+        article.article_id
+      )
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId: article.article_id }),
+        dispatch('getLikesCount', { articleId: article.article_id }),
+        dispatch('getArticleComments', { articleId: article.article_id })
+      ])
+      commit(types.SET_LIKES_COUNT, { likesCount })
+      commit(types.SET_ARTICLE_DETAIL, {
+        article: { ...article, body, userInfo, alisToken, comments }
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
