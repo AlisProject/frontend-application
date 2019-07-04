@@ -20,7 +20,11 @@ export default {
       store.dispatch('user/resetUserArticles')
       store.dispatch('user/resetUserArticlesLastEvaluatedKey')
     }
-    await store.dispatch('user/setUserInfo', { userId: params.userId })
+    try {
+      await store.dispatch('user/setUserInfo', { userId: params.userId })
+    } catch (e) {
+      error({ statusCode: 404 })
+    }
   },
   async mounted() {
     try {
