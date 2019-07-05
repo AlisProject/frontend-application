@@ -16,9 +16,10 @@ dist
 .idea
 .vscode
 
+# Jest
+coverage/
+
 # etc
 yarn-error.log
 .serverless
-
-# Jest
-coverage/
+tmp*
