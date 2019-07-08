@@ -29,10 +29,19 @@ nodenv install
 yarn
 ```
 
+## Build
+
+```bash
+yarn build
+```
+
 ## Deployment
 
 ```bash
-./deploy.sh
+yarn deploy
+
+# Re install dependencies
+yarn
 ```
 
 # Development

@@ -1,32 +1,65 @@
 version: 2.1
-jobs:
-  build:
+
+references:
+  ignore_master: &ignore_master
+    filters:
+      branches:
+        ignore:
+          - master
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
+
+executors:
+  default:
+    working_directory: ~/repo
     docker:
       - image: circleci/node:10.15.3-browsers
 
-    working_directory: ~/repo
+commands:
+  prepare-aws-cli:
+    description: 'AWS CLIを準備'
+    steps:
+      - aws-cli/install
+      - aws-cli/configure
 
+  prepare-resources:
+    description: 'リソースを準備'
     steps:
       - checkout
 
+      - run:
+          name: Install Yarn
+          command: sudo npm install -g yarn@1.6.0
+
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}
-            - v1-dependencies-
+            - v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
+            - v2-dependencies-
 
       - run:
           name: Install dependencies
           command: |
-            sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
+            # yarn.lockの内容をすべてインストール
+            yarn install --frozen-lockfile
 
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}
+          key: v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
+
+jobs:
+  lint-and-test:
+    executor:
+      name: default
+
+    steps:
+      - prepare-resources
 
       - run: yarn lint
+
       - run:
-          name: Format
+          name: Format checking
           command: |
             yarn format;
             git diff --exit-code --quiet;
@@ -34,44 +67,62 @@ jobs:
               echo 'Unformat file(s) found.';
               exit 1
             fi
+
       - run: yarn test:coverage
+
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
 
-  deploy:
-    docker:
-      - image: circleci/node:10.15.3-browsers
-
-    working_directory: ~/repo
+  build:
+    executor:
+      name: default
 
     steps:
-      - checkout
+      - prepare-resources
+
+      - prepare-aws-cli
 
       - run:
-          name: Install dependencies
+          name: Build Nuxt resources
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo npm install -g yarn@1.6.0 && yarn install --frozen-lockfile
+              sudo -E yarn build
             fi
 
-      - run:
-          name: deploy
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .nuxt/*
+
+  deploy:
+    executor:
+      name: default
+
+    steps:
+      - prepare-resources
+
+      - prepare-aws-cli
+
+      - attach_workspace:
+          at: .
+
+      - deploy:
+          name: Deployment
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo ./deploy_via_ci.sh
+              sudo npm install -g serverless
+              sudo -E yarn deploy
             fi
 
 workflows:
-  version: 2
-  build-deploy:
+  main:
     jobs:
-      - build
+      - lint-and-test
+      - build:
+          <<: *ignore_master
       - deploy:
+          # ステージング環境、本番環境へのデプロイはCodeBuildに委ねる
+          <<: *ignore_master
           requires:
+            - lint-and-test
             - build
-          filters:
-            branches:
-              ignore:
-                # ステージング環境、本番環境へのデプロイはCodeBuildに委ねる
-                - develop
-                - master
