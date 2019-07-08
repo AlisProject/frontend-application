@@ -49,7 +49,10 @@ export default {
     }
   },
   watch: {
-    $route() {
+    $route(to, from) {
+      // ログインが必要なページに遷移した場合、ユーザーにログインを求めるために
+      // ログインモーダルを表示する必要があるためモーダルを消す処理をスキップ
+      if (to.name === 'login') return
       this.$root.$emit('closeModal')
     }
   },
