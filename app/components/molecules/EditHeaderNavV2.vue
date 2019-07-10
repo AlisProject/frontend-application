@@ -16,13 +16,18 @@
         下書き
       </nuxt-link>
       <span class="area-save-status">{{ saveStatus }}</span>
+      <nuxt-link
+        :to="`${historiesPath}`"
+        class="area-article-histories fa fa-history"
+        @click.native="resetHistories()"
+      />
       <edit-header-nav-post-article-v2 />
     </div>
   </nav>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import EditHeaderNavPostArticleV2 from '../molecules/EditHeaderNavPostArticleV2'
 
 export default {
@@ -47,13 +52,21 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   computed: {
-    ...mapGetters('article', ['saveStatus']),
+    historiesPath() {
+      const articleStatus = this.$route.path.startsWith('/me/articles/public/') ? 'public' : 'draft'
+      return `/me/articles/${articleStatus}/v2/${this.articleId}/content_edit_histories`
+    },
+    ...mapGetters('article', ['articleId', 'saveStatus']),
     ...mapGetters('user', ['currentUserInfo'])
   },
   methods: {
     handleScroll() {
       this.isFixed = window.scrollY >= 100
-    }
+    },
+    resetHistories() {
+      this.resetArticleContentEditHistories()
+    },
+    ...mapActions('article', ['resetArticleContentEditHistories'])
   }
 }
 </script>
@@ -80,7 +93,7 @@ export default {
     width: 640px;
     /* prettier-ignore */
     grid-template-areas:
-      "articles-link ... save-status post-article";
+      "articles-link ... save-status article-histories post-article";
   }
 
   &.is-fixed {
@@ -104,13 +117,32 @@ export default {
   text-decoration: none;
 }
 
+.area-article-histories {
+  grid-area: article-histories;
+  align-items: center;
+  color: gray;
+  display: flex;
+  font-size: 22px;
+  justify-content: flex-start;
+  letter-spacing: 1.6px;
+  line-height: 24px;
+  text-decoration: none;
+  padding: 0px 7px 0px 0px;
+
+  &:hover,
+  &:focus {
+    color: #0086cc;
+  }
+}
+
 .area-save-status {
   grid-area: save-status;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  padding: 0 2px 0 0;
   align-items: center;
   white-space: nowrap;
-  color: #0086cc;
+  color: lightgray;
   font-size: 16px;
   letter-spacing: 1.6px;
   font-weight: bold;
