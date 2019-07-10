@@ -116,20 +116,26 @@ export default {
 .area-article-histories {
   grid-area: article-histories;
   align-items: center;
-  color: #6e6e6e;
+  color: gray;
   display: flex;
   font-size: 22px;
   justify-content: flex-start;
   letter-spacing: 1.6px;
   line-height: 24px;
   text-decoration: none;
-  padding: 0px 5px 0px 0px;
+  padding: 0px 7px 0px 0px;
+
+  &:hover,
+  &:focus {
+    color: #0086cc;
+  }
 }
 
 .area-save-status {
   grid-area: save-status;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  padding: 0 2px 0 0;
   align-items: center;
   white-space: nowrap;
   color: lightgray;
