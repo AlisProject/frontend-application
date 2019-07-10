@@ -21,8 +21,9 @@ export default {
   },
   async beforeCreate() {
     const { articleId } = this.$route.params
+    const { version } = this.$route.query
     try {
-      await this.$store.dispatch('article/getEditDraftArticle', { articleId })
+      await this.$store.dispatch('article/getEditDraftArticle', { articleId, version })
       this.componentName = 'EditDraftArticleV2'
       this.$store.dispatch('article/setGotArticleData', { gotArticleData: true })
       // Update thumbnails

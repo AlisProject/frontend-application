@@ -16,13 +16,18 @@
         下書き
       </nuxt-link>
       <span class="area-save-status">{{ saveStatus }}</span>
+      <nuxt-link
+        :to="`content_edit_histories`"
+        class="area-article-histories fa fa-history"
+        @click.native="resetHistories()"
+      />
       <edit-header-nav-post-article-v2 />
     </div>
   </nav>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import EditHeaderNavPostArticleV2 from '../molecules/EditHeaderNavPostArticleV2'
 
 export default {
@@ -53,7 +58,11 @@ export default {
   methods: {
     handleScroll() {
       this.isFixed = window.scrollY >= 100
-    }
+    },
+    resetHistories() {
+      this.resetArticleContentEditHistories()
+    },
+    ...mapActions('article', ['resetArticleContentEditHistories'])
   }
 }
 </script>
@@ -80,7 +89,7 @@ export default {
     width: 640px;
     /* prettier-ignore */
     grid-template-areas:
-      "articles-link ... save-status post-article";
+      "articles-link ... save-status article-histories post-article";
   }
 
   &.is-fixed {
@@ -104,13 +113,26 @@ export default {
   text-decoration: none;
 }
 
+.area-article-histories {
+  grid-area: article-histories;
+  align-items: center;
+  color: #6e6e6e;
+  display: flex;
+  font-size: 22px;
+  justify-content: flex-start;
+  letter-spacing: 1.6px;
+  line-height: 24px;
+  text-decoration: none;
+  padding: 0px 5px 0px 0px;
+}
+
 .area-save-status {
   grid-area: save-status;
   display: flex;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  color: #0086cc;
+  color: lightgray;
   font-size: 16px;
   letter-spacing: 1.6px;
   font-weight: bold;

@@ -15,6 +15,7 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
+  articleContentEditHistories: null,
   currentPrice: null,
   suggestedThumbnails: [],
   thumbnail: '',
@@ -81,6 +82,7 @@ const getters = {
   articleId: (state) => state.articleId,
   title: (state) => state.title,
   body: (state) => state.body,
+  articleContentEditHistories: (state) => state.articleContentEditHistories,
   suggestedThumbnails: (state) => Array.from(new Set(state.suggestedThumbnails)),
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
@@ -245,9 +247,10 @@ const actions = {
     const article = await this.$axios.$get(`/api/articles/${articleId}`)
     commit(types.SET_ARTICLE, { article })
   },
-  async getEditDraftArticle({ commit }, { articleId }) {
+  async getEditDraftArticle({ commit }, { articleId, version }) {
     try {
-      const article = await this.$axios.$get(`/api/me/articles/${articleId}/drafts`)
+      const queryParam = version == null ? '' : `?version=${version}`
+      const article = await this.$axios.$get(`/api/me/articles/${articleId}/drafts${queryParam}`)
       // "/me/articles/drafts/article_id" への POST で記事が作成された直後、その記事データには body カラムがないため、
       // article.body.replace がエラーとなってしまう。
       // そこで、article.body の存在確認を行ってから article.body.replace の処理を行っている。
@@ -310,9 +313,12 @@ const actions = {
     commit(types.SET_ARTICLE_ID, { articleId })
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   },
-  async getEditPublicArticleDetail({ commit }, { articleId }) {
+  async getEditPublicArticleDetail({ commit }, { articleId, version }) {
     try {
-      const article = await this.$axios.$get(`/api/me/articles/${articleId}/public/edit`)
+      const queryParam = version == null ? '' : `?version=${version}`
+      const article = await this.$axios.$get(
+        `/api/me/articles/${articleId}/public/edit${queryParam}`
+      )
       // 有料記事本文に含まれる有料エリアを示すラインを削除
       const body = article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
@@ -383,6 +389,21 @@ const actions = {
     } catch (error) {
       Promise.reject(error)
     }
+  },
+  async getArticleContentEditHistories({ commit }, { articleId }) {
+    try {
+      const { Items: articleContentEditHistories } = await this.$axios.$get(
+        `/api/me/articles/${articleId}/content_edit_histories`
+      )
+      commit(types.SET_ARTICLE_CONTENT_EDIT_HISTORIES, {
+        articleContentEditHistories: articleContentEditHistories
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetArticleContentEditHistories({ commit }) {
+    commit(types.SET_ARTICLE_CONTENT_EDIT_HISTORIES, { articleContentEditHistories: null })
   },
   async publishDraftArticle({ commit }, { articleId, topic, tags }) {
     await this.$axios.$put(`/api/me/articles/${articleId}/drafts/publish`, { topic, tags })
@@ -1016,6 +1037,9 @@ const mutations = {
   },
   [types.UPDATE_BODY](state, { body }) {
     state.body = body
+  },
+  [types.SET_ARTICLE_CONTENT_EDIT_HISTORIES](state, { articleContentEditHistories: histories }) {
+    state.articleContentEditHistories = histories
   },
   [types.UPDATE_SUGGESTED_THUMBNAILS](state, { thumbnails }) {
     state.suggestedThumbnails = thumbnails

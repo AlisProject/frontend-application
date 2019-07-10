@@ -4,6 +4,11 @@
       <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
     </nuxt-link>
     <span class="save-status">{{ saveStatus }}</span>
+    <nuxt-link
+      :to="`content_edit_histories`"
+      class="history-icon fa fa-history"
+      @click.native="resetHistories()"
+    />
     <button class="post-article" @click="showMobileEditorHeaderPostArticleModal">
       公開する
     </button>
@@ -47,6 +52,9 @@ export default {
       this.resetArticleData()
       this.setArticleListScrollHeight({ scroll: 0 })
     },
+    resetHistories() {
+      this.resetArticleContentEditHistories()
+    },
     showMobileEditorHeaderPostArticleModal() {
       this.setThumbnails()
       this.setMobileEditorHeaderPostArticleModal({ isShow: true })
@@ -60,7 +68,12 @@ export default {
       }
     },
     ...mapActions('presentation', ['setArticleListScrollHeight']),
-    ...mapActions('article', ['resetArticleData', 'updateSuggestedThumbnails', 'updateThumbnail']),
+    ...mapActions('article', [
+      'resetArticleData',
+      'resetArticleContentEditHistories',
+      'updateSuggestedThumbnails',
+      'updateThumbnail'
+    ]),
     ...mapActions('user', ['setMobileEditorHeaderPostArticleModal'])
   }
 }
@@ -131,7 +144,15 @@ export default {
     color: #6e6e6e;
     font-size: 12px;
     position: absolute;
-    right: 90px;
+    right: 93px;
+    width: 48px;
+  }
+  .history-icon {
+    color: #6e6e6e;
+    font-size: 14px;
+    position: absolute;
+    text-decoration: none;
+    right: 40px;
     width: 48px;
   }
 
