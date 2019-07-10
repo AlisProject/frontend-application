@@ -144,16 +144,17 @@ export default {
     color: #6e6e6e;
     font-size: 12px;
     position: absolute;
-    right: 93px;
+    right: 109px;
     width: 48px;
   }
   .history-icon {
     color: #6e6e6e;
-    font-size: 14px;
+    font-size: 27px;
     position: absolute;
     text-decoration: none;
-    right: 40px;
-    width: 48px;
+    width: 27px;
+    right: 0;
+    margin: 0 81px 0 0;
   }
 
   .post-article {
