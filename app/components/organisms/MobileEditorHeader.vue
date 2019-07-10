@@ -5,7 +5,7 @@
     </nuxt-link>
     <span class="save-status">{{ saveStatus }}</span>
     <nuxt-link
-      :to="`content_edit_histories`"
+      :to="`${historiesPath}`"
       class="history-icon fa fa-history"
       @click.native="resetHistories()"
     />
@@ -42,8 +42,12 @@ export default {
     }
   },
   computed: {
+    historiesPath() {
+      const articleStatus = this.$route.path.startsWith('/me/articles/public/') ? 'public' : 'draft'
+      return `/me/articles/${articleStatus}/v2/${this.articleId}/content_edit_histories`
+    },
     ...mapGetters('user', ['loggedIn', 'mobileEditorHeaderPostArticleModal']),
-    ...mapGetters('article', ['saveStatus', 'thumbnail'])
+    ...mapGetters('article', ['articleId', 'saveStatus', 'thumbnail'])
   },
   methods: {
     resetData() {

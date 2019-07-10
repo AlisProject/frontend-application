@@ -17,7 +17,7 @@
       </nuxt-link>
       <span class="area-save-status">{{ saveStatus }}</span>
       <nuxt-link
-        :to="`content_edit_histories`"
+        :to="`${historiesPath}`"
         class="area-article-histories fa fa-history"
         @click.native="resetHistories()"
       />
@@ -52,7 +52,11 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   computed: {
-    ...mapGetters('article', ['saveStatus']),
+    historiesPath() {
+      const articleStatus = this.$route.path.startsWith('/me/articles/public/') ? 'public' : 'draft'
+      return `/me/articles/${articleStatus}/v2/${this.articleId}/content_edit_histories`
+    },
+    ...mapGetters('article', ['articleId', 'saveStatus']),
     ...mapGetters('user', ['currentUserInfo'])
   },
   methods: {
