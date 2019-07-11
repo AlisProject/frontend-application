@@ -9,7 +9,8 @@
       :articleContentEditHistory="articleContentEditHistory"
     />
     <p class="caution-statement">
-      ※ 編集履歴は最新の 100 件が保存されます。
+      ※ 編集履歴は最新の 100 件が保存されます。<br>
+      ※ 本文が復元されます。タイトルは復元されません。
     </p>
   </div>
 </template>

@@ -66,4 +66,10 @@ a {
   font-size: 16px;
   margin: 0px 8px 0px auto;
 }
+
+@media screen and (max-width: 320px) {
+  .area-import-label {
+    font-size: 14px;
+  }
+}
 </style>
