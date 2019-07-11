@@ -148,15 +148,18 @@ export default {
       this.price = currentPrice
     }
     this.listen(window, 'click', (event) => {
-      // タグの ☓ ボタンを押したときにはポップアップを非表示にしない
-      if (!this.$el.contains(event.target) && !event.target.classList.contains('ti-icon-close')) {
+      const target = event.target
+      // タグの ☓ ボタンやオートコンプリートのタグを押したときにはポップアップを非表示にしない。
+      const isClickedTagRemoveButton = target.classList.contains('ti-icon-close')
+      const isClickedAutocompletedTag =
+        target.classList.value === '' && target.dataset && target.dataset.count
+      if (!this.$el.contains(target) && !isClickedTagRemoveButton && !isClickedAutocompletedTag) {
         this.closePopup()
       }
     })
   },
   destroyed() {
     this.resetCurrentPrice()
-    this.updateTags({ tags: [] })
     if (this._eventRemovers) {
       this._eventRemovers.forEach((eventRemover) => {
         eventRemover.remove()
@@ -314,8 +317,7 @@ export default {
       'getTopics',
       'resetArticleTopic',
       'setArticleTopic',
-      'resetCurrentPrice',
-      'updateTags'
+      'resetCurrentPrice'
     ]),
     ...mapActions('user', [
       'setFirstProcessModal',

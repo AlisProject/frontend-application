@@ -33,7 +33,11 @@
       <p class="error-message">
         {{ errorMessage }}
       </p>
-      <app-button class="to-next-step-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button
+        class="to-next-step-button"
+        :disabled="isProcessing || invalidSubmit"
+        @click="onSubmit"
+      >
         認証コードを送信する
       </app-button>
       <p class="back-to-input-phone-number">
@@ -55,7 +59,8 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -116,7 +121,8 @@ export default {
       this.hideRequestPhoneNumberVerifyInputAuthCodeError({ type })
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
+      if (this.isProcessing || this.invalidSubmit) return
+      this.isProcessing = true
       const { authCode: code } = this.requestPhoneNumberVerifyModal.inputAuthCode.formData
       try {
         await this.verifySMSCode({ code })
@@ -133,6 +139,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     backToInputPhoneNumber() {

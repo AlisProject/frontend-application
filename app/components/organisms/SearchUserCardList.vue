@@ -34,4 +34,10 @@ export default {
     grid-template-rows: repeat(auto-fill, auto);
   }
 }
+
+@media screen and (max-width: 320px) {
+  .area-search-user-card-list-container {
+    grid-template-columns: 300px;
+  }
+}
 </style>

@@ -103,7 +103,7 @@ export default {
       this.$v.userReportModal.inputFreeText.formData[type].$reset()
       this.hideUserReportInputFreeTextError({ type })
     },
-    async onSubmit() {
+    onSubmit() {
       if (this.invalidSubmit) return
       this.setUserReportInputFreeTextModal({ isShow: false })
       this.setUserReportConfirmationModal({ isShow: true })

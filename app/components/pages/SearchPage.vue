@@ -408,5 +408,13 @@ export default {
   .search-page-container {
     grid-template-columns: 10px 1fr 10px;
   }
+
+  .area-search {
+    max-width: 100%;
+
+    .form-input {
+      width: 300px;
+    }
+  }
 }
 </style>

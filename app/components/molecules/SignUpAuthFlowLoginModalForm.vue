@@ -47,7 +47,7 @@
           プライバシーポリシー
         </nuxt-link>に同意して
       </p>
-      <app-button class="login-button" :disabled="invalidSubmit" @click="onSubmit">
+      <app-button class="login-button" :disabled="isProcessing || invalidSubmit" @click="onSubmit">
         ログインする
       </app-button>
       <p class="for-password-forgot-user">
@@ -68,7 +68,8 @@ export default {
   },
   data() {
     return {
-      errorMessage: ''
+      errorMessage: '',
+      isProcessing: false
     }
   },
   computed: {
@@ -126,9 +127,10 @@ export default {
       this.hideSignUpAuthFlowLoginError({ type })
     },
     async onSubmit() {
-      if (this.invalidSubmit) return
-      const { userIdOrEmail, password } = this.signUpAuthFlowModal.login.formData
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
+        const { userIdOrEmail, password } = this.signUpAuthFlowModal.login.formData
         await this.signUpLogin({ userId: userIdOrEmail, password })
         this.setSignUpAuthFlowLoginModal({ isSignUpAuthFlowLoginModal: false })
         this.setSignUpAuthFlowInputPhoneNumberModal({ isSignUpAuthFlowInputPhoneNumberModal: true })
@@ -146,6 +148,8 @@ export default {
             break
         }
         this.errorMessage = errorMessage
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions('user', [

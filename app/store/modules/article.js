@@ -15,6 +15,7 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
+  articleContentEditHistories: null,
   currentPrice: null,
   suggestedThumbnails: [],
   thumbnail: '',
@@ -81,6 +82,7 @@ const getters = {
   articleId: (state) => state.articleId,
   title: (state) => state.title,
   body: (state) => state.body,
+  articleContentEditHistories: (state) => state.articleContentEditHistories,
   suggestedThumbnails: (state) => Array.from(new Set(state.suggestedThumbnails)),
   thumbnail: (state) => state.thumbnail,
   isSaving: (state) => state.isSaving,
@@ -125,9 +127,17 @@ const getters = {
     const filteredRecommendedArticles = recommendedArticles.filter((recommendedArticle) => {
       return !removeTargetArticleIds.includes(recommendedArticle.article_id)
     })
+    // 表示する記事のグリットがずれないようにするため、表示する記事を 6 の倍数にしている。
+    const removeCount = filteredRecommendedArticles.length % 6
+    const removedArticles =
+      removeCount === 0
+        ? [...filteredRecommendedArticles]
+        : [...filteredRecommendedArticles.slice(0, -removeCount)]
     return {
       ...state.recommendedArticles,
-      articles: filteredRecommendedArticles
+      // 最後のページではグリットに関係なくすべての記事を表示したいため、
+      // そのまま filteredRecommendedArticles を表示している。
+      articles: state.recommendedArticles.isLastPage ? filteredRecommendedArticles : removedArticles
     }
   },
   purchasedArticleIds: (state) => state.purchasedArticleIds,
@@ -237,9 +247,10 @@ const actions = {
     const article = await this.$axios.$get(`/api/articles/${articleId}`)
     commit(types.SET_ARTICLE, { article })
   },
-  async getEditDraftArticle({ commit }, { articleId }) {
+  async getEditDraftArticle({ commit }, { articleId, version }) {
     try {
-      const article = await this.$axios.$get(`/api/me/articles/${articleId}/drafts`)
+      const queryParam = version == null ? '' : `?version=${version}`
+      const article = await this.$axios.$get(`/api/me/articles/${articleId}/drafts${queryParam}`)
       // "/me/articles/drafts/article_id" への POST で記事が作成された直後、その記事データには body カラムがないため、
       // article.body.replace がエラーとなってしまう。
       // そこで、article.body の存在確認を行ってから article.body.replace の処理を行っている。
@@ -280,29 +291,6 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getArticleRandom({ commit, dispatch }) {
-    try {
-      const article = await this.$axios.$get(`/labo/n/random`)
-      const body = getBodyWithImageOptimizationParam(
-        article.body,
-        process.env.DOMAIN,
-        article.user_id,
-        article.article_id
-      )
-      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
-        dispatch('getUserInfo', { userId: article.user_id }),
-        dispatch('getAlisToken', { articleId: article.article_id }),
-        dispatch('getLikesCount', { articleId: article.article_id }),
-        dispatch('getArticleComments', { articleId: article.article_id })
-      ])
-      commit(types.SET_LIKES_COUNT, { likesCount })
-      commit(types.SET_ARTICLE_DETAIL, {
-        article: { ...article, body, userInfo, alisToken, comments }
-      })
-    } catch (error) {
-      return Promise.reject(error)
-    }
-  },
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/api/me/articles/${articleId}/public`)
     commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
@@ -325,9 +313,12 @@ const actions = {
     commit(types.SET_ARTICLE_ID, { articleId })
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
   },
-  async getEditPublicArticleDetail({ commit }, { articleId }) {
+  async getEditPublicArticleDetail({ commit }, { articleId, version }) {
     try {
-      const article = await this.$axios.$get(`/api/me/articles/${articleId}/public/edit`)
+      const queryParam = version == null ? '' : `?version=${version}`
+      const article = await this.$axios.$get(
+        `/api/me/articles/${articleId}/public/edit${queryParam}`
+      )
       // 有料記事本文に含まれる有料エリアを示すラインを削除
       const body = article.body.replace(/<p class=["|']paywall-line["|']>.*?<\/p>/, '')
       if (article.eye_catch_url) {
@@ -398,6 +389,21 @@ const actions = {
     } catch (error) {
       Promise.reject(error)
     }
+  },
+  async getArticleContentEditHistories({ commit }, { articleId }) {
+    try {
+      const { Items: articleContentEditHistories } = await this.$axios.$get(
+        `/api/me/articles/${articleId}/content_edit_histories`
+      )
+      commit(types.SET_ARTICLE_CONTENT_EDIT_HISTORIES, {
+        articleContentEditHistories: articleContentEditHistories
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetArticleContentEditHistories({ commit }) {
+    commit(types.SET_ARTICLE_CONTENT_EDIT_HISTORIES, { articleContentEditHistories: null })
   },
   async publishDraftArticle({ commit }, { articleId, topic, tags }) {
     await this.$axios.$put(`/api/me/articles/${articleId}/drafts/publish`, { topic, tags })
@@ -968,6 +974,32 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  // Laboリソース
+
+  async getLaboNArticleRandom({ commit, dispatch }) {
+    try {
+      const article = await this.$axios.$get(`/laboratory/labo/n/random`)
+      const body = getBodyWithImageOptimizationParam(
+        article.body,
+        process.env.DOMAIN,
+        article.user_id,
+        article.article_id
+      )
+      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+        dispatch('getUserInfo', { userId: article.user_id }),
+        dispatch('getAlisToken', { articleId: article.article_id }),
+        dispatch('getLikesCount', { articleId: article.article_id }),
+        dispatch('getArticleComments', { articleId: article.article_id })
+      ])
+      commit(types.SET_LIKES_COUNT, { likesCount })
+      commit(types.SET_ARTICLE_DETAIL, {
+        article: { ...article, body, userInfo, alisToken, comments }
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 
@@ -1005,6 +1037,9 @@ const mutations = {
   },
   [types.UPDATE_BODY](state, { body }) {
     state.body = body
+  },
+  [types.SET_ARTICLE_CONTENT_EDIT_HISTORIES](state, { articleContentEditHistories: histories }) {
+    state.articleContentEditHistories = histories
   },
   [types.UPDATE_SUGGESTED_THUMBNAILS](state, { thumbnails }) {
     state.suggestedThumbnails = thumbnails
@@ -1105,7 +1140,6 @@ const mutations = {
     state.page = 1
     state.isLastPage = false
     state.eyecatchArticles = []
-    state.tipEyecatchArticles = []
     state.recommendedArticles = {
       articles: [],
       page: 1,
