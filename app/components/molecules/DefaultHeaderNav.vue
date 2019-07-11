@@ -1,7 +1,7 @@
 <template>
   <nav class="area-nav">
     <div class="area-nav-links" @scroll="handleHorizontalScroll">
-      <nuxt-link to="/" class="nav-link area-topic0" @click.native="resetArticleData">
+      <nuxt-link to="/" class="nav-link area-topic0" @click.native="initTopPage">
         <span class="topic-display-name">
           オススメ
         </span>
@@ -75,6 +75,12 @@ export default {
     to(topic) {
       const to = this.articleType === 'popularArticles' ? 'popular' : 'recent'
       return { path: `/articles/${to}`, query: { topic } }
+    },
+    initTopPage() {
+      // 同一ページからの遷移の場合は記事の初期化は行わない
+      if (this.$route.path !== '/') {
+        this.resetArticleData()
+      }
     },
     resetData(event) {
       // 同一のページの場合は記事情報をリセットしない
