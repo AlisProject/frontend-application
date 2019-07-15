@@ -203,10 +203,11 @@ export default {
     background-size: 32px;
     border-radius: 50%;
     border: 1px solid #ff4949;
-    box-shadow: 0px 2px 15px -1px #ff4949;
     cursor: pointer;
     position: relative;
     box-sizing: border-box;
+    box-shadow: 0px 2px 4px -1px #ff4949;
+    opacity: 0.6;
 
     .likes-count {
       align-items: center;
