@@ -202,8 +202,8 @@ export default {
     background-position: 9px;
     background-size: 32px;
     border-radius: 50%;
-    border: 1px solid #ff4949;
-    box-shadow: 0px 2px 15px -1px #ff4949;
+    border: 1px solid #E5C2C6;
+    box-shadow: 0px 2px 15px -1px #E5C2C6;
     cursor: pointer;
     position: relative;
     box-sizing: border-box;
@@ -212,8 +212,8 @@ export default {
       align-items: center;
       background-color: #fff;
       border-radius: 50%;
-      border: 1px solid #ff4949;
-      color: #ff4949;
+      border: 1px solid #E5C2C6;
+      color: #E5C2C6;
       cursor: auto;
       display: flex;
       font-size: 12px;
@@ -226,7 +226,7 @@ export default {
     }
 
     &.liked {
-      background: #ff4949 url('~assets/images/pc/article/icon_like_selected.png') no-repeat;
+      background: #E5C2C6 url('~assets/images/pc/article/icon_like_selected.png') no-repeat;
       background-position: 9px;
       background-size: 32px;
       border-radius: 50%;
@@ -234,7 +234,7 @@ export default {
       position: relative;
 
       .likes-count {
-        background-color: #ff4949;
+        background-color: #E5C2C6;
         color: #fff;
       }
     }
