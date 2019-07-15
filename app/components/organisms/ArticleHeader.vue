@@ -42,6 +42,11 @@
             target="_blank"
           >Facebookでシェアする</a>
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
+          <hr class="separate-line">
+          <span
+            class="article-popup-content write-to-blockchain-button"
+            @click="writeToBlockchain(article.body)"
+          >ブロックチェーンに記録する</span>
         </div>
       </div>
     </template>
@@ -57,6 +62,7 @@
 </template>
 
 <script>
+/* global Web3 */
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
@@ -110,6 +116,24 @@ export default {
       const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
       return price
     },
+    registryContractAbi() {
+      return [
+        {
+          name: 'register',
+          outputs: [],
+          inputs: [
+            {
+              type: 'bytes32',
+              name: '_digest'
+            }
+          ],
+          constant: false,
+          payable: false,
+          type: 'function',
+          gas: 74115
+        }
+      ]
+    },
     ...mapGetters('article', ['purchasedArticleIds'])
   },
   mounted() {
@@ -154,6 +178,57 @@ export default {
       } catch (e) {
         this.sendNotification({ text: '記事を下書きに戻せませんでした', type: 'warning' })
       }
+    },
+    checkIsMetaMaskInstalled() {
+      return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask
+    },
+    async approveMetaMask() {
+      await window.ethereum.enable()
+      return new Web3(window.ethereum)
+    },
+    async writeToBlockchain(text) {
+      if (!this.checkIsMetaMaskInstalled()) {
+        this.sendNotification({
+          text: 'MetaMaskをインストールして下さい',
+          type: 'warning'
+        })
+        return
+      }
+
+      let web3
+      try {
+        web3 = await this.approveMetaMask()
+      } catch (e) {
+        this.sendNotification({
+          text: 'MetaMaskの承認に失敗しました',
+          type: 'warning'
+        })
+        return
+      }
+
+      // ダイジェストを生成
+      const digest = web3.utils.keccak256(text)
+
+      const registry = new web3.eth.Contract(
+        this.registryContractAbi,
+        process.env.PUBLIC_CHAIN_REGISTRY_ADDRESS
+      )
+      registry.methods
+        .register(digest)
+        .send({
+          from: window.ethereum.selectedAddress // MetaMaskで選択中のアカウント
+        })
+        .on('transactionHash', (hash) => {
+          this.sendNotification({
+            text: 'トランザクションを発行しました。詳細はMETAMASKでご確認ください'
+          })
+        })
+        .on('error', (e) => {
+          this.sendNotification({
+            text: 'トランザクション発行に失敗しました',
+            type: 'warning'
+          })
+        })
     },
     execCopyUrl() {
       const copied = this.execCopy(this.shareUrl)
