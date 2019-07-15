@@ -42,8 +42,9 @@
             target="_blank"
           >Facebookでシェアする</a>
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
-          <hr class="separate-line">
+          <hr v-if="!isMobile()" class="separate-line">
           <span
+            v-if="!isMobile()"
             class="article-popup-content write-to-blockchain-button"
             @click="writeToBlockchain(article.body)"
           >ブロックチェーンに記録する</span>
@@ -67,6 +68,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { isV2 } from '~/utils/article'
+import { isMobile } from '~/utils/device'
 
 export default {
   props: {
@@ -85,7 +87,23 @@ export default {
   },
   data() {
     return {
-      isArticlePopupShown: false
+      isArticlePopupShown: false,
+      isMobile,
+      registryContractAbi: [
+        {
+          name: 'register',
+          outputs: [],
+          inputs: [
+            {
+              type: 'bytes32',
+              name: '_digest'
+            }
+          ],
+          constant: false,
+          payable: false,
+          type: 'function'
+        }
+      ]
     }
   },
   computed: {
@@ -116,23 +134,8 @@ export default {
       const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
       return price
     },
-    registryContractAbi() {
-      return [
-        {
-          name: 'register',
-          outputs: [],
-          inputs: [
-            {
-              type: 'bytes32',
-              name: '_digest'
-            }
-          ],
-          constant: false,
-          payable: false,
-          type: 'function',
-          gas: 74115
-        }
-      ]
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
     },
     ...mapGetters('article', ['purchasedArticleIds'])
   },
@@ -179,6 +182,10 @@ export default {
         this.sendNotification({ text: '記事を下書きに戻せませんでした', type: 'warning' })
       }
     },
+    isTargetNetwork(networkType) {
+      const targetNetworkType = this.isProduction ? 'main' : 'ropsten'
+      return networkType === targetNetworkType
+    },
     checkIsMetaMaskInstalled() {
       return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask
     },
@@ -189,7 +196,7 @@ export default {
     async writeToBlockchain(text) {
       if (!this.checkIsMetaMaskInstalled()) {
         this.sendNotification({
-          text: 'MetaMaskをインストールして下さい',
+          text: 'MetaMaskのインストールが必要です',
           type: 'warning'
         })
         return
@@ -201,6 +208,15 @@ export default {
       } catch (e) {
         this.sendNotification({
           text: 'MetaMaskの承認に失敗しました',
+          type: 'warning'
+        })
+        return
+      }
+
+      const networkType = await web3.eth.net.getNetworkType()
+      if (!this.isTargetNetwork(networkType)) {
+        this.sendNotification({
+          text: 'Ethereumメインネットワークのみご利用できます。MetaMaskの設定をご確認ください。',
           type: 'warning'
         })
         return
