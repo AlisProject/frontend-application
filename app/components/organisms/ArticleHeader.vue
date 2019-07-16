@@ -46,7 +46,7 @@
           <span
             v-if="!isMobile()"
             class="article-popup-content write-to-blockchain-button"
-            @click="writeToBlockchain(article.body)"
+            @click="writeToBlockchain()"
           >ブロックチェーンに記録する</span>
         </div>
       </div>
@@ -137,7 +137,7 @@ export default {
     isProduction() {
       return process.env.ALIS_APP_ID === 'alis'
     },
-    ...mapGetters('article', ['purchasedArticleIds'])
+    ...mapGetters('article', ['purchasedArticleIds', 'originalBody'])
   },
   mounted() {
     this.listen(window, 'click', (event) => {
@@ -193,7 +193,7 @@ export default {
       await window.ethereum.enable()
       return new Web3(window.ethereum)
     },
-    async writeToBlockchain(text) {
+    async writeToBlockchain() {
       if (!this.checkIsMetaMaskInstalled()) {
         this.sendNotification({
           text: 'MetaMaskのインストールが必要です',
@@ -222,8 +222,10 @@ export default {
         return
       }
 
+      // 表示用の最適化をしていないBody情報を取得
+      await this.getPublicArticleOriginalBody({ articleId: this.article.article_id })
       // ダイジェストを生成
-      const digest = web3.utils.keccak256(text)
+      const digest = web3.utils.keccak256(this.originalBody)
 
       const registry = new web3.eth.Contract(
         this.registryContractAbi,
@@ -280,7 +282,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['unpublishPublicArticle'])
+    ...mapActions('article', ['unpublishPublicArticle', 'getPublicArticleOriginalBody'])
   }
 }
 </script>
