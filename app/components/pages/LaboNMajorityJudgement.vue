@@ -2,30 +2,36 @@
   <div class="majority-judgement-container">
     <app-header />
     <div class="area-mj">
-      <h1 class="area-title">
-        <!-- FIXME: 運用時はタイトル修正       -->
-        マジョリティ・ジャッジメント(※現在無効)
-      </h1>
-      <div class="area-description">
-        あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリーに対して、選択肢のどれかを選択してください。
-      </div>
-      <div class="area-mj-grid">
-        <labo-n-majority-judgement-grid
-          :records="gridRecords"
-          :columns="topicOptions"
-          @level-changed="levelChanged"
-        />
-      </div>
-      <div class="area-submit-button">
-        <app-button
-          class="save-button"
-          :isLoading="isProcessing"
-          :disabled="isInvalid || isProcessing"
-          @click="onSubmit"
-        >
-          保存する
-        </app-button>
-      </div>
+      <the-loader v-if="isLoading" :isLoading="isLoading" class="area-title" />
+      <template v-else>
+        <h1 class="area-title">
+          <!-- FIXME: 運用時はタイトル修正       -->
+          マジョリティ・ジャッジメント(※現在無効)
+        </h1>
+        <div v-if="!exists" class="area-description">
+          あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリーに対して、選択肢のどれかを選択してください。
+        </div>
+        <div v-if="!exists" class="area-mj-grid">
+          <labo-n-majority-judgement-grid
+            :records="gridRecords"
+            :columns="topicOptions"
+            @level-changed="levelChanged"
+          />
+        </div>
+        <div v-if="!exists" class="area-submit-button">
+          <app-button
+            class="save-button"
+            :isLoading="isProcessing"
+            :disabled="isInvalid || isProcessing"
+            @click="onSubmit"
+          >
+            保存する
+          </app-button>
+        </div>
+        <div v-if="exists">
+          ご回答いただきありがとうございました。結果は後ほど共有いたしますので楽しみにお待ち下さい😉
+        </div>
+      </template>
     </div>
     <app-footer />
   </div>
@@ -35,6 +41,7 @@
 import { mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '~/components/organisms/AppHeader'
+import TheLoader from '../atoms/TheLoader'
 import LaboNMajorityJudgementGrid from '~/components/organisms/LaboNMajorityJudgementGrid'
 import AppFooter from '~/components/organisms/AppFooter'
 import AppButton from '../atoms/AppButton'
@@ -42,12 +49,16 @@ import AppButton from '../atoms/AppButton'
 export default {
   components: {
     AppHeader,
+    TheLoader,
     LaboNMajorityJudgementGrid,
     AppFooter,
     AppButton
   },
   data() {
     return {
+      isProcessing: false,
+      exists: true,
+      isLoading: true,
       topicOptions: [
         { key: 'record_header', text: '' },
         { key: 'opt1', text: 'テクノロジー' },
@@ -71,8 +82,17 @@ export default {
         opt3: null,
         opt4: null,
         opt5: null
-      },
-      isProcessing: false
+      }
+    }
+  },
+  async mounted() {
+    try {
+      const result = await this.$axios.$get('/laboratory/labo/n/majority_judgement')
+      this.exists = result.exists
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.isLoading = false
     }
   },
   computed: {
@@ -91,7 +111,7 @@ export default {
         const { opt1, opt2, opt3, opt4, opt5 } = this.selectedLevels
         await this.postMajorityJudgement({ opt1, opt2, opt3, opt4, opt5 })
         this.sendNotification({ text: '選択を保存しました' })
-        // this.$router.push('/me/settings/applications')
+        this.exists = true
       } catch (error) {
         const statusCode = error.response.status
         if (statusCode >= 400 && statusCode < 500) {
