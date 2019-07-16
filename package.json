@@ -30,7 +30,7 @@
     "blueimp-load-image": "^2.20.1",
     "dayjs": "^1.8.9",
     "express": "^4.16.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "medium-editor": "^5.23.3",
     "node-fetch": "^2.6.0",
     "normalize.css": "^8.0.1",
