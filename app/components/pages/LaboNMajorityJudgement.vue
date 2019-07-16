@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     isInvalid() {
-      return !Object.values(this.selectedLevels).every(value => value)
+      return !Object.values(this.selectedLevels).every((value) => value)
     }
   },
   methods: {
