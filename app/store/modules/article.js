@@ -1140,6 +1140,9 @@ const mutations = {
     state.page = 1
     state.isLastPage = false
     state.eyecatchArticles = []
+    // fixme: 本来であれば tipEyecatchArticles も記事情報なので初期化すべきだが、
+    //        TOPページから他カテゴリに遷移する際に記事が何も表示されない状態となり、見栄えが悪いためコメントアウトしている。
+    // state.tipEyecatchArticles = []
     state.recommendedArticles = {
       articles: [],
       page: 1,

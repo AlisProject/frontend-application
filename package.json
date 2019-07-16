@@ -19,7 +19,7 @@
     "test:coverage": "jest --config jest.config.js --no-cache --coverage"
   },
   "dependencies": {
-    "@alisproject/alis-editor": "^0.2.9",
+    "@alisproject/alis-editor": "^0.2.11",
     "@johmun/vue-tags-input": "^2.0.1",
     "@nuxtjs/axios": "^5.5.3",
     "@nuxtjs/markdownit": "^1.2.3",
@@ -31,7 +31,7 @@
     "blueimp-load-image": "^2.20.1",
     "dayjs": "^1.8.9",
     "express": "^4.16.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "medium-editor": "^5.23.3",
     "node-fetch": "^2.6.0",
     "normalize.css": "^8.0.1",
