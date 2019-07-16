@@ -86,7 +86,7 @@ jobs:
           name: Build Nuxt resources
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo -E yarn build
+              yarn build
             fi
 
       - persist_to_workspace:
@@ -111,7 +111,7 @@ jobs:
           command: |
             if [ $ALIS_APP_ID ]; then
               sudo npm install -g serverless
-              sudo -E yarn deploy
+              yarn deploy
             fi
 
 workflows:
