@@ -7,6 +7,7 @@
       <div v-show="isSelectedEmailAuth" class="email-auth" :class="{ isSelectedEmailAuth }">
         <form class="signup-form" @keypress.enter="onSubmit">
           <form-group
+            ref="userIdOrEmail"
             label="ユーザーID または メールアドレス"
             :inputAttrs="{ type: 'text', placeholder: 'alis@example.com' }"
             :hasError="hasUserIdOrEmailError"
@@ -15,6 +16,7 @@
             @focus="resetError('userIdOrEmail')"
           />
           <form-group
+            ref="password"
             label="パスワード※半角英数字8文字以上"
             :inputAttrs="{ ref: 'password', type: 'password', placeholder: '●●●●●●●●' }"
             :hasError="hasPasswordError"
