@@ -17,7 +17,12 @@
         />
       </div>
       <div class="area-submit-button">
-        <app-button class="save-button" :disabled="isInvalid || isProcessing" @click="onSubmit">
+        <app-button
+          class="save-button"
+          :isLoading="isProcessing"
+          :disabled="isInvalid || isProcessing"
+          @click="onSubmit"
+        >
           保存する
         </app-button>
       </div>
