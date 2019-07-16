@@ -1032,6 +1032,22 @@ const actions = {
   },
   setLoginFrom({ commit }, { from }) {
     commit(types.SET_LOGIN_FROM, { from })
+  },
+
+  // Labo
+
+  async postMajorityJudgement({ commit }, { opt1, opt2, opt3, opt4, opt5 }) {
+    try {
+      await this.$axios.$post('/laboratory/labo/n/majority_judgement', {
+        opt_1: opt1,
+        opt_2: opt2,
+        opt_3: opt3,
+        opt_4: opt4,
+        opt_5: opt5
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 }
 

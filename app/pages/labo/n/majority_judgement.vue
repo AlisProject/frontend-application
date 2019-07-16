@@ -12,6 +12,7 @@ export default {
   },
   async fetch({ store, query, from = {}, error }) {
     try {
+      // TODO:
       // await store.dispatch('article/getLaboNArticleRandom')
       //
       // await store.dispatch('article/getTopics')

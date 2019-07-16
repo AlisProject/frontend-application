@@ -1,22 +1,116 @@
 <template>
   <div class="majority-judgement-container">
     <app-header />
-    <h1 class="area-title">
-      マジョリティ・ジャッジメント
-    </h1>
-    <!--    TODO: ここにテーブル作る-->
+    <div class="area-mj">
+      <h1 class="area-title">
+        <!-- FIXME: 運用時はタイトル修正       -->
+        マジョリティ・ジャッジメント(※現在無効)
+      </h1>
+      <div class="area-description">
+        あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリーに対して、選択肢のどれかを選択してください。
+      </div>
+      <div class="area-mj-grid">
+        <labo-n-majority-judgement-grid
+          :records="gridRecords"
+          :columns="topicOptions"
+          @level-changed="levelChanged"
+        />
+      </div>
+      <div class="area-submit-button">
+        <app-button class="save-button" :disabled="invalidSubmit || isProcessing" @click="onSubmit">
+          保存する
+        </app-button>
+      </div>
+    </div>
     <app-footer />
   </div>
 </template>
 
 <script>
-import AppHeader from '../organisms/AppHeader'
-import AppFooter from '../organisms/AppFooter'
+import { mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import AppHeader from '~/components/organisms/AppHeader'
+import LaboNMajorityJudgementGrid from '~/components/organisms/LaboNMajorityJudgementGrid'
+import AppFooter from '~/components/organisms/AppFooter'
+import AppButton from '../atoms/AppButton'
 
 export default {
   components: {
     AppHeader,
-    AppFooter
+    LaboNMajorityJudgementGrid,
+    AppFooter,
+    AppButton
+  },
+  data() {
+    return {
+      topicOptions: [
+        { key: 'record_header', text: '' },
+        { key: 'opt1', text: 'テクノロジー' },
+        { key: 'opt2', text: '神仏' },
+        { key: 'opt3', text: '音楽' },
+        { key: 'opt4', text: '恋愛・出会い' },
+        { key: 'opt5', text: 'おもしろ' }
+      ],
+      gridRecords: [
+        { level: 1, text: '絶対に必要' },
+        { level: 2, text: 'かなり必要' },
+        { level: 3, text: 'やや必要' },
+        { level: 4, text: 'どちらでもない' },
+        { level: 5, text: 'やや不要' },
+        { level: 6, text: 'かなり不要' },
+        { level: 7, text: '絶対に不要' }
+      ],
+      selectedLevels: {
+        // TODO: バリデーション
+        opt1: 0,
+        opt2: 0,
+        opt3: 0,
+        opt4: 0,
+        opt5: 0
+      },
+      isProcessing: false
+    }
+  },
+  computed: {
+    invalidSubmit() {
+      // TODO:
+      return false
+      // return this.$v.$invalid || this.urls.length === 0
+    }
+  },
+  methods: {
+    levelChanged(target) {
+      this.selectedLevels[target.key] = target.value
+    },
+    async onSubmit() {
+      try {
+        if (this.invalidSubmit || this.isProcessing) return
+        this.isProcessing = true
+        const { opt1, opt2, opt3, opt4, opt5 } = this.selectedLevels
+        await this.postMajorityJudgement({ opt1, opt2, opt3, opt4, opt5 })
+        this.sendNotification({ text: '選択を保存しました' })
+        // this.$router.push('/me/settings/applications')
+      } catch (error) {
+        const statusCode = error.response.status
+        if (statusCode >= 400 && statusCode < 500) {
+          this.sendNotification({
+            text: '登録に失敗しました。入力内容をご確認ください',
+            type: 'warning'
+          })
+        } else if (statusCode <= 500) {
+          this.sendNotification({
+            text: 'エラーが発生しました。しばらく時間を置いて再度お試しください',
+            type: 'warning'
+          })
+        }
+      } finally {
+        this.isProcessing = false
+      }
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('user', ['postMajorityJudgement'])
   }
 }
 </script>
@@ -27,12 +121,32 @@ export default {
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
-    "app-header  app-header                              app-header"
-    "...         title                                   ...       "
-    "app-footer  app-footer                              app-footer";
+    "app-header  app-header  app-header"
+    "...         ...         ...       "
+    "mj          mj          mj        "
+    "app-footer  app-footer  app-footer";
   grid-template-columns: 1fr 460px 1fr;
   grid-template-rows: 100px 50px 1fr 75px;
   min-height: 100vh;
+}
+
+.area-mj {
+  display: grid;
+  grid-area: mj;
+  grid-template-columns: auto;
+  grid-gap: 30px;
+  justify-items: center;
+  grid-template-rows:
+    15px
+    30px
+    330px
+    1fr;
+  /* prettier-ignore */
+  grid-template-areas:
+    'title'
+    'description'
+    'mj-grid'
+    'submit-button';
 }
 
 .area-title {
@@ -40,6 +154,18 @@ export default {
   grid-area: title;
   letter-spacing: 1.33px;
   margin: 0;
+}
+
+.area-description {
+  font-size: 15px;
+  grid-area: description;
+  letter-spacing: 1.33px;
+  margin: 0;
+}
+
+.area-mj-grid {
+  display: grid;
+  grid-area: mj-grid;
 }
 
 @media screen and (max-width: 920px) {
