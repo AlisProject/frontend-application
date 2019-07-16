@@ -17,7 +17,7 @@
         />
       </div>
       <div class="area-submit-button">
-        <app-button class="save-button" :disabled="invalidSubmit || isProcessing" @click="onSubmit">
+        <app-button class="save-button" :disabled="isInvalid || isProcessing" @click="onSubmit">
           保存する
         </app-button>
       </div>
@@ -61,21 +61,18 @@ export default {
         { level: 7, text: '絶対に不要' }
       ],
       selectedLevels: {
-        // TODO: バリデーション
-        opt1: 0,
-        opt2: 0,
-        opt3: 0,
-        opt4: 0,
-        opt5: 0
+        opt1: null,
+        opt2: null,
+        opt3: null,
+        opt4: null,
+        opt5: null
       },
       isProcessing: false
     }
   },
   computed: {
-    invalidSubmit() {
-      // TODO:
-      return false
-      // return this.$v.$invalid || this.urls.length === 0
+    isInvalid() {
+      return !Object.values(this.selectedLevels).every(value => value)
     }
   },
   methods: {
@@ -84,7 +81,7 @@ export default {
     },
     async onSubmit() {
       try {
-        if (this.invalidSubmit || this.isProcessing) return
+        if (this.isInvalid || this.isProcessing) return
         this.isProcessing = true
         const { opt1, opt2, opt3, opt4, opt5 } = this.selectedLevels
         await this.postMajorityJudgement({ opt1, opt2, opt3, opt4, opt5 })
