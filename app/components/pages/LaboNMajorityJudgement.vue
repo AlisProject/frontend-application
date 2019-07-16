@@ -2,11 +2,13 @@
   <div class="majority-judgement-container">
     <app-header />
     <div class="area-mj">
-      <the-loader v-if="isLoading" :isLoading="isLoading" class="area-title" />
+      <template v-if="!isAvailable">
+        本機能は現在無効です。
+      </template>
+      <the-loader v-else-if="isLoading" :isLoading="isLoading" class="area-title" />
       <template v-else>
         <h1 class="area-title">
-          <!-- FIXME: 運用時はタイトル修正       -->
-          マジョリティ・ジャッジメント(※現在無効)
+          マジョリティ・ジャッジメント
         </h1>
         <div v-if="!exists" class="area-description">
           あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリーに対して、選択肢のどれかを選択してください。
@@ -98,6 +100,16 @@ export default {
   computed: {
     isInvalid() {
       return !Object.values(this.selectedLevels).every((value) => value)
+    },
+    isAvailable() {
+      // FIXME: 運用開始時にフラグを立てる
+      // return true
+
+      // stgでのみ有効
+      return !this.isProduction
+    },
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
     }
   },
   methods: {
