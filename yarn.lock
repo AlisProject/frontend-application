@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@alisproject/alis-editor@^0.2.9":
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.2.9.tgz#7965ad4679c350193c633f4f97c0f3f462f85319"
+"@alisproject/alis-editor@^0.2.11":
+  version "0.2.11"
+  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.2.11.tgz#0ad6ebc52f0ad20301f4e2b032ad2987b7622473"
   dependencies:
     "@ckeditor/ckeditor5-autosave" "^10.0.2"
     "@ckeditor/ckeditor5-basic-styles" "^10.1.0"
@@ -4391,7 +4391,6 @@ fsevents@^2.0.6:
 fstream@^1.0.0, fstream@^1.0.2:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/fstream/-/fstream-1.0.12.tgz#4e8ba8ee2d48be4f7d0de505455548eae5932045"
-  integrity sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==
   dependencies:
     graceful-fs "^4.1.2"
     inherits "~2.0.0"
@@ -4544,7 +4543,6 @@ gzip-size@^5.0.0:
 handlebars@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.1.2.tgz#b6b37c1ced0306b221e094fc7aca3ec23b131b67"
-  integrity sha512-nvfrjqvt9xQ8Z/w0ijewdD/vvWDTOweBUm96NTr66Wfvo1mJenBLwcYmPs3TIBP5ruzYGD7Hx/DaM9RmhroGPw==
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -5658,7 +5656,6 @@ js-tokens@^3.0.2:
 js-yaml@^3.12.0, js-yaml@^3.9.0, js-yaml@^3.9.1:
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
-  integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -5915,7 +5912,6 @@ locate-path@^3.0.0:
 lodash-es@^4.17.10:
   version "4.17.14"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.14.tgz#12a95a963cc5955683cee3b74e85458954f37ecc"
-  integrity sha512-7zchRrGa8UZXjD/4ivUWP1867jDkhzTG2c/uj739utSd7O/pFFdxspCemIFKEEjErbcqRzn8nKnGsi7mvTgRPA==
 
 lodash._reinterpolate@~3.0.0:
   version "3.0.0"
@@ -5940,7 +5936,6 @@ lodash.memoize@^4.1.2:
 lodash.merge@^4.6.0:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
-  integrity sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==
 
 lodash.sortby@^4.7.0:
   version "4.7.0"
