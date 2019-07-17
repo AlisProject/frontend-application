@@ -14,7 +14,7 @@ aws cloudformation deploy \
     # UserPoolId=${COGNITO_USER_POOL_ID} \ FIXME: ALIS-3831
     # ClientId=${COGNITO_APP_CLIENT_ID} \ FIXME: ALIS-3831
     DistS3BucketName=${DIST_S3_BUCKET_NAME} \
-    Domain=${DOMAIN} \
+    Domain=${ALIS_APP_DOMAIN} \
     BaseUrl=${BASE_URL} \
     IframelyApiKey=${IFRAMELY_API_KEY} \
     NuxtApiGatewayName=${NUXT_API_GATEWAY_NAME} \

@@ -67,14 +67,14 @@ export default {
           property: 'og:image',
           content:
             this.$store.state.user.userInfo.icon_image_url ||
-            `https://${process.env.DOMAIN}/d/nuxt/dist/icon_user_noimg.png`
+            `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/icon_user_noimg.png`
         },
         {
           hid: 'twitter:image',
           name: 'twitter:image',
           content:
             this.$store.state.user.userInfo.icon_image_url ||
-            `https://${process.env.DOMAIN}/d/nuxt/dist/icon_user_noimg.png`
+            `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/icon_user_noimg.png`
         }
       ]
     }

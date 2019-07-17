@@ -136,7 +136,7 @@ Resources:
             Value: !Ref ClientId
           - Name: DIST_S3_BUCKET_NAME
             Value: !Ref DistS3BucketName
-          - Name: DOMAIN
+          - Name: ALIS_APP_DOMAIN
             Value: !Ref Domain
           - Name: BASE_URL
             Value: !Ref BaseUrl

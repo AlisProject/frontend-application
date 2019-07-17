@@ -62,7 +62,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `https://${process.env.DOMAIN}${this.$route.fullPath}`
+          content: `https://${process.env.ALIS_APP_DOMAIN}${this.$route.fullPath}`
         }
       ]
     }

@@ -10,9 +10,6 @@ export ALIS_APP_ID=alis
 # デプロイするAWS S3 バケット名
 export DIST_S3_BUCKET_NAME=${ALIS_APP_ID}ssm-dist-s3-bucket
 
-# 構築するアプリケーションのドメイン
-export DOMAIN=${ALIS_APP_ID}example.com
-
 # ALIS Serverless aplicationにより生成されたAWS API Gatewayの情報
 # see: https://github.com/AlisProject/serverless-application
 export BASE_URL=https://${ALIS_APP_ID}example.com

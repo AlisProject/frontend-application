@@ -28,7 +28,7 @@ export default {
   },
   head: {
     title: '検索',
-    link: [{ rel: 'canonical', href: `https://${process.env.DOMAIN}/search` }]
+    link: [{ rel: 'canonical', href: `https://${process.env.ALIS_APP_DOMAIN}/search` }]
   }
 }
 </script>

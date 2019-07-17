@@ -58,7 +58,7 @@ functions:
     environment:
       BASE_URL: ${env:BASE_URL}
       REGION: ${env:AWS_DEFAULT_REGION}
-      DOMAIN: ${env:DOMAIN}
+      ALIS_APP_DOMAIN: ${env:ALIS_APP_DOMAIN}
     events:
       - http:
           path: '/'
