@@ -63,7 +63,10 @@ module.exports = {
         sizes: '192x192',
         href: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/touch-icon.png`
       },
-      { rel: 'shortcut icon', href: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/touch-icon.png` },
+      {
+        rel: 'shortcut icon',
+        href: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/touch-icon.png`
+      },
       {
         rel: 'stylesheet',
         href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
