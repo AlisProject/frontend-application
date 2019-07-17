@@ -12,7 +12,7 @@ aws cloudformation deploy \
     AlisAppId=${ALIS_APP_ID} \
     Region=${AWS_DEFAULT_REGION} \
     # UserPoolId=${COGNITO_USER_POOL_ID} \ FIXME: ALIS-3831
-    ClientId=${CLIENT_ID} \
+    # ClientId=${COGNITO_APP_CLIENT_ID} \ FIXME: ALIS-3831
     DistS3BucketName=${DIST_S3_BUCKET_NAME} \
     Domain=${DOMAIN} \
     BaseUrl=${BASE_URL} \

@@ -132,7 +132,7 @@ Resources:
             Value: !Ref Region
           - Name: COGNITO_USER_POOL_ID
             Value: !Ref UserPoolId
-          - Name: CLIENT_ID
+          - Name: COGNITO_APP_CLIENT_ID
             Value: !Ref ClientId
           - Name: DIST_S3_BUCKET_NAME
             Value: !Ref DistS3BucketName

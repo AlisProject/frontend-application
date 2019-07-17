@@ -7,11 +7,6 @@ export ALIS_APP_ID=alis
 
 ## ********** ここの値を追加・変更する場合、CodePipelineへの追加も必要な場合があるので注意 **********
 
-
-# ALIS Serverless aplicationにより生成されたAWS Cognitoの情報
-# see: https://github.com/AlisProject/serverless-application
-export CLIENT_ID=3blv8falksulbexxxxxxxxxxxx
-
 # デプロイするAWS S3 バケット名
 export DIST_S3_BUCKET_NAME=${ALIS_APP_ID}ssm-dist-s3-bucket
 

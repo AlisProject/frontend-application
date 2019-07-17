@@ -14,7 +14,7 @@ export default {
 
     const userId =
       localStorage.getItem(
-        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+        `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
       ) || ''
     const externalProviderUserIdPrefix = ['LINE-', 'Twitter-', 'Facebook-', 'Yahoo-']
     const isExternalProviderUserId = externalProviderUserIdPrefix.some((prefix) =>
