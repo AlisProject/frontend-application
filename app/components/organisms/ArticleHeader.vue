@@ -42,6 +42,12 @@
             target="_blank"
           >Facebookでシェアする</a>
           <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
+          <hr v-if="!isMobile()" class="separate-line">
+          <span
+            v-if="!isMobile()"
+            class="article-popup-content write-to-blockchain-button"
+            @click="writeToBlockchain()"
+          >ブロックチェーンに記録する</span>
         </div>
       </div>
     </template>
@@ -57,10 +63,12 @@
 </template>
 
 <script>
+/* global Web3 */
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { isV2 } from '~/utils/article'
+import { isMobile } from '~/utils/device'
 
 export default {
   props: {
@@ -79,7 +87,23 @@ export default {
   },
   data() {
     return {
-      isArticlePopupShown: false
+      isArticlePopupShown: false,
+      isMobile,
+      registryContractAbi: [
+        {
+          name: 'register',
+          outputs: [],
+          inputs: [
+            {
+              type: 'bytes32',
+              name: '_digest'
+            }
+          ],
+          constant: false,
+          payable: false,
+          type: 'function'
+        }
+      ]
     }
   },
   computed: {
@@ -110,7 +134,10 @@ export default {
       const price = new BigNumber(this.article.price).div(formatNumber).toString(10)
       return price
     },
-    ...mapGetters('article', ['purchasedArticleIds'])
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
+    },
+    ...mapGetters('article', ['purchasedArticleIds', 'originalBody'])
   },
   mounted() {
     this.listen(window, 'click', (event) => {
@@ -155,6 +182,72 @@ export default {
         this.sendNotification({ text: '記事を下書きに戻せませんでした', type: 'warning' })
       }
     },
+    isTargetNetwork(networkType) {
+      const targetNetworkType = this.isProduction ? 'main' : 'ropsten'
+      return networkType === targetNetworkType
+    },
+    checkIsMetaMaskInstalled() {
+      return typeof window.ethereum !== 'undefined' && window.ethereum.isMetaMask
+    },
+    async approveMetaMask() {
+      await window.ethereum.enable()
+      return new Web3(window.ethereum)
+    },
+    async writeToBlockchain() {
+      if (!this.checkIsMetaMaskInstalled()) {
+        this.sendNotification({
+          text: 'MetaMaskのインストールが必要です',
+          type: 'warning'
+        })
+        return
+      }
+
+      let web3
+      try {
+        web3 = await this.approveMetaMask()
+      } catch (e) {
+        this.sendNotification({
+          text: 'MetaMaskの承認に失敗しました',
+          type: 'warning'
+        })
+        return
+      }
+
+      const networkType = await web3.eth.net.getNetworkType()
+      if (!this.isTargetNetwork(networkType)) {
+        this.sendNotification({
+          text: 'Ethereumメインネットワークのみご利用できます。MetaMaskの設定をご確認ください。',
+          type: 'warning'
+        })
+        return
+      }
+
+      // 表示用の最適化をしていないBody情報を取得
+      await this.getPublicArticleOriginalBody({ articleId: this.article.article_id })
+      // ダイジェストを生成
+      const digest = web3.utils.keccak256(this.originalBody)
+
+      const registry = new web3.eth.Contract(
+        this.registryContractAbi,
+        process.env.PUBLIC_CHAIN_REGISTRY_ADDRESS
+      )
+      registry.methods
+        .register(digest)
+        .send({
+          from: window.ethereum.selectedAddress // MetaMaskで選択中のアカウント
+        })
+        .on('transactionHash', (hash) => {
+          this.sendNotification({
+            text: 'トランザクションを発行しました。詳細はMETAMASKでご確認ください'
+          })
+        })
+        .on('error', (e) => {
+          this.sendNotification({
+            text: 'トランザクション発行に失敗しました',
+            type: 'warning'
+          })
+        })
+    },
     execCopyUrl() {
       const copied = this.execCopy(this.shareUrl)
       if (copied) {
@@ -189,7 +282,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['unpublishPublicArticle'])
+    ...mapActions('article', ['unpublishPublicArticle', 'getPublicArticleOriginalBody'])
   }
 }
 </script>

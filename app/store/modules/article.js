@@ -15,6 +15,7 @@ const state = () => ({
   draftArticles: [],
   title: '',
   body: '',
+  originalBody: '',
   articleContentEditHistories: null,
   currentPrice: null,
   suggestedThumbnails: [],
@@ -82,6 +83,7 @@ const getters = {
   articleId: (state) => state.articleId,
   title: (state) => state.title,
   body: (state) => state.body,
+  originalBody: (state) => state.originalBody,
   articleContentEditHistories: (state) => state.articleContentEditHistories,
   suggestedThumbnails: (state) => Array.from(new Set(state.suggestedThumbnails)),
   thumbnail: (state) => state.thumbnail,
@@ -312,6 +314,10 @@ const actions = {
     })
     commit(types.SET_ARTICLE_ID, { articleId })
     commit(types.SET_IS_FETCHED_PUBLIC_ARTICLE, { isFetched: true })
+  },
+  async getPublicArticleOriginalBody({ commit }, { articleId }) {
+    const article = await this.$axios.$get(`/api/me/articles/${articleId}/public`)
+    commit(types.SET_ARTICLE_ORIGINAL_BODY, { originalBody: article.body })
   },
   async getEditPublicArticleDetail({ commit }, { articleId, version }) {
     try {
@@ -1019,6 +1025,9 @@ const mutations = {
   [types.SET_ARTICLE](state, { article }) {
     state.title = article.title
     state.body = article.body
+  },
+  [types.SET_ARTICLE_ORIGINAL_BODY](state, { originalBody }) {
+    state.originalBody = originalBody
   },
   [types.SET_ARTICLE_ID](state, { articleId }) {
     state.articleId = articleId
