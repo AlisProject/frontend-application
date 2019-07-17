@@ -7,9 +7,6 @@ export ALIS_APP_ID=alis
 
 ## ********** ここの値を追加・変更する場合、CodePipelineへの追加も必要な場合があるので注意 **********
 
-# Iframely API KEY
-export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
-
 # API Gateway name for Nuxt
 # see: https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html
 export NUXT_API_GATEWAY_NAME=${ALIS_APP_ID}
