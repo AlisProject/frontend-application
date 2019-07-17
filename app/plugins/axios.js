@@ -5,7 +5,7 @@ export default async ({ $axios, store, env }) => {
   } catch (e) {}
 
   $axios.onRequest(async (req) => {
-    if (req.url.startsWith('/api/me/')) {
+    if (req.url.startsWith('/api/me/') || req.url.startsWith('/laboratory/labo/')) {
       try {
         await store.dispatch('user/getUserSession')
         const currentUser = localStorage.getItem(

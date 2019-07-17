@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.development.js",
+    "debug": "cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.debug.js",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "format": "prettier-eslint --write \"./**/*.{js,vue}\" --ignore \"./node_modules/**\" ",
