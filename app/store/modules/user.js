@@ -1038,7 +1038,7 @@ const actions = {
 
   async postMajorityJudgement({ commit }, { opt1, opt2, opt3, opt4, opt5 }) {
     try {
-      await this.$axios.$post('/laboratory/labo/n/majority_judgement/create', {
+      await this.$axios.$post('/laboratory/labo/n/majority_judgement', {
         opt_1: opt1,
         opt_2: opt2,
         opt_3: opt3,
