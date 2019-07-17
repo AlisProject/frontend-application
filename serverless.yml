@@ -56,7 +56,7 @@ functions:
     timeout: 30
     memorySize: 2048
     environment:
-      BASE_URL: ${env:BASE_URL}
+      BASE_URL: https://${env:ALIS_APP_DOMAIN}
       REGION: ${env:AWS_DEFAULT_REGION}
       ALIS_APP_DOMAIN: ${env:ALIS_APP_DOMAIN}
     events:
