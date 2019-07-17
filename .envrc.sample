@@ -7,9 +7,6 @@ export ALIS_APP_ID=alis
 
 ## ********** ここの値を追加・変更する場合、CodePipelineへの追加も必要な場合があるので注意 **********
 
-# デプロイするAWS S3 バケット名
-export DIST_S3_BUCKET_NAME=${ALIS_APP_ID}ssm-dist-s3-bucket
-
 # ALIS Serverless aplicationにより生成されたAWS API Gatewayの情報
 # see: https://github.com/AlisProject/serverless-application
 export BASE_URL=https://${ALIS_APP_ID}example.com

@@ -11,9 +11,10 @@ aws cloudformation deploy \
     ApprovalEmailAddress=${APPROVAL_EMAIL_ADDRESS} \
     AlisAppId=${ALIS_APP_ID} \
     Region=${AWS_DEFAULT_REGION} \
-    # UserPoolId=${COGNITO_USER_POOL_ID} \ FIXME: ALIS-3831
-    # ClientId=${COGNITO_APP_CLIENT_ID} \ FIXME: ALIS-3831
-    DistS3BucketName=${DIST_S3_BUCKET_NAME} \
+    # FIXME: ALIS-3831
+    # UserPoolId=${COGNITO_USER_POOL_ID} \
+    # ClientId=${COGNITO_APP_CLIENT_ID} \
+    # DistS3BucketName=${DIST_S3_BUCKET_NAME} \
     Domain=${ALIS_APP_DOMAIN} \
     BaseUrl=${BASE_URL} \
     IframelyApiKey=${IFRAMELY_API_KEY} \
