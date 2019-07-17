@@ -18,6 +18,5 @@ aws cloudformation deploy \
     # Domain=${ALIS_APP_DOMAIN} \
     # BaseUrl=${BASE_URL} \
     # IframelyApiKey=${IFRAMELY_API_KEY} \
-    NuxtApiGatewayName=${NUXT_API_GATEWAY_NAME} \
   --capabilities CAPABILITY_IAM \
   --no-fail-on-empty-changeset

@@ -142,8 +142,6 @@ Resources:
             Value: !Ref BaseUrl
           - Name: IFRAMELY_API_KEY
             Value: !Ref IframelyApiKey
-          - Name: NUXT_API_GATEWAY_NAME
-            Value: !Ref NuxtApiGatewayName
         Image: !Ref CodeBuildImage
         Type: LINUX_CONTAINER
         PrivilegedMode: True
