@@ -130,7 +130,7 @@ Resources:
             Value: !Ref AlisAppId
           - Name: REGION
             Value: !Ref Region
-          - Name: USER_POOL_ID
+          - Name: COGNITO_USER_POOL_ID
             Value: !Ref UserPoolId
           - Name: CLIENT_ID
             Value: !Ref ClientId

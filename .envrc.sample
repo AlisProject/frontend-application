@@ -10,7 +10,6 @@ export ALIS_APP_ID=alis
 
 # ALIS Serverless aplicationにより生成されたAWS Cognitoの情報
 # see: https://github.com/AlisProject/serverless-application
-export USER_POOL_ID=ap-northeast-1_1OI5XXXX
 export CLIENT_ID=3blv8falksulbexxxxxxxxxxxx
 
 # デプロイするAWS S3 バケット名

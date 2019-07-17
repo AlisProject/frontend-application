@@ -11,7 +11,7 @@ aws cloudformation deploy \
     ApprovalEmailAddress=${APPROVAL_EMAIL_ADDRESS} \
     AlisAppId=${ALIS_APP_ID} \
     Region=${AWS_DEFAULT_REGION} \
-    UserPoolId=${USER_POOL_ID} \
+    # UserPoolId=${COGNITO_USER_POOL_ID} \ FIXME: ALIS-3831
     ClientId=${CLIENT_ID} \
     DistS3BucketName=${DIST_S3_BUCKET_NAME} \
     Domain=${DOMAIN} \
