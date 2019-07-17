@@ -138,7 +138,7 @@ module.exports = {
   ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
-    REGION: process.env.REGION,
+    REGION: process.env.AWS_DEFAULT_REGION,
     USER_POOL_ID: process.env.USER_POOL_ID,
     CLIENT_ID: process.env.CLIENT_ID,
     DOMAIN: process.env.DOMAIN,
