@@ -30,18 +30,6 @@
           >
             下書きに戻す
           </span>
-          <hr v-if="isV2Article" class="separate-line">
-          <a
-            class="article-popup-content"
-            :href="twitterShareUrl"
-            target="_blank"
-          >Twitterでシェアする</a>
-          <a
-            class="article-popup-content"
-            :href="facebookShareUrl"
-            target="_blank"
-          >Facebookでシェアする</a>
-          <span class="article-popup-content" @click="execCopyUrl">シェア用のURLをコピーする</span>
           <hr v-if="!isMobile()" class="separate-line">
           <span
             v-if="!isMobile()"
@@ -111,14 +99,6 @@ export default {
       return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
         this.article.article_id
       }`
-    },
-    twitterShareUrl() {
-      return `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-        this.shareUrl
-      )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
-    },
-    facebookShareUrl() {
-      return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.shareUrl)}`
     },
     isV2Article() {
       return isV2(this.article)
@@ -248,26 +228,6 @@ export default {
           })
         })
     },
-    execCopyUrl() {
-      const copied = this.execCopy(this.shareUrl)
-      if (copied) {
-        this.sendNotification({ text: 'URLをコピーしました' })
-      } else {
-        this.sendNotification({ text: 'コピーができませんでした', type: 'warning' })
-      }
-    },
-    execCopy(string) {
-      const temp = document.createElement('div')
-      temp.appendChild(document.createElement('pre')).textContent = string
-      const s = temp.style
-      s.position = 'fixed'
-      s.left = '-100%'
-      document.body.appendChild(temp)
-      document.getSelection().selectAllChildren(temp)
-      const result = document.execCommand('copy')
-      document.body.removeChild(temp)
-      return result
-    },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
         this._eventRemovers = []
@@ -331,7 +291,7 @@ export default {
       font-size: 14px;
       padding: 8px 16px;
       position: absolute;
-      left: -190px;
+      right: 0px;
       top: 24px;
       z-index: 1;
 
@@ -409,7 +369,7 @@ export default {
 
     .article-button {
       .article-popup {
-        left: -190px;
+        right: 0px;
 
         .article-popup-content.unpublish-button {
           display: none;
