@@ -19,14 +19,6 @@ export ALIS_APP_ID=alis
 # export DAILY_LIMIT_TOKEN_SEND_VALUE=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDailyLimitTokenSendValue --query "Parameter.Value" --output text`
 
 
-# --- Codepipeline ---
-# デプロイ自動化の設定に利用。通常は設定不要
-export GITHUB_TOKEN=123...
-
-# 自動デプロイ承認用メールの送り先。通常は設定不要
-export APPROVAL_EMAIL_ADDRESS=foo@example.com
-
-
 # --- AWS ---
 
 ## aws-cli

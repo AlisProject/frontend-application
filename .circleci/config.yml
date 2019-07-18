@@ -6,9 +6,18 @@ references:
       branches:
         ignore:
           - master
+  only_master: &only_master
+    filters:
+      branches:
+        only:
+          - master
+  production_steps: &production_steps
+    <<: *only_master
+    context: common_production_deployment
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
+  slack: circleci/slack@3.2.0
 
 executors:
   default:
@@ -28,25 +37,25 @@ commands:
     steps:
       - checkout
 
-      - run:
-          name: Install Yarn
-          command: sudo npm install -g yarn@1.6.0
+      - run: sudo npm install -g yarn@1.6.0
 
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
             - v2-dependencies-
 
-      - run:
-          name: Install dependencies
-          command: |
-            # yarn.lockの内容をすべてインストール
-            yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
 
       - save_cache:
           paths:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
+
+  prepare-deployment:
+    description: 'デプロイを準備'
+    steps:
+      - prepare-resources
+      - prepare-aws-cli
 
 jobs:
   lint-and-test:
@@ -78,13 +87,12 @@ jobs:
       name: default
 
     steps:
-      - prepare-resources
-
-      - prepare-aws-cli
+      - prepare-deployment
 
       - run:
-          name: Build Nuxt resources
+          name: "Build Nuxt resources"
           command: |
+            mkdir .nuxt
             if [ $ALIS_APP_ID ]; then
               yarn build
             fi
@@ -99,30 +107,77 @@ jobs:
       name: default
 
     steps:
-      - prepare-resources
-
-      - prepare-aws-cli
+      - prepare-deployment
 
       - attach_workspace:
           at: .
 
       - deploy:
-          name: Deployment
+          name: "Deployment"
           command: |
             if [ $ALIS_APP_ID ]; then
               sudo npm install -g serverless
               yarn deploy
             fi
 
+  deploy-exclude-master:
+    executor:
+      name: default
+
+    steps:
+      - prepare-deployment
+
+      - attach_workspace:
+          at: .
+
+      - deploy:
+          name: "Deployment"
+          command: |
+            if [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
+              sudo npm install -g serverless
+              yarn deploy
+            fi
+
+  notify-to-slack-for-approval:
+    executor:
+      name: default
+
+    steps:
+      - slack/approval:
+          message: "本番環境へのデプロイを承認してください"
+          color: "#F5E911"
+
+
 workflows:
   main:
     jobs:
       - lint-and-test
-      - build:
+      - build
+
+      # ステージング環境以外へのデプロイ
+      # AlisProjectアカウントからフォークした環境での実行を想定
+      - deploy-exclude-master:
           <<: *ignore_master
-      - deploy:
-          # ステージング環境、本番環境へのデプロイはCodeBuildに委ねる
-          <<: *ignore_master
-          requires:
+          context: common_staging_deployment
+          requires: &test-and-build
             - lint-and-test
             - build
+
+      # ステージング環境へのデプロイ
+      - deploy:
+          <<: *only_master
+          context: common_staging_deployment
+          requires: *test-and-build
+
+      # 本番環境へのデプロイ(承認処理付き)
+      - notify-to-slack-for-approval:
+          <<: *production_steps
+          requires: *test-and-build
+      - approval:
+          <<: *production_steps
+          type: approval
+          requires: *test-and-build
+      - deploy:
+          <<: *production_steps
+          requires:
+            - approval
