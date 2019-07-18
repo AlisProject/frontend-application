@@ -14,7 +14,7 @@ export default {
 
     const userId =
       localStorage.getItem(
-        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+        `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
       ) || ''
     const externalProviderUserIdPrefix = ['LINE-', 'Twitter-', 'Facebook-', 'Yahoo-']
     const isExternalProviderUserId = externalProviderUserIdPrefix.some((prefix) =>
@@ -62,7 +62,7 @@ export default {
         {
           hid: 'og:url',
           property: 'og:url',
-          content: `https://${process.env.DOMAIN}${this.$route.fullPath}`
+          content: `https://${process.env.ALIS_APP_DOMAIN}${this.$route.fullPath}`
         }
       ]
     }

@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     shareUrl() {
-      return `https://${process.env.DOMAIN}/${this.article.user_id}/articles/${
+      return `https://${process.env.ALIS_APP_DOMAIN}/${this.article.user_id}/articles/${
         this.article.article_id
       }`
     },

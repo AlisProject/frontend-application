@@ -419,7 +419,7 @@ const actions = {
   async logout({ commit }) {
     try {
       const userId = localStorage.getItem(
-        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+        `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
       )
       const result = await this.cognito.logoutUser({ userId })
       commit(types.SET_LOGGED_IN, { loggedIn: false })
@@ -668,7 +668,7 @@ const actions = {
   async postUserId({ state, dispatch }, { userId }) {
     try {
       const externalProviderUserId = localStorage.getItem(
-        `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+        `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
       )
       const result = await this.$axios.$post('/api/me/external_provider_user', {
         user_id: userId

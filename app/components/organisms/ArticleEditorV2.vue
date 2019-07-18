@@ -67,9 +67,9 @@ export default {
     return {
       isPc: true,
       updateArticleInterval: null,
-      clientId: process.env.CLIENT_ID,
+      clientId: process.env.COGNITO_APP_CLIENT_ID,
       iframelyApiKey: process.env.IFRAMELY_API_KEY,
-      domain: process.env.DOMAIN,
+      domain: process.env.ALIS_APP_DOMAIN,
       titleElementHeight: 40,
       isChecked: false,
       title: this.defaultTitle

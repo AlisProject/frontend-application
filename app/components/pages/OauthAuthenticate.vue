@@ -132,7 +132,7 @@ export default {
       }
     },
     getIdToken() {
-      const clientId = process.env.CLIENT_ID
+      const clientId = process.env.COGNITO_APP_CLIENT_ID
       const currentUser = localStorage.getItem(
         `CognitoIdentityServiceProvider.${clientId}.LastAuthUser`
       )

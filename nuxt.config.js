@@ -41,14 +41,14 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+        content: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
       },
       { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
       { hid: 'twitter:site', name: 'twitter:site', content: '@ALIS_media' },
       {
         hid: 'twitter:image',
         name: 'twitter:image',
-        content: `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+        content: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
       },
       { hid: 'fb:app_id', property: 'fb:app_id', content: '2157199921164241' }
     ],
@@ -56,14 +56,17 @@ module.exports = {
       {
         rel: 'icon',
         type: 'image/x-icon',
-        href: `https://${process.env.DOMAIN}/d/nuxt/dist/favicon.ico`
+        href: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/favicon.ico`
       },
       {
         rel: 'apple-touch-icon',
         sizes: '192x192',
-        href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png`
+        href: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/touch-icon.png`
       },
-      { rel: 'shortcut icon', href: `https://${process.env.DOMAIN}/d/nuxt/dist/touch-icon.png` },
+      {
+        rel: 'shortcut icon',
+        href: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/touch-icon.png`
+      },
       {
         rel: 'stylesheet',
         href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
@@ -115,7 +118,7 @@ module.exports = {
     }
   },
   build: {
-    publicPath: `https://${process.env.DOMAIN}/d/nuxt/dist/`,
+    publicPath: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/`,
     /*
      ** Run ESLint on save
      */
@@ -138,10 +141,10 @@ module.exports = {
   ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
-    REGION: process.env.REGION,
-    USER_POOL_ID: process.env.USER_POOL_ID,
-    CLIENT_ID: process.env.CLIENT_ID,
-    DOMAIN: process.env.DOMAIN,
+    REGION: process.env.AWS_DEFAULT_REGION,
+    COGNITO_USER_POOL_ID: process.env.COGNITO_USER_POOL_ID,
+    COGNITO_APP_CLIENT_ID: process.env.COGNITO_APP_CLIENT_ID,
+    ALIS_APP_DOMAIN: process.env.ALIS_APP_DOMAIN,
     PUBLIC_CHAIN_BRIDGE_ADDRESS: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
     PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
     PUBLIC_CHAIN_REGISTRY_ADDRESS: process.env.PUBLIC_CHAIN_REGISTRY_ADDRESS,

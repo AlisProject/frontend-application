@@ -275,7 +275,7 @@ const actions = {
       const article = await this.$axios.$get(`/api/articles/${articleId}`)
       const body = getBodyWithImageOptimizationParam(
         article.body,
-        process.env.DOMAIN,
+        process.env.ALIS_APP_DOMAIN,
         article.user_id,
         articleId
       )
@@ -298,7 +298,7 @@ const actions = {
     commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
     const body = getBodyWithImageOptimizationParam(
       article.body,
-      process.env.DOMAIN,
+      process.env.ALIS_APP_DOMAIN,
       article.user_id,
       articleId
     )
@@ -989,7 +989,7 @@ const actions = {
       const article = await this.$axios.$get(`/laboratory/labo/n/random`)
       const body = getBodyWithImageOptimizationParam(
         article.body,
-        process.env.DOMAIN,
+        process.env.ALIS_APP_DOMAIN,
         article.user_id,
         article.article_id
       )
