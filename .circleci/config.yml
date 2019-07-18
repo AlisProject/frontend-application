@@ -6,6 +6,14 @@ references:
       branches:
         ignore:
           - master
+  only_master: &only_master
+    filters:
+      branches:
+        only:
+          - master
+  production_steps: &production_steps
+    <<: *only_master
+    context: common_production_deployment
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
@@ -48,6 +56,10 @@ commands:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
 
+  prepare-deployment:
+    - prepare-resources
+    - prepare-aws-cli
+
 jobs:
   lint-and-test:
     executor:
@@ -78,14 +90,31 @@ jobs:
       name: default
 
     steps:
-      - prepare-resources
-
-      - prepare-aws-cli
+      - prepare-deployment
 
       - run:
-          name: Build Nuxt resources
+          name: "Build Nuxt resources"
           command: |
             if [ $ALIS_APP_ID ]; then
+              yarn build
+            fi
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .nuxt/*
+
+  build-exclude-master:
+    executor:
+      name: default
+
+    steps:
+      - prepare-deployment
+
+      - run:
+          name: "Build Nuxt resources"
+          command: |
+            if [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
               yarn build
             fi
 
@@ -99,17 +128,33 @@ jobs:
       name: default
 
     steps:
-      - prepare-resources
-
-      - prepare-aws-cli
+      - prepare-deployment
 
       - attach_workspace:
           at: .
 
       - deploy:
-          name: Deployment
+          name: "Deployment"
           command: |
             if [ $ALIS_APP_ID ]; then
+              sudo npm install -g serverless
+              yarn deploy
+            fi
+
+  deploy-exclude-master:
+    executor:
+      name: default
+
+    steps:
+      - prepare-deployment
+
+      - attach_workspace:
+          at: .
+
+      - deploy:
+          name: "Deployment"
+          command: |
+            if [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
               sudo npm install -g serverless
               yarn deploy
             fi
@@ -119,10 +164,40 @@ workflows:
     jobs:
       - lint-and-test
       - build:
+          <<: *only_master
+      - build-exclude-master:
           <<: *ignore_master
+
+      # ステージング環境以外へのデプロイ
+      # AlisProjectアカウントからフォークした環境での実行を想定
+      - deploy-exclude-master:
+          <<: *ignore_master
+          context: common_staging_deployment
+          requires:
+            - lint-and-test
+            - build-exclude-master
+
+      # ステージング環境へのデプロイ
       - deploy:
-          # ステージング環境、本番環境へのデプロイはCodeBuildに委ねる
-          <<: *ignore_master
+          <<: *only_master
+          context: common_staging_deployment
+          requires:
+            - build
+            - lint-and-test
+
+      # 本番環境へのデプロイ(承認処理付き)
+      - notify-to-slack-for-approval:
+          <<: *production_steps
           requires:
             - lint-and-test
             - build
+      - approval:
+          <<: *production_steps
+          type: approval
+          requires:
+            - lint-and-test
+            - build
+      - deploy:
+          <<: *production_steps
+          requires:
+            - approval
