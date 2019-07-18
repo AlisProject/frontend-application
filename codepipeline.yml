@@ -130,20 +130,18 @@ Resources:
             Value: !Ref AlisAppId
           - Name: REGION
             Value: !Ref Region
-          - Name: USER_POOL_ID
+          - Name: COGNITO_USER_POOL_ID
             Value: !Ref UserPoolId
-          - Name: CLIENT_ID
+          - Name: COGNITO_APP_CLIENT_ID
             Value: !Ref ClientId
           - Name: DIST_S3_BUCKET_NAME
             Value: !Ref DistS3BucketName
-          - Name: DOMAIN
+          - Name: ALIS_APP_DOMAIN
             Value: !Ref Domain
           - Name: BASE_URL
             Value: !Ref BaseUrl
           - Name: IFRAMELY_API_KEY
             Value: !Ref IframelyApiKey
-          - Name: NUXT_API_GATEWAY_NAME
-            Value: !Ref NuxtApiGatewayName
         Image: !Ref CodeBuildImage
         Type: LINUX_CONTAINER
         PrivilegedMode: True

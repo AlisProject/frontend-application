@@ -4,34 +4,19 @@
 ## すべてのサブシステムで同じ値を使う必要がある
 export ALIS_APP_ID=alis
 
-
-## ********** ここの値を追加・変更する場合、CodePipelineへの追加も必要な場合があるので注意 **********
-
-
-# AWSのリージョン
-export REGION=ap-northeast-1
-
-# ALIS Serverless aplicationにより生成されたAWS Cognitoの情報
-# see: https://github.com/AlisProject/serverless-application
-export USER_POOL_ID=ap-northeast-1_1OI5XXXX
-export CLIENT_ID=3blv8falksulbexxxxxxxxxxxx
-
-# デプロイするAWS S3 バケット名
-export DIST_S3_BUCKET_NAME=${ALIS_APP_ID}ssm-dist-s3-bucket
-
-# 構築するアプリケーションのドメイン
-export DOMAIN=${ALIS_APP_ID}example.com
-
-# ALIS Serverless aplicationにより生成されたAWS API Gatewayの情報
-# see: https://github.com/AlisProject/serverless-application
-export BASE_URL=https://${ALIS_APP_ID}example.com
-
-# Iframely API KEY
-export IFRAMELY_API_KEY=518401c27dxxxxxxxxxxx
-
-# API Gateway name for Nuxt
-# see: https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-custom-domains.html
-export NUXT_API_GATEWAY_NAME=${ALIS_APP_ID}
+## SSMから、ローカルで開発する際に必要となる値を取得し、環境変数へ格納
+## ローカルで開発する場合は、ここのコメントアウトを解除して使用する
+# export ALIS_APP_DOMAIN=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmAlisAppDomain --query "Parameter.Value" --output text`
+# export BASE_URL=https://${ALIS_APP_DOMAIN}
+# export COGNITO_USER_POOL_ID=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmCognitoUserPoolId --query "Parameter.Value" --output text`
+# export COGNITO_APP_CLIENT_ID=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmCognitoUserPoolAppId --query "Parameter.Value" --output text`
+# export DIST_S3_BUCKET_NAME=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDistS3BucketName --query "Parameter.Value" --output text`
+# export IFRAMELY_API_KEY=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmIframelyApiKey --query "Parameter.Value" --output text`
+# export PUBLIC_CHAIN_BRIDGE_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainBridgeAddress --query "Parameter.Value" --output text`
+# export PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainAlisTokenAddress --query "Parameter.Value" --output text`
+# export PUBLIC_CHAIN_REGISTRY_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainRegistryAddress --query "Parameter.Value" --output text`
+# export PUBLIC_CHAIN_OPERATION_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainOperationUrl --query "Parameter.Value" --output text`
+# export DAILY_LIMIT_TOKEN_SEND_VALUE=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDailyLimitTokenSendValue --query "Parameter.Value" --output text`
 
 
 # --- Codepipeline ---
@@ -49,6 +34,6 @@ export APPROVAL_EMAIL_ADDRESS=foo@example.com
 ##   - see: https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/cli-environment.html
 ## .credentialsファイルよりもこちらの環境変数が優先される
 ## Cloud formationのデプロイやS3作成など重要な操作を行うため、管理者レベルの権限を持つ必要がある。
-export AWS_DEFAULT_REGION=${REGION}
+export AWS_DEFAULT_REGION=ap-northeast-1
 export AWS_ACCESS_KEY_ID=AKIAJZCGSXXXXXXXXXX
 export AWS_SECRET_ACCESS_KEY=iU6/q6ls5i5pDBPxxxxxxxxxxxxxxxxxxxx

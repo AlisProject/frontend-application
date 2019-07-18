@@ -9,10 +9,10 @@ export default async ({ $axios, store, env }) => {
       try {
         await store.dispatch('user/getUserSession')
         const currentUser = localStorage.getItem(
-          `CognitoIdentityServiceProvider.${env.CLIENT_ID}.LastAuthUser`
+          `CognitoIdentityServiceProvider.${env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
         )
         const token = localStorage.getItem(
-          `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
+          `CognitoIdentityServiceProvider.${env.COGNITO_APP_CLIENT_ID}.${currentUser}.idToken`
         )
         req.headers.common.Authorization = token
       } catch (e) {}
@@ -22,10 +22,10 @@ export default async ({ $axios, store, env }) => {
 
   if (process.client) {
     const currentUser = localStorage.getItem(
-      `CognitoIdentityServiceProvider.${env.CLIENT_ID}.LastAuthUser`
+      `CognitoIdentityServiceProvider.${env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
     )
     const token = localStorage.getItem(
-      `CognitoIdentityServiceProvider.${env.CLIENT_ID}.${currentUser}.idToken`
+      `CognitoIdentityServiceProvider.${env.COGNITO_APP_CLIENT_ID}.${currentUser}.idToken`
     )
     $axios.setToken(token)
   }

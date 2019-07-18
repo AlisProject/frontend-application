@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# SSMからNuxtのビルドに必要な値を取得し、環境変数へ格納
+export DIST_S3_BUCKET_NAME=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDistS3BucketName --query "Parameter.Value" --output text`
+
+# リソースをS3へアップロード
 aws s3 cp .nuxt/dist/client s3://${DIST_S3_BUCKET_NAME}/d/nuxt/dist --recursive
 aws s3 cp app/static/favicon.ico s3://${DIST_S3_BUCKET_NAME}/d/nuxt/dist/
 aws s3 cp app/static/OGP_1200×630.png s3://${DIST_S3_BUCKET_NAME}/d/nuxt/dist/

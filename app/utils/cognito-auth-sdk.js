@@ -5,7 +5,7 @@ export default class CognitoAuthSDK {
     access_token: accessToken,
     refresh_token: refreshToken
   }) {
-    const key = `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}`
+    const key = `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}`
     const keyWithLastAuthUser = `${key}.${lastAuthUser}`
     localStorage.setItem(`${key}.LastAuthUser`, lastAuthUser)
     localStorage.setItem(`${keyWithLastAuthUser}.idToken`, idToken)
@@ -14,7 +14,7 @@ export default class CognitoAuthSDK {
   }
 
   removeTokens({ lastAuthUser }) {
-    const key = `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}`
+    const key = `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}`
     const keyWithLastAuthUser = `${key}.${lastAuthUser}`
     localStorage.removeItem(`${keyWithLastAuthUser}.idToken`)
     localStorage.removeItem(`${keyWithLastAuthUser}.accessToken`)

@@ -24,7 +24,7 @@ export default ({ app }) => {
 
   app.router.afterEach((to, from) => {
     const currentUser = localStorage.getItem(
-      `CognitoIdentityServiceProvider.${process.env.CLIENT_ID}.LastAuthUser`
+      `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
     )
     dataLayer.push(to.gtm || { userId: currentUser })
   })

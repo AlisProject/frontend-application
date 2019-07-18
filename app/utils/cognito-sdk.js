@@ -11,8 +11,8 @@ import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityservi
 export default class CognitoSDK {
   constructor() {
     this.poolData = {
-      UserPoolId: process.env.USER_POOL_ID,
-      ClientId: process.env.CLIENT_ID
+      UserPoolId: process.env.COGNITO_USER_POOL_ID,
+      ClientId: process.env.COGNITO_APP_CLIENT_ID
     }
     this.userPool = new CognitoUserPool(this.poolData)
     AWS.config.region = process.env.REGION

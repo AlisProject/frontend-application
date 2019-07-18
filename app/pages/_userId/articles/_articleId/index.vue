@@ -146,12 +146,14 @@ export default {
         {
           hid: `og:image`,
           property: 'og:image',
-          content: eyeCatchUrl || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+          content:
+            eyeCatchUrl || `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
         },
         {
           hid: 'twitter:image',
           name: 'twitter:image',
-          content: eyeCatchUrl || `https://${process.env.DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
+          content:
+            eyeCatchUrl || `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/OGP_1200×630.png`
         }
       ]
     }

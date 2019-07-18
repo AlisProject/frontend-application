@@ -34,7 +34,7 @@ export function createInsertPluginTemplateFromUrl(url) {
 
 export function getThumbnails(images) {
   return images
-    .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.DOMAIN))
+    .filter((img) => !img.src.includes('data:') || img.src.includes(process.env.ALIS_APP_DOMAIN))
     .map((img) => img.src)
 }
 
