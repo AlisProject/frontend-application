@@ -37,20 +37,14 @@ commands:
     steps:
       - checkout
 
-      - run:
-          name: Install Yarn
-          command: sudo npm install -g yarn@1.6.0
+      - run: sudo npm install -g yarn@1.6.0
 
       - restore_cache:
           keys:
             - v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
             - v2-dependencies-
 
-      - run:
-          name: Install dependencies
-          command: |
-            # yarn.lockの内容をすべてインストール
-            yarn install --frozen-lockfile
+      - run: yarn install --frozen-lockfile
 
       - save_cache:
           paths:
