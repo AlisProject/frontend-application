@@ -17,6 +17,7 @@ references:
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
+  slack: circleci/slack@3.2.0
 
 executors:
   default:
