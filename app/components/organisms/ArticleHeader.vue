@@ -291,7 +291,7 @@ export default {
       font-size: 14px;
       padding: 8px 16px;
       position: absolute;
-      left: -190px;
+      right: 0px;
       top: 24px;
       z-index: 1;
 
@@ -369,7 +369,7 @@ export default {
 
     .article-button {
       .article-popup {
-        left: -190px;
+        right: 0px;
 
         .article-popup-content.unpublish-button {
           display: none;
