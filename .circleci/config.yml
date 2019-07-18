@@ -52,8 +52,10 @@ commands:
           key: v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
 
   prepare-deployment:
-    - prepare-resources
-    - prepare-aws-cli
+    description: 'デプロイを準備'
+    steps:
+      - prepare-resources
+      - prepare-aws-cli
 
 jobs:
   lint-and-test:
@@ -90,26 +92,8 @@ jobs:
       - run:
           name: "Build Nuxt resources"
           command: |
+            mkdir .nuxt
             if [ $ALIS_APP_ID ]; then
-              yarn build
-            fi
-
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .nuxt/*
-
-  build-exclude-master:
-    executor:
-      name: default
-
-    steps:
-      - prepare-deployment
-
-      - run:
-          name: "Build Nuxt resources"
-          command: |
-            if [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
               yarn build
             fi
 
@@ -154,44 +138,45 @@ jobs:
               yarn deploy
             fi
 
+  notify-to-slack-for-approval:
+    executor:
+      name: default
+
+    steps:
+      - slack/approval:
+          message: "本番環境へのデプロイを承認してください"
+          color: "#F5E911"
+
+
 workflows:
   main:
     jobs:
       - lint-and-test
-      - build:
-          <<: *only_master
-      - build-exclude-master:
-          <<: *ignore_master
+      - build
 
       # ステージング環境以外へのデプロイ
       # AlisProjectアカウントからフォークした環境での実行を想定
       - deploy-exclude-master:
           <<: *ignore_master
           context: common_staging_deployment
-          requires:
+          requires: &test-and-build
             - lint-and-test
-            - build-exclude-master
+            - build
 
       # ステージング環境へのデプロイ
       - deploy:
           <<: *only_master
           context: common_staging_deployment
-          requires:
-            - build
-            - lint-and-test
+          requires: *test-and-build
 
       # 本番環境へのデプロイ(承認処理付き)
       - notify-to-slack-for-approval:
           <<: *production_steps
-          requires:
-            - lint-and-test
-            - build
+          requires: *test-and-build
       - approval:
           <<: *production_steps
           type: approval
-          requires:
-            - lint-and-test
-            - build
+          requires: *test-and-build
       - deploy:
           <<: *production_steps
           requires:
