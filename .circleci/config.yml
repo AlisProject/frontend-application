@@ -82,7 +82,7 @@ jobs:
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
 
-  build:
+  build: &build
     executor:
       name: default
 
@@ -101,6 +101,8 @@ jobs:
           root: .
           paths:
             - .nuxt/*
+
+  build-production: *build
 
   deploy:
     executor:
@@ -152,14 +154,17 @@ workflows:
   main:
     jobs:
       - lint-and-test
-      - build
+      - build:
+          context: common_staging_deployment
+      - build-production:
+          <<: *production_steps
 
       # ステージング環境以外へのデプロイ
       # AlisProjectアカウントからフォークした環境での実行を想定
       - deploy-exclude-master:
           <<: *ignore_master
           context: common_staging_deployment
-          requires: &test-and-build
+          requires:
             - lint-and-test
             - build
 
@@ -167,7 +172,9 @@ workflows:
       - deploy:
           <<: *only_master
           context: common_staging_deployment
-          requires: *test-and-build
+          requires: &test-and-build
+            - lint-and-test
+            - build-production
 
       # 本番環境へのデプロイ(承認処理付き)
       - notify-to-slack-for-approval:
