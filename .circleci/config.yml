@@ -5,12 +5,12 @@ references:
     filters:
       branches:
         ignore:
-          - master
+          - ALIS-3869-2
   only_master: &only_master
     filters:
       branches:
         only:
-          - master
+          - ALIS-3869-2
   production_steps: &production_steps
     <<: *only_master
     context: common_production_deployment
@@ -22,6 +22,12 @@ orbs:
 executors:
   default:
     working_directory: ~/repo
+    docker:
+      - image: circleci/node:10.15.3-browsers
+
+  production:
+    # 本番環境では、persist_to_workspaceで保存されるワークスペースを独自のパスとするためにworking_directoryを変えている
+    working_directory: ~/repo_production
     docker:
       - image: circleci/node:10.15.3-browsers
 
@@ -82,7 +88,7 @@ jobs:
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
 
-  build-staging: &build
+  build-staging:
     executor:
       name: default
 
@@ -102,7 +108,19 @@ jobs:
           paths:
             - .nuxt/*
 
-  build-production: *build
+  build-production:
+    executor:
+      name: production
+
+    steps:
+      - prepare-deployment
+
+      - run: yarn build
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .nuxt/*
 
   deploy:
     executor:
@@ -121,6 +139,22 @@ jobs:
               sudo npm install -g serverless
               yarn deploy
             fi
+
+  deploy-production:
+    executor:
+      name: production
+
+    steps:
+      - prepare-deployment
+
+      - attach_workspace:
+          at: .
+
+      - deploy:
+          name: "Deployment"
+          command: |
+            sudo npm install -g serverless
+            yarn deploy
 
   deploy-exclude-master:
     executor:
@@ -190,7 +224,7 @@ workflows:
           <<: *production_steps
           type: approval
           requires: *test-and-build-production
-      - deploy:
+      - deploy-production:
           <<: *production_steps
           requires:
             - approval
