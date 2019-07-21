@@ -16,7 +16,8 @@
     "deploy": "./deploy.sh",
     "sls:deploy": "sls deploy",
     "test": "jest --config jest.config.js --verbose --no-cache",
-    "test:coverage": "jest --config jest.config.js --no-cache --coverage"
+    "test:coverage": "jest --config jest.config.js --no-cache --coverage",
+    "cilint": "circleci config validate -c .circleci/config.yml"
   },
   "dependencies": {
     "@alisproject/alis-editor": "^0.2.11",
