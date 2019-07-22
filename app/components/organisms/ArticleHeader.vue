@@ -218,8 +218,13 @@ export default {
         })
         .on('transactionHash', (hash) => {
           this.sendNotification({
-            text: 'トランザクションを発行しました。詳細はMETAMASKでご確認ください'
+            text: 'トランザクションを発行しました。記事が5秒以内に自動でダウンロードされます。'
           })
+
+          // 3秒後に記事をダウンロード
+          setTimeout(() => {
+            this.downloadArticle(this.originalBody)
+          }, 3000)
         })
         .on('error', (e) => {
           this.sendNotification({
@@ -227,6 +232,12 @@ export default {
             type: 'warning'
           })
         })
+    },
+    downloadArticle(originalBody) {
+      const download = document.createElement('a')
+      download.download = 'article'
+      download.href = URL.createObjectURL(new Blob([originalBody], { type: 'text/plain' }))
+      download.click()
     },
     listen(target, eventType, callback) {
       if (!this._eventRemovers) {
