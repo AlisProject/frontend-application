@@ -1,5 +1,6 @@
 version: 2.1
 
+# YAMLのマージ(<<:)を使用したい場合はここに定義する
 references:
   ignore_master: &ignore_master
     filters:
@@ -11,7 +12,7 @@ references:
       branches:
         only:
           - master
-  production_steps: &production_steps
+  production_jobs: &production_jobs
     <<: *only_master
     context: common_production_deployment
 
@@ -59,16 +60,14 @@ commands:
 
 jobs:
   lint-and-test:
-    executor:
-      name: default
-
+    executor: default
     steps:
       - prepare-resources
 
       - run: yarn lint
 
       - run:
-          name: Format checking
+          name: 'Format checking'
           command: |
             yarn format;
             git diff --exit-code --quiet;
@@ -82,16 +81,16 @@ jobs:
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
 
-  build-staging: &build
-    executor:
-      name: default
-
+  build:
+    executor: default
     steps:
       - prepare-deployment
 
       - run:
-          name: "Build Nuxt resources"
+          name: 'Build Nuxt resources'
           command: |
+            # ALIS_APP_IDが無い環境ではビルド&デプロイは行わない。
+            # persist_to_workspaceで落ちるため事前にディレクトリを生成している
             mkdir .nuxt
             if [ $ALIS_APP_ID ]; then
               yarn build
@@ -102,12 +101,8 @@ jobs:
           paths:
             - .nuxt/*
 
-  build-production: *build
-
   deploy:
-    executor:
-      name: default
-
+    executor: default
     steps:
       - prepare-deployment
 
@@ -115,17 +110,15 @@ jobs:
           at: .
 
       - deploy:
-          name: "Deployment"
+          name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo npm install -g serverless
+              sudo npm install -g serverless@1.47.0
               yarn deploy
             fi
 
   deploy-exclude-master:
-    executor:
-      name: default
-
+    executor: default
     steps:
       - prepare-deployment
 
@@ -133,64 +126,68 @@ jobs:
           at: .
 
       - deploy:
-          name: "Deployment"
+          name: 'Deployment'
           command: |
-            if [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
-              sudo npm install -g serverless
+            if [ $ALIS_APP_ID ] && [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
+              sudo npm install -g serverless@1.47.0
               yarn deploy
             fi
 
   notify-to-slack-for-approval:
-    executor:
-      name: default
-
+    executor: default
     steps:
       - slack/approval:
-          message: "本番環境へのデプロイを承認してください"
-          color: "#F5E911"
+          message: '本番環境へのデプロイを承認してください'
+          color: '#F5E911'
 
 
 workflows:
-  main:
+  # 本番環境以外のワークフロー
+  staging-and-others:
     jobs:
       - lint-and-test
-
-
-      # 本番環境以外で使用するリソース
-      - build-staging:
+      - build:
           context: common_staging_deployment
-
 
       # 本番環境とステージング環境以外へのデプロイ
       # AlisProjectアカウントからフォークした環境での実行を想定
       - deploy-exclude-master:
           <<: *ignore_master
           context: common_staging_deployment
-          requires: &test-and-build-staging
+          requires: &test-and-build
             - lint-and-test
-            - build-staging
-
+            - build
 
       # ステージング環境へのデプロイ
       - deploy:
+          name: deploy-staging
           <<: *only_master
           context: common_staging_deployment
-          requires: *test-and-build-staging
+          requires: *test-and-build
 
+  # 本番環境のワークフロー
+  production:
+    jobs:
+      - lint-and-test:
+          name: lint-and-test-production
+          <<: *production_jobs
+      - build:
+          name: build-production
+          <<: *production_jobs
 
-      # 本番環境へのデプロイ(承認処理付き)
-      - build-production:
-          <<: *production_steps
+      # 承認処理
       - notify-to-slack-for-approval:
-          <<: *production_steps
+          <<: *production_jobs
           requires: &test-and-build-production
-            - lint-and-test
+            - lint-and-test-production
             - build-production
       - approval:
-          <<: *production_steps
+          <<: *production_jobs
           type: approval
           requires: *test-and-build-production
+
       - deploy:
-          <<: *production_steps
+          name: deploy-production
+          <<: *production_jobs
           requires:
             - approval
