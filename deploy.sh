@@ -1,7 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
 
 # SSMからNuxtのビルドに必要な値を取得し、環境変数へ格納
-export DIST_S3_BUCKET_NAME=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDistS3BucketName --query "Parameter.Value" --output text`
+# exportと一緒に記述すると、exportは成功とみなされてSSMの取得が失敗した場合でもスクリプトが継続してしまう
+# 値の取得に失敗した際には終了させたいので、2行に取得処理を分けている
+DIST_S3_BUCKET_NAME=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDistS3BucketName --query "Parameter.Value" --output text`
+export DIST_S3_BUCKET_NAME=${DIST_S3_BUCKET_NAME}
 
 # リソースをS3へアップロード
 aws s3 cp .nuxt/dist/client s3://${DIST_S3_BUCKET_NAME}/d/nuxt/dist --recursive
