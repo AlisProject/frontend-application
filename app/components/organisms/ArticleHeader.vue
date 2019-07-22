@@ -218,7 +218,7 @@ export default {
         })
         .on('transactionHash', (hash) => {
           this.sendNotification({
-            text: 'トランザクションを発行しました。記事が5秒以内に自動でダウンロードされます。'
+            text: 'トランザクションを発行しました。詳細はMETAMASKでご確認ください'
           })
 
           // 3秒後に記事をダウンロード
@@ -235,7 +235,7 @@ export default {
     },
     downloadArticle(originalBody) {
       const download = document.createElement('a')
-      download.download = 'article'
+      download.download = 'hashed-article'
       download.href = URL.createObjectURL(new Blob([originalBody], { type: 'text/plain' }))
       download.click()
     },
