@@ -171,23 +171,24 @@ workflows:
       - lint-and-test:
           name: lint-and-test-production
           <<: *production_jobs
-      - build:
-          name: build-production
-          <<: *production_jobs
 
       # 承認処理
       - notify-to-slack-for-approval:
           <<: *production_jobs
-          requires: &test-and-build-production
+          requires: &requires-production
             - lint-and-test-production
-            - build-production
       - approval:
           <<: *production_jobs
           type: approval
-          requires: *test-and-build-production
+          requires: *requires-production
 
+      - build:
+          name: build-production
+          <<: *production_jobs
+          requires:
+            - approval
       - deploy:
           name: deploy-production
           <<: *production_jobs
           requires:
-            - approval
+            - build-production
