@@ -2,9 +2,10 @@
 # yarn lockfile v1
 
 
-"@alisproject/alis-editor@^0.2.11":
-  version "0.2.11"
-  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.2.11.tgz#0ad6ebc52f0ad20301f4e2b032ad2987b7622473"
+"@alisproject/alis-editor@^0.2.13":
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.2.13.tgz#fb6aaa94f3bb449573b6271f24f31d320ba9210c"
+  integrity sha512-YGu3ljG1FdyduF5zK4bLgaRElLQvVxW/2rc47gYESFIFfWGmx0SyjHZ164Df0LqzgaKUAOCVERZCPeC/n6rGzg==
   dependencies:
     "@ckeditor/ckeditor5-autosave" "^10.0.2"
     "@ckeditor/ckeditor5-basic-styles" "^10.1.0"
