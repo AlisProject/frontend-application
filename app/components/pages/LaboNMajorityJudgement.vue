@@ -11,7 +11,7 @@
           マジョリティ・ジャッジメント
         </h1>
         <div v-if="!exists" class="area-description">
-          あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリーに対して、選択肢のどれかを選択してください。
+          あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリー案に対して、評価の選択肢をどれかひとつ選んでください。
         </div>
         <div v-if="!exists" class="area-mj-grid">
           <labo-n-majority-judgement-grid
