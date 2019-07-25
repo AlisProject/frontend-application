@@ -2,7 +2,10 @@
   <div class="majority-judgement-container">
     <app-header />
     <div class="area-mj">
-      <template v-if="!isAvailable">
+      <template v-if="!loginUser">
+        本機能のご利用にはログインしていただく必要があります。
+      </template>
+      <template v-else-if="!isAvailable">
         本機能は現在無効です。
       </template>
       <the-loader v-else-if="isLoading" :isLoading="isLoading" class="area-title" />
@@ -11,7 +14,7 @@
           マジョリティ・ジャッジメント
         </h1>
         <div v-if="!exists" class="area-description">
-          あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリーに対して、選択肢のどれかを選択してください。
+          あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリー案に対して、評価の選択肢をどれかひとつ選んでください。
         </div>
         <div v-if="!exists" class="area-mj-grid">
           <labo-n-majority-judgement-grid
@@ -59,6 +62,7 @@ export default {
   data() {
     return {
       isProcessing: false,
+      loginUser: true,
       exists: true,
       isLoading: true,
       topicOptions: [
@@ -70,13 +74,13 @@ export default {
         { key: 'opt5', text: 'おもしろ' }
       ],
       gridRecords: [
-        { level: 1, text: '絶対に必要' },
-        { level: 2, text: 'かなり必要' },
-        { level: 3, text: 'やや必要' },
+        { level: 7, text: '絶対に必要' },
+        { level: 6, text: 'かなり必要' },
+        { level: 5, text: 'やや必要' },
         { level: 4, text: 'どちらでもない' },
-        { level: 5, text: 'やや不要' },
-        { level: 6, text: 'かなり不要' },
-        { level: 7, text: '絶対に不要' }
+        { level: 3, text: 'やや不要' },
+        { level: 2, text: 'かなり不要' },
+        { level: 1, text: '絶対に不要' }
       ],
       selectedLevels: {
         opt1: null,
@@ -88,6 +92,13 @@ export default {
     }
   },
   async mounted() {
+    try {
+      await this.getUserSession()
+    } catch (e) {
+      this.loginUser = false
+      return
+    }
+
     try {
       const result = await this.$axios.$get('/laboratory/labo/n/majority_judgement')
       this.exists = result.exists
@@ -144,7 +155,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['postMajorityJudgement'])
+    ...mapActions('user', ['postMajorityJudgement', 'getUserSession'])
   }
 }
 </script>
@@ -202,9 +213,47 @@ export default {
   grid-area: mj-grid;
 }
 
-@media screen and (max-width: 920px) {
+/* iPad */
+@media screen and (max-width: 1024px) {
+  .area-description {
+    margin: 40px 30px;
+  }
+
+  .area-mj {
+    grid-template-rows:
+      25px
+      120px
+      760px
+      1fr;
+  }
+}
+
+@media screen and (max-width: 812px) {
   .majority-judgement-container {
     grid-template-columns: 1fr 460px 1fr;
+  }
+
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      330px
+      1fr;
+  }
+
+  .area-app-footer-container {
+    margin-top: 35px;
+  }
+}
+
+/* iPhone XS MAX, XR, Plus */
+@media screen and (max-width: 667px) {
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      350px
+      1fr;
   }
 }
 
@@ -214,14 +263,93 @@ export default {
     grid-template-rows: 66px 40px 1fr min-content;
   }
 
+  .area-mj {
+    display: grid;
+    grid-area: mj;
+    grid-template-columns: auto;
+    grid-gap: 30px;
+    justify-items: center;
+    grid-template-rows:
+      25px
+      60px
+      900px
+      1fr;
+    /* prettier-ignore */
+    grid-template-areas:
+      'title'
+      'description'
+      'mj-grid'
+      'submit-button';
+  }
+
   .area-title {
-    font-size: 16px;
+    font-size: 20px;
+    grid-area: title;
+    letter-spacing: 1.33px;
+    margin: 0;
+  }
+
+  .area-description {
+    font-size: 15px;
+    grid-area: description;
+    letter-spacing: 1.33px;
+    margin: 0;
+  }
+
+  .area-mj-grid {
+    display: grid;
+    grid-area: mj-grid;
+  }
+
+  .area-submit-button {
+    margin-top: 15px;
   }
 }
 
-@media screen and (max-width: 370px) {
+/* iPhone XS MAX, XR, Plus */
+@media screen and (max-width: 568px) {
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      350px
+      1fr;
+  }
+}
+
+/* iPhone XS MAX, XR, Plus */
+@media screen and (max-width: 414px) {
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      530px
+      1fr;
+  }
+}
+
+/* iPhone X */
+@media screen and (max-width: 375px) {
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      600px
+      1fr;
+  }
+}
+
+@media screen and (max-width: 320px) {
   .majority-judgement-container {
     grid-template-columns: 10px 1fr 10px;
+  }
+
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      550px
+      1fr;
   }
 }
 </style>
