@@ -214,6 +214,21 @@ export default {
   grid-area: mj-grid;
 }
 
+/* iPad */
+@media screen and (max-width: 1024px) {
+  .area-description {
+    margin: 40px 30px;
+  }
+
+  .area-mj {
+    grid-template-rows:
+      25px
+      120px
+      760px
+      1fr;
+  }
+}
+
 @media screen and (max-width: 920px) {
   .majority-judgement-container {
     grid-template-columns: 1fr 460px 1fr;

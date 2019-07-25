@@ -73,6 +73,14 @@ td {
   padding: 10px 20px;
 }
 
+@media screen and (max-width: 1024px) {
+  th,
+  td {
+    min-width: 120px;
+    padding: 35px 20px;
+  }
+}
+
 @media screen and (max-width: 920px) {
   th,
   td {
