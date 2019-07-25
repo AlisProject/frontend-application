@@ -70,13 +70,13 @@ export default {
         { key: 'opt5', text: 'おもしろ' }
       ],
       gridRecords: [
-        { level: 1, text: '絶対に必要' },
-        { level: 2, text: 'かなり必要' },
-        { level: 3, text: 'やや必要' },
+        { level: 7, text: '絶対に必要' },
+        { level: 6, text: 'かなり必要' },
+        { level: 5, text: 'やや必要' },
         { level: 4, text: 'どちらでもない' },
-        { level: 5, text: 'やや不要' },
-        { level: 6, text: 'かなり不要' },
-        { level: 7, text: '絶対に不要' }
+        { level: 3, text: 'やや不要' },
+        { level: 2, text: 'かなり不要' },
+        { level: 1, text: '絶対に不要' }
       ],
       selectedLevels: {
         opt1: null,
