@@ -72,4 +72,12 @@ td {
   min-width: 120px;
   padding: 10px 20px;
 }
+
+@media screen and (max-width: 920px) {
+  th,
+  td {
+    min-width: 1rem;
+    padding: 10px 20px;
+  }
+}
 </style>

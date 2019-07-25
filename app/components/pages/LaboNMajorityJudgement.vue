@@ -218,10 +218,6 @@ export default {
   .majority-judgement-container {
     grid-template-columns: 1fr 460px 1fr;
   }
-
-  .area-app-footer-container {
-    margin-top: 35px;
-  }
 }
 
 @media screen and (max-width: 640px) {
@@ -230,8 +226,50 @@ export default {
     grid-template-rows: 66px 40px 1fr min-content;
   }
 
+  .area-mj {
+    display: grid;
+    grid-area: mj;
+    grid-template-columns: auto;
+    grid-gap: 30px;
+    justify-items: center;
+    grid-template-rows:
+      25px
+      60px
+      900px
+      1fr;
+    /* prettier-ignore */
+    grid-template-areas:
+      'title'
+      'description'
+      'mj-grid'
+      'submit-button';
+  }
+
   .area-title {
-    font-size: 16px;
+    font-size: 20px;
+    grid-area: title;
+    letter-spacing: 1.33px;
+    margin: 0;
+  }
+
+  .area-description {
+    font-size: 15px;
+    grid-area: description;
+    letter-spacing: 1.33px;
+    margin: 0;
+  }
+
+  .area-mj-grid {
+    display: grid;
+    grid-area: mj-grid;
+  }
+
+  .area-submit-button {
+    margin-top: 15px;
+  }
+
+  .area-app-footer-container {
+    margin-top: 35px;
   }
 }
 
