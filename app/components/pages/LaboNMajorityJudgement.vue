@@ -2,7 +2,10 @@
   <div class="majority-judgement-container">
     <app-header />
     <div class="area-mj">
-      <template v-if="!isAvailable">
+      <template v-if="!loginUser">
+        本機能のご利用にはログインしていただく必要があります。
+      </template>
+      <template v-else-if="!isAvailable">
         本機能は現在無効です。
       </template>
       <the-loader v-else-if="isLoading" :isLoading="isLoading" class="area-title" />
@@ -59,6 +62,7 @@ export default {
   data() {
     return {
       isProcessing: false,
+      loginUser: true,
       exists: true,
       isLoading: true,
       topicOptions: [
@@ -89,6 +93,14 @@ export default {
   },
   async mounted() {
     try {
+      await this.getUserSession()
+    } catch (e) {
+      this.loginUser = false
+      return
+    }
+
+    try {
+      await this.getUserSession()
       const result = await this.$axios.$get('/laboratory/labo/n/majority_judgement')
       this.exists = result.exists
     } catch (e) {
@@ -144,7 +156,7 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['postMajorityJudgement'])
+    ...mapActions('user', ['postMajorityJudgement', 'getUserSession'])
   }
 }
 </script>
