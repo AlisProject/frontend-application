@@ -218,6 +218,10 @@ export default {
   .majority-judgement-container {
     grid-template-columns: 1fr 460px 1fr;
   }
+
+  .area-app-footer-container {
+    margin-top: 35px;
+  }
 }
 
 @media screen and (max-width: 640px) {
