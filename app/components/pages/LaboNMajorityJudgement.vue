@@ -229,9 +229,32 @@ export default {
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 812px) {
   .majority-judgement-container {
     grid-template-columns: 1fr 460px 1fr;
+  }
+
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      330px
+      1fr;
+  }
+
+  .area-app-footer-container {
+    margin-top: 35px;
+  }
+}
+
+/* iPhone XS MAX, XR, Plus */
+@media screen and (max-width: 667px) {
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      350px
+      1fr;
   }
 }
 
@@ -282,9 +305,16 @@ export default {
   .area-submit-button {
     margin-top: 15px;
   }
+}
 
-  .area-app-footer-container {
-    margin-top: 35px;
+/* iPhone XS MAX, XR, Plus */
+@media screen and (max-width: 568px) {
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      350px
+      1fr;
   }
 }
 
