@@ -80,4 +80,12 @@ td {
     padding: 10px 20px;
   }
 }
+
+@media screen and (max-width: 320px) {
+  th,
+  td {
+    min-width: 2rem;
+    padding: 7px 8px;
+  }
+}
 </style>

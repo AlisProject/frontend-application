@@ -273,9 +273,17 @@ export default {
   }
 }
 
-@media screen and (max-width: 370px) {
+@media screen and (max-width: 320px) {
   .majority-judgement-container {
     grid-template-columns: 10px 1fr 10px;
+  }
+
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      550px
+      1fr;
   }
 }
 </style>
