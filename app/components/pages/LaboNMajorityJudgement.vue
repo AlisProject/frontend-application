@@ -273,6 +273,17 @@ export default {
   }
 }
 
+/* iPhone XS MAX, XR, Plus */
+@media screen and (max-width: 414px) {
+  .area-mj {
+    grid-template-rows:
+      25px
+      60px
+      530px
+      1fr;
+  }
+}
+
 @media screen and (max-width: 320px) {
   .majority-judgement-container {
     grid-template-columns: 10px 1fr 10px;
