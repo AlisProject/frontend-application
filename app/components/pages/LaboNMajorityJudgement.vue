@@ -100,7 +100,6 @@ export default {
     }
 
     try {
-      await this.getUserSession()
       const result = await this.$axios.$get('/laboratory/labo/n/majority_judgement')
       this.exists = result.exists
     } catch (e) {
