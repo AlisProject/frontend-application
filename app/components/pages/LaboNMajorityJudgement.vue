@@ -113,15 +113,15 @@ export default {
       return !Object.values(this.selectedLevels).every((value) => value)
     },
     isAvailable() {
-      // FIXME: 運用開始時にフラグを立てる
-      // return true
+      // 運用開始時にtrueを返し、フラグを立てる
+      return true
 
       // stgでのみ有効
-      return !this.isProduction
-    },
-    isProduction() {
-      return process.env.ALIS_APP_ID === 'alis'
+      // return !this.isProduction
     }
+    // isProduction() {
+    //   return process.env.ALIS_APP_ID === 'alis'
+    // }
   },
   methods: {
     levelChanged(target) {
