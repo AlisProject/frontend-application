@@ -5,6 +5,9 @@
       <template v-if="!loginUser">
         本機能のご利用にはログインしていただく必要があります。
       </template>
+      <template v-else-if="!phoneNumberVerifiedUser">
+        本機能のご利用には電話番号認証をしていただく必要があります。
+      </template>
       <template v-else-if="!isAvailable">
         本機能は現在無効です。
       </template>
@@ -43,7 +46,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '~/components/organisms/AppHeader'
 import TheLoader from '../atoms/TheLoader'
@@ -63,6 +66,7 @@ export default {
     return {
       isProcessing: false,
       loginUser: true,
+      phoneNumberVerifiedUser: true,
       exists: true,
       isLoading: true,
       topicOptions: [
@@ -99,6 +103,11 @@ export default {
       return
     }
 
+    if (!this.currentUser.phoneNumberVerified) {
+      this.phoneNumberVerifiedUser = false
+      return
+    }
+
     try {
       const result = await this.$axios.$get('/laboratory/labo/n/majority_judgement')
       this.exists = result.exists
@@ -118,7 +127,8 @@ export default {
 
       // stgでのみ有効
       // return !this.isProduction
-    }
+    },
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
     // isProduction() {
     //   return process.env.ALIS_APP_ID === 'alis'
     // }
