@@ -20,12 +20,16 @@
       </p>
     </div>
     <no-ssr>
-      <div v-if="isCurrentUser" class="profile-edit" @click="showProfileSettingsModal">
-        プロフィールを編集
+      <div v-if="isCurrentUser && loggedIn" class="menu" @click="toggleMenuPopup">
+        <div v-show="isMenuPopupShown" class="menu-popup-current-user">
+          <div class="menu-option" @click="showProfileSettingsModal">
+            プロフィールを編集
+          </div>
+          <nuxt-link class="menu-option" to="/me/settings/mute_users">
+            ミュートしたユーザー
+          </nuxt-link>
+        </div>
       </div>
-      <nuxt-link v-if="isCurrentUser" class="mute-users" to="/me/settings/mute_users">
-        ミュートしたユーザー
-      </nuxt-link>
     </no-ssr>
     <no-ssr>
       <div v-if="!isCurrentUser && loggedIn" class="menu" @click="toggleMenuPopup">
@@ -166,16 +170,14 @@ export default {
 .area-user-info-container {
   display: grid;
   grid-area: user-info;
-  grid-template-rows: 40px 30px auto auto auto;
+  grid-template-rows: 40px 30px auto;
   grid-template-columns: 80px 0 min-content 40px auto;
   grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
     "profile-icon ... user-display-name user-display-name sub-icon         "
     "profile-icon ... user-id           user-id           ...              "
-    "...          ... self-introduction self-introduction self-introduction"
-    "...          ... profile-edit      profile-edit      ...              "
-    "...          ... mute-users        mute-users        ...              ";
+    "...          ... self-introduction self-introduction self-introduction";
   padding-bottom: 60px;
 }
 
@@ -210,41 +212,6 @@ export default {
   }
 }
 
-.profile-edit {
-  grid-area: profile-edit;
-  background-color: #fff;
-  border-radius: 2px;
-  border: 1px solid #cecece;
-  color: #6e6e6e;
-  cursor: pointer;
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  height: 22px;
-  line-height: 22px;
-  margin-top: 10px;
-  text-align: center;
-  width: 200px;
-}
-
-.mute-users {
-  grid-area: mute-users;
-  background-color: #fff;
-  border-radius: 2px;
-  border: 1px solid #cecece;
-  color: #6e6e6e;
-  cursor: pointer;
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  height: 22px;
-  line-height: 22px;
-  margin-top: 10px;
-  text-align: center;
-  width: 200px;
-  text-decoration: none;
-}
-
 .menu {
   grid-area: sub-icon;
   background-image: url('~assets/images/pc/common/icon_draftcassette_active.png');
@@ -263,7 +230,6 @@ export default {
     box-sizing: border-box;
     font-size: 14px;
     position: absolute;
-    left: -58px;
     top: 40px;
     width: 110px;
     z-index: 1;
@@ -274,6 +240,29 @@ export default {
       color: #6e6e6e;
       cursor: pointer;
       user-select: none;
+      text-decoration: none;
+    }
+  }
+
+  .menu-popup-current-user {
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
+    cursor: default;
+    box-sizing: border-box;
+    font-size: 14px;
+    position: absolute;
+    top: 40px;
+    width: 166px;
+    z-index: 1;
+
+    .menu-option {
+      display: block;
+      margin: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
     }
   }
 }
@@ -325,15 +314,13 @@ export default {
 
     &.is-current-user {
       grid-column-gap: 20px;
-      grid-template-rows: 20px 20px 16px 24px 24px auto;
+      grid-template-rows: 20px 20px 16px auto;
       grid-template-columns: 80px auto 40px;
       /* prettier-ignore */
       grid-template-areas:
         "profile-icon      user-display-name ...              "
         "profile-icon      user-id           ...              "
         "profile-icon      ...               ...              "
-        "profile-icon      profile-edit      profile-edit     "
-        "profile-icon      mute-users        mute-users       "
         "self-introduction self-introduction self-introduction";
       padding: 0 12px;
     }
@@ -343,14 +330,6 @@ export default {
     .user-id {
       padding-top: 2px;
     }
-  }
-
-  .profile-edit {
-    margin-top: 0;
-    // 12px - padding of .area-user-info-container
-    // 80px - width   of .profile-icon
-    // 20px - gap     of .area-user-info-container
-    width: calc(100vw - 12px - 80px - 20px - 12px);
   }
 
   .menu {
