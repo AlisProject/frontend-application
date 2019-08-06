@@ -39,7 +39,9 @@ export default {
       topicNumber: 1
     }
   },
-  mounted() {
+  async mounted() {
+    await this.getMuteUsers()
+    await this.getNewPagesArticles({ topic: this.$route.query.topic })
     window.addEventListener('scroll', this.infiniteScroll)
 
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
@@ -87,7 +89,8 @@ export default {
     ...mapActions('user', [
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'getMuteUsers'
     ]),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },

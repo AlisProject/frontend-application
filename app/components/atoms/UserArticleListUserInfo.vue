@@ -23,10 +23,16 @@
       <div v-if="isCurrentUser" class="profile-edit" @click="showProfileSettingsModal">
         プロフィールを編集
       </div>
+      <nuxt-link v-if="isCurrentUser" class="mute-users" to="/me/settings/mute_users">
+        ミュートユーザ一覧
+      </nuxt-link>
     </no-ssr>
     <no-ssr>
       <div v-if="!isCurrentUser && loggedIn" class="report-user" @click="toggleReportPopup">
         <div v-show="isReportPopupShown" class="report-popup">
+          <span class="report" @click="addMuteUser">
+            ミュートする
+          </span>
           <span class="report" @click="showUserReportModal">
             報告する
           </span>
@@ -49,6 +55,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { htmlDecode } from '~/utils/article'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   props: {
@@ -131,7 +138,25 @@ export default {
       this.setUserReportModal({ isShow: true })
       this.setUserReportSelectReasonModal({ isShow: true })
     },
-    ...mapActions('user', ['setProfileSettingsModal']),
+    async addMuteUser() {
+      try {
+        await this.setMuteUser({ muteUserId: this.user.user_id })
+        this.sendNotification({
+          text: '登録に成功しました。該当ユーザの記事は一覧から表示されなくなります',
+          dismissAfter: 7000
+        })
+      } catch (error) {
+        this.sendNotification({
+          text: '登録に失敗しました。しばらく時間を置いて再度お試しください',
+          type: 'warning',
+          dismissAfter: 7000
+        })
+      }
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('user', ['setProfileSettingsModal', 'setMuteUser']),
     ...mapActions('report', ['setUserReportModal', 'setUserReportSelectReasonModal'])
   }
 }
@@ -141,7 +166,7 @@ export default {
 .area-user-info-container {
   display: grid;
   grid-area: user-info;
-  grid-template-rows: 40px 30px auto auto;
+  grid-template-rows: 40px 30px auto auto auto;
   grid-template-columns: 80px 0 min-content 40px auto;
   grid-column-gap: 20px;
   /* prettier-ignore */
@@ -149,7 +174,8 @@ export default {
     "profile-icon ... user-display-name user-display-name sub-icon         "
     "profile-icon ... user-id           user-id           ...              "
     "...          ... self-introduction self-introduction self-introduction"
-    "...          ... profile-edit      profile-edit      ...              ";
+    "...          ... profile-edit      profile-edit      ...              "
+    "...          ... mute-users        mute-users        ...              ";
   padding-bottom: 60px;
 }
 
@@ -201,6 +227,24 @@ export default {
   width: 200px;
 }
 
+.mute-users {
+  grid-area: mute-users;
+  background-color: #fff;
+  border-radius: 2px;
+  border: 1px solid #cecece;
+  color: #6e6e6e;
+  cursor: pointer;
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  height: 22px;
+  line-height: 22px;
+  margin-top: 10px;
+  text-align: center;
+  width: 200px;
+  text-decoration: none;
+}
+
 .report-user {
   grid-area: sub-icon;
   background-image: url('~assets/images/pc/common/icon_draftcassette_active.png');
@@ -221,7 +265,7 @@ export default {
     position: absolute;
     left: -58px;
     top: 40px;
-    width: 90px;
+    width: 110px;
     z-index: 1;
 
     .report {
@@ -281,7 +325,7 @@ export default {
 
     &.is-current-user {
       grid-column-gap: 20px;
-      grid-template-rows: 20px 20px 16px 24px auto;
+      grid-template-rows: 20px 20px 16px 24px 24px auto;
       grid-template-columns: 80px auto 40px;
       /* prettier-ignore */
       grid-template-areas:
@@ -289,6 +333,7 @@ export default {
         "profile-icon      user-id           ...              "
         "profile-icon      ...               ...              "
         "profile-icon      profile-edit      profile-edit     "
+        "profile-icon      mute-users        mute-users       "
         "self-introduction self-introduction self-introduction";
       padding: 0 12px;
     }

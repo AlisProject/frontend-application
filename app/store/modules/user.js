@@ -179,6 +179,7 @@ const state = () => ({
   applications: [],
   application: {},
   connectedApplications: [],
+  muteUsers: [],
   loginFrom: {}
 })
 
@@ -226,7 +227,8 @@ const getters = {
   inputWithdrawAuthCodeModal: (state) => state.inputWithdrawAuthCodeModal,
   applications: (state) => state.applications,
   application: (state) => state.application,
-  connectedApplications: (state) => state.connectedApplications
+  connectedApplications: (state) => state.connectedApplications,
+  muteUsers: (state) => state.muteUsers
 }
 
 const actions = {
@@ -1030,6 +1032,38 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getMuteUsers({ commit }) {
+    try {
+      if (state.loggedIn === true) {
+        const muteUsers = await this.$axios.$get('/api/me/configurations/mute_users')
+        commit(types.SET_MUTE_USERS, { muteUsers: muteUsers.mute_users })
+      }
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async setMuteUser({ commit }, { muteUserId }) {
+    try {
+      await this.$axios.$post('/api/me/configurations/mute_users', {
+        mute_user_id: muteUserId
+      })
+      commit(types.SET_MUTE_USER, { muteUserId: muteUserId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async deleteMuteUser({ commit }, { muteUserId }) {
+    try {
+      await this.$axios.$delete('/api/me/configurations/mute_users', {
+        data: {
+          mute_user_id: muteUserId
+        }
+      })
+      commit(types.DELETE_MUTE_USER, { muteUserId: muteUserId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   setLoginFrom({ commit }, { from }) {
     commit(types.SET_LOGIN_FROM, { from })
   },
@@ -1373,6 +1407,17 @@ const mutations = {
   [types.DELETE_CONNECTED_APPLICATION](state, { clientId }) {
     state.connectedApplications = state.connectedApplications.filter((application) => {
       return application.clientId !== clientId
+    })
+  },
+  [types.SET_MUTE_USERS](state, { muteUsers }) {
+    state.muteUsers = muteUsers
+  },
+  [types.SET_MUTE_USER](state, { muteUserId }) {
+    state.muteUsers.push(muteUserId)
+  },
+  [types.DELETE_MUTE_USER](state, { muteUserId }) {
+    state.muteUsers = state.muteUsers.filter((item) => {
+      return item !== muteUserId
     })
   },
   [types.SET_LOGIN_FROM](state, { from }) {

@@ -71,11 +71,16 @@ export default {
   },
   computed: {
     ...mapGetters('article', ['tipEyecatchArticles', 'recommendedArticles']),
-    ...mapGetters('user', ['loggedIn', 'currentUser']),
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'muteUsers']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
   },
   async mounted() {
-    if (!this.loggedIn) this.isShowGuide = true
+    if (!this.loggedIn) {
+      this.isShowGuide = true
+    }
+    await this.getMuteUsers()
+    await this.getTipEyecatchArticles()
+    await this.getRecommendedArticles()
 
     window.addEventListener('scroll', this.infiniteScroll)
 
@@ -122,11 +127,12 @@ export default {
       }
       location.href = '/me/articles/new'
     },
-    ...mapActions('article', ['getRecommendedArticles']),
+    ...mapActions('article', ['getTipEyecatchArticles', 'getRecommendedArticles']),
     ...mapActions('user', [
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'getMuteUsers'
     ]),
     ...mapActions('presentation', ['setArticleListScrollHeight'])
   },

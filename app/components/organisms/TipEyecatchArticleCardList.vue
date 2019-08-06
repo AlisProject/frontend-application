@@ -7,19 +7,19 @@
         :article="article"
         :order="`eyecatch${i + 1}`"
       />
-      <eyecatch-alternative-image v-else :order="`eyecatch${i + 1}`" />
+      <!-- Fixme: 投げ銭ランキングが 3 件未満だった場合代わりの表示を行うために利用しているが、ロード時間によってチラつくケースがあった。
+                  3 件未満になるケースは発生しにくく、発生しても例外等は発生しないため一旦コメントアウトにて対応 -->
+      <!--<eyecatch-alternative-image v-else :order="`eyecatch${i + 1}`" />-->
     </template>
   </div>
 </template>
 
 <script>
 import TipEyecatchArticleCard from '../organisms/TipEyecatchArticleCard'
-import EyecatchAlternativeImage from '../atoms/EyecatchAlternativeImage'
 
 export default {
   components: {
-    TipEyecatchArticleCard,
-    EyecatchAlternativeImage
+    TipEyecatchArticleCard
   },
   props: {
     articles: {

@@ -15,10 +15,6 @@ export default {
   async fetch({ store }) {
     await store.dispatch('article/getTopics')
     store.dispatch('article/resetArticleData')
-    await Promise.all([
-      store.dispatch('article/getEyecatchArticles'),
-      store.dispatch('article/getRecommendedArticles')
-    ])
   },
   async mounted() {
     try {

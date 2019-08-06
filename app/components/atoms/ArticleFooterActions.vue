@@ -10,9 +10,12 @@
     <a class="sub-action area-share-facebook" target="_blank" />
     <div class="sub-action area-etc" @click="toggleEtcPopup">
       <div v-show="isEtcPopupShown" class="etc-popup">
-        <span class="report" @click="showPopupReportModal">
-          報告する
-        </span>
+        <div class="report" @click="showPopupReportModal">
+          この記事を報告する
+        </div>
+        <div class="report" @click="addMuteUser">
+          このユーザーをミュートする
+        </div>
       </div>
     </div>
   </div>
@@ -155,6 +158,25 @@ export default {
         }
       })
     },
+    async addMuteUser() {
+      if (this.loggedIn) {
+        try {
+          await this.setMuteUser({ muteUserId: this.articleUserId })
+          this.sendNotification({
+            text: '登録に成功しました。該当ユーザの記事は一覧から表示されなくなります',
+            dismissAfter: 7000
+          })
+        } catch (error) {
+          this.sendNotification({
+            text: '登録に失敗しました。しばらく時間を置いて再度お試しください',
+            type: 'warning',
+            dismissAfter: 7000
+          })
+        }
+      } else {
+        this.setRequestLoginModal({ isShow: true, requestType: 'muteUser' })
+      }
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -165,7 +187,8 @@ export default {
       'setRequestPhoneNumberVerifyModal',
       'setRequestPhoneNumberVerifyInputPhoneNumberModal',
       'setFirstProcessModal',
-      'setFirstProcessLikedArticleModal'
+      'setFirstProcessLikedArticleModal',
+      'setMuteUser'
     ]),
     ...mapActions('report', ['setArticleReportModal', 'setArticleReportSelectReasonModal']),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
@@ -287,16 +310,16 @@ export default {
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
-      padding: 12px;
       position: absolute;
       right: 0;
       top: 48px;
-      width: 90px;
+      width: 210px;
       z-index: 1;
 
       .report {
         cursor: pointer;
         user-select: none;
+        margin: 12px;
       }
     }
   }

@@ -41,6 +41,8 @@ export default {
           return '記事を報告するために'
         case 'purchaseArticle':
           return '記事を購入するために'
+        case 'muteUser':
+          return 'ミュート機能を利用するためには'
         default:
           return ''
       }

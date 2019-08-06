@@ -16,10 +16,6 @@ export default {
 
       await store.dispatch('article/getTopics')
       store.dispatch('article/resetArticleData')
-      await Promise.all([
-        store.dispatch('article/getEyecatchArticles'),
-        store.dispatch('article/getRecommendedArticles')
-      ])
     } catch (e) {
       store.dispatch('user/setSignUpAuthFlowModal', { showSignUpAuthFlowModal: false })
       store.dispatch('user/setSignUpAuthFlowLoginModal', { isSignUpAuthFlowLoginModal: false })
