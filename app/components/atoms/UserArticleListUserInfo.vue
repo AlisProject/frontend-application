@@ -28,12 +28,12 @@
       </nuxt-link>
     </no-ssr>
     <no-ssr>
-      <div v-if="!isCurrentUser && loggedIn" class="report-user" @click="toggleReportPopup">
-        <div v-show="isReportPopupShown" class="report-popup">
-          <span class="report" @click="showUserReportModal">
+      <div v-if="!isCurrentUser && loggedIn" class="menu" @click="toggleMenuPopup">
+        <div v-show="isMenuPopupShown" class="menu-popup">
+          <span class="menu-option" @click="showUserReportModal">
             報告する
           </span>
-          <span class="report" @click="addMuteUser">
+          <span class="menu-option" @click="addMuteUser">
             ミュートする
           </span>
         </div>
@@ -66,20 +66,20 @@ export default {
   },
   data() {
     return {
-      isReportPopupShown: false
+      isMenuPopupShown: false
     }
   },
   async mounted() {
     await this.$nextTick()
-    const reportUserElement = this.$el.querySelector('.report-user')
+    const menuElement = this.$el.querySelector('.menu')
     this.listen(window, 'click', (event) => {
-      if (reportUserElement && !reportUserElement.contains(event.target)) {
-        this.closeReportPopup()
+      if (menuElement && !menuElement.contains(event.target)) {
+        this.closeMenuPopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
-      if (reportUserElement && !reportUserElement.contains(event.target)) {
-        this.closeReportPopup()
+      if (menuElement && !menuElement.contains(event.target)) {
+        this.closeMenuPopup()
       }
     })
   },
@@ -114,11 +114,11 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    toggleReportPopup() {
-      this.isReportPopupShown = !this.isReportPopupShown
+    toggleMenuPopup() {
+      this.isMenuPopupShown = !this.isMenuPopupShown
     },
-    closeReportPopup() {
-      this.isReportPopupShown = false
+    closeMenuPopup() {
+      this.isMenuPopupShown = false
     },
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
@@ -245,7 +245,7 @@ export default {
   text-decoration: none;
 }
 
-.report-user {
+.menu {
   grid-area: sub-icon;
   background-image: url('~assets/images/pc/common/icon_draftcassette_active.png');
   background-position: 10px;
@@ -255,7 +255,7 @@ export default {
   position: relative;
   width: 40px;
 
-  .report-popup {
+  .menu-popup {
     background-color: #ffffff;
     border-radius: 4px;
     box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
@@ -268,7 +268,7 @@ export default {
     width: 110px;
     z-index: 1;
 
-    .report {
+    .menu-option {
       display: block;
       margin: 12px;
       color: #6e6e6e;
@@ -317,8 +317,8 @@ export default {
     /* prettier-ignore */
     grid-template-areas:
       "profile-icon      ...               ...        "
-      "profile-icon      user-display-name report-user"
-      "profile-icon      user-id           report-user"
+      "profile-icon      user-display-name menu"
+      "profile-icon      user-id           menu"
       "profile-icon      ...               ...        "
       "self-introduction self-introduction self-introduction";
     padding: 0 12px;
@@ -353,8 +353,8 @@ export default {
     width: calc(100vw - 12px - 80px - 20px - 12px);
   }
 
-  .report-user {
-    grid-area: report-user;
+  .menu {
+    grid-area: menu;
   }
 
   .area-user-display-name {
@@ -365,7 +365,7 @@ export default {
       // 12px - padding of .area-user-info-container
       // 80px - width   of .profile-icon
       // 20px - gap     of .area-user-info-container
-      // 40px - width   of .report-user
+      // 40px - width   of .menu
       max-width: calc(100vw - 12px - 80px - 20px - 40px - 20px - 12px);
     }
   }

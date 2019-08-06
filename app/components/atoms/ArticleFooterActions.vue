@@ -10,10 +10,10 @@
     <a class="sub-action area-share-facebook" target="_blank" />
     <div class="sub-action area-etc" @click="toggleEtcPopup">
       <div v-show="isEtcPopupShown" class="etc-popup">
-        <div class="report" @click="showPopupReportModal">
+        <div class="menu-option" @click="showPopupReportModal">
           記事を報告する
         </div>
-        <div class="report" @click="addMuteUser">
+        <div class="menu-option" @click="addMuteUser">
           ユーザーをミュートする
         </div>
       </div>
@@ -316,7 +316,7 @@ export default {
       width: 188px;
       z-index: 1;
 
-      .report {
+      .menu-option {
         cursor: pointer;
         user-select: none;
         margin: 12px;
