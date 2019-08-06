@@ -30,11 +30,11 @@
     <no-ssr>
       <div v-if="!isCurrentUser && loggedIn" class="report-user" @click="toggleReportPopup">
         <div v-show="isReportPopupShown" class="report-popup">
-          <span class="report" @click="addMuteUser">
-            ミュートする
-          </span>
           <span class="report" @click="showUserReportModal">
             報告する
+          </span>
+          <span class="report" @click="addMuteUser">
+            ミュートする
           </span>
         </div>
       </div>
@@ -270,7 +270,7 @@ export default {
 
     .report {
       display: block;
-      padding: 12px;
+      margin: 12px;
       color: #6e6e6e;
       cursor: pointer;
       user-select: none;
