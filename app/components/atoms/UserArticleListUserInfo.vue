@@ -24,7 +24,7 @@
         プロフィールを編集
       </div>
       <nuxt-link v-if="isCurrentUser" class="mute-users" to="/me/settings/mute_users">
-        ミュートユーザ一覧
+        ミュートしたユーザー
       </nuxt-link>
     </no-ssr>
     <no-ssr>

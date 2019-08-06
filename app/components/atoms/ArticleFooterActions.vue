@@ -11,10 +11,10 @@
     <div class="sub-action area-etc" @click="toggleEtcPopup">
       <div v-show="isEtcPopupShown" class="etc-popup">
         <div class="report" @click="showPopupReportModal">
-          この記事を報告する
+          記事を報告する
         </div>
         <div class="report" @click="addMuteUser">
-          このユーザーをミュートする
+          ユーザーをミュートする
         </div>
       </div>
     </div>
@@ -313,7 +313,7 @@ export default {
       position: absolute;
       right: 0;
       top: 48px;
-      width: 210px;
+      width: 188px;
       z-index: 1;
 
       .report {

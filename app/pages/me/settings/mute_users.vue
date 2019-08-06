@@ -10,17 +10,17 @@ export default {
     MuteUserList
   },
   head: {
-    title: 'ミュートユーザー一覧',
+    title: 'ミュートしたユーザー',
     meta: [
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'ミュートユーザー一覧 | ALIS'
+        content: 'ミュートしたユーザー | ALIS'
       },
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'ミュートユーザー一覧'
+        content: 'ミュートしたユーザー'
       }
     ]
   }

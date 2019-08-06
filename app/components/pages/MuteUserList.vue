@@ -2,11 +2,11 @@
   <div class="mute-user-list-container">
     <app-header />
     <h1 class="area-title">
-      ミュートユーザ一覧
+      ミュートしたユーザー
     </h1>
     <mute-user-card-list v-if="muteUsers.length > 0" :muteUsers="muteUsers" />
     <div v-else class="area-label">
-      現在ミュートユーザは登録されていません
+      現在ミュートしたユーザーは登録されていません
     </div>
     <app-footer />
   </div>

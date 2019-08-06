@@ -174,8 +174,8 @@ const actions = {
   async getPopularArticles({ commit, dispatch, state, rootState }, { topic }) {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
-      // 最終ページ、もしくはミュートユーザを除いた記事数が表示件数以上になるまでループ
-      // ミュートユーザの記事があることを想定し、API コール数を削減するため多めに取得
+      // 最終ページ、もしくはミュート済みユーザを除いた記事数が表示件数以上になるまでループ
+      // ミュート済みユーザの記事があることを想定し、API コール数を削減するため多めに取得
       const viewCount = 12
       const limitCount = viewCount + 6
       while (!state.isTmpArticlesLastPage && state.tmpPopularArticles.length < viewCount) {
@@ -188,7 +188,7 @@ const actions = {
         if (tmpArticles.length < limitCount) {
           commit(types.SET_TMP_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
         }
-        // ミュートユーザ記事を削除し、tmpArticles に追加
+        // ミュート済みユーザの記事を削除し、tmpArticles に追加
         commit(types.SET_TMP_POPULAR_ARTICLES, {
           tmpArticles: tmpArticles.filter(
             (article) => rootState.user.muteUsers.indexOf(article.user_id) === -1
@@ -223,8 +223,8 @@ const actions = {
   async getNewPagesArticles({ commit, dispatch, state, rootState }, { topic }) {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
-      // 最終ページ、もしくはミュートユーザを除いた記事数が表示件数以上になるまでループ
-      // ミュートユーザの記事があることを想定し、API コール数を削減するため多めに取得
+      // 最終ページ、もしくはミュート済みユーザを除いた記事数が表示件数以上になるまでループ
+      // ミュート済みユーザの記事があることを想定し、API コール数を削減するため多めに取得
       const viewCount = 12
       const limitCount = viewCount + 6
       while (!state.isTmpArticlesLastPage && state.tmpNewArticles.length < viewCount) {
@@ -237,7 +237,7 @@ const actions = {
         if (tmpArticles.length < limitCount) {
           commit(types.SET_TMP_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
         }
-        // ミュートユーザ記事を削除し、tmpArticles に追加
+        // ミュート済みユーザの記事を削除し、tmpArticles に追加
         commit(types.SET_TMP_NEW_ARTICLES, {
           tmpArticles: tmpArticles.filter(
             (article) => rootState.user.muteUsers.indexOf(article.user_id) === -1
@@ -825,8 +825,8 @@ const actions = {
   },
   async getRecommendedArticles({ commit, state, dispatch, rootState }) {
     try {
-      // 最終ページ、もしくはミュートユーザを除いた記事数が表示件数以上になるまでループ
-      // ミュートユーザの記事があることを想定し、API コール数を削減するため多めに取得
+      // 最終ページ、もしくはミュート済みユーザを除いた記事数が表示件数以上になるまでループ
+      // ミュート済みユーザの記事があることを想定し、API コール数を削減するため多めに取得
       const viewCount = 12
       const limitCount = viewCount + 6
       while (
@@ -842,7 +842,7 @@ const actions = {
         if (tmpArticles.length < limitCount) {
           commit(types.SET_RECOMMENDED_ARTICLES_IS_TMP_ARTICLES_LAST_PAGE, { isLastPage: true })
         }
-        // ミュートユーザ記事を削除し、tmpArticles に追加
+        // ミュート済みユーザ記事を削除し、tmpArticles に追加
         commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES, {
           tmpArticles: tmpArticles.filter(
             (article) => rootState.user.muteUsers.indexOf(article.user_id) === -1
@@ -1000,14 +1000,14 @@ const actions = {
   },
   async getTipEyecatchArticles({ commit, dispatch, rootState }) {
     try {
-      // 最終ページ、もしくはミュートユーザを除いた記事数が表示件数以上になるまでループ
-      // ミュートユーザの記事があることを想定し、API コール数を削減するため多めに取得
+      // 最終ページ、もしくはミュート済みユーザを除いた記事数が表示件数以上になるまでループ
+      // ミュート済みユーザの記事があることを想定し、API コール数を削減するため多めに取得
       const viewCount = 3
       const limitCount = viewCount + 6
       const articles = []
       let pageCount = 1
       let isLast = false
-      // ミュートユーザの記事を除外した上で、記事数が表示件数以上になるまでループ
+      // ミュート済みユーザの記事を除外した上で、記事数が表示件数以上になるまでループ
       while (!isLast && articles.length < viewCount) {
         const { Items: tmpArticles } = await this.$axios.$get('/api/articles/tip_ranking', {
           params: { limit: limitCount, page: pageCount }
@@ -1016,7 +1016,7 @@ const actions = {
         if (tmpArticles.length < limitCount) {
           isLast = true
         }
-        // ミュートユーザ記事を除外後、先頭から表示件数を満たすように articles に追加
+        // ミュート済みユーザの記事を除外後、先頭から表示件数を満たすように articles に追加
         articles.push(
           ...tmpArticles
             .filter((article) => rootState.user.muteUsers.indexOf(article.user_id) === -1)
@@ -1041,8 +1041,8 @@ const actions = {
   },
   async getTipRankingArticles({ commit, state, dispatch, rootState }) {
     try {
-      // 最終ページ、もしくはミュートユーザを除いた記事数が表示件数以上になるまでループ
-      // ミュートユーザの記事があることを想定し、API コール数を削減するため多めに取得
+      // 最終ページ、もしくはミュート済みユーザを除いた記事数が表示件数以上になるまでループ
+      // ミュート済みユーザの記事があることを想定し、API コール数を削減するため多めに取得
       const viewCount = 12
       const limitCount = viewCount + 6
       while (
@@ -1058,7 +1058,7 @@ const actions = {
         if (tmpArticles.length < limitCount) {
           commit(types.SET_TIP_RANKING_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
         }
-        // ミュートユーザ記事を削除し、tmpArticles に追加
+        // ミュート済みユーザの記事を削除し、tmpArticles に追加
         commit(types.SET_TIP_RANKING_ARTICLES_TMP_ARTICLES, {
           tmpArticles: tmpArticles.filter(
             (article) => rootState.user.muteUsers.indexOf(article.user_id) === -1
