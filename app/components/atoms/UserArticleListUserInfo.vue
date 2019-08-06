@@ -296,6 +296,26 @@ export default {
       max-width: 160px;
     }
   }
+
+  .menu {
+    height: 40px;
+
+    .menu-popup {
+      left: -79px;
+
+      .menu-option {
+        margin: 24px 12px;
+      }
+    }
+
+    .menu-popup-current-user {
+      left: -134px;
+
+      .menu-option {
+        margin: 24px 12px;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 550px) {
@@ -319,7 +339,7 @@ export default {
       /* prettier-ignore */
       grid-template-areas:
         "profile-icon      user-display-name ...              "
-        "profile-icon      user-id           ...              "
+        "profile-icon      user-id           menu             "
         "profile-icon      ...               ...              "
         "self-introduction self-introduction self-introduction";
       padding: 0 12px;

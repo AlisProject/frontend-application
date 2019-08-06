@@ -374,6 +374,16 @@ export default {
       background-position: 8px;
       background-size: 24px;
     }
+
+    .area-etc {
+      .etc-popup {
+        width: 178px;
+
+        .menu-option {
+          margin: 24px 12px;
+        }
+      }
+    }
   }
 }
 </style>
