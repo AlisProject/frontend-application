@@ -14,7 +14,7 @@
       :articles="tipEyecatchArticles"
       class="tip-eyecatch-article-card-list"
     />
-    <div class="area-recommended-like-ranking">
+    <div v-if="isInit" class="area-recommended-like-ranking">
       <div class="label">
         いいねによるオススメ
       </div>
@@ -24,7 +24,7 @@
       :isTipRanking="true"
       class="eyecatch-article-card-list-sp"
     />
-    <div class="area-more-link">
+    <div v-if="isInit" class="area-more-link">
       <nuxt-link class="more-link-sp" to="/articles/ranking/tip">
         もっと見る ＞
       </nuxt-link>
@@ -66,7 +66,8 @@ export default {
   data() {
     return {
       isFetchingArticles: false,
-      isShowGuide: false
+      isShowGuide: false,
+      isInit: false
     }
   },
   computed: {
@@ -81,6 +82,7 @@ export default {
     await this.getMuteUsers()
     await this.getTipEyecatchArticles()
     await this.getRecommendedArticles()
+    this.isInit = true
 
     window.addEventListener('scroll', this.infiniteScroll)
 
@@ -444,6 +446,9 @@ export default {
 @media screen and (max-width: 375px) {
   .top-page {
     grid-template-columns: 1fr auto 1fr;
+  }
+  .label {
+    width: 340px;
   }
 }
 </style>
