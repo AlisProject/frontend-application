@@ -12,7 +12,7 @@
       </ul>
     </div>
     <mute-user-card-list v-if="muteUsers.length > 0" :muteUsers="muteUsers" />
-    <div v-else class="area-label">
+    <div v-else-if="!isLoading" class="area-label">
       現在ミュートしたユーザーは登録されていません
     </div>
     <app-footer />
@@ -31,10 +31,19 @@ export default {
     MuteUserCardList,
     AppFooter
   },
+  data() {
+    return {
+      isLoading: true
+    }
+  },
   async mounted() {
     await this.getMuteUsers()
+    this.isLoading = false
   },
   computed: {
+    hasEmptyMutedUsers() {
+      return this.muteUsers.length > 0
+    },
     ...mapGetters('article', ['articleContentEditHistories']),
     ...mapGetters('user', ['muteUsers'])
   },
