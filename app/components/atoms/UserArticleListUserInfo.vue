@@ -37,9 +37,14 @@
           <span class="menu-option" @click="showUserReportModal">
             報告する
           </span>
-          <span class="menu-option" @click="addMuteUser">
+          <span v-if="!isMuteUser" class="menu-option" @click="addMuteUser">
             ミュートする
           </span>
+          <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
+          このためページを直接開いた場合ミュート済みかの判定ができず、再度ユーザをミュートすることが可能な状態となっている -->
+          <nuxt-link v-else class="menu-muted-option" to="/me/settings/mute_users">
+            ミュートしたユーザー
+          </nuxt-link>
         </div>
       </div>
     </no-ssr>
@@ -115,7 +120,10 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser'])
+    isMuteUser() {
+      return this.muteUsers.indexOf(this.user.user_id) !== -1
+    },
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'muteUsers'])
   },
   methods: {
     toggleMenuPopup() {
@@ -231,10 +239,18 @@ export default {
     font-size: 14px;
     position: absolute;
     top: 40px;
-    width: 110px;
+    width: 170px;
     z-index: 1;
 
     .menu-option {
+      display: block;
+      margin: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+    .menu-muted-option {
       display: block;
       margin: 12px;
       color: #6e6e6e;
@@ -257,6 +273,14 @@ export default {
     z-index: 1;
 
     .menu-option {
+      display: block;
+      margin: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+    .menu-muted-option {
       display: block;
       margin: 12px;
       color: #6e6e6e;
@@ -301,7 +325,7 @@ export default {
     height: 40px;
 
     .menu-popup {
-      left: -79px;
+      left: -137px;
 
       .menu-option {
         margin: 24px 12px;
@@ -313,6 +337,10 @@ export default {
 
       .menu-option {
         margin: 24px 12px;
+      }
+      .menu-muted-option {
+        margin: 24px 12px;
+        text-decoration: none;
       }
     }
   }

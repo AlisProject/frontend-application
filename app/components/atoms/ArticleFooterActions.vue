@@ -1,5 +1,5 @@
 <template>
-  <div class="area-footer-actions">
+  <div :class="[isMyArticle ? 'area-footer-actions-own' : 'area-footer-actions']">
     <div class="action area-like" :class="{ liked: isLikedArticle }" @click="like">
       <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
     </div>
@@ -8,13 +8,20 @@
     </no-ssr>
     <a class="sub-action area-share-twitter" target="_blank" />
     <a class="sub-action area-share-facebook" target="_blank" />
-    <div class="sub-action area-etc" @click="toggleEtcPopup">
+    <div v-if="!isMyArticle" class="sub-action area-etc" @click="toggleEtcPopup">
       <div v-show="isEtcPopupShown" class="etc-popup">
         <div class="menu-option" @click="showPopupReportModal">
           記事を報告する
         </div>
-        <div class="menu-option" @click="addMuteUser">
+        <div v-if="!isMuteUser" class="menu-option" @click="addMuteUser">
           ユーザーをミュートする
+        </div>
+        <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
+                    このためページを直接開いた場合ミュート済みかの判定ができず、再度ユーザをミュートすることが可能な状態となっている -->
+        <div v-else class="menu-option">
+          <nuxt-link class="muted-link" to="/me/settings/mute_users">
+            ミュートしたユーザー
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -85,7 +92,10 @@ export default {
       if (!this.currentUser) return false
       return this.articleUserId === this.currentUser.userId
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser', 'currentUserInfo']),
+    isMuteUser() {
+      return this.muteUsers.indexOf(this.articleUserId) !== -1
+    },
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'currentUserInfo', 'muteUsers']),
     ...mapGetters('article', ['article']),
     ...mapGetters(['toastMessages'])
   },
@@ -197,7 +207,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.area-footer-actions {
+.area-footer-actions,
+.area-footer-actions-own {
   display: grid;
   grid-area: footer-actions;
   grid-template-rows: 52px;
@@ -321,8 +332,15 @@ export default {
         user-select: none;
         margin: 12px;
       }
+      .muted-link {
+        color: #000000;
+        text-decoration: none;
+      }
     }
   }
+}
+.area-footer-actions-own {
+  grid-template-columns: repeat(2, 52px) 1fr repeat(2, 40px);
 }
 
 @media screen and (max-width: 640px) {
