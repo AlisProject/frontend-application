@@ -7,8 +7,12 @@
     <div class="area-description">
       <ul>
         <li>ミュートの登録・解除が相手に知られることはありません。</li>
-        <li>ミュート機能を使用すると、各種ランキングの順位が非使用時と変化しますのでご注意ください。</li>
-        <li>ミュートしたユーザーの記事は一覧に表示されません。検索結果やその他の場所では表示される可能性があります。</li>
+        <li>
+          ミュート機能を使用すると、各種ランキングの順位が非使用時と変化しますのでご注意ください。
+        </li>
+        <li>
+          ミュートしたユーザーの記事は一覧に表示されません。検索結果やその他の場所では表示される可能性があります。
+        </li>
       </ul>
     </div>
     <mute-user-card-list v-if="muteUsers.length > 0" :muteUsers="muteUsers" />
@@ -84,7 +88,8 @@ export default {
   margin: 0;
 }
 
-_:lang(x)+_:-webkit-full-screen-document, .area-description {
+_:lang(x) + _:-webkit-full-screen-document,
+.area-description {
   font-size: 14px;
 }
 
