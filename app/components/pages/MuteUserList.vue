@@ -107,6 +107,13 @@ export default {
   }
 }
 
+@media screen and (max-width: 414px) {
+  .mute-user-list-container {
+    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows: 100px 29px 183px 1fr 75px;
+  }
+}
+
 @media screen and (max-width: 370px) {
   .mute-user-list-container {
     grid-template-columns: 10px 1fr 10px;
