@@ -37,14 +37,11 @@
           <span class="menu-option" @click="showUserReportModal">
             報告する
           </span>
-          <span v-if="!isMuteUser" class="menu-option" @click="addMuteUser">
-            ミュートする
-          </span>
           <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
           このためページを直接開いた場合ミュート済みかの判定ができず、再度ユーザをミュートすることが可能な状態となっている -->
-          <nuxt-link v-else class="menu-muted-option" to="/me/settings/mute_users">
-            ミュートしたユーザー
-          </nuxt-link>
+          <span class="menu-option" @click="addMuteUser">
+            ミュートする
+          </span>
         </div>
       </div>
     </no-ssr>
@@ -120,10 +117,7 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    isMuteUser() {
-      return this.muteUsers.indexOf(this.user.user_id) !== -1
-    },
-    ...mapGetters('user', ['loggedIn', 'currentUser', 'muteUsers'])
+    ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
     toggleMenuPopup() {
@@ -154,9 +148,9 @@ export default {
       try {
         await this.setMuteUser({ muteUserId: this.user.user_id })
         this.sendNotification({
-          text: '登録に成功しました。該当ユーザの記事は一覧から表示されなくなります',
-          dismissAfter: 7000
+          text: 'ユーザーをミュートしました'
         })
+        this.$router.push('/me/settings/mute_users')
       } catch (error) {
         this.sendNotification({
           text: '登録に失敗しました。しばらく時間を置いて再度お試しください',
