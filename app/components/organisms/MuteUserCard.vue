@@ -43,6 +43,7 @@ a {
   grid-template-rows: auto;
   padding: 12px 0px 12px 0px;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .area-mute-user-id {
