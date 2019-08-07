@@ -45,9 +45,6 @@ export default {
     this.isLoading = false
   },
   computed: {
-    hasEmptyMutedUsers() {
-      return this.muteUsers.length > 0
-    },
     ...mapGetters('article', ['articleContentEditHistories']),
     ...mapGetters('user', ['muteUsers'])
   },
