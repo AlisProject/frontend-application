@@ -20,7 +20,7 @@
       </p>
     </div>
     <no-ssr>
-      <div v-if="isCurrentUser && loggedIn" class="menu" @click="toggleMenuPopup">
+      <div v-if="isCurrentUser" class="menu" @click="toggleMenuPopup">
         <div v-show="isMenuPopupShown" class="menu-popup-current-user">
           <div class="menu-option" @click="showProfileSettingsModal">
             プロフィールを編集
