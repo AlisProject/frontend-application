@@ -4,7 +4,10 @@
       <nuxt-link :to="`/users/${muteUserId}`" class="area-mute-user-id">
         <span>@{{ muteUserId }}</span>
       </nuxt-link>
-      <span class="area-delete-label" @click="deleteMuteUserAndNotify(muteUserId)">ミュートを解除</span>
+      <span
+        class="area-delete-label"
+        @click="deleteMuteUserAndNotify(muteUserId)"
+      >ミュートを解除</span>
     </div>
   </section>
 </template>
