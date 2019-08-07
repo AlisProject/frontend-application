@@ -167,8 +167,7 @@ export default {
         try {
           await this.setMuteUser({ muteUserId: this.articleUserId })
           this.sendNotification({
-            text: '登録に成功しました。該当ユーザの記事は一覧から表示されなくなります',
-            dismissAfter: 7000
+            text: 'ユーザーをミュートしました'
           })
           this.$router.push('/me/settings/mute_users')
         } catch (error) {
