@@ -8,23 +8,25 @@
     </no-ssr>
     <a class="sub-action area-share-twitter" target="_blank" />
     <a class="sub-action area-share-facebook" target="_blank" />
-    <div v-if="!isMyArticle" class="sub-action area-etc" @click="toggleEtcPopup">
-      <div v-show="isEtcPopupShown" class="etc-popup">
-        <div class="menu-option" @click="showPopupReportModal">
-          記事を報告する
-        </div>
-        <div v-if="!isMuteUser" class="menu-option" @click="addMuteUser">
-          ユーザーをミュートする
-        </div>
-        <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
+    <no-ssr>
+      <div v-if="!isMyArticle" class="sub-action area-etc" @click="toggleEtcPopup">
+        <div v-show="isEtcPopupShown" class="etc-popup">
+          <div class="menu-option" @click="showPopupReportModal">
+            記事を報告する
+          </div>
+          <div v-if="!isMuteUser" class="menu-option" @click="addMuteUser">
+            ユーザーをミュートする
+          </div>
+          <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
                     このためページを直接開いた場合ミュート済みかの判定ができず、再度ユーザをミュートすることが可能な状態となっている -->
-        <div v-else class="menu-option">
-          <nuxt-link class="muted-link" to="/me/settings/mute_users">
-            ミュートしたユーザー
-          </nuxt-link>
+          <div v-else class="menu-option">
+            <nuxt-link class="muted-link" to="/me/settings/mute_users">
+              ミュートしたユーザー
+            </nuxt-link>
+          </div>
         </div>
       </div>
-    </div>
+    </no-ssr>
   </div>
 </template>
 
@@ -207,16 +209,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.area-footer-actions {
+  grid-template-columns: repeat(2, 52px) 1fr repeat(3, 40px);
+  /* prettier-ignore */
+  grid-template-areas:
+    'like tip ... share-twitter share-facebook etc';
+}
+
+.area-footer-actions-own {
+  grid-template-columns: repeat(2, 52px) 1fr repeat(2, 40px);
+  /* prettier-ignore */
+  grid-template-areas:
+    'like tip ... share-twitter share-facebook';
+}
+
 .area-footer-actions,
 .area-footer-actions-own {
   display: grid;
   grid-area: footer-actions;
   grid-template-rows: 52px;
-  grid-template-columns: repeat(2, 52px) 1fr repeat(3, 40px);
   grid-column-gap: 20px;
-  /* prettier-ignore */
-  grid-template-areas:
-    'like tip ... share-twitter share-facebook etc';
   align-items: center;
 
   .action {
@@ -338,9 +350,6 @@ export default {
       }
     }
   }
-}
-.area-footer-actions-own {
-  grid-template-columns: repeat(2, 52px) 1fr repeat(2, 40px);
 }
 
 @media screen and (max-width: 640px) {
