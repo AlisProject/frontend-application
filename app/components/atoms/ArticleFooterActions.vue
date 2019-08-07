@@ -14,15 +14,10 @@
           <div class="menu-option" @click="showPopupReportModal">
             記事を報告する
           </div>
-          <div v-if="!isMuteUser" class="menu-option" @click="addMuteUser">
-            ユーザーをミュートする
-          </div>
           <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
                     このためページを直接開いた場合ミュート済みかの判定ができず、再度ユーザをミュートすることが可能な状態となっている -->
-          <div v-else class="menu-option">
-            <nuxt-link class="muted-link" to="/me/settings/mute_users">
-              ミュートしたユーザー
-            </nuxt-link>
+          <div class="menu-option" @click="addMuteUser">
+            ユーザーをミュートする
           </div>
         </div>
       </div>
@@ -94,10 +89,7 @@ export default {
       if (!this.currentUser) return false
       return this.articleUserId === this.currentUser.userId
     },
-    isMuteUser() {
-      return this.muteUsers.indexOf(this.articleUserId) !== -1
-    },
-    ...mapGetters('user', ['loggedIn', 'currentUser', 'currentUserInfo', 'muteUsers']),
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'currentUserInfo']),
     ...mapGetters('article', ['article']),
     ...mapGetters(['toastMessages'])
   },
@@ -178,6 +170,7 @@ export default {
             text: '登録に成功しました。該当ユーザの記事は一覧から表示されなくなります',
             dismissAfter: 7000
           })
+          this.$router.push('/me/settings/mute_users')
         } catch (error) {
           this.sendNotification({
             text: '登録に失敗しました。しばらく時間を置いて再度お試しください',
@@ -343,10 +336,6 @@ export default {
         cursor: pointer;
         user-select: none;
         margin: 12px;
-      }
-      .muted-link {
-        color: #000000;
-        text-decoration: none;
       }
     }
   }
