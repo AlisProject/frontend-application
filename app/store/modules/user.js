@@ -1032,7 +1032,7 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getMuteUsers({ commit }) {
+  async getMuteUsers({ commit, state }) {
     try {
       if (state.loggedIn === true) {
         const muteUsers = await this.$axios.$get('/api/me/configurations/mute_users')
