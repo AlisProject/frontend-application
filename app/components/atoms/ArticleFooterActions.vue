@@ -341,13 +341,24 @@ export default {
 }
 
 @media screen and (max-width: 640px) {
+  .area-footer-actions-own {
+    grid-template-columns: 10px repeat(1, 52px) 1fr repeat(2, 40px) 10px;
+    /* prettier-ignore */
+    grid-template-areas:
+      '... like ... share-twitter share-facebook ...';
+  }
+
   .area-footer-actions {
-    background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
-    position: relative;
     grid-template-columns: 10px 40px 0 40px 1fr repeat(3, 40px) 10px;
     /* prettier-ignore */
     grid-template-areas:
       '... like ... tip ... share-twitter share-facebook etc ...';
+  }
+
+  .area-footer-actions,
+  .area-footer-actions-own {
+    background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
+    position: relative;
     grid-column-gap: 10px;
 
     &:after {

@@ -4,13 +4,17 @@
       <nuxt-link :to="`/users/${muteUserId}`" class="area-mute-user-id">
         <span>@{{ muteUserId }}</span>
       </nuxt-link>
-      <span class="area-delete-label" @click="deleteMuteUser({ muteUserId })">ミュートを解除</span>
+      <span
+        class="area-delete-label"
+        @click="deleteMuteUserAndNotify(muteUserId)"
+      >ミュートを解除</span>
     </div>
   </section>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   props: {
@@ -25,7 +29,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions('user', ['deleteMuteUser'])
+    async deleteMuteUserAndNotify(muteUserId) {
+      await this.deleteMuteUser({ muteUserId })
+      this.sendNotification({
+        text: '@' + muteUserId + 'のミュートを解除しました'
+      })
+    },
+    ...mapActions('user', ['deleteMuteUser']),
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    })
   }
 }
 </script>
