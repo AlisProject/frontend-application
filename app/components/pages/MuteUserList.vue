@@ -53,6 +53,7 @@ export default {
 }
 </script>
 
+<!--suppress CssInvalidPseudoSelector -->
 <style lang="scss" scoped>
 .mute-user-list-container {
   background-size: contain;
@@ -83,6 +84,10 @@ export default {
   margin: 0;
 }
 
+_:lang(x)+_:-webkit-full-screen-document, .area-description {
+  font-size: 14px;
+}
+
 .area-label {
   font-size: 14px;
   grid-area: mute-user-card-list;
@@ -99,7 +104,7 @@ export default {
 @media screen and (max-width: 640px) {
   .mute-user-list-container {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 66px 40px 1fr min-content;
+    grid-template-rows: 100px 29px 183px 1fr 75px;
   }
 
   .area-title {
@@ -110,7 +115,6 @@ export default {
 @media screen and (max-width: 414px) {
   .mute-user-list-container {
     grid-template-columns: 10px 1fr 10px;
-    grid-template-rows: 100px 29px 183px 1fr 75px;
   }
 }
 
