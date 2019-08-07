@@ -19,10 +19,6 @@ export default {
 
       await store.dispatch('article/getTopics')
       store.dispatch('article/resetArticleData')
-      await Promise.all([
-        store.dispatch('article/getEyecatchArticles'),
-        store.dispatch('article/getRecommendedArticles')
-      ])
     } catch (e) {
       store.dispatch('user/setLoginModal', { showLoginModal: false })
       error({ statusCode: 404 })

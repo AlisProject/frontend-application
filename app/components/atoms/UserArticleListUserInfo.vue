@@ -20,16 +20,31 @@
       </p>
     </div>
     <no-ssr>
-      <div v-if="isCurrentUser" class="profile-edit" @click="showProfileSettingsModal">
-        プロフィールを編集
+      <div v-if="isCurrentUser" class="menu" @click="toggleMenuPopup">
+        <div v-show="isMenuPopupShown" class="menu-popup-current-user">
+          <div class="menu-option" @click="showProfileSettingsModal">
+            プロフィールを編集
+          </div>
+          <nuxt-link class="menu-option" to="/me/settings/mute_users">
+            ミュートしたユーザー
+          </nuxt-link>
+        </div>
       </div>
     </no-ssr>
     <no-ssr>
-      <div v-if="!isCurrentUser && loggedIn" class="report-user" @click="toggleReportPopup">
-        <div v-show="isReportPopupShown" class="report-popup">
-          <span class="report" @click="showUserReportModal">
+      <div v-if="!isCurrentUser && loggedIn" class="menu" @click="toggleMenuPopup">
+        <div v-show="isMenuPopupShown" class="menu-popup">
+          <span class="menu-option" @click="showUserReportModal">
             報告する
           </span>
+          <span v-if="!isMuteUser" class="menu-option" @click="addMuteUser">
+            ミュートする
+          </span>
+          <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
+          このためページを直接開いた場合ミュート済みかの判定ができず、再度ユーザをミュートすることが可能な状態となっている -->
+          <nuxt-link v-else class="menu-muted-option" to="/me/settings/mute_users">
+            ミュートしたユーザー
+          </nuxt-link>
         </div>
       </div>
     </no-ssr>
@@ -49,6 +64,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import { htmlDecode } from '~/utils/article'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   props: {
@@ -59,20 +75,20 @@ export default {
   },
   data() {
     return {
-      isReportPopupShown: false
+      isMenuPopupShown: false
     }
   },
   async mounted() {
     await this.$nextTick()
-    const reportUserElement = this.$el.querySelector('.report-user')
+    const menuElement = this.$el.querySelector('.menu')
     this.listen(window, 'click', (event) => {
-      if (reportUserElement && !reportUserElement.contains(event.target)) {
-        this.closeReportPopup()
+      if (menuElement && !menuElement.contains(event.target)) {
+        this.closeMenuPopup()
       }
     })
     this.listen(window, 'touchstart', (event) => {
-      if (reportUserElement && !reportUserElement.contains(event.target)) {
-        this.closeReportPopup()
+      if (menuElement && !menuElement.contains(event.target)) {
+        this.closeMenuPopup()
       }
     })
   },
@@ -104,14 +120,17 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser'])
+    isMuteUser() {
+      return this.muteUsers.indexOf(this.user.user_id) !== -1
+    },
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'muteUsers'])
   },
   methods: {
-    toggleReportPopup() {
-      this.isReportPopupShown = !this.isReportPopupShown
+    toggleMenuPopup() {
+      this.isMenuPopupShown = !this.isMenuPopupShown
     },
-    closeReportPopup() {
-      this.isReportPopupShown = false
+    closeMenuPopup() {
+      this.isMenuPopupShown = false
     },
     showProfileSettingsModal() {
       this.setProfileSettingsModal({ showProfileSettingsModal: true })
@@ -131,7 +150,25 @@ export default {
       this.setUserReportModal({ isShow: true })
       this.setUserReportSelectReasonModal({ isShow: true })
     },
-    ...mapActions('user', ['setProfileSettingsModal']),
+    async addMuteUser() {
+      try {
+        await this.setMuteUser({ muteUserId: this.user.user_id })
+        this.sendNotification({
+          text: '登録に成功しました。該当ユーザの記事は一覧から表示されなくなります',
+          dismissAfter: 7000
+        })
+      } catch (error) {
+        this.sendNotification({
+          text: '登録に失敗しました。しばらく時間を置いて再度お試しください',
+          type: 'warning',
+          dismissAfter: 7000
+        })
+      }
+    },
+    ...mapActions({
+      sendNotification: ADD_TOAST_MESSAGE
+    }),
+    ...mapActions('user', ['setProfileSettingsModal', 'setMuteUser']),
     ...mapActions('report', ['setUserReportModal', 'setUserReportSelectReasonModal'])
   }
 }
@@ -141,15 +178,14 @@ export default {
 .area-user-info-container {
   display: grid;
   grid-area: user-info;
-  grid-template-rows: 40px 30px auto auto;
+  grid-template-rows: 40px 30px auto;
   grid-template-columns: 80px 0 min-content 40px auto;
   grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
     "profile-icon ... user-display-name user-display-name sub-icon         "
     "profile-icon ... user-id           user-id           ...              "
-    "...          ... self-introduction self-introduction self-introduction"
-    "...          ... profile-edit      profile-edit      ...              ";
+    "...          ... self-introduction self-introduction self-introduction";
   padding-bottom: 60px;
 }
 
@@ -184,24 +220,7 @@ export default {
   }
 }
 
-.profile-edit {
-  grid-area: profile-edit;
-  background-color: #fff;
-  border-radius: 2px;
-  border: 1px solid #cecece;
-  color: #6e6e6e;
-  cursor: pointer;
-  display: block;
-  font-size: 12px;
-  font-weight: bold;
-  height: 22px;
-  line-height: 22px;
-  margin-top: 10px;
-  text-align: center;
-  width: 200px;
-}
-
-.report-user {
+.menu {
   grid-area: sub-icon;
   background-image: url('~assets/images/pc/common/icon_draftcassette_active.png');
   background-position: 10px;
@@ -211,7 +230,7 @@ export default {
   position: relative;
   width: 40px;
 
-  .report-popup {
+  .menu-popup {
     background-color: #ffffff;
     border-radius: 4px;
     box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
@@ -219,17 +238,55 @@ export default {
     box-sizing: border-box;
     font-size: 14px;
     position: absolute;
-    left: -58px;
     top: 40px;
-    width: 90px;
+    width: 170px;
     z-index: 1;
 
-    .report {
+    .menu-option {
       display: block;
-      padding: 12px;
+      margin: 12px;
       color: #6e6e6e;
       cursor: pointer;
       user-select: none;
+      text-decoration: none;
+    }
+    .menu-muted-option {
+      display: block;
+      margin: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+  }
+
+  .menu-popup-current-user {
+    background-color: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 0 rgba(192, 192, 192, 0.5);
+    cursor: default;
+    box-sizing: border-box;
+    font-size: 14px;
+    position: absolute;
+    top: 40px;
+    width: 166px;
+    z-index: 1;
+
+    .menu-option {
+      display: block;
+      margin: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+    .menu-muted-option {
+      display: block;
+      margin: 12px;
+      color: #6e6e6e;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
     }
   }
 }
@@ -263,6 +320,30 @@ export default {
       max-width: 160px;
     }
   }
+
+  .menu {
+    height: 40px;
+
+    .menu-popup {
+      left: -137px;
+
+      .menu-option {
+        margin: 24px 12px;
+      }
+    }
+
+    .menu-popup-current-user {
+      left: -134px;
+
+      .menu-option {
+        margin: 24px 12px;
+      }
+      .menu-muted-option {
+        margin: 24px 12px;
+        text-decoration: none;
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 550px) {
@@ -273,22 +354,21 @@ export default {
     /* prettier-ignore */
     grid-template-areas:
       "profile-icon      ...               ...        "
-      "profile-icon      user-display-name report-user"
-      "profile-icon      user-id           report-user"
+      "profile-icon      user-display-name menu"
+      "profile-icon      user-id           menu"
       "profile-icon      ...               ...        "
       "self-introduction self-introduction self-introduction";
     padding: 0 12px;
 
     &.is-current-user {
       grid-column-gap: 20px;
-      grid-template-rows: 20px 20px 16px 24px auto;
+      grid-template-rows: 20px 20px 16px auto;
       grid-template-columns: 80px auto 40px;
       /* prettier-ignore */
       grid-template-areas:
         "profile-icon      user-display-name ...              "
-        "profile-icon      user-id           ...              "
+        "profile-icon      user-id           menu             "
         "profile-icon      ...               ...              "
-        "profile-icon      profile-edit      profile-edit     "
         "self-introduction self-introduction self-introduction";
       padding: 0 12px;
     }
@@ -300,16 +380,8 @@ export default {
     }
   }
 
-  .profile-edit {
-    margin-top: 0;
-    // 12px - padding of .area-user-info-container
-    // 80px - width   of .profile-icon
-    // 20px - gap     of .area-user-info-container
-    width: calc(100vw - 12px - 80px - 20px - 12px);
-  }
-
-  .report-user {
-    grid-area: report-user;
+  .menu {
+    grid-area: menu;
   }
 
   .area-user-display-name {
@@ -320,7 +392,7 @@ export default {
       // 12px - padding of .area-user-info-container
       // 80px - width   of .profile-icon
       // 20px - gap     of .area-user-info-container
-      // 40px - width   of .report-user
+      // 40px - width   of .menu
       max-width: calc(100vw - 12px - 80px - 20px - 40px - 20px - 12px);
     }
   }

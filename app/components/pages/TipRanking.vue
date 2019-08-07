@@ -53,6 +53,9 @@ export default {
     ...mapGetters('article', ['tipEyecatchArticles', 'tipRankingArticles'])
   },
   async mounted() {
+    await this.getMuteUsers()
+    await this.getTipEyecatchArticles()
+    await this.getTipRankingArticles()
     window.addEventListener('scroll', this.infiniteScroll)
 
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
@@ -82,7 +85,8 @@ export default {
         this.isFetchingArticles = false
       }
     },
-    ...mapActions('article', ['getTipRankingArticles'])
+    ...mapActions('article', ['getTipEyecatchArticles', 'getTipRankingArticles']),
+    ...mapActions('user', ['getMuteUsers'])
   },
   watch: {
     async 'tipRankingArticles.articles'() {

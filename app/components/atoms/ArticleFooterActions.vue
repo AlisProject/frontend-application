@@ -1,5 +1,5 @@
 <template>
-  <div class="area-footer-actions">
+  <div :class="[isMyArticle ? 'area-footer-actions-own' : 'area-footer-actions']">
     <div class="action area-like" :class="{ liked: isLikedArticle }" @click="like">
       <span class="likes-count" @click.stop>{{ formattedLikesCount }}</span>
     </div>
@@ -8,13 +8,20 @@
     </no-ssr>
     <a class="sub-action area-share-twitter" target="_blank" />
     <a class="sub-action area-share-facebook" target="_blank" />
-    <div class="sub-action area-etc" @click="toggleEtcPopup">
-      <div v-show="isEtcPopupShown" class="etc-popup">
-        <span class="report" @click="showPopupReportModal">
-          報告する
-        </span>
+    <no-ssr>
+      <div v-if="!isMyArticle" class="sub-action area-etc" @click="toggleEtcPopup">
+        <div v-show="isEtcPopupShown" class="etc-popup">
+          <div class="menu-option" @click="showPopupReportModal">
+            記事を報告する
+          </div>
+          <!-- Fixme: リソース観点よりページ表示時に mute_users の取得を行っていない。
+                    このためページを直接開いた場合ミュート済みかの判定ができず、再度ユーザをミュートすることが可能な状態となっている -->
+          <div class="menu-option" @click="addMuteUser">
+            ユーザーをミュートする
+          </div>
+        </div>
       </div>
-    </div>
+    </no-ssr>
   </div>
 </template>
 
@@ -155,6 +162,25 @@ export default {
         }
       })
     },
+    async addMuteUser() {
+      if (this.loggedIn) {
+        try {
+          await this.setMuteUser({ muteUserId: this.articleUserId })
+          this.sendNotification({
+            text: 'ユーザーをミュートしました'
+          })
+          this.$router.push('/me/settings/mute_users')
+        } catch (error) {
+          this.sendNotification({
+            text: '登録に失敗しました。しばらく時間を置いて再度お試しください',
+            type: 'warning',
+            dismissAfter: 7000
+          })
+        }
+      } else {
+        this.setRequestLoginModal({ isShow: true, requestType: 'muteUser' })
+      }
+    },
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
@@ -165,7 +191,8 @@ export default {
       'setRequestPhoneNumberVerifyModal',
       'setRequestPhoneNumberVerifyInputPhoneNumberModal',
       'setFirstProcessModal',
-      'setFirstProcessLikedArticleModal'
+      'setFirstProcessLikedArticleModal',
+      'setMuteUser'
     ]),
     ...mapActions('report', ['setArticleReportModal', 'setArticleReportSelectReasonModal']),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])
@@ -175,14 +202,25 @@ export default {
 
 <style lang="scss" scoped>
 .area-footer-actions {
-  display: grid;
-  grid-area: footer-actions;
-  grid-template-rows: 52px;
   grid-template-columns: repeat(2, 52px) 1fr repeat(3, 40px);
-  grid-column-gap: 20px;
   /* prettier-ignore */
   grid-template-areas:
     'like tip ... share-twitter share-facebook etc';
+}
+
+.area-footer-actions-own {
+  grid-template-columns: repeat(2, 52px) 1fr repeat(2, 40px);
+  /* prettier-ignore */
+  grid-template-areas:
+    'like tip ... share-twitter share-facebook';
+}
+
+.area-footer-actions,
+.area-footer-actions-own {
+  display: grid;
+  grid-area: footer-actions;
+  grid-template-rows: 52px;
+  grid-column-gap: 20px;
   align-items: center;
 
   .action {
@@ -287,16 +325,16 @@ export default {
       cursor: default;
       box-sizing: border-box;
       font-size: 14px;
-      padding: 12px;
       position: absolute;
       right: 0;
       top: 48px;
-      width: 90px;
+      width: 188px;
       z-index: 1;
 
-      .report {
+      .menu-option {
         cursor: pointer;
         user-select: none;
+        margin: 12px;
       }
     }
   }
@@ -350,6 +388,16 @@ export default {
     .area-tip {
       background-position: 8px;
       background-size: 24px;
+    }
+
+    .area-etc {
+      .etc-popup {
+        width: 178px;
+
+        .menu-option {
+          margin: 24px 12px;
+        }
+      }
     }
   }
 }

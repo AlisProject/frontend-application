@@ -22,7 +22,6 @@ export default {
       const { topic } = query
       await store.dispatch('article/getTopics')
       store.dispatch('article/setTopicDisplayName', { topicName: topic })
-      await store.dispatch('article/getPopularArticles', { topic })
     } catch (e) {
       error({ statusCode: 404 })
     }

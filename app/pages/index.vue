@@ -19,10 +19,6 @@ export default {
       }
 
       await store.dispatch('article/getTopics')
-      await Promise.all([
-        store.dispatch('article/getTipEyecatchArticles'),
-        store.dispatch('article/getRecommendedArticles')
-      ])
     } catch (e) {
       error({ statusCode: 404 })
     }
