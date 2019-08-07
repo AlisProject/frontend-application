@@ -1,8 +1,8 @@
 <template>
   <section>
     <div class="mute-user-card-container">
-      <nuxt-link :to="`/users/${muteUserId}`">
-        <span class="area-mute-user-id">@{{ muteUserId }}</span>
+      <nuxt-link :to="`/users/${muteUserId}`" class="area-mute-user-id">
+        <span>@{{ muteUserId }}</span>
       </nuxt-link>
       <span class="area-delete-label" @click="deleteMuteUser({ muteUserId })">ミュートを解除</span>
     </div>
@@ -45,13 +45,18 @@ a {
   grid-template-rows: auto;
   padding: 12px 0px 12px 0px;
   border-radius: 4px;
-  cursor: pointer;
 }
 
 .area-mute-user-id {
   grid-area: mute-user-id;
   color: #6e6e6e;
   padding: 0px 0px 0px 8px;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: darkblue;
+  }
 }
 
 .area-delete-label {
@@ -59,6 +64,12 @@ a {
   color: #7f7f7f;
   font-size: 16px;
   margin: 0px 8px 0px auto;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: darkblue;
+  }
 }
 
 @media screen and (max-width: 320px) {
