@@ -4,6 +4,13 @@
     <h1 class="area-title">
       ミュートしたユーザー
     </h1>
+    <div class="area-description">
+      <ul>
+        <li>ミュートの登録・解除が相手に知られることはありません。</li>
+        <li>ミュート機能を使用すると、各種ランキングの順位が非使用時と変化しますのでご注意ください。</li>
+        <li>ミュートしたユーザーの記事は一覧に表示されません。検索結果やその他の場所では表示される可能性があります。</li>
+      </ul>
+    </div>
     <mute-user-card-list v-if="muteUsers.length > 0" :muteUsers="muteUsers" />
     <div v-else class="area-label">
       現在ミュートしたユーザーは登録されていません
@@ -45,16 +52,24 @@ export default {
   grid-template-areas:
     "app-header  app-header           app-header"
     "...         title                ...       "
+    "...         description          ...       "
     "...         mute-user-card-list  ...       "
     "app-footer  app-footer           app-footer";
   grid-template-columns: 1fr 460px 1fr;
-  grid-template-rows: 100px 50px 1fr 75px;
+  grid-template-rows: 100px 29px 141px 1fr 75px;
   min-height: 100vh;
 }
 
 .area-title {
   font-size: 20px;
   grid-area: title;
+  letter-spacing: 1.33px;
+  margin: 0;
+}
+
+.area-description {
+  font-size: 10px;
+  grid-area: description;
   letter-spacing: 1.33px;
   margin: 0;
 }
