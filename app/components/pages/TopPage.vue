@@ -2,7 +2,7 @@
   <div class="top-page" :class="{ 'is-show-guide': isShowGuide }">
     <app-header />
     <default-header-nav class="default-header-nav" />
-    <div class="area-recommended-tip-ranking">
+    <div v-if="isInit" class="area-recommended-tip-ranking">
       <div class="label">
         投げ銭によるオススメ
       </div>
@@ -80,9 +80,11 @@ export default {
       this.isShowGuide = true
     }
     await this.getMuteUsers()
+    // Eyecatch 部分が読み込み完了次第、描画を行う
     await this.getTipEyecatchArticles()
-    await this.getRecommendedArticles()
+    await this.$nextTick()
     this.isInit = true
+    await this.getRecommendedArticles()
 
     window.addEventListener('scroll', this.infiniteScroll)
 
@@ -446,9 +448,6 @@ export default {
 @media screen and (max-width: 375px) {
   .top-page {
     grid-template-columns: 1fr auto 1fr;
-  }
-  .label {
-    width: 340px;
   }
 }
 </style>
