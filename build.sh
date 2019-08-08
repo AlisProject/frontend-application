@@ -26,5 +26,7 @@ PUBLIC_CHAIN_OPERATION_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublic
 export PUBLIC_CHAIN_OPERATION_URL=${PUBLIC_CHAIN_OPERATION_URL}
 DAILY_LIMIT_TOKEN_SEND_VALUE=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDailyLimitTokenSendValue --query "Parameter.Value" --output text`
 export DAILY_LIMIT_TOKEN_SEND_VALUE=${DAILY_LIMIT_TOKEN_SEND_VALUE}
+SENTRY_DSN=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmSentryDSN --query "Parameter.Value" --output text`
+export SENTRY_DSN=${SENTRY_DSN}
 
 yarn nuxt build

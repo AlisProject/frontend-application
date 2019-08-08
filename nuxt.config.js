@@ -80,7 +80,7 @@ module.exports = {
   /*
    ** Build configuration
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', '@nuxtjs/style-resources'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', '@nuxtjs/style-resources', '@nuxtjs/sentry'],
   styleResources: {
     scss: ['~assets/stylesheets/mixins/**.scss']
   },
@@ -103,6 +103,10 @@ module.exports = {
       retries: 3,
       retryDelay: axiosRetry.exponentialDelay
     }
+  },
+  sentry: {
+    dsn: `${process.env.SENTRY_DSN}`,
+    config: {}
   },
   srcDir: 'app',
   router: {
@@ -150,6 +154,7 @@ module.exports = {
     PUBLIC_CHAIN_REGISTRY_ADDRESS: process.env.PUBLIC_CHAIN_REGISTRY_ADDRESS,
     PUBLIC_CHAIN_OPERATION_URL: process.env.PUBLIC_CHAIN_OPERATION_URL,
     DAILY_LIMIT_TOKEN_SEND_VALUE: process.env.DAILY_LIMIT_TOKEN_SEND_VALUE,
+    SENTRY_DSN: process.env.SENTRY_DSN,
     ALIS_APP_ID: process.env.ALIS_APP_ID
   }
 }
