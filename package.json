@@ -24,6 +24,7 @@
     "@johmun/vue-tags-input": "^2.0.1",
     "@nuxtjs/axios": "^5.5.3",
     "@nuxtjs/markdownit": "^1.2.3",
+    "@nuxtjs/sentry": "^3.0.0",
     "@nuxtjs/style-resources": "^0.1.2",
     "amazon-cognito-identity-js": "^3.0.7",
     "aws-sdk": "^2.411.0",
