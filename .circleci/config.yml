@@ -18,7 +18,7 @@ references:
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
-  slack: circleci/slack@3.2.0
+  slack: circleci/slack@3.3.0
 
 executors:
   default:
@@ -165,22 +165,15 @@ workflows:
           context: common_staging_deployment
           requires: *test-and-build
 
-  # 本番環境のワークフロー
+  # 本番環境のワークフロー(テスト等無し・承認付き)
   production:
     jobs:
-      - lint-and-test:
-          name: lint-and-test-production
-          <<: *production_jobs
-
-      # 承認処理
+      # stagingで同時にテストを行っているため本番環境ワークフローではテストを行わない
       - notify-to-slack-for-approval:
           <<: *production_jobs
-          requires: &requires-production
-            - lint-and-test-production
       - approval:
           <<: *production_jobs
           type: approval
-          requires: *requires-production
 
       - build:
           name: build-production
