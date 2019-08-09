@@ -59,6 +59,7 @@ functions:
       BASE_URL: https://${ssm:${env:ALIS_APP_ID}ssmAlisAppDomain}
       REGION: ${env:AWS_DEFAULT_REGION}
       ALIS_APP_DOMAIN: ${ssm:${env:ALIS_APP_ID}ssmAlisAppDomain}
+      SENTRY_DSN: ${ssm:${env:ALIS_APP_ID}ssmSentryDSN}
     events:
       - http:
           path: '/'
