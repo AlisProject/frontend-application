@@ -168,19 +168,12 @@ workflows:
   # 本番環境のワークフロー
   production:
     jobs:
-      - lint-and-test:
-          name: lint-and-test-production
-          <<: *production_jobs
-
       # 承認処理
       - notify-to-slack-for-approval:
           <<: *production_jobs
-          requires: &requires-production
-            - lint-and-test-production
       - approval:
           <<: *production_jobs
           type: approval
-          requires: *requires-production
 
       - build:
           name: build-production
