@@ -165,10 +165,10 @@ workflows:
           context: common_staging_deployment
           requires: *test-and-build
 
-  # 本番環境のワークフロー
+  # 本番環境のワークフロー(テスト等無し・承認付き)
   production:
     jobs:
-      # 承認処理
+      # stagingで同時にテストを行っているため本番環境ワークフローではテストを行わない
       - notify-to-slack-for-approval:
           <<: *production_jobs
       - approval:
