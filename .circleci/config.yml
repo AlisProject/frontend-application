@@ -144,11 +144,12 @@ jobs:
     executor: default
     steps:
       - run:
+          name: 'Sentryのリリースを更新する'
           command: |
             curl $SENTRY_RELEASE_WEBHOOK \
               -X POST \
               -H 'Content-Type: application/json' \
-              -d '{"version": "abcdefg"}'
+              -d '{"version": "'$CIRCLE_SHA1'"}'
 
 workflows:
   # 本番環境以外のワークフロー
@@ -177,7 +178,8 @@ workflows:
       - update-sentry-version:
           <<: *only_master
           context: common_staging_deployment
-          requires: deploy-staging
+          requires:
+            - deploy-staging
 
   # 本番環境のワークフロー(テスト等無し・承認付き)
   production:
@@ -194,8 +196,14 @@ workflows:
           <<: *production_jobs
           requires:
             - approval
+
       - deploy:
           name: deploy-production
           <<: *production_jobs
           requires:
             - build-production
+
+      - update-sentry-version:
+          <<: *production_jobs
+          requires:
+            - deploy-production
