@@ -28,5 +28,7 @@ DAILY_LIMIT_TOKEN_SEND_VALUE=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDail
 export DAILY_LIMIT_TOKEN_SEND_VALUE=${DAILY_LIMIT_TOKEN_SEND_VALUE}
 SENTRY_DSN=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmSentryDSN --query "Parameter.Value" --output text`
 export SENTRY_DSN=${SENTRY_DSN}
+SENTRY_RELEASE=`git rev-parse HEAD`
+export SENTRY_RELEASE=${SENTRY_RELEASE}
 
 yarn nuxt build
