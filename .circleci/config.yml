@@ -6,12 +6,12 @@ references:
     filters:
       branches:
         ignore:
-          - master
+          - ALIS-4067
   only_master: &only_master
     filters:
       branches:
         only:
-          - master
+          - ALIS-4067
   production_jobs: &production_jobs
     <<: *only_master
     context: common_production_deployment
@@ -180,30 +180,3 @@ workflows:
           context: common_staging_deployment
           requires:
             - deploy-staging
-
-  # 本番環境のワークフロー(テスト等無し・承認付き)
-  production:
-    jobs:
-      # stagingで同時にテストを行っているため本番環境ワークフローではテストを行わない
-      - notify-to-slack-for-approval:
-          <<: *production_jobs
-      - approval:
-          <<: *production_jobs
-          type: approval
-
-      - build:
-          name: build-production
-          <<: *production_jobs
-          requires:
-            - approval
-
-      - deploy:
-          name: deploy-production
-          <<: *production_jobs
-          requires:
-            - build-production
-
-      - update-sentry-version:
-          <<: *production_jobs
-          requires:
-            - deploy-production
