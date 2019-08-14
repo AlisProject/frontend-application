@@ -107,7 +107,8 @@ module.exports = {
   sentry: {
     dsn: `${process.env.SENTRY_DSN}`,
     config: {
-      release: `${process.env.SENTRY_RELEASE}`
+      release: `${process.env.SENTRY_RELEASE}`,
+      publishRelease: true
     }
   },
   srcDir: 'app',
