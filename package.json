@@ -11,6 +11,7 @@
     "generate": "nuxt generate",
     "format": "prettier-eslint --write \"./**/*.{js,vue}\" --ignore \"./node_modules/**\" ",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lf": "yarn lint && yarn format",
     "precommit": "npm run lint",
     "build": "./build.sh",
     "deploy": "./deploy.sh",

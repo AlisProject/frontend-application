@@ -79,7 +79,9 @@ export default {
   },
   mounted() {
     this.$root.$on('closeModal', async () => {
-      await this.closeModal()
+      if (!this.firstProcessModal.isShow) {
+        await this.closeModal()
+      }
     })
   },
   methods: {
