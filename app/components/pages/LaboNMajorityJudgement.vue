@@ -122,8 +122,9 @@ export default {
       return !Object.values(this.selectedLevels).every((value) => value)
     },
     isAvailable() {
-      // 運用開始時にtrueを返し、フラグを立てる
-      return true
+      // 運用時にtrueを返し、フラグを立てる
+      // return true
+      return false
 
       // stgでのみ有効
       // return !this.isProduction
