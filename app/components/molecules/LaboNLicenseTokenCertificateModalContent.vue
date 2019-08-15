@@ -46,23 +46,23 @@ export default {
       ownerAddress: '',
       abi: [
         {
-          'constant': true,
-          'inputs': [
+          constant: true,
+          inputs: [
             {
-              'name': 'tokenId',
-              'type': 'uint256'
+              name: 'tokenId',
+              type: 'uint256'
             }
           ],
-          'name': 'ownerOf',
-          'outputs': [
+          name: 'ownerOf',
+          outputs: [
             {
-              'name': '',
-              'type': 'address'
+              name: '',
+              type: 'address'
             }
           ],
-          'payable': false,
-          'stateMutability': 'view',
-          'type': 'function'
+          payable: false,
+          stateMutability: 'view',
+          type: 'function'
         }
       ]
     }
@@ -79,7 +79,10 @@ export default {
   methods: {
     async getOwnerAddress(tokenId) {
       const web3 = new Web3(window.ethereum)
-      const licenseToken = new web3.eth.Contract(this.abi, process.env.PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS)
+      const licenseToken = new web3.eth.Contract(
+        this.abi,
+        process.env.PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS
+      )
       const owner = await licenseToken.methods.ownerOf(tokenId).call()
       return owner
     },
@@ -115,10 +118,7 @@ export default {
     closeModal() {
       this.setLaboLicenseTokenCertificateModal({ isShow: false })
     },
-    ...mapActions('user', [
-      'setLaboLicenseTokenCertificateModal',
-      'getLicenseTokenFileDownloadUrl'
-    ])
+    ...mapActions('user', ['setLaboLicenseTokenCertificateModal', 'getLicenseTokenFileDownloadUrl'])
   }
 }
 </script>

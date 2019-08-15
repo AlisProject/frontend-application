@@ -7,7 +7,8 @@
         <option v-for="i in 10" :value="i">
           {{ i }}
         </option>
-      </select> 個
+      </select>
+      個
     </div>
   </div>
 </template>
@@ -28,31 +29,32 @@ export default {
       maxFileSize: 52428800,
       options: {
         url: 'none',
-        dictDefaultMessage: 'ここにファイルをドラッグ&ドロップしてライセンストークンを発行できます。<br><br>※ 貴方が著作権を保有するコンテンツのみご利用下さい。'
+        dictDefaultMessage:
+          'ここにファイルをドラッグ&ドロップしてライセンストークンを発行できます。<br><br>※ 貴方が著作権を保有するコンテンツのみご利用下さい。'
       },
       abi: [
         {
-          'constant': false,
-          'inputs': [
+          constant: false,
+          inputs: [
             {
-              'name': 'contentDigest',
-              'type': 'uint256'
+              name: 'contentDigest',
+              type: 'uint256'
             },
             {
-              'name': 'amount',
-              'type': 'uint256'
+              name: 'amount',
+              type: 'uint256'
             }
           ],
-          'name': 'bulkMint',
-          'outputs': [
+          name: 'bulkMint',
+          outputs: [
             {
-              'name': '',
-              'type': 'bool'
+              name: '',
+              type: 'bool'
             }
           ],
-          'payable': false,
-          'stateMutability': 'nonpayable',
-          'type': 'function'
+          payable: false,
+          stateMutability: 'nonpayable',
+          type: 'function'
         }
       ]
     }
@@ -141,7 +143,11 @@ export default {
       return web3.utils.keccak256(data)
     },
     async getUploadUrl(contentDigest, uploadFileName, uploadFileSize) {
-      const response = await this.getLicenseTokenFileUploadUrl({ contentDigest, uploadFileName, uploadFileSize })
+      const response = await this.getLicenseTokenFileUploadUrl({
+        contentDigest,
+        uploadFileName,
+        uploadFileSize
+      })
       return response.upload_url
     },
     async uploadFile(uploadUrl, file) {
@@ -163,17 +169,24 @@ export default {
     async mintToken(contentDigest) {
       return new Promise((resolve, reject) => {
         const web3 = new Web3(window.ethereum)
-        const licenseToken = new web3.eth.Contract(this.abi, process.env.PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS)
+        const licenseToken = new web3.eth.Contract(
+          this.abi,
+          process.env.PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS
+        )
         const account = window.ethereum.selectedAddress // MetaMaskで選択中のアカウント
         const amount = parseInt(document.querySelector('#mint-amount').value)
 
-        licenseToken.methods.bulkMint(contentDigest, amount).send({
-          from: account
-        }).on('transactionHash', hash => {
-          resolve(hash)
-        }).on('error', err => {
-          reject(err)
-        })
+        licenseToken.methods
+          .bulkMint(contentDigest, amount)
+          .send({
+            from: account
+          })
+          .on('transactionHash', (hash) => {
+            resolve(hash)
+          })
+          .on('error', (err) => {
+            reject(err)
+          })
       })
     },
     ...mapActions({

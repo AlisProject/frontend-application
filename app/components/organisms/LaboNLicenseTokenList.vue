@@ -16,7 +16,8 @@
 /* global Web3 */
 import { mapActions, mapGetters } from 'vuex'
 
-const LaboNLicenseTokenCertificateModal = () => import('../organisms/LaboNLicenseTokenCertificateModal')
+const LaboNLicenseTokenCertificateModal = () =>
+  import('../organisms/LaboNLicenseTokenCertificateModal')
 
 export default {
   components: {
@@ -28,37 +29,46 @@ export default {
       tokenLoaded: false,
       abi: [
         {
-          'constant': true,
-          'inputs': [{
-            'name': 'owner',
-            'type': 'address'
-          }],
-          'name': 'balanceOf',
-          'outputs': [{
-            'name': '',
-            'type': 'uint256'
-          }],
-          'payable': false,
-          'stateMutability': 'view',
-          'type': 'function'
+          constant: true,
+          inputs: [
+            {
+              name: 'owner',
+              type: 'address'
+            }
+          ],
+          name: 'balanceOf',
+          outputs: [
+            {
+              name: '',
+              type: 'uint256'
+            }
+          ],
+          payable: false,
+          stateMutability: 'view',
+          type: 'function'
         },
         {
-          'constant': true,
-          'inputs': [{
-            'name': 'owner',
-            'type': 'address'
-          }, {
-            'name': 'index',
-            'type': 'uint256'
-          }],
-          'name': 'tokenOfOwnerByIndex',
-          'outputs': [{
-            'name': '',
-            'type': 'uint256'
-          }],
-          'payable': false,
-          'stateMutability': 'view',
-          'type': 'function'
+          constant: true,
+          inputs: [
+            {
+              name: 'owner',
+              type: 'address'
+            },
+            {
+              name: 'index',
+              type: 'uint256'
+            }
+          ],
+          name: 'tokenOfOwnerByIndex',
+          outputs: [
+            {
+              name: '',
+              type: 'uint256'
+            }
+          ],
+          payable: false,
+          stateMutability: 'view',
+          type: 'function'
         }
       ]
     }
@@ -73,7 +83,10 @@ export default {
     async getOwnedTokenIds() {
       const web3 = new Web3(window.ethereum)
       const account = window.ethereum.selectedAddress
-      const licenseToken = new web3.eth.Contract(this.abi, process.env.PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS)
+      const licenseToken = new web3.eth.Contract(
+        this.abi,
+        process.env.PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS
+      )
       const balanceOf = await licenseToken.methods.balanceOf(account).call()
       const tokenIds = []
       for (let i = 0; i < balanceOf; i++) {
@@ -118,5 +131,4 @@ export default {
   font-size: 16px;
   text-align: center;
 }
-
 </style>

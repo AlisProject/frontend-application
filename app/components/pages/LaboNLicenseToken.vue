@@ -106,7 +106,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .license-token-container {
   display: grid;
   grid-row-gap: 40px;
@@ -192,5 +191,4 @@ export default {
     }
   }
 }
-
 </style>

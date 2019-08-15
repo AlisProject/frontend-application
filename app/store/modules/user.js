@@ -1088,7 +1088,10 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getLicenseTokenFileUploadUrl({ commit }, { contentDigest, uploadFileName, uploadFileSize }) {
+  async getLicenseTokenFileUploadUrl(
+    { commit },
+    { contentDigest, uploadFileName, uploadFileSize }
+  ) {
     try {
       const url = await this.$axios.$get('/laboratory/labo/n/license_token/file_upload_url', {
         params: {
