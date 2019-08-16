@@ -104,12 +104,6 @@ module.exports = {
       retryDelay: axiosRetry.exponentialDelay
     }
   },
-  sentry: {
-    dsn: `${process.env.SENTRY_DSN}`,
-    config: {
-      release: `${process.env.SENTRY_RELEASE}`
-    }
-  },
   srcDir: 'app',
   router: {
     base: '/'
@@ -156,8 +150,6 @@ module.exports = {
     PUBLIC_CHAIN_REGISTRY_ADDRESS: process.env.PUBLIC_CHAIN_REGISTRY_ADDRESS,
     PUBLIC_CHAIN_OPERATION_URL: process.env.PUBLIC_CHAIN_OPERATION_URL,
     DAILY_LIMIT_TOKEN_SEND_VALUE: process.env.DAILY_LIMIT_TOKEN_SEND_VALUE,
-    SENTRY_DSN: process.env.SENTRY_DSN,
-    SENTRY_RELEASE: process.env.SENTRY_RELEASE,
     ALIS_APP_ID: process.env.ALIS_APP_ID
   }
 }
