@@ -87,13 +87,13 @@ jobs:
       - prepare-deployment
 
       - run:
-          name: 'Build Nuxt resources'
+          name: 'Nuxt.jsリソースのビルド。Sentryeへのreleaseとsourcemapの反映も行われる'
           command: |
             # ALIS_APP_IDが無い環境ではビルド&デプロイは行わない。
             # persist_to_workspaceで落ちるため事前にディレクトリを生成している
             mkdir .nuxt
             if [ $ALIS_APP_ID ]; then
-              yarn build
+              yarn build:ci
             fi
 
       - persist_to_workspace:
