@@ -352,12 +352,12 @@ const actions = {
         article.user_id,
         articleId
       )
-      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+      const [userInfo, alisToken, likesCount] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
-        dispatch('getLikesCount', { articleId }),
-        dispatch('getArticleComments', { articleId })
+        dispatch('getLikesCount', { articleId })
       ])
+      const comments = []
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, {
         article: { ...article, body, userInfo, alisToken, comments }
@@ -375,12 +375,12 @@ const actions = {
       article.user_id,
       articleId
     )
-    const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+    const [userInfo, alisToken, likesCount] = await Promise.all([
       dispatch('getUserInfo', { userId: article.user_id }),
       dispatch('getAlisToken', { articleId }),
-      dispatch('getLikesCount', { articleId }),
-      dispatch('getArticleComments', { articleId })
+      dispatch('getLikesCount', { articleId })
     ])
+    const comments = []
     commit(types.SET_LIKES_COUNT, { likesCount })
     commit(types.SET_ARTICLE_DETAIL, {
       article: { ...article, body, userInfo, alisToken, comments }
@@ -963,12 +963,12 @@ const actions = {
   async getPurchaedArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/api/me/articles/purchased/${articleId}`)
-      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+      const [userInfo, alisToken, likesCount] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
-        dispatch('getLikesCount', { articleId }),
-        dispatch('getArticleComments', { articleId })
+        dispatch('getLikesCount', { articleId })
       ])
+      const comments = []
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
       commit(types.SET_IS_FETCHED_PURCHASED_ARTICLE, { isFetched: true })
