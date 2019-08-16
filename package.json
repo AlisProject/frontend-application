@@ -14,6 +14,7 @@
     "lf": "yarn lint && yarn format",
     "precommit": "npm run lint",
     "build": "./build.sh",
+    "build:ci": "./build.sh ci",
     "deploy": "./deploy.sh",
     "sls:deploy": "sls deploy",
     "test": "jest --config jest.config.js --verbose --no-cache",

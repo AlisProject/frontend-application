@@ -33,4 +33,8 @@ export SENTRY_DSN=${SENTRY_DSN}
 SENTRY_RELEASE=`git rev-parse HEAD`
 export SENTRY_RELEASE=${SENTRY_RELEASE}
 
-yarn nuxt build
+if [ $1 = 'ci' ];then
+  yarn nuxt build --config-file nuxt.config.ci.js
+else
+  yarn nuxt build
+fi

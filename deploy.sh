@@ -6,8 +6,6 @@ set -e
 # 値の取得に失敗した際には終了させたいので、2行に取得処理を分けている
 DIST_S3_BUCKET_NAME=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDistS3BucketName --query "Parameter.Value" --output text`
 export DIST_S3_BUCKET_NAME=${DIST_S3_BUCKET_NAME}
-SENTRY_RELEASE=`git rev-parse HEAD`
-export SENTRY_RELEASE=${SENTRY_RELEASE}
 
 # リソースをS3へアップロード
 aws s3 cp .nuxt/dist/client s3://${DIST_S3_BUCKET_NAME}/d/nuxt/dist --recursive
