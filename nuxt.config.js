@@ -104,6 +104,9 @@ module.exports = {
       retryDelay: axiosRetry.exponentialDelay
     }
   },
+  sentry: {
+    dsn: `${process.env.SENTRY_DSN}`
+  },
   srcDir: 'app',
   router: {
     base: '/'
