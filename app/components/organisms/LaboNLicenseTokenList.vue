@@ -7,7 +7,11 @@
       所有するトークンがありません
     </div>
     <div v-else class="token-list">
-      <span v-for="tokenId in tokenIds" class="token-list-element" @click="showCertificate(tokenId)">
+      <span
+        v-for="tokenId in tokenIds"
+        class="token-list-element"
+        @click="showCertificate(tokenId)"
+      >
         <span class="token-icon fa fa-check-circle">Token{{ tokenId }}</span>
       </span>
     </div>
