@@ -1,6 +1,9 @@
 <template>
   <div class="token-list-area">
-    <div v-if="tokenLoaded && tokenIds.length <= 0" class="token-list-empty">
+    <div v-if="!tokenLoaded" class="token-list-loading">
+      <i class="fa fa-spinner fa-spin" />
+    </div>
+    <div v-else-if="tokenLoaded && tokenIds.length <= 0" class="token-list-empty">
       所有するトークンがありません
     </div>
     <div v-else class="token-list">
@@ -131,6 +134,7 @@ export default {
   }
 }
 
+.token-list-loading,
 .token-list-empty {
   font-size: 16px;
   text-align: center;
