@@ -3,11 +3,11 @@
     <div v-if="tokenLoaded && tokenIds.length <= 0" class="token-list-empty">
       所有するトークンがありません
     </div>
-    <ul v-else class="token-list">
-      <li v-for="tokenId in tokenIds" class="token-list-element" @click="showCertificate(tokenId)">
-        トークン{{ tokenId }}
-      </li>
-    </ul>
+    <div v-else class="token-list">
+      <span v-for="tokenId in tokenIds" class="token-list-element" @click="showCertificate(tokenId)">
+        <span class="token-icon fa fa-check-circle">Token{{ tokenId }}</span>
+      </span>
+    </div>
     <labo-n-license-token-certificate-modal v-if="laboLicenseTokenCertificateModal.isShow" />
   </div>
 </template>
@@ -110,20 +110,24 @@ export default {
 
 <style lang="scss" scoped>
 .token-list {
-  font-size: 16px;
+  font-size: 14px;
   letter-spacing: 0.8px;
   padding: 0;
-  margin: 10;
-  line-height: 1.2;
+  margin: 10px;
+  line-height: 40px;
   cursor: pointer;
   list-style: none;
+  word-break: keep-all;
+  padding-left: 57px;
 
   .token-list-element {
+    width: 102px;
     cursor: pointer;
-    padding-bottom: 10px;
+    padding: 7px;
+    margin-right: 5px;
     text-align: center;
     color: #0086cc;
-    word-break: break-all;
+    word-break: keep-all;
   }
 }
 
