@@ -6,7 +6,7 @@
       <div v-else>
         <div v-if="isMobile()">
           <h2 class="title">
-            この機能はスマートフォンからは利用出来ません
+            この機能はモバイル端末からは利用出来ません
           </h2>
         </div>
         <div v-else-if="!isMetaMaskInstalled" class="request-install-metamask">
@@ -28,6 +28,19 @@
           <div v-if="isTargetNetwork">
             <h1 class="title">
               ライセンストークン管理
+            </h1>
+            <h1 class="documentation">
+              <ul>
+                <li>
+                  貴方が著作権を保有するコンテンツのみご利用下さい。
+                </li>
+                <li>α版のためトークンに名前は付けられず、DRM未対応です。</li>
+                <li>ファイルの保持は永続的に保証されるものではありません。</li>
+                <li>
+                  ファイルのダウンロードはライセンストークンの所有者のみ可能です。
+                </li>
+                <li>証明書のデザインがアレなのは、そのうちなんとかします。</li>
+              </ul>
             </h1>
             <labo-n-license-token-dropzone />
             <div class="certification-list">
@@ -153,6 +166,14 @@ export default {
   font-weight: 500;
   letter-spacing: 5px;
   text-align: center;
+  margin: 0 0 40px;
+  line-height: 1.5;
+}
+
+.documentation {
+  color: #030303;
+  font-size: 14px;
+  text-align: left;
   margin: 0 0 40px;
   line-height: 1.5;
 }

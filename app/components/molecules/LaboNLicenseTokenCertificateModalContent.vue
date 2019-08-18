@@ -26,9 +26,6 @@
       コンテンツをダウンロードする
     </div>
 
-    <div class="notes">
-      ダウンロードはライセンストークンの所有者のみ可能です。<br>また本機能はα版であり、コンテンツのダウンロードを永続的に保証するものではありません。
-    </div>
     <button class="close-button" @click="closeModal">
       もどる
     </button>
