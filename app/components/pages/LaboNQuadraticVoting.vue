@@ -14,10 +14,10 @@
       <the-loader v-else-if="isLoading" :isLoading="isLoading" class="area-title" />
       <template v-else>
         <h1 class="area-title">
-          マジョリティ・ジャッジメント
+          Quadratic Voting
         </h1>
         <div v-if="!exists" class="area-description">
-          あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリー案に対して、評価の選択肢をどれかひとつ選んでください。
+          2020年度のALIS Projectの運営方針としてあなたが望ましいものは何ですか？
         </div>
         <div v-if="!exists" class="area-mj-grid">
           <labo-n-quadratic-voting-grid
