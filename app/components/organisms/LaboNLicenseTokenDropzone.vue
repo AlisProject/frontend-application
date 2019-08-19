@@ -2,7 +2,7 @@
   <div>
     <dropzone id="license-token-dropzone" ref="el" :options="options" :destroyDropzone="true" />
     <div class="mint-amount-area">
-      発行数
+      発行するトークン数
       <select id="mint-amount">
         <option v-for="i in 10" :value="i">
           {{ i }}
