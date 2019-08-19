@@ -26,17 +26,21 @@
       コンテンツをダウンロードする
     </div>
 
-    <button class="close-button" @click="closeModal">
-      もどる
-    </button>
+    <app-button class="transfer-button" @click="closeAndOpenTransferModal()">
+      トークンを送る
+    </app-button>
   </div>
 </template>
 
 <script>
 /* global Web3 */
 import { mapGetters, mapActions } from 'vuex'
+import AppButton from '../atoms/AppButton'
 
 export default {
+  components: {
+    AppButton
+  },
   data() {
     return {
       downloadFailed: false,
@@ -112,10 +116,20 @@ export default {
       const signature = await web3.eth.personal.sign(data, window.ethereum.selectedAddress)
       return signature
     },
-    closeModal() {
+    closeAndOpenTransferModal() {
       this.setLaboLicenseTokenCertificateModal({ isShow: false })
+
+      this.setLaboLicenseTokenTransferModalValues({ tokenId: this.tokenId })
+      setTimeout(() => {
+        this.setLaboLicenseTokenTransferModal({ isShow: true })
+      }, 400)
     },
-    ...mapActions('user', ['setLaboLicenseTokenCertificateModal', 'getLicenseTokenFileDownloadUrl'])
+    ...mapActions('user', [
+      'setLaboLicenseTokenCertificateModal',
+      'setLaboLicenseTokenTransferModal',
+      'setLaboLicenseTokenTransferModalValues',
+      'getLicenseTokenFileDownloadUrl'
+    ])
   }
 }
 </script>
@@ -199,16 +213,7 @@ export default {
   }
 }
 
-.close-button {
-  background-color: #fff;
-  border-radius: 30px;
-  border: 1px solid #0086cc;
-  color: #0086cc;
-  cursor: pointer;
-  display: block;
-  height: 37px;
+.transfer-button {
   margin: 40px auto;
-  width: 256px;
-  outline: none;
 }
 </style>

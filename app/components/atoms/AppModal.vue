@@ -74,7 +74,8 @@ export default {
       'confirmPurchaseArticleModal',
       'withdrawalDetailModal',
       'inputWithdrawAuthCodeModal',
-      'laboLicenseTokenCertificateModal'
+      'laboLicenseTokenCertificateModal',
+      'laboLicenseTokenTransferModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -202,6 +203,9 @@ export default {
       if (this.laboLicenseTokenCertificateModal.isShow) {
         this.setLaboLicenseTokenCertificateModal({ isShow: false })
       }
+      if (this.laboLicenseTokenTransferModal.isShow) {
+        this.setLaboLicenseTokenTransferModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -236,7 +240,8 @@ export default {
       'setConfirmPurchaseArticleModal',
       'setWithdrawalDetailModal',
       'setInputWithdrawAuthCodeModal',
-      'setLaboLicenseTokenCertificateModal'
+      'setLaboLicenseTokenCertificateModal',
+      'setLaboLicenseTokenTransferModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

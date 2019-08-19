@@ -16,6 +16,7 @@
       </span>
     </div>
     <labo-n-license-token-certificate-modal v-if="laboLicenseTokenCertificateModal.isShow" />
+    <labo-n-license-token-transfer-modal v-if="laboLicenseTokenTransferModal.isShow" />
   </div>
 </template>
 
@@ -25,10 +26,12 @@ import { mapActions, mapGetters } from 'vuex'
 
 const LaboNLicenseTokenCertificateModal = () =>
   import('../organisms/LaboNLicenseTokenCertificateModal')
+const LaboNLicenseTokenTransferModal = () => import('../organisms/LaboNLicenseTokenTransferModal')
 
 export default {
   components: {
-    LaboNLicenseTokenCertificateModal
+    LaboNLicenseTokenCertificateModal,
+    LaboNLicenseTokenTransferModal
   },
   data() {
     return {
@@ -81,7 +84,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['laboLicenseTokenCertificateModal'])
+    ...mapGetters('user', ['laboLicenseTokenCertificateModal', 'laboLicenseTokenTransferModal'])
   },
   async mounted() {
     this.tokenIds = await this.getOwnedTokenIds()

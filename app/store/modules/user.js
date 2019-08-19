@@ -180,6 +180,10 @@ const state = () => ({
     isShow: false,
     tokenId: ''
   },
+  laboLicenseTokenTransferModal: {
+    isShow: false,
+    tokenId: ''
+  },
   applications: [],
   application: {},
   connectedApplications: [],
@@ -230,6 +234,7 @@ const getters = {
   },
   inputWithdrawAuthCodeModal: (state) => state.inputWithdrawAuthCodeModal,
   laboLicenseTokenCertificateModal: (state) => state.laboLicenseTokenCertificateModal,
+  laboLicenseTokenTransferModal: (state) => state.laboLicenseTokenTransferModal,
   applications: (state) => state.applications,
   application: (state) => state.application,
   connectedApplications: (state) => state.connectedApplications,
@@ -1123,6 +1128,12 @@ const actions = {
   },
   setLaboLicenseTokenCertificateModalValues({ commit }, { tokenId }) {
     commit(types.SET_LABO_LICENSE_TOKEN_CERTIFICATE_MODAL_VALUES, { tokenId })
+  },
+  setLaboLicenseTokenTransferModal({ commit }, { isShow }) {
+    commit(types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL, { isShow })
+  },
+  setLaboLicenseTokenTransferModalValues({ commit }, { tokenId }) {
+    commit(types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL_VALUES, { tokenId })
   }
 }
 
@@ -1441,6 +1452,12 @@ const mutations = {
   },
   [types.SET_LABO_LICENSE_TOKEN_CERTIFICATE_MODAL_VALUES](state, { tokenId }) {
     state.laboLicenseTokenCertificateModal.tokenId = tokenId
+  },
+  [types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL](state, { isShow }) {
+    state.laboLicenseTokenTransferModal.isShow = isShow
+  },
+  [types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL_VALUES](state, { tokenId }) {
+    state.laboLicenseTokenTransferModal.tokenId = tokenId
   },
   [types.SET_APPLICATIONS](state, { applications }) {
     state.applications = applications
