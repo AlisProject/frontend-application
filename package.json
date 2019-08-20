@@ -45,6 +45,7 @@
     "serverless-prune-plugin": "^1.3.2",
     "smoothscroll-polyfill": "^0.4.3",
     "url-regex": "^4.1.1",
+    "vue-numeric-input": "^1.0.5",
     "vuelidate": "^0.7.4",
     "vuex-toast": "^0.1.3"
   },

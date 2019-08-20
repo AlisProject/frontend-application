@@ -14,13 +14,19 @@
             <span v-if="column.key === 'record_header'">
               {{ record.text }}
             </span>
-            <span v-else>
-              <input
+            <span v-else-if="column.key === 'voting'">
+              <vue-numeric-input
+                v-model="votedValues[record.option]"
                 class="client-input"
-                type="radio"
-                :name="column.key"
-                @change="$emit('level-changed', { key: column.key, value: record.level })"
-              >
+                :min="0"
+                :max="10"
+                :value="0"
+                :name="record.option"
+                @change="checkRemainingCredit"
+              />
+            </span>
+            <span v-else>
+              {{ votedValues[record.option] ** 2 }}
             </span>
           </td>
         </tr>
@@ -30,11 +36,22 @@
 </template>
 
 <script>
+import VueNumericInput from 'vue-numeric-input'
+
 export default {
+  components: {
+    VueNumericInput
+  },
   props: {
     records: Array,
     columns: Array,
-    filterKey: String
+    votedValues: Object,
+    remainingCredit: Number
+  },
+  methods: {
+    checkRemainingCredit(newValue) {
+      console.log(newValue)
+    }
   }
 }
 </script>

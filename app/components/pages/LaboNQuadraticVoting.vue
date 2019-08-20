@@ -1,7 +1,7 @@
 <template>
   <div class="quadratic-voting-container">
     <app-header />
-    <div class="area-mj">
+    <div class="area-qv">
       <template v-if="!loginUser">
         本機能のご利用にはログインしていただく必要があります。
       </template>
@@ -19,18 +19,25 @@
         <div v-if="!exists" class="area-description">
           2020年度のALIS Projectの運営方針としてあなたが望ましいものは何ですか？
         </div>
-        <div v-if="!exists" class="area-mj-grid">
+        <div v-if="!exists" class="area-credit">
+          <span v-if="overCredit">※クレジットが足りません</span>
+          残クレジット:
+          <span>{{ remainingCredit }}</span>
+        </div>
+        <div v-if="!exists" class="area-qv-grid">
           <labo-n-quadratic-voting-grid
             :records="gridRecords"
-            :columns="topicOptions"
-            @level-changed="levelChanged"
+            :columns="columns"
+            :votedValues="votedValues"
+            :remainingCredit="remainingCredit"
+            @value-changed="valueChanged"
           />
         </div>
         <div v-if="!exists" class="area-submit-button">
           <app-button
             class="save-button"
             :isLoading="isProcessing"
-            :disabled="isInvalid || isProcessing"
+            :disabled="isInvalid || isProcessing || overCredit"
             @click="onSubmit"
           >
             保存する
@@ -69,29 +76,26 @@ export default {
       phoneNumberVerifiedUser: true,
       exists: true,
       isLoading: true,
-      topicOptions: [
-        { key: 'record_header', text: '' },
-        { key: 'opt1', text: 'テクノロジー' },
-        { key: 'opt2', text: '神仏' },
-        { key: 'opt3', text: '音楽' },
-        { key: 'opt4', text: '恋愛・出会い' },
-        { key: 'opt5', text: 'おもしろ' }
+      columns: [
+        { key: 'record_header', text: '運営方針' },
+        { key: 'voting', text: '投票' },
+        { key: 'spent_credit', text: '消費クレジット' }
       ],
       gridRecords: [
-        { level: 7, text: '絶対に必要' },
-        { level: 6, text: 'かなり必要' },
-        { level: 5, text: 'やや必要' },
-        { level: 4, text: 'どちらでもない' },
-        { level: 3, text: 'やや不要' },
-        { level: 2, text: 'かなり不要' },
-        { level: 1, text: '絶対に不要' }
+        { option: 'opt1', text: '暗号通貨ALISの価格を上げる' },
+        { option: 'opt2', text: '暗号通貨ALISが使える場所やサービスを増やす' },
+        { option: 'opt3', text: 'Platformを利用するユーザー数を増やす' },
+        { option: 'opt4', text: 'Platformの機能を充実させる' },
+        { option: 'opt5', text: 'Platformのすべての機能をEthereumパブリックチェーン上で実装する' },
+        { option: 'opt6', text: 'R&Dの比率を増やしEthereumやBlockchainのエコシステムへ貢献' }
       ],
-      selectedLevels: {
-        opt1: null,
-        opt2: null,
-        opt3: null,
-        opt4: null,
-        opt5: null
+      votedValues: {
+        opt1: 0,
+        opt2: 0,
+        opt3: 0,
+        opt4: 0,
+        opt5: 0,
+        opt6: 0
       }
     }
   },
@@ -119,7 +123,9 @@ export default {
   },
   computed: {
     isInvalid() {
-      return !Object.values(this.selectedLevels).every((value) => value)
+      // TODO:
+      // return !Object.values(this.votedValues).every((value) => value)
+      return false
     },
     isAvailable() {
       // 運用時にtrueを返し、フラグを立てる
@@ -129,21 +135,34 @@ export default {
       // stgでのみ有効
       return !this.isProduction
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser'])
-    // isProduction() {
-    //   return process.env.ALIS_APP_ID === 'alis'
-    // }
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
+    },
+    remainingCredit() {
+      let totalVotedValue = 0
+      for (const key in this.votedValues) {
+        totalVotedValue += this.votedValues[key] ** 2
+      }
+
+      // TODO: refactoring
+      return 100 - totalVotedValue
+    },
+    overCredit() {
+      return this.remainingCredit < 0
+    }
   },
   methods: {
-    levelChanged(target) {
-      this.selectedLevels[target.key] = target.value
+    valueChanged(target) {
+      this.votedValues[target.option] = target.value
     },
     async onSubmit() {
       try {
         if (this.isInvalid || this.isProcessing) return
         this.isProcessing = true
-        const { opt1, opt2, opt3, opt4, opt5 } = this.selectedLevels
-        await this.postQuadraticVoting({ opt1, opt2, opt3, opt4, opt5 })
+        // TODO: リファクタリング
+        const { opt1, opt2, opt3, opt4, opt5, opt6 } = this.votedValues
+        await this.postQuadraticVoting({ opt1, opt2, opt3, opt4, opt5, opt6 })
         this.sendNotification({ text: '選択を保存しました' })
         this.exists = true
       } catch (error) {
@@ -179,29 +198,31 @@ export default {
   grid-template-areas:
     "app-header  app-header  app-header"
     "...         ...         ...       "
-    "mj          mj          mj        "
+    "qv          qv          qv        "
     "app-footer  app-footer  app-footer";
   grid-template-columns: 1fr 460px 1fr;
   grid-template-rows: 100px 50px 1fr 75px;
   min-height: 100vh;
 }
 
-.area-mj {
+.area-qv {
   display: grid;
-  grid-area: mj;
+  grid-area: qv;
   grid-template-columns: auto;
   grid-gap: 30px;
   justify-items: center;
   grid-template-rows:
     15px
     30px
+    15px
     330px
     1fr;
   /* prettier-ignore */
   grid-template-areas:
     'title'
     'description'
-    'mj-grid'
+    'credit'
+    'qv-grid'
     'submit-button';
 }
 
@@ -219,9 +240,16 @@ export default {
   margin: 0;
 }
 
-.area-mj-grid {
+.area-credit {
+  font-size: 30px;
+  grid-area: credit;
+  letter-spacing: 1.33px;
+  margin: 0;
+}
+
+.area-qv-grid {
   display: grid;
-  grid-area: mj-grid;
+  grid-area: qv-grid;
 }
 
 /* iPad */
@@ -230,7 +258,7 @@ export default {
     margin: 40px 30px;
   }
 
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
       120px
@@ -244,7 +272,7 @@ export default {
     grid-template-columns: 1fr 460px 1fr;
   }
 
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
       60px
@@ -259,7 +287,7 @@ export default {
 
 /* iPhone XS MAX, XR, Plus */
 @media screen and (max-width: 667px) {
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
       60px
@@ -274,14 +302,15 @@ export default {
     grid-template-rows: 66px 40px 1fr min-content;
   }
 
-  .area-mj {
+  .area-qv {
     display: grid;
-    grid-area: mj;
+    grid-area: qv;
     grid-template-columns: auto;
     grid-gap: 30px;
     justify-items: center;
     grid-template-rows:
       25px
+      60px
       60px
       900px
       1fr;
@@ -289,7 +318,8 @@ export default {
     grid-template-areas:
       'title'
       'description'
-      'mj-grid'
+      'credit'
+      'qv-grid'
       'submit-button';
   }
 
@@ -307,9 +337,16 @@ export default {
     margin: 0;
   }
 
-  .area-mj-grid {
+  .area-description {
+    font-size: 15px;
+    grid-area: credit;
+    letter-spacing: 1.33px;
+    margin: 0;
+  }
+
+  .area-qv-grid {
     display: grid;
-    grid-area: mj-grid;
+    grid-area: qv-grid;
   }
 
   .area-submit-button {
@@ -319,7 +356,7 @@ export default {
 
 /* iPhone XS MAX, XR, Plus */
 @media screen and (max-width: 568px) {
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
       60px
@@ -330,7 +367,7 @@ export default {
 
 /* iPhone XS MAX, XR, Plus */
 @media screen and (max-width: 414px) {
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
       60px
@@ -341,7 +378,7 @@ export default {
 
 /* iPhone X */
 @media screen and (max-width: 375px) {
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
       60px
@@ -355,7 +392,7 @@ export default {
     grid-template-columns: 10px 1fr 10px;
   }
 
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
       60px
