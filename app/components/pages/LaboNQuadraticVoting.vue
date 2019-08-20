@@ -20,7 +20,7 @@
           2020年度のALIS Projectの運営方針としてあなたが望ましいものは何ですか？
         </div>
         <div v-if="!exists" class="area-credit">
-          <span v-if="overCredit" class="over-credit-text">※クレジットが足りません</span>
+          <span v-if="isInvalid" class="over-credit-text">※クレジットが足りません</span>
           残クレジット:
           <span>{{ remainingCredit }}</span>
         </div>
@@ -37,7 +37,7 @@
           <app-button
             class="save-button"
             :isLoading="isProcessing"
-            :disabled="isInvalid || isProcessing || overCredit"
+            :disabled="isInvalid || isProcessing"
             @click="onSubmit"
           >
             保存する
@@ -123,14 +123,11 @@ export default {
   },
   computed: {
     isInvalid() {
-      // TODO:
-      // return !Object.values(this.votedValues).every((value) => value)
-      return false
+      return this.remainingCredit < 0
     },
     isAvailable() {
       // 運用時にtrueを返し、フラグを立てる
       // return true
-      // return false
 
       // stgでのみ有効
       return !this.isProduction
@@ -147,9 +144,6 @@ export default {
 
       // TODO: refactoring
       return 100 - totalVotedValue
-    },
-    overCredit() {
-      return this.remainingCredit < 0
     }
   },
   methods: {

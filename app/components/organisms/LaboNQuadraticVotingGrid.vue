@@ -23,7 +23,6 @@
               :name="record.option"
               :size="10"
               :align="right"
-              @change="checkRemainingCredit"
             />
           </td>
           <td>
@@ -45,13 +44,7 @@ export default {
   props: {
     records: Array,
     columns: Array,
-    votedValues: Object,
-    remainingCredit: Number
-  },
-  methods: {
-    checkRemainingCredit(newValue) {
-      console.log(newValue)
-    }
+    votedValues: Object
   }
 }
 </script>
