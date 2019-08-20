@@ -73,7 +73,9 @@ export default {
       'mobileEditorHeaderPostArticleModal',
       'confirmPurchaseArticleModal',
       'withdrawalDetailModal',
-      'inputWithdrawAuthCodeModal'
+      'inputWithdrawAuthCodeModal',
+      'laboLicenseTokenCertificateModal',
+      'laboLicenseTokenTransferModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
@@ -198,6 +200,12 @@ export default {
       if (this.inputWithdrawAuthCodeModal.isShow) {
         this.setInputWithdrawAuthCodeModal({ isShow: false })
       }
+      if (this.laboLicenseTokenCertificateModal.isShow) {
+        this.setLaboLicenseTokenCertificateModal({ isShow: false })
+      }
+      if (this.laboLicenseTokenTransferModal.isShow) {
+        this.setLaboLicenseTokenTransferModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -231,7 +239,9 @@ export default {
       'setMobileEditorHeaderPostArticleModal',
       'setConfirmPurchaseArticleModal',
       'setWithdrawalDetailModal',
-      'setInputWithdrawAuthCodeModal'
+      'setInputWithdrawAuthCodeModal',
+      'setLaboLicenseTokenCertificateModal',
+      'setLaboLicenseTokenTransferModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',
