@@ -20,7 +20,7 @@
           2020年度のALIS Projectの運営方針としてあなたが望ましいものは何ですか？
         </div>
         <div v-if="!exists" class="area-credit">
-          <span v-if="overCredit">※クレジットが足りません</span>
+          <span v-if="overCredit" class="over-credit-text">※クレジットが足りません</span>
           残クレジット:
           <span>{{ remainingCredit }}</span>
         </div>
@@ -212,10 +212,10 @@ export default {
   grid-gap: 30px;
   justify-items: center;
   grid-template-rows:
-    15px
+    20px
     30px
-    15px
-    330px
+    0
+    344px
     1fr;
   /* prettier-ignore */
   grid-template-areas:
@@ -227,7 +227,7 @@ export default {
 }
 
 .area-title {
-  font-size: 20px;
+  font-size: 28px;
   grid-area: title;
   letter-spacing: 1.33px;
   margin: 0;
@@ -241,10 +241,21 @@ export default {
 }
 
 .area-credit {
-  font-size: 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-top: 23px;
+  width: 833px;
+  font-size: 23px;
   grid-area: credit;
   letter-spacing: 1.33px;
   margin: 0;
+
+  .over-credit-text {
+    color: red;
+    margin-right: 10px;
+    font-size: 15px;
+  }
 }
 
 .area-qv-grid {

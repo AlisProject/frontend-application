@@ -16,6 +16,7 @@
     "build": "./build.sh",
     "build:ci": "./build.sh ci",
     "deploy": "./deploy.sh",
+    "bd": "yarn build && yarn deploy && yarn",
     "sls:deploy": "sls deploy",
     "test": "jest --config jest.config.js --verbose --no-cache",
     "test:coverage": "jest --config jest.config.js --no-cache --coverage",

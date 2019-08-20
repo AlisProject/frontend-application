@@ -10,24 +10,24 @@
       </thead>
       <tbody>
         <tr v-for="record in records">
-          <td v-for="column in columns">
-            <span v-if="column.key === 'record_header'">
-              {{ record.text }}
-            </span>
-            <span v-else-if="column.key === 'voting'">
-              <vue-numeric-input
-                v-model="votedValues[record.option]"
-                class="client-input"
-                :min="0"
-                :max="10"
-                :value="0"
-                :name="record.option"
-                @change="checkRemainingCredit"
-              />
-            </span>
-            <span v-else>
-              {{ votedValues[record.option] ** 2 }}
-            </span>
+          <td class="record-header">
+            {{ record.text }}
+          </td>
+          <td>
+            <vue-numeric-input
+              v-model="votedValues[record.option]"
+              class="client-input"
+              :min="0"
+              :max="10"
+              :value="0"
+              :name="record.option"
+              :size="10"
+              :align="right"
+              @change="checkRemainingCredit"
+            />
+          </td>
+          <td>
+            {{ votedValues[record.option] ** 2 }}
           </td>
         </tr>
       </tbody>
@@ -84,9 +84,13 @@ td {
   text-align: center;
 }
 
+td.record-header {
+  text-align: left;
+}
+
 th,
 td {
-  min-width: 120px;
+  min-width: 50px;
   padding: 10px 20px;
 }
 
