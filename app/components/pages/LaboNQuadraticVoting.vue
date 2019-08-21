@@ -57,7 +57,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '~/components/organisms/AppHeader'
-import TheLoader from '../atoms/TheLoader'
 import LaboNQuadraticVotingGrid from '~/components/organisms/LaboNQuadraticVotingGrid'
 import AppFooter from '~/components/organisms/AppFooter'
 import AppButton from '../atoms/AppButton'
@@ -65,7 +64,6 @@ import AppButton from '../atoms/AppButton'
 export default {
   components: {
     AppHeader,
-    TheLoader,
     LaboNQuadraticVotingGrid,
     AppFooter,
     AppButton
@@ -270,7 +268,7 @@ export default {
       69px
       0
       388px
-      1fr
+      1fr;
   }
 }
 
@@ -282,8 +280,7 @@ export default {
   }
 
   .area-qv {
-    grid-template-rows:
-      0 67px 0 285px 1fr;
+    grid-template-rows: 0 67px 0 285px 1fr;
   }
 
   .area-credit {
@@ -298,8 +295,7 @@ export default {
   }
 
   .area-qv {
-    grid-template-rows:
-      24px 64px 0 312px 1fr
+    grid-template-rows: 24px 64px 0 312px 1fr;
   }
 
   .area-credit {
@@ -313,8 +309,7 @@ export default {
   }
 
   .area-qv {
-    grid-template-rows:
-      1px 63px 0 450px 1fr;
+    grid-template-rows: 1px 63px 0 450px 1fr;
   }
 }
 </style>

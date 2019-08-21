@@ -124,11 +124,11 @@ td {
     min-width: 90px;
   }
 
-  .client-input{
+  .client-input {
     width: 80px;
   }
 
-  .btn-decrement{
+  .btn-decrement {
     padding-right: 32px;
   }
 }
