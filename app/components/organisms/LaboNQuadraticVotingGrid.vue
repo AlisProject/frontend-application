@@ -115,8 +115,8 @@ td {
 @media screen and (max-width: 414px) {
   th,
   td {
-    min-width: 2rem;
-    padding: 10px 13px;
+    min-width: 90px;
+    padding: 1px 1px;
   }
 }
 

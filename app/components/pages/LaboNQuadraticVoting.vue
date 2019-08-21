@@ -272,112 +272,19 @@ export default {
   }
 }
 
-@media screen and (max-width: 812px) {
-  .quadratic-voting-container {
-    grid-template-columns: 1fr 460px 1fr;
-  }
-
-  .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      330px
-      1fr;
-  }
-
-  .area-app-footer-container {
-    margin-top: 35px;
-  }
-}
-
-/* iPhone XS MAX, XR, Plus */
-@media screen and (max-width: 667px) {
-  .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      350px
-      1fr;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .quadratic-voting-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 66px 40px 1fr min-content;
-  }
-
-  .area-qv {
-    display: grid;
-    grid-area: qv;
-    grid-template-columns: auto;
-    grid-gap: 30px;
-    justify-items: center;
-    grid-template-rows:
-      25px
-      60px
-      60px
-      900px
-      1fr;
-    /* prettier-ignore */
-    grid-template-areas:
-      'title'
-      'description'
-      'credit'
-      'qv-grid'
-      'submit-button';
-  }
-
-  .area-title {
-    font-size: 20px;
-    grid-area: title;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-description {
-    font-size: 15px;
-    grid-area: description;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-description {
-    font-size: 15px;
-    grid-area: credit;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-qv-grid {
-    display: grid;
-    grid-area: qv-grid;
-  }
-
-  .area-submit-button {
-    margin-top: 15px;
-  }
-}
-
-/* iPhone XS MAX, XR, Plus */
-@media screen and (max-width: 568px) {
-  .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      350px
-      1fr;
-  }
-}
-
 /* iPhone XS MAX, XR, Plus */
 @media screen and (max-width: 414px) {
+  .quadratic-voting-container {
+    grid-template-columns: 7px 400px 7px;
+    grid-template-rows: 50px 50px 1fr 75px;
+  }
   .area-qv {
     grid-template-rows:
-      25px
-      60px
-      530px
-      1fr;
+      0 67px 0 285px 1fr;
+  }
+
+  .area-credit {
+    width: 100%;
   }
 }
 
