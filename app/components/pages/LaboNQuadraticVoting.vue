@@ -81,12 +81,12 @@ export default {
         { key: 'spent_credit', text: '消費クレジット' }
       ],
       gridRecords: [
-        { option: 'opt1', text: '暗号通貨ALISの価格を上げる' },
-        { option: 'opt2', text: '暗号通貨ALISが使える場所やサービスを増やす' },
-        { option: 'opt3', text: 'Platformを利用するユーザー数を増やす' },
-        { option: 'opt4', text: 'Platformの機能を充実させる' },
-        { option: 'opt5', text: 'Platformのすべての機能をEthereumパブリックチェーン上で実装する' },
-        { option: 'opt6', text: 'R&Dの比率を増やしEthereumやBlockchainのエコシステムへ貢献' }
+        { option: 'opt1', text: '暗号通貨ALISが使える場所やサービスを増やす' },
+        { option: 'opt2', text: '広告を出稿してユーザー数を増やす' },
+        { option: 'opt3', text: 'とにかく機能を充実させる' },
+        { option: 'opt4', text: 'ToBビジネスに注力する' },
+        { option: 'opt5', text: 'すべての機能をEthereumパブリックチェーンへ移行' },
+        { option: 'opt6', text: 'R&DでEthereumやBlockchainのエコシステムへ貢献' }
       ],
       votedValues: {
         opt1: 0,
@@ -208,7 +208,7 @@ export default {
     20px
     30px
     0
-    344px
+    348px
     1fr;
   /* prettier-ignore */
   grid-template-areas:
@@ -238,7 +238,7 @@ export default {
   justify-content: flex-end;
   align-items: flex-end;
   padding-top: 23px;
-  width: 833px;
+  width: 709px;
   font-size: 23px;
   grid-area: credit;
   letter-spacing: 1.33px;
