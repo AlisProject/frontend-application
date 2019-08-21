@@ -312,10 +312,7 @@ export default {
 
   .area-qv {
     grid-template-rows:
-      25px
-      60px
-      550px
-      1fr;
+      1px 63px 0 450px 1fr;
   }
 }
 </style>
