@@ -269,7 +269,7 @@ export default {
       25px
       69px
       0
-      704px
+      388px
       1fr
   }
 }

@@ -100,7 +100,6 @@ td {
   th,
   td {
     min-width: 120px;
-    padding: 35px 20px;
   }
 }
 
@@ -108,7 +107,6 @@ td {
   th,
   td {
     min-width: 1rem;
-    padding: 10px 20px;
   }
 }
 
