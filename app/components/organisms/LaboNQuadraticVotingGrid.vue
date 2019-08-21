@@ -23,6 +23,8 @@
               :name="record.option"
               :size="10"
               :align="right"
+              :precision="0"
+              @blur="checkNan"
             />
           </td>
           <td>
@@ -45,6 +47,14 @@ export default {
     records: Array,
     columns: Array,
     votedValues: Object
+  },
+  methods: {
+    checkNan(event) {
+      console.log(event.srcElement)
+      if (event.srcElement.value === '') {
+        this.votedValues[event.srcElement.name] = 0
+      }
+    }
   }
 }
 </script>
