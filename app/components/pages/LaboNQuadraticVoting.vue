@@ -11,7 +11,9 @@
       <template v-else-if="!isAvailable">
         本機能は現在無効です。
       </template>
-      <the-loader v-else-if="isLoading" :isLoading="isLoading" class="area-title" />
+      <template v-else-if="isLoading">
+        <i v-if="isLoading" class="fa fa-spinner fa-pulse fa-fw" />
+      </template>
       <template v-else>
         <h1 class="area-title">
           Quadratic Voting
@@ -55,7 +57,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '~/components/organisms/AppHeader'
-import TheLoader from '../atoms/TheLoader'
 import LaboNQuadraticVotingGrid from '~/components/organisms/LaboNQuadraticVotingGrid'
 import AppFooter from '~/components/organisms/AppFooter'
 import AppButton from '../atoms/AppButton'
@@ -63,7 +64,6 @@ import AppButton from '../atoms/AppButton'
 export default {
   components: {
     AppHeader,
-    TheLoader,
     LaboNQuadraticVotingGrid,
     AppFooter,
     AppButton
@@ -81,12 +81,12 @@ export default {
         { key: 'spent_credit', text: '消費クレジット' }
       ],
       gridRecords: [
-        { option: 'opt1', text: '暗号通貨ALISの価格を上げる' },
-        { option: 'opt2', text: '暗号通貨ALISが使える場所やサービスを増やす' },
-        { option: 'opt3', text: 'Platformを利用するユーザー数を増やす' },
-        { option: 'opt4', text: 'Platformの機能を充実させる' },
-        { option: 'opt5', text: 'Platformのすべての機能をEthereumパブリックチェーン上で実装する' },
-        { option: 'opt6', text: 'R&Dの比率を増やしEthereumやBlockchainのエコシステムへ貢献' }
+        { option: 'opt1', text: '暗号通貨ALISが使える場所やサービスを増やす' },
+        { option: 'opt2', text: '広告を出稿してユーザー数を増やす' },
+        { option: 'opt3', text: 'とにかく機能を充実させる' },
+        { option: 'opt4', text: 'ToBビジネスに注力する' },
+        { option: 'opt5', text: 'すべての機能をEthereumパブリックチェーンへ移行' },
+        { option: 'opt6', text: 'R&DでEthereumやBlockchainのエコシステムへ貢献' }
       ],
       votedValues: {
         opt1: 0,
@@ -126,10 +126,10 @@ export default {
     },
     isAvailable() {
       // 運用時にtrueを返し、フラグを立てる
-      // return true
+      return true
 
       // stgでのみ有効
-      return !this.isProduction
+      // return !this.isProduction
     },
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     isProduction() {
@@ -208,7 +208,7 @@ export default {
     20px
     30px
     0
-    344px
+    348px
     1fr;
   /* prettier-ignore */
   grid-template-areas:
@@ -238,7 +238,7 @@ export default {
   justify-content: flex-end;
   align-items: flex-end;
   padding-top: 23px;
-  width: 833px;
+  width: 709px;
   font-size: 23px;
   grid-area: credit;
   letter-spacing: 1.33px;
@@ -265,129 +265,41 @@ export default {
   .area-qv {
     grid-template-rows:
       25px
-      120px
-      760px
-      1fr;
-  }
-}
-
-@media screen and (max-width: 812px) {
-  .quadratic-voting-container {
-    grid-template-columns: 1fr 460px 1fr;
-  }
-
-  .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      330px
-      1fr;
-  }
-
-  .area-app-footer-container {
-    margin-top: 35px;
-  }
-}
-
-/* iPhone XS MAX, XR, Plus */
-@media screen and (max-width: 667px) {
-  .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      350px
-      1fr;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .quadratic-voting-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 66px 40px 1fr min-content;
-  }
-
-  .area-qv {
-    display: grid;
-    grid-area: qv;
-    grid-template-columns: auto;
-    grid-gap: 30px;
-    justify-items: center;
-    grid-template-rows:
-      25px
-      60px
-      60px
-      900px
-      1fr;
-    /* prettier-ignore */
-    grid-template-areas:
-      'title'
-      'description'
-      'credit'
-      'qv-grid'
-      'submit-button';
-  }
-
-  .area-title {
-    font-size: 20px;
-    grid-area: title;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-description {
-    font-size: 15px;
-    grid-area: description;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-description {
-    font-size: 15px;
-    grid-area: credit;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-qv-grid {
-    display: grid;
-    grid-area: qv-grid;
-  }
-
-  .area-submit-button {
-    margin-top: 15px;
-  }
-}
-
-/* iPhone XS MAX, XR, Plus */
-@media screen and (max-width: 568px) {
-  .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      350px
+      69px
+      0
+      388px
       1fr;
   }
 }
 
 /* iPhone XS MAX, XR, Plus */
 @media screen and (max-width: 414px) {
+  .quadratic-voting-container {
+    grid-template-columns: 7px 400px 7px;
+    grid-template-rows: 50px 50px 1fr 75px;
+  }
+
   .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      530px
-      1fr;
+    grid-template-rows: 0 67px 0 285px 1fr;
+  }
+
+  .area-credit {
+    width: 100%;
   }
 }
 
 /* iPhone X */
 @media screen and (max-width: 375px) {
+  .quadratic-voting-container {
+    grid-template-columns: 7px 361px 7px;
+  }
+
   .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      600px
-      1fr;
+    grid-template-rows: 24px 64px 0 312px 1fr;
+  }
+
+  .area-credit {
+    font-size: 15px;
   }
 }
 
@@ -397,11 +309,7 @@ export default {
   }
 
   .area-qv {
-    grid-template-rows:
-      25px
-      60px
-      550px
-      1fr;
+    grid-template-rows: 1px 63px 0 450px 1fr;
   }
 }
 </style>

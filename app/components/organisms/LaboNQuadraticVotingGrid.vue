@@ -100,7 +100,6 @@ td {
   th,
   td {
     min-width: 120px;
-    padding: 35px 20px;
   }
 }
 
@@ -108,15 +107,29 @@ td {
   th,
   td {
     min-width: 1rem;
-    padding: 10px 20px;
   }
 }
 
 @media screen and (max-width: 414px) {
   th,
   td {
-    min-width: 2rem;
-    padding: 10px 13px;
+    min-width: 90px;
+    padding: 1px 1px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  th,
+  td {
+    min-width: 90px;
+  }
+
+  .client-input {
+    width: 80px;
+  }
+
+  .btn-decrement {
+    padding-right: 32px;
   }
 }
 
