@@ -11,7 +11,9 @@
       <template v-else-if="!isAvailable">
         本機能は現在無効です。
       </template>
-      <the-loader v-else-if="isLoading" :isLoading="isLoading" class="area-title" />
+      <template v-else-if="isLoading">
+        <i v-if="isLoading" class="fa fa-spinner fa-pulse fa-fw" />
+      </template>
       <template v-else>
         <h1 class="area-title">
           Quadratic Voting
