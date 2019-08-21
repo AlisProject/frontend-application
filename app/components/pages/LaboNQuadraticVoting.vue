@@ -29,7 +29,6 @@
             :records="gridRecords"
             :columns="columns"
             :votedValues="votedValues"
-            :remainingCredit="remainingCredit"
             @value-changed="valueChanged"
           />
         </div>

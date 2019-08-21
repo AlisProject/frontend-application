@@ -21,8 +21,7 @@
               :max="10"
               :value="0"
               :name="record.option"
-              :size="10"
-              :align="right"
+              :size="'10'"
               :precision="0"
               @blur="checkNan"
             />
