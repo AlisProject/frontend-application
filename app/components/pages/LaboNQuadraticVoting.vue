@@ -278,6 +278,7 @@ export default {
     grid-template-columns: 7px 400px 7px;
     grid-template-rows: 50px 50px 1fr 75px;
   }
+
   .area-qv {
     grid-template-rows:
       0 67px 0 285px 1fr;
@@ -290,12 +291,17 @@ export default {
 
 /* iPhone X */
 @media screen and (max-width: 375px) {
+  .quadratic-voting-container {
+    grid-template-columns: 7px 361px 7px;
+  }
+
   .area-qv {
     grid-template-rows:
-      25px
-      60px
-      600px
-      1fr;
+      24px 64px 0 312px 1fr
+  }
+
+  .area-credit {
+    font-size: 15px;
   }
 }
 

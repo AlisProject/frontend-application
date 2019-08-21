@@ -120,6 +120,21 @@ td {
   }
 }
 
+@media screen and (max-width: 375px) {
+  th,
+  td {
+    min-width: 90px;
+  }
+
+  .client-input{
+    width: 80px;
+  }
+
+  .btn-decrement{
+    padding-right: 32px;
+  }
+}
+
 @media screen and (max-width: 320px) {
   th,
   td {
