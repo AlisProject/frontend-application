@@ -16,6 +16,12 @@ export default {
       localStorage.getItem(
         `CognitoIdentityServiceProvider.${process.env.COGNITO_APP_CLIENT_ID}.LastAuthUser`
       ) || ''
+
+    // Sentryにユーザを紐付け
+    this.$sentry.configureScope((scope) => {
+      scope.setUser({ id: userId })
+    })
+
     const externalProviderUserIdPrefix = ['LINE-', 'Twitter-', 'Facebook-', 'Yahoo-']
     const isExternalProviderUserId = externalProviderUserIdPrefix.some((prefix) =>
       userId.startsWith(prefix)
