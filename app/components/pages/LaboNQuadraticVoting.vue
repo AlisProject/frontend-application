@@ -41,7 +41,7 @@
             :disabled="isInvalid || isProcessing"
             @click="onSubmit"
           >
-            保存する
+            投票する
           </app-button>
         </div>
         <div v-if="exists">
