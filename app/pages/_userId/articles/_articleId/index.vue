@@ -63,12 +63,16 @@ export default {
     }
   },
   async mounted() {
+    const { articleId } = this.$route.params
+
+    // 記事情報取得
     if (this.loggedIn) {
-      const { articleId } = this.$route.params
       if (this.currentUser.phoneNumberVerified) await this.postPv({ articleId })
       await this.getIsLikedArticle({ articleId })
       await this.updateArticleCommentsByCommentIds({ articleId })
 
+      // 自分の記事の場合は getPublicArticleDetail より記事情報を取得する。
+      // 但し、fetch 時に取得済みの場合は実施しない
       if (this.isCurrentUser && !this.$store.state.article.isFetchedPublicArticle) {
         await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
         this.$store.dispatch('article/setIsFetchedPublicArticle', { isFetched: true })
@@ -77,25 +81,24 @@ export default {
           paywallLine.innerHTML = `これより上のエリアが<span class="br" />無料で表示されます`
         }
         showEmbed()
-        return
-      }
-
-      await this.$store.dispatch('article/setPurchasedArticleIds')
-      const isPurchased =
-        this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
-      if (
-        isPurchased &&
-        !this.isCurrentUser &&
-        !this.$store.state.article.isFetchedPurchasedArticle
-      ) {
-        await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
-        const paywallLine = document.querySelector('.paywall-line')
-        if (paywallLine) paywallLine.remove()
-        showEmbed()
+        // 記事を購入していた場合は getPurchaedArticleDetail より記事情報を取得する。
+        // 但し、fetch 時に取得済みの場合は実施しない
+      } else if (!this.isCurrentUser && !this.$store.state.article.isFetchedPurchasedArticle) {
+        await this.$store.dispatch('article/setPurchasedArticleIds')
+        const isPurchased =
+          this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
+        if (isPurchased) {
+          await this.$store.dispatch('article/getPurchaedArticleDetail', { articleId })
+          const paywallLine = document.querySelector('.paywall-line')
+          if (paywallLine) paywallLine.remove()
+          showEmbed()
+        }
       }
     } else {
       this.setIsLikedArticle({ liked: false })
     }
+    // コメント取得
+    await this.setArticleComments({ articleId })
   },
   computed: {
     isCurrentUser() {
@@ -109,6 +112,7 @@ export default {
       'postPv',
       'getIsLikedArticle',
       'setIsLikedArticle',
+      'setArticleComments',
       'updateArticleCommentsByCommentIds'
     ])
   },
