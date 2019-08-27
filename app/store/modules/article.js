@@ -1249,6 +1249,7 @@ const mutations = {
   },
   [types.SET_ARTICLE_COMMENTS](state, { comments }) {
     state.article.comments.push(...comments)
+    state.article.initComment = true
   },
   [types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
     state.articleCommentsLastEvaluatedKey = lastEvaluatedKey
