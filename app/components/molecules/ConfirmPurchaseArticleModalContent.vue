@@ -86,7 +86,10 @@ export default {
         })
         if (status === 'done') {
           this.sendNotification({ text: '記事を購入しました' })
+          // 記事取得
           await this.getPurchaedArticleDetail({ articleId: this.article.article_id })
+          // コメント取得
+          await this.setArticleComments({ articleId: this.article.article_id })
           window.scrollTo({
             top: 0
           })
@@ -121,7 +124,12 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('article', ['getArticlePrice', 'purchaseArticle', 'getPurchaedArticleDetail']),
+    ...mapActions('article', [
+      'getArticlePrice',
+      'purchaseArticle',
+      'getPurchaedArticleDetail',
+      'setArticleComments'
+    ]),
     ...mapActions('user', ['setConfirmPurchaseArticleModal', 'getBalance'])
   }
 }
