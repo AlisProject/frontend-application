@@ -189,11 +189,11 @@ $topicCount: 10;
 .area-nav-links {
   grid-area: nav-links;
   display: grid;
-  grid-column-gap: 13px;
-  grid-template-columns: repeat($topicCount, 96px);
+  grid-column-gap: 8px;
+  grid-template-columns: repeat($topicCount, 91px);
   /* prettier-ignore */
   grid-template-areas:
-    "topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9";
+    "topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9 topic10";
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 
@@ -216,7 +216,7 @@ $topicCount: 10;
   text-decoration: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
   white-space: nowrap;
-  width: 96px;
+  width: 91px;
 
   &:before {
     content: '';
@@ -242,7 +242,7 @@ $topicCount: 10;
     display: block;
     height: 44px;
     margin: 3px 2px 0 2px;
-    width: 90px;
+    width: 85px;
 
     .topic-display-name {
       bottom: 5px;
