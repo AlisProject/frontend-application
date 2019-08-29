@@ -63,8 +63,10 @@ const state = () => ({
   recommendedArticles: {
     articles: [],
     tmpArticles: [],
+    tmpArticleIds: [],
     page: 1,
-    isLastPage: false
+    isLastPage: false,
+    isTmpRecommendedArticlesLastPage: false
   },
   purchasedArticleIds: [],
   purchasedArticles: {
@@ -863,22 +865,51 @@ const actions = {
         !state.recommendedArticles.isTmpArticlesLastPage &&
         state.recommendedArticles.tmpArticles.length < viewCount
       ) {
-        const { Items: tmpArticles } = await this.$axios.$get('/api/articles/recommended', {
-          params: { limit: limitCount, page: state.recommendedArticles.page }
-        })
-        // ページ数追加
-        commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: state.recommendedArticles.page + 1 })
-        // ページ末尾のケースを考慮
-        if (tmpArticles.length < limitCount) {
-          commit(types.SET_RECOMMENDED_ARTICLES_IS_TMP_ARTICLES_LAST_PAGE, { isLastPage: true })
-        }
-        // ミュート済みユーザ記事を削除し、tmpArticles に追加
-        commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES, {
-          tmpArticles: tmpArticles.filter(
+        // おすすめ記事一覧取得
+        if (!state.recommendedArticles.isTmpRecommendedArticlesLastPage) {
+          const { Items: tmpArticles } = await this.$axios.$get('/api/articles/recommended', {
+            params: { limit: limitCount, page: state.recommendedArticles.page }
+          })
+          // ページ数追加
+          commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: state.recommendedArticles.page + 1 })
+          // ページ末尾のケースを考慮
+          if (tmpArticles.length < limitCount) {
+            commit(types.SET_TMP_RECOMMENDED_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+            commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: 1 })
+          }
+          // ミュート済みユーザ記事を削除し、tmpArticles に追加
+          const withOutMuteUserArticles = tmpArticles.filter(
             (article) => rootState.user.muteUsers.indexOf(article.user_id) === -1
           )
-        })
+          commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES, {
+            tmpArticles: withOutMuteUserArticles
+          })
+          commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLE_IDS, {
+            tmpArticleIds: withOutMuteUserArticles.map((i) => i.article_id)
+          })
+        }
+        // 新規記事一覧取得。おすすめ記事一覧の記事データが存在しない場合は続けて新規記事一覧から取得
+        if (state.recommendedArticles.isTmpRecommendedArticlesLastPage) {
+          const { Items: tmpArticles } = await this.$axios.$get('/api/articles/recent', {
+            params: { limit: limitCount, page: state.recommendedArticles.page }
+          })
+          // ページ数追加
+          commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: state.recommendedArticles.page + 1 })
+          // ページ末尾のケースを考慮
+          if (tmpArticles.length < limitCount) {
+            commit(types.SET_RECOMMENDED_ARTICLES_IS_TMP_ARTICLES_LAST_PAGE, { isLastPage: true })
+          }
+          // ミュート済みユーザの記事と、オススメ記事で取得した記事を除外し、tmpArticles に追加
+          commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES, {
+            tmpArticles: tmpArticles.filter(
+              (article) =>
+                rootState.user.muteUsers.indexOf(article.user_id) === -1 &&
+                state.recommendedArticles.tmpArticleIds.indexOf(article.article_id) === -1
+            )
+          })
+        }
       }
+
       // tmpArticles の先頭から表示件数の記事を取得し、store から削除
       const articles = state.recommendedArticles.tmpArticles.slice(0, viewCount)
       commit(types.DELETE_RECOMMENDED_ARTICLES_TMP_ARTICLES, { deleteCount: viewCount })
@@ -1325,9 +1356,11 @@ const mutations = {
     state.recommendedArticles = {
       articles: [],
       tmpArticles: [],
+      tmpArticleIds: [],
       page: 1,
       isLastPage: false,
-      isTmpArticlesLastPage: false
+      isTmpArticlesLastPage: false,
+      isTmpRecommendedArticlesLastPage: false
     }
     state.tipRankingArticles = {
       articles: [],
@@ -1413,6 +1446,9 @@ const mutations = {
   [types.SET_RECOMMENDED_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
     state.recommendedArticles.isLastPage = isLastPage
   },
+  [types.SET_TMP_RECOMMENDED_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.recommendedArticles.isTmpRecommendedArticlesLastPage = isLastPage
+  },
   [types.SET_RECOMMENDED_ARTICLES_IS_TMP_ARTICLES_LAST_PAGE](state, { isLastPage }) {
     state.recommendedArticles.isTmpArticlesLastPage = isLastPage
   },
@@ -1421,6 +1457,9 @@ const mutations = {
   },
   [types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES](state, { tmpArticles }) {
     state.recommendedArticles.tmpArticles.push(...tmpArticles)
+  },
+  [types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLE_IDS](state, { tmpArticleIds }) {
+    state.recommendedArticles.tmpArticleIds.push(...tmpArticleIds)
   },
   [types.DELETE_RECOMMENDED_ARTICLES_TMP_ARTICLES](state, { deleteCount }) {
     state.recommendedArticles.tmpArticles.splice(0, deleteCount)
