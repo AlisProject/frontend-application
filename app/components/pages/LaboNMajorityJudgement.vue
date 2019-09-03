@@ -79,13 +79,13 @@ export default {
         { key: 'opt4', text: '5％をプール' }
       ],
       gridRecords: [
-        { level: 7, text: '絶対に満足' },
+        { level: 7, text: '大変に満足' },
         { level: 6, text: 'かなり満足' },
         { level: 5, text: 'やや満足' },
         { level: 4, text: 'どちらでもない' },
         { level: 3, text: 'やや不満' },
         { level: 2, text: 'かなり不満' },
-        { level: 1, text: '絶対に不満' }
+        { level: 1, text: '大変に不満' }
       ],
       selectedLevels: {
         opt1: null,
