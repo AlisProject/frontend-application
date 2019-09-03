@@ -23,7 +23,7 @@
     "cilint": "circleci config validate -c .circleci/config.yml"
   },
   "dependencies": {
-    "@alisproject/alis-editor": "0.2.15",
+    "@alisproject/alis-editor": "^0.2.16",
     "@johmun/vue-tags-input": "^2.0.1",
     "@nuxtjs/axios": "^5.5.3",
     "@nuxtjs/markdownit": "^1.2.3",
