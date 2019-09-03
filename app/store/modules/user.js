@@ -1080,14 +1080,13 @@ const actions = {
 
   // Labo
 
-  async postMajorityJudgement({ commit }, { opt1, opt2, opt3, opt4, opt5 }) {
+  async postMajorityJudgement({ commit }, { opt1, opt2, opt3, opt4 }) {
     try {
       await this.$axios.$post('/laboratory/labo/n/majority_judgement', {
         opt_1: opt1,
         opt_2: opt2,
         opt_3: opt3,
-        opt_4: opt4,
-        opt_5: opt5
+        opt_4: opt4
       })
     } catch (error) {
       return Promise.reject(error)

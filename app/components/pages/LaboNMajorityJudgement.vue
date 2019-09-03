@@ -17,7 +17,9 @@
           マジョリティ・ジャッジメント
         </h1>
         <div v-if="!exists" class="area-description">
-          あなたが今後alis.toに必要または不要だと思うカテゴリーはどれですか？それぞれのカテゴリー案に対して、評価の選択肢をどれかひとつ選んでください。
+          あなたが今後使う上で_満足度の高いALIS投げ銭機能_のルールはどれですか？ (<a
+            href="https://alis.to/ALIS-official/articles/3k9L4QAv09Rr"
+          >記事</a>内のそれぞれの選択肢を確認した上でご投票ください）
         </div>
         <div v-if="!exists" class="area-mj-grid">
           <labo-n-majority-judgement-grid
@@ -71,27 +73,25 @@ export default {
       isLoading: true,
       topicOptions: [
         { key: 'record_header', text: '' },
-        { key: 'opt1', text: 'テクノロジー' },
-        { key: 'opt2', text: '神仏' },
-        { key: 'opt3', text: '音楽' },
-        { key: 'opt4', text: '恋愛・出会い' },
-        { key: 'opt5', text: 'おもしろ' }
+        { key: 'opt1', text: '10％をバーン' },
+        { key: 'opt2', text: '10％をプール' },
+        { key: 'opt3', text: '5%をバーン' },
+        { key: 'opt4', text: '5％をプール' }
       ],
       gridRecords: [
-        { level: 7, text: '絶対に必要' },
-        { level: 6, text: 'かなり必要' },
-        { level: 5, text: 'やや必要' },
+        { level: 7, text: '絶対に満足' },
+        { level: 6, text: 'かなり満足' },
+        { level: 5, text: 'やや満足' },
         { level: 4, text: 'どちらでもない' },
-        { level: 3, text: 'やや不要' },
-        { level: 2, text: 'かなり不要' },
-        { level: 1, text: '絶対に不要' }
+        { level: 3, text: 'やや不満' },
+        { level: 2, text: 'かなり不満' },
+        { level: 1, text: '絶対に不満' }
       ],
       selectedLevels: {
         opt1: null,
         opt2: null,
         opt3: null,
-        opt4: null,
-        opt5: null
+        opt4: null
       }
     }
   },
@@ -123,8 +123,8 @@ export default {
     },
     isAvailable() {
       // 運用時にtrueを返し、フラグを立てる
-      // return true
-      return false
+      return true
+      // return false
 
       // stgでのみ有効
       // return !this.isProduction
@@ -142,8 +142,8 @@ export default {
       try {
         if (this.isInvalid || this.isProcessing) return
         this.isProcessing = true
-        const { opt1, opt2, opt3, opt4, opt5 } = this.selectedLevels
-        await this.postMajorityJudgement({ opt1, opt2, opt3, opt4, opt5 })
+        const { opt1, opt2, opt3, opt4 } = this.selectedLevels
+        await this.postMajorityJudgement({ opt1, opt2, opt3, opt4 })
         this.sendNotification({ text: '選択を保存しました' })
         this.exists = true
       } catch (error) {
