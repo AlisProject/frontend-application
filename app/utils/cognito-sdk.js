@@ -6,6 +6,7 @@ import {
   CognitoRefreshToken
 } from 'amazon-cognito-identity-js'
 import AWS from 'aws-sdk/global'
+import S3 from 'aws-sdk/clients/s3'
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
 export default class CognitoSDK {
@@ -23,7 +24,7 @@ export default class CognitoSDK {
 
     return new Promise((resolve, reject) => {
       if (!this.cognitoUser) {
-        reject(new Error('There is not cognito User'))
+        reject(new Error('There is no cognito User'))
         return
       }
 
@@ -38,7 +39,8 @@ export default class CognitoSDK {
           phone_number_verified: phoneNumberVerified,
           'custom:private_eth_address': privateEthAddress
         } = session.idToken.payload
-        resolve({ userId, emailVerified, phoneNumberVerified, privateEthAddress })
+        const jwtToken = session.idToken.jwtToken
+        resolve({ userId, emailVerified, phoneNumberVerified, privateEthAddress, jwtToken })
       })
     })
   }

@@ -2051,9 +2051,10 @@ autoprefixer@^9.4.9:
     postcss "^7.0.16"
     postcss-value-parser "^3.3.1"
 
-aws-sdk@^2.411.0:
-  version "2.411.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.411.0.tgz#1a6df6c4eed402b43a047c57eaef839279718b34"
+aws-sdk@^2.506.0:
+  version "2.506.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.506.0.tgz#fcc741a3d750c1a4684bc103b1994a47d9414d16"
+  integrity sha512-DuA9YPLRXWadf4CyEty8OaK6/lSD3fJEbwgJUT42NWIEd7Ex86wyrU/f9n9SaysRrBcrBIbghfHgD/pFQOCJKA==
   dependencies:
     buffer "4.9.1"
     events "1.1.1"
@@ -4495,6 +4496,11 @@ fs-write-stream-atomic@^1.0.8:
 fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
+
+fs@0.0.1-security:
+  version "0.0.1-security"
+  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
+  integrity sha1-invTcYa23d84E/I4WLV+yq9eQdQ=
 
 fsevents@^1.2.7:
   version "1.2.7"
@@ -9716,6 +9722,7 @@ vue@^2.5.16, vue@^2.5.21:
 vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
+  integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
 vuelidate@^0.7.4:
   version "0.7.4"

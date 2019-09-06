@@ -10,6 +10,11 @@
       class="profile-icon"
       src="~assets/images/pc/notification/icon_announce.png"
     >
+    <img
+      v-else-if="notification.type === 'csvdownload'" 
+      class="profile-icon"
+      src="~assets/images/pc/notification/icon_download.png"
+    >
     <template
       v-if="
         notification.type === 'comment' ||

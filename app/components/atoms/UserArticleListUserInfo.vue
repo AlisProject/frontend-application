@@ -28,6 +28,9 @@
           <nuxt-link class="menu-option" to="/me/settings/mute_users">
             ミュートしたユーザー
           </nuxt-link>
+          <nuxt-link class="menu-option" to="/me/token_history_csv_download">
+            トークンの全履歴をエクスポート
+          </nuxt-link>
         </div>
       </div>
     </no-ssr>
