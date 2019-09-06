@@ -126,7 +126,7 @@ export default {
     },
     isAvailable() {
       // 運用時にtrueを返し、フラグを立てる
-      return true
+      return false
 
       // stgでのみ有効
       // return !this.isProduction
