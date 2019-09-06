@@ -69,7 +69,7 @@ module.exports = {
       },
       {
         rel: 'stylesheet',
-        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css'
       }
     ]
   },
@@ -105,8 +105,7 @@ module.exports = {
     }
   },
   sentry: {
-    dsn: `${process.env.SENTRY_DSN}`,
-    config: {}
+    dsn: `${process.env.SENTRY_DSN}`
   },
   srcDir: 'app',
   router: {
@@ -152,6 +151,7 @@ module.exports = {
     PUBLIC_CHAIN_BRIDGE_ADDRESS: process.env.PUBLIC_CHAIN_BRIDGE_ADDRESS,
     PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS: process.env.PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS,
     PUBLIC_CHAIN_REGISTRY_ADDRESS: process.env.PUBLIC_CHAIN_REGISTRY_ADDRESS,
+    PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS: process.env.PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS,
     PUBLIC_CHAIN_OPERATION_URL: process.env.PUBLIC_CHAIN_OPERATION_URL,
     DAILY_LIMIT_TOKEN_SEND_VALUE: process.env.DAILY_LIMIT_TOKEN_SEND_VALUE,
     SENTRY_DSN: process.env.SENTRY_DSN,

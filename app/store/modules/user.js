@@ -176,6 +176,14 @@ const state = () => ({
     address: '',
     totalAmount: null
   },
+  laboLicenseTokenCertificateModal: {
+    isShow: false,
+    tokenId: ''
+  },
+  laboLicenseTokenTransferModal: {
+    isShow: false,
+    tokenId: ''
+  },
   applications: [],
   application: {},
   connectedApplications: [],
@@ -225,6 +233,8 @@ const getters = {
     }
   },
   inputWithdrawAuthCodeModal: (state) => state.inputWithdrawAuthCodeModal,
+  laboLicenseTokenCertificateModal: (state) => state.laboLicenseTokenCertificateModal,
+  laboLicenseTokenTransferModal: (state) => state.laboLicenseTokenTransferModal,
   applications: (state) => state.applications,
   application: (state) => state.application,
   connectedApplications: (state) => state.connectedApplications,
@@ -1113,18 +1123,74 @@ const actions = {
 
   // Labo
 
-  async postMajorityJudgement({ commit }, { opt1, opt2, opt3, opt4, opt5 }) {
+  async postMajorityJudgement({ commit }, { opt1, opt2, opt3, opt4 }) {
     try {
       await this.$axios.$post('/laboratory/labo/n/majority_judgement', {
         opt_1: opt1,
         opt_2: opt2,
         opt_3: opt3,
-        opt_4: opt4,
-        opt_5: opt5
+        opt_4: opt4
       })
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+
+  async postQuadraticVoting({ commit }, { opt1, opt2, opt3, opt4, opt5, opt6 }) {
+    try {
+      await this.$axios.$post('/laboratory/labo/n/quadratic_voting', {
+        opt_1: opt1,
+        opt_2: opt2,
+        opt_3: opt3,
+        opt_4: opt4,
+        opt_5: opt5,
+        opt_6: opt6
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getLicenseTokenFileUploadUrl(
+    { commit },
+    { contentDigest, uploadFileName, uploadFileSize }
+  ) {
+    try {
+      const url = await this.$axios.$get('/laboratory/labo/n/license_token/file_upload_url', {
+        params: {
+          content_digest: contentDigest,
+          upload_file_name: uploadFileName,
+          upload_file_size: uploadFileSize
+        }
+      })
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getLicenseTokenFileDownloadUrl({ commit }, { tokenId, signature }) {
+    try {
+      const url = await this.$axios.$get('/laboratory/labo/n/license_token/file_download_url', {
+        params: {
+          token_id: tokenId,
+          signature
+        }
+      })
+      return url
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  setLaboLicenseTokenCertificateModal({ commit }, { isShow }) {
+    commit(types.SET_LABO_LICENSE_TOKEN_CERTIFICATE_MODAL, { isShow })
+  },
+  setLaboLicenseTokenCertificateModalValues({ commit }, { tokenId }) {
+    commit(types.SET_LABO_LICENSE_TOKEN_CERTIFICATE_MODAL_VALUES, { tokenId })
+  },
+  setLaboLicenseTokenTransferModal({ commit }, { isShow }) {
+    commit(types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL, { isShow })
+  },
+  setLaboLicenseTokenTransferModalValues({ commit }, { tokenId }) {
+    commit(types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL_VALUES, { tokenId })
   }
 }
 
@@ -1437,6 +1503,18 @@ const mutations = {
   [types.SET_INPUT_WITHDRAW_AUTH_CODE_MODAL_VALUES](state, { address, totalAmount }) {
     state.inputWithdrawAuthCodeModal.address = address
     state.inputWithdrawAuthCodeModal.totalAmount = totalAmount
+  },
+  [types.SET_LABO_LICENSE_TOKEN_CERTIFICATE_MODAL](state, { isShow }) {
+    state.laboLicenseTokenCertificateModal.isShow = isShow
+  },
+  [types.SET_LABO_LICENSE_TOKEN_CERTIFICATE_MODAL_VALUES](state, { tokenId }) {
+    state.laboLicenseTokenCertificateModal.tokenId = tokenId
+  },
+  [types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL](state, { isShow }) {
+    state.laboLicenseTokenTransferModal.isShow = isShow
+  },
+  [types.SET_LABO_LICENSE_TOKEN_TRANSFER_MODAL_VALUES](state, { tokenId }) {
+    state.laboLicenseTokenTransferModal.tokenId = tokenId
   },
   [types.SET_APPLICATIONS](state, { applications }) {
     state.applications = applications

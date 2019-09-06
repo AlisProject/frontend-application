@@ -73,13 +73,17 @@ export default {
       'mobileEditorHeaderPostArticleModal',
       'confirmPurchaseArticleModal',
       'withdrawalDetailModal',
-      'inputWithdrawAuthCodeModal'
+      'inputWithdrawAuthCodeModal',
+      'laboLicenseTokenCertificateModal',
+      'laboLicenseTokenTransferModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal'])
   },
   mounted() {
     this.$root.$on('closeModal', async () => {
-      await this.closeModal()
+      if (!this.firstProcessModal.isShow) {
+        await this.closeModal()
+      }
     })
   },
   methods: {
@@ -196,6 +200,12 @@ export default {
       if (this.inputWithdrawAuthCodeModal.isShow) {
         this.setInputWithdrawAuthCodeModal({ isShow: false })
       }
+      if (this.laboLicenseTokenCertificateModal.isShow) {
+        this.setLaboLicenseTokenCertificateModal({ isShow: false })
+      }
+      if (this.laboLicenseTokenTransferModal.isShow) {
+        this.setLaboLicenseTokenTransferModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -229,7 +239,9 @@ export default {
       'setMobileEditorHeaderPostArticleModal',
       'setConfirmPurchaseArticleModal',
       'setWithdrawalDetailModal',
-      'setInputWithdrawAuthCodeModal'
+      'setInputWithdrawAuthCodeModal',
+      'setLaboLicenseTokenCertificateModal',
+      'setLaboLicenseTokenTransferModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

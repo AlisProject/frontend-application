@@ -1,7 +1,7 @@
 <template>
-  <div class="majority-judgement-container">
+  <div class="quadratic-voting-container">
     <app-header />
-    <div class="area-mj">
+    <div class="area-qv">
       <template v-if="!loginUser">
         本機能のご利用にはログインしていただく必要があります。
       </template>
@@ -11,21 +11,27 @@
       <template v-else-if="!isAvailable">
         本機能は現在無効です。
       </template>
-      <the-loader v-else-if="isLoading" :isLoading="isLoading" class="area-title" />
+      <template v-else-if="isLoading">
+        <i v-if="isLoading" class="fa fa-spinner fa-pulse fa-fw" />
+      </template>
       <template v-else>
         <h1 class="area-title">
-          マジョリティ・ジャッジメント
+          Quadratic Voting
         </h1>
         <div v-if="!exists" class="area-description">
-          あなたが今後使う上で_満足度の高いALIS投げ銭機能_のルールはどれですか？ (<a
-            href="https://alis.to/ALIS-official/articles/3k9L4QAv09Rr"
-          >記事</a>内のそれぞれの選択肢を確認した上でご投票ください）
+          2020年度のALIS Projectの運営方針としてあなたが望ましいものは何ですか？
         </div>
-        <div v-if="!exists" class="area-mj-grid">
-          <labo-n-majority-judgement-grid
+        <div v-if="!exists" class="area-credit">
+          <span v-if="isInvalid" class="over-credit-text">※クレジットが足りません</span>
+          残クレジット:
+          <span>{{ remainingCredit }}</span>
+        </div>
+        <div v-if="!exists" class="area-qv-grid">
+          <labo-n-quadratic-voting-grid
             :records="gridRecords"
-            :columns="topicOptions"
-            @level-changed="levelChanged"
+            :columns="columns"
+            :votedValues="votedValues"
+            @value-changed="valueChanged"
           />
         </div>
         <div v-if="!exists" class="area-submit-button">
@@ -35,7 +41,7 @@
             :disabled="isInvalid || isProcessing"
             @click="onSubmit"
           >
-            保存する
+            投票する
           </app-button>
         </div>
         <div v-if="exists">
@@ -51,16 +57,14 @@
 import { mapActions, mapGetters } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppHeader from '~/components/organisms/AppHeader'
-import TheLoader from '../atoms/TheLoader'
-import LaboNMajorityJudgementGrid from '~/components/organisms/LaboNMajorityJudgementGrid'
+import LaboNQuadraticVotingGrid from '~/components/organisms/LaboNQuadraticVotingGrid'
 import AppFooter from '~/components/organisms/AppFooter'
 import AppButton from '../atoms/AppButton'
 
 export default {
   components: {
     AppHeader,
-    TheLoader,
-    LaboNMajorityJudgementGrid,
+    LaboNQuadraticVotingGrid,
     AppFooter,
     AppButton
   },
@@ -71,27 +75,26 @@ export default {
       phoneNumberVerifiedUser: true,
       exists: true,
       isLoading: true,
-      topicOptions: [
-        { key: 'record_header', text: '' },
-        { key: 'opt1', text: '10％をバーン' },
-        { key: 'opt2', text: '10％をプール' },
-        { key: 'opt3', text: '5%をバーン' },
-        { key: 'opt4', text: '5％をプール' }
+      columns: [
+        { key: 'record_header', text: '運営方針' },
+        { key: 'voting', text: '投票' },
+        { key: 'spent_credit', text: '消費クレジット' }
       ],
       gridRecords: [
-        { level: 7, text: '大変満足' },
-        { level: 6, text: 'かなり満足' },
-        { level: 5, text: 'やや満足' },
-        { level: 4, text: 'どちらでもない' },
-        { level: 3, text: 'やや不満' },
-        { level: 2, text: 'かなり不満' },
-        { level: 1, text: '大変不満' }
+        { option: 'opt1', text: '暗号通貨ALISが使える場所やサービスを増やす' },
+        { option: 'opt2', text: '広告を出稿してユーザー数を増やす' },
+        { option: 'opt3', text: 'とにかく機能を充実させる' },
+        { option: 'opt4', text: 'ToBビジネスに注力する' },
+        { option: 'opt5', text: 'すべての機能をEthereumパブリックチェーンへ移行' },
+        { option: 'opt6', text: 'R&DでEthereumやBlockchainのエコシステムへ貢献' }
       ],
-      selectedLevels: {
-        opt1: null,
-        opt2: null,
-        opt3: null,
-        opt4: null
+      votedValues: {
+        opt1: 0,
+        opt2: 0,
+        opt3: 0,
+        opt4: 0,
+        opt5: 0,
+        opt6: 0
       }
     }
   },
@@ -109,7 +112,7 @@ export default {
     }
 
     try {
-      const result = await this.$axios.$get('/laboratory/labo/n/majority_judgement')
+      const result = await this.$axios.$get('/laboratory/labo/n/quadratic_voting')
       this.exists = result.exists
     } catch (e) {
       console.log(e)
@@ -119,31 +122,40 @@ export default {
   },
   computed: {
     isInvalid() {
-      return !Object.values(this.selectedLevels).every((value) => value)
+      return this.remainingCredit < 0
     },
     isAvailable() {
       // 運用時にtrueを返し、フラグを立てる
-      return true
-      // return false
+      return false
 
       // stgでのみ有効
       // return !this.isProduction
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser'])
-    // isProduction() {
-    //   return process.env.ALIS_APP_ID === 'alis'
-    // }
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
+    isProduction() {
+      return process.env.ALIS_APP_ID === 'alis'
+    },
+    remainingCredit() {
+      let totalVotedValue = 0
+      for (const key in this.votedValues) {
+        totalVotedValue += this.votedValues[key] ** 2
+      }
+
+      // TODO: refactoring
+      return 100 - totalVotedValue
+    }
   },
   methods: {
-    levelChanged(target) {
-      this.selectedLevels[target.key] = target.value
+    valueChanged(target) {
+      this.votedValues[target.option] = target.value
     },
     async onSubmit() {
       try {
         if (this.isInvalid || this.isProcessing) return
         this.isProcessing = true
-        const { opt1, opt2, opt3, opt4 } = this.selectedLevels
-        await this.postMajorityJudgement({ opt1, opt2, opt3, opt4 })
+        // TODO: リファクタリング
+        const { opt1, opt2, opt3, opt4, opt5, opt6 } = this.votedValues
+        await this.postQuadraticVoting({ opt1, opt2, opt3, opt4, opt5, opt6 })
         this.sendNotification({ text: '選択を保存しました' })
         this.exists = true
       } catch (error) {
@@ -166,47 +178,49 @@ export default {
     ...mapActions({
       sendNotification: ADD_TOAST_MESSAGE
     }),
-    ...mapActions('user', ['postMajorityJudgement', 'getUserSession'])
+    ...mapActions('user', ['postQuadraticVoting', 'getUserSession'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.majority-judgement-container {
+.quadratic-voting-container {
   background-size: contain;
   display: grid;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header  app-header"
     "...         ...         ...       "
-    "mj          mj          mj        "
+    "qv          qv          qv        "
     "app-footer  app-footer  app-footer";
   grid-template-columns: 1fr 460px 1fr;
   grid-template-rows: 100px 50px 1fr 75px;
   min-height: 100vh;
 }
 
-.area-mj {
+.area-qv {
   display: grid;
-  grid-area: mj;
+  grid-area: qv;
   grid-template-columns: auto;
   grid-gap: 30px;
   justify-items: center;
   grid-template-rows:
-    15px
+    20px
     30px
-    330px
+    0
+    348px
     1fr;
   /* prettier-ignore */
   grid-template-areas:
     'title'
     'description'
-    'mj-grid'
+    'credit'
+    'qv-grid'
     'submit-button';
 }
 
 .area-title {
-  font-size: 20px;
+  font-size: 28px;
   grid-area: title;
   letter-spacing: 1.33px;
   margin: 0;
@@ -219,9 +233,27 @@ export default {
   margin: 0;
 }
 
-.area-mj-grid {
+.area-credit {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-top: 23px;
+  width: 709px;
+  font-size: 23px;
+  grid-area: credit;
+  letter-spacing: 1.33px;
+  margin: 0;
+
+  .over-credit-text {
+    color: red;
+    margin-right: 10px;
+    font-size: 15px;
+  }
+}
+
+.area-qv-grid {
   display: grid;
-  grid-area: mj-grid;
+  grid-area: qv-grid;
 }
 
 /* iPad */
@@ -230,137 +262,54 @@ export default {
     margin: 40px 30px;
   }
 
-  .area-mj {
+  .area-qv {
     grid-template-rows:
       25px
-      120px
-      760px
-      1fr;
-  }
-}
-
-@media screen and (max-width: 812px) {
-  .majority-judgement-container {
-    grid-template-columns: 1fr 460px 1fr;
-  }
-
-  .area-mj {
-    grid-template-rows:
-      25px
-      60px
-      330px
-      1fr;
-  }
-
-  .area-app-footer-container {
-    margin-top: 35px;
-  }
-}
-
-/* iPhone XS MAX, XR, Plus */
-@media screen and (max-width: 667px) {
-  .area-mj {
-    grid-template-rows:
-      25px
-      60px
-      350px
-      1fr;
-  }
-}
-
-@media screen and (max-width: 640px) {
-  .majority-judgement-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 66px 40px 1fr min-content;
-  }
-
-  .area-mj {
-    display: grid;
-    grid-area: mj;
-    grid-template-columns: auto;
-    grid-gap: 30px;
-    justify-items: center;
-    grid-template-rows:
-      25px
-      60px
-      900px
-      1fr;
-    /* prettier-ignore */
-    grid-template-areas:
-      'title'
-      'description'
-      'mj-grid'
-      'submit-button';
-  }
-
-  .area-title {
-    font-size: 20px;
-    grid-area: title;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-description {
-    font-size: 15px;
-    grid-area: description;
-    letter-spacing: 1.33px;
-    margin: 0;
-  }
-
-  .area-mj-grid {
-    display: grid;
-    grid-area: mj-grid;
-  }
-
-  .area-submit-button {
-    margin-top: 15px;
-  }
-}
-
-/* iPhone XS MAX, XR, Plus */
-@media screen and (max-width: 568px) {
-  .area-mj {
-    grid-template-rows:
-      25px
-      60px
-      350px
+      69px
+      0
+      388px
       1fr;
   }
 }
 
 /* iPhone XS MAX, XR, Plus */
 @media screen and (max-width: 414px) {
-  .area-mj {
-    grid-template-rows:
-      25px
-      60px
-      530px
-      1fr;
+  .quadratic-voting-container {
+    grid-template-columns: 7px 400px 7px;
+    grid-template-rows: 50px 50px 1fr 75px;
+  }
+
+  .area-qv {
+    grid-template-rows: 0 67px 0 285px 1fr;
+  }
+
+  .area-credit {
+    width: 100%;
   }
 }
 
 /* iPhone X */
 @media screen and (max-width: 375px) {
-  .area-mj {
-    grid-template-rows:
-      25px
-      60px
-      600px
-      1fr;
+  .quadratic-voting-container {
+    grid-template-columns: 7px 361px 7px;
+  }
+
+  .area-qv {
+    grid-template-rows: 24px 64px 0 312px 1fr;
+  }
+
+  .area-credit {
+    font-size: 15px;
   }
 }
 
 @media screen and (max-width: 320px) {
-  .majority-judgement-container {
+  .quadratic-voting-container {
     grid-template-columns: 10px 1fr 10px;
   }
 
-  .area-mj {
-    grid-template-rows:
-      25px
-      60px
-      550px
-      1fr;
+  .area-qv {
+    grid-template-rows: 1px 63px 0 450px 1fr;
   }
 }
 </style>

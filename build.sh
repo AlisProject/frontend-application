@@ -22,11 +22,19 @@ PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmP
 export PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS=${PUBLIC_CHAIN_ALIS_TOKEN_ADDRESS}
 PUBLIC_CHAIN_REGISTRY_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainRegistryAddress --query "Parameter.Value" --output text`
 export PUBLIC_CHAIN_REGISTRY_ADDRESS=${PUBLIC_CHAIN_REGISTRY_ADDRESS}
+PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainLicenseTokenAddress --query "Parameter.Value" --output text`
+export PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS=${PUBLIC_CHAIN_LICENSE_TOKEN_ADDRESS}
 PUBLIC_CHAIN_OPERATION_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainOperationUrl --query "Parameter.Value" --output text`
 export PUBLIC_CHAIN_OPERATION_URL=${PUBLIC_CHAIN_OPERATION_URL}
 DAILY_LIMIT_TOKEN_SEND_VALUE=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDailyLimitTokenSendValue --query "Parameter.Value" --output text`
 export DAILY_LIMIT_TOKEN_SEND_VALUE=${DAILY_LIMIT_TOKEN_SEND_VALUE}
 SENTRY_DSN=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmSentryDSN --query "Parameter.Value" --output text`
 export SENTRY_DSN=${SENTRY_DSN}
+SENTRY_RELEASE=`git rev-parse HEAD`
+export SENTRY_RELEASE=${SENTRY_RELEASE}
 
-yarn nuxt build
+if [ $1 = 'ci' ];then
+  yarn nuxt build --config-file nuxt.config.ci.js
+else
+  yarn nuxt build
+fi

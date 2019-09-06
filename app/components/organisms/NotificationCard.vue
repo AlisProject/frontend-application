@@ -26,6 +26,10 @@
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />
     </div>
+    <div v-else-if="notification.type === 'fraud'" class="notification-card-container">
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
+    </div>
     <nuxt-link v-else :to="articlePath" class="notification-card-container">
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />

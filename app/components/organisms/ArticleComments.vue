@@ -1,7 +1,8 @@
 <template>
   <div id="article-comments" class="area-article-comments">
-    <div class="header-contents">
+    <div class="area-header-contents">
       <span class="to-comment-button" @click="moveToBottom">コメントする</span>
+      <the-loader :is-loading="!article.initComment" class="comment-loader" />
       <span
         v-if="hasArticleCommentsLastEvaluatedKey"
         class="read-more-button"
@@ -17,10 +18,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ArticleComment from '../atoms/ArticleComment'
+import TheLoader from '../atoms/TheLoader'
 
 export default {
   components: {
-    ArticleComment
+    ArticleComment,
+    TheLoader
   },
   props: {
     comments: {
@@ -35,7 +38,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['loggedIn', 'currentUser']),
-    ...mapGetters('article', ['hasArticleCommentsLastEvaluatedKey'])
+    ...mapGetters('article', ['hasArticleCommentsLastEvaluatedKey', 'article'])
   },
   methods: {
     async showComments() {
@@ -86,28 +89,33 @@ export default {
   background-color: rgba(35, 37, 56, 0.05);
   display: grid;
   grid-area: article-comments;
-  padding: 20px calc(50% - 324px) 8px;
+  padding: 8px calc(50% - 324px) 8px;
 }
 
-.header-contents {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row-reverse;
-  padding: 20px 0 20px;
+.area-header-contents {
+  display: grid;
+  grid-template-columns: 110px 1fr 75px;
+  /* prettier-ignore */
+  grid-template-areas:
+    'read-more           loader           to-comment';
 }
 
 .read-more-button {
+  grid-area: read-more;
   color: #6e6e6e;
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;
+  padding: 32px 0px 20px;
 }
 
 .to-comment-button {
+  grid-area: to-comment;
   color: #0086cc;
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;
+  padding: 32px 0px 20px;
 }
 
 .article-comments {
@@ -117,7 +125,7 @@ export default {
 
 @media screen and (max-width: 640px) {
   .area-article-comments {
-    padding: 20px 10px 8px;
+    padding: 8px 10px 8px;
   }
 }
 </style>

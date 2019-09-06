@@ -11,6 +11,7 @@ const state = () => ({
   isLikedArticle: false,
   popularArticles: [],
   tmpPopularArticles: [],
+  tmpPopularArticleIds: [],
   newArticles: [],
   tmpNewArticles: [],
   publicArticles: [],
@@ -42,6 +43,7 @@ const state = () => ({
   page: 1,
   isLastPage: false,
   isTmpArticlesLastPage: false,
+  isTmpPopularArticlesLastPage: false,
   topics: [],
   articleType: 'popularArticles',
   topicType: null,
@@ -61,8 +63,10 @@ const state = () => ({
   recommendedArticles: {
     articles: [],
     tmpArticles: [],
+    tmpArticleIds: [],
     page: 1,
-    isLastPage: false
+    isLastPage: false,
+    isTmpRecommendedArticlesLastPage: false
   },
   purchasedArticleIds: [],
   purchasedArticles: {
@@ -171,6 +175,7 @@ const getters = {
 }
 
 const actions = {
+  // 人気記事一覧を取得。人気記事が取得し終わったら、そのまま新規記事を続けて取得する。
   async getPopularArticles({ commit, dispatch, state, rootState }, { topic }) {
     try {
       commit(types.SET_FETCHING_ARTICLE_TOPIC, { topic })
@@ -179,22 +184,49 @@ const actions = {
       const viewCount = 12
       const limitCount = viewCount + 6
       while (!state.isTmpArticlesLastPage && state.tmpPopularArticles.length < viewCount) {
-        const { Items: tmpArticles } = await this.$axios.$get('/api/articles/popular', {
-          params: { topic, limit: limitCount, page: state.page }
-        })
-        // ページ数追加
-        commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
-        // ページ末尾のケースを考慮
-        if (tmpArticles.length < limitCount) {
-          commit(types.SET_TMP_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
-        }
-        // ミュート済みユーザの記事を削除し、tmpArticles に追加
-        commit(types.SET_TMP_POPULAR_ARTICLES, {
-          tmpArticles: tmpArticles.filter(
+        // 人気記事一覧取得
+        if (!state.isTmpPopularArticlesLastPage) {
+          const { Items: tmpArticles } = await this.$axios.$get('/api/articles/popular', {
+            params: { topic, limit: limitCount, page: state.page }
+          })
+          // ページ数追加
+          commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
+          // ページ末尾のケースを考慮
+          if (tmpArticles.length < limitCount) {
+            commit(types.SET_TMP_POPULAR_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+            commit(types.SET_ARTICLES_PAGE, { page: 1 })
+          }
+          // ミュート済みユーザの記事を除外し、tmpPopularArticles に追加
+          const withOutMuteUserArticles = tmpArticles.filter(
             (article) => rootState.user.muteUsers.indexOf(article.user_id) === -1
           )
-        })
+          commit(types.SET_TMP_POPULAR_ARTICLES, { tmpArticles: withOutMuteUserArticles })
+          commit(types.SET_TMP_POPULAR_ARTICLE_IDS, {
+            tmpArticleIds: withOutMuteUserArticles.map((i) => i.article_id)
+          })
+        }
+        // 新規記事一覧取得。人気記事一覧の記事データが存在しない場合は続けて新規記事一覧から取得
+        if (state.isTmpPopularArticlesLastPage) {
+          const { Items: tmpArticles } = await this.$axios.$get('/api/articles/recent', {
+            params: { topic, limit: limitCount, page: state.page }
+          })
+          // ページ数追加
+          commit(types.SET_ARTICLES_PAGE, { page: state.page + 1 })
+          // ページ末尾のケースを考慮
+          if (tmpArticles.length < limitCount) {
+            commit(types.SET_TMP_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+          }
+          // ミュート済みユーザの記事かつ、人気記事で取得した記事を除外し、tmpPopularArticles に追加
+          commit(types.SET_TMP_POPULAR_ARTICLES, {
+            tmpArticles: tmpArticles.filter(
+              (article) =>
+                rootState.user.muteUsers.indexOf(article.user_id) === -1 &&
+                state.tmpPopularArticleIds.indexOf(article.article_id) === -1
+            )
+          })
+        }
       }
+
       // tmpArticles の先頭から表示件数の記事を取得し、store から削除
       const articles = state.tmpPopularArticles.slice(0, viewCount)
       commit(types.DELETE_TMP_POPULAR_ARTICLES, { deleteCount: viewCount })
@@ -213,7 +245,7 @@ const actions = {
       // また、トピックに対しても同様の問題が生じるため別トピックの取得中は記事の追加を行わない。
       if (state.articleType === 'newArticles' || state.fetchingArticleTopic !== topic) return
       commit(types.SET_POPULAR_ARTICLES, { articles: articlesWithData })
-      if (state.tmpNewArticles.length < 1 && state.isTmpArticlesLastPage) {
+      if (state.tmpPopularArticles.length < 1 && state.isTmpArticlesLastPage) {
         commit(types.SET_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
       }
     } catch (error) {
@@ -322,12 +354,12 @@ const actions = {
         article.user_id,
         articleId
       )
-      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+      const [userInfo, alisToken, likesCount] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
-        dispatch('getLikesCount', { articleId }),
-        dispatch('getArticleComments', { articleId })
+        dispatch('getLikesCount', { articleId })
       ])
+      const comments = []
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, {
         article: { ...article, body, userInfo, alisToken, comments }
@@ -345,12 +377,12 @@ const actions = {
       article.user_id,
       articleId
     )
-    const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+    const [userInfo, alisToken, likesCount] = await Promise.all([
       dispatch('getUserInfo', { userId: article.user_id }),
       dispatch('getAlisToken', { articleId }),
-      dispatch('getLikesCount', { articleId }),
-      dispatch('getArticleComments', { articleId })
+      dispatch('getLikesCount', { articleId })
     ])
+    const comments = []
     commit(types.SET_LIKES_COUNT, { likesCount })
     commit(types.SET_ARTICLE_DETAIL, {
       article: { ...article, body, userInfo, alisToken, comments }
@@ -833,22 +865,51 @@ const actions = {
         !state.recommendedArticles.isTmpArticlesLastPage &&
         state.recommendedArticles.tmpArticles.length < viewCount
       ) {
-        const { Items: tmpArticles } = await this.$axios.$get('/api/articles/recommended', {
-          params: { limit: limitCount, page: state.recommendedArticles.page }
-        })
-        // ページ数追加
-        commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: state.recommendedArticles.page + 1 })
-        // ページ末尾のケースを考慮
-        if (tmpArticles.length < limitCount) {
-          commit(types.SET_RECOMMENDED_ARTICLES_IS_TMP_ARTICLES_LAST_PAGE, { isLastPage: true })
-        }
-        // ミュート済みユーザ記事を削除し、tmpArticles に追加
-        commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES, {
-          tmpArticles: tmpArticles.filter(
+        // おすすめ記事一覧取得
+        if (!state.recommendedArticles.isTmpRecommendedArticlesLastPage) {
+          const { Items: tmpArticles } = await this.$axios.$get('/api/articles/recommended', {
+            params: { limit: limitCount, page: state.recommendedArticles.page }
+          })
+          // ページ数追加
+          commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: state.recommendedArticles.page + 1 })
+          // ページ末尾のケースを考慮
+          if (tmpArticles.length < limitCount) {
+            commit(types.SET_TMP_RECOMMENDED_ARTICLES_IS_LAST_PAGE, { isLastPage: true })
+            commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: 1 })
+          }
+          // ミュート済みユーザ記事を削除し、tmpArticles に追加
+          const withOutMuteUserArticles = tmpArticles.filter(
             (article) => rootState.user.muteUsers.indexOf(article.user_id) === -1
           )
-        })
+          commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES, {
+            tmpArticles: withOutMuteUserArticles
+          })
+          commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLE_IDS, {
+            tmpArticleIds: withOutMuteUserArticles.map((i) => i.article_id)
+          })
+        }
+        // 新規記事一覧取得。おすすめ記事一覧の記事データが存在しない場合は続けて新規記事一覧から取得
+        if (state.recommendedArticles.isTmpRecommendedArticlesLastPage) {
+          const { Items: tmpArticles } = await this.$axios.$get('/api/articles/recent', {
+            params: { limit: limitCount, page: state.recommendedArticles.page }
+          })
+          // ページ数追加
+          commit(types.SET_RECOMMENDED_ARTICLES_PAGE, { page: state.recommendedArticles.page + 1 })
+          // ページ末尾のケースを考慮
+          if (tmpArticles.length < limitCount) {
+            commit(types.SET_RECOMMENDED_ARTICLES_IS_TMP_ARTICLES_LAST_PAGE, { isLastPage: true })
+          }
+          // ミュート済みユーザの記事と、オススメ記事で取得した記事を除外し、tmpArticles に追加
+          commit(types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES, {
+            tmpArticles: tmpArticles.filter(
+              (article) =>
+                rootState.user.muteUsers.indexOf(article.user_id) === -1 &&
+                state.recommendedArticles.tmpArticleIds.indexOf(article.article_id) === -1
+            )
+          })
+        }
       }
+
       // tmpArticles の先頭から表示件数の記事を取得し、store から削除
       const articles = state.recommendedArticles.tmpArticles.slice(0, viewCount)
       commit(types.DELETE_RECOMMENDED_ARTICLES_TMP_ARTICLES, { deleteCount: viewCount })
@@ -933,12 +994,12 @@ const actions = {
   async getPurchaedArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/api/me/articles/purchased/${articleId}`)
-      const [userInfo, alisToken, likesCount, comments] = await Promise.all([
+      const [userInfo, alisToken, likesCount] = await Promise.all([
         dispatch('getUserInfo', { userId: article.user_id }),
         dispatch('getAlisToken', { articleId }),
-        dispatch('getLikesCount', { articleId }),
-        dispatch('getArticleComments', { articleId })
+        dispatch('getLikesCount', { articleId })
       ])
+      const comments = []
       commit(types.SET_LIKES_COUNT, { likesCount })
       commit(types.SET_ARTICLE_DETAIL, { article: { ...article, userInfo, alisToken, comments } })
       commit(types.SET_IS_FETCHED_PURCHASED_ARTICLE, { isFetched: true })
@@ -1129,6 +1190,9 @@ const mutations = {
   [types.SET_TMP_POPULAR_ARTICLES](state, { tmpArticles }) {
     state.tmpPopularArticles.push(...tmpArticles)
   },
+  [types.SET_TMP_POPULAR_ARTICLE_IDS](state, { tmpArticleIds }) {
+    state.tmpPopularArticleIds.push(...tmpArticleIds)
+  },
   [types.DELETE_TMP_POPULAR_ARTICLES](state, { deleteCount }) {
     state.tmpPopularArticles.splice(0, deleteCount)
   },
@@ -1216,6 +1280,7 @@ const mutations = {
   },
   [types.SET_ARTICLE_COMMENTS](state, { comments }) {
     state.article.comments.push(...comments)
+    state.article.initComment = true
   },
   [types.SET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
     state.articleCommentsLastEvaluatedKey = lastEvaluatedKey
@@ -1270,15 +1335,20 @@ const mutations = {
   [types.SET_TMP_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
     state.isTmpArticlesLastPage = isLastPage
   },
+  [types.SET_TMP_POPULAR_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.isTmpPopularArticlesLastPage = isLastPage
+  },
   [types.RESET_ARTICLE_DATA](state) {
     state.newArticles = []
     state.popularArticles = []
     state.tmpNewArticles = []
     state.tmpPopularArticles = []
+    state.tmpPopularArticleIds = []
     state.isFetching = false
     state.page = 1
     state.isLastPage = false
     state.isTmpArticlesLastPage = false
+    state.isTmpPopularArticlesLastPage = false
     state.eyecatchArticles = []
     // fixme: 本来であれば tipEyecatchArticles も記事情報なので初期化すべきだが、
     //        TOPページから他カテゴリに遷移する際に記事が何も表示されない状態となり、見栄えが悪いためコメントアウトしている。
@@ -1286,9 +1356,11 @@ const mutations = {
     state.recommendedArticles = {
       articles: [],
       tmpArticles: [],
+      tmpArticleIds: [],
       page: 1,
       isLastPage: false,
-      isTmpArticlesLastPage: false
+      isTmpArticlesLastPage: false,
+      isTmpRecommendedArticlesLastPage: false
     }
     state.tipRankingArticles = {
       articles: [],
@@ -1374,6 +1446,9 @@ const mutations = {
   [types.SET_RECOMMENDED_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
     state.recommendedArticles.isLastPage = isLastPage
   },
+  [types.SET_TMP_RECOMMENDED_ARTICLES_IS_LAST_PAGE](state, { isLastPage }) {
+    state.recommendedArticles.isTmpRecommendedArticlesLastPage = isLastPage
+  },
   [types.SET_RECOMMENDED_ARTICLES_IS_TMP_ARTICLES_LAST_PAGE](state, { isLastPage }) {
     state.recommendedArticles.isTmpArticlesLastPage = isLastPage
   },
@@ -1382,6 +1457,9 @@ const mutations = {
   },
   [types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLES](state, { tmpArticles }) {
     state.recommendedArticles.tmpArticles.push(...tmpArticles)
+  },
+  [types.SET_RECOMMENDED_ARTICLES_TMP_ARTICLE_IDS](state, { tmpArticleIds }) {
+    state.recommendedArticles.tmpArticleIds.push(...tmpArticleIds)
   },
   [types.DELETE_RECOMMENDED_ARTICLES_TMP_ARTICLES](state, { deleteCount }) {
     state.recommendedArticles.tmpArticles.splice(0, deleteCount)

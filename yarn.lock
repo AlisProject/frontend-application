@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@alisproject/alis-editor@^0.2.13":
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.2.13.tgz#fb6aaa94f3bb449573b6271f24f31d320ba9210c"
+"@alisproject/alis-editor@^0.2.16":
+  version "0.2.16"
+  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.2.16.tgz#90b83e6f7d28931ec1803aeced0e72d5d4752efe"
   dependencies:
     "@ckeditor/ckeditor5-autosave" "^10.0.2"
     "@ckeditor/ckeditor5-basic-styles" "^10.1.0"
@@ -3603,6 +3603,10 @@ dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
+dropzone@^5.5.1:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/dropzone/-/dropzone-5.5.1.tgz#06e2f513e61d6aa363d4b556f18574f47cf7ba26"
+
 duplexer@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/duplexer/-/duplexer-0.1.1.tgz#ace6ff808c1ce66b57d1ebf97977acb02334cfc1"
@@ -3872,12 +3876,14 @@ eslint-scope@^4.0.0:
     estraverse "^4.1.1"
 
 eslint-utils@^1.3.0, eslint-utils@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/eslint-utils/-/eslint-utils-1.3.1.tgz#9a851ba89ee7c460346f97cf8939c7298827e512"
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/eslint-utils/-/eslint-utils-1.4.2.tgz#166a5180ef6ab7eb462f162fd0e6f2463d7309ab"
+  dependencies:
+    eslint-visitor-keys "^1.0.0"
 
 eslint-visitor-keys@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.1.0.tgz#e2a82cea84ff246ad6fb57f9bde5b46621459ec2"
 
 eslint@^4.0.0, eslint@^4.5.0:
   version "4.19.1"
@@ -6433,8 +6439,8 @@ mississippi@^3.0.0:
     through2 "^2.0.0"
 
 mixin-deep@^1.2.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/mixin-deep/-/mixin-deep-1.3.1.tgz#a49e7268dce1a0d9698e45326c5626df3543d0fe"
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/mixin-deep/-/mixin-deep-1.3.2.tgz#1120b43dc359a785dce65b55b82e257ccf479566"
   dependencies:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
@@ -6760,6 +6766,13 @@ num2fraction@^1.2.2:
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
+
+"nuxt-dropzone @^1.0.2":
+  name nuxt-dropzone
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/nuxt-dropzone/-/nuxt-dropzone-1.0.2.tgz#7b39014ebf4c2084ea5c976f8d9f7b3cead2c7af"
+  dependencies:
+    vue2-dropzone "3.5.8"
 
 nuxt@^2.8.1:
   version "2.8.1"
@@ -8592,8 +8605,8 @@ set-value@^0.4.3:
     to-object-path "^0.3.0"
 
 set-value@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/set-value/-/set-value-2.0.0.tgz#71ae4a88f0feefbbf52d1ea604f3fb315ebb6274"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/set-value/-/set-value-2.0.1.tgz#a18d40530e6f07de4228c7defe4227af8cad005b"
   dependencies:
     extend-shallow "^2.0.1"
     is-extendable "^0.1.1"
@@ -9680,6 +9693,10 @@ vue-no-ssr@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
 
+vue-numeric-input@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/vue-numeric-input/-/vue-numeric-input-1.0.5.tgz#c34f6cfee6163c16dd40f61810748075a1ae0505"
+
 vue-router@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.6.tgz#2e4f0f9cbb0b96d0205ab2690cfe588935136ac3"
@@ -9714,6 +9731,12 @@ vue-template-compiler@^2.6.10:
 vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
+
+vue2-dropzone@3.5.8:
+  version "3.5.8"
+  resolved "https://registry.yarnpkg.com/vue2-dropzone/-/vue2-dropzone-3.5.8.tgz#cbe92d5424b5cc62c4d4ad62814d0cf6f3bb6cda"
+  dependencies:
+    dropzone "^5.5.1"
 
 vue@^2.5.16, vue@^2.5.21:
   version "2.6.7"

@@ -33,6 +33,7 @@
     </template>
     <div v-if="notification.type === 'comment'" class="sub-icon comment" />
     <div v-if="notification.type === 'tip'" class="sub-icon tip" />
+    <div v-if="notification.type === 'fraud'" class="fraud-icon fa fa-exclamation-circle" />
     <div
       v-if="notification.type === 'tip_error' || notification.type === 'purchase_error'"
       class="tip-error-icon"
@@ -102,6 +103,13 @@ export default {
       background-position-x: 3px;
       background-position-y: 3px;
     }
+  }
+
+  .fraud-icon {
+    font-size: 40px;
+    color: red;
+    width: 40px;
+    height: 40px;
   }
 
   .tip-error-icon {

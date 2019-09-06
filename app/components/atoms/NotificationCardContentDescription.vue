@@ -35,6 +35,9 @@
   <p v-else-if="notification.type === 'purchase_error'" class="area-description">
     <span class="gray-darker">記事の購入</span>に<span class="gray-darker">失敗</span>しました。<span class="gray-darker">再度購入</span>してください。"{{ decodedArticleTitle }}"
   </p>
+  <p v-else-if="notification.type === 'fraud'" class="area-description">
+    <span class="gray-darker">{{ notification.fraud_body }}</span>
+  </p>
 </template>
 
 <script>

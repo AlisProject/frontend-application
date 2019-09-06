@@ -18,7 +18,7 @@ references:
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
-  slack: circleci/slack@3.2.0
+  slack: circleci/slack@3.3.0
 
 executors:
   default:
@@ -87,13 +87,13 @@ jobs:
       - prepare-deployment
 
       - run:
-          name: 'Build Nuxt resources'
+          name: 'Nuxt.jsリソースのビルド。Sentryeへのreleaseとsourcemapの反映も行われる'
           command: |
             # ALIS_APP_IDが無い環境ではビルド&デプロイは行わない。
             # persist_to_workspaceで落ちるため事前にディレクトリを生成している
             mkdir .nuxt
             if [ $ALIS_APP_ID ]; then
-              yarn build
+              yarn build:ci
             fi
 
       - persist_to_workspace:
@@ -140,7 +140,6 @@ jobs:
           message: '本番環境へのデプロイを承認してください'
           color: '#F5E911'
 
-
 workflows:
   # 本番環境以外のワークフロー
   staging-and-others:
@@ -165,28 +164,22 @@ workflows:
           context: common_staging_deployment
           requires: *test-and-build
 
-  # 本番環境のワークフロー
+  # 本番環境のワークフロー(テスト等無し・承認付き)
   production:
     jobs:
-      - lint-and-test:
-          name: lint-and-test-production
-          <<: *production_jobs
-
-      # 承認処理
+      # stagingで同時にテストを行っているため本番環境ワークフローではテストを行わない
       - notify-to-slack-for-approval:
           <<: *production_jobs
-          requires: &requires-production
-            - lint-and-test-production
       - approval:
           <<: *production_jobs
           type: approval
-          requires: *requires-production
 
       - build:
           name: build-production
           <<: *production_jobs
           requires:
             - approval
+
       - deploy:
           name: deploy-production
           <<: *production_jobs
