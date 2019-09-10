@@ -6,7 +6,10 @@ nuxtConfig.sentry = {
   dsn: `${process.env.SENTRY_DSN}`,
   publishRelease: true,
   config: {
-    release: `${process.env.SENTRY_RELEASE}`
+    release: `${process.env.SENTRY_RELEASE}`,
+    ignoreErrors: [
+      /^view-createPositionAt-offset-required.*/
+    ]
   }
 }
 
