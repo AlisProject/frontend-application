@@ -7,9 +7,7 @@ nuxtConfig.sentry = {
   publishRelease: true,
   config: {
     release: `${process.env.SENTRY_RELEASE}`,
-    ignoreErrors: [
-      /^view-createPositionAt-offset-required.*/
-    ]
+    ignoreErrors: [/^view-createPositionAt-offset-required.*/]
   }
 }
 
