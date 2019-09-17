@@ -439,12 +439,9 @@ const actions = {
       const s3 = new AWS.S3()
 
       // create a KeyValue to pass the s3 constructor from csvurl by deleting a domain part
-      const csvdomain =
-        'https://' +
-        process.env.ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET +
-        '.s3-' +
-        process.env.AWS_DEFAULT_REGION +
-        '.amazonaws.com/'
+      const csvdomain = `https://${process.env.ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET}.s3-${
+        process.env.AWS_DEFAULT_REGION
+      }.amazonaws.com/`
       const KeyValue = csvurl.replace(csvdomain, '')
 
       const params = {

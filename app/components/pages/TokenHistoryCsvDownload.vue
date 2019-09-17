@@ -15,7 +15,7 @@
         <li>csvファイルは通知のメッセージをクリックするとダウンロードできます</li>
       </ul>
       <div v-if="recordNotFoundError" class="record-notfound-error-text">
-        レコードが見つかりませんでした
+        履歴情報が存在しないため処理を中断しました
       </div>
       <app-button class="create-csv-button" @click="CreateTokenHistoryAndNotify()">
         csvを生成する
