@@ -1,5 +1,6 @@
 import { uniqBy } from 'lodash'
 import { BigNumber } from 'bignumber.js'
+import AWS from 'aws-sdk'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
 import CognitoAuthSDK from '~/utils/cognito-auth-sdk'
@@ -420,14 +421,15 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async getAllTokenHistoryCsvDownload({ commit, dispatch }, csv_url ) {
+  async getAllTokenHistoryCsvDownload({ commit, dispatch }, csvurl) {
     try {
       const result = await this.cognito.getUserSession()
-      const userpoolinfo = `cognito-idp.${process.env.AWS_DEFAULT_REGION}.amazonaws.com/${process.env.COGNITO_USER_POOL_ID}`
+      const userpoolinfo = `cognito-idp.${process.env.AWS_DEFAULT_REGION}.amazonaws.com/${
+        process.env.COGNITO_USER_POOL_ID
+      }`
 
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: process.env.COGNITO_IDENTITY_POOL_ID,
-        
         Logins: {
           [userpoolinfo]: result.jwtToken
         }
@@ -436,24 +438,27 @@ const actions = {
       AWS.config.credentials.get()
       const s3 = new AWS.S3()
 
-      // create a KeyValue to pass the s3 constructor from csv_url by deleting a domain part
-      const csv_domain = 'https://' + process.env.ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET + '.s3-'+ process.env.AWS_DEFAULT_REGION +'.amazonaws.com/'
-      const KeyValue = csv_url.replace(csv_domain, '')
+      // create a KeyValue to pass the s3 constructor from csvurl by deleting a domain part
+      const csvdomain =
+        'https://' +
+        process.env.ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET +
+        '.s3-' +
+        process.env.AWS_DEFAULT_REGION +
+        '.amazonaws.com/'
+      const KeyValue = csvurl.replace(csvdomain, '')
 
-      var params = {
+      const params = {
         Bucket: process.env.ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET,
         Key: KeyValue
-//        Key: 'private/ap-northeast-1:6eb2fb02-33b3-42de-8b9a-60d04afe3535/yasu-s3-upload-test.txt' //アクセス権限あり
-//        Key: 'private/ap-northeast-1:6eb2fb02-33b3-42de-8b9a-60d04afe3535/yasu-s3-upload.txt' //アクセス権限なし
       }
-      s3.getSignedUrl('getObject', params, function (err, url){
+      s3.getSignedUrl('getObject', params, function(err, url) {
         if (err) throw err
         document.location.href = url
       })
       return result
     } catch (error) {
       return Promise.reject(error)
-    }    
+    }
   },
   async refreshUserSession({ commit }) {
     try {
@@ -1112,9 +1117,9 @@ const actions = {
   setLoginFrom({ commit }, { from }) {
     commit(types.SET_LOGIN_FROM, { from })
   },
-  async CreateTokenHistory({ commit }){
+  async CreateTokenHistory({ commit }) {
     try {
-      const result = await this.$axios.$get('/api/me/all_token_history_csv_download')
+      const result = await this.$axios.$post('/api/me/token_history_csv_download')
       return result
     } catch (error) {
       return Promise.reject(error)

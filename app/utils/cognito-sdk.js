@@ -6,7 +6,6 @@ import {
   CognitoRefreshToken
 } from 'amazon-cognito-identity-js'
 import AWS from 'aws-sdk/global'
-import S3 from 'aws-sdk/clients/s3'
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
 export default class CognitoSDK {

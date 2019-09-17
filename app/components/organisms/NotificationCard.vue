@@ -20,8 +20,8 @@
     </a>
     <div
       v-else-if="notification.type === 'csvdownload'"
-      @click="getAllTokenHistoryCsvDownload(`${notification.announce_url}`)"
       class="notification-card-container"
+      @click="getAllTokenHistoryCsvDownload(`${notification.announce_url}`)"
     >
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />
@@ -38,9 +38,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import NotificationCardImage from '../atoms/NotificationCardImage'
 import NotificationCardContent from '../molecules/NotificationCardContent'
-import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -76,10 +76,10 @@ export default {
     }
   },
   methods: {
-    async getAllTokenHistoryCsvDownload(csv_url) {
-      await this.getAllTokenHistoryCsvDownload(csv_url)
+    async getAllTokenHistoryCsvDownload(csvurl) {
+      await this.getAllTokenHistoryCsvDownload(csvurl)
     },
-    ...mapActions('user', ['getAllTokenHistoryCsvDownload']),
+    ...mapActions('user', ['getAllTokenHistoryCsvDownload'])
   }
 }
 </script>
@@ -98,6 +98,6 @@ a {
   grid-template-columns: auto 5fr;
   grid-template-rows: auto;
   border-radius: 4px;
-  cursor: pointer
+  cursor: pointer;
 }
 </style>

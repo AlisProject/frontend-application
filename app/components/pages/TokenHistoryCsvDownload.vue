@@ -14,23 +14,23 @@
       <ul>
         <li>csvファイルは通知のメッセージをクリックするとダウンロードできます</li>
       </ul>
-    <app-button
-        class="create-csv-button"
-        @click="CreateTokenHistoryAndNotify()"
-      >
-          csvを生成する
-    </app-button>
+      <div v-if="recordNotFoundError" class="record-notfound-error-text">
+        レコードが見つかりませんでした
+      </div>
+      <app-button class="create-csv-button" @click="CreateTokenHistoryAndNotify()">
+        csvを生成する
+      </app-button>
     </div>
     <app-footer />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import { mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import AppFooter from '../organisms/AppFooter'
 import AppButton from '../atoms/AppButton'
-import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 
 export default {
   components: {
@@ -40,19 +40,22 @@ export default {
   },
   data() {
     return {
-      isLoading: true
+      isLoading: true,
+      recordNotFoundError: false
     }
   },
-  async mounted() {
-  },
-  computed: {
-  },
+  async mounted() {},
+  computed: {},
   methods: {
     async CreateTokenHistoryAndNotify() {
-      await this.CreateTokenHistory()
-      this.sendNotification({
-        text: 'csvの生成開始'
-      })
+      try {
+        await this.CreateTokenHistory()
+        this.sendNotification({
+          text: 'csvの生成開始'
+        })
+      } catch (err) {
+        this.recordNotFoundError = true
+      }
     },
     ...mapActions('user', ['CreateTokenHistory']),
     ...mapActions({
@@ -109,6 +112,14 @@ _:lang(x) + _:-webkit-full-screen-document,
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.record-notfound-error-text {
+  color: #f06273;
+  font-size: 14px;
+  margin-bottom: -30px;
+  text-align: center;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 920px) {
