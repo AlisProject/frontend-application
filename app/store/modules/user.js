@@ -428,6 +428,7 @@ const actions = {
         process.env.COGNITO_USER_POOL_ID
       }`
 
+      // get an user's creadential data
       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: process.env.COGNITO_IDENTITY_POOL_ID,
         Logins: {
