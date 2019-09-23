@@ -17,7 +17,11 @@
       <div v-if="recordNotFoundError" class="record-notfound-error-text">
         履歴情報が存在しないため処理を中断しました
       </div>
-      <app-button class="create-csv-button" @click="CreateTokenHistoryAndNotify()">
+      <app-button
+        class="create-csv-button"
+        :disabled="isClicked"
+        @click="CreateTokenHistoryAndNotify()"
+      >
         csvを生成する
       </app-button>
     </div>
@@ -41,6 +45,7 @@ export default {
   data() {
     return {
       isLoading: true,
+      isClicked: false,
       recordNotFoundError: false
     }
   },
@@ -48,6 +53,7 @@ export default {
   computed: {},
   methods: {
     async CreateTokenHistoryAndNotify() {
+      this.isClicked = true
       try {
         await this.CreateTokenHistory()
         this.sendNotification({
