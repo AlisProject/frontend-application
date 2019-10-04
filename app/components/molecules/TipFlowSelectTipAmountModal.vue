@@ -37,11 +37,11 @@
     </div>
     <div class="burn-description">
       ※贈ったALISの10%が<a
-        href="https://intercom.help/alismedia/%E3%81%9D%E3%81%AE%E4%BB%96-%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B/%E3%83%90%E3%83%BC%E3%83%B3%E3%81%A8%E3%81%AF"
+        href="https://intercom.help/alismedia/ja/articles/3386669-%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%83%86%E3%82%A3-%E3%82%A6%E3%82%A9%E3%83%AC%E3%83%83%E3%83%88%E3%81%B8%E3%81%AE%E3%83%97%E3%83%BC%E3%83%AB%E3%81%A8%E3%81%AF"
         class="link"
         target="_blank"
         rel="noopener noreferrer nofollow"
-      >バーン</a>されます
+      >プール</a>されます
     </div>
     <div class="select-unit-box">
       <div
