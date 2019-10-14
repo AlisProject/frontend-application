@@ -18,6 +18,14 @@
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />
     </a>
+    <div
+      v-else-if="notification.type === 'csvdownload'"
+      class="notification-card-container"
+      @click="getAllTokenHistoryCsvDownload(`${notification.announce_url}`)"
+    >
+      <notification-card-image :notification="notification" />
+      <notification-card-content :notification="notification" />
+    </div>
     <div v-else-if="notification.type === 'fraud'" class="notification-card-container">
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />
@@ -30,6 +38,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import NotificationCardImage from '../atoms/NotificationCardImage'
 import NotificationCardContent from '../molecules/NotificationCardContent'
 
@@ -65,6 +74,12 @@ export default {
           return `/${this.notification.user_id}/articles/${this.notification.article_id}`
       }
     }
+  },
+  methods: {
+    async getAllTokenHistoryCsvDownload(csvurl) {
+      await this.getAllTokenHistoryCsvDownload(csvurl)
+    },
+    ...mapActions('user', ['getAllTokenHistoryCsvDownload'])
   }
 }
 </script>
@@ -83,5 +98,6 @@ a {
   grid-template-columns: auto 5fr;
   grid-template-rows: auto;
   border-radius: 4px;
+  cursor: pointer;
 }
 </style>

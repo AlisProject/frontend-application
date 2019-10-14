@@ -1,5 +1,6 @@
 import { uniqBy } from 'lodash'
 import { BigNumber } from 'bignumber.js'
+import AWS from 'aws-sdk'
 import * as types from '../mutation-types'
 import CognitoSDK from '~/utils/cognito-sdk'
 import CognitoAuthSDK from '~/utils/cognito-auth-sdk'
@@ -415,6 +416,43 @@ const actions = {
       const result = await this.cognito.getUserSession()
       commit(types.SET_LOGGED_IN, { loggedIn: true })
       commit(types.SET_CURRENT_USER, { user: result })
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getAllTokenHistoryCsvDownload({ commit, dispatch }, csvurl) {
+    try {
+      const result = await this.cognito.getUserSession()
+      const userpoolinfo = `cognito-idp.${process.env.AWS_DEFAULT_REGION}.amazonaws.com/${
+        process.env.COGNITO_USER_POOL_ID
+      }`
+
+      // get an user's creadential data
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+        IdentityPoolId: process.env.COGNITO_IDENTITY_POOL_ID,
+        Logins: {
+          [userpoolinfo]: result.jwtToken
+        }
+      })
+
+      AWS.config.credentials.get()
+      const s3 = new AWS.S3()
+
+      // create a KeyValue to pass the s3 constructor from csvurl by deleting a domain part
+      const csvdomain = `https://${process.env.ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET}.s3-${
+        process.env.AWS_DEFAULT_REGION
+      }.amazonaws.com/`
+      const KeyValue = csvurl.replace(csvdomain, '')
+
+      const params = {
+        Bucket: process.env.ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET,
+        Key: KeyValue
+      }
+      s3.getSignedUrl('getObject', params, function(err, url) {
+        if (err) throw err
+        document.location.href = url
+      })
       return result
     } catch (error) {
       return Promise.reject(error)
@@ -1076,6 +1114,14 @@ const actions = {
   },
   setLoginFrom({ commit }, { from }) {
     commit(types.SET_LOGIN_FROM, { from })
+  },
+  async CreateTokenHistory({ commit }) {
+    try {
+      const result = await this.$axios.$post('/api/me/token_history_csv_download')
+      return result
+    } catch (error) {
+      return Promise.reject(error)
+    }
   },
 
   // Labo
