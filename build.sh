@@ -32,6 +32,8 @@ SENTRY_DSN=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmSentryDSN --query "Par
 export SENTRY_DSN=${SENTRY_DSN}
 SENTRY_RELEASE=`git rev-parse HEAD`
 export SENTRY_RELEASE=${SENTRY_RELEASE}
+ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmAllTokenHistoryCsvDownloadS3Bucket --query "Parameter.Value" --output text`
+export ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET=${ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET}
 
 if [ $1 = 'ci' ];then
   yarn nuxt build --config-file nuxt.config.ci.js
