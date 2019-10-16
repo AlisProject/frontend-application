@@ -14,6 +14,13 @@
       <ul>
         <li>csvファイルは通知のメッセージをクリックするとダウンロードできます</li>
       </ul>
+      <ul>
+        <li>
+          csvファイルの中身の詳細に関しては<a
+            href="https://alis.to/ALIS-official/articles/2Mqmy7Z7ngXP"
+          >こちらの記事</a>をご参照ください。
+        </li>
+      </ul>
       <div v-if="recordNotFoundError" class="record-notfound-error-text">
         履歴情報が存在しないため処理を中断しました
       </div>
