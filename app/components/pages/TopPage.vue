@@ -188,12 +188,12 @@ export default {
     "app-footer app-footer                     app-footer                     app-footer";
 
   grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px auto 1fr 75px 75px;
+  grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px auto 1fr 75px 75px;
   min-height: 100vh;
 
   &.is-show-guide {
     grid-template-rows:
-      100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px 652px minmax(100px, 1fr)
+      100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px 652px minmax(100px, 1fr)
       75px 75px;
     /* prettier-ignore */
     grid-template-areas:
@@ -224,7 +224,7 @@ export default {
   }
 
   .default-header-nav {
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   .how-to-use-image,
@@ -287,7 +287,7 @@ export default {
 @media screen and (max-width: 1296px) {
   .top-page {
     grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px 1fr 75px 75px;
+    grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px 1fr 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                     app-header"
@@ -303,7 +303,7 @@ export default {
       "app-footer app-footer                     app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px minmax(50px, min-content) 50px 26px 30px auto 26px 30px auto 1fr 75px 75px;
+      grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px auto 1fr 75px 75px;
       /* prettier-ignore */
       grid-template-areas:
         "app-header app-header                     app-header"
@@ -337,7 +337,7 @@ export default {
 @media screen and (max-width: 920px) {
   .top-page {
     grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 80px 50px 26px 30px auto 60px 26px 30px 1fr 75px minmax(
+    grid-template-rows: 100px 80px 43px 26px 30px auto 60px 26px 30px 1fr 75px minmax(
         75px,
         min-content
       );
@@ -357,7 +357,7 @@ export default {
       "app-footer app-footer                    app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px 80px 50px auto 26px 30px auto 60px 26px 30px 1fr 75px minmax(
+      grid-template-rows: 100px 80px 43px auto 26px 30px auto 60px 26px 30px 1fr 75px minmax(
           75px,
           min-content
         );
