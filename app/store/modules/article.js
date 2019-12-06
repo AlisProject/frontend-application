@@ -935,16 +935,24 @@ const actions = {
     }
   },
   async putDraftArticleTitle({ commit }, { articleTitle, articleId }) {
-    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/title`, articleTitle)
+    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/title`, articleTitle, {
+      timeout: 10000
+    })
   },
   async putPublicArticleTitle({ commit }, { articleTitle, articleId }) {
-    await this.$axios.$put(`/api/me/articles/${articleId}/public/title`, articleTitle)
+    await this.$axios.$put(`/api/me/articles/${articleId}/public/title`, articleTitle, {
+      timeout: 10000
+    })
   },
   async putDraftArticleBody({ commit }, { articleBody, articleId }) {
-    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/body`, articleBody)
+    await this.$axios.$put(`/api/me/articles/${articleId}/drafts/body`, articleBody, {
+      timeout: 10000
+    })
   },
   async putPublicArticleBody({ commit }, { articleBody, articleId }) {
-    await this.$axios.$put(`/api/me/articles/${articleId}/public/body`, articleBody)
+    await this.$axios.$put(`/api/me/articles/${articleId}/public/body`, articleBody, {
+      timeout: 10000
+    })
   },
   async postNewArticleId({ commit }) {
     const { article_id: articleId } = await this.$axios.$post('/api/me/articles/drafts/article_id')
