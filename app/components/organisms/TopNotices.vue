@@ -1,10 +1,10 @@
 <template>
   <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="ALIS-official/articles/3LqEG1Lkj850">
-      実施中イベント <span class="tooltip" />
+    <nuxt-link class="description" to="/ALIS-official/articles/azDdbZkWoYBm">
+      実施中 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/2019%E3%83%88%E3%82%AD%E3%83%A1%E3%82%AD%E7%A5%AD%E3%82%8A">
-      #2019トキメキ祭り
+    <nuxt-link class="link" to="/tag/%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA%E8%A8%98%E4%BA%8B">
+      シリーズ記事
     </nuxt-link>
   </div>
 </template>
