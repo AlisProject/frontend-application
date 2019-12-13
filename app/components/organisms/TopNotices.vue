@@ -1,7 +1,7 @@
 <template>
   <div class="area-topo-notices-container">
     <nuxt-link class="description" to="/ALIS-official/articles/azDdbZkWoYBm">
-      実施中 <span class="tooltip" />
+      注目 <span class="tooltip" />
     </nuxt-link>
     <nuxt-link class="link" to="/tag/%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA%E8%A8%98%E4%BA%8B">
       シリーズ記事
