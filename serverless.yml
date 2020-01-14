@@ -1,11 +1,11 @@
 service:
   name: ${env:ALIS_APP_ID}frontend
 
-frameworkVersion: ">=1.47.0 <2.0.0"
+frameworkVersion: ">=1.61.0 <2.0.0"
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs12.x
   region: ${env:AWS_DEFAULT_REGION}
   stage: prod
   logs:

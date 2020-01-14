@@ -24,7 +24,7 @@ executors:
   default:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:10.15.3-browsers
+      - image: circleci/node:12.13.0-browsers
 
 commands:
   prepare-aws-cli:
@@ -38,7 +38,7 @@ commands:
     steps:
       - checkout
 
-      - run: sudo npm install -g yarn@1.6.0
+      - run: sudo npm install -g yarn@1.21.1
 
       - restore_cache:
           keys:
@@ -113,7 +113,7 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo npm install -g serverless@1.47.0
+              sudo npm install -g serverless
               yarn deploy
             fi
 
@@ -129,7 +129,7 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ] && [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
-              sudo npm install -g serverless@1.47.0
+              sudo npm install -g serverless
               yarn deploy
             fi
 
