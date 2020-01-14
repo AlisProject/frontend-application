@@ -42,15 +42,15 @@ commands:
 
       - restore_cache:
           keys:
-            - v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
-            - v2-dependencies-
+            - v3-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
+            - v3-dependencies-
 
       - run: yarn install --frozen-lockfile
 
       - save_cache:
           paths:
             - node_modules
-          key: v2-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
+          key: v3-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
 
   prepare-deployment:
     description: 'デプロイを準備'

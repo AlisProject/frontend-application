@@ -23,7 +23,7 @@
     "cilint": "circleci config validate -c .circleci/config.yml"
   },
   "dependencies": {
-    "@alisproject/alis-editor": "^0.2.21",
+    "@alisproject/alis-editor": "^0.2.22",
     "@johmun/vue-tags-input": "^2.1.0",
     "@nuxtjs/axios": "^5.9.3",
     "@nuxtjs/markdownit": "^1.2.7",
@@ -57,23 +57,23 @@
     "axios-mock-adapter": "^1.16.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.1.0",
+    "babel-jest": "^24.9.0",
     "cross-env": "^5.2.0",
     "eslint": "5.14.1",
     "eslint-config-standard": "12.0.0",
     "eslint-loader": "2.1.2",
     "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-jest": "22.3.0",
+    "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-node": "8.0.1",
     "eslint-plugin-promise": "4.0.1",
     "eslint-plugin-standard": "4.0.0",
     "eslint-plugin-vue": "5.2.2",
-    "jest": "24.8.0",
-    "jest-transform-stub": "2.0.0",
+    "jest": "^24.9.0",
+    "jest-transform-stub": "^2.0.0",
     "node-sass": "^4.12.0",
     "prettier": "1.16.4",
     "prettier-eslint": "8.8.2",
     "prettier-eslint-cli": "4.7.1",
-    "vue-jest": "3.0.3"
+    "vue-jest": "^3.0.5"
   }
 }
