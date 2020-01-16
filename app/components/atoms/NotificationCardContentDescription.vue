@@ -75,10 +75,7 @@ export default {
 
 <style lang="scss" scoped>
 .area-description {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
   color: #7f7f7f;
-  display: -webkit-box;
   font-size: 14px;
   line-height: 1.5;
   margin: 0;
