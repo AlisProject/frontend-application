@@ -25,6 +25,8 @@ module.exports.handler = (event, context, callback) => {
       body: '',
       isBase64Encoded: false
     }
+    // 待機中のイベントがあっても処理を中断
+    context.callbackWaitsForEmptyEventLoop = false
     callback(null, response)
   } else {
     awsServerlessExpress.proxy(server, event, context)
