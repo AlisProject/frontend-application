@@ -6,6 +6,7 @@ import user from './modules/user'
 import tag from './modules/tag'
 import report from './modules/report'
 import presentation from './modules/presentation'
+import badge from './modules/badge'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default () =>
       tag,
       report,
       presentation,
+      badge,
       toast: createModule({
         dismissInterval: 2000
       })
