@@ -13,13 +13,18 @@ const state = () => ({
 })
 
 const getters = {
+  // バッジ一覧を取得
   badges: (state) => {
     return state.badges
-  } // バッジ一覧を取得
+  },
+  // ウォレットアドレスを取得
+  walletAddress: (state) => {
+    return state.walletAddress
+  }
 }
 
 const actions = {
-  // バッジ一覧を取得
+  // バッジ一覧を取得する
   async fetchBadges({ commit }, { walletAddress }) {
     const badgeContract = createContractObject(JSON.parse(abi), process.env.BADGE_CONTRACT_ADDRESS)
 
@@ -61,6 +66,36 @@ const actions = {
 
     commit(types.SET_BADGES, {
       badges
+    })
+  },
+  // ウォレットのアドレスを取得する
+  async fetchWalletAddress({ commit }, { userId }) {
+    const response = await this.$axios.$get(
+      `${process.env.USER_INFO_SERVICE_BASE_URL}/api/users/${userId}/publicchain/address`
+    )
+    commit(types.SET_BADGES_WALLET_ADDRESS, {
+      walletAddress: response.public_chain_address
+    })
+  },
+  // ウォレットのアドレスを登録する
+  async registerWalletAddress({ commit }, { signature }) {
+    const response = await this.$axios.$post(
+      `${process.env.USER_INFO_SERVICE_BASE_URL}/api/me/publicchain/address`,
+      {
+        signature
+      }
+    )
+    commit(types.SET_BADGES_WALLET_ADDRESS, {
+      walletAddress: response.public_chain_address
+    })
+  },
+  // ウォレットのアドレス連携を解除する
+  async unregisterWalletAddress({ commit }) {
+    await this.$axios.$delete(
+      `${process.env.USER_INFO_SERVICE_BASE_URL}/api/me/publicchain/address`
+    )
+    commit(types.SET_BADGES_WALLET_ADDRESS, {
+      walletAddress: ''
     })
   }
 }
