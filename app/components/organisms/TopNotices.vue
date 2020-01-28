@@ -3,12 +3,6 @@
     <nuxt-link class="description" to="/ALIS-official/articles/azDdbZkWoYBm">
       注目 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E7%B4%85%E7%B5%84">
-      紅組
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E7%99%BD%E7%B5%84">
-      白組
-    </nuxt-link>
     <nuxt-link class="link" to="/tag/%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA%E8%A8%98%E4%BA%8B">
       シリーズ記事
     </nuxt-link>
