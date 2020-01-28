@@ -55,7 +55,11 @@ export function getWalletAddress() {
   if (!isMetaMaskInstalled()) {
     throw new Error('MetaMask is not installed')
   }
-  return window.ethereum.selectedAddress()
+  if (!window.ethereum.selectedAddress) {
+    throw new Error('MetaMask is not enabled')
+  }
+
+  return window.ethereum.selectedAddress
 }
 
 // 署名を生成する
@@ -64,6 +68,6 @@ export async function generateSignature(data) {
     throw new Error('MetaMask is not installed')
   }
   const web3 = createWeb3Object()
-  const accountAddress = getWalletAddress()
-  return web3.eth.personal.sign(data, accountAddress)
+  const walletAddress = getWalletAddress()
+  return web3.eth.personal.sign(data, walletAddress)
 }
