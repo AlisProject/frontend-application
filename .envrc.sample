@@ -21,7 +21,6 @@ export ALIS_APP_ID=alis
 # export PUBLIC_CHAIN_REGISTRY_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainRegistryAddress --query "Parameter.Value" --output text`
 # export PUBLIC_CHAIN_OPERATION_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmPublicChainOperationUrl --query "Parameter.Value" --output text`
 # export DAILY_LIMIT_TOKEN_SEND_VALUE=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmDailyLimitTokenSendValue --query "Parameter.Value" --output text`
-# export BADGE_CONTRACT_ADDRESS=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmBadgeContractAddress --query "Parameter.Value" --output text`
 # export SENTRY_DSN=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmSentryDSN --query "Parameter.Value" --output text`
 
 

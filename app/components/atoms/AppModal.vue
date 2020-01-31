@@ -77,7 +77,8 @@ export default {
       'laboLicenseTokenCertificateModal',
       'laboLicenseTokenTransferModal'
     ]),
-    ...mapGetters('report', ['userReportModal', 'articleReportModal'])
+    ...mapGetters('report', ['userReportModal', 'articleReportModal']),
+    ...mapGetters('badge', ['badgeDescriptionModal'])
   },
   mounted() {
     this.$root.$on('closeModal', async () => {
@@ -206,6 +207,9 @@ export default {
       if (this.laboLicenseTokenTransferModal.isShow) {
         this.setLaboLicenseTokenTransferModal({ isShow: false })
       }
+      if (this.badgeDescriptionModal.isShow) {
+        this.setBadgeDescriptionModal({ isShow: false, tokenId: 0, metadata: {} })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -254,7 +258,8 @@ export default {
       'setArticleReportInputFreeTextModal',
       'setArticleReportConfirmationModal',
       'resetArticleReportData'
-    ])
+    ]),
+    ...mapActions('badge', ['setBadgeDescriptionModal'])
   },
   watch: {
     showModalContent() {

@@ -2,7 +2,7 @@
   <div class="draft-article-list-container">
     <app-header />
     <user-article-list-user-info :user="userInfo" />
-    <user-profile-nav />
+    <user-profile-nav :isCurrentUser="true" />
     <user-article-card-list :articles="draftArticles" :link-to="'draft'" />
     <the-loader :is-loading="hasDraftArticlesLastEvaluatedKey" />
     <app-footer />

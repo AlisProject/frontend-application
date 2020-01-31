@@ -5,11 +5,22 @@ import * as types from '../mutation-types'
 const namespaced = true
 
 const abi =
-  '[{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}]'
+  '[{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"internalType":"string","name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"badgeTypeSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]'
+
+const TYPE_ID_OFFSET = 100000000
 
 const state = () => ({
+  isLoading: true,
+  badgeContractAddress: '',
   badges: [], // バッジ一覧
-  walletAddress: '' // ウォレットアドレス
+  walletAddress: '', // ウォレットアドレス
+  badgeDescriptionModal: {
+    isShow: false,
+    tokenId: 0,
+    badgeTypeSupply: 0,
+    badgeContractAddress: '',
+    metadata: {}
+  }
 })
 
 const getters = {
@@ -20,14 +31,20 @@ const getters = {
   // ウォレットアドレスを取得
   walletAddress: (state) => {
     return state.walletAddress
+  },
+  badgeDescriptionModal: (state) => {
+    return state.badgeDescriptionModal
   }
 }
 
 const actions = {
   // バッジ一覧を取得する
   async fetchBadges({ commit }, { walletAddress }) {
-    const badgeContract = createContractObject(JSON.parse(abi), process.env.BADGE_CONTRACT_ADDRESS)
-
+    // バッジコントラクトのアドレスは動的に取得する
+    const badgeContractAddress = await this.$axios.$get(
+      `${process.env.USER_INFO_SERVICE_BASE_URL}/api/publicchain/badge/address`
+    )
+    const badgeContract = createContractObject(JSON.parse(abi), badgeContractAddress)
     // 所有するトークンの総数を取得
     const balanceOf = await badgeContract.methods.balanceOf(walletAddress).call()
 
@@ -63,7 +80,6 @@ const actions = {
     badges.sort(function(a, b) {
       return a.tokenId - b.tokenId
     })
-
     commit(types.SET_BADGES, {
       badges
     })
@@ -97,12 +113,48 @@ const actions = {
     commit(types.SET_BADGES_WALLET_ADDRESS, {
       walletAddress: ''
     })
+    commit(types.SET_BADGES, {
+      badges: []
+    })
+  },
+  // バッジの供給量を取得
+  async fetchBadgeTypeSupply({ commit }, { tokenId }) {
+    // バッジコントラクトのアドレスは動的に取得する
+    const badgeContractAddress = await this.$axios.$get(
+      `${process.env.USER_INFO_SERVICE_BASE_URL}/api/publicchain/badge/address`
+    )
+    const badgeContract = createContractObject(JSON.parse(abi), badgeContractAddress)
+    // tokenId から typeId を取得
+    const typeId = Math.floor(tokenId / TYPE_ID_OFFSET)
+    const badgeTypeSupply = await badgeContract.methods.badgeTypeSupply(typeId).call()
+    commit(types.SET_BADGE_TYPE_SUPPLY, {
+      badgeTypeSupply,
+      badgeContractAddress
+    })
+  },
+  setBadgeDescriptionModal({ commit }, { isShow, tokenId, metadata }) {
+    commit(types.SET_BADGE_DESCRIPTION_MODAL, { isShow, tokenId, metadata })
+  },
+  setIsLoading({ commit }, { isLoading }) {
+    commit(types.SET_BADGE_DESCRIPTION_MODAL, { isLoading })
   }
 }
 
 const mutations = {
   [types.SET_BADGES](state, { badges }) {
     state.badges = badges
+  },
+  [types.SET_BADGES_WALLET_ADDRESS](state, { walletAddress }) {
+    state.walletAddress = walletAddress
+  },
+  [types.SET_BADGE_DESCRIPTION_MODAL](state, { isShow, tokenId, metadata }) {
+    state.badgeDescriptionModal.isShow = isShow
+    state.badgeDescriptionModal.tokenId = tokenId
+    state.badgeDescriptionModal.metadata = metadata
+  },
+  [types.SET_BADGE_TYPE_SUPPLY](state, { badgeTypeSupply, badgeContractAddress }) {
+    state.badgeDescriptionModal.badgeTypeSupply = badgeTypeSupply
+    state.badgeDescriptionModal.badgeContractAddress = badgeContractAddress
   },
   [types.SET_BADGES_WALLET_ADDRESS](state, { walletAddress }) {
     state.walletAddress = walletAddress
