@@ -42,7 +42,7 @@ const actions = {
   async fetchBadges({ commit }, { walletAddress }) {
     // バッジコントラクトのアドレスは動的に取得する
     const badgeContractAddress = await this.$axios.$get(
-      `${process.env.WEB3_SERVICE_BASE_URL}/api/publicchain/badge/address`
+      `${process.env.WEB3_SERVICE_BASE_URL}/api/badge/eth_address`
     )
     const badgeContract = createContractObject(JSON.parse(abi), badgeContractAddress)
     // 所有するトークンの総数を取得
@@ -87,7 +87,7 @@ const actions = {
   // ウォレットのアドレスを取得する
   async fetchWalletAddress({ commit }, { userId }) {
     const response = await this.$axios.$get(
-      `${process.env.WEB3_SERVICE_BASE_URL}/api/users/${userId}/publicchain/address`
+      `${process.env.WEB3_SERVICE_BASE_URL}/api/users/${userId}/eth_address`
     )
     commit(types.SET_BADGES_WALLET_ADDRESS, {
       walletAddress: response.public_chain_address
@@ -96,7 +96,7 @@ const actions = {
   // ウォレットのアドレスを登録する
   async registerWalletAddress({ commit }, { signature }) {
     const response = await this.$axios.$post(
-      `${process.env.WEB3_SERVICE_BASE_URL}/api/me/publicchain/address`,
+      `${process.env.WEB3_SERVICE_BASE_URL}/api/me/eth_address`,
       {
         signature
       }
@@ -107,7 +107,7 @@ const actions = {
   },
   // ウォレットのアドレス連携を解除する
   async unregisterWalletAddress({ commit }) {
-    await this.$axios.$delete(`${process.env.WEB3_SERVICE_BASE_URL}/api/me/publicchain/address`)
+    await this.$axios.$delete(`${process.env.WEB3_SERVICE_BASE_URL}/api/me/eth_address`)
     commit(types.SET_BADGES_WALLET_ADDRESS, {
       walletAddress: ''
     })
@@ -119,7 +119,7 @@ const actions = {
   async fetchBadgeTypeSupply({ commit }, { tokenId }) {
     // バッジコントラクトのアドレスは動的に取得する
     const badgeContractAddress = await this.$axios.$get(
-      `${process.env.WEB3_SERVICE_BASE_URL}/api/publicchain/badge/address`
+      `${process.env.WEB3_SERVICE_BASE_URL}/api/badge/eth_address`
     )
     const badgeContract = createContractObject(JSON.parse(abi), badgeContractAddress)
     // tokenId から typeId を取得
