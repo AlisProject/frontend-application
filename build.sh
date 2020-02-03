@@ -36,7 +36,7 @@ COGNITO_IDENTITY_POOL_ID=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmCognitoI
 export COGNITO_IDENTITY_POOL_ID=${COGNITO_IDENTITY_POOL_ID}
 ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmAllTokenHistoryCsvDownloadS3Bucket --query "Parameter.Value" --output text`
 export ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET=${ALL_TOKEN_HISTORY_CSV_DWONLOAD_S3_BUCKET}
-export USER_INFO_SERVICE_BASE_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmUserInfoServiceBaseUrl --query "Parameter.Value" --output text`
+export WEB3_SERVICE_BASE_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmWeb3ServiceBaseUrl --query "Parameter.Value" --output text`
 
 if [ $1 = 'ci' ];then
   yarn nuxt build --config-file nuxt.config.ci.js

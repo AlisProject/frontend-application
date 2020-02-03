@@ -8,7 +8,7 @@ export ALIS_APP_ID=alis
 ## ローカルで開発する場合は、ここのコメントアウトを解除して使用する
 # export ALIS_APP_DOMAIN=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmAlisAppDomain --query "Parameter.Value" --output text`
 # export BASE_URL=https://${ALIS_APP_DOMAIN}
-# export USER_INFO_SERVICE_BASE_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmUserInfoServiceBaseUrl --query "Parameter.Value" --output text`
+# export WEB3_SERVICE_BASE_URL=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmWeb3ServiceBaseUrl --query "Parameter.Value" --output text`
 # export COGNITO_USER_POOL_ID=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmCognitoUserPoolId --query "Parameter.Value" --output text`
 # export COGNITO_APP_CLIENT_ID=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmCognitoUserPoolAppId --query "Parameter.Value" --output text`
 # export export COGNITO_IDENTITY_POOL_ID=`aws ssm get-parameter --name ${ALIS_APP_ID}ssmCognitoIdentityPoolId --query "Parameter.Value" --output text`

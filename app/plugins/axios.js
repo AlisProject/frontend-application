@@ -8,7 +8,7 @@ export default async ({ $axios, store, env }) => {
     if (
       req.url.startsWith('/api/me/') ||
       req.url.startsWith('/laboratory/labo/') ||
-      req.url.startsWith(env.USER_INFO_SERVICE_BASE_URL + '/api/me/')
+      req.url.startsWith(env.WEB3_SERVICE_BASE_URL + '/api/me/')
     ) {
       try {
         await store.dispatch('user/getUserSession')
