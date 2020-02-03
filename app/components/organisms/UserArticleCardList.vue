@@ -36,6 +36,7 @@ export default {
   grid-gap: 30px;
   grid-template-columns: repeat(2, 340px);
   grid-template-rows: repeat(auto-fill, 326px);
+  margin-top: 40px;
 }
 
 @media screen and (max-width: 920px) {

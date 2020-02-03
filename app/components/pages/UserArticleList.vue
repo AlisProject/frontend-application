@@ -3,7 +3,7 @@
     <app-header />
     <user-article-list-user-info :user="isCurrentUser ? currentUserInfo : userInfo" />
     <no-ssr>
-      <user-profile-nav v-if="isCurrentUser" />
+      <user-profile-nav :isCurrentUser="isCurrentUser" />
     </no-ssr>
     <user-article-card-list :articles="isCurrentUser ? publicArticles : userArticles" />
     <the-loader

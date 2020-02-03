@@ -23,6 +23,7 @@
     <confirm-purchase-article-modal v-if="confirmPurchaseArticleModal.isShow" />
     <withdrawal-detail-modal v-if="withdrawalDetailModal.isShow" />
     <input-withdraw-auth-code-modal v-if="inputWithdrawAuthCodeModal.isShow" />
+    <badge-description-modal v-if="badgeDescriptionModal.isShow" />
     <toast position="n" />
   </header>
 </template>
@@ -47,6 +48,7 @@ const FirstProcessModal = () => import('../organisms/FirstProcessModal')
 const ConfirmPurchaseArticleModal = () => import('../organisms/ConfirmPurchaseArticleModal')
 const WithdrawalDetailModal = () => import('../organisms/WithdrawalDetailModal')
 const InputWithdrawAuthCodeModal = () => import('../organisms/InputWithdrawAuthCodeModal')
+const BadgeDescriptionModal = () => import('../organisms/BadgeDescriptionModal')
 
 export default {
   components: {
@@ -66,7 +68,8 @@ export default {
     FirstProcessModal,
     ConfirmPurchaseArticleModal,
     WithdrawalDetailModal,
-    InputWithdrawAuthCodeModal
+    InputWithdrawAuthCodeModal,
+    BadgeDescriptionModal
   },
   computed: {
     ...mapGetters('user', [
@@ -84,7 +87,8 @@ export default {
       'withdrawalDetailModal',
       'inputWithdrawAuthCodeModal'
     ]),
-    ...mapGetters('report', ['userReportModal', 'articleReportModal'])
+    ...mapGetters('report', ['userReportModal', 'articleReportModal']),
+    ...mapGetters('badge', ['badgeDescriptionModal'])
   },
   methods: {
     resetData() {
