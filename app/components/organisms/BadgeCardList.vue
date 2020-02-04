@@ -238,6 +238,7 @@ export default {
   grid-template-rows: repeat(auto-fill, 180px);
   justify-content: center;
   padding: 0 0 21px;
+  margin: 14.5px 0 0;
 }
 
 .badge-description {

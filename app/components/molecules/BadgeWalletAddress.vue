@@ -51,7 +51,7 @@ export default {
   text-align: right;
   color: #6e6e6e;
   font-size: 11px;
-  margin: 14.5px 0 14.5px 0;
+  margin: 14.5px 0 0;
 }
 
 .wallet-address-remove {
