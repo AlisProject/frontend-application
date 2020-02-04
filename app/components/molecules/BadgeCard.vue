@@ -35,7 +35,7 @@ export default {
 
 <style lang="scss" scoped>
 .badge-card-container {
-  @include cassette-shadow();
+  @include cassette-shadow-small();
   display: grid;
   grid-template-rows: 131px 49px;
   grid-template-columns: 39px 91px;
