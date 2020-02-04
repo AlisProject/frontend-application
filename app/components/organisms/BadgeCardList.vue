@@ -74,7 +74,7 @@
     <badge-card
       v-for="badge in badges"
       :key="badge.tokenId"
-      :tokenId="badge.tokenId"
+      :tokenId="parseInt(badge.tokenId, 10)"
       :metadata="badge.metadata"
     />
   </div>

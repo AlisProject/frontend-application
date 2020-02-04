@@ -118,9 +118,10 @@ const actions = {
   // バッジの供給量を取得
   async fetchBadgeTypeSupply({ commit }, { tokenId }) {
     // バッジコントラクトのアドレスは動的に取得する
-    const badgeContractAddress = await this.$axios.$get(
+    const response = await this.$axios.$get(
       `${process.env.WEB3_SERVICE_BASE_URL}/api/badge/eth_address`
     )
+    const badgeContractAddress = response.badge_contract_address
     const badgeContract = createContractObject(JSON.parse(abi), badgeContractAddress)
     // tokenId から typeId を取得
     const typeId = Math.floor(tokenId / TYPE_ID_OFFSET)
