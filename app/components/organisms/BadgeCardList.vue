@@ -131,8 +131,9 @@ export default {
           await enableMetaMask()
 
           // 署名を生成
-          const data = `この署名はあなたのETHアカウントをALISに登録するために利用されます。\n
-                        あなたのユーザID: ${this.userInfo.user_id}`
+          const data = `この署名はあなたのETHアカウントをALISに登録するために利用されます。\n\nあなたのユーザID: ${
+            this.userInfo.user_id
+          }`
           const signature = await generateSignature(data)
 
           // 署名を送信(アドレス連携)
