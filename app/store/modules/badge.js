@@ -41,10 +41,10 @@ const actions = {
   // バッジ一覧を取得する
   async fetchBadges({ commit }, { walletAddress }) {
     // バッジコントラクトのアドレスは動的に取得する
-    const badgeContractAddress = await this.$axios.$get(
+    const response = await this.$axios.$get(
       `${process.env.WEB3_SERVICE_BASE_URL}/api/badge/eth_address`
     )
-    const badgeContract = createContractObject(JSON.parse(abi), badgeContractAddress)
+    const badgeContract = createContractObject(JSON.parse(abi), response.badge_contract_address)
     // 所有するトークンの総数を取得
     const balanceOf = await badgeContract.methods.balanceOf(walletAddress).call()
 

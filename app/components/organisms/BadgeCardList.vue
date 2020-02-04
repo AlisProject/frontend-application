@@ -114,7 +114,7 @@ export default {
   },
   async mounted() {
     this.isMetaMaskInstalled = isMetaMaskInstalled()
-    this.isCorrectNetworkSelected = isCorrectNetworkSelected()
+    this.isCorrectNetworkSelected = await isCorrectNetworkSelected()
     this.isLoading = false
   },
   computed: {
