@@ -237,6 +237,7 @@ export default {
   grid-template-columns: repeat(auto-fill, 130px);
   grid-template-rows: repeat(auto-fill, 180px);
   justify-content: center;
+  padding: 0 0 21px;
 }
 
 .badge-description {
