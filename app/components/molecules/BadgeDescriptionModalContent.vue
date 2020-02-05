@@ -11,7 +11,7 @@
       存在枚数： {{ badgeDescriptionModal.badgeTypeSupply }}
       <a
         :href="
-          `https://${openSeaDomain}/${badgeDescriptionModal.badgeContractAddress}/${
+          `https://${openSeaDomain}/assets/${badgeDescriptionModal.badgeContractAddress}/${
             badgeDescriptionModal.tokenId
           }`
         "
