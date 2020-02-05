@@ -224,7 +224,7 @@ export default {
   grid-template-rows: 1fr;
   justify-content: center;
   width: 500px;
-  margin: 0 auto 0 auto;
+  margin: 20px auto 20px auto;
 }
 
 .area-not-exists-badges {
@@ -259,6 +259,7 @@ ul.notice {
   list-style-type: none;
   text-indent: -1.25em;
   font-size: 10px;
+  color: #6e6e6e;
   li:before {
     display: inline;
     content: '※';
@@ -280,6 +281,10 @@ ul.notice {
 }
 
 @media screen and (max-width: 550px) {
+  .area-wallet-address-notice {
+    margin: 0 auto 0 auto;
+  }
+
   .area-badge-card-list-container {
     margin: -31px 0 0;
     grid-gap: 15px;
