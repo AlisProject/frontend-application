@@ -10,11 +10,14 @@ export async function isCorrectNetworkSelected() {
   if (!isMetaMaskInstalled()) {
     throw new Error('MetaMask is not installed')
   }
-  const web3 = createWeb3Object()
+  const web3 = createWeb3Object(true)
   const networkType = await web3.eth.net.getNetworkType()
   const isProduction = process.env.ALIS_APP_ID === 'alis'
-  const targetNetworkType = isProduction ? 'main' : 'ropsten'
-  return networkType === targetNetworkType
+  if (isProduction) {
+    return networkType === 'main'
+  } else {
+    return networkType === 'ropsten' || networkType === 'rinkeby'
+  }
 }
 
 // MetaMaskを有効化する
@@ -34,8 +37,11 @@ export async function enableMetaMask() {
 }
 
 // Web3オブジェクトを生成する
-export function createWeb3Object() {
-  if (window.ethereum) {
+export function createWeb3Object(isMetamask = false) {
+  if (isMetamask) {
+    if (!isMetaMaskInstalled()) {
+      throw new Error('MetaMask is not installed')
+    }
     // MetaMaskがインストールされている場合
     return new Web3(window.ethereum)
   } else {
@@ -45,8 +51,8 @@ export function createWeb3Object() {
 }
 
 // Contractオブジェクトを生成する
-export function createContractObject(abi, address) {
-  const web3 = createWeb3Object()
+export function createContractObject(abi, address, isMetamask = false) {
+  const web3 = createWeb3Object(isMetamask)
   return new web3.eth.Contract(abi, address)
 }
 
@@ -67,7 +73,7 @@ export async function generateSignature(data) {
   if (!isMetaMaskInstalled) {
     throw new Error('MetaMask is not installed')
   }
-  const web3 = createWeb3Object()
+  const web3 = createWeb3Object(true)
   const walletAddress = getWalletAddress()
   return web3.eth.personal.sign(data, walletAddress)
 }
