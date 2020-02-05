@@ -62,7 +62,7 @@ export default {
   grid-area: publisher-logo;
   max-width: 100%;
   object-fit: contain;
-  margin: 12px 7px 12px 7px;
+  margin: 12px 7px 12px 11px;
   width: 25px;
   height: 25px;
 }
