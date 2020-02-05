@@ -35,7 +35,7 @@ export default {
 
 <style lang="scss" scoped>
 .badge-card-container {
-  @include cassette-shadow();
+  @include cassette-shadow-small();
   display: grid;
   grid-template-rows: 131px 49px;
   grid-template-columns: 39px 91px;
@@ -62,7 +62,7 @@ export default {
   grid-area: publisher-logo;
   max-width: 100%;
   object-fit: contain;
-  margin: 12px 7px 12px 7px;
+  margin: 12px 7px 12px 11px;
   width: 25px;
   height: 25px;
 }

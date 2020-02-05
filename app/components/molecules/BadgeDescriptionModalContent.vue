@@ -62,6 +62,7 @@ export default {
   width: 100%;
   height: 124px;
   margin: 10px 0px 10px 0;
+  padding: 0 0 31px;
 }
 
 .area-badge-image {
