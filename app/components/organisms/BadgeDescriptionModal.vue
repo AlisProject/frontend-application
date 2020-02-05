@@ -11,7 +11,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import AppModal from '../atoms/AppModal'
+import AppModal from '../atoms/BadgeModal'
 import BadgeDescriptionModalContent from '../molecules/BadgeDescriptionModalContent'
 
 export default {
