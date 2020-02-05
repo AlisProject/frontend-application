@@ -112,9 +112,13 @@ export default {
       isMobile
     }
   },
-  async mounted() {
+  async created() {
     this.isMetaMaskInstalled = isMetaMaskInstalled()
-    this.isCorrectNetworkSelected = await isCorrectNetworkSelected()
+    if (this.isMetaMaskInstalled) {
+      this.isCorrectNetworkSelected = await isCorrectNetworkSelected()
+    } else {
+      this.isCorrectNetworkSelected = false
+    }
     this.isLoading = false
   },
   computed: {
