@@ -270,14 +270,14 @@ ul.notice {
     width: 340px;
   }
   .area-badge-card-list-container {
-    margin: 0 27px 0 27px;
+    margin: 14.5px 27px;
     grid-gap: 15px 26px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .area-badge-card-list-container {
-    margin: 0;
+    margin: -31px 0 0;
     grid-gap: 15px;
     grid-template-columns: repeat(auto-fill, 96px);
     grid-template-rows: repeat(auto-fill, 136px);
