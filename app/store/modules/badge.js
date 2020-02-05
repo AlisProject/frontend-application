@@ -136,6 +136,14 @@ const actions = {
   },
   setIsLoading({ commit }, { isLoading }) {
     commit(types.SET_BADGE_DESCRIPTION_MODAL, { isLoading })
+  },
+  async removeBadgeInfo({ commit }) {
+    commit(types.SET_BADGES_WALLET_ADDRESS, {
+      walletAddress: ''
+    })
+    commit(types.SET_BADGES, {
+      badges: []
+    })
   }
 }
 

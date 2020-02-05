@@ -39,6 +39,9 @@ export default {
       isLoading: true
     }
   },
+  async created() {
+    await this.removeBadgeInfo()
+  },
   async mounted() {
     await this.fetchWalletAddress({ userId: this.$route.params.userId })
     if (this.walletAddress) {
@@ -54,7 +57,7 @@ export default {
     ...mapGetters('badge', ['walletAddress'])
   },
   methods: {
-    ...mapActions('badge', ['fetchWalletAddress', 'fetchBadges'])
+    ...mapActions('badge', ['fetchWalletAddress', 'fetchBadges', 'removeBadgeInfo'])
   }
 }
 </script>
