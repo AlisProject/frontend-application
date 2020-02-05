@@ -103,8 +103,8 @@ export default {
         }
         if (
           this.signUpAuthFlowModal.isInputPhoneNumberModal ||
-            this.signUpAuthFlowModal.isInputAuthCodeModal ||
-            this.signUpAuthFlowModal.isProfileSettingsModal
+          this.signUpAuthFlowModal.isInputAuthCodeModal ||
+          this.signUpAuthFlowModal.isProfileSettingsModal
         ) {
           this.setSignUpAuthFlowInputPhoneNumberModal({
             isSignUpAuthFlowInputPhoneNumberModal: false
@@ -279,104 +279,104 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .modal {
-    &-mask {
-      background-color: rgba(0, 0, 0, 0.8);
-      bottom: 0;
-      display: table;
-      height: 100vh;
-      left: 0;
-      position: fixed;
-      right: 0;
-      top: 0;
-      transition: opacity 0.3s ease;
-      width: 100%;
-      z-index: 9998;
+.modal {
+  &-mask {
+    background-color: rgba(0, 0, 0, 0.8);
+    bottom: 0;
+    display: table;
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: opacity 0.3s ease;
+    width: 100%;
+    z-index: 9998;
+  }
+
+  &-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  &-container {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    box-sizing: border-box;
+    margin: 10px auto;
+    max-width: 800px;
+    overflow-y: auto;
+    padding: 20px 30px;
+    transition: all 0.3s ease;
+    width: 80%;
+  }
+
+  &-body {
+    .title {
+      color: #030303;
+      font-size: 20px;
+      font-weight: 100;
+      letter-spacing: 5px;
+      line-height: 24px;
+      margin: 50px 20px 0;
+      text-align: center;
+    }
+  }
+
+  &-header {
+    &-content {
+      margin: -20px -30px 20px;
     }
 
+    &-default-button {
+      color: #6e6e6e;
+      cursor: pointer;
+      float: right;
+      font-size: 26px;
+      margin-right: -10px;
+      position: relative;
+    }
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+
+  &-leave-active {
+    opacity: 0;
+  }
+
+  &-enter &-container,
+  &-leave-active &-container {
+    transform: scale(1.1);
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .modal {
     &-wrapper {
-      display: table-cell;
-      vertical-align: middle;
+      width: 100%;
     }
 
     &-container {
-      background: #fff;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-      box-sizing: border-box;
-      margin: 10px auto;
-      max-width: 800px;
-      overflow-y: auto;
-      padding: 20px 30px;
-      transition: all 0.3s ease;
-      width: 80%;
+      border-radius: 0;
+      height: 100vh;
+      margin-top: 0;
+      max-width: 550px;
+      overflow-y: scroll;
+      width: 100vw;
+    }
+
+    &-inner-container {
+      margin: 115px 0 0;
     }
 
     &-body {
       .title {
-        color: #030303;
-        font-size: 20px;
-        font-weight: 100;
-        letter-spacing: 5px;
-        line-height: 24px;
-        margin: 50px 20px 0;
-        text-align: center;
-      }
-    }
-
-    &-header {
-      &-content {
-        margin: -20px -30px 20px;
-      }
-
-      &-default-button {
-        color: #6e6e6e;
-        cursor: pointer;
-        float: right;
-        font-size: 26px;
-        margin-right: -10px;
-        position: relative;
-      }
-    }
-
-    &-enter {
-      opacity: 0;
-    }
-
-    &-leave-active {
-      opacity: 0;
-    }
-
-    &-enter &-container,
-    &-leave-active &-container {
-      transform: scale(1.1);
-    }
-  }
-
-  @media screen and (max-width: 550px) {
-    .modal {
-      &-wrapper {
-        width: 100%;
-      }
-
-      &-container {
-        border-radius: 0;
-        height: 100vh;
-        margin-top: 0;
-        max-width: 550px;
-        overflow-y: scroll;
-        width: 100vw;
-      }
-
-      &-inner-container{
-        margin: 115px 0 0;
-      }
-
-      &-body {
-        .title {
-          margin: 0 20px;
-        }
+        margin: 0 20px;
       }
     }
   }
+}
 </style>
