@@ -6,7 +6,7 @@
       </p>
       <ul class="notice">
         <li>
-          詳細については<nuxt-link class="link" to="/ALIS-official/article/K0ZQLL7yDQP8">
+          詳細については<nuxt-link class="link" to="/ALIS-official/articles/K0ZQLL7yDQP8">
             こちら
           </nuxt-link>をご参照ください
         </li>
@@ -52,7 +52,7 @@
           バッジの再発行は行えません。連携するETHアカウントはお間違えないようお願いします
         </li>
         <li>
-          詳細については<nuxt-link class="link" to="/ALIS-official/article/K0ZQLL7yDQP8">
+          詳細については<nuxt-link class="link" to="/ALIS-official/articles/K0ZQLL7yDQP8">
             こちら
           </nuxt-link>をご参照ください
         </li>
@@ -65,7 +65,7 @@
       登録済みのETHアカウントを変更する場合はパソコンから当ページにアクセスください。
     </p>
     <p>
-      詳細については<nuxt-link class="link" to="/ALIS-official/article/K0ZQLL7yDQP8">
+      詳細については<nuxt-link class="link" to="/ALIS-official/articles/K0ZQLL7yDQP8">
         こちら
       </nuxt-link>をご参照ください
     </p>
