@@ -103,6 +103,8 @@ export default {
     line-height: 13.5px;
     font-size: 10px;
     margin: auto 5px auto 0;
+    text-overflow: ellipsis;
+    height: 28px;
   }
 }
 </style>
