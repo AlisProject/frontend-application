@@ -478,7 +478,7 @@ export default {
 
 @media screen and (max-width: 640px) {
   .area-editor-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     display: none;
   }
 

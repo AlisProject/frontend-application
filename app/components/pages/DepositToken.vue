@@ -389,7 +389,7 @@ export default {
     "...        nav        ...       "
     "...        deposit    ..."
     "app-footer app-footer app-footer";
-  grid-template-columns: 1fr 400px 1fr;
+  grid-template-columns: minmax(0, 1fr) 400px minmax(0, 1fr);
   grid-template-rows: 100px 22px auto 75px;
   min-height: 100vh;
 }

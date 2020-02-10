@@ -122,7 +122,7 @@ export default {
 .license-token-container {
   display: grid;
   grid-row-gap: 40px;
-  grid-template-columns: 1fr 710px 1fr;
+  grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
   grid-template-rows: 100px auto 75px;
   /* prettier-ignore */
   grid-template-areas:
@@ -135,14 +135,14 @@ export default {
 
 @media screen and (max-width: 920px) {
   .license-token-container {
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 550px) {
   .license-token-container {
     background: #fff;
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
     grid-template-rows: 66px auto min-content;
     grid-row-gap: 20px;
     /* prettier-ignore */

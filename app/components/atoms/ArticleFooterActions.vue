@@ -202,14 +202,14 @@ export default {
 
 <style lang="scss" scoped>
 .area-footer-actions {
-  grid-template-columns: repeat(2, 52px) 1fr repeat(3, 40px);
+  grid-template-columns: repeat(2, 52px) minmax(0, 1fr) repeat(3, 40px);
   /* prettier-ignore */
   grid-template-areas:
     'like tip ... share-twitter share-facebook etc';
 }
 
 .area-footer-actions-own {
-  grid-template-columns: repeat(2, 52px) 1fr repeat(2, 40px);
+  grid-template-columns: repeat(2, 52px) minmax(0, 1fr) repeat(2, 40px);
   /* prettier-ignore */
   grid-template-areas:
     'like tip ... share-twitter share-facebook';
@@ -342,14 +342,14 @@ export default {
 
 @media screen and (max-width: 640px) {
   .area-footer-actions-own {
-    grid-template-columns: 10px repeat(1, 52px) 1fr repeat(2, 40px) 10px;
+    grid-template-columns: 10px repeat(1, 52px) minmax(0, 1fr) repeat(2, 40px) 10px;
     /* prettier-ignore */
     grid-template-areas:
       '... like ... share-twitter share-facebook ...';
   }
 
   .area-footer-actions {
-    grid-template-columns: 10px 40px 0 40px 1fr repeat(3, 40px) 10px;
+    grid-template-columns: 10px 40px 0 40px minmax(0, 1fr) repeat(3, 40px) 10px;
     /* prettier-ignore */
     grid-template-areas:
       '... like ... tip ... share-twitter share-facebook etc ...';

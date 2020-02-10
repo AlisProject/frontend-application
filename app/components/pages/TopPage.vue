@@ -187,13 +187,13 @@ export default {
     "...        loader                         loader                         ...       "
     "app-footer app-footer                     app-footer                     app-footer";
 
-  grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px auto 1fr 75px 75px;
+  grid-template-columns: minmax(0, 1fr) 710px 340px minmax(0, 1fr);
+  grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px auto minmax(0, 1fr) 75px 75px;
   min-height: 100vh;
 
   &.is-show-guide {
     grid-template-rows:
-      100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px 652px minmax(100px, 1fr)
+      100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px 652px minmax(100px, minmax(0, 1fr))
       75px 75px;
     /* prettier-ignore */
     grid-template-areas:
@@ -286,8 +286,8 @@ export default {
 
 @media screen and (max-width: 1296px) {
   .top-page {
-    grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px 1fr 75px 75px;
+    grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
+    grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px minmax(0, 1fr) 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                     app-header"
@@ -303,7 +303,7 @@ export default {
       "app-footer app-footer                     app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px auto 1fr 75px 75px;
+      grid-template-rows: 100px minmax(50px, min-content) 43px 26px 30px auto 26px 30px auto minmax(0, 1fr) 75px 75px;
       /* prettier-ignore */
       grid-template-areas:
         "app-header app-header                     app-header"
@@ -336,8 +336,8 @@ export default {
 
 @media screen and (max-width: 920px) {
   .top-page {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 80px 43px 26px 30px auto 60px 26px 30px 1fr 75px minmax(
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+    grid-template-rows: 100px 80px 43px 26px 30px auto 60px 26px 30px minmax(0, 1fr) 75px minmax(
         75px,
         min-content
       );
@@ -357,7 +357,7 @@ export default {
       "app-footer app-footer                    app-footer";
 
     &.is-show-guide {
-      grid-template-rows: 100px 80px 43px auto 26px 30px auto 60px 26px 30px 1fr 75px minmax(
+      grid-template-rows: 100px 80px 43px auto 26px 30px auto 60px 26px 30px minmax(0, 1fr) 75px minmax(
           75px,
           min-content
         );
@@ -409,7 +409,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .top-page {
-    grid-template-rows: 66px minmax(50px, min-content) 36px 30px 26px auto 60px 26px 30px 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) 36px 30px 26px auto 60px 26px 30px minmax(0, 1fr) 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
@@ -427,7 +427,7 @@ export default {
     grid-gap: 0;
 
     &.is-show-guide {
-      grid-template-rows: 66px minmax(50px, min-content) 44px auto 30px 26px auto 60px 26px 30px 1fr 75px min-content;
+      grid-template-rows: 66px minmax(50px, min-content) 44px auto 30px 26px auto 60px 26px 30px minmax(0, 1fr) 75px min-content;
       /* prettier-ignore */
       grid-template-areas:
         "app-header       app-header                    app-header      "
@@ -461,7 +461,7 @@ export default {
 
 @media screen and (max-width: 375px) {
   .top-page {
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   }
 }
 </style>

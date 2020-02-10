@@ -94,7 +94,7 @@ export default {
 
 .area-header-contents {
   display: grid;
-  grid-template-columns: 110px 1fr 75px;
+  grid-template-columns: 110px minmax(0, 1fr) 75px;
   /* prettier-ignore */
   grid-template-areas:
     'read-more           loader           to-comment';

@@ -47,7 +47,7 @@ export default {
 @media screen and (max-width: 550px) {
   .area-search-article-card-list-container {
     grid-gap: 24px;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 </style>

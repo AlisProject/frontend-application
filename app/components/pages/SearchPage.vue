@@ -298,7 +298,7 @@ export default {
 .search-page-container {
   display: grid;
   grid-row-gap: 40px;
-  grid-template-rows: 100px auto auto 1fr 75px 75px;
+  grid-template-rows: 100px auto auto minmax(0, 1fr) 75px 75px;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header             app-header"
@@ -308,7 +308,7 @@ export default {
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
   min-height: 100vh;
-  grid-template-columns: 1fr 710px 1fr;
+  grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
 }
 
 .area-search {
@@ -379,7 +379,7 @@ export default {
 
 @media screen and (max-width: 920px) {
   .search-page-container {
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
   }
 
   .area-search {
@@ -393,20 +393,20 @@ export default {
 
 @media screen and (max-width: 640px) {
   .search-page-container {
-    grid-template-rows: 100px auto auto 1fr 75px min-content;
+    grid-template-rows: 100px auto auto minmax(0, 1fr) 75px min-content;
   }
 }
 
 @media screen and (max-width: 550px) {
   .search-page-container {
-    grid-template-rows: 66px auto auto 1fr 75px min-content;
+    grid-template-rows: 66px auto auto minmax(0, 1fr) 75px min-content;
     grid-row-gap: 30px;
   }
 }
 
 @media screen and (max-width: 370px) {
   .search-page-container {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 
   .area-search {

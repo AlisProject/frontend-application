@@ -37,7 +37,7 @@ export default {
 .help-container {
   display: grid;
   grid-template-rows: 100px 150px calc(100vh - 100px - 150px - 75px) 75px;
-  grid-template-columns: 1fr 600px 1fr;
+  grid-template-columns: minmax(0, 1fr) 600px minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     'app-header       app-header       app-header      '
@@ -70,7 +70,7 @@ export default {
 @media screen and (max-width: 640px) {
   .help-container {
     grid-template-rows: 70px 10vh calc(100vh - 10vh - 70px - 190px) min-content;
-    grid-template-columns: 30px 1fr 30px;
+    grid-template-columns: 30px minmax(0, 1fr) 30px;
     /* prettier-ignore */
     grid-template-areas:
     'app-header       app-header       app-header      '

@@ -158,7 +158,7 @@ $topicCount: 10;
     /* prettier-ignore */
     grid-template-areas:
       '... nav-links ...';
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 
     .nav-link {
       height: 28px;

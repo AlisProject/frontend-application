@@ -65,8 +65,8 @@ export default {
 <style lang="scss" scoped>
 .badge-list-container {
   display: grid;
-  grid-template-rows: 100px auto auto auto auto 1fr 75px;
-  grid-template-columns: 1fr 710px 1fr;
+  grid-template-rows: 100px auto auto auto auto minmax(0, 1fr) 75px;
+  grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     "app-header app-header        app-header"
@@ -81,15 +81,15 @@ export default {
 
 @media screen and (max-width: 920px) {
   .badge-list-container {
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 550px) {
   .badge-list-container {
     background: #fff;
-    grid-template-columns: 1fr 380px 1fr;
-    grid-template-rows: 66px min-content auto auto auto 1fr min-content;
+    grid-template-columns: minmax(0, 1fr) 380px minmax(0, 1fr);
+    grid-template-rows: 66px min-content auto auto auto minmax(0, 1fr) min-content;
     grid-row-gap: 20px;
     /* prettier-ignore */
     grid-template-areas:
@@ -105,7 +105,7 @@ export default {
 
 @media screen and (max-width: 370px) {
   .badge-list-container {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 }
 </style>
