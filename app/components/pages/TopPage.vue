@@ -459,9 +459,9 @@ export default {
   }
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 360px) {
   .top-page {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: minmax(10px, 1fr) calc(100% - 20px) minmax(10px, 1fr);
   }
 }
 </style>
