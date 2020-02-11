@@ -130,12 +130,14 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .area-app-header-container {
+    width: 100%;
     max-width: calc(100% - 68px);
   }
 }
 
 @mixin spStyles() {
   .area-app-header-container {
+    width: 100%;
     max-width: calc(100% - 24px);
     background: #fff;
   }

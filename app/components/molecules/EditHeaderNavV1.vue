@@ -75,7 +75,7 @@ export default {
   .area-nav-inner {
     display: grid;
     grid-area: nav-inner;
-    grid-template-columns: 70px 1fr 90px min-content;
+    grid-template-columns: 70px minmax(0, 1fr) 90px min-content;
     margin: auto;
     width: 640px;
     /* prettier-ignore */

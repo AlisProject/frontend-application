@@ -90,8 +90,8 @@ export default {
     "...         description          ...       "
     "...         csvdownloadbutton    ...       "
     "app-footer  app-footer           app-footer";
-  grid-template-columns: 1fr 460px 1fr;
-  grid-template-rows: 100px 29px 141px 1fr 75px;
+  grid-template-columns: minmax(0, 1fr) 460px minmax(0, 1fr);
+  grid-template-rows: 100px 29px 141px minmax(0, 1fr) 75px;
   min-height: 100vh;
 }
 
@@ -137,14 +137,14 @@ _:lang(x) + _:-webkit-full-screen-document,
 
 @media screen and (max-width: 920px) {
   .token-history-csv-download {
-    grid-template-columns: 1fr 460px 1fr;
+    grid-template-columns: minmax(0, 1fr) 460px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 640px) {
   .token-history-csv-download {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 29px 183px 1fr 75px;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+    grid-template-rows: 100px 29px 183px minmax(0, 1fr) 75px;
   }
 
   .area-title {
@@ -154,13 +154,13 @@ _:lang(x) + _:-webkit-full-screen-document,
 
 @media screen and (max-width: 414px) {
   .token-history-csv-download {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 }
 
 @media screen and (max-width: 370px) {
   .token-history-csv-download {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 }
 </style>

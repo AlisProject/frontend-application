@@ -49,7 +49,7 @@ export default {
   .area-nav-inner {
     display: grid;
     grid-area: nav-inner;
-    grid-template-columns: 1fr min-content;
+    grid-template-columns: minmax(0, 1fr) min-content;
     margin: auto;
     width: 640px;
     /* prettier-ignore */
@@ -114,7 +114,7 @@ export default {
     .area-nav-inner {
       display: grid;
       grid-area: nav-inner;
-      grid-template-columns: 1fr min-content 12px;
+      grid-template-columns: minmax(0, 1fr) min-content 12px;
       margin: auto;
       width: 100%;
       /* prettier-ignore */

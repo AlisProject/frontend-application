@@ -125,8 +125,8 @@ export default {
     "...                     article-card-list       ...                    "
     "...                     loader                  ...                    "
     "app-footer              app-footer              app-footer             ";
-  grid-template-columns: 1fr 1080px 1fr;
-  grid-template-rows: 100px auto 84px 1fr 75px 75px;
+  grid-template-columns: minmax(0, 1fr) 1080px minmax(0, 1fr);
+  grid-template-rows: 100px auto 84px minmax(0, 1fr) 75px 75px;
   min-height: 100vh;
 }
 
@@ -138,7 +138,7 @@ export default {
 
 @media screen and (max-width: 1296px) {
   .new-article-list-container {
-    grid-template-columns: 1fr 710px 1fr;
+    grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
     /* prettier-ignore */
     grid-template-areas:
       "app-header              app-header              app-header             "
@@ -152,20 +152,20 @@ export default {
 
 @media screen and (max-width: 920px) {
   .new-article-list-container {
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 550px) {
   .new-article-list-container {
-    grid-template-rows: 66px minmax(62px, min-content) 60px 1fr 75px min-content;
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-rows: 66px minmax(62px, min-content) 60px minmax(0, 1fr) 75px min-content;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 370px) {
   .new-article-list-container {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 }
 </style>

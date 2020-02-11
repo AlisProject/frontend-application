@@ -64,7 +64,7 @@ export default {
   &.create-article-container {
     display: grid;
     grid-template-rows: 100px 74px 50px 650px 75px;
-    grid-template-columns: 1fr 640px 1fr;
+    grid-template-columns: minmax(0, 1fr) 640px minmax(0, 1fr);
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header app-header"
@@ -79,7 +79,7 @@ export default {
   .create-article-container.ios,
   .create-article-container.android {
     grid-template-rows: 66px 40px min-content min-content min-content;
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
     /* prettier-ignore */
     grid-template-areas:
     "mobile-editor-header mobile-editor-header mobile-editor-header"

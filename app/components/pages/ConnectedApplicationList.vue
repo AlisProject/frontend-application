@@ -92,7 +92,7 @@ export default {
     "app-header app-header   app-header"
     "...        applications ...       "
     "app-footer app-footer   app-footer";
-  grid-template-columns: 1fr 640px 1fr;
+  grid-template-columns: minmax(0, 1fr) 640px minmax(0, 1fr);
   grid-template-rows: 100px auto 75px;
   min-height: 100vh;
 }
@@ -178,7 +178,7 @@ export default {
 @media screen and (max-width: 640px) {
   .connected-application-list-container {
     grid-template-rows: 100px auto min-content;
-    grid-template-columns: 20px 1fr 20px;
+    grid-template-columns: 20px minmax(0, 1fr) 20px;
   }
 
   .application {

@@ -45,8 +45,8 @@ export default {
     "...         title                                   ...       "
     "...         article-content-edit-history-card-list  ...       "
     "app-footer  app-footer                              app-footer";
-  grid-template-columns: 1fr 460px 1fr;
-  grid-template-rows: 100px 50px 1fr 75px;
+  grid-template-columns: minmax(0, 1fr) 460px minmax(0, 1fr);
+  grid-template-rows: 100px 50px minmax(0, 1fr) 75px;
   min-height: 100vh;
 }
 
@@ -59,14 +59,14 @@ export default {
 
 @media screen and (max-width: 920px) {
   .article-content-edit-history-list-container {
-    grid-template-columns: 1fr 460px 1fr;
+    grid-template-columns: minmax(0, 1fr) 460px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-content-edit-history-list-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 66px 40px 1fr min-content;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+    grid-template-rows: 66px 40px minmax(0, 1fr) min-content;
   }
 
   .area-title {
@@ -76,7 +76,7 @@ export default {
 
 @media screen and (max-width: 370px) {
   .article-content-edit-history-list-container {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 }
 </style>

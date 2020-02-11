@@ -40,7 +40,7 @@ export default {
 .select-paypart-container.pc {
   display: grid;
   grid-template-rows: 100px 74px 50px 650px 75px;
-  grid-template-columns: 1fr 640px 1fr;
+  grid-template-columns: minmax(0, 1fr) 640px minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     'app-header app-header app-header'
@@ -53,7 +53,7 @@ export default {
 .select-paypart-container.ios,
 .select-paypart-container.android {
   display: grid;
-  grid-template-columns: 1fr 640px 1fr;
+  grid-template-columns: minmax(0, 1fr) 640px minmax(0, 1fr);
   grid-template-rows: 66px min-content min-content min-content;
   /* prettier-ignore */
   grid-template-areas:
@@ -68,7 +68,7 @@ export default {
   .select-paypart-container.android {
     display: grid;
     grid-template-rows: 66px min-content min-content min-content;
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
     /* prettier-ignore */
     grid-template-areas:
       'app-header app-header app-header'

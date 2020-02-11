@@ -94,8 +94,8 @@ export default {
 .tag-article-list {
   display: grid;
   grid-row-gap: 40px;
-  grid-template-columns: 1fr 710px 1fr;
-  grid-template-rows: 100px 40px 26px 1fr 75px 75px;
+  grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
+  grid-template-rows: 100px 40px 26px minmax(0, 1fr) 75px 75px;
   /* prettier-ignore */
   grid-template-areas:
     "app-header  app-header             app-header"
@@ -115,7 +115,7 @@ export default {
 
 .area-nav {
   grid-area: nav;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 48px minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     'nav-content ...';
@@ -141,26 +141,26 @@ export default {
 
 @media screen and (max-width: 920px) {
   .tag-article-list {
-    grid-template-columns: 1fr 340px 1fr;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 640px) {
   .tag-article-list {
-    grid-template-rows: 100px 40px 26px 1fr 75px min-content;
+    grid-template-rows: 100px 40px 26px minmax(0, 1fr) 75px min-content;
   }
 }
 
 @media screen and (max-width: 550px) {
   .tag-article-list {
     grid-row-gap: 26px;
-    grid-template-rows: 60px 40px 26px 1fr 75px min-content;
+    grid-template-rows: 60px 40px 26px minmax(0, 1fr) 75px min-content;
   }
 }
 
 @media screen and (max-width: 370px) {
   .tag-article-list {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 }
 </style>

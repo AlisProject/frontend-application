@@ -220,8 +220,8 @@ export default {
 
 .area-wallet-address-notice {
   grid-area: badge-card-list;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   justify-content: center;
   width: 500px;
   margin: 20px auto 20px auto;
@@ -229,8 +229,8 @@ export default {
 
 .area-not-exists-badges {
   grid-area: badge-card-list;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
   justify-content: center;
   text-align: center;
 }

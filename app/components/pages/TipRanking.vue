@@ -125,8 +125,8 @@ export default {
     "...        loader                         loader                         ...       "
     "app-footer app-footer                     app-footer                     app-footer";
 
-  grid-template-columns: 1fr 710px 340px 1fr;
-  grid-template-rows: 100px minmax(50px, min-content) 26px 30px auto auto 1fr 75px 75px;
+  grid-template-columns: minmax(0, 1fr) 710px 340px minmax(0, 1fr);
+  grid-template-rows: 100px minmax(50px, min-content) 26px 30px auto auto minmax(0, 1fr) 75px 75px;
   min-height: 100vh;
 
   .default-header-nav {
@@ -159,8 +159,8 @@ export default {
 
 @media screen and (max-width: 1296px) {
   .tip-ranking-container {
-    grid-template-columns: 1fr 710px 1fr;
-    grid-template-rows: 100px minmax(50px, min-content) 26px 30px auto 1fr 75px 75px;
+    grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
+    grid-template-rows: 100px minmax(50px, min-content) 26px 30px auto minmax(0, 1fr) 75px 75px;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                     app-header"
@@ -180,8 +180,8 @@ export default {
 
 @media screen and (max-width: 920px) {
   .tip-ranking-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 100px 80px 26px 30px auto 1fr 75px minmax(75px, min-content);
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+    grid-template-rows: 100px 80px 26px 30px auto minmax(0, 1fr) 75px minmax(75px, min-content);
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
@@ -207,7 +207,7 @@ export default {
 
 @media screen and (max-width: 550px) {
   .tip-ranking-container {
-    grid-template-rows: 66px minmax(50px, min-content) 30px 26px 30px auto 1fr 75px min-content;
+    grid-template-rows: 66px minmax(50px, min-content) 30px 26px 30px auto minmax(0, 1fr) 75px min-content;
     /* prettier-ignore */
     grid-template-areas:
       "app-header app-header                    app-header"
@@ -229,7 +229,7 @@ export default {
 
 @media screen and (max-width: 375px) {
   .tip-ranking-container {
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   }
 }
 </style>

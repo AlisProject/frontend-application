@@ -129,8 +129,8 @@ E-mail：info@alismedia.jp
 <style lang="scss" scoped>
 .privacy-policy-container {
   display: grid;
-  grid-template-rows: 100px 50px 1fr 75px;
-  grid-template-columns: 1fr 640px 1fr;
+  grid-template-rows: 100px 50px minmax(0, 1fr) 75px;
+  grid-template-columns: minmax(0, 1fr) 640px minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     'app-header       app-header       app-header      '
@@ -164,20 +164,20 @@ E-mail：info@alismedia.jp
 
 @media screen and (max-width: 1080px) {
   .privacy-policy-container {
-    grid-template-rows: 100px 50px 1fr 75px;
+    grid-template-rows: 100px 50px minmax(0, 1fr) 75px;
   }
 }
 
 @media screen and (max-width: 820px) {
   .privacy-policy-container {
-    grid-template-columns: 80px 1fr 80px;
+    grid-template-columns: 80px minmax(0, 1fr) 80px;
   }
 }
 
 @media screen and (max-width: 550px) {
   .privacy-policy-container {
-    grid-template-rows: 70px 0 1fr min-content;
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows: 70px 0 minmax(0, 1fr) min-content;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
     /* prettier-ignore */
     grid-template-areas:
     'app-header       app-header       app-header      '

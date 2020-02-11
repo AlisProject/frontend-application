@@ -63,7 +63,7 @@ export default {
     "app-header app-header app-header"
     "...        supporters ...       "
     "app-footer app-footer app-footer";
-  grid-template-columns: 1fr 400px 1fr;
+  grid-template-columns: minmax(0, 1fr) 400px minmax(0, 1fr);
   grid-template-rows: 100px auto minmax(75px, min-content);
   min-height: 100vh;
 }
@@ -139,7 +139,7 @@ export default {
 @media screen and (max-width: 550px) {
   .tip-supporters-container {
     grid-template-rows: 66px auto min-content;
-    grid-template-columns: 1fr 258px 1fr;
+    grid-template-columns: minmax(0, 1fr) 258px minmax(0, 1fr);
   }
 
   .name,

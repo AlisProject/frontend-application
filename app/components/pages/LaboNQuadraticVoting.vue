@@ -193,8 +193,8 @@ export default {
     "...         ...         ...       "
     "qv          qv          qv        "
     "app-footer  app-footer  app-footer";
-  grid-template-columns: 1fr 460px 1fr;
-  grid-template-rows: 100px 50px 1fr 75px;
+  grid-template-columns: minmax(0, 1fr) 460px minmax(0, 1fr);
+  grid-template-rows: 100px 50px minmax(0, 1fr) 75px;
   min-height: 100vh;
 }
 
@@ -209,7 +209,7 @@ export default {
     30px
     0
     348px
-    1fr;
+    minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     'title'
@@ -268,7 +268,7 @@ export default {
       69px
       0
       388px
-      1fr;
+      minmax(0, 1fr);
   }
 }
 
@@ -276,11 +276,11 @@ export default {
 @media screen and (max-width: 414px) {
   .quadratic-voting-container {
     grid-template-columns: 7px 400px 7px;
-    grid-template-rows: 50px 50px 1fr 75px;
+    grid-template-rows: 50px 50px minmax(0, 1fr) 75px;
   }
 
   .area-qv {
-    grid-template-rows: 0 67px 0 285px 1fr;
+    grid-template-rows: 0 67px 0 285px minmax(0, 1fr);
   }
 
   .area-credit {
@@ -295,7 +295,7 @@ export default {
   }
 
   .area-qv {
-    grid-template-rows: 24px 64px 0 312px 1fr;
+    grid-template-rows: 24px 64px 0 312px minmax(0, 1fr);
   }
 
   .area-credit {
@@ -305,11 +305,11 @@ export default {
 
 @media screen and (max-width: 320px) {
   .quadratic-voting-container {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 
   .area-qv {
-    grid-template-rows: 1px 63px 0 450px 1fr;
+    grid-template-rows: 1px 63px 0 450px minmax(0, 1fr);
   }
 }
 </style>

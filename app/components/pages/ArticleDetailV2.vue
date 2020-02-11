@@ -117,9 +117,9 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px 1fr min-content min-content 75px;
-  // grid-template-rows: 100px 50px 1fr 470px 75px;
-  grid-template-columns: 1fr 640px 1fr;
+  grid-template-rows: 100px minmax(0, 1fr) min-content min-content 75px;
+  // grid-template-rows: 100px 50px minmax(0, 1fr) 470px 75px;
+  grid-template-columns: minmax(0, 1fr) 640px minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     'app-header           app-header           app-header      '
@@ -181,14 +181,14 @@ export default {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px 1fr min-content min-content 75px;
+    grid-template-rows: 100px minmax(0, 1fr) min-content min-content 75px;
   }
 }
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 66px 1fr min-content min-content min-content;
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-rows: 66px minmax(0, 1fr) min-content min-content min-content;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
     /* prettier-ignore */
     grid-template-areas:
     'app-header           app-header           app-header      '

@@ -181,8 +181,8 @@ export default {
     "...         ...         ...       "
     "mj          mj          mj        "
     "app-footer  app-footer  app-footer";
-  grid-template-columns: 1fr 460px 1fr;
-  grid-template-rows: 100px 50px 1fr 75px;
+  grid-template-columns: minmax(0, 1fr) 460px minmax(0, 1fr);
+  grid-template-rows: 100px 50px minmax(0, 1fr) 75px;
   min-height: 100vh;
 }
 
@@ -196,7 +196,7 @@ export default {
     15px
     30px
     330px
-    1fr;
+    minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
     'title'
@@ -235,13 +235,13 @@ export default {
       25px
       120px
       760px
-      1fr;
+      minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 812px) {
   .majority-judgement-container {
-    grid-template-columns: 1fr 460px 1fr;
+    grid-template-columns: minmax(0, 1fr) 460px minmax(0, 1fr);
   }
 
   .area-mj {
@@ -249,7 +249,7 @@ export default {
       25px
       60px
       330px
-      1fr;
+      minmax(0, 1fr);
   }
 
   .area-app-footer-container {
@@ -264,14 +264,14 @@ export default {
       25px
       60px
       350px
-      1fr;
+      minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 640px) {
   .majority-judgement-container {
-    grid-template-columns: 1fr 340px 1fr;
-    grid-template-rows: 66px 40px 1fr min-content;
+    grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+    grid-template-rows: 66px 40px minmax(0, 1fr) min-content;
   }
 
   .area-mj {
@@ -284,7 +284,7 @@ export default {
       25px
       60px
       900px
-      1fr;
+      minmax(0, 1fr);
     /* prettier-ignore */
     grid-template-areas:
       'title'
@@ -324,7 +324,7 @@ export default {
       25px
       60px
       350px
-      1fr;
+      minmax(0, 1fr);
   }
 }
 
@@ -335,7 +335,7 @@ export default {
       25px
       60px
       530px
-      1fr;
+      minmax(0, 1fr);
   }
 }
 
@@ -346,13 +346,13 @@ export default {
       25px
       60px
       600px
-      1fr;
+      minmax(0, 1fr);
   }
 }
 
 @media screen and (max-width: 320px) {
   .majority-judgement-container {
-    grid-template-columns: 10px 1fr 10px;
+    grid-template-columns: 10px minmax(0, 1fr) 10px;
   }
 
   .area-mj {
@@ -360,7 +360,7 @@ export default {
       25px
       60px
       550px
-      1fr;
+      minmax(0, 1fr);
   }
 }
 </style>
