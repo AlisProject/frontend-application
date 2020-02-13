@@ -1,4 +1,5 @@
 const axiosRetry = require('axios-retry')
+const CKEditorStyles = require('@ckeditor/ckeditor5-dev-utils').styles
 
 module.exports = {
   /*
@@ -121,6 +122,17 @@ module.exports = {
     }
   },
   build: {
+    /**
+     * この postcss 設定を足さないと CKEditor5 ^16.0.0 で build された
+     * AlisEditor.css の parse にシンタックスエラーが起きる
+     */
+    postcss: CKEditorStyles.getPostCssConfig({
+      themeImporter: {
+        themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+      },
+      minify: true
+    }),
+
     publicPath: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/`,
     /*
      ** Run ESLint on save
@@ -139,7 +151,8 @@ module.exports = {
   css: [
     '~assets/stylesheets/medium-editor.scss',
     '~assets/stylesheets/vuex-toast.scss',
-    '@alisproject/alis-editor/dist/AlisEditor.css',
+    '@ocrybit/alis-editor/dist/AlisEditor.css',
+    '~/assets/stylesheets/gruvbox-dark-modified.css',
     '~assets/stylesheets/ckeditor-view.scss'
   ],
   env: {
