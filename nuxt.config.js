@@ -151,7 +151,7 @@ module.exports = {
   css: [
     '~assets/stylesheets/medium-editor.scss',
     '~assets/stylesheets/vuex-toast.scss',
-    '@ocrybit/alis-editor/dist/AlisEditor.css',
+    '@alisproject/alis-editor/dist/AlisEditor.css',
     '~/assets/stylesheets/gruvbox-dark-modified.css',
     '~assets/stylesheets/ckeditor-view.scss'
   ],
