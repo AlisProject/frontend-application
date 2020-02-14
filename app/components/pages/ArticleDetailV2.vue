@@ -90,7 +90,11 @@ export default {
       try {
         const $ = cheerio.load(`<div id="outerHTML">${this.article.body}</div>`)
         $('code').each(function() {
-          const language = $(this).attr('class').split('-').slice(1).join('-')
+          const language = $(this)
+            .attr('class')
+            .split('-')
+            .slice(1)
+            .join('-')
           $(this).html(htmlDecode(hljs.highlight(language, $(this).html()).value))
         })
         highlightedArticleBody = $('#outerHTML').html()
