@@ -1,10 +1,19 @@
 <template>
   <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="/ALIS-official/articles/azDdbZkWoYBm">
-      注目 <span class="tooltip" />
+    <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
+      今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA%E8%A8%98%E4%BA%8B">
-      シリーズ記事
+    <nuxt-link class="link" to="/tag/%E5%BE%A1%E6%9C%B1%E5%8D%B0">
+      御朱印
+    </nuxt-link>
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0"
+    >
+      プログラミング
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E7%AD%8B%E3%83%88%E3%83%AC">
+      筋トレ
     </nuxt-link>
   </div>
 </template>
