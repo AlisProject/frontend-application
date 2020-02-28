@@ -6,6 +6,7 @@ Gruvbox style (dark) (c) Pavel Pertsev (original style at https://github.com/mor
 
 .ck-content pre {
     background: #282828;
+    clear:both;
 }
 .ck-content pre code {
   display: block;
