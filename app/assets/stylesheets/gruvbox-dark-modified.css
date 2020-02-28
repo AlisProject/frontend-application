@@ -6,12 +6,15 @@ Gruvbox style (dark) (c) Pavel Pertsev (original style at https://github.com/mor
 
 .ck-content pre {
     background: #282828;
+    overflow-x: auto;
+    word-wrap: normal;
+    white-space: pre;
     clear:both;
 }
+
 .ck-content pre code {
   display: block;
-  overflow-x: auto;
-  padding: 0.5em;
+  padding: 0em;
   background: #282828;
 }
 
