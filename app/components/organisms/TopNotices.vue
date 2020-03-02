@@ -1,10 +1,16 @@
 <template>
   <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="/ALIS-official/articles/azDdbZkWoYBm">
-      注目 <span class="tooltip" />
+    <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
+      今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%B7%E3%83%AA%E3%83%BC%E3%82%BA%E8%A8%98%E4%BA%8B">
-      シリーズ記事
+    <nuxt-link class="link" to="/tag/Avacus">
+      Avacus
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E4%B8%80%E8%98%AD">
+      一蘭
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E6%B5%9C%E8%BE%BA%E7%BE%8E%E6%B3%A2">
+      浜辺美波
     </nuxt-link>
   </div>
 </template>
