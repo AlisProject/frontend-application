@@ -53,12 +53,17 @@
       font-style: normal;
     }
 
+    pre {
+      max-width: 640px;
+    }
+
     img {
       max-width: 100%;
     }
 
     .image {
       margin: 24px 0;
+      display: block;
 
       > figcaption {
         color: #666;
@@ -237,6 +242,10 @@
         line-height: 1.8;
         margin: 20px 0;
         padding: 8px 20px;
+      }
+
+      pre {
+        max-width: calc(100vw - 36px - 32px);
       }
 
       .image {
