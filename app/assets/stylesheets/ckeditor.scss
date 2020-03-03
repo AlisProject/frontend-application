@@ -75,24 +75,28 @@
     background: none;
   }
 
-  &.ck-editor__is-empty:not(.ck-focused):before {
-    color: #898989;
-    content: '本文を入力してください';
-    cursor: text;
-    display: block;
-    margin: 16px 0;
-    position: absolute;
-  }
-
   .media {
     margin: 1em 3px;
   }
 }
 
+#ALISEditor:not([data-empty="false"]) .ck-editor__is-empty:not(.ck-focused):before {
+  color: #898989;
+  content: '本文を入力してください';
+  cursor: text;
+  display: block;
+  margin: 16px 0;
+  position: absolute;
+}
+
 .area-editor-container {
   .ck-content {
+    outline: none;
+      
     .image {
       margin: 24px 3px;
+      display: block;
+      overflow: hidden;
     }
 
     .image-style-align-right {

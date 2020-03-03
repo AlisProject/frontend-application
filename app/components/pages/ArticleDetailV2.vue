@@ -8,7 +8,7 @@
       <h1 class="area-title">
         {{ decodedTitle }}
       </h1>
-      <div class="area-content ck-content" v-html="article.body" />
+      <div class="area-content ck-content" v-html="body" />
       <no-ssr>
         <article-detail-paypart v-if="isShowPaypart" :article="article" />
       </no-ssr>
@@ -35,6 +35,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import hljs from 'highlight.js'
+import cheerio from 'cheerio'
 import AppHeader from '../organisms/AppHeader'
 import ArticleHeader from '../organisms/ArticleHeader'
 import ArticleFooterActions from '../atoms/ArticleFooterActions'
@@ -83,6 +85,24 @@ export default {
     this.resetArticleCommentsLastEvaluatedKey()
   },
   computed: {
+    body() {
+      let highlightedArticleBody = this.article.body
+      try {
+        const $ = cheerio.load(`<div id="outerHTML">${this.article.body}</div>`)
+        $('code').each(function() {
+          const language = $(this)
+            .attr('class')
+            .split('-')
+            .slice(1)
+            .join('-')
+          $(this).html(htmlDecode(hljs.highlight(language, $(this).html()).value))
+        })
+        highlightedArticleBody = $('#outerHTML').html()
+      } catch (e) {
+        /* 記事のパースでエラーが起きた場合元のbodyをそのまま返す */
+      }
+      return highlightedArticleBody
+    },
     decodedTitle() {
       return htmlDecode(this.article.title)
     },
