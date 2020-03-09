@@ -3,14 +3,14 @@
     <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
       今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/Avacus">
-      Avacus
+    <nuxt-link class="link" to="/tag/%E3%83%95%E3%82%A1%E3%83%9F%E3%82%B3%E3%83%B3">
+      ファミコン
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E4%B8%80%E8%98%AD">
-      一蘭
+    <nuxt-link class="link" to="/tag/ALIS%E3%81%A7%E5%86%99%E7%9C%9F">
+      ALISで写真
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E6%B5%9C%E8%BE%BA%E7%BE%8E%E6%B3%A2">
-      浜辺美波
+    <nuxt-link class="link" to="/tag/%E3%83%AC%E3%82%B7%E3%83%94">
+      レシピ
     </nuxt-link>
   </div>
 </template>
