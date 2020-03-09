@@ -1,7 +1,8 @@
 <template>
-  <div class="new-article-list-container">
+  <div class="new-article-list-container" :class="{ 'with-notices': isWithNotices}">
     <app-header />
     <default-header-nav />
+    <category-notices v-if="$route.query.topic === 'game'"/>
     <article-type-select-nav />
     <article-card-list :articles="newArticles" />
     <the-loader :is-loading="!isLastPage" />
@@ -13,6 +14,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
+import CategoryNotices from '../organisms/CategoryNotices'
 import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
@@ -23,12 +25,16 @@ export default {
   components: {
     AppHeader,
     DefaultHeaderNav,
+    CategoryNotices,
     ArticleTypeSelectNav,
     ArticleCardList,
     TheLoader,
     AppFooter
   },
   computed: {
+    isWithNotices() {
+      return this.$route.query.topic === 'game'
+    },
     ...mapGetters('article', ['newArticles', 'isLastPage', 'topics']),
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('presentation', ['articleListScrollHeight'])
@@ -129,6 +135,19 @@ export default {
   grid-template-rows: 100px auto 84px minmax(0, 1fr) 75px 75px;
   min-height: 100vh;
 }
+.new-article-list-container.with-notices {
+  /* prettier-ignore */
+  grid-template-areas:
+    "app-header              app-header              app-header             "
+    "nav                     nav                     nav                    "
+    "...                     notices                 ...                    "
+    "article-type-select-nav article-type-select-nav article-type-select-nav"
+    "...                     ...                     ...                    "
+    "...                     article-card-list       ...                    "
+    "...                     loader                  ...                    "
+    "app-footer              app-footer              app-footer             ";
+  grid-template-rows: 100px auto 36px 49px 17.5px minmax(0, 1fr) 75px 75px;
+}
 
 .is-fixed-button {
   position: fixed;
@@ -139,14 +158,6 @@ export default {
 @media screen and (max-width: 1296px) {
   .new-article-list-container {
     grid-template-columns: minmax(0, 1fr) 710px minmax(0, 1fr);
-    /* prettier-ignore */
-    grid-template-areas:
-      "app-header              app-header              app-header             "
-      "nav                     nav                     nav                    "
-      "article-type-select-nav article-type-select-nav article-type-select-nav"
-      "...                     article-card-list       ...                    "
-      "...                     loader                  ...                    "
-      "app-footer              app-footer              app-footer             ";
   }
 }
 
@@ -160,6 +171,9 @@ export default {
   .new-article-list-container {
     grid-template-rows: 66px minmax(62px, min-content) 60px minmax(0, 1fr) 75px min-content;
     grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+  }
+  .new-article-list-container.with-notices {
+    grid-template-rows: 66px minmax(62px, min-content) 36px 30px 20px minmax(0, 1fr) 75px min-content;
   }
 }
 
