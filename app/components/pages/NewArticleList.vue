@@ -1,8 +1,8 @@
 <template>
-  <div class="new-article-list-container" :class="{ 'with-notices': isWithNotices}">
+  <div class="new-article-list-container" :class="{ 'with-notices': isWithNotices }">
     <app-header />
     <default-header-nav />
-    <category-notices v-if="$route.query.topic === 'game'"/>
+    <category-notices v-if="$route.query.topic === 'game'" />
     <article-type-select-nav />
     <article-card-list :articles="newArticles" />
     <the-loader :is-loading="!isLastPage" />

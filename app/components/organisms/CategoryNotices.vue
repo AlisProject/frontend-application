@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="area-category-notices-container js-scrollable">
     <nuxt-link class="description" to="/ALIS-official/articles/KeO0vXW1opDL">
       クリスペ <span class="tooltip" />
@@ -6,16 +6,28 @@
     <nuxt-link class="link" to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A">
       全て
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%83%87%E3%83%83%E3%82%AD%E7%B4%B9%E4%BB%8B">
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%83%87%E3%83%83%E3%82%AD%E7%B4%B9%E4%BB%8B"
+    >
       デッキ紹介
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%82%AB%E3%83%BC%E3%83%89%E8%A9%95%E4%BE%A1">
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%82%AB%E3%83%BC%E3%83%89%E8%A9%95%E4%BE%A1"
+    >
       カード評価
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E5%88%9D%E5%BF%83%E8%80%85">
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E5%88%9D%E5%BF%83%E8%80%85"
+    >
       初心者
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%81%9D%E3%81%AE%E4%BB%96">
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%81%9D%E3%81%AE%E4%BB%96"
+    >
       その他
     </nuxt-link>
   </div>
