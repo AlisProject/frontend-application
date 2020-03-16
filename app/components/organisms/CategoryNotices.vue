@@ -1,36 +1,48 @@
 <template>
-  <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
-      今週のお題 <span class="tooltip" />
+  <div class="area-category-notices-container js-scrollable">
+    <nuxt-link class="description" to="/ALIS-official/articles/KeO0vXW1opDL">
+      クリスペ <span class="tooltip" />
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A">
+      全て
     </nuxt-link>
     <nuxt-link
       class="link"
-      to="/tag/%E3%83%87%E3%82%A3%E3%83%BC%E3%83%97%E3%83%95%E3%82%A7%E3%82%A4%E3%82%AF"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%83%87%E3%83%83%E3%82%AD%E7%B4%B9%E4%BB%8B"
     >
-      ディープフェイク
+      デッキ紹介
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/DIY">
-      DIY
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%82%AB%E3%83%BC%E3%83%89%E8%A9%95%E4%BE%A1"
+    >
+      カード評価
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E6%9C%AC">
-      本
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E5%88%9D%E5%BF%83%E8%80%85"
+    >
+      初心者
+    </nuxt-link>
+    <nuxt-link
+      class="link"
+      to="/tag/%E3%82%AF%E3%83%AA%E3%82%B9%E3%83%9A%EF%BC%9A%E3%81%9D%E3%81%AE%E4%BB%96"
+    >
+      その他
     </nuxt-link>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.area-topo-notices-container {
+.area-category-notices-container {
   grid-area: notices;
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
-}
-
-.popular-article-list-container,
-.new-article-list-container {
-  .area-topo-notices-container {
-    padding-top: 20px;
+  padding-top: 18px;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -83,31 +95,15 @@
   }
 }
 
-@media screen and (max-width: 1296px) {
-  .popular-article-list-container,
-  .new-article-list-container {
-    .area-topo-notices-container {
-      padding-left: 12px;
-    }
-  }
-}
-
 @media screen and (max-width: 920px) {
-  .top-page .description {
+  .description {
     margin: 0 20px 0 0;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .top-page .area-topo-notices-container {
-    padding-top: 20px;
-  }
-
-  .popular-article-list-container,
-  .new-article-list-container {
-    .area-topo-notices-container {
-      padding-top: 10px;
-    }
+  .area-category-notices-container {
+    padding-top: 8px;
   }
 
   .description {
