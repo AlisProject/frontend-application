@@ -3,17 +3,14 @@
     <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
       今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link
-      class="link"
-      to="/tag/%E3%83%87%E3%82%A3%E3%83%BC%E3%83%97%E3%83%95%E3%82%A7%E3%82%A4%E3%82%AF"
-    >
-      ディープフェイク
+    <nuxt-link class="link" to="/tag/%E3%81%A9%E3%81%86%E3%81%B6%E3%81%A4%E3%81%AE%E6%A3%AE">
+      どうぶつの森
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/DIY">
-      DIY
+    <nuxt-link class="link" to="/tag/%E3%82%AC%E3%82%B8%E3%82%A7%E3%83%83%E3%83%88">
+      ガジェット
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E6%9C%AC">
-      本
+    <nuxt-link class="link" to="/tag/%E6%AD%B4%E5%8F%B2">
+      歴史
     </nuxt-link>
   </div>
 </template>
