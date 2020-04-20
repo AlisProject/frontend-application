@@ -3,14 +3,14 @@
     <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
       今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/Ethereum">
-      Ethereum
+    <nuxt-link class="link" to="/tag/%E8%87%AA%E7%B2%9B%E4%B8%AD%E3%81%AE%E8%B6%A3%E5%91%B3">
+      自粛中の趣味
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/VR">
-      VR
+    <nuxt-link class="link" to="/tag/5G">
+      5G
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%83%87%E3%83%BC%E3%82%BF%E5%88%86%E6%9E%90">
-      データ分析
+    <nuxt-link class="link" to="/tag/%E6%80%AA%E8%AB%87">
+      怪談
     </nuxt-link>
   </div>
 </template>
