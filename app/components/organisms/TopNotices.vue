@@ -8,7 +8,7 @@
     </nuxt-link>
     <nuxt-link
       class="link"
-      to="/tag/tag/%E3%81%8A%E3%81%99%E3%81%99%E3%82%81%E3%82%A2%E3%83%97%E3%83%AA"
+      to="/tag/%E3%81%8A%E3%81%99%E3%81%99%E3%82%81%E3%82%A2%E3%83%97%E3%83%AA"
     >
       おすすめアプリ
     </nuxt-link>
