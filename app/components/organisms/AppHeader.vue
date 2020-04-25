@@ -17,6 +17,7 @@
     <request-login-modal v-if="requestLoginModal.isShow" />
     <tip-modal v-if="showTipModal" />
     <request-phone-number-verify-modal v-if="requestPhoneNumberVerifyModal.isShow" />
+    <request-wallet-password-modal v-if="requestWalletPasswordModal.isShow" />
     <user-report-modal v-if="userReportModal.isShow" />
     <article-report-modal v-if="articleReportModal.isShow" />
     <first-process-modal v-if="firstProcessModal.isShow" />
@@ -42,6 +43,7 @@ const ProfileSettingsModal = () => import('../organisms/ProfileSettingsModal')
 const RequestLoginModal = () => import('../organisms/RequestLoginModal')
 const TipModal = () => import('../organisms/TipModal')
 const RequestPhoneNumberVerifyModal = () => import('../organisms/RequestPhoneNumberVerifyModal')
+const RequestWalletPasswordModal = () => import('../organisms/RequestWalletPasswordModal')
 const UserReportModal = () => import('../organisms/UserReportModal')
 const ArticleReportModal = () => import('../organisms/ArticleReportModal')
 const FirstProcessModal = () => import('../organisms/FirstProcessModal')
@@ -69,7 +71,8 @@ export default {
     ConfirmPurchaseArticleModal,
     WithdrawalDetailModal,
     InputWithdrawAuthCodeModal,
-    BadgeDescriptionModal
+    BadgeDescriptionModal,
+    RequestWalletPasswordModal
   },
   computed: {
     ...mapGetters('user', [
@@ -82,6 +85,7 @@ export default {
       'requestLoginModal',
       'showTipModal',
       'requestPhoneNumberVerifyModal',
+      'requestWalletPasswordModal',
       'firstProcessModal',
       'confirmPurchaseArticleModal',
       'withdrawalDetailModal',

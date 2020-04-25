@@ -161,7 +161,8 @@ export default {
       'setSignUpAuthFlowInputPhoneNumberModal',
       'signUpLogin',
       'resetPassword',
-      'forgotPassword'
+      'forgotPassword',
+      'setSignUpAuthFlowInputWalletPasswordModal'
     ])
   }
 }

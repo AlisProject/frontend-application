@@ -11,7 +11,7 @@ export default {
   components: {
     WithdrawToken
   },
-  mounted() {
+  async mounted() {
     if (isMobile()) {
       this.$router.replace('/')
       return
@@ -21,12 +21,19 @@ export default {
       this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
       this.$router.replace('/')
     }
+    const encryptInfo = await this.getWalletEncryptInfo()
+    if (this.loggedIn && !encryptInfo.encrypted_secret_key) {
+      this.setRequestWalletPasswordModal({ isShow: true })
+      this.setRequestInputWalletPasswordModal({ isShow: true })
+      this.$router.replace('/')
+    }
   },
   computed: {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
     ...mapActions('user', [
+      'getWalletEncryptInfo',
       'setRequestPhoneNumberVerifyModal',
       'setRequestPhoneNumberVerifyInputPhoneNumberModal'
     ])

@@ -82,7 +82,7 @@ export default {
     hasAuthCodeError() {
       return this.formError.authCode && this.$v.authCode.$error
     },
-    ...mapGetters('user', ['inputWithdrawAuthCodeModal'])
+    ...mapGetters('user', ['inputWithdrawAuthCodeModal', 'withDrawTransactionsInfo', 'pbkdf2Key'])
   },
   validations: {
     authCode: {
@@ -107,20 +107,20 @@ export default {
     async onSubmit() {
       if (this.invalidSubmit) return
       const pinCode = this.authCode
-      const { address: recipientEthAddress, totalAmount } = this.inputWithdrawAuthCodeModal
+      const { totalAmount } = this.inputWithdrawAuthCodeModal
       const accessToken = await this.getAccessToken()
       try {
         if (this.isProcessing) return
         this.isProcessing = true
-        const sendValue = new BigNumber(totalAmount).multipliedBy(formatNumber).toString(10)
         const hasExceededAmount = await this.checkIsWithdrawable(totalAmount)
         if (!hasExceededAmount) {
           this.errorMessage = 'ALISが不足しています'
           return
         }
         const isCompleted = await this.postTokenSend({
-          recipientEthAddress,
-          sendValue,
+          initApproveTransaction: this.withDrawTransactionsInfo.initApproveTransaction,
+          approveTransaction: this.withDrawTransactionsInfo.approveTransaction,
+          relayTransaction: this.withDrawTransactionsInfo.relayTransaction,
           accessToken,
           pinCode
         })

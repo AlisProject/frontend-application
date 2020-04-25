@@ -40,6 +40,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
+import { getLocalStoragePbkdf2Key, setLocalStoragePbkdf2Key } from '~/utils/wallet'
 
 export default {
   components: {
@@ -64,7 +65,7 @@ export default {
         .plus(this.tipTokenAmountFeeForUser)
         .toString(10)
     },
-    ...mapGetters('user', ['tipTokenAmount', 'alisToken']),
+    ...mapGetters('user', ['tipTokenAmount', 'alisToken', 'tipTransactionsInfo', 'pbkdf2Key']),
     ...mapGetters('article', ['article'])
   },
   methods: {
@@ -72,7 +73,6 @@ export default {
       try {
         if (this.isProcessing) return
         this.isProcessing = true
-
         await this.getUsersAlisToken()
 
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmountForUser)
@@ -84,9 +84,15 @@ export default {
           return
         }
 
-        const tipValue = new BigNumber(this.tipTokenAmount).toString()
+        await this.postTipToken({
+          articleId: this.article.article_id,
+          tipTransaction: this.tipTransactionsInfo.tipTransaction,
+          burnTransaction: this.tipTransactionsInfo.burnTransaction
+        })
 
-        await this.postTipToken({ tipValue, articleId: this.article.article_id })
+        if (!getLocalStoragePbkdf2Key()) {
+          setLocalStoragePbkdf2Key(this.pbkdf2Key)
+        }
       } catch (error) {
         this.errorMessage = 'エラーが発生しました。しばらく時間を置いて再度お試しください'
         return

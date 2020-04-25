@@ -1,35 +1,52 @@
 <template>
   <div class="wrapper">
-    <div class="eye-catch-image-box">
-      <img
-        v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
-        class="eye-catch-image"
-        src="~assets/images/pc/common/thumbnail_noimg.png"
+    <no-ssr>
+      <div class="eye-catch-image-box">
+        <img
+          v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
+          class="eye-catch-image"
+          src="~assets/images/pc/common/thumbnail_noimg.png"
+        >
+        <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
+      </div>
+      <h2 class="title" :class="{ withWalletPassword: !localStoragePbkdf2Key }">
+        {{ decodedTitle }}
+      </h2>
+      <span class="label" :class="{ withWalletPassword: !localStoragePbkdf2Key }">支払い金額</span>
+      <div class="price-box" :class="{ withWalletPassword: !localStoragePbkdf2Key }">
+        {{ formattedPrice }}
+        <span class="unit">ALIS</span>
+      </div>
+      <div
+        v-if="!localStoragePbkdf2Key"
+        class="label"
+        :class="{ withWalletPassword: !localStoragePbkdf2Key }"
       >
-      <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
-    </div>
-    <h2 class="title">
-      {{ decodedTitle }}
-    </h2>
-    <span class="label">支払い金額</span>
-    <div class="price-box">
-      {{ formattedPrice }}
-      <span class="unit">ALIS</span>
-    </div>
-    <div class="confirm-text">
-      記事作成者の意思により事前の予告なく、記事の編集ならびに削除が行われる可能性があります
-    </div>
-    <span class="error-message">
-      {{ errorMessage }}
-    </span>
-    <app-button
-      class="purchase-button"
-      :isLoading="isProcessing"
-      :disabled="!isPurchasable || isProcessing"
-      @click="purchase"
-    >
-      購入する※取り消し不可
-    </app-button>
+        ウォレットパスワード
+      </div>
+      <div v-if="!localStoragePbkdf2Key" class="wallet-password-input-box">
+        <input
+          v-model="walletPassword"
+          class="wallet-password-input"
+          type="password"
+          placeholder=""
+        >
+      </div>
+      <div class="confirm-text">
+        記事作成者の意思により事前の予告なく、記事の編集ならびに削除が行われる可能性があります
+      </div>
+      <span class="error-message" :class="{ withWalletPassword: !localStoragePbkdf2Key }">
+        {{ errorMessage }}
+      </span>
+      <app-button
+        class="purchase-button"
+        :isLoading="isProcessing"
+        :disabled="!isPurchasable || isProcessing"
+        @click="purchase"
+      >
+        購入する※取り消し不可
+      </app-button>
+    </no-ssr>
   </div>
 </template>
 
@@ -39,6 +56,13 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import AppButton from '../atoms/AppButton'
 import { BigNumber } from 'bignumber.js'
 import { htmlDecode, showEmbed } from '~/utils/article'
+import {
+  getLocalStoragePbkdf2Key,
+  getPbkdf2,
+  decryptSecretKey,
+  setLocalStoragePbkdf2Key
+} from '~/utils/wallet'
+import { getErc20TransferData, getSignedRawTransaction } from '~/utils/web3'
 
 export default {
   components: {
@@ -46,6 +70,8 @@ export default {
   },
   data() {
     return {
+      walletPassword: '',
+      localStoragePbkdf2Key: true,
       errorMessage: '',
       isPurchasable: true,
       isProcessing: false
@@ -56,6 +82,7 @@ export default {
     this.isPurchasable = await this.checkIsPurchasable()
     if (!this.isPurchasable) this.errorMessage = 'ALISが不足しています'
     const modalTitle = document.querySelector('.modal-body .title')
+    this.localStoragePbkdf2Key = getLocalStoragePbkdf2Key()
     if (window.innerWidth <= 320 && modalTitle) modalTitle.style.marginTop = '40px'
   },
   computed: {
@@ -80,10 +107,51 @@ export default {
           this.isProcessing = false
           return
         }
+
+        if (!this.localStoragePbkdf2Key && this.walletPassword.length < 8) {
+          this.errorMessage = 'ウォレットパスワードを8文字以上で入力してください'
+          return
+        }
+
+        // get private key
+        const walletEncryptInfo = await this.getWalletEncryptInfo()
+        const pbkdf2Key = this.localStoragePbkdf2Key
+          ? this.localStoragePbkdf2Key
+          : getPbkdf2(this.walletPassword, walletEncryptInfo.salt)
+        const privateKey = decryptSecretKey(walletEncryptInfo.encrypted_secret_key, pbkdf2Key)
+        // create purchase transaction
+        const articlePrice = new BigNumber(this.article.price)
+        const nonce = await this.getWalletNonce()
+        const sendAddress = await this.getWalletAddress({ userId: this.article.userInfo.user_id })
+        const purchaseTokenAmount = articlePrice.div(10).multipliedBy(9)
+        const burnTokenAmount = articlePrice.div(10)
+        const purchaseData = getErc20TransferData(sendAddress, purchaseTokenAmount)
+        const purchaseTransaction = await getSignedRawTransaction(
+          nonce,
+          process.env.PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS,
+          purchaseData,
+          privateKey
+        )
+        // create burn transaction
+        const burnData = getErc20TransferData(process.env.BURN_ADDRESS, burnTokenAmount)
+        const burnTransaction = await getSignedRawTransaction(
+          nonce + 1,
+          process.env.PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS,
+          burnData,
+          privateKey
+        )
+
         const status = await this.purchaseArticle({
           articleId: this.article.article_id,
-          price: this.article.price
+          purchaseTransaction,
+          burnTransaction
         })
+
+        // error が発生しなければ pbkdf2key を localStorage に保存
+        if (!this.localStoragePbkdf2Key) {
+          setLocalStoragePbkdf2Key(this.pbkdf2Key)
+        }
+
         if (status === 'done') {
           this.sendNotification({ text: '記事を購入しました' })
           // 記事取得
@@ -130,7 +198,13 @@ export default {
       'getPurchaedArticleDetail',
       'setArticleComments'
     ]),
-    ...mapActions('user', ['setConfirmPurchaseArticleModal', 'getBalance'])
+    ...mapActions('user', [
+      'setConfirmPurchaseArticleModal',
+      'getBalance',
+      'getWalletAddress',
+      'getWalletNonce',
+      'getWalletEncryptInfo'
+    ])
   }
 }
 </script>
@@ -202,6 +276,38 @@ export default {
   width: 296px;
 }
 
+.wallet-password-input-box {
+  position: relative;
+
+  .wallet-password-input {
+    appearance: none;
+    border: 4px;
+
+    //background-color: rgba(0, 134, 204, 0.05);
+    box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #030303;
+    font-size: 14px;
+    height: 45px;
+    /*line-height: 20px;*/
+    margin-bottom: 20px;
+    padding: 0 12px;
+    text-align: left;
+    width: 296px;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
 .confirm-text {
   color: #6e6e6e;
   font-size: 12px;
@@ -233,10 +339,32 @@ export default {
 
   .title {
     margin-bottom: 20px;
+
+    &.withWalletPassword {
+      margin-bottom: 10px;
+    }
+  }
+
+  .label {
+    &.withWalletPassword {
+      font-size: 13px;
+    }
   }
 
   .price-box {
     width: 260px;
+    &.withWalletPassword {
+      height: 40px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .wallet-password-input-box {
+    .wallet-password-input {
+      width: 260px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
   }
 
   .confirm-text {
@@ -247,6 +375,10 @@ export default {
     margin-top: 20px;
     min-height: 14px;
     margin-bottom: 10px;
+
+    &.withWalletPassword {
+      margin-top: 10px;
+    }
   }
 }
 </style>

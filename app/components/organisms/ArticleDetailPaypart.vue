@@ -53,7 +53,7 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    showModal() {
+    async showModal() {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'purchaseArticle' })
         return
@@ -63,13 +63,22 @@ export default {
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
         return
       }
+      const encryptInfo = await this.getWalletEncryptInfo()
+      if (!encryptInfo.encrypted_secret_key) {
+        this.setRequestWalletPasswordModal({ isShow: true })
+        this.setRequestInputWalletPasswordModal({ isShow: true })
+        return
+      }
       this.setConfirmPurchaseArticleModal({ isShow: true })
     },
     ...mapActions('user', [
       'setConfirmPurchaseArticleModal',
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'getWalletEncryptInfo',
+      'setRequestWalletPasswordModal',
+      'setRequestInputWalletPasswordModal'
     ])
   }
 }

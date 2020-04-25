@@ -15,6 +15,9 @@ const state = () => ({
   showLoginModal: false,
   showProfileSettingsModal: false,
   sentMail: false,
+  walletPasswordModal: {
+    isShow: false
+  },
   signUpModal: {
     formData: {
       userId: '',
@@ -31,10 +34,12 @@ const state = () => ({
     isLoginModal: false,
     isInputPhoneNumberModal: false,
     isInputAuthCodeModal: false,
+    isInputWalletPasswordModal: false,
     isProfileSettingsModal: false,
     isInputUserIdModal: false,
     isCompletedPhoneNumberAuthModal: false,
     isNotCompletedPhoneNumberAuthModal: false,
+
     login: {
       formData: {
         userIdOrEmail: '',
@@ -59,6 +64,15 @@ const state = () => ({
       },
       formError: {
         authCode: false
+      }
+    },
+    inputWalletPassword: {
+      formData: {
+        walletPassword: ''
+      },
+      formError: {
+        walletPassword: false,
+        repeatPassword: false
       }
     },
     profileSettings: {
@@ -127,6 +141,20 @@ const state = () => ({
     isCompletedModal: false
   },
   tipTokenAmount: 0,
+  tipTransactionsInfo: {
+    tipTransaction: '',
+    burnTransaction: ''
+  },
+  purchaseTransactionsInfo: {
+    purchaseTransaction: '',
+    burnTransaction: ''
+  },
+  withDrawTransactionsInfo: {
+    initApproveTransaction: '',
+    approveTransaction: '',
+    relayTransaction: ''
+  },
+  pbkdf2Key: '',
   requestPhoneNumberVerifyModal: {
     isShow: false,
     requestType: '',
@@ -146,6 +174,19 @@ const state = () => ({
       },
       formError: {
         authCode: false
+      }
+    }
+  },
+  requestWalletPasswordModal: {
+    isShow: false,
+    isRequestInputWalletPasswordModal: false,
+    inputWalletPassword: {
+      formData: {
+        walletPassword: ''
+      },
+      formError: {
+        walletPassword: false,
+        repeatPassword: false
       }
     }
   },
@@ -221,7 +262,12 @@ const getters = {
   showTipModal: (state) => state.showTipModal,
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
+  tipTransactionsInfo: (state) => state.tipTransactionsInfo,
+  purchaseTransactionsInfo: (state) => state.purchaseTransactionsInfo,
+  withDrawTransactionsInfo: (state) => state.withDrawTransactionsInfo,
+  pbkdf2Key: (state) => state.pbkdf2Key,
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
+  requestWalletPasswordModal: (state) => state.requestWalletPasswordModal,
   firstProcessModal: (state) => state.firstProcessModal,
   mobileEditorHeaderPostArticleModal: (state) => state.mobileEditorHeaderPostArticleModal,
   selectPayment: (state) => state.selectPayment,
@@ -316,6 +362,23 @@ const actions = {
   hideSignUpAuthFlowInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR, { type })
   },
+  setSignUpAuthFlowInputWalletPasswordModal(
+    { commit },
+    { isSignUpAuthFlowInputWalletPasswordModal }
+  ) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD_MODAL, {
+      isSignUpAuthFlowInputWalletPasswordModal
+    })
+  },
+  setSignUpAuthFlowInputWalletPassword({ commit }, { password }) {
+    commit(types.SET_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD, { password })
+  },
+  showSignUpAuthFlowInputWalletPasswordError({ commit }, { type }) {
+    commit(types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD_ERROR, { type })
+  },
+  hideSignUpAuthFlowInputWalletPasswordError({ commit }, { type }) {
+    commit(types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD_ERROR, { type })
+  },
   setLoginModal({ commit }, { showLoginModal }) {
     commit(types.SET_LOGIN_MODAL, { showLoginModal })
   },
@@ -400,6 +463,24 @@ const actions = {
     } catch (error) {
       return Promise.reject(error)
     }
+  },
+  async postWalletInfo({ commit }, { walletAddress, salt, encryptedSecretKey, signature }) {
+    try {
+      await this.$axios.$post('/api/me/configurations/wallet', {
+        wallet_address: walletAddress,
+        salt: salt,
+        encrypted_secret_key: encryptedSecretKey,
+        signature: signature
+      })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async putUserInfo({ commit }, { userDisplayName, selfIntroduction }) {
+    await this.$axios.$put('/api/me/info', {
+      user_display_name: userDisplayName,
+      self_introduction: selfIntroduction
+    })
   },
   async login({ commit }, { userId, password }) {
     try {
@@ -491,12 +572,6 @@ const actions = {
   },
   setLoggedIn({ commit }, { loggedIn }) {
     commit(types.SET_LOGGED_IN, { loggedIn })
-  },
-  async putUserInfo({ commit }, { userDisplayName, selfIntroduction }) {
-    await this.$axios.$put('/api/me/info', {
-      user_display_name: userDisplayName,
-      self_introduction: selfIntroduction
-    })
   },
   async postUserIcon({ commit }, { iconImage, imageContentType }) {
     try {
@@ -621,6 +696,38 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getAllowance({ commit }) {
+    try {
+      const response = await this.$axios.$get('/api/me/wallet/allowance')
+      console.log(response)
+      return response.allowance
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getWalletEncryptInfo({ commit }) {
+    try {
+      return await this.$axios.$get('/api/me/configurations/wallet')
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getWalletAddress({ commit }, { userId }) {
+    try {
+      const response = await this.$axios.$get(`/api/users/${userId}/wallet/address`)
+      return response.wallet_address
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  async getWalletNonce({ commit }) {
+    try {
+      const response = await this.$axios.$get(`/api/me/wallet/nonce`)
+      return parseInt(response.nonce)
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async getUsersAlisToken({ commit, dispatch }) {
     try {
       const { result } = await dispatch('getBalance')
@@ -687,16 +794,37 @@ const actions = {
   setTipTokenAmount({ commit }, { tipTokenAmount }) {
     commit(types.SET_TIP_TOKEN_AMOUNT, { tipTokenAmount })
   },
+  setTipTransactionsInfo({ commit }, { tipTransaction, burnTransaction }) {
+    commit(types.SET_TIP_TRANSACTIONS_INFO, { tipTransaction, burnTransaction })
+  },
+  setWithDrawTransactionsInfo(
+    { commit },
+    { initApproveTransaction, approveTransaction, relayTransaction }
+  ) {
+    commit(types.SET_WITH_DRAW_TRANSACTIONS_INFO, {
+      initApproveTransaction,
+      approveTransaction,
+      relayTransaction
+    })
+  },
+  setWalletPbkdf2Key({ commit }, { pbkdf2Key }) {
+    commit(types.SET_WALLET_PBKDF2_KEY, { pbkdf2Key })
+  },
   setTipFlowCompletedModal({ commit }, { isShow }) {
     commit(types.SET_TIP_FLOW_COMPLETED_MODAL, { isShow })
   },
-  async postTipToken({ commit }, { tipValue, articleId }) {
+  async postTipToken({ commit }, { articleId, tipTransaction, burnTransaction }) {
     try {
-      await this.$axios.$post('/api/me/wallet/tip', { tip_value: tipValue, article_id: articleId })
+      await this.$axios.$post('/api/me/wallet/tip', {
+        article_id: articleId,
+        tip_signed_transaction: tipTransaction,
+        burn_signed_transaction: burnTransaction
+      })
     } catch (error) {
       return Promise.reject(error)
     }
   },
+
   resetNotificationData({ commit }) {
     commit(types.RESET_NOTIFICATION_DATA)
   },
@@ -760,6 +888,24 @@ const actions = {
   },
   hideRequestPhoneNumberVerifyInputAuthCodeError({ commit }, { type }) {
     commit(types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR, { type })
+  },
+  setRequestWalletPasswordModal({ commit }, { isShow }) {
+    commit(types.SET_REQUEST_WALLET_PASSWORD_MODAL, { isShow })
+  },
+  setRequestInputWalletPasswordModal({ commit }, { isShow }) {
+    commit(types.SET_REQUEST_INPUT_WALLET_PASSWORD_MODAL, { isShow })
+  },
+  resetRequestWalletPasswordModal({ commit }) {
+    commit(types.RESET_REQUEST_WALLET_PASSWORD_MODAL)
+  },
+  setRequestInputWalletPassword({ commit }, { password }) {
+    commit(types.SET_REQUEST_INPUT_WALLET_PASSWORD, { password })
+  },
+  showRequestInputWalletPasswordError({ commit }, { type }) {
+    commit(types.SHOW_REQUEST_INPUT_WALLET_PASSWORD_ERROR, { type })
+  },
+  hideRequestInputWalletPasswordError({ commit }, { type }) {
+    commit(types.HIDE_REQUEST_INPUT_WALLET_PASSWORD_ERROR, { type })
   },
   async getLineLoginAuthorizeURL() {
     try {
@@ -966,14 +1112,22 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async postTokenSend({ commit }, { recipientEthAddress, sendValue, accessToken, pinCode }) {
+  async postTokenSend(
+    { commit },
+    { initApproveTransaction, approveTransaction, relayTransaction, accessToken, pinCode }
+  ) {
     try {
-      const result = await this.$axios.$post('/api/me/wallet/token/send', {
-        recipient_eth_address: recipientEthAddress,
-        send_value: sendValue,
+      const sendItems = {
+        approve_signed_transaction: approveTransaction,
+        relay_signed_transaction: relayTransaction,
         access_token: accessToken,
         pin_code: pinCode
-      })
+      }
+      if (initApproveTransaction) {
+        sendItems.init_approve_signed_transaction = initApproveTransaction
+      }
+      console.log(sendItems)
+      const result = await this.$axios.$post('/api/me/wallet/token/send', sendItems)
       return result.is_completed
     } catch (error) {
       return Promise.reject(error)
@@ -1275,6 +1429,21 @@ const mutations = {
   [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.signUpAuthFlowModal.inputAuthCode.formError[type] = false
   },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD_MODAL](
+    state,
+    { isSignUpAuthFlowInputWalletPasswordModal }
+  ) {
+    state.signUpAuthFlowModal.isInputWalletPasswordModal = isSignUpAuthFlowInputWalletPasswordModal
+  },
+  [types.SET_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD](state, { password }) {
+    state.signUpAuthFlowModal.inputWalletPassword.formData.walletPassword = password
+  },
+  [types.SHOW_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputWalletPassword.formError[type] = true
+  },
+  [types.HIDE_SIGN_UP_AUTH_FLOW_INPUT_WALLET_PASSWORD_ERROR](state, { type }) {
+    state.signUpAuthFlowModal.inputWalletPassword.formError[type] = false
+  },
   [types.SET_LOGIN_MODAL](state, { showLoginModal }) {
     state.showLoginModal = showLoginModal
   },
@@ -1347,8 +1516,10 @@ const mutations = {
   },
   [types.RESET_PASSWORD](state) {
     state.signUpModal.formData.password = ''
+    state.signUpAuthFlowModal.inputWalletPassword.formData.walletPassword = ''
     state.signUpAuthFlowModal.login.formData.password = ''
     state.loginModal.formData.password = ''
+    state.requestWalletPasswordModal.inputWalletPassword.formData.walletPassword = ''
   },
   [types.SET_REQUEST_LOGIN_MODAL](state, { isShow, requestType }) {
     state.requestLoginModal.isShow = isShow
@@ -1404,8 +1575,23 @@ const mutations = {
   [types.SET_TIP_TOKEN_AMOUNT](state, { tipTokenAmount }) {
     state.tipTokenAmount = tipTokenAmount
   },
+  [types.SET_TIP_TRANSACTIONS_INFO](state, { tipTransaction, burnTransaction }) {
+    state.tipTransactionsInfo.tipTransaction = tipTransaction
+    state.tipTransactionsInfo.burnTransaction = burnTransaction
+  },
+  [types.SET_WITH_DRAW_TRANSACTIONS_INFO](
+    state,
+    { initApproveTransaction, approveTransaction, relayTransaction }
+  ) {
+    state.withDrawTransactionsInfo.initApproveTransaction = initApproveTransaction
+    state.withDrawTransactionsInfo.approveTransaction = approveTransaction
+    state.withDrawTransactionsInfo.relayTransaction = relayTransaction
+  },
   [types.SET_TIP_FLOW_COMPLETED_MODAL](state, { isShow }) {
     state.tipFlowModal.isCompletedModal = isShow
+  },
+  [types.SET_WALLET_PBKDF2_KEY](state, { pbkdf2Key }) {
+    state.pbkdf2Key = pbkdf2Key
   },
   [types.RESET_NOTIFICATION_DATA](state) {
     state.notifications = []
@@ -1450,6 +1636,26 @@ const mutations = {
   },
   [types.HIDE_REQUEST_PHONE_NUMBER_VERIFY_INPUT_AUTH_CODE_ERROR](state, { type }) {
     state.requestPhoneNumberVerifyModal.inputAuthCode.formError[type] = false
+  },
+  [types.SET_REQUEST_WALLET_PASSWORD_MODAL](state, { isShow }) {
+    state.requestWalletPasswordModal.isShow = isShow
+  },
+  [types.SET_REQUEST_INPUT_WALLET_PASSWORD_MODAL](state, { isShow }) {
+    state.requestWalletPasswordModal.isRequestInputWalletPasswordModal = isShow
+  },
+  [types.RESET_REQUEST_WALLET_PASSWORD_MODAL](state) {
+    state.requestWalletPasswordModal.inputWalletPassword.formData.walletPassword = ''
+    state.requestWalletPasswordModal.inputWalletPassword.formError.walletPassword = false
+    state.requestWalletPasswordModal.inputWalletPassword.formError.repeatPassword = false
+  },
+  [types.SET_REQUEST_INPUT_WALLET_PASSWORD](state, { password }) {
+    state.requestWalletPasswordModal.inputWalletPassword.formData.walletPassword = password
+  },
+  [types.SHOW_REQUEST_INPUT_WALLET_PASSWORD_ERROR](state, { type }) {
+    state.requestWalletPasswordModal.inputWalletPassword.formError[type] = true
+  },
+  [types.HIDE_REQUEST_INPUT_WALLET_PASSWORD_ERROR](state, { type }) {
+    state.requestWalletPasswordModal.inputWalletPassword.formError[type] = false
   },
   [types.SET_SIGN_UP_AUTH_FLOW_COMPLETED_PHONE_NUMBER_AUTH_MODAL](state, { isShow }) {
     state.signUpAuthFlowModal.isCompletedPhoneNumberAuthModal = isShow

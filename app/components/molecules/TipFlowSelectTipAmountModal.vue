@@ -1,64 +1,93 @@
 <template>
   <div class="tip-flow-select-tip-amount-modal">
-    <h1 class="title">
-      ALISを贈る
-    </h1>
-    <span class="description">
-      お贈り先をご確認の上、贈る量を決めて確認画面へお進みください
-    </span>
-    <img
-      v-if="article.userInfo.icon_image_url !== undefined"
-      class="author-icon"
-      :src="article.userInfo.icon_image_url"
-      :alt="imageCaption"
-    >
-    <img
-      v-else
-      class="author-icon"
-      src="~assets/images/pc/common/icon_user_noimg.png"
-      :alt="imageCaption"
-    >
-    <span class="user-display-name">
-      {{ decodedUserDisplayName }}
-    </span>
-    <span class="user-id"> @{{ article.userInfo.user_id }} </span>
-    <div class="triangle-mark" />
-    <div class="token-amount-input-box">
-      <input
-        v-model="tipTokenAmount"
-        class="token-amount-input"
-        type="number"
-        @keydown.up.down.prevent
-        @keydown.69.prevent
-        @keydown.187.prevent
-        @keydown.189.prevent
+    <no-ssr>
+      <h1 class="title">
+        ALISを贈る
+      </h1>
+      <span class="description">
+        お贈り先をご確認の上、贈る量を決めて確認画面へお進みください
+      </span>
+      <img
+        v-if="article.userInfo.icon_image_url !== undefined"
+        class="author-icon"
+        :class="{ withWalletPassword: !localStoragePbkdf2Key }"
+        :src="article.userInfo.icon_image_url"
+        :alt="imageCaption"
       >
-      <span class="token-amount-input-unit">ALIS</span>
-    </div>
-    <div class="burn-description">
-      ※贈ったALISの10%が<a
-        href="https://intercom.help/alismedia/ja/articles/3386669-%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%83%86%E3%82%A3-%E3%82%A6%E3%82%A9%E3%83%AC%E3%83%83%E3%83%88%E3%81%B8%E3%81%AE%E3%83%97%E3%83%BC%E3%83%AB%E3%81%A8%E3%81%AF"
-        class="link"
-        target="_blank"
-        rel="noopener noreferrer nofollow"
-      >プール</a>されます
-    </div>
-    <div class="select-unit-box">
-      <div
-        v-for="unit in orderedUnitList"
-        :data-token-amount="unit.amount"
-        :class="`unit-item unit-${unit.name}`"
-        @click="addTipTokenAmount(unit.amount)"
+      <img
+        v-else
+        class="author-icon"
+        :class="{ withWalletPassword: !localStoragePbkdf2Key }"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        :alt="imageCaption"
       >
-        {{ unit.amount }}
+      <span class="user-display-name" :class="{ withWalletPassword: !localStoragePbkdf2Key }">
+        {{ decodedUserDisplayName }}
+      </span>
+      <span class="user-id"> @{{ article.userInfo.user_id }} </span>
+      <div class="triangle-mark" :class="{ withWalletPassword: !localStoragePbkdf2Key }" />
+      <div v-if="!localStoragePbkdf2Key" class="input-title-first">
+        ALIS
       </div>
-    </div>
-    <span class="error-message">
-      {{ errorMessage }}
-    </span>
-    <app-button class="to-confirmation-page-button" @click="moveToConfirmationPage">
-      確認画面へ進む
-    </app-button>
+      <div class="token-amount-input-box">
+        <input
+          v-model="tipTokenAmount"
+          class="token-amount-input"
+          type="number"
+          :class="{ withWalletPassword: !localStoragePbkdf2Key }"
+          @keydown.up.down.prevent
+          @keydown.69.prevent
+          @keydown.187.prevent
+          @keydown.189.prevent
+        >
+        <span
+          class="token-amount-input-unit"
+          :class="{ withWalletPassword: !localStoragePbkdf2Key }"
+        >
+          ALIS
+        </span>
+      </div>
+      <div class="burn-description" :class="{ withWalletPassword: !localStoragePbkdf2Key }">
+        ※贈ったALISの10%が<a
+          href="https://intercom.help/alismedia/ja/articles/3386669-%E3%82%B3%E3%83%9F%E3%83%A5%E3%83%8B%E3%83%86%E3%82%A3-%E3%82%A6%E3%82%A9%E3%83%AC%E3%83%83%E3%83%88%E3%81%B8%E3%81%AE%E3%83%97%E3%83%BC%E3%83%AB%E3%81%A8%E3%81%AF"
+          class="link"
+          :class="{ withWalletPassword: !localStoragePbkdf2Key }"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >プール</a>されます
+      </div>
+      <div v-if="!localStoragePbkdf2Key" class="input-title">
+        ウォレットパスワード
+      </div>
+      <div v-if="!localStoragePbkdf2Key" class="wallet-password-input-box">
+        <input
+          v-model="walletPassword"
+          class="wallet-password-input"
+          type="password"
+          placeholder=""
+        >
+      </div>
+      <div class="select-unit-box">
+        <div
+          v-for="unit in orderedUnitList"
+          :data-token-amount="unit.amount"
+          :class="`unit-item unit-${unit.name}`"
+          @click="addTipTokenAmount(unit.amount)"
+        >
+          {{ unit.amount }}
+        </div>
+      </div>
+      <span class="error-message">
+        {{ errorMessage }}
+      </span>
+      <app-button
+        class="to-confirmation-page-button"
+        :disabled="isProcessing"
+        @click="moveToConfirmationPage"
+      >
+        確認画面へ進む
+      </app-button>
+    </no-ssr>
   </div>
 </template>
 
@@ -67,9 +96,16 @@ import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
 import { htmlDecode } from '~/utils/article'
-import { isOverDecimalPoint } from '~/utils/wallet'
+import {
+  isOverDecimalPoint,
+  getLocalStoragePbkdf2Key,
+  getPbkdf2,
+  decryptSecretKey
+} from '~/utils/wallet'
+import { getErc20TransferData, getSignedRawTransaction } from '~/utils/web3'
 
 const FORMAT_NUMBER = 10 ** 18
+const BURN_FORMAT_NUMBER = 10 ** 17
 const MAXIMUM_TIPPABLE_TOKEN_AMOUNT = '999.9999999999'
 const MINIMUM_TIPPABLE_TOKEN_AMOUNT = '0.0000000001'
 
@@ -80,6 +116,9 @@ export default {
   data() {
     return {
       tipTokenAmount: 0,
+      localStoragePbkdf2Key: true,
+      walletPassword: '',
+      isProcessing: false,
       errorMessage: '',
       unitList: [
         { amount: 10, name: '10', order: 1 },
@@ -105,6 +144,7 @@ export default {
         true
       )
     })
+    this.localStoragePbkdf2Key = getLocalStoragePbkdf2Key()
     this.getUsersAlisToken()
   },
   computed: {
@@ -153,8 +193,10 @@ export default {
         this.errorMessage = '数字で入力してください'
       }
     },
-    moveToConfirmationPage() {
+    async moveToConfirmationPage() {
       try {
+        if (this.isProcessing || this.invalidSubmit) return
+        this.isProcessing = true
         const formattedAlisTokenAmount = new BigNumber(this.alisToken)
         const formattedTipTokenAmount = new BigNumber(this.tipTokenAmount)
         const fee = formattedTipTokenAmount.multipliedBy(0.1)
@@ -163,6 +205,11 @@ export default {
           .isLessThanOrEqualTo(formattedAlisTokenAmount)
         if (!isAddableToken) {
           this.errorMessage = 'ALISが不足しています'
+          return
+        }
+
+        if (!this.localStoragePbkdf2Key && this.walletPassword.length < 8) {
+          this.errorMessage = 'ウォレットパスワードを8文字以上で入力してください'
           return
         }
 
@@ -196,20 +243,56 @@ export default {
 
         if (isLessThanMinTipToken) return
 
-        this.setTipTokenAmount({
-          tipTokenAmount: formattedTipTokenAmount.multipliedBy(FORMAT_NUMBER)
+        // get private key
+        const walletEncryptInfo = await this.getWalletEncryptInfo()
+        const pbkdf2Key = this.localStoragePbkdf2Key
+          ? this.localStoragePbkdf2Key
+          : getPbkdf2(this.walletPassword, walletEncryptInfo.salt)
+        const privateKey = decryptSecretKey(walletEncryptInfo.encrypted_secret_key, pbkdf2Key)
+        // create tip transaction
+        const nonce = await this.getWalletNonce()
+        const sendAddress = await this.getWalletAddress({ userId: this.article.userInfo.user_id })
+        const tipTokenAmount = formattedTipTokenAmount.multipliedBy(FORMAT_NUMBER)
+        const burnTokenAmount = formattedTipTokenAmount.multipliedBy(BURN_FORMAT_NUMBER)
+        const tipData = getErc20TransferData(sendAddress, tipTokenAmount)
+        const tipTransaction = await getSignedRawTransaction(
+          nonce,
+          process.env.PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS,
+          tipData,
+          privateKey
+        )
+        // create burn transaction
+        const burnData = await getErc20TransferData(process.env.BURN_ADDRESS, burnTokenAmount)
+        const burnTransaction = await getSignedRawTransaction(
+          nonce + 1,
+          process.env.PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS,
+          burnData,
+          privateKey
+        )
+        this.setWalletPbkdf2Key({ pbkdf2Key: pbkdf2Key })
+        this.setTipTransactionsInfo({
+          tipTransaction,
+          burnTransaction
         })
+        this.setTipTokenAmount({ tipTokenAmount: tipTokenAmount })
         this.setTipFlowSelectTipAmountModal({ isShow: false })
         this.setTipFlowConfirmationModal({ isShow: true })
       } catch (error) {
-        this.errorMessage = '数字で入力してください'
+        this.errorMessage = '処理に失敗しました。入力内容を確認して下さい'
+      } finally {
+        this.isProcessing = false
       }
     },
     ...mapActions('user', [
       'getUsersAlisToken',
       'setTipFlowSelectTipAmountModal',
       'setTipFlowConfirmationModal',
-      'setTipTokenAmount'
+      'setTipTokenAmount',
+      'setTipTransactionsInfo',
+      'setWalletPbkdf2Key',
+      'getWalletAddress',
+      'getWalletNonce',
+      'getWalletEncryptInfo'
     ])
   }
 }
@@ -246,6 +329,9 @@ export default {
     margin-top: 40px;
     width: 80px;
     object-fit: cover;
+    &.withWalletPassword {
+      margin-top: 0;
+    }
   }
 
   .user-display-name {
@@ -253,6 +339,9 @@ export default {
     font-size: 14px;
     letter-spacing: 0.8px;
     margin-top: 16px;
+    &.withWalletPassword {
+      margin-top: 0;
+    }
   }
 
   .user-id {
@@ -269,6 +358,9 @@ export default {
     height: 0;
     margin-top: 20px;
     width: 0;
+    &.withWalletPassword {
+      margin-top: 10px;
+    }
   }
 
   .token-amount-input-box {
@@ -288,6 +380,12 @@ export default {
       text-align: center;
       width: 400px;
 
+      &.withWalletPassword {
+        font-size: 18px;
+        line-height: 20px;
+        margin-top: 0;
+      }
+
       &::-webkit-inner-spin-button,
       &::-webkit-outer-spin-button {
         -webkit-appearance: none;
@@ -300,7 +398,6 @@ export default {
 
       &:focus {
         outline: 0;
-        box-shadow: none;
       }
     }
 
@@ -311,6 +408,35 @@ export default {
       font-weight: bold;
       top: 39px;
       right: 10px;
+      &.withWalletPassword {
+        top: 15px;
+      }
+    }
+  }
+
+  .wallet-password-input-box {
+    position: relative;
+
+    .wallet-password-input {
+      appearance: none;
+      border: 0;
+      box-shadow: 0 0 16px 0 rgba(0, 134, 204, 0.5);
+      box-sizing: border-box;
+      font-size: 18px;
+      line-height: 20px;
+      padding: 10px 40px;
+      text-align: center;
+      width: 400px;
+
+      &::-webkit-inner-spin-button,
+      &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      &:focus {
+        outline: 0;
+      }
     }
   }
 
@@ -321,11 +447,34 @@ export default {
     text-align: right;
     margin: 10px 0 0;
 
+    &.withWalletPassword {
+      font-size: 10px;
+    }
+
     .link {
       color: #0086cc;
       font-size: 12px;
       text-decoration: none;
+
+      &.withWalletPassword {
+        font-size: 10px;
+      }
     }
+  }
+
+  .input-title-first {
+    color: #6e6e6e;
+    font-size: 12px;
+    width: 400px;
+    margin: 0 0 10px 0;
+    text-align: left;
+  }
+  .input-title {
+    color: #6e6e6e;
+    font-size: 12px;
+    width: 400px;
+    margin: 10px 0 10px 0;
+    text-align: left;
   }
 
   .select-unit-box {
@@ -378,7 +527,8 @@ export default {
   }
 
   .to-confirmation-page-button {
-    margin: 8px 0 40px;
+    // margin: 8px 0 40px;
+    margin: 0 0 40px;
   }
 }
 
@@ -400,12 +550,26 @@ export default {
       width: 255px;
     }
 
+    .input-title-first {
+      width: 255px;
+    }
+
+    .input-title {
+      width: 255px;
+    }
+
     .select-unit-box {
       margin: 30px auto 0;
     }
 
     .token-amount-input-box {
       .token-amount-input {
+        width: 255px;
+      }
+    }
+
+    .wallet-password-input-box {
+      .wallet-password-input {
         width: 255px;
       }
     }
