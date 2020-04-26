@@ -149,7 +149,7 @@ export default {
 
         // error が発生しなければ pbkdf2key を localStorage に保存
         if (!this.localStoragePbkdf2Key) {
-          setLocalStoragePbkdf2Key(this.pbkdf2Key)
+          setLocalStoragePbkdf2Key(pbkdf2Key)
         }
 
         if (status === 'done') {

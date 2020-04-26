@@ -123,7 +123,6 @@ export default {
         }
         const encryptInfo = await this.getWalletEncryptInfo()
         if (!encryptInfo.encrypted_secret_key) {
-          console.log('asdfasdfasdf')
           this.setRequestWalletPasswordModal({ isShow: true })
           this.setRequestInputWalletPasswordModal({ isShow: true })
           return

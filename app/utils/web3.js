@@ -110,7 +110,7 @@ export function getErc20ApproveData(to, value) {
   )
 }
 
-export function getErc20RelayDate(to, value) {
+export function getErc20RelayData(to, value) {
   const toAddress = to.slice(0, 2) === '0x' ? to.slice(2) : to
   return (
     '0xeeec0e24' + '0'.repeat(24) + toAddress + ('0'.repeat(64) + value.toString(16)).slice(-64)

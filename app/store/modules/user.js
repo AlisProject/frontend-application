@@ -145,10 +145,6 @@ const state = () => ({
     tipTransaction: '',
     burnTransaction: ''
   },
-  purchaseTransactionsInfo: {
-    purchaseTransaction: '',
-    burnTransaction: ''
-  },
   withDrawTransactionsInfo: {
     initApproveTransaction: '',
     approveTransaction: '',
@@ -263,7 +259,6 @@ const getters = {
   tipFlowModal: (state) => state.tipFlowModal,
   tipTokenAmount: (state) => state.tipTokenAmount,
   tipTransactionsInfo: (state) => state.tipTransactionsInfo,
-  purchaseTransactionsInfo: (state) => state.purchaseTransactionsInfo,
   withDrawTransactionsInfo: (state) => state.withDrawTransactionsInfo,
   pbkdf2Key: (state) => state.pbkdf2Key,
   requestPhoneNumberVerifyModal: (state) => state.requestPhoneNumberVerifyModal,
@@ -699,7 +694,6 @@ const actions = {
   async getAllowance({ commit }) {
     try {
       const response = await this.$axios.$get('/api/me/wallet/allowance')
-      console.log(response)
       return response.allowance
     } catch (error) {
       return Promise.reject(error)
@@ -1126,7 +1120,6 @@ const actions = {
       if (initApproveTransaction) {
         sendItems.init_approve_signed_transaction = initApproveTransaction
       }
-      console.log(sendItems)
       const result = await this.$axios.$post('/api/me/wallet/token/send', sendItems)
       return result.is_completed
     } catch (error) {

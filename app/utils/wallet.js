@@ -35,7 +35,6 @@ export function isOverDecimalPoint(amount = '', decimalPoint = 0) {
 
 export function passwordToPbkdf2(password) {
   const salt = btoaFromUint8Array(window.crypto.getRandomValues(new Uint8Array(128)))
-  console.log(window.crypto.getRandomValues(new Uint8Array(128)))
   return {
     key: getPbkdf2(password, salt),
     salt: salt
@@ -90,6 +89,7 @@ export function getLocalStoragePbkdf2Key() {
   const now = new Date()
   if (item.expire < now.getTime()) {
     localStorage.removeItem('alis.to.wallet.pbkdf2Key')
+    return null
   }
   return JSON.parse(item).value
 }

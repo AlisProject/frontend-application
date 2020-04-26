@@ -136,7 +136,7 @@ import {
   getPbkdf2,
   decryptSecretKey
 } from '~/utils/wallet'
-import { getErc20ApproveData, getErc20RelayDate, getSignedRawTransaction } from '~/utils/web3'
+import { getErc20ApproveData, getErc20RelayData, getSignedRawTransaction } from '~/utils/web3'
 
 const formatNumber = 10 ** 18
 
@@ -330,7 +330,7 @@ export default {
         )
         nonce += 1
         // create relay transaction
-        const relayData = getErc20RelayDate(this.address, formatNumberAmount)
+        const relayData = getErc20RelayData(this.address, formatNumberAmount)
         const relayTransaction = await getSignedRawTransaction(
           nonce,
           process.env.PRIVATE_CHAIN_BRIDGE_ADDRESS,
