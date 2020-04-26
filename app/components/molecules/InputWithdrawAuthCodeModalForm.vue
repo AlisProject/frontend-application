@@ -51,7 +51,7 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
-import { addDigitSeparator } from '~/utils/wallet'
+import { addDigitSeparator, setLocalStoragePbkdf2Key } from '~/utils/wallet'
 
 const formatNumber = 10 ** 18
 
@@ -124,6 +124,10 @@ export default {
           accessToken,
           pinCode
         })
+        // error が発生しなければ pbkdf2key を localStorage に保存
+        if (!this.localStoragePbkdf2Key) {
+          setLocalStoragePbkdf2Key(this.pbkdf2Key)
+        }
         if (isCompleted) {
           this.sendNotification({ text: '出金を受け付けました' })
         } else {

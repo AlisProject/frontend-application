@@ -307,7 +307,8 @@ export default {
         let initApproveTransaction = ''
         let nonce = await this.getWalletNonce()
         const initApproveData = getErc20ApproveData(process.env.PRIVATE_CHAIN_BRIDGE_ADDRESS, 0)
-        if (this.getAllowance() !== '0x0') {
+        const allowance = await this.getAllowance()
+        if (parseInt(allowance, 16) !== 0) {
           initApproveTransaction = await getSignedRawTransaction(
             nonce,
             process.env.PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS,
@@ -346,6 +347,7 @@ export default {
           relayTransaction
         })
         await this.sendConfirm()
+        this.walletPassword = ''
         this.setInputWithdrawAuthCodeModal({ isShow: true })
       } catch (error) {
         this.sendNotification({
