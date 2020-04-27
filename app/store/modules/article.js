@@ -1023,10 +1023,11 @@ const actions = {
       return Promise.reject(error)
     }
   },
-  async purchaseArticle({ commit, state }, { articleId, price }) {
+  async purchaseArticle({ commit, state }, { articleId, purchaseTransaction, burnTransaction }) {
     try {
       const { status } = await this.$axios.$post(`/api/me/articles/${articleId}/purchase`, {
-        price
+        purchase_signed_transaction: purchaseTransaction,
+        burn_signed_transaction: burnTransaction
       })
       commit(types.SET_PURCHASED_ARTICLE_IDS, {
         articleIds: [...state.purchasedArticleIds, articleId]

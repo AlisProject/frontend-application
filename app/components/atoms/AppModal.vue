@@ -75,7 +75,8 @@ export default {
       'withdrawalDetailModal',
       'inputWithdrawAuthCodeModal',
       'laboLicenseTokenCertificateModal',
-      'laboLicenseTokenTransferModal'
+      'laboLicenseTokenTransferModal',
+      'requestWalletPasswordModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal']),
     ...mapGetters('badge', ['badgeDescriptionModal'])
@@ -168,6 +169,11 @@ export default {
           this.$router.replace('/')
         }
       }
+      if (this.requestWalletPasswordModal.isShow) {
+        this.setRequestWalletPasswordModal({ isShow: false })
+        this.setRequestInputWalletPasswordModal({ isShow: false })
+        this.resetRequestWalletPasswordModal()
+      }
       if (this.userReportModal.isShow) {
         this.setUserReportModal({ isShow: false })
         this.setUserReportSelectReasonModal({ isShow: false })
@@ -245,7 +251,10 @@ export default {
       'setWithdrawalDetailModal',
       'setInputWithdrawAuthCodeModal',
       'setLaboLicenseTokenCertificateModal',
-      'setLaboLicenseTokenTransferModal'
+      'setLaboLicenseTokenTransferModal',
+      'setRequestWalletPasswordModal',
+      'setRequestInputWalletPasswordModal',
+      'resetRequestWalletPasswordModal'
     ]),
     ...mapActions('report', [
       'setUserReportModal',

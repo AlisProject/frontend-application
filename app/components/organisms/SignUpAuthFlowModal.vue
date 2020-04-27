@@ -8,6 +8,7 @@
       <sign-up-auth-flow-login-modal-form v-if="isLoginModal" />
       <sign-up-auth-flow-input-phone-number-modal-form v-if="isInputPhoneNumberModal" />
       <sign-up-auth-flow-input-auth-code-modal-form v-if="isInputAuthCodeModal" />
+      <sign-up-auth-flow-input-wallet-password-modal-form v-if="isInputWalletPasswordModal" />
       <profile-settings-modal-form v-if="isProfileSettingsModal" />
       <sign-up-auth-flow-input-user-id-form v-if="isInputUserIdModal" />
       <sign-up-auth-flow-completed-phone-number-auth-modal v-if="isCompletedPhoneNumberAuthModal" />
@@ -24,6 +25,7 @@ import AppModal from '../atoms/AppModal'
 import SignUpAuthFlowLoginModalForm from '../molecules/SignUpAuthFlowLoginModalForm'
 import SignUpAuthFlowInputPhoneNumberModalForm from '../molecules/SignUpAuthFlowInputPhoneNumberModalForm'
 import SignUpAuthFlowInputAuthCodeModalForm from '../molecules/SignUpAuthFlowInputAuthCodeModalForm'
+import SignUpAuthFlowInputWalletPasswordModalForm from '../molecules/SignUpAuthFlowInputWalletPasswordModalForm'
 import ProfileSettingsModalForm from '../molecules/ProfileSettingsModalForm'
 import SignUpAuthFlowInputUserIdForm from '../molecules/SignUpAuthFlowInputUserIdForm'
 import SignUpAuthFlowCompletedPhoneNumberAuthModal from '../molecules/SignUpAuthFlowCompletedPhoneNumberAuthModal'
@@ -35,6 +37,7 @@ export default {
     SignUpAuthFlowLoginModalForm,
     SignUpAuthFlowInputPhoneNumberModalForm,
     SignUpAuthFlowInputAuthCodeModalForm,
+    SignUpAuthFlowInputWalletPasswordModalForm,
     ProfileSettingsModalForm,
     SignUpAuthFlowInputUserIdForm,
     SignUpAuthFlowCompletedPhoneNumberAuthModal,
@@ -46,6 +49,8 @@ export default {
         return 'SNS認証完了'
       } else if (this.isInputPhoneNumberModal || this.isInputAuthCodeModal) {
         return 'アカウント認証'
+      } else if (this.isInputWalletPasswordModal) {
+        return 'ウォレットパスワード設定'
       } else if (this.isProfileSettingsModal) {
         return 'プロフィール'
       } else if (this.isCompletedPhoneNumberAuthModal || this.isNotCompletedPhoneNumberAuthModal) {
@@ -62,6 +67,9 @@ export default {
     },
     isInputAuthCodeModal() {
       return this.signUpAuthFlowModal.isInputAuthCodeModal
+    },
+    isInputWalletPasswordModal() {
+      return this.signUpAuthFlowModal.isInputWalletPasswordModal
     },
     isProfileSettingsModal() {
       return this.signUpAuthFlowModal.isProfileSettingsModal

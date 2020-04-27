@@ -200,10 +200,16 @@ export default {
       this.getNotifications()
       this.$router.push('/me/notifications')
     },
-    moveToNewArticlePage() {
+    async moveToNewArticlePage() {
       if (!this.currentUser.phoneNumberVerified) {
         this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
         this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
+      }
+      const encryptInfo = await this.getWalletEncryptInfo()
+      if (!encryptInfo.encrypted_secret_key) {
+        this.setRequestWalletPasswordModal({ isShow: true })
+        this.setRequestInputWalletPasswordModal({ isShow: true })
         return
       }
       this.$router.push('/me/articles/new')
@@ -222,7 +228,10 @@ export default {
       'resetNotificationData',
       'getNotifications',
       'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'getWalletEncryptInfo',
+      'setRequestWalletPasswordModal',
+      'setRequestInputWalletPasswordModal'
     ]),
     ...mapActions('article', [
       'resetSearchArticles',

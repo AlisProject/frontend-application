@@ -66,6 +66,12 @@ export default {
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
           return
         }
+        const encryptInfo = await this.getWalletEncryptInfo()
+        if (!encryptInfo.encrypted_secret_key) {
+          this.setRequestWalletPasswordModal({ isShow: true })
+          this.setRequestInputWalletPasswordModal({ isShow: true })
+          return
+        }
         try {
           await this.postLike({ articleId: this.articleId })
           await this.getIsLikedArticle({ articleId: this.articleId })
@@ -91,8 +97,13 @@ export default {
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',
       'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'setRequestWalletPasswordModal',
+      'setRequestInputWalletPasswordModal',
       'setFirstProcessModal',
-      'setFirstProcessLikedArticleModal'
+      'setFirstProcessLikedArticleModal',
+      'getWalletEncryptInfo',
+      'setRequestWalletPasswordModal',
+      'setRequestInputWalletPasswordModal'
     ])
   }
 }

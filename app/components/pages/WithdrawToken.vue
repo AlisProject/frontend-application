@@ -1,107 +1,123 @@
 <template>
   <div class="withdraw-token-container">
-    <app-header />
-    <wallet-nav selected="withdraw" />
-    <div class="area-withdraw">
-      <div v-if="!isConfirmPage && !relayPaused" class="withdraw-box">
-        <h2 class="title">
-          出金内容を入力してください
-        </h2>
-        <div class="address-input-box">
+    <no-ssr>
+      <app-header />
+      <wallet-nav selected="withdraw" />
+      <div class="area-withdraw">
+        <div v-if="!isConfirmPage && !relayPaused" class="withdraw-box">
+          <h2 class="title">
+            出金内容を入力してください
+          </h2>
+          <div class="address-input-box">
+            <div class="label" v-text="'宛先'" />
+            <input
+              :value="address"
+              class="address-input"
+              :class="{ error: addressErrorMessage }"
+              type="text"
+              placeholder="0x98105Ee422f3d690C612..."
+              @input="onInputAddress"
+            >
+            <span class="error-message">
+              {{ addressErrorMessage }}
+            </span>
+          </div>
+          <div class="token-amount-input-box">
+            <div class="label" v-text="'出金額'" />
+            <span class="ownwd-balance-box">
+              保有ALIS：<span class="ownwd-balance">{{ formattedAlisToken }} ALIS</span>
+            </span>
+            <input
+              :value="amount"
+              class="token-amount-input"
+              :class="{ error: amountErrorMessage }"
+              type="number"
+              placeholder="1000"
+              min="1"
+              @input="onInputAmount"
+              @keydown.69.prevent
+              @keydown.187.prevent
+              @keydown.189.prevent
+            >
+            <span class="token-amount-input-unit">ALIS</span>
+            <span class="error-message">
+              {{ amountErrorMessage }}
+            </span>
+          </div>
+          <div v-if="!localStoragePbkdf2Key" class="wallet-password-input-box">
+            <div class="label" v-text="'ウォレットパスワード'" />
+            <input
+              :value="walletPassword"
+              class="wallet-password-input"
+              :class="{ error: walletPasswordErrorMessage }"
+              type="password"
+              placeholder=""
+              @input="onInputWalletPassword"
+            >
+            <span class="error-message">
+              {{ walletPasswordErrorMessage }}
+            </span>
+          </div>
+          <p class="description">
+            上記の金額に加えて{{ relayFee }}ALISの手数料が発生します
+          </p>
+          <app-button
+            class="withdraw-button"
+            :disabled="!isWithdrawable"
+            @click="handleClickConfirmWithdraw"
+          >
+            出金内容を確認する
+          </app-button>
+        </div>
+        <div v-if="isConfirmPage && !relayPaused" class="confirm-withdraw-box">
+          <h2 class="title mb20">
+            出金内容を確認してください
+          </h2>
+          <p class="description">
+            以下の内容で間違えがないか、必ずご確認ください※間違えて出金したALISは返還できかねます
+          </p>
           <div class="label" v-text="'宛先'" />
-          <input
-            :value="address"
-            class="address-input"
-            :class="{ error: addressErrorMessage }"
-            type="text"
-            placeholder="0x98105Ee422f3d690C612..."
-            @input="onInputAddress"
-          >
-          <span class="error-message">
-            {{ addressErrorMessage }}
-          </span>
-        </div>
-        <div class="token-amount-input-box">
+          <div class="confirm-input">
+            {{ address }}
+          </div>
           <div class="label" v-text="'出金額'" />
-          <span class="ownwd-balance-box">
-            保有ALIS：<span class="ownwd-balance">{{ formattedAlisToken }} ALIS</span>
-          </span>
-          <input
-            :value="amount"
-            class="token-amount-input"
-            :class="{ error: amountErrorMessage }"
-            type="number"
-            placeholder="1000"
-            min="1"
-            @input="onInputAmount"
-            @keydown.69.prevent
-            @keydown.187.prevent
-            @keydown.189.prevent
+          <div class="confirm-input">
+            {{ amount }}
+            <span class="unit">ALIS</span>
+          </div>
+          <div class="label" v-text="'手数料'" />
+          <div class="confirm-input">
+            {{ relayFee }}
+            <span class="unit">ALIS</span>
+          </div>
+          <div class="label" v-text="'合計額（出金額+手数料）'" />
+          <div class="confirm-input">
+            {{ totalAmount }}
+            <span class="unit">ALIS</span>
+          </div>
+          <app-button
+            class="withdraw-button"
+            :disabled="isProcessing"
+            :isLoading="isProcessing"
+            @click="showModal"
           >
-          <span class="token-amount-input-unit">ALIS</span>
-          <span class="error-message">
-            {{ amountErrorMessage }}
-          </span>
+            出金する※取り消し不可
+          </app-button>
+          <app-button class="back-button" type="secondary" @click="handleClickBack">
+            戻る
+          </app-button>
         </div>
-        <p class="description">
-          上記の金額に加えて{{ relayFee }}ALISの手数料が発生します
-        </p>
-        <app-button
-          class="withdraw-button"
-          :disabled="!isWithdrawable"
-          @click="handleClickConfirmWithdraw"
-        >
-          出金内容を確認する
-        </app-button>
+        <div v-if="relayPaused" class="relay-paused-box">
+          <h2 class="title">
+            現在、出金の機能を一時的に停止しております
+          </h2>
+          <p class="description">
+            出金機能の再開までしばらくお待ち下さい
+          </p>
+        </div>
       </div>
-      <div v-if="isConfirmPage && !relayPaused" class="confirm-withdraw-box">
-        <h2 class="title mb20">
-          出金内容を確認してください
-        </h2>
-        <p class="description">
-          以下の内容で間違えがないか、必ずご確認ください※間違えて出金したALISは返還できかねます
-        </p>
-        <div class="label" v-text="'宛先'" />
-        <div class="confirm-input">
-          {{ address }}
-        </div>
-        <div class="label" v-text="'出金額'" />
-        <div class="confirm-input">
-          {{ amount }}
-          <span class="unit">ALIS</span>
-        </div>
-        <div class="label" v-text="'手数料'" />
-        <div class="confirm-input">
-          {{ relayFee }}
-          <span class="unit">ALIS</span>
-        </div>
-        <div class="label" v-text="'合計額（出金額+手数料）'" />
-        <div class="confirm-input">
-          {{ totalAmount }}
-          <span class="unit">ALIS</span>
-        </div>
-        <app-button
-          class="withdraw-button"
-          :disabled="isProcessing"
-          :isLoading="isProcessing"
-          @click="showModal"
-        >
-          出金する※取り消し不可
-        </app-button>
-        <app-button class="back-button" type="secondary" @click="handleClickBack">
-          戻る
-        </app-button>
-      </div>
-      <div v-if="relayPaused" class="relay-paused-box">
-        <h2 class="title">
-          現在、出金の機能を一時的に停止しております
-        </h2>
-        <p class="description">
-          出金機能の再開までしばらくお待ち下さい
-        </p>
-      </div>
-    </div>
-    <app-footer />
+      <app-footer />
+    </no-ssr>
   </div>
 </template>
 
@@ -113,7 +129,14 @@ import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
-import { addDigitSeparator, isOverDecimalPoint } from '~/utils/wallet'
+import {
+  addDigitSeparator,
+  isOverDecimalPoint,
+  getLocalStoragePbkdf2Key,
+  getPbkdf2,
+  decryptSecretKey
+} from '~/utils/wallet'
+import { getErc20ApproveData, getErc20RelayData, getSignedRawTransaction } from '~/utils/web3'
 
 const formatNumber = 10 ** 18
 
@@ -128,8 +151,11 @@ export default {
     return {
       address: '',
       amount: null,
+      walletPassword: '',
+      localStoragePbkdf2Key: true,
       addressErrorMessage: '',
       amountErrorMessage: '',
+      walletPasswordErrorMessage: '',
       isConfirmPage: false,
       maxSingleRelayAmount: null,
       minSingleRelayAmount: null,
@@ -143,6 +169,7 @@ export default {
     this.$root.$on('resetWithdrawTokenComponentState', () => {
       this.resetWithdrawTokenComponentState()
     })
+    this.localStoragePbkdf2Key = getLocalStoragePbkdf2Key()
     try {
       const result = await this.getBridgeInformation()
       this.maxSingleRelayAmount = result.max_single_relay_amount
@@ -161,12 +188,16 @@ export default {
       return new BigNumber(this.alisToken).toFixed(3, 1)
     },
     isWithdrawable() {
+      const isWithDrawableWalletPasswrod = this.localStoragePbkdf2Key
+        ? true
+        : this.walletPassword !== '' && this.walletPasswordErrorMessage === ''
       return (
         this.address !== '' &&
         this.addressErrorMessage === '' &&
         this.amount !== null &&
         this.amount !== '' &&
-        this.amountErrorMessage === ''
+        this.amountErrorMessage === '' &&
+        isWithDrawableWalletPasswrod
       )
     },
     totalAmount() {
@@ -239,6 +270,18 @@ export default {
         this.amountErrorMessage = '数字で入力してください'
       }
     },
+    onInputWalletPassword(event) {
+      this.walletPassword = event.target.value
+      if (this.walletPassword === '') {
+        this.walletPasswordErrorMessage = ''
+        return
+      }
+      if (this.walletPassword.length < 8) {
+        this.walletPasswordErrorMessage = 'ウォレットパスワードを8文字以上で入力してください'
+        return
+      }
+      this.walletPasswordErrorMessage = ''
+    },
     handleClickConfirmWithdraw() {
       if (!this.isWithdrawable) return
       this.isConfirmPage = true
@@ -250,10 +293,62 @@ export default {
       try {
         if (this.isProcessing) return
         this.isProcessing = true
-        await this.sendConfirm()
-        this.setInputWithdrawAuthCodeModal({ isShow: true })
+
         const { address, totalAmount } = this
         this.setInputWithdrawAuthCodeModalValues({ address, totalAmount })
+
+        // get private key
+        const walletEncryptInfo = await this.getWalletEncryptInfo()
+        const pbkdf2Key = this.localStoragePbkdf2Key
+          ? this.localStoragePbkdf2Key
+          : getPbkdf2(this.walletPassword, walletEncryptInfo.salt)
+        const privateKey = decryptSecretKey(walletEncryptInfo.encrypted_secret_key, pbkdf2Key)
+        // create init approve transaction
+        let initApproveTransaction = ''
+        let nonce = await this.getWalletNonce()
+        const initApproveData = getErc20ApproveData(process.env.PRIVATE_CHAIN_BRIDGE_ADDRESS, 0)
+        const allowance = await this.getAllowance()
+        if (parseInt(allowance, 16) !== 0) {
+          initApproveTransaction = await getSignedRawTransaction(
+            nonce,
+            process.env.PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS,
+            initApproveData,
+            privateKey
+          )
+          nonce += 1
+        }
+        // create approve transaction
+        const formatNumberAmount = new BigNumber(this.amount).multipliedBy(formatNumber)
+        const approveData = getErc20ApproveData(
+          process.env.PRIVATE_CHAIN_BRIDGE_ADDRESS,
+          formatNumberAmount
+        )
+        const approveTransaction = await getSignedRawTransaction(
+          nonce,
+          process.env.PRIVATE_CHAIN_ALIS_TOKEN_ADDRESS,
+          approveData,
+          privateKey
+        )
+        nonce += 1
+        // create relay transaction
+        const relayData = getErc20RelayData(this.address, formatNumberAmount)
+        const relayTransaction = await getSignedRawTransaction(
+          nonce,
+          process.env.PRIVATE_CHAIN_BRIDGE_ADDRESS,
+          relayData,
+          privateKey
+        )
+        if (!this.localStoragePbkdf2Key) {
+          this.setWalletPbkdf2Key({ pbkdf2Key: pbkdf2Key })
+        }
+        this.setWithDrawTransactionsInfo({
+          initApproveTransaction,
+          approveTransaction,
+          relayTransaction
+        })
+        await this.sendConfirm()
+        this.walletPassword = ''
+        this.setInputWithdrawAuthCodeModal({ isShow: true })
       } catch (error) {
         this.sendNotification({
           text: '出金用認証コードの送信に失敗しました。しばらく時間を置いて再度お試しください',
@@ -277,7 +372,13 @@ export default {
       'getBalance',
       'setInputWithdrawAuthCodeModal',
       'setInputWithdrawAuthCodeModalValues',
-      'sendConfirm'
+      'setWithDrawTransactionsInfo',
+      'setWalletPbkdf2Key',
+      'sendConfirm',
+      'getAllowance',
+      'getWalletAddress',
+      'getWalletNonce',
+      'getWalletEncryptInfo'
     ])
   }
 }
@@ -392,6 +493,37 @@ export default {
 }
 
 .address-input {
+  appearance: none;
+  border: 0;
+  box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);
+  box-sizing: border-box;
+  color: #030303;
+  font-size: 14px;
+  line-height: 28px;
+  padding: 10px 12px;
+  width: 400px;
+  margin-bottom: 8px;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  &::-webkit-input-placeholder {
+    color: #cecece;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+
+  &.error {
+    box-shadow: 0 0 8px 0 rgba(240, 98, 115, 0.5);
+  }
+}
+
+.wallet-password-input {
   appearance: none;
   border: 0;
   box-shadow: 0 0 8px 0 rgba(192, 192, 192, 0.5);

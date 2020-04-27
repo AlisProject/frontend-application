@@ -122,7 +122,7 @@ export default {
         this.isFetchingArticles = false
       }
     },
-    moveToNewArticlePage() {
+    async moveToNewArticlePage() {
       if (!this.loggedIn) {
         this.setRequestLoginModal({ isShow: true, requestType: 'articleCreate' })
         return

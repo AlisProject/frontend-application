@@ -130,8 +130,8 @@ export default {
         this.setSignUpAuthFlowInputAuthCodeModal({
           isSignUpAuthFlowInputAuthCodeModal: false
         })
-        this.setSignUpAuthFlowProfileSettingsModal({
-          isSignUpAuthFlowProfileSettingsModal: true
+        this.setSignUpAuthFlowInputWalletPasswordModal({
+          isSignUpAuthFlowInputWalletPasswordModal: true
         })
       } catch (error) {
         let errorMessage = ''
@@ -159,6 +159,7 @@ export default {
       'showSignUpAuthFlowInputAuthCodeError',
       'hideSignUpAuthFlowInputAuthCodeError',
       'setSignUpAuthFlowInputAuthCodeModal',
+      'setSignUpAuthFlowInputWalletPasswordModal',
       'setSignUpAuthFlowProfileSettingsModal',
       'verifySMSCode',
       'refreshUserSession'

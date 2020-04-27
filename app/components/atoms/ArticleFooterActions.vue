@@ -121,6 +121,12 @@ export default {
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
           return
         }
+        const encryptInfo = await this.getWalletEncryptInfo()
+        if (!encryptInfo.encrypted_secret_key) {
+          this.setRequestWalletPasswordModal({ isShow: true })
+          this.setRequestInputWalletPasswordModal({ isShow: true })
+          return
+        }
         try {
           await this.postLike({ articleId: this.articleId })
           await this.getIsLikedArticle({ articleId: this.articleId })
@@ -143,6 +149,12 @@ export default {
         if (!this.currentUser.phoneNumberVerified) {
           this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleTip' })
           this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+          return
+        }
+        const encryptInfo = await this.getWalletEncryptInfo()
+        if (!encryptInfo.encrypted_secret_key) {
+          this.setRequestWalletPasswordModal({ isShow: true })
+          this.setRequestInputWalletPasswordModal({ isShow: true })
           return
         }
         this.setTipModal({ showTipModal: true })
@@ -192,7 +204,10 @@ export default {
       'setRequestPhoneNumberVerifyInputPhoneNumberModal',
       'setFirstProcessModal',
       'setFirstProcessLikedArticleModal',
-      'setMuteUser'
+      'setMuteUser',
+      'getWalletEncryptInfo',
+      'setRequestWalletPasswordModal',
+      'setRequestInputWalletPasswordModal'
     ]),
     ...mapActions('report', ['setArticleReportModal', 'setArticleReportSelectReasonModal']),
     ...mapActions('article', ['postLike', 'getIsLikedArticle'])

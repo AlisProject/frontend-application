@@ -51,7 +51,11 @@ import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { required, minLength, maxLength, numeric } from 'vuelidate/lib/validators'
 import { BigNumber } from 'bignumber.js'
 import AppButton from '../atoms/AppButton'
-import { addDigitSeparator } from '~/utils/wallet'
+import {
+  addDigitSeparator,
+  setLocalStoragePbkdf2Key,
+  getLocalStoragePbkdf2Key
+} from '~/utils/wallet'
 
 const formatNumber = 10 ** 18
 
@@ -82,7 +86,7 @@ export default {
     hasAuthCodeError() {
       return this.formError.authCode && this.$v.authCode.$error
     },
-    ...mapGetters('user', ['inputWithdrawAuthCodeModal'])
+    ...mapGetters('user', ['inputWithdrawAuthCodeModal', 'withDrawTransactionsInfo', 'pbkdf2Key'])
   },
   validations: {
     authCode: {
@@ -107,23 +111,27 @@ export default {
     async onSubmit() {
       if (this.invalidSubmit) return
       const pinCode = this.authCode
-      const { address: recipientEthAddress, totalAmount } = this.inputWithdrawAuthCodeModal
+      const { totalAmount } = this.inputWithdrawAuthCodeModal
       const accessToken = await this.getAccessToken()
       try {
         if (this.isProcessing) return
         this.isProcessing = true
-        const sendValue = new BigNumber(totalAmount).multipliedBy(formatNumber).toString(10)
         const hasExceededAmount = await this.checkIsWithdrawable(totalAmount)
         if (!hasExceededAmount) {
           this.errorMessage = 'ALISが不足しています'
           return
         }
         const isCompleted = await this.postTokenSend({
-          recipientEthAddress,
-          sendValue,
+          initApproveTransaction: this.withDrawTransactionsInfo.initApproveTransaction,
+          approveTransaction: this.withDrawTransactionsInfo.approveTransaction,
+          relayTransaction: this.withDrawTransactionsInfo.relayTransaction,
           accessToken,
           pinCode
         })
+        // error が発生しなければ pbkdf2key を localStorage に保存
+        if (!getLocalStoragePbkdf2Key()) {
+          setLocalStoragePbkdf2Key(this.pbkdf2Key)
+        }
         if (isCompleted) {
           this.sendNotification({ text: '出金を受け付けました' })
         } else {

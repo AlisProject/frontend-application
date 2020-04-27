@@ -5,6 +5,7 @@ import {
   CognitoUserAttribute,
   CognitoRefreshToken
 } from 'amazon-cognito-identity-js'
+import { removeLocalStoragePbkdf2Key } from '~/utils/wallet'
 import AWS from 'aws-sdk/global'
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider'
 
@@ -183,6 +184,7 @@ export default class CognitoSDK {
   }
 
   logoutUser({ userId }) {
+    removeLocalStoragePbkdf2Key()
     this.cognitoUser = this.getCognitoUser(userId)
     return this.cognitoUser.signOut()
   }
