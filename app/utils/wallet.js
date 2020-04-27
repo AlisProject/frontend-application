@@ -87,7 +87,7 @@ export function getLocalStoragePbkdf2Key() {
     return null
   }
   const now = new Date()
-  if (item.expire < now.getTime()) {
+  if (JSON.parse(item).expire < now.getTime()) {
     localStorage.removeItem('alis.to.wallet.pbkdf2Key')
     return null
   }
