@@ -177,6 +177,7 @@ export default {
       }
     },
     ...mapActions('user', [
+      'setSignUpAuthFlowProfileSettingsModal',
       'setSignUpAuthFlowInputWalletPasswordModal',
       'setSignUpAuthFlowInputWalletPassword',
       'showSignUpAuthFlowInputWalletPasswordError',
