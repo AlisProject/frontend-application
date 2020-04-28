@@ -33,9 +33,7 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    ...mapActions('user', [
-      'getWalletEncryptInfo'
-    ])
+    ...mapActions('user', ['getWalletEncryptInfo'])
   },
   head() {
     return {
