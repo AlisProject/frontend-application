@@ -21,11 +21,11 @@ export default {
       this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
       this.$router.replace('/')
     }
+
+    // ウォレット未移行の場合はdepositへ遷移しモーダルを表示
     const encryptInfo = await this.getWalletEncryptInfo()
     if (this.loggedIn && !encryptInfo.encrypted_secret_key) {
-      this.setRequestWalletPasswordModal({ isShow: true })
-      this.setRequestInputWalletPasswordModal({ isShow: true })
-      this.$router.replace('/')
+      this.$router.replace('/me/wallet/deposit')
     }
   },
   computed: {

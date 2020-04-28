@@ -25,7 +25,6 @@ export default {
     if (this.loggedIn && !encryptInfo.encrypted_secret_key) {
       this.setRequestWalletPasswordModal({ isShow: true })
       this.setRequestInputWalletPasswordModal({ isShow: true })
-      this.$router.replace('/')
     }
   },
   computed: {
