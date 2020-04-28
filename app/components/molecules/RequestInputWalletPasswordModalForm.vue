@@ -5,6 +5,17 @@
         <div class="announce">
           当操作を行うにはウォレットパスワードを設定する必要があります
         </div>
+        <span class="warning">
+          <div class="warning-title">
+            バックアップをしないと暗号資産ALISを失うリスクがあります！
+          </div>
+          <div class="warning-body">
+            ウォレットパスワードは必ずご自身で安全な形で管理してください。
+            忘れた場合、暗号資産ALISを喪失し、ALIS内の複数の機能も使えなくなります。
+            また、当社はウォレットパスワードの再発行やリセットなどを行うことはできません。
+            パスワードを紛失したことで損失が生じても当社ではその責任を負いません。
+          </div>
+        </span>
         <form class="wallet-password-form" @keypress.enter.prevent="onSubmit">
           <form-group
             label="パスワード※半角英数字8文字以上 "
@@ -26,10 +37,6 @@
             @blur="showRepeatPasswordError"
             @focus="resetRepeatPasswordError"
           />
-          <span class="warning">
-            ※
-            パスワードの再発行は行なえません。パスワードを失念すると出金含めウォレットの操作が一切できなくなります。
-          </span>
         </form>
 
         <div class="modal-footer">
@@ -217,22 +224,31 @@ export default {
   max-width: 100%;
 
   .announce {
-    max-width: 400px;
     margin: 30px auto 15px auto;
     font-size: 14px;
+    text-align: center;
   }
 
   .wallet-password-form {
     margin: 20px auto 0;
     max-width: 400px;
-
-    .warning {
-      margin-top: 60px;
-      color: #6e6e6e;
+  }
+  .warning {
+    margin-top: 60px;
+    font-size: 12px;
+    line-height: 18px;
+    right: 0;
+    text-align: center;
+    .warning-title {
+      margin-top: 20px;
+      color: #f06273;
+      font-size: 17px;
+      font-weight: 900;
+    }
+    .warning-body {
+      margin: 10px 0 10px 0;
       font-size: 12px;
       font-weight: 500;
-      line-height: 18px;
-      right: 0;
     }
   }
 }
@@ -330,6 +346,20 @@ export default {
   .agreement-confirmation {
     margin: 10px 0 0;
     padding: 0 10px;
+  }
+
+  .wallet-password {
+    .warning {
+      .warning-title {
+        margin-top: 10px;
+      }
+      .warning-body {
+        margin: 10px 0 10px 0;
+      }
+    }
+    .wallet-password-form {
+      margin: 10px auto 0;
+    }
   }
 }
 </style>
