@@ -19,13 +19,12 @@ export default {
     if (this.loggedIn && !this.currentUser.phoneNumberVerified) {
       this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'depositToken' })
       this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-      this.$router.replace('/')
+      return
     }
     const encryptInfo = await this.getWalletEncryptInfo()
     if (this.loggedIn && !encryptInfo.encrypted_secret_key) {
       this.setRequestWalletPasswordModal({ isShow: true })
       this.setRequestInputWalletPasswordModal({ isShow: true })
-      this.$router.replace('/')
     }
   },
   computed: {
