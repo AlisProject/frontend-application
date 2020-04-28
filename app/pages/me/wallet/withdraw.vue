@@ -16,27 +16,24 @@ export default {
       this.$router.replace('/')
       return
     }
+
+    // 電話番号未認証の場合はdepositへ遷移しモーダルを表示
     if (this.loggedIn && !this.currentUser.phoneNumberVerified) {
-      this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'withdrawToken' })
-      this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
-      this.$router.replace('/')
+      this.$router.replace('/me/wallet/deposit')
+      return
     }
+
+    // ウォレット未移行の場合はdepositへ遷移しモーダルを表示
     const encryptInfo = await this.getWalletEncryptInfo()
     if (this.loggedIn && !encryptInfo.encrypted_secret_key) {
-      this.setRequestWalletPasswordModal({ isShow: true })
-      this.setRequestInputWalletPasswordModal({ isShow: true })
-      this.$router.replace('/')
+      this.$router.replace('/me/wallet/deposit')
     }
   },
   computed: {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    ...mapActions('user', [
-      'getWalletEncryptInfo',
-      'setRequestPhoneNumberVerifyModal',
-      'setRequestPhoneNumberVerifyInputPhoneNumberModal'
-    ])
+    ...mapActions('user', ['getWalletEncryptInfo'])
   },
   head() {
     return {
