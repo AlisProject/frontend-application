@@ -169,6 +169,9 @@ export default {
         this.sendNotification({ text: 'ウォレットパスワードを登録しました。' })
         this.setRequestInputWalletPasswordModal({ isShow: false })
         this.setRequestWalletPasswordModal({ isShow: false })
+
+        // すぐに投げ銭など使えるようにするため
+        await this.refreshUserSession()
       } catch (error) {
         this.errorMessage = 'エラーが発生しました。入力内容を確認してください'
       } finally {
@@ -182,6 +185,7 @@ export default {
       'showRequestInputWalletPasswordError',
       'hideRequestInputWalletPasswordError',
       'resetPassword',
+      'refreshUserSession',
       'postWalletInfo'
     ]),
     ...mapActions({

@@ -167,6 +167,9 @@ export default {
         this.setSignUpAuthFlowProfileSettingsModal({
           isSignUpAuthFlowProfileSettingsModal: true
         })
+
+        // すぐに投げ銭など使えるようにするため
+        await this.refreshUserSession()
       } catch (error) {
         this.errorMessage = 'エラーが発生しました。入力内容を確認してください'
       } finally {
@@ -179,6 +182,7 @@ export default {
       'setSignUpAuthFlowInputWalletPassword',
       'showSignUpAuthFlowInputWalletPasswordError',
       'hideSignUpAuthFlowInputWalletPasswordError',
+      'refreshUserSession',
       'resetPassword',
       'postWalletInfo'
     ])
