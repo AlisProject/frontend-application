@@ -318,10 +318,10 @@ export default {
           nonce += 1
         }
         // create approve transaction
-        const formatNumberAmount = new BigNumber(this.amount).multipliedBy(formatNumber)
+        const formatNumberTotalAmount = totalAmount.multipliedBy(formatNumber)
         const approveData = getErc20ApproveData(
           process.env.PRIVATE_CHAIN_BRIDGE_ADDRESS,
-          formatNumberAmount
+          formatNumberTotalAmount
         )
         const approveTransaction = await getSignedRawTransaction(
           nonce,
@@ -331,7 +331,7 @@ export default {
         )
         nonce += 1
         // create relay transaction
-        const relayData = getErc20RelayData(this.address, formatNumberAmount)
+        const relayData = getErc20RelayData(this.address, formatNumberTotalAmount)
         const relayTransaction = await getSignedRawTransaction(
           nonce,
           process.env.PRIVATE_CHAIN_BRIDGE_ADDRESS,
