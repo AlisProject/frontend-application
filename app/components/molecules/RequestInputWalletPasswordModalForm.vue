@@ -18,11 +18,13 @@
         </span>
         <form class="wallet-password-form" @keypress.enter.prevent="onSubmit">
           <form-group
-            label="パスワード※半角英数字8文字以上 "
+            label="パスワード※半角英数字記号8文字以上 "
             :inputAttrs="{ ref: 'walletPassword', type: 'password', placeholder: '●●●●●●●●' }"
             :hasError="hasPasswordError"
             :errorMessage="
-              showErrorInvalidPassword ? 'パスワードは8文字以上で入力してください' : ''
+              showErrorInvalidPassword
+                ? 'パスワードは半角英数字記号かつ8文字以上で入力してください'
+                : ''
             "
             @input="setWalletPassword"
             @blur="showError('walletPassword')"
@@ -81,7 +83,7 @@ export default {
     showErrorInvalidPassword() {
       return (
         this.requestWalletPasswordModal.inputWalletPassword.formError.walletPassword &&
-        !this.$v.requestWalletPasswordModal.inputWalletPassword.formData.walletPassword.minLength
+        this.$v.requestWalletPasswordModal.inputWalletPassword.formData.walletPassword.$error
       )
     },
     showErrorInvalidRepeatPassword() {
@@ -113,7 +115,10 @@ export default {
         formData: {
           walletPassword: {
             required,
-            minLength: minLength(8)
+            minLength: minLength(8),
+            function(value) {
+              return /^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/.test(value)
+            }
           }
         }
       }
