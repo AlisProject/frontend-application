@@ -3,17 +3,14 @@
     <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
       今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%B5%E3%82%A4%E3%82%A8%E3%83%B3%E3%82%B9">
-      サイエンス
+    <nuxt-link class="link" to="/tag/%E3%83%93%E3%83%83%E3%83%88%E3%82%B3%E3%82%A4%E3%83%B3">
+      ビットコイン
     </nuxt-link>
-    <nuxt-link
-      class="link"
-      to="/tag/%E3%81%8A%E3%81%99%E3%81%99%E3%82%81%E3%82%A2%E3%83%97%E3%83%AA"
-    >
-      おすすめアプリ
+    <nuxt-link class="link" to="/tag/%E3%83%8F%E3%83%83%E3%82%B7%E3%83%A5">
+      ハッシュ
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%83%86%E3%83%AC%E3%83%AF%E3%83%BC%E3%82%AF">
-      テレワーク
+    <nuxt-link class="link" to="/tag/%E5%93%B2%E5%AD%A6">
+      哲学
     </nuxt-link>
   </div>
 </template>
