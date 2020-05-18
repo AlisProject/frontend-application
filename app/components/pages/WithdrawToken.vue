@@ -18,6 +18,9 @@
               placeholder="0x98105Ee422f3d690C612..."
               @input="onInputAddress"
             >
+            <p class="caution-statement">
+              ※信頼できる宛先かどうか確認の上、出金手順を進めてください
+            </p>
             <span class="error-message">
               {{ addressErrorMessage }}
             </span>
@@ -490,6 +493,13 @@ export default {
   letter-spacing: 0.8px;
   margin: 20px 0 10px;
   width: 100%;
+}
+
+.caution-statement {
+  color: #7f7f7f;
+  font-size: 12px;
+  margin: 0 0 5px;
+  text-align: right;
 }
 
 .address-input {
