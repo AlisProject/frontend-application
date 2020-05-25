@@ -3,17 +3,17 @@
     <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
       今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/ALIS%E5%B7%9D%E6%9F%B3">
-      ALIS川柳
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%82%B3%E3%83%AD%E3%83%8A">
-      コロナ
-    </nuxt-link>
     <nuxt-link
       class="link"
-      to="/tag/%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC%E6%95%B0%E3%82%92%E5%A2%97%E3%82%84%E3%81%99%E3%81%AB%E3%81%AF"
+      to="/tag/%E6%9A%97%E5%8F%B7%E8%B3%87%E7%94%A3%E5%8F%A4%E7%89%A9%E5%95%86"
     >
-      ユーザー数を増やすには
+      暗号資産古物商
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E8%87%AA%E5%AE%85%E9%81%8B%E5%8B%95">
+      自宅運動
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/%E6%8A%95%E8%B3%87">
+      投資
     </nuxt-link>
   </div>
 </template>
