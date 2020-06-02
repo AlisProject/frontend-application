@@ -6,6 +6,13 @@
 </head>
 
 <body {{ BODY_ATTRS }}>
+    <% if (process.env.NODE_ENV === 'production') { %>
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-5DZNDNB" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    <% } %>
     {{ APP }}
 </body>
 
