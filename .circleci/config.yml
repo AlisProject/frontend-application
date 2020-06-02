@@ -83,6 +83,7 @@ jobs:
 
   build:
     executor: default
+    resource_class: medium+
     steps:
       - prepare-deployment
 
