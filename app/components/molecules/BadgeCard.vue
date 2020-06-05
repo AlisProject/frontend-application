@@ -1,7 +1,7 @@
 <template>
   <div class="badge-card-container" @click="showBadgeDescriptionModal">
-    <img class="area-badge-image" :src="metadata.image">
-    <img class="area-publisher-logo" :src="metadata.publisher_logo">
+    <img class="area-badge-image" :src="metadata.image" alt="Badge">
+    <img class="area-publisher-logo" :src="metadata.publisher_logo" alt="Publisher logo">
     <div class="area-badge-name">
       {{ metadata.name }}
     </div>

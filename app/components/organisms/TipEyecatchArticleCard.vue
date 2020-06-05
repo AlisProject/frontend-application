@@ -8,6 +8,7 @@
     <img
       :src="require(`~/assets/images/pc/article/m_ribbon_${order.replace('eyecatch', '')}.png`)"
       class="ribbon"
+      alt="Ribbon"
     >
     <div class="article-subdata-box">
       <div class="label">
@@ -32,8 +33,8 @@
     </no-ssr>
     <div class="token-info">
       <div class="icons">
-        <img class="icon" src="~assets/images/pc/common/icon_catset_like_white.png">
-        <img class="icon" src="~assets/images/pc/common/icon_catset_tip_white.png">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_like_white.png" alt="Like token">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_tip_white.png" alt="Tip token">
       </div>
       <div class="amounts">
         <span class="like-token-amount">

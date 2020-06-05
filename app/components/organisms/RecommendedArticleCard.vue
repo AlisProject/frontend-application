@@ -7,14 +7,16 @@
       v-if="isTipRanking"
       :src="require(`~/assets/images/pc/article/m_ribbon_${order}.png`)"
       class="ribbon"
+      alt="Tip ranking"
     >
     <div class="eye-catch-image-box">
       <img
         v-if="article.eye_catch_url === null || article.eye_catch_url === undefined"
         class="eye-catch-image"
         src="~assets/images/pc/common/thumbnail_noimg.png"
+        alt="Eye catch"
       >
-      <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`">
+      <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`" alt="Eye catch">
     </div>
     <span class="topic">
       {{ topicDisplayName }}
@@ -37,8 +39,8 @@
     </no-ssr>
     <div class="token-info">
       <div class="icons">
-        <img class="icon" src="~assets/images/pc/common/icon_catset_like.png">
-        <img class="icon" src="~assets/images/pc/common/icon_catset_tip.png">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_like.png" alt="Like token">
+        <img class="icon" src="~assets/images/pc/common/icon_catset_tip.png" alt="Tip token">
       </div>
       <div class="amounts">
         <span class="like-token-amount">

@@ -15,6 +15,7 @@
         class="search-icon"
         :class="{ disabled: inputText === '' }"
         src="~assets/images/pc/common/icon_search.png"
+        alt="Search"
         @click="onClickSearch"
       >
     </form>

@@ -15,11 +15,13 @@
           v-if="supporter.icon_image_url"
           :class="`user-icon rank${i + 1}`"
           :src="supporter.icon_image_url | addOptimizeParamToImageUrl('48x48')"
+          alt="Supporter profile icon"
         >
         <img
           v-else
           :class="`user-icon rank${i + 1}`"
           src="~assets/images/pc/common/icon_user_noimg.png"
+          alt="Supporter profile icon"
         >
         <div class="name">
           {{ supporter.user_display_name | htmlDecode }}
