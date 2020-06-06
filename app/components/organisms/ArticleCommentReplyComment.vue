@@ -3,8 +3,18 @@
     <div>
       <div class="article-comment">
         <nuxt-link :to="`/users/${replyComment.userInfo.user_id}`" class="commented-user">
-          <img v-if="hasUserIcon" class="icon" :src="replyComment.userInfo.icon_image_url" alt="Profile icon">
-          <img v-else class="icon" src="~assets/images/pc/common/icon_user_noimg.png" alt="Profile icon">
+          <img
+            v-if="hasUserIcon"
+            class="icon"
+            :src="replyComment.userInfo.icon_image_url"
+            alt="Profile icon"
+          >
+          <img
+            v-else
+            class="icon"
+            src="~assets/images/pc/common/icon_user_noimg.png"
+            alt="Profile icon"
+          >
           <ul class="info">
             <li class="info-content">
               {{ decodedUserDisplayName }}
@@ -33,7 +43,12 @@
             src="~assets/images/pc/article/a_icon_Good_selected.png"
             alt="Like comment"
           >
-          <img v-else class="icon" src="~assets/images/pc/article/a_icon_Good.png" alt="Like comment">
+          <img
+            v-else
+            class="icon"
+            src="~assets/images/pc/article/a_icon_Good.png"
+            alt="Like comment"
+          >
           <span class="likes-count">{{ likesCount }}</span>
         </div>
         <div class="action-reply" @click="reply">

@@ -9,7 +9,12 @@
             :src="currentUserInfo.icon_image_url"
             alt="Profile icon"
           >
-          <img v-else class="icon" src="~assets/images/pc/common/icon_user_noimg.png" alt="Profile icon">
+          <img
+            v-else
+            class="icon"
+            src="~assets/images/pc/common/icon_user_noimg.png"
+            alt="Profile icon"
+          >
           <span class="name">{{ decodedUserDisplayName }}</span>
         </div>
       </no-ssr>

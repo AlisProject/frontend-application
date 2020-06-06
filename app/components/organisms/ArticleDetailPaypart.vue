@@ -11,7 +11,12 @@
           src="~assets/images/pc/common/thumbnail_noimg.png"
           alt="Eye catch"
         >
-        <img v-else class="eye-catch-image" :src="`${article.eye_catch_url}?d=592x296`" alt="Eye catch">
+        <img
+          v-else
+          class="eye-catch-image"
+          :src="`${article.eye_catch_url}?d=592x296`"
+          alt="Eye catch"
+        >
       </div>
       <h2 class="title">
         {{ decodedTitle }}

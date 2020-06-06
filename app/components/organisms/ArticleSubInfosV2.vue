@@ -2,8 +2,16 @@
   <div class="area-article-sub-infos-container">
     <div class="article-sub-infos">
       <div class="icons">
-        <img class="icon" src="~assets/images/pc/article/icon_article_date.png" alt="Article date">
-        <img class="icon" src="~assets/images/pc/article/icon_article_like.png" alt="Article like">
+        <img
+          class="icon"
+          src="~assets/images/pc/article/icon_article_date.png"
+          alt="Article date"
+        >
+        <img
+          class="icon"
+          src="~assets/images/pc/article/icon_article_like.png"
+          alt="Article like"
+        >
         <img class="icon" src="~assets/images/pc/article/icon_article_tip.png" alt="Article tip">
         <img
           class="icon"

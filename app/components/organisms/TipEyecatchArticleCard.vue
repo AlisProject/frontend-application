@@ -33,8 +33,16 @@
     </no-ssr>
     <div class="token-info">
       <div class="icons">
-        <img class="icon" src="~assets/images/pc/common/icon_catset_like_white.png" alt="Like token">
-        <img class="icon" src="~assets/images/pc/common/icon_catset_tip_white.png" alt="Tip token">
+        <img
+          class="icon"
+          src="~assets/images/pc/common/icon_catset_like_white.png"
+          alt="Like token"
+        >
+        <img
+          class="icon"
+          src="~assets/images/pc/common/icon_catset_tip_white.png"
+          alt="Tip token"
+        >
       </div>
       <div class="amounts">
         <span class="like-token-amount">

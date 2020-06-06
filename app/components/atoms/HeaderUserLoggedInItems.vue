@@ -14,7 +14,12 @@
         src="~assets/images/pc/common/icon_notification_mark.png"
         alt="Move to notification page"
       >
-      <img v-else class="notification-icon" src="~assets/images/pc/common/icon_notification.png" alt="Notification">
+      <img
+        v-else
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_notification.png"
+        alt="Notification"
+      >
     </span>
     <div
       v-if="currentUserInfo.icon_image_url !== undefined"
@@ -24,7 +29,11 @@
       <img class="profile-icon" :src="currentUserInfo.icon_image_url" alt="Profile icon">
     </div>
     <div v-else class="profile-icon-box" @click="toggleMenu">
-      <img class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png" alt="Profile icon">
+      <img
+        class="profile-icon"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        alt="Profile icon"
+      >
     </div>
     <div v-if="isMenuShown" class="menu">
       <template v-if="currentUserInfo.icon_image_url !== undefined">
@@ -35,9 +44,17 @@
       </template>
       <template v-else>
         <div class="background-user-image-box">
-          <img class="background-user-image" src="~assets/images/pc/common/icon_user_noimg.png" alt="">
+          <img
+            class="background-user-image"
+            src="~assets/images/pc/common/icon_user_noimg.png"
+            alt=""
+          >
         </div>
-        <img src="~assets/images/pc/common/icon_user_noimg.png" class="profile-image" alt="Profile icon">
+        <img
+          src="~assets/images/pc/common/icon_user_noimg.png"
+          class="profile-image"
+          alt="Profile icon"
+        >
       </template>
       <p class="alis-token-amount">
         {{ formattedAlisToken }} ALIS

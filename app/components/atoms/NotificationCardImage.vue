@@ -33,7 +33,12 @@
         :src="notification.userInfo.icon_image_url"
         alt="Profile icon"
       >
-      <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png" alt="Profile icon">
+      <img
+        v-else
+        class="profile-icon"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        alt="Profile icon"
+      >
     </template>
     <div v-if="notification.type === 'comment'" class="sub-icon comment" />
     <div v-if="notification.type === 'tip'" class="sub-icon tip" />
