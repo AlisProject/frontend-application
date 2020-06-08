@@ -2,13 +2,22 @@
   <div class="area-article-sub-infos-container">
     <div class="article-sub-infos">
       <div class="icons">
-        <img class="icon" src="~assets/images/pc/article/icon_article_date.png">
-        <img class="icon" src="~assets/images/pc/article/icon_article_like.png">
-        <img class="icon" src="~assets/images/pc/article/icon_article_tip.png">
+        <img
+          class="icon"
+          src="~assets/images/pc/article/icon_article_date.png"
+          alt="Article date"
+        >
+        <img
+          class="icon"
+          src="~assets/images/pc/article/icon_article_like.png"
+          alt="Article like"
+        >
+        <img class="icon" src="~assets/images/pc/article/icon_article_tip.png" alt="Article tip">
         <img
           class="icon"
           :class="{ 'visibility-hidden': !hasSupporter }"
           src="~assets/images/pc/article/icon_article_supporter.png"
+          alt="Article supporter"
         >
       </div>
       <div class="titles">
@@ -40,11 +49,13 @@
             v-if="supporter.icon_image_url"
             :class="`user-icon rank${i + 1}`"
             :src="supporter.icon_image_url | addOptimizeParamToImageUrl('48x48')"
+            alt="Supporter profile icon"
           >
           <img
             v-else
             :class="`user-icon rank${i + 1}`"
             src="~assets/images/pc/common/icon_user_noimg.png"
+            alt="Supporter profile icon"
           >
         </nuxt-link>
       </div>

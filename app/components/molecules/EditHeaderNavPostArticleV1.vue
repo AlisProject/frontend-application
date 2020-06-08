@@ -22,7 +22,7 @@
           :class="{ selected: img === thumbnail }"
           @click.prevent="selectThumbnail"
         >
-          <img :src="img" class="thumbnail">
+          <img :src="img" class="thumbnail" alt="Thumbnail">
         </div>
       </div>
       <h3 class="headline">

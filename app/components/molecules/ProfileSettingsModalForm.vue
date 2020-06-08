@@ -7,9 +7,20 @@
             v-if="currentUserInfo.icon_image_url !== undefined"
             class="upload-img"
             :src="currentUserInfo.icon_image_url"
+            alt="Profile image"
           >
-          <img v-else-if="uploadedImage" class="upload-img" :src="uploadedImage">
-          <img v-else src="~assets/images/pc/common/icon_user_noimg.png" class="upload-img">
+          <img
+            v-else-if="uploadedImage"
+            class="upload-img"
+            :src="uploadedImage"
+            alt="Profile image"
+          >
+          <img
+            v-else
+            src="~assets/images/pc/common/icon_user_noimg.png"
+            class="upload-img"
+            alt="Profile image"
+          >
           <label class="upload-btn">
             <img class="btn-pic" src="~assets/images/pc/common/icon_profile_img.png" alt="upload">
             <input class="upload-img-input" type="file" accept="image/*" @change="onFileChange">

@@ -1,6 +1,6 @@
 import { uniqBy } from 'lodash'
 import * as types from '../mutation-types'
-import { getBodyWithImageOptimizationParam } from '~/utils/article'
+import { getBodyAfterImageTagOptimization } from '~/utils/article'
 
 const namespaced = true
 
@@ -348,7 +348,7 @@ const actions = {
   async getArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/api/articles/${articleId}`)
-      const body = getBodyWithImageOptimizationParam(
+      const body = getBodyAfterImageTagOptimization(
         article.body,
         process.env.ALIS_APP_DOMAIN,
         article.user_id,
@@ -371,7 +371,7 @@ const actions = {
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/api/me/articles/${articleId}/public`)
     commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
-    const body = getBodyWithImageOptimizationParam(
+    const body = getBodyAfterImageTagOptimization(
       article.body,
       process.env.ALIS_APP_DOMAIN,
       article.user_id,
@@ -1170,7 +1170,7 @@ const actions = {
   async getLaboNArticleRandom({ commit, dispatch }) {
     try {
       const article = await this.$axios.$get(`/laboratory/labo/n/random`)
-      const body = getBodyWithImageOptimizationParam(
+      const body = getBodyAfterImageTagOptimization(
         article.body,
         process.env.ALIS_APP_DOMAIN,
         article.user_id,

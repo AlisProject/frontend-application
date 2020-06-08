@@ -5,38 +5,56 @@
       to="/search?context=article"
       @click.native="resetSearchStates"
     >
-      <img class="search-icon" src="~assets/images/pc/common/icon_search.png">
+      <img class="search-icon" src="~assets/images/pc/common/icon_search.png" alt="Search">
     </nuxt-link>
     <span class="notification-icon-box" @click="moveToNotificationPage">
       <img
         v-if="unreadNotification"
         class="notification-icon"
         src="~assets/images/pc/common/icon_notification_mark.png"
+        alt="Move to notification page"
       >
-      <img v-else class="notification-icon" src="~assets/images/pc/common/icon_notification.png">
+      <img
+        v-else
+        class="notification-icon"
+        src="~assets/images/pc/common/icon_notification.png"
+        alt="Notification"
+      >
     </span>
     <div
       v-if="currentUserInfo.icon_image_url !== undefined"
       class="profile-icon-box"
       @click="toggleMenu"
     >
-      <img class="profile-icon" :src="currentUserInfo.icon_image_url">
+      <img class="profile-icon" :src="currentUserInfo.icon_image_url" alt="Profile icon">
     </div>
     <div v-else class="profile-icon-box" @click="toggleMenu">
-      <img class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
+      <img
+        class="profile-icon"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        alt="Profile icon"
+      >
     </div>
     <div v-if="isMenuShown" class="menu">
       <template v-if="currentUserInfo.icon_image_url !== undefined">
         <div class="background-user-image-box">
-          <img class="background-user-image" :src="currentUserInfo.icon_image_url">
+          <img class="background-user-image" :src="currentUserInfo.icon_image_url" alt="">
         </div>
-        <img :src="currentUserInfo.icon_image_url" class="profile-image">
+        <img :src="currentUserInfo.icon_image_url" class="profile-image" alt="Profile icon">
       </template>
       <template v-else>
         <div class="background-user-image-box">
-          <img class="background-user-image" src="~assets/images/pc/common/icon_user_noimg.png">
+          <img
+            class="background-user-image"
+            src="~assets/images/pc/common/icon_user_noimg.png"
+            alt=""
+          >
         </div>
-        <img src="~assets/images/pc/common/icon_user_noimg.png" class="profile-image">
+        <img
+          src="~assets/images/pc/common/icon_user_noimg.png"
+          class="profile-image"
+          alt="Profile icon"
+        >
       </template>
       <p class="alis-token-amount">
         {{ formattedAlisToken }} ALIS

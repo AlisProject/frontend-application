@@ -1,6 +1,6 @@
 <template>
   <div class="badge-description-container">
-    <img class="area-badge-image" :src="badgeDescriptionModal.metadata.image">
+    <img class="area-badge-image" :src="badgeDescriptionModal.metadata.image" alt="Badge">
     <div class="area-badge-description">
       {{ badgeDescriptionModal.metadata.description }}
     </div>

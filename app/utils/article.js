@@ -399,10 +399,16 @@ export function showEmbed() {
   })
 }
 
-export function getBodyWithImageOptimizationParam(body, domain, userId, articleId) {
-  const pattern = String.raw`<(img( alt="")? src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
-  const regexp = new RegExp(pattern, 'g')
-  return body.replace(regexp, '<$1?d=800x2160">')
+export function getBodyAfterImageTagOptimization(body, domain, userId, articleId) {
+  // alt属性の追加
+  const altAdditionPattern = String.raw`<(img) (src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png)")>`
+  const altAdditionRegexp = new RegExp(altAdditionPattern, 'g')
+  body = body.replace(altAdditionRegexp, '<$1 alt="Content image" $2>')
+
+  // サイズの指定
+  const sizePattern = String.raw`<(img alt=".*?" src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
+  const sizeRegexp = new RegExp(sizePattern, 'g')
+  return body.replace(sizeRegexp, '<$1?d=800x2160">')
 }
 
 export function formatTokenAmount(tokenAmount = 0) {

@@ -4,16 +4,19 @@
       v-if="notification.type === 'like'"
       class="profile-icon"
       src="~assets/images/pc/common/icon_like.png"
+      alt="Notification of like"
     >
     <img
       v-else-if="notification.type === 'announce'"
       class="profile-icon"
       src="~assets/images/pc/notification/icon_announce.png"
+      alt="Notification of announce"
     >
     <img
       v-else-if="notification.type === 'csvdownload'"
       class="profile-icon"
       src="~assets/images/pc/notification/icon_download.png"
+      alt="Notification of csv download"
     >
     <template
       v-if="
@@ -28,8 +31,14 @@
         v-if="notification.userInfo.icon_image_url"
         class="profile-icon"
         :src="notification.userInfo.icon_image_url"
+        alt="Profile icon"
       >
-      <img v-else class="profile-icon" src="~assets/images/pc/common/icon_user_noimg.png">
+      <img
+        v-else
+        class="profile-icon"
+        src="~assets/images/pc/common/icon_user_noimg.png"
+        alt="Profile icon"
+      >
     </template>
     <div v-if="notification.type === 'comment'" class="sub-icon comment" />
     <div v-if="notification.type === 'tip'" class="sub-icon tip" />
@@ -42,6 +51,7 @@
       v-if="notification.type === 'purchase'"
       class="profile-icon"
       src="~assets/images/pc/notification/icon_notification_check.png"
+      alt="Notification of purchase"
     >
   </div>
 </template>
