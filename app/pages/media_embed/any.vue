@@ -2,7 +2,7 @@
   <a :href="href" target="_blank" class="iframely-embed-card">
     <div class="title" :class="{ 'without-space': !hasThumbnail }">{{ title }}</div>
     <div class="description" :class="{ 'without-space': !hasThumbnail }">{{ description }}</div>
-    <img v-if="hasThumbnail" class="thumbnail" :src="src">
+    <img v-if="hasThumbnail" class="thumbnail" :src="src" alt="Thumbnail">
     <div class="site">{{ site }}</div>
   </a>
 </template>
