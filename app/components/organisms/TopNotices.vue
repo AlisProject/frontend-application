@@ -3,20 +3,14 @@
     <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
       今週のお題 <span class="tooltip" />
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E6%A4%9C%E5%AF%9F%E5%BA%81%E6%B3%95">
-      検察庁法
+    <nuxt-link class="link" to="/tag/%E3%83%86%E3%82%A4%E3%82%AF%E3%82%A2%E3%82%A6%E3%83%88">
+      テイクアウト
     </nuxt-link>
-    <nuxt-link
-      class="link"
-      to="/tag/%E8%AA%B0%E3%81%AB%E3%82%82%E8%A8%80%E3%81%88%E3%81%AA%E3%81%84%E8%A9%B1"
-    >
-      誰にも言えない話
+    <nuxt-link class="link" to="/tag/%E3%83%AC%E3%83%88%E3%83%AD%E3%82%B2%E3%83%BC%E3%83%A0">
+      レトロゲーム
     </nuxt-link>
-    <nuxt-link
-      class="link"
-      to="/tag/%E4%BF%A1%E9%A0%BC%E3%81%A7%E3%81%8D%E3%82%8B%E8%A8%98%E4%BA%8B%E3%81%A8%E3%83%A6%E3%83%BC%E3%82%B6%E3%83%BC"
-    >
-      信頼できる記事とユーザー
+    <nuxt-link class="link" to="/tag/Brave">
+      Brave
     </nuxt-link>
   </div>
 </template>
