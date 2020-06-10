@@ -69,3 +69,9 @@ functions:
           method: get
     alarms:
       - functionErrors
+    vpc:
+      securityGroupIds:
+        - "Fn::ImportValue": ${env:ALIS_APP_ID}-FrontendSecurityGroupId
+      subnetIds:
+        - "Fn::ImportValue": ${env:ALIS_APP_ID}-PrivateLambdaMultiAZ1aSubNetId
+        - "Fn::ImportValue": ${env:ALIS_APP_ID}-PrivateLambdaMultiAZ1cSubNetId
