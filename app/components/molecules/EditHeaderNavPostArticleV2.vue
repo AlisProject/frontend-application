@@ -230,12 +230,14 @@ export default {
               }
             }
           }
-          // タイトルと異なるBASHO専用タグが設定されていないこと
+          // 全てのBASHO専用タグを取得
+          const allBashoTags = bashoTags
+            .map((bashoTag) => '筋トレ：' + bashoTag)
+            .concat(bashoTags.map((bashoTag) => '英語学習：' + bashoTag))
           const filterTags = tags.filter(
-            (tag) =>
-              tag !== tagHeader + targetBashoTag &&
-              bashoTags.map((bashoTag) => tagHeader + bashoTag).includes(tag)
+            (tag) => tag !== tagHeader + targetBashoTag && allBashoTags.includes(tag)
           )
+          // タイトルと異なるBASHO専用タグが設定されていないこと
           if (filterTags.length > 0) {
             this.sendNotification({
               text: 'タイトルと異なるタグ、「' + filterTags.join('、') + '」を削除してください',
