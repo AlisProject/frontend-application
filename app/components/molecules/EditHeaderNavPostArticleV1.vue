@@ -40,7 +40,11 @@
               選択してください
             </option>
             <option v-for="topic in topics" :value="topic.name">
-              {{ topic.display_name }}
+              {{
+                ['筋トレ', '英語学習'].includes(topic.display_name)
+                  ? 'BASHO：' + topic.display_name
+                  : topic.display_name
+              }}
             </option>
           </select>
         </no-ssr>
@@ -127,14 +131,67 @@ export default {
           return
         }
 
+        // タグのデータ形式をAPIに適するように整形
+        const tags = this.tags.map((tag) => tag.text)
+
+        // BASHO 対応
+        if (['fitness', 'learn-english'].includes(topicType)) {
+          // タイトルの先頭が正しく設定されているか
+          if (
+            !title.startsWith('【質問】') &&
+            !title.startsWith('【議論】') &&
+            !title.startsWith('【共有】')
+          ) {
+            this.sendNotification({
+              text:
+                'BASHOカテゴリ利用の際は、タイトルの先頭に【質問】、【議論】、【共有】のいずれかを記載ください',
+              dismissAfter: 10000
+            })
+            this.publishingArticle = false
+            return
+          }
+          // 正しいBASHO専用タグが設定されていない場合は付与
+          const tagHeader = topicType === 'fitness' ? '筋トレ：' : '英語学習：'
+          const bashoTags = ['質問', '議論', '共有']
+          let targetBashoTag = ''
+          for (const bashoTag of bashoTags) {
+            if (title.startsWith('【' + bashoTag + '】')) {
+              targetBashoTag = bashoTag
+              if (!tags.includes(tagHeader + bashoTag)) {
+                if (tags.length > 4) {
+                  this.sendNotification({
+                    text: 'タイトルに紐づくタグ、”' + tagHeader + bashoTag + '” を設定してください',
+                    dismissAfter: 10000
+                  })
+                  this.publishingArticle = false
+                  return
+                } else {
+                  tags.push(tagHeader + bashoTag)
+                }
+              }
+            }
+          }
+          // タイトルと異なるBASHO専用タグが設定されていないこと
+          const filterTags = tags.filter(
+            (tag) =>
+              tag !== tagHeader + targetBashoTag &&
+              bashoTags.map((bashoTag) => tagHeader + bashoTag).includes(tag)
+          )
+          if (filterTags.length > 0) {
+            this.sendNotification({
+              text: 'タイトルと異なるタグ、「' + filterTags.join('、') + '」を削除してください',
+              dismissAfter: 10000
+            })
+            this.publishingArticle = false
+            return
+          }
+        }
+
         const article = { title, body, overview }
 
         if (this.thumbnail !== '') {
           article.eye_catch_url = this.thumbnail
         }
-
-        // タグのデータ形式をAPIに適するように整形
-        const tags = this.tags.map((tag) => tag.text)
 
         if (
           location.href.includes('/me/articles/draft') ||
