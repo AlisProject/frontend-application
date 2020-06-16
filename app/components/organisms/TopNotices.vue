@@ -1,16 +1,7 @@
 <template>
   <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="/ALIS-official/articles/K8DQAXMojLyN">
-      今週のお題 <span class="tooltip" />
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%83%86%E3%82%A4%E3%82%AF%E3%82%A2%E3%82%A6%E3%83%88">
-      テイクアウト
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/%E3%83%AC%E3%83%88%E3%83%AD%E3%82%B2%E3%83%BC%E3%83%A0">
-      レトロゲーム
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/Brave">
-      Brave
+    <nuxt-link class="description" to="/ALIS-official/articles/KeOGzWqAzrwl">
+      BASHOについて <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>
