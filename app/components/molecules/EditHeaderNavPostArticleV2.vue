@@ -204,7 +204,7 @@ export default {
             this.sendNotification({
               text:
                 'BASHOカテゴリ利用の際は、タイトルの先頭に【質問】、【議論】、【共有】のいずれかを記載ください',
-              dismissAfter: 10000
+              dismissAfter: 7000
             })
             this.publishingArticle = false
             return
@@ -220,7 +220,7 @@ export default {
                 if (tags.length > 4) {
                   this.sendNotification({
                     text: 'タイトルに紐づくタグ、”' + tagHeader + bashoTag + '” を設定してください',
-                    dismissAfter: 10000
+                    dismissAfter: 7000
                   })
                   this.publishingArticle = false
                   return
@@ -241,7 +241,7 @@ export default {
           if (filterTags.length > 0) {
             this.sendNotification({
               text: 'タイトルと異なるタグ、「' + filterTags.join('、') + '」を削除してください',
-              dismissAfter: 10000
+              dismissAfter: 7000
             })
             this.publishingArticle = false
             return
