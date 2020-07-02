@@ -95,7 +95,8 @@ module.exports = {
     '~/plugins/vuelidate',
     { src: '~plugins/gtm.js', ssr: false },
     { src: '~/plugins/vue-tags-input', ssr: false },
-    { src: '~/plugins/editor', ssr: false }
+    { src: '~/plugins/editor', ssr: false },
+    { src: '~/plugins/lazysizes', ssr: false }
   ],
   axios: {
     baseURL: process.env.BASE_URL,

@@ -43,6 +43,7 @@
     "ethereumjs-tx": "^2.1.2",
     "express": "^4.16.4",
     "highlight.js": "^9.18.1",
+    "lazysizes": "^5.2.2",
     "lodash": "^4.17.13",
     "medium-editor": "^5.23.3",
     "node-fetch": "^2.6.0",
