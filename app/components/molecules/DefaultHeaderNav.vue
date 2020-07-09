@@ -206,6 +206,7 @@ $topicCount: 10;
     "topic0 topic1 topic2 topic3 topic4 topic5 topic6 topic7 topic8 topic9 topic10";
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
 
   &::-webkit-scrollbar {
     display: none;
