@@ -147,7 +147,12 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-    }
+    },
+
+    /**
+     * Edgeブラウザ対応のためeditorプラグインをトランスパイルする
+     */
+    transpile: ['editor']
   },
   css: [
     '~assets/stylesheets/medium-editor.scss',
