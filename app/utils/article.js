@@ -400,15 +400,17 @@ export function showEmbed() {
 }
 
 export function getBodyAfterImageTagOptimization(body, domain, userId, articleId) {
-  // alt属性の追加
-  const altAdditionPattern = String.raw`<(img) (src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png)")>`
-  const altAdditionRegexp = new RegExp(altAdditionPattern, 'g')
-  body = body.replace(altAdditionRegexp, '<$1 alt="Content image" $2>')
-
-  // サイズの指定
-  const sizePattern = String.raw`<(img alt=".*?" src="https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
-  const sizeRegexp = new RegExp(sizePattern, 'g')
-  return body.replace(sizeRegexp, '<$1?d=800x2160">')
+  // 画像タグに以下の最適化を実施
+  // ・alt属性の追加
+  // ・サイズの指定
+  // ・遅延ローディングの適用
+  const imgTagPattern = String.raw`<img( alt="")? src="(https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
+  const imgTagRegexp = new RegExp(imgTagPattern, 'g')
+  const blankImage = require('~/assets/images/pc/article/article_image_blank.png')
+  return body.replace(
+    imgTagRegexp,
+    `<img alt="Content image" class="lazyload" data-src="$2?d=800x2160" src="${blankImage}">`
+  )
 }
 
 export function formatTokenAmount(tokenAmount = 0) {
