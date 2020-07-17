@@ -1,7 +1,10 @@
 <template>
   <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="/ALIS-official/articles/KeOGzWqAzrwl">
-      BASHOについて <span class="tooltip" />
+    <a class="description" href="https://basho.vercel.app/" target="_blank">
+      BASHOはこちら
+    </a>
+    <nuxt-link class="link" to="/ALIS-official/articles/aEO1Gl15mXN6">
+      BASHOとは？
     </nuxt-link>
   </div>
 </template>

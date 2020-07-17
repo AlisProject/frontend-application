@@ -17,12 +17,6 @@
         "
         @click.native="resetData"
       >
-        <span
-          v-if="topic.name === 'fitness' || topic.name === 'learn-english'"
-          class="topic-display-pre-name"
-        >
-          BASHO
-        </span>
         <span class="topic-display-name">
           {{ topic.display_name }}
         </span>
@@ -175,10 +169,6 @@ $topicCount: 10;
         }
       }
 
-      .topic-display-pre-name {
-        display: none;
-      }
-
       .topic-display-name {
         bottom: 7px;
       }
@@ -240,13 +230,6 @@ $topicCount: 10;
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
   }
 
-  .topic-display-pre-name {
-    margin-top: 10px;
-    left: 0;
-    position: absolute;
-    right: 0;
-  }
-
   .topic-display-name {
     bottom: 6px;
     left: 0;
@@ -261,10 +244,6 @@ $topicCount: 10;
     height: 44px;
     margin: 3px 2px 0 2px;
     width: 85px;
-
-    .topic-display-pre-name {
-      margin-top: 8px;
-    }
 
     .topic-display-name {
       bottom: 5px;

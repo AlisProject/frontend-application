@@ -2,7 +2,7 @@
   <div class="new-article-list-container" :class="{ 'with-notices': isWithNotices }">
     <app-header />
     <default-header-nav />
-    <category-notices v-if="isWithNotices" />
+    <category-notices v-if="$route.query.topic === 'game'" />
     <article-type-select-nav />
     <article-card-list :articles="newArticles" />
     <the-loader :is-loading="!isLastPage" />
@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     isWithNotices() {
-      return ['game', 'fitness', 'learn-english'].includes(this.$route.query.topic)
+      return this.$route.query.topic === 'game'
     },
     ...mapGetters('article', ['newArticles', 'isLastPage', 'topics']),
     ...mapGetters('user', ['loggedIn', 'currentUser']),
