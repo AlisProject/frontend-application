@@ -161,7 +161,7 @@ workflows:
       # ステージング環境へのデプロイ
       - deploy:
           name: deploy-staging
-          <<: *only_master
+          # <<: *only_master
           context: common_staging_deployment
           requires: *test-and-build
 
