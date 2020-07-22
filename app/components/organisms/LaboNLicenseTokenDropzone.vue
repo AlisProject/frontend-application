@@ -14,7 +14,7 @@
 </template>
 
 <script>
-/* global Web3 */
+import Web3 from 'web3'
 import { mapActions, mapGetters } from 'vuex'
 import Dropzone from 'nuxt-dropzone'
 import 'nuxt-dropzone/dropzone.css'

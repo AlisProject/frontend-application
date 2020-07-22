@@ -59,7 +59,7 @@
 </template>
 
 <script>
-/* global Web3 */
+import Web3 from 'web3'
 import AppHeader from '~/components/organisms/AppHeader'
 import AppFooter from '~/components/organisms/AppFooter'
 import LaboNLicenseTokenDropzone from '~/components/organisms/LaboNLicenseTokenDropzone'

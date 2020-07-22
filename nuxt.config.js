@@ -10,11 +10,6 @@ module.exports = {
       {
         src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`,
         async: true
-      },
-      {
-        // web3 を npm から追加すると、インポート時に SSR で落ちるようになってしまうため、CDN から読み込んでいる。
-        src: '//cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js',
-        defer: true
       }
     ],
     title: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア',

@@ -74,7 +74,7 @@
 </template>
 
 <script>
-/* global Web3 */
+import Web3 from 'web3'
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
