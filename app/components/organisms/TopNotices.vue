@@ -6,6 +6,33 @@
     <nuxt-link class="link" to="/ALIS-official/articles/aEO1Gl15mXN6">
       BASHOとは？
     </nuxt-link>
+    <nuxt-link class="link" to="#">
+      |
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/DeFi">
+      DeFi特集
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/LINK">
+      LINK
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/mkr">
+      MKR
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/synthetix">
+      SNX
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/Compound">
+      COMP
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/Band%20Protocol">
+      BAND
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/REN">
+      REN
+    </nuxt-link>
+    <nuxt-link class="link" to="/tag/Balancer">
+      BAL
+    </nuxt-link>
   </div>
 </template>
 
