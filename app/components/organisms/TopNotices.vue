@@ -1,14 +1,5 @@
 <template>
   <div class="area-topo-notices-container">
-    <a class="description" href="https://basho.vercel.app/" target="_blank">
-      BASHOはこちら
-    </a>
-    <nuxt-link class="link" to="/ALIS-official/articles/aEO1Gl15mXN6">
-      BASHOとは？
-    </nuxt-link>
-    <nuxt-link class="link" to="#">
-      |
-    </nuxt-link>
     <nuxt-link class="link" to="/tag/DeFi">
       DeFi特集
     </nuxt-link>
