@@ -114,7 +114,7 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo npm install -g serverless
+              sudo npm install -g 'serverless@<2.0.0'
               yarn deploy
             fi
 
@@ -130,7 +130,7 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ] && [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
-              sudo npm install -g serverless
+              sudo npm install -g 'serverless@<2.0.0'
               yarn deploy
             fi
 
