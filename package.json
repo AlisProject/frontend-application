@@ -46,7 +46,7 @@
     "lazysizes": "^5.2.2",
     "lodash": "^4.17.19",
     "medium-editor": "^5.23.3",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^2.6.0",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.11.0",
     "nuxt-dropzone": "^1.0.4",
