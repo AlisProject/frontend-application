@@ -2989,9 +2989,10 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
-"ckeditor5-emptyness@git+https://github.com/alexeckermann/ckeditor5-emptyness.git":
+"ckeditor5-emptyness@https://github.com/alexeckermann/ckeditor5-emptyness":
   version "0.2.1"
-  resolved "git+https://github.com/alexeckermann/ckeditor5-emptyness.git#693a5c77f659f1cb141591c9cd78427ebc72b550"
+  uid "693a5c77f659f1cb141591c9cd78427ebc72b550"
+  resolved "https://github.com/alexeckermann/ckeditor5-emptyness#693a5c77f659f1cb141591c9cd78427ebc72b550"
   dependencies:
     "@ckeditor/ckeditor5-core" "^11.0.1"
     "@ckeditor/ckeditor5-engine" "^11.0.0"
@@ -6917,9 +6918,10 @@ node-cache@^4.1.1:
     clone "2.x"
     lodash "^4.17.15"
 
-node-fetch@^2.1.2, node-fetch@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
+node-fetch@^2.1.2, node-fetch@^2.6.0, node-fetch@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
 node-gyp@^3.8.0:
   version "3.8.0"
