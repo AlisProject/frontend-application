@@ -7881,7 +7881,7 @@ nuxt-dropzone@^1.0.4:
   dependencies:
     vue2-dropzone "3.6.0"
 
-nuxt@^2.11.0:
+nuxt@^2.14.6:
   version "2.14.6"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-2.14.6.tgz#56ba99cbd055ebdb33250a4d1ed09f084ad7fa14"
   dependencies:

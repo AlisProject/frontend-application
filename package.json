@@ -48,7 +48,7 @@
     "medium-editor": "^5.23.3",
     "node-fetch": "^2.6.1",
     "normalize.css": "^8.0.1",
-    "nuxt": "^2.11.0",
+    "nuxt": "^2.14.6",
     "nuxt-dropzone": "^1.0.4",
     "sass-loader": "^7.1.0",
     "serverless-plugin-aws-alerts": "^1.2.4",
