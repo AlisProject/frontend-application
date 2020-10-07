@@ -23,6 +23,10 @@
       />
       <article-sub-infos :published-at="publishedAt" :token-amount="article.alisToken" />
       <author-info :user="article.userInfo" />
+      <user-article-popular-card-list
+        v-if="userPopularArticles.articles.length > 0"
+        :articles="userPopularArticles.articles"
+      />
     </div>
     <article-comments :comments="article.comments" />
     <article-comment-form />
@@ -38,6 +42,7 @@ import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfos from '../atoms/ArticleSubInfos'
 import AuthorInfo from '../atoms/AuthorInfo'
+import UserArticlePopularCardList from '../organisms/UserArticlePopularCardList'
 import ArticleTags from '../molecules/ArticleTags'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
@@ -52,6 +57,7 @@ export default {
     ArticleSideActions,
     ArticleSubInfos,
     AuthorInfo,
+    UserArticlePopularCardList,
     ArticleTags,
     ArticleCommentForm,
     ArticleComments,
@@ -64,6 +70,10 @@ export default {
     },
     topic: {
       type: String,
+      required: false
+    },
+    userPopularArticles: {
+      type: Object,
       required: false
     }
   },
@@ -91,7 +101,8 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'postPv'])
+    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'postPv']),
+    ...mapActions('user', ['resetUserPopularArticles'])
   },
   watch: {
     loggedIn(newState) {
@@ -128,13 +139,14 @@ export default {
   grid-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    'header        '
-    'title         '
-    'content       '
-    'tags          '
-    'article-sub-infos'
-    'footer-actions'
-    'author-info   ';
+    'header                        '
+    'title                         '
+    'content                       '
+    'tags                          '
+    'article-sub-infos             '
+    'footer-actions                '
+    'author-info                   '
+    'user-article-popular-card-list';
 }
 
 .area-title {
@@ -179,13 +191,14 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      'header         header            header        '
-      '...            title             ...           '
-      '...            content           ...           '
-      '...            tags              ...           '
-      '...            article-sub-infos ...'
-      '...            author-info       ...           '
-      'footer-actions footer-actions    footer-actions';
+      'header         header                          header        '
+      '...            title                           ...           '
+      '...            content                         ...           '
+      '...            tags                            ...           '
+      '...            article-sub-infos               ...           '
+      '...            author-info                     ...           '
+      '...            user-article-popular-card-list  ...           '
+      'footer-actions footer-actions                  footer-actions';
   }
 
   .area-title {

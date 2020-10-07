@@ -1,5 +1,10 @@
 <template>
-  <component :is="componentName" :article="article" :topic="topicDisplayName" />
+  <component
+    :is="componentName"
+    :article="article"
+    :userPopularArticles="userPopularArticles"
+    :topic="topicDisplayName"
+  />
 </template>
 
 <script>
@@ -38,7 +43,8 @@ export default {
       }
       await Promise.all([
         store.dispatch(`article/${getArticleType}`, { articleId }),
-        store.dispatch('article/getArticleSupporters', { articleId })
+        store.dispatch('article/getArticleSupporters', { articleId }),
+        store.dispatch('user/resetUserPopularArticles', {})
       ])
       if (params.userId !== store.state.article.article.user_id) {
         redirect(
@@ -63,7 +69,7 @@ export default {
     }
   },
   async mounted() {
-    const { articleId } = this.$route.params
+    const { articleId, userId } = this.$route.params
 
     // 記事情報取得
     if (this.loggedIn) {
@@ -97,6 +103,8 @@ export default {
     } else {
       this.setIsLikedArticle({ liked: false })
     }
+    // 該当ユーザの人気記事取得
+    await this.getTopUserPopularArticles({ userId, excludeArticleId: articleId })
     // コメント取得
     await this.setArticleComments({ articleId })
   },
@@ -104,7 +112,7 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    ...mapGetters('user', ['loggedIn', 'currentUser']),
+    ...mapGetters('user', ['loggedIn', 'currentUser', 'userPopularArticles']),
     ...mapGetters('article', ['article', 'topicDisplayName'])
   },
   methods: {
@@ -114,7 +122,8 @@ export default {
       'setIsLikedArticle',
       'setArticleComments',
       'updateArticleCommentsByCommentIds'
-    ])
+    ]),
+    ...mapActions('user', ['getTopUserPopularArticles'])
   },
   head() {
     const { article } = this.$store.state.article

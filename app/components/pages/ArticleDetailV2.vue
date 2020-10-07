@@ -26,6 +26,10 @@
       />
       <article-sub-infos-v2 :article="article" :publishedAt="publishedAt" />
       <author-info :user="article.userInfo" />
+      <user-article-popular-card-list
+        v-if="userPopularArticles.articles.length > 0"
+        :articles="userPopularArticles.articles"
+      />
     </div>
     <article-comments :comments="article.comments" />
     <article-comment-form />
@@ -43,6 +47,7 @@ import ArticleFooterActions from '../atoms/ArticleFooterActions'
 import ArticleSideActions from '../atoms/ArticleSideActions'
 import ArticleSubInfosV2 from '../organisms/ArticleSubInfosV2'
 import AuthorInfo from '../atoms/AuthorInfo'
+import UserArticlePopularCardList from '../organisms/UserArticlePopularCardList'
 import ArticleTags from '../molecules/ArticleTags'
 import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
@@ -58,6 +63,7 @@ export default {
     ArticleSideActions,
     ArticleSubInfosV2,
     AuthorInfo,
+    UserArticlePopularCardList,
     ArticleTags,
     ArticleDetailPaypart,
     ArticleCommentForm,
@@ -71,6 +77,10 @@ export default {
     },
     topic: {
       type: String,
+      required: false
+    },
+    userPopularArticles: {
+      type: Object,
       required: false
     }
   },
@@ -122,7 +132,8 @@ export default {
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
-    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'postPv'])
+    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'postPv']),
+    ...mapActions('user', ['resetUserPopularArticles'])
   },
   watch: {
     loggedIn(newState) {
@@ -159,25 +170,27 @@ export default {
   grid-gap: 30px;
   /* prettier-ignore */
   grid-template-areas:
-    'header        '
-    'title         '
-    'content       '
-    'tags          '
-    'article-sub-infos'
-    'footer-actions'
-    'author-info   ';
+    'header                        '
+    'title                         '
+    'content                       '
+    'tags                          '
+    'article-sub-infos             '
+    'footer-actions                '
+    'author-info                   '
+    'user-article-popular-card-list';
 
   &.is-show-paypart {
     /* prettier-ignore */
     grid-template-areas:
-    'header        '
-    'title         '
-    'content       '
-    'paypart       '
-    'tags          '
-    'article-sub-infos'
-    'footer-actions'
-    'author-info   ';
+    'header                        '
+    'title                         '
+    'content                       '
+    'paypart                       '
+    'tags                          '
+    'article-sub-infos             '
+    'footer-actions                '
+    'author-info                   '
+    'user-article-popular-card-list';
   }
 }
 
@@ -223,25 +236,27 @@ export default {
     grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
-      'header         header            header        '
-      '...            title             ...           '
-      '...            content           ...           '
-      '...            tags              ...           '
-      '...            article-sub-infos ...'
-      '...            author-info       ...           '
-      'footer-actions footer-actions    footer-actions';
+      'header         header                          header        '
+      '...            title                           ...           '
+      '...            content                         ...           '
+      '...            tags                            ...           '
+      '...            article-sub-infos               ...           '
+      '...            author-info                     ...           '
+      '...            user-article-popular-card-list  ...           '
+      'footer-actions footer-actions                  footer-actions';
 
     &.is-show-paypart {
       /* prettier-ignore */
       grid-template-areas:
-        'header         header            header        '
-        '...            title             ...           '
-        '...            content           ...           '
-        'paypart        paypart           paypart       '
-        '...            tags              ...           '
-        '...            article-sub-infos ...'
-        '...            author-info       ...           '
-        'footer-actions footer-actions    footer-actions';
+        'header         header                         header        '
+        '...            title                          ...           '
+        '...            content                        ...           '
+        'paypart        paypart                        paypart       '
+        '...            tags                           ...           '
+        '...            article-sub-infos              ...           '
+        '...            author-info                    ...           '
+        '...            user-article-popular-card-list ...           '
+        'footer-actions footer-actions                 footer-actions';
     }
   }
 
