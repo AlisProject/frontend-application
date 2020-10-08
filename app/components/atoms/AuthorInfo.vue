@@ -69,7 +69,6 @@ export default {
   grid-area: author-info;
   background-color: #fff;
   border-radius: 4px;
-  margin-bottom: 40px;
   padding: 20px;
   position: relative;
   text-decoration: none;

@@ -118,7 +118,11 @@ const state = () => ({
   userInfo: {},
   userArticles: [],
   userArticlesCurrentUserId: false,
+  userPopularArticles: {
+    articles: []
+  },
   isFetchingUserArticles: false,
+  isFetchingUserPopularArticles: false,
   userArticlesLastEvaluatedKey: {},
   requestLoginModal: {
     isShow: false,
@@ -247,6 +251,7 @@ const getters = {
   userArticles: (state) => state.userArticles,
   userArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey,
   hasUserArticlesLastEvaluatedKey: (state) => state.userArticlesLastEvaluatedKey !== null,
+  userPopularArticles: (state) => state.userPopularArticles,
   requestLoginModal: (state) => state.requestLoginModal,
   alisToken: (state) => state.alisToken,
   notifications: (state) => uniqBy(state.notifications, 'notification_id'),
@@ -634,6 +639,46 @@ const actions = {
     } finally {
       commit(types.SET_IS_FETCHING_USER_ARTICLES, { isFetching: false })
     }
+  },
+  async getTopUserPopularArticles(
+    { commit, state },
+    { userId, limit = 3, excludeArticleId = null }
+  ) {
+    if (state.isFetchingUserPopularArticles) return
+    try {
+      commit(types.SET_IS_FETCHING_USER_POPULAR_ARTICLES, { isFetching: true })
+      // 該当ユーザの人気記事を取得（excludeArticleId が設定されている場合は１件多く取得）
+      const tmpLimit = excludeArticleId ? limit + 1 : limit
+      const { Items: articles } = await this.$axios.$get(`/api/users/${userId}/articles/popular`, {
+        params: { limit: tmpLimit }
+      })
+      // excludeArticleId に指定された記事を除外。存在しない場合は末尾の記事を削除
+      if (excludeArticleId) {
+        const removeIndex = articles.findIndex((article) => article.article_id === excludeArticleId)
+        if (removeIndex >= 0) {
+          articles.splice(removeIndex, 1)
+        } else {
+          articles.pop()
+        }
+      }
+      const articlesWithData = await Promise.all(
+        articles.map(async (article) => {
+          const { alis_token: alisToken } = await this.$axios.$get(
+            `/api/articles/${article.article_id}/alistoken`
+          )
+          return { ...article, alisToken }
+        })
+      )
+
+      commit(types.SET_USER_POPULAR_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      Promise.reject(error)
+    } finally {
+      commit(types.SET_IS_FETCHING_USER_POPULAR_ARTICLES, { isFetching: false })
+    }
+  },
+  resetUserPopularArticles({ commit }) {
+    commit(types.RESET_USER_POPULAR_ARTICLES)
   },
   async getNotifications({ commit, dispatch, state }) {
     try {
@@ -1498,6 +1543,12 @@ const mutations = {
   [types.SET_USER_ARTICLES](state, { articles }) {
     state.userArticles.push(...articles)
   },
+  [types.SET_USER_POPULAR_ARTICLES](state, { articles }) {
+    state.userPopularArticles.articles.push(...articles)
+  },
+  [types.RESET_USER_POPULAR_ARTICLES](state) {
+    state.userPopularArticles.articles = []
+  },
   [types.SET_USER_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
     state.userArticlesLastEvaluatedKey = lastEvaluatedKey
   },
@@ -1673,6 +1724,9 @@ const mutations = {
   },
   [types.SET_IS_FETCHING_USER_ARTICLES](state, { isFetching }) {
     state.isFetchingUserArticles = isFetching
+  },
+  [types.SET_IS_FETCHING_USER_POPULAR_ARTICLES](state, { isFetching }) {
+    state.isFetchingUserPopularArticles = isFetching
   },
   [types.SET_USER_ARTICLES_CURRENT_USER_ID](state, { userId }) {
     state.userArticlesCurrentUserId = userId
