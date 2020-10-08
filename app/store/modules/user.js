@@ -648,7 +648,7 @@ const actions = {
     try {
       commit(types.SET_IS_FETCHING_USER_POPULAR_ARTICLES, { isFetching: true })
       // 該当ユーザの人気記事を取得（excludeArticleId が設定されている場合は１件多く取得）
-      const tmpLimit = excludeArticleId ? (limit += 1) : limit
+      const tmpLimit = excludeArticleId ? limit + 1 : limit
       const { Items: articles } = await this.$axios.$get(`/api/users/${userId}/articles/popular`, {
         params: { limit: tmpLimit }
       })
