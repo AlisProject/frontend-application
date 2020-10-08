@@ -137,6 +137,7 @@ a {
   width: 57px;
   height: 57px;
   margin-left: 16px;
+  object-fit: cover;
 }
 
 .user-article-popular-card {
