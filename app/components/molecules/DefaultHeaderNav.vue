@@ -242,7 +242,7 @@ $topicCount: 10;
     box-shadow: 0 0 0 1px #fff, 0 0 0 3px #0086cc;
     display: block;
     height: 44px;
-    margin: 3px 2px 0 2px;
+    margin: 3px 3px 0;
     width: 85px;
 
     .topic-display-name {
@@ -251,6 +251,15 @@ $topicCount: 10;
 
     &:before {
       background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%);
+    }
+
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 3px;
+      height: 1px;
+      content: '';
     }
 
     &.area-topic0 {
