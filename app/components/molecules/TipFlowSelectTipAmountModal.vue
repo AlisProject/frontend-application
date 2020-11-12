@@ -249,6 +249,9 @@ export default {
           ? this.localStoragePbkdf2Key
           : getPbkdf2(this.walletPassword, walletEncryptInfo.salt)
         const privateKey = decryptSecretKey(walletEncryptInfo.encrypted_secret_key, pbkdf2Key)
+        if (privateKey === '') {
+          throw new Error('wrong key')
+        }
         // create tip transaction
         const nonce = await this.getWalletNonce()
         const sendAddress = await this.getWalletAddress({ userId: this.article.userInfo.user_id })
@@ -278,7 +281,11 @@ export default {
         this.setTipFlowSelectTipAmountModal({ isShow: false })
         this.setTipFlowConfirmationModal({ isShow: true })
       } catch (error) {
-        this.errorMessage = '処理に失敗しました。入力内容を確認して下さい'
+        if (error.message === 'wrong key') {
+          this.errorMessage = 'パスワードが正しくありません。入力内容をご確認ください'
+        } else {
+          this.errorMessage = '処理に失敗しました。入力内容を確認して下さい'
+        }
       } finally {
         this.isProcessing = false
       }

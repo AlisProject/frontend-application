@@ -125,6 +125,9 @@ export default {
           ? this.localStoragePbkdf2Key
           : getPbkdf2(this.walletPassword, walletEncryptInfo.salt)
         const privateKey = decryptSecretKey(walletEncryptInfo.encrypted_secret_key, pbkdf2Key)
+        if (privateKey === '') {
+          throw new Error('wrong key')
+        }
         // create purchase transaction
         const articlePrice = new BigNumber(this.article.price)
         const nonce = await this.getWalletNonce()
@@ -180,7 +183,9 @@ export default {
           this.errorMessage = '記事の購入に失敗しました'
         }
       } catch (error) {
-        if (error.response.data.message === 'Price was changed') {
+        if (error.message === 'wrong key') {
+          this.errorMessage = 'パスワードが正しくありません。入力内容をご確認ください'
+        } else if (error.response.data.message === 'Price was changed') {
           this.errorMessage = '記事の価格が変更されました'
         } else {
           this.errorMessage = 'エラーが発生しました。しばらく時間を置いて再度お試しください'

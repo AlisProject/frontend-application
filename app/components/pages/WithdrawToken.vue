@@ -306,6 +306,9 @@ export default {
           ? this.localStoragePbkdf2Key
           : getPbkdf2(this.walletPassword, walletEncryptInfo.salt)
         const privateKey = decryptSecretKey(walletEncryptInfo.encrypted_secret_key, pbkdf2Key)
+        if (privateKey === '') {
+          throw new Error('wrong key')
+        }
         // create init approve transaction
         let initApproveTransaction = ''
         let nonce = await this.getWalletNonce()
@@ -353,8 +356,14 @@ export default {
         this.walletPassword = ''
         this.setInputWithdrawAuthCodeModal({ isShow: true })
       } catch (error) {
+        let notificationMsg
+        if (error.message === 'wrong key') {
+          notificationMsg = 'パスワードが正しくありません。入力内容をご確認ください'
+        } else {
+          notificationMsg = 'エラーが発生しました。入力内容をご確認ください'
+        }
         this.sendNotification({
-          text: '出金用認証コードの送信に失敗しました。しばらく時間を置いて再度お試しください',
+          text: notificationMsg,
           type: 'warning'
         })
       } finally {
