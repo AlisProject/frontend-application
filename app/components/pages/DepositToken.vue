@@ -282,30 +282,10 @@ export default {
 
       return Number(amountHex)
     },
-    _sendTransactions(transactions) {
-      return new Promise((resolve, reject) => {
-        const totalCount = transactions.length // 総トランザクション数
-        let finishCount = 0 // 完了トランザクション数
-        let successCount = 0 // 成功トランザクション数
-
-        // NOTICE MetaMask上ではトランザクションの順序が逆に表示されるため、reverse処理を入れている
-        for (const transaction of transactions.reverse()) {
-          window.ethereum.sendAsync(transaction, (err, result) => {
-            if (!err && !result.error) {
-              successCount++
-            }
-            finishCount++
-
-            if (finishCount < totalCount) return
-
-            if (successCount >= totalCount) {
-              resolve()
-            } else {
-              reject()
-            }
-          })
-        }
-      })
+    async _sendTransactions(transactions) {
+      for (const transaction of transactions) {
+        await window.ethereum.request(transaction)
+      }
     },
     onInput(event) {
       try {
