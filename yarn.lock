@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alisproject/alis-editor@^0.3.5":
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.3.5.tgz#5cb2e6b2b9aa70fcbe3f6cf20366af16616a1f87"
-  integrity sha512-vTh8bD8zU9fsxrLnHgn5JKFoHi9eXrRmiNGbyVJ2dbUgFeeI++59i9F4E96AzImS6RIjDaY78q2OTLZf1mGZdQ==
+"@alisproject/alis-editor@^0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.3.6.tgz#e563f80c3d5a5a367d39b9e413ba545175d512f7"
+  integrity sha512-GLXNe03G5b7Q/vgsD0aO43cJHvLOGCPlGaAAZ+nVQnBhhBGP9pfiGZ8OB6MD7cVcBK8W6rpJVLg3YFCZoMFo7w==
   dependencies:
     "@ckeditor/ckeditor5-autosave" "^16.0.0"
     "@ckeditor/ckeditor5-basic-styles" "^16.0.0"
@@ -20,7 +20,7 @@
     "@ckeditor/ckeditor5-media-embed" "^16.0.0"
     "@ckeditor/ckeditor5-paragraph" "^16.0.0"
     "@ckeditor/ckeditor5-theme-lark" "^16.0.0"
-    axios "^0.19.2"
+    axios "^0.21.1"
     blueimp-load-image "^2.20.1"
     ckeditor5-emptyness "https://github.com/alexeckermann/ckeditor5-emptyness"
     url-regex "^5.0.0"
@@ -2657,6 +2657,13 @@ axios@^0.19.2:
   dependencies:
     follow-redirects "1.5.10"
 
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
+  dependencies:
+    follow-redirects "^1.10.0"
+
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
@@ -3412,10 +3419,9 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
-"ckeditor5-emptyness@https://github.com/alexeckermann/ckeditor5-emptyness":
+"ckeditor5-emptyness@git+https://github.com/alexeckermann/ckeditor5-emptyness.git":
   version "0.2.1"
-  uid "693a5c77f659f1cb141591c9cd78427ebc72b550"
-  resolved "https://github.com/alexeckermann/ckeditor5-emptyness#693a5c77f659f1cb141591c9cd78427ebc72b550"
+  resolved "git+https://github.com/alexeckermann/ckeditor5-emptyness.git#693a5c77f659f1cb141591c9cd78427ebc72b550"
   dependencies:
     "@ckeditor/ckeditor5-core" "^11.0.1"
     "@ckeditor/ckeditor5-engine" "^11.0.0"
@@ -5314,6 +5320,11 @@ follow-redirects@1.5.10:
 follow-redirects@^1.0.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
+
+follow-redirects@^1.10.0:
+  version "1.13.3"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.3.tgz#e5598ad50174c1bc4e872301e82ac2cd97f90267"
+  integrity sha512-DUgl6+HDzB0iEptNQEXLx/KhTmDb8tZUHSeLqpnjpknR70H0nC2t9N73BK6fN4hOvJ84pKlIQVQ4k5FFlBedKA==
 
 for-in@^1.0.2:
   version "1.0.2"
