@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alisproject/alis-editor@0.3.9":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.3.9.tgz#638ad7b921cce1b6e786fad6e9bac2f2bb8211da"
-  integrity sha512-mwbU/h8ySSnuJiqzklxsA/v6f1v47BQzo/tdauTiSr3yJB9Lh9UJSu4ESccOcKTtK3AoZEB6kKoofDHYMpTwfg==
+"@alisproject/alis-editor@0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.3.10.tgz#17de60ccfeac30a1152ad8efc73f6e9977eecdf8"
+  integrity sha512-F7jBMQrleLwSXM7ukd8Ep6ZKVyZwtTAWDsSR5QI4FnsPV1UaHB82UO65MHeeTdArwi0s/2KXYldNKTJ4klPtAQ==
   dependencies:
     "@ckeditor/ckeditor5-autosave" "^16.0.0"
     "@ckeditor/ckeditor5-basic-styles" "^16.0.0"
@@ -23,7 +23,6 @@
     axios "^0.21.1"
     blueimp-load-image "^2.20.1"
     ckeditor5-emptyness "https://github.com/alexeckermann/ckeditor5-emptyness"
-    fsevents "^2.3.2"
     url-regex "^5.0.0"
     vue "^2.6.11"
 
