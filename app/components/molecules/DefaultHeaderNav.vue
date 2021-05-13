@@ -13,7 +13,8 @@
         :style="`background-image: url(${topicImages[topic.name]})`"
         :to="to(topic.name)"
         :class="
-          `nav-link area-topic${topic.order} ${isTopPage(topic.order) && 'nuxt-link-exact-active'}`
+          `nav-link area-topic${topic.order}
+          ${isActive(topic.order, topic.name) && 'nuxt-link-exact-active'}`
         "
         @click.native="resetData"
       >
@@ -89,8 +90,11 @@ export default {
       this.setArticleListScrollHeight({ scroll: 0 })
       this.beforeClickedLinkName = event.target.dataset.topic
     },
-    isTopPage(topicOrder) {
-      return this.$route.query.from === 'top' && topicOrder === 1
+    isActive(topicOrder, topicName) {
+      return (
+        (this.$route.query.from === 'top' && topicOrder === 1) ||
+        this.$route.path.startsWith(`/category/${topicName}`)
+      )
     },
     handleScroll() {
       const navElement = this.$el

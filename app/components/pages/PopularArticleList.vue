@@ -1,8 +1,12 @@
 <template>
-  <div class="popular-article-list-container" :class="{ 'with-notices': isWithNotices }">
+  <div
+    class="popular-article-list-container"
+    :class="{ 'with-notices': isWithNotices, 'with-ranking': isWithRanking }"
+  >
     <app-header />
     <default-header-nav />
     <category-notices v-if="$route.query.topic === 'game'" />
+    <coin-ranking-top v-if="$route.query.topic === 'crypto'" />
     <article-type-select-nav />
     <article-card-list :articles="popularArticles" />
     <the-loader :is-loading="!isLastPage" />
@@ -15,6 +19,7 @@ import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import CategoryNotices from '../organisms/CategoryNotices'
+import CoinRankingTop from '../organisms/CoinRankingTop'
 import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
@@ -26,6 +31,7 @@ export default {
     AppHeader,
     DefaultHeaderNav,
     CategoryNotices,
+    CoinRankingTop,
     ArticleTypeSelectNav,
     ArticleCardList,
     TheLoader,
@@ -40,6 +46,9 @@ export default {
   computed: {
     isWithNotices() {
       return this.$route.query.topic === 'game'
+    },
+    isWithRanking() {
+      return this.$route.query.topic === 'crypto'
     },
     ...mapGetters('article', ['popularArticles', 'isLastPage', 'topics']),
     ...mapGetters('user', ['loggedIn', 'currentUser']),
@@ -150,10 +159,28 @@ export default {
   grid-template-rows: 100px auto 36px 49px 17.5px minmax(0, 1fr) 75px 75px;
 }
 
+.popular-article-list-container.with-ranking {
+  /* prettier-ignore */
+  grid-template-areas:
+    "app-header              app-header              app-header             "
+    "nav                     nav                     nav                    "
+    "...                     ranking                 ...                    "
+    "article-type-select-nav article-type-select-nav article-type-select-nav"
+    "...                     ...                     ...                    "
+    "...                     article-card-list       ...                    "
+    "...                     loader                  ...                    "
+    "app-footer              app-footer              app-footer             ";
+  grid-template-rows: 100px auto auto 49px 17.5px minmax(0, 1fr) 75px 75px;
+}
+
 .is-fixed-button {
   position: fixed;
   right: 20px;
   bottom: 20px;
+}
+
+.coin-ranking {
+  margin-top: 5px;
 }
 
 @media screen and (max-width: 1296px) {
