@@ -80,6 +80,7 @@ const state = () => ({
     page: 1,
     isLastPage: false
   },
+  cryptoRankingInfo: [],
   supporters: []
 })
 
@@ -171,7 +172,8 @@ const getters = {
       articles: filteredTipRankingArticles
     }
   },
-  supporters: (state) => state.supporters
+  supporters: (state) => state.supporters,
+  cryptoRankingInfo: (state) => state.cryptoRankingInfo
 }
 
 const actions = {
@@ -1164,6 +1166,19 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getCryptoRankingInfo({ commit }, { limit }) {
+    try {
+      const rankingInfo = await this.$axios.$get(`/api/crypto/ranking`, {
+        params: { limit: limit }
+      })
+      commit(types.SET_CRYPTO_RANKING_INFO, { rankingInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetCryptoRankingInfo({ commit }) {
+    commit(types.RESET_CRYPTO_RANKING_INFO)
+  },
 
   // Laboリソース
 
@@ -1520,6 +1535,12 @@ const mutations = {
   },
   [types.SET_ARTICLE_SUPPORTERS](state, { supporters }) {
     state.supporters = supporters
+  },
+  [types.SET_CRYPTO_RANKING_INFO](state, { rankingInfo }) {
+    state.cryptoRankingInfo = rankingInfo
+  },
+  [types.RESET_CRYPTO_RANKING_INFO](state) {
+    state.cryptoRankingInfo = []
   }
 }
 
