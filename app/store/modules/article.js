@@ -1168,7 +1168,7 @@ const actions = {
   },
   async getCryptoRankingInfo({ commit }, { limit }) {
     try {
-      const rankingInfo = await this.$axios.$get(`/api/crypto/ranking`, {
+      const rankingInfo = await this.$axios.$get(`/api/topics/crypto/ranking`, {
         params: { limit: limit }
       })
       commit(types.SET_CRYPTO_RANKING_INFO, { rankingInfo })
