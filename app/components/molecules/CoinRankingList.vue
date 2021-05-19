@@ -210,6 +210,9 @@ export default {
   .coin-colchange {
     width: 75px;
   }
+  .coin-colcap {
+    width: 0;
+  }
   .market-cap-head {
     display: none;
   }
