@@ -24,14 +24,9 @@ export default {
   data() {
     return {
       rankingLabel: '時価総額ランキング',
-      addLink: null,
+      addLink: '/articles/popular?topic=crypto',
       addText: '戻る'
     }
-  },
-  mounted() {
-    this.addLink = this.$nuxt.context.from
-      ? this.$nuxt.context.from.fullPath
-      : '/articles/popular?topic=crypto'
   }
 }
 </script>
