@@ -24,7 +24,7 @@
     "cilint": "circleci config validate -c .circleci/config.yml"
   },
   "dependencies": {
-    "@alisproject/alis-editor": "0.3.11",
+    "@alisproject/alis-editor": "0.3.12",
     "@ckeditor/ckeditor5-dev-utils": "^12.0.7",
     "@johmun/vue-tags-input": "^2.1.0",
     "@nuxtjs/axios": "^5.9.3",
