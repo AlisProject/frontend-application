@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@alisproject/alis-editor@0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.3.12.tgz#83b749a10b62d3feef3383a309fc506c50bd2efa"
-  integrity sha512-8LuLKX3wJYx59zSIpuNrfaAnD/p8Gw20LBxkY36rdNTPzemxKnUWHgayolnXEmKu2YAn+6zZLHUP7q07u9QyZQ==
+"@alisproject/alis-editor@0.3.13":
+  version "0.3.13"
+  resolved "https://registry.yarnpkg.com/@alisproject/alis-editor/-/alis-editor-0.3.13.tgz#b7c28a001a2e9fdcf2060060608187817881ff4b"
+  integrity sha512-rCdjQ38V8GpAoII/MuwyrN22Qpoy530TrtkIUepVkT8ros5jX2WJiH/E0u3LOkZ5CuldaEWqM8GJaPZJhNpaqA==
   dependencies:
     "@ckeditor/ckeditor5-autosave" "^16.0.0"
     "@ckeditor/ckeditor5-basic-styles" "^16.0.0"
@@ -3428,10 +3428,9 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
-"ckeditor5-emptyness@https://github.com/alexeckermann/ckeditor5-emptyness":
+"ckeditor5-emptyness@git+https://github.com/alexeckermann/ckeditor5-emptyness.git":
   version "0.2.1"
-  uid "693a5c77f659f1cb141591c9cd78427ebc72b550"
-  resolved "https://github.com/alexeckermann/ckeditor5-emptyness#693a5c77f659f1cb141591c9cd78427ebc72b550"
+  resolved "git+https://github.com/alexeckermann/ckeditor5-emptyness.git#693a5c77f659f1cb141591c9cd78427ebc72b550"
   dependencies:
     "@ckeditor/ckeditor5-core" "^11.0.1"
     "@ckeditor/ckeditor5-engine" "^11.0.0"
