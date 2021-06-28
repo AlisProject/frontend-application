@@ -2,6 +2,12 @@
 <html {{ HTML_ATTRS }}>
 
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+    <% if (process.env.NODE_ENV === 'production') { %>
+      <!-- Google AdSense -->
+      <script data-ad-client="ca-pub-6184356842528918" async
+              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- End Google AdSense -->
+    <% } %>
     {{ HEAD }}
 </head>
 
