@@ -17,7 +17,7 @@ references:
     context: common_production_deployment
 
 orbs:
-  aws-cli: circleci/aws-cli@0.1.13
+  aws-cli: circleci/aws-cli@2.0.3
   slack: circleci/slack@3.3.0
 
 executors:
@@ -31,7 +31,6 @@ commands:
     description: 'AWS CLIを準備'
     steps:
       - aws-cli/install
-      - aws-cli/configure
 
   prepare-resources:
     description: 'リソースを準備'
