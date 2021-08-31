@@ -18,6 +18,12 @@
       src="~assets/images/pc/notification/icon_download.png"
       alt="Notification of csv download"
     >
+    <img
+      v-else-if="notification.type === 'pv'"
+      class="profile-icon"
+      src="~assets/images/pc/notification/icon_congratulation.png"
+      alt="Notification of pv"
+    >
     <template
       v-if="
         notification.type === 'comment' ||
