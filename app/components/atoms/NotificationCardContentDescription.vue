@@ -42,9 +42,7 @@
     <span class="gray-darker">{{ notification.fraud_body }}</span>
   </p>
   <p v-else-if="notification.type === 'pv'" class="area-description">
-    "{{ decodedArticleTitle }}"の閲覧回数が<span
-      class="gray-darker"
-    >{{ notification.pv_counts }}回</span>を超えました。
+    あなたの記事の閲覧回数が<span class="gray-darker">{{ notification.pv_count }}回</span>を超えました。"{{ decodedArticleTitle }}"
   </p>
 </template>
 
