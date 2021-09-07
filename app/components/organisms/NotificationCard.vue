@@ -55,7 +55,6 @@ export default {
   computed: {
     articlePath() {
       switch (this.notification.type) {
-        case 'pv':
         case 'tip_error':
         case 'purchase':
         case 'purchase_error':
