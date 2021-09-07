@@ -5,14 +5,9 @@
       <no-ssr>
         <article-header :article="article" :topic="topic" :is-current-user="isCurrentUser" />
       </no-ssr>
-      <div class="area-title">
-        <h1 class="title">
-          {{ decodedTitle }}
-        </h1>
-        <span v-if="article.pv_count > 0" class="pv-count">
-          {{ article.pv_count.toLocaleString() }} views
-        </span>
-      </div>
+      <h1 class="area-title">
+        {{ decodedTitle }}
+      </h1>
       <div class="area-content ck-content" v-html="body" />
       <no-ssr>
         <article-detail-paypart v-if="isShowPaypart" :article="article" />
@@ -201,20 +196,12 @@ export default {
 
 .area-title {
   grid-area: title;
-  .title {
-    color: #333;
-    font-size: 24px;
-    letter-spacing: 0.02em;
-    line-height: 1.5;
-    margin: 2px 0 -2px;
-    word-break: break-all;
-  }
-  .pv-count {
-    color: #5e5e5e;
-    font-size: 14px;
-    margin-left: 3px;
-  }
-  margin-bottom: -24px;
+  color: #333;
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  margin: 2px 0 -24px;
+  word-break: break-all;
 }
 
 .area-content {
