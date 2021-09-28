@@ -205,7 +205,7 @@ export default {
   position: relative;
 }
 
-.area-app-header {
+header.area-app-header {
   background-color: white;
   height: 100px;
   max-width: 100%;
@@ -315,7 +315,7 @@ export default {
   .article-container {
     grid-template-rows: 100px minmax(0, 1fr) min-content min-content 75px;
   }
-  .area-app-header {
+  header.area-app-header {
     /deep/ a.logo-link {
       position: absolute;
       left: 34px;
@@ -332,7 +332,7 @@ export default {
 }
 
 @media screen and (max-width: 920px) {
-  .area-app-header {
+  header.area-app-header {
     /deep/ a.logo-link {
       position: absolute;
       left: 12px;
@@ -365,7 +365,7 @@ export default {
     'app-footer           app-footer           app-footer      ';
   }
 
-  .area-app-header {
+  header.area-app-header {
     height: 66px;
   }
 
