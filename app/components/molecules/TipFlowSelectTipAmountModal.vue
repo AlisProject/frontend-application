@@ -2,7 +2,7 @@
   <div class="tip-flow-select-tip-amount-modal">
     <no-ssr>
       <h1 class="title">
-        ALISを贈る
+        ALISを贈って記事をサポート
       </h1>
       <span class="description">
         お贈り先をご確認の上、贈る量を決めて確認画面へお進みください

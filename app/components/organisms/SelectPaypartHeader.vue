@@ -1,7 +1,7 @@
 <template>
   <header class="area-mobile-editor-header-container" :class="{ 'is-fixed': isFixed }">
     <nuxt-link to="/" class="logo-link" @click.native="resetData">
-      <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
+      <img class="logo" src="~assets/images/pc/common/header_logo_original.svg" alt="logo">
     </nuxt-link>
     <span class="save-status">{{ saveStatus }}</span>
     <select-paypart-publish-button class="post-article" />

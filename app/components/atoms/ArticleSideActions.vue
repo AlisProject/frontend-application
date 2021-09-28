@@ -138,6 +138,7 @@ export default {
     position: relative;
     box-sizing: border-box;
     margin-bottom: 20px;
+    margin-top: 60px;
 
     .likes-count {
       align-items: center;

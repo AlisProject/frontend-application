@@ -1,8 +1,8 @@
 <template>
-  <div class="area-header" :class="{ 'is-sticky': isCurrentUser }">
-    <span class="topic">{{ topic }}</span>
+  <div class="area-header">
+    <a class="share-twitter" target="_blank" />
+    <a class="share-facebook" target="_blank" />
     <template v-if="isCurrentUser">
-      <span class="article-status">(公開中)</span>
       <div v-if="isPaidArticle" class="price-label">
         有料：{{ formattedPrice }}ALIS
       </div>
@@ -136,6 +136,15 @@ export default {
         this.closeEtcPopup()
       }
     })
+    this.$el.querySelector(
+      '.share-twitter'
+    ).href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+      location.href
+    )}&text=${encodeURIComponent(`${this.article.title} | ALIS`)}`
+
+    this.$el.querySelector(
+      '.share-facebook'
+    ).href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`
   },
   destroyed() {
     if (this._eventRemovers) {
@@ -263,24 +272,25 @@ export default {
   grid-area: header;
   align-items: center;
   background: #fff;
-  border-bottom: 1px solid #f0f0f0;
   display: flex;
   height: 31px;
+  margin-top: -3px;
   margin-bottom: -20px;
   z-index: 2;
 
-  .topic {
-    color: #5e5e5e;
-    font-size: 14px;
-    letter-spacing: 0.3px;
-    margin-right: 8px;
-    word-break: break-all;
+  .share-twitter {
+    background: #fff url('~assets/images/pc/article/icon_share_twitter_circle.svg') no-repeat;
+    background-size: cover;
+    height: 22px;
+    width: 22px;
   }
 
-  .article-status {
-    color: #6e6e6e;
-    font-size: 12px;
-    font-weight: bold;
+  .share-facebook {
+    background: #fff url('~assets/images/pc/article/icon_share_facebook_circle.svg') no-repeat;
+    background-size: cover;
+    height: 22px;
+    width: 22px;
+    margin-left: 8px;
     margin-right: auto;
   }
 
@@ -359,14 +369,8 @@ export default {
 
 @media screen and (max-width: 640px) {
   .area-header {
-    border-bottom: none;
     padding: 0 16px;
     position: relative;
-
-    &.is-sticky {
-      position: sticky;
-      top: 0;
-    }
 
     &::before {
       content: '';
@@ -375,7 +379,6 @@ export default {
       bottom: 0;
       height: 1px;
       width: calc(100% - 16px * 2);
-      border-bottom: 1px solid #f0f0f0;
     }
 
     .article-button {
