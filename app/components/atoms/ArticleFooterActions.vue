@@ -372,13 +372,11 @@ export default {
 
   .area-footer-actions,
   .area-footer-actions-own {
-    background: linear-gradient(#fff 50%, rgba(35, 37, 56, 0.05) 50%);
     position: relative;
     grid-column-gap: 10px;
 
     &:after {
       bottom: 26px;
-      box-shadow: 0 15px 10px -10px rgba(192, 192, 192, 0.5);
       content: '';
       height: 100px;
       opacity: 0.5;

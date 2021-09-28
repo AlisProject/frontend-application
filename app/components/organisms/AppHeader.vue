@@ -1,7 +1,7 @@
 <template>
   <header class="area-app-header-container">
     <nuxt-link to="/" class="logo-link" @click.native="resetData">
-      <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
+      <img class="logo" src="~assets/images/pc/common/header_logo_original.svg" alt="logo">
     </nuxt-link>
     <no-ssr>
       <div class="session-items">
@@ -119,7 +119,8 @@ export default {
 }
 
 .logo-link {
-  margin: 0 auto;
+  left: 0px;
+  position: absolute;
 
   .logo {
     width: 102px;
@@ -164,9 +165,7 @@ export default {
 }
 
 @media screen and (max-width: 920px) and (min-width: 551px) {
-  .article-container {
-    @include spStyles();
-  }
+  @include spStyles();
 }
 
 @media screen and (max-width: 550px) {

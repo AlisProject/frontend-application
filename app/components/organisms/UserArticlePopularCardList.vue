@@ -10,7 +10,6 @@
       v-for="article in articles"
       :key="article.article_id"
       :article="article"
-      :userInfo="userInfo"
     />
   </div>
 </template>
