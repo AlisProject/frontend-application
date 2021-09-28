@@ -140,11 +140,6 @@ export default {
             'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/css/medium-editor-insert-plugin.min.css'
         }
       ],
-      script: [
-        {
-          src: 'https://www.googleoptimize.com/optimize.js?id=OPT-P9KC4QC'
-        }
-      ],
       meta: [
         {
           hid: `og:title`,
