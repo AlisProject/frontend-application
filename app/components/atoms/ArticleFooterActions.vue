@@ -237,6 +237,7 @@ export default {
   grid-template-rows: 52px;
   grid-column-gap: 20px;
   align-items: center;
+  margin-top: 30px;
 
   .action {
     height: 52px;
