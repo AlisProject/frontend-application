@@ -19,6 +19,10 @@
 import { mapActions } from 'vuex'
 
 export default {
+  mounted() {
+    // google optimize
+    window.dataLayer.push({ event: 'optimize.activate' })
+  },
   methods: {
     showSignUpModal() {
       this.setSignUpModal({ showSignUpModal: true })
