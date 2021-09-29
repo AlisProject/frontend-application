@@ -2,13 +2,13 @@
   <div class="area-article-registration">
     <img
       class="registration pc"
-      src="~assets/images/pc/article/icon_article_registration_pc1.png"
+      src="~assets/images/pc/article/img_article_registration_pc1.svg"
       alt="Article registration"
       @click="showSignUpModal"
     >
     <img
       class="registration sp"
-      src="~assets/images/pc/article/icon_article_registration_sp1.png"
+      src="~assets/images/pc/article/img_article_registration_sp1.svg"
       alt="Article registration"
       @click="showSignUpModal"
     >
