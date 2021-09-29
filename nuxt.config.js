@@ -9,7 +9,7 @@ module.exports = {
     script: [
       {
         hid: 'gop',
-        innerHTML: `window.dataLayer = window.dataLayer || []; window.dataLayer.push({'event': 'optimize.activate'});`,
+        innerHTML: `window.dataLayer = window.dataLayer || [];`,
         type: 'text/javascript'
       },
       {

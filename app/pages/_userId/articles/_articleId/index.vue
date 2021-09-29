@@ -69,9 +69,10 @@ export default {
     }
   },
   async mounted() {
-    const { articleId, userId } = this.$route.params
-
+    // google optimize
+    window.dataLayer.push({ event: 'optimize.activate' })
     // 記事情報取得
+    const { articleId, userId } = this.$route.params
     if (this.loggedIn) {
       if (this.currentUser.phoneNumberVerified) await this.postPv({ articleId })
       await this.getIsLikedArticle({ articleId })
