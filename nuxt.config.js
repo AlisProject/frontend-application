@@ -8,6 +8,11 @@ module.exports = {
   head: {
     script: [
       {
+        hid: 'gop',
+        innerHTML: `window.dataLayer = window.dataLayer || []; window.dataLayer.push({'event': 'optimize.activate'});`,
+        type: 'text/javascript'
+      },
+      {
         src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`,
         async: true
       },
@@ -17,6 +22,9 @@ module.exports = {
         defer: true
       }
     ],
+    __dangerouslyDisableSanitizersByTagID: {
+      gop: ['innerHTML']
+    },
     title: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア',
     titleTemplate: '%s | ALIS',
     meta: [
