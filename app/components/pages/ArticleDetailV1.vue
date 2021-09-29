@@ -109,8 +109,6 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
     // ちらつきを抑えるため mouted 後に表示
     this.isShowRegistration = true
-    // google optimize
-    window.dataLayer.push({ event: 'optimize.activate' })
   },
   beforeDestroy() {
     this.resetArticleCommentsLastEvaluatedKey()
