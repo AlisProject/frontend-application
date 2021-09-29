@@ -191,6 +191,11 @@ header.area-app-header {
   }
   &.is-scroll {
     transform: translateY(-100%);
+    /deep/ .modal {
+      &-mask {
+        top: 100px;
+      }
+    }
   }
 }
 
@@ -290,9 +295,6 @@ header.area-app-header {
       right: 0;
       left: auto;
     }
-    &.is-scroll {
-      height: 44px;
-    }
   }
 }
 
@@ -311,6 +313,13 @@ header.area-app-header {
 
   header.area-app-header {
     height: 66px;
+    &.is-scroll {
+      /deep/ .modal {
+        &-mask {
+          top: 66px;
+        }
+      }
+    }
   }
 
   .area-article {

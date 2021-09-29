@@ -45,7 +45,7 @@ export default {
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.4px;
-  margin-right: 15px;
+  margin-right: 5px;
 }
 
 .value {
