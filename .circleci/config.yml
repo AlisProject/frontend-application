@@ -113,7 +113,7 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo npm install -g 'serverless@<2.0.0'
+              sudo npm install -g 'serverless@1.x'
               yarn deploy
             fi
 
