@@ -57,10 +57,10 @@ export default {
   grid-auto-rows: min-content;
   grid-template-columns: min-content min-content;
 }
-/deep/ .recommended-article-card {
+/deep/ a.recommended-article-card {
   width: 312px;
 }
-.recommended-article-card {
+a.recommended-article-card {
   /deep/ .eye-catch-image-box {
     width: 268px;
   }
@@ -73,10 +73,10 @@ export default {
 }
 
 @media screen and (max-width: 640px) {
-  /deep/ .recommended-article-card {
+  /deep/ a.recommended-article-card {
     width: 340px;
   }
-  .recommended-article-card {
+  a.recommended-article-card {
     /deep/ .eye-catch-image-box {
       width: 296px;
     }
@@ -103,10 +103,10 @@ export default {
   .area-article-topic-recommended-title {
     margin-left: calc(50% - 150px);
   }
-  /deep/ .recommended-article-card {
+  /deep/ a.recommended-article-card {
     width: 300px;
   }
-  .recommended-article-card {
+  a.recommended-article-card {
     /deep/ .eye-catch-image-box {
       width: 256px;
     }
