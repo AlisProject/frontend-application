@@ -45,6 +45,10 @@
     </div>
     <article-comments :comments="article.comments" />
     <article-comment-form />
+    <article-topic-recommended-card-list
+      v-if="topicRecommendedArticles.articles.length > 0"
+      :articles="topicRecommendedArticles.articles"
+    />
     <app-footer />
   </div>
 </template>
@@ -67,6 +71,7 @@ import ArticleRegistration from '../organisms/ArticleRegistration'
 import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
+import ArticleTopicRecommendedCardList from '../organisms/ArticleTopicRecommendedCardList'
 import AppFooter from '../organisms/AppFooter'
 import { htmlDecode, showEmbed } from '~/utils/article'
 
@@ -86,6 +91,7 @@ export default {
     ArticleDetailPaypart,
     ArticleCommentForm,
     ArticleComments,
+    ArticleTopicRecommendedCardList,
     AppFooter
   },
   props: {
@@ -98,6 +104,10 @@ export default {
       required: false
     },
     userPopularArticles: {
+      type: Object,
+      required: false
+    },
+    topicRecommendedArticles: {
       type: Object,
       required: false
     }
@@ -175,8 +185,11 @@ export default {
       if (this.scrollCount < 10) this.scrollCount++
       this.lastScrollY = window.scrollY
     },
-    ...mapActions('article', ['resetArticleCommentsLastEvaluatedKey', 'postPv']),
-    ...mapActions('user', ['resetUserPopularArticles'])
+    ...mapActions('article', [
+      'resetArticleCommentsLastEvaluatedKey',
+      'postPv',
+      'getTopicRecommendedArticles'
+    ])
   },
   watch: {
     loggedIn(newState) {
@@ -191,16 +204,16 @@ export default {
 <style lang="scss" scoped>
 .article-container {
   display: grid;
-  grid-template-rows: 100px minmax(0, 1fr) min-content min-content 75px;
-  // grid-template-rows: 100px 50px minmax(0, 1fr) 470px 75px;
+  grid-template-rows: 100px minmax(0, 1fr) min-content min-content min-content 75px;
   grid-template-columns: minmax(0, 1fr) 640px minmax(0, 1fr);
   /* prettier-ignore */
   grid-template-areas:
-    'app-header           app-header           app-header      '
-    '...                  article              ...             '
-    'article-comments     article-comments     article-comments'
-    'article-comment-form article-comment-form article-comment-form'
-    'app-footer           app-footer           app-footer      ';
+    'app-header            app-header            app-header           '
+    '...                   article               ...                  '
+    'article-comments      article-comments      article-comments     '
+    'article-comment-form  article-comment-form  article-comment-form '
+    '...                   recommended-card-list ...                  '
+    'app-footer            app-footer            app-footer           ';
   background: white;
   position: relative;
 }
@@ -318,7 +331,7 @@ header.area-app-header {
 
 @media screen and (max-width: 1080px) {
   .article-container {
-    grid-template-rows: 100px minmax(0, 1fr) min-content min-content 75px;
+    grid-template-rows: 100px minmax(0, 1fr) min-content min-content min-content 75px;
   }
   header.area-app-header {
     /deep/ a.logo-link {
@@ -356,15 +369,16 @@ header.area-app-header {
 
 @media screen and (max-width: 640px) {
   .article-container {
-    grid-template-rows: 66px minmax(0, 1fr) min-content min-content min-content;
+    grid-template-rows: 66px minmax(0, 1fr) min-content min-content min-content min-content;
     grid-template-columns: 10px minmax(0, 1fr) 10px;
     /* prettier-ignore */
     grid-template-areas:
-    'app-header           app-header           app-header      '
-    'article              article              article         '
-    'article-comments     article-comments     article-comments'
-    'article-comment-form article-comment-form article-comment-form'
-    'app-footer           app-footer           app-footer      ';
+    'app-header            app-header            app-header           '
+    'article               article               article              '
+    'article-comments      article-comments      article-comments     '
+    'article-comment-form  article-comment-form  article-comment-form '
+    'recommended-card-list recommended-card-list recommended-card-list'
+    'app-footer            app-footer            app-footer      ';
   }
 
   header.area-app-header {

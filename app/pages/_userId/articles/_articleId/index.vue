@@ -3,6 +3,7 @@
     :is="componentName"
     :article="article"
     :userPopularArticles="userPopularArticles"
+    :topicRecommendedArticles="topicRecommendedArticles"
     :topic="topicDisplayName"
   />
 </template>
@@ -43,8 +44,17 @@ export default {
       }
       await Promise.all([
         store.dispatch(`article/${getArticleType}`, { articleId }),
-        store.dispatch('article/getArticleSupporters', { articleId }),
-        store.dispatch('user/resetUserPopularArticles', {})
+        store.dispatch('article/getArticleSupporters', { articleId })
+      ])
+      await Promise.all([
+        store.dispatch('user/getTopUserPopularArticles', {
+          userId: store.state.article.article.user_id,
+          excludeArticleId: articleId
+        }),
+        store.dispatch('article/getTopicRecommendedArticles', {
+          topic: store.state.article.article.topic,
+          excludeArticleId: articleId
+        })
       ])
       if (params.userId !== store.state.article.article.user_id) {
         redirect(
@@ -70,7 +80,7 @@ export default {
   },
   async mounted() {
     // 記事情報取得
-    const { articleId, userId } = this.$route.params
+    const { articleId } = this.$route.params
     if (this.loggedIn) {
       if (this.currentUser.phoneNumberVerified) await this.postPv({ articleId })
       await this.getIsLikedArticle({ articleId })
@@ -102,8 +112,6 @@ export default {
     } else {
       this.setIsLikedArticle({ liked: false })
     }
-    // 該当ユーザの人気記事取得
-    await this.getTopUserPopularArticles({ userId, excludeArticleId: articleId })
     // コメント取得
     await this.setArticleComments({ articleId })
   },
@@ -112,7 +120,7 @@ export default {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
     ...mapGetters('user', ['loggedIn', 'currentUser', 'userPopularArticles']),
-    ...mapGetters('article', ['article', 'topicDisplayName'])
+    ...mapGetters('article', ['article', 'topicDisplayName', 'topicRecommendedArticles'])
   },
   methods: {
     ...mapActions('article', [

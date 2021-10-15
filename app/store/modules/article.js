@@ -1,4 +1,4 @@
-import { uniqBy } from 'lodash'
+import { uniqBy, shuffle } from 'lodash'
 import * as types from '../mutation-types'
 import { getBodyAfterImageTagOptimization } from '~/utils/article'
 
@@ -67,6 +67,9 @@ const state = () => ({
     page: 1,
     isLastPage: false,
     isTmpRecommendedArticlesLastPage: false
+  },
+  topicRecommendedArticles: {
+    articles: []
   },
   purchasedArticleIds: [],
   purchasedArticles: {
@@ -152,6 +155,7 @@ const getters = {
       articles: state.recommendedArticles.isLastPage ? filteredRecommendedArticles : removedArticles
     }
   },
+  topicRecommendedArticles: (state) => state.topicRecommendedArticles,
   purchasedArticleIds: (state) => state.purchasedArticleIds,
   purchasedArticles: (state) => {
     return {
@@ -857,6 +861,38 @@ const actions = {
       return Promise.reject(error)
     }
   },
+  async getTopicRecommendedArticles(
+    { commit, state, dispatch, rootState },
+    { topic, excludeArticleId }
+  ) {
+    try {
+      const viewCount = 12
+      // 対象データを取得しミュートユーザの記事を削除
+      const { Items: tmpArticles } = await this.$axios.$get('/api/articles/eyecatch', {
+        params: { topic: topic }
+      })
+      const withOutMuteUserArticles = tmpArticles.filter(
+        (article) =>
+          rootState.user.muteUsers.indexOf(article.user_id) === -1 &&
+          article.article_id !== excludeArticleId
+      )
+      // 指定件数をランダム取得
+      const targetArticles = shuffle(withOutMuteUserArticles).slice(0, viewCount)
+      // 各種情報を付与
+      const articlesWithData = await Promise.all(
+        targetArticles.map(async (article) => {
+          const [userInfo, alisToken] = await Promise.all([
+            dispatch('getUserInfo', { userId: article.user_id }),
+            dispatch('getAlisToken', { articleId: article.article_id })
+          ])
+          return { ...article, userInfo, alisToken }
+        })
+      )
+      commit(types.SET_TOPIC_RECOMMENDED_ARTICLES, { articles: articlesWithData })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async getRecommendedArticles({ commit, state, dispatch, rootState }) {
     try {
       // 最終ページ、もしくはミュート済みユーザを除いた記事数が表示件数以上になるまでループ
@@ -1487,6 +1523,9 @@ const mutations = {
   },
   [types.DELETE_RECOMMENDED_ARTICLES_TMP_ARTICLES](state, { deleteCount }) {
     state.recommendedArticles.tmpArticles.splice(0, deleteCount)
+  },
+  [types.SET_TOPIC_RECOMMENDED_ARTICLES](state, { articles }) {
+    state.topicRecommendedArticles.articles = articles
   },
   [types.SET_IS_FETCHING_TAG_ARTICLES](state, { isFetching }) {
     state.tagArticles.isFetching = isFetching

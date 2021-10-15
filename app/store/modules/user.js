@@ -677,9 +677,6 @@ const actions = {
       commit(types.SET_IS_FETCHING_USER_POPULAR_ARTICLES, { isFetching: false })
     }
   },
-  resetUserPopularArticles({ commit }) {
-    commit(types.RESET_USER_POPULAR_ARTICLES)
-  },
   async getNotifications({ commit, dispatch, state }) {
     try {
       const {
@@ -1544,10 +1541,7 @@ const mutations = {
     state.userArticles.push(...articles)
   },
   [types.SET_USER_POPULAR_ARTICLES](state, { articles }) {
-    state.userPopularArticles.articles.push(...articles)
-  },
-  [types.RESET_USER_POPULAR_ARTICLES](state) {
-    state.userPopularArticles.articles = []
+    state.userPopularArticles.articles = articles
   },
   [types.SET_USER_ARTICLES_LAST_EVALUATED_KEY](state, { lastEvaluatedKey }) {
     state.userArticlesLastEvaluatedKey = lastEvaluatedKey
