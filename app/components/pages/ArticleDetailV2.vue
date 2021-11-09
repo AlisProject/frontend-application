@@ -32,7 +32,11 @@
       />
       <article-supporters :article="article" />
       <article-sub-infos-v2 :article="article" />
-      <article-registration v-if="isShowRegistration && !loggedIn" />
+      <article-registration
+        v-if="isShowRegistration && !loggedIn"
+        :tags="article.tags"
+        :topic="article.topic"
+      />
       <author-info
         :user="article.userInfo"
         class="area-authr-info"

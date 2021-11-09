@@ -19,9 +19,24 @@
 import { mapActions } from 'vuex'
 
 export default {
+  props: {
+    tags: {
+      type: Array,
+      required: false,
+      default: []
+    },
+    topic: {
+      type: String,
+      required: false
+    }
+  },
   mounted() {
     // google optimize
-    window.dataLayer.push({ event: 'optimize.activate' })
+    window.dataLayer.push({
+      event: 'optimize.activate',
+      tags: this.tags,
+      topic: this.topic
+    })
   },
   methods: {
     showSignUpModal() {
