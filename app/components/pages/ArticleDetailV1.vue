@@ -28,7 +28,11 @@
         :is-liked-article="isLikedArticle"
       />
       <article-sub-infos :published-at="publishedAt" :token-amount="article.alisToken" />
-      <article-registration v-if="isShowRegistration && !loggedIn" />
+      <article-registration
+        v-if="isShowRegistration && !loggedIn"
+        :tags="article.tags"
+        :topic="article.topic"
+      />
       <author-info
         :user="article.userInfo"
         class="area-authr-info"
