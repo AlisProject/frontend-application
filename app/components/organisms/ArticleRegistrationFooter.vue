@@ -4,7 +4,7 @@
       <img class="area-logo" src="~assets/images/pc/common/logo_white.svg" alt="logo">
       <div class="area-message">
         <div class="title">
-          アカウント登録をおすすめします
+          アカウント作成をおすすめします
         </div>
         <div class="detail">
           いいね、記事投稿でトークンを獲得できます
