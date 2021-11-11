@@ -32,11 +32,7 @@
       />
       <article-supporters :article="article" />
       <article-sub-infos-v2 :article="article" />
-      <article-registration
-        v-if="isShowRegistration && !loggedIn"
-        :tags="article.tags"
-        :topic="article.topic"
-      />
+      <article-registration v-if="isShowRegistration && !loggedIn" />
       <author-info
         :user="article.userInfo"
         class="area-authr-info"
@@ -53,7 +49,14 @@
       v-if="topicRecommendedArticles.articles.length > 0"
       :articles="topicRecommendedArticles.articles"
     />
-    <app-footer />
+    <app-footer ref="appFooter" />
+    <article-registration-footer
+      v-if="isShowRegistration && !loggedIn"
+      ref="registrationFooter"
+      :tags="article.tags"
+      :topic="article.topic"
+      class="area-register-footer is-scroll"
+    />
   </div>
 </template>
 
@@ -72,6 +75,7 @@ import AuthorHeaderInfo from '../atoms/AuthorHeaderInfo'
 import UserArticlePopularCardList from '../organisms/UserArticlePopularCardList'
 import ArticleTags from '../molecules/ArticleTags'
 import ArticleRegistration from '../organisms/ArticleRegistration'
+import ArticleRegistrationFooter from '../organisms/ArticleRegistrationFooter'
 import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
 import ArticleCommentForm from '../molecules/ArticleCommentForm'
 import ArticleComments from '../organisms/ArticleComments'
@@ -92,6 +96,7 @@ export default {
     UserArticlePopularCardList,
     ArticleTags,
     ArticleRegistration,
+    ArticleRegistrationFooter,
     ArticleDetailPaypart,
     ArticleCommentForm,
     ArticleComments,
@@ -120,7 +125,8 @@ export default {
     return {
       isShowRegistration: false,
       lastScrollY: 0,
-      scrollCount: 0
+      scrollCount: 0,
+      detailHeaderEl: null
     }
   },
   mounted() {
@@ -135,6 +141,9 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
     // ちらつきを抑えるため mounted 後に表示
     this.isShowRegistration = true
+
+    // scroll イベント発行時に利用するエレメントを定義
+    this.detailHeaderEl = this.$refs.detailHeader.$el
   },
   beforeDestroy() {
     this.resetArticleCommentsLastEvaluatedKey()
@@ -180,14 +189,26 @@ export default {
   },
   methods: {
     handleScroll(event) {
-      const headerElement = this.$refs.detailHeader.$el
+      // appHeader
       if (window.scrollY >= this.lastScrollY && window.scrollY > 100 && this.scrollCount >= 10) {
-        headerElement.classList.add('is-scroll')
+        this.detailHeaderEl.classList.add('is-scroll')
       } else {
-        headerElement.classList.remove('is-scroll')
+        this.detailHeaderEl.classList.remove('is-scroll')
       }
       if (this.scrollCount < 10) this.scrollCount++
       this.lastScrollY = window.scrollY
+
+      // registrationFooter
+      if (!this.loggedIn) {
+        const registrationFooterEl = this.$refs.registrationFooter.$el
+        const registrationFooterRect = registrationFooterEl.getBoundingClientRect()
+        const appFooterRect = this.$refs.appFooter.$el.getBoundingClientRect()
+        if (registrationFooterRect.top < appFooterRect.top - 80) {
+          registrationFooterEl.classList.add('is-scroll')
+        } else {
+          registrationFooterEl.classList.remove('is-scroll')
+        }
+      }
     },
     ...mapActions('article', [
       'resetArticleCommentsLastEvaluatedKey',
@@ -327,6 +348,12 @@ header.area-app-header {
 
 .area-content {
   grid-area: content;
+}
+
+.area-register-footer {
+  &.is-scroll {
+    transform: none;
+  }
 }
 
 .sp-footer {
