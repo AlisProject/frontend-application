@@ -201,7 +201,7 @@ export default {
       .area-button {
         margin-left: 0;
         margin-top: 15px;
-        height: 40px;
+        height: 36px;
         .registration-footer-close {
           position: absolute;
           left: 20px;
