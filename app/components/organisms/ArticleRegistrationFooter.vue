@@ -141,8 +141,9 @@ export default {
         display: inline-block;
         font-size: 14px;
         width: 105px;
-        outline: solid 1px;
+        border: 1px solid;
         height: 34px;
+        line-height: 34px;
         &:hover,
         &:focus {
           background: #0086cc;
@@ -155,7 +156,7 @@ export default {
         font-weight: bold;
         height: 34px;
         line-height: 34px;
-        width: 160px;
+        width: 170px;
         background-color: #ffffff;
         color: #000000;
         margin-left: 10px;
