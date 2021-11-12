@@ -110,7 +110,8 @@ export default {
   .registration-footer {
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: 350px 290px;
+    grid-template-columns: 340px 290px;
+    grid-gap: 10px;
     /* prettier-ignore */
     grid-template-areas:
       'message  button';
@@ -139,6 +140,7 @@ export default {
       margin-left: auto;
       .registration-footer-close {
         display: inline-block;
+        box-shadow: none;
         font-size: 14px;
         width: 105px;
         border: 1px solid;
@@ -174,6 +176,7 @@ export default {
     .registration-footer {
       grid-template-rows: auto;
       grid-template-columns: 100%;
+      width: calc(100% - 40px);
       /* prettier-ignore */
       grid-template-areas:
         'logo   '
