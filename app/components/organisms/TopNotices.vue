@@ -9,8 +9,8 @@
     <nuxt-link class="link" to="/tag/ブロックチェーンゲーム">
       ブロックチェーンゲーム
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/Dapps">
-      Dapps
+    <nuxt-link class="link" to="/tag/dapps">
+      dapps
     </nuxt-link>
     <nuxt-link class="link" to="/tag/NFT">
       NFT
