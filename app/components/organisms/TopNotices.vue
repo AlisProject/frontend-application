@@ -1,28 +1,22 @@
 <template>
   <div class="area-topo-notices-container">
+    <div class="description">
+      注目タグ:
+    </div>
     <nuxt-link class="link" to="/tag/DeFi">
-      DeFi特集
+      DeFi
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/mkr">
-      MKR
+    <nuxt-link class="link" to="/tag/ブロックチェーンゲーム">
+      ブロックチェーンゲーム
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/synthetix">
-      SNX
+    <nuxt-link class="link" to="/tag/Dapps">
+      Dapps
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/Compound">
-      COMP
+    <nuxt-link class="link" to="/tag/NFT">
+      NFT
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/Balancer">
-      BAL
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/CRV">
-      CRV
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/uniswap">
-      Uniswap
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/Chainlink">
-      Chainlink
+    <nuxt-link class="link" to="/tag/ETH">
+      ETH
     </nuxt-link>
   </div>
 </template>
@@ -34,6 +28,9 @@
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  .title {
+    display: inline-block;
+  }
 }
 
 .popular-article-list-container,
@@ -48,7 +45,7 @@
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
-  margin-right: 20px;
+  margin-right: 10px;
   height: 16px;
   white-space: nowrap;
 }
@@ -103,7 +100,7 @@
 
 @media screen and (max-width: 920px) {
   .top-page .description {
-    margin: 0 20px 0 0;
+    margin: 0 10px 0 0;
   }
 }
 
@@ -119,11 +116,13 @@
     }
   }
 
-  .description {
+  .top-page .description {
+    margin: 0 5px 0 0;
     font-size: 14px;
   }
 
   .link {
+    margin-right: 10px;
     font-size: 14px;
   }
 }
