@@ -32,7 +32,7 @@
     "@nuxtjs/sentry": "^4.0.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "amazon-cognito-identity-js": "^3.0.7",
-    "aws-sdk": "^2.411.0",
+    "aws-sdk": "^2.814.0",
     "aws-serverless-express": "^3.3.5",
     "bignumber.js": "^8.1.1",
     "blueimp-load-image": "^2.26.0",
