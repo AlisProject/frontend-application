@@ -84,7 +84,11 @@ const state = () => ({
     isLastPage: false
   },
   cryptoRankingInfo: [],
-  supporters: []
+  supporters: [],
+  articleDeleteModal: {
+    isShow: false,
+    isConfirmationModal: false
+  }
 })
 
 const getters = {
@@ -177,7 +181,8 @@ const getters = {
     }
   },
   supporters: (state) => state.supporters,
-  cryptoRankingInfo: (state) => state.cryptoRankingInfo
+  cryptoRankingInfo: (state) => state.cryptoRankingInfo,
+  articleDeleteModal: (state) => state.articleDeleteModal
 }
 
 const actions = {
@@ -997,6 +1002,14 @@ const actions = {
     commit(types.SET_ARTICLE_ID, { articleId })
     return articleId
   },
+  async deleteArticleDraft({ commit }, { articleId }) {
+    try {
+      await this.$axios.$delete(`/api/me/articles/${articleId}/drafts`)
+      commit(types.DELETE_ARTICLE_DRAFT, { articleId })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
   async publishDraftArticleWithHeader(
     { commit },
     { articleId, topic, tags, eyeCatchUrl, price, paidBody }
@@ -1258,6 +1271,10 @@ const mutations = {
   },
   [types.SET_NEW_ARTICLES](state, { articles }) {
     state.newArticles.push(...articles)
+  },
+  [types.DELETE_ARTICLE_DRAFT](state, { articleId }) {
+    const draftArticles = state.draftArticles.filter((article) => article.article_id !== articleId)
+    state.draftArticles = draftArticles
   },
   [types.SET_TMP_NEW_ARTICLES](state, { tmpArticles }) {
     state.tmpNewArticles.push(...tmpArticles)

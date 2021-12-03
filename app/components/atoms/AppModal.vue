@@ -79,7 +79,8 @@ export default {
       'requestWalletPasswordModal'
     ]),
     ...mapGetters('report', ['userReportModal', 'articleReportModal']),
-    ...mapGetters('badge', ['badgeDescriptionModal'])
+    ...mapGetters('badge', ['badgeDescriptionModal']),
+    ...mapGetters('articleModals', ['articleDeleteModal'])
   },
   mounted() {
     this.$root.$on('closeModal', async () => {
@@ -216,6 +217,9 @@ export default {
       if (this.badgeDescriptionModal.isShow) {
         this.setBadgeDescriptionModal({ isShow: false, tokenId: 0, metadata: {} })
       }
+      if (this.articleDeleteModal.isShow) {
+        this.setArticleDeleteModal({ isShow: false })
+      }
       this.$emit('close')
       this.resetPassword()
     },
@@ -268,6 +272,7 @@ export default {
       'setArticleReportConfirmationModal',
       'resetArticleReportData'
     ]),
+    ...mapActions('articleModals', ['setArticleDeleteModal']),
     ...mapActions('badge', ['setBadgeDescriptionModal'])
   },
   watch: {

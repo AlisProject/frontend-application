@@ -16,7 +16,22 @@
         下書き
       </nuxt-link>
       <span class="area-save-status">{{ saveStatus }}</span>
+      <div v-if="type === 'draft-article'" class="area-article-menu" @click="toggleArticlePopup">
+        <div v-show="isArticlePopupShown" class="article-popup">
+          <nuxt-link
+            class="article-popup-content"
+            :to="`${historiesPath}`"
+            @click.native="resetHistories()"
+          >
+            編集履歴一覧
+          </nuxt-link>
+          <span class="article-popup-content" @click="showArticleDeleteModal">
+            削除
+          </span>
+        </div>
+      </div>
       <nuxt-link
+        v-if="type !== 'draft-article'"
         :to="`${historiesPath}`"
         class="area-article-histories fa fa-history"
         @click.native="resetHistories()"
@@ -42,14 +57,38 @@ export default {
   },
   data() {
     return {
+      isArticlePopupShown: false,
       isFixed: false
     }
   },
   mounted() {
+    this.listen(window, 'click', (event) => {
+      if (
+        this.$el.querySelector('.area-article-menu') &&
+        !this.$el.querySelector('.area-article-menu').contains(event.target)
+      ) {
+        this.closeEtcPopup()
+      }
+    })
+    this.listen(window, 'touchstart', (event) => {
+      if (
+        this.$el.querySelector('.area-article-menu') &&
+        !this.$el.querySelector('.area-article-menu').contains(event.target)
+      ) {
+        this.closeEtcPopup()
+      }
+    })
     window.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
+  },
+  destroyed() {
+    if (this._eventRemovers) {
+      this._eventRemovers.forEach((eventRemover) => {
+        eventRemover.remove()
+      })
+    }
   },
   computed: {
     historiesPath() {
@@ -60,13 +99,34 @@ export default {
     ...mapGetters('user', ['currentUserInfo'])
   },
   methods: {
+    showArticleDeleteModal() {
+      this.setArticleDeleteModal({ isShow: true })
+    },
+    toggleArticlePopup() {
+      this.isArticlePopupShown = !this.isArticlePopupShown
+    },
+    closeEtcPopup() {
+      this.isArticlePopupShown = false
+    },
     handleScroll() {
       this.isFixed = window.scrollY >= 100
     },
     resetHistories() {
       this.resetArticleContentEditHistories()
     },
-    ...mapActions('article', ['resetArticleContentEditHistories'])
+    listen(target, eventType, callback) {
+      if (!this._eventRemovers) {
+        this._eventRemovers = []
+      }
+      target.addEventListener(eventType, callback)
+      this._eventRemovers.push({
+        remove: function() {
+          target.removeEventListener(eventType, callback)
+        }
+      })
+    },
+    ...mapActions('article', ['resetArticleContentEditHistories']),
+    ...mapActions('articleModals', ['setArticleDeleteModal'])
   }
 }
 </script>
@@ -93,7 +153,7 @@ export default {
     width: 640px;
     /* prettier-ignore */
     grid-template-areas:
-      "articles-link ... save-status article-histories post-article";
+      "articles-link ... save-status article-menu post-article";
   }
 
   &.is-fixed {
@@ -118,7 +178,7 @@ export default {
 }
 
 .area-article-histories {
-  grid-area: article-histories;
+  grid-area: article-menu;
   align-items: center;
   color: gray;
   display: flex;
@@ -132,6 +192,44 @@ export default {
   &:hover,
   &:focus {
     color: #0086cc;
+  }
+}
+
+.area-article-menu {
+  grid-area: article-menu;
+  background: #fff url('~assets/images/pc/article/icon_etc.png') no-repeat;
+  background-size: 24px;
+  cursor: pointer;
+  position: relative;
+  width: 30px;
+  margin: 5px 8px 8px 8px;
+
+  .article-popup {
+    background-color: #ffffff;
+    border-radius: 4px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+    cursor: default;
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 8px 16px;
+    position: absolute;
+    right: 0px;
+    top: 24px;
+    z-index: 1;
+
+    .article-popup-content {
+      color: #6e6e6e;
+      cursor: pointer;
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 2;
+      text-align: left;
+      text-decoration: none;
+      user-select: none;
+      white-space: nowrap;
+      width: 100%;
+    }
   }
 }
 
