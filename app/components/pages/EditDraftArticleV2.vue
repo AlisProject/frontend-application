@@ -1,7 +1,7 @@
 <template>
   <div :class="`edit-article-container ${deviceType}`">
     <app-header v-if="deviceType === 'pc'" />
-    <mobile-editor-header v-else />
+    <mobile-editor-header v-else type="draft-article" />
     <edit-header-nav-v2 type="draft-article" />
     <article-editor-v2
       :default-title="decodedTitle"

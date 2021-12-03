@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { createModule } from 'vuex-toast'
 import article from './modules/article'
+import articleModals from './modules/articleModals'
 import user from './modules/user'
 import tag from './modules/tag'
 import report from './modules/report'
@@ -14,6 +15,7 @@ export default () =>
   new Vuex.Store({
     modules: {
       article,
+      articleModals,
       user,
       tag,
       report,
