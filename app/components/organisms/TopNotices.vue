@@ -3,6 +3,9 @@
     <div class="description">
       注目タグ:
     </div>
+    <nuxt-link class="link" to="/tag/Web3">
+      Web3
+    </nuxt-link>
     <nuxt-link class="link" to="/tag/DeFi">
       DeFi
     </nuxt-link>
