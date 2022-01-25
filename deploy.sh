@@ -19,7 +19,7 @@ aws s3 cp app/static/header_logo_original.png s3://${DIST_S3_BUCKET_NAME}/d/nuxt
 yarn install --production --frozen-lockfile
 
 # node-module の不要ファイルを削除
-node-prune ./node_modules
+/home/circleci/go/bin/node-prune ./node_modules
 
 # デプロイ
 yarn sls:deploy
