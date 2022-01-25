@@ -28,15 +28,16 @@ executors:
       - image: circleci/node:12.13.0-browsers
 
 commands:
-  prepare-go:
-    description: 'go 言語をインストール'
-    steps:
-      - go/install
-
   prepare-aws-cli:
     description: 'AWS CLIを準備'
     steps:
       - aws-cli/install
+
+  prepare-node-prune:
+    description: 'node-prune をインストール'
+    steps:
+      - go/install
+      - run: go get github.com/tj/node-prune@v1.2.0
 
   prepare-resources:
     description: 'リソースを準備'
@@ -62,7 +63,7 @@ commands:
     steps:
       - prepare-resources
       - prepare-aws-cli
-      - prepare-go
+      - prepare-node-prune
 
 jobs:
   lint-and-test:
@@ -121,7 +122,6 @@ jobs:
           command: |
             if [ $ALIS_APP_ID ]; then
               sudo npm install -g 'serverless@1.x'
-              sudo go get github.com/tj/node-prune@1.2.0
               yarn deploy
             fi
 
@@ -138,7 +138,6 @@ jobs:
           command: |
             if [ $ALIS_APP_ID ] && [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
               sudo npm install -g 'serverless@1.x'
-              sudo go get github.com/tj/node-prune@1.2.0
               yarn deploy
             fi
 
