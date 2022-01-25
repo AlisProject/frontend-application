@@ -19,6 +19,7 @@ references:
 orbs:
   aws-cli: circleci/aws-cli@2.0.3
   slack: circleci/slack@3.3.0
+  go: circleci/go@1.7.0
 
 executors:
   default:
@@ -27,6 +28,11 @@ executors:
       - image: circleci/node:12.13.0-browsers
 
 commands:
+  prepare-go:
+    description: 'go 言語をインストール'
+    steps:
+      - go/install
+
   prepare-aws-cli:
     description: 'AWS CLIを準備'
     steps:
@@ -56,6 +62,7 @@ commands:
     steps:
       - prepare-resources
       - prepare-aws-cli
+      - prepare-go
 
 jobs:
   lint-and-test:
@@ -114,6 +121,7 @@ jobs:
           command: |
             if [ $ALIS_APP_ID ]; then
               sudo npm install -g 'serverless@1.x'
+              sudo go get github.com/tj/node-prune@1.2.0
               yarn deploy
             fi
 
@@ -129,7 +137,8 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ] && [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
-              sudo npm install -g 'serverless@<2.0.0'
+              sudo npm install -g 'serverless@1.x'
+              sudo go get github.com/tj/node-prune@1.2.0
               yarn deploy
             fi
 
