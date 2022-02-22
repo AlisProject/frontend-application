@@ -1,7 +1,7 @@
 <template>
   <div class="area-topo-notices-container">
     <nuxt-link class="description" to="/ALIS-official/articles/aplLk5nW8ZQ6">
-      記事を書いてNFTを獲得、春のNFT祭り開催中!! <span class="tooltip" />
+      記事を書いてNFTをゲット、詳細はコチラから !! <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>
