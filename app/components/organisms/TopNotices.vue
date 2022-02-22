@@ -1,25 +1,7 @@
 <template>
   <div class="area-topo-notices-container">
-    <div class="description">
-      注目タグ:
-    </div>
-    <nuxt-link class="link" to="/tag/Web3">
-      Web3
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/DeFi">
-      DeFi
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/ブロックチェーンゲーム">
-      ブロックチェーンゲーム
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/dapps">
-      dapps
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/NFT">
-      NFT
-    </nuxt-link>
-    <nuxt-link class="link" to="/tag/ETH">
-      ETH
+    <nuxt-link class="description" to="/ALIS-official/articles/aplLk5nW8ZQ6">
+      記事を書いてNFTを獲得、春のNFT祭り開催中!! <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>
