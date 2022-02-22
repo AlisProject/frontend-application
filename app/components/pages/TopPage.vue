@@ -104,6 +104,10 @@ export default {
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
     }
+
+    if (!this.loggedIn && this.$route.query.isSignUp === 'true') {
+      this.setSignUpModal({ showSignUpModal: true })
+    }
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.infiniteScroll)
@@ -136,6 +140,7 @@ export default {
     },
     ...mapActions('article', ['getTipEyecatchArticles', 'getRecommendedArticles']),
     ...mapActions('user', [
+      'setSignUpModal',
       'setRequestLoginModal',
       'setRequestPhoneNumberVerifyModal',
       'setRequestPhoneNumberVerifyInputPhoneNumberModal',
