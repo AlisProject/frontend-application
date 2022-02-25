@@ -1,7 +1,8 @@
 <template>
-  <div class="tag-article-list">
+  <div class="tag-article-list" :class="{ 'defined-tag': definedTag }" :style="tagStyle">
     <app-header />
-    <div class="area-tag">
+    <tag-info v-if="definedTag" :tagInfo="definedTag" />
+    <div v-else class="area-tag">
       {{ $route.params.tag }}
     </div>
     <div class="area-nav">
@@ -24,6 +25,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
+import TagInfo from '../atoms/TagInfo'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -31,12 +33,24 @@ import { isPageScrollable, isScrollBottom } from '~/utils/client'
 export default {
   components: {
     AppHeader,
+    TagInfo,
     SearchArticleCardList,
     TheLoader,
     AppFooter
   },
   computed: {
-    ...mapGetters('article', ['tagArticles']),
+    definedTag() {
+      return this.eventsInfo.find((definedTag) => definedTag.key === this.$route.params.tag)
+    },
+    tagStyle() {
+      if (this.definedTag) {
+        return {
+          '--background': `#fff url(${this.definedTag.backgroundUrl}) no-repeat`
+        }
+      }
+      return null
+    },
+    ...mapGetters('article', ['tagArticles', 'eventsInfo']),
     ...mapGetters('presentation', ['tagArticlesScrollHeight'])
   },
   mounted() {
@@ -105,6 +119,13 @@ export default {
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
   min-height: 100vh;
+  &.defined-tag {
+    grid-template-rows: 100px 200px 26px minmax(0, 1fr) 75px 75px;
+    background: var(--background);
+    background-attachment: fixed;
+    background-position: bottom;
+    /*background-size: 100% auto;*/
+  }
 }
 
 .area-tag {
@@ -142,6 +163,10 @@ export default {
 @media screen and (max-width: 920px) {
   .tag-article-list {
     grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
+    &.defined-tag {
+      grid-template-rows: 100px 245px 26px minmax(0, 1fr) 75px 75px;
+      background: none;
+    }
   }
 }
 

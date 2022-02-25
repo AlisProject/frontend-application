@@ -88,7 +88,26 @@ const state = () => ({
   articleDeleteModal: {
     isShow: false,
     isConfirmationModal: false
-  }
+  },
+  eventsInfo: [
+    {
+      key: 'クリプトモン',
+      name: 'クリプトモン',
+      iconUrl: '/d/nuxt/dist/img/static/kryptomon/icon.svg',
+      backgroundUrl: '/d/nuxt/dist/img/static/kryptomon/background.png',
+      bannerUrl: '/d/nuxt/dist/img/static/kryptomon/banner.svg',
+      bannerSpUrl: '/d/nuxt/dist/img/static/kryptomon/bannerSp.svg',
+      eventUrl: '/event',
+      iconCaption: 'kryptomon',
+      description:
+        'ポケモンやたまごっち、クリプトキティを融合させたようなPlay to Earn型のNFTブロックチェーンゲームです。',
+      twitterUrl: '/twitter',
+      telegramUrl: '/telegram',
+      discordUrl: '/discord',
+      officialArticleUrl: '/officialArticle',
+      officialPageUrl: '/officialPage'
+    }
+  ]
 })
 
 const getters = {
@@ -182,7 +201,8 @@ const getters = {
   },
   supporters: (state) => state.supporters,
   cryptoRankingInfo: (state) => state.cryptoRankingInfo,
-  articleDeleteModal: (state) => state.articleDeleteModal
+  articleDeleteModal: (state) => state.articleDeleteModal,
+  eventsInfo: (state) => state.eventsInfo
 }
 
 const actions = {
