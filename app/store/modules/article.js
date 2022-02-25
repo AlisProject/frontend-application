@@ -97,15 +97,15 @@ const state = () => ({
       backgroundUrl: '/d/nuxt/dist/img/static/kryptomon/background.png',
       bannerUrl: '/d/nuxt/dist/img/static/kryptomon/banner.svg',
       bannerSpUrl: '/d/nuxt/dist/img/static/kryptomon/bannerSp.svg',
-      eventUrl: '/event',
+      eventUrl: '/ALIS-official/articles/anL06PpOY9d8',
       iconCaption: 'kryptomon',
       description:
-        'ポケモンやたまごっち、クリプトキティを融合させたようなPlay to Earn型のNFTブロックチェーンゲームです。',
-      twitterUrl: '/twitter',
-      telegramUrl: '/telegram',
-      discordUrl: '/discord',
-      officialArticleUrl: '/officialArticle',
-      officialPageUrl: '/officialPage'
+        'ポケモンやたまごっち、クリプトキティを融合させたようなPlay-to-Earn型のNFTブロックチェーンゲームです。',
+      twitterUrl: 'https://twitter.com/KryptomonJP',
+      telegramUrl: 'https://t.me/kryptomon_japan',
+      discordUrl: 'https://discord.com/invite/hYRjSfsWXt',
+      officialArticleUrl: '/kryptomonJP/articles/2MqN7JXkokg4',
+      officialPageUrl: 'https://www.kryptomon.co/'
     }
   ]
 })

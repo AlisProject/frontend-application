@@ -4,7 +4,7 @@
     <div class="area-article v2-content" :class="{ 'is-show-paypart': isShowPaypart }">
       <div class="area-title">
         <div v-if="['crypto', 'game'].includes(article.topic)">
-          <nuxt-link to="/event">
+          <nuxt-link :to="eventInfo.eventUrl">
             <div class="event-banner" />
           </nuxt-link>
         </div>
@@ -451,7 +451,6 @@ header.area-app-header {
       background: var(--banner-background-sp);
       background-size: 100%;
       height: calc(100vw / 5);
-      margin-right: 10px;
     }
   }
   .area-article {

@@ -12,30 +12,15 @@
         {{ tagInfo.description }}
       </div>
       <div class="area-sns">
-        <nuxt-link
-          v-if="tagInfo.twitterUrl"
-          :to="tagInfo.twitterUrl"
-          target="_blank"
-          class="sns-icon"
-        >
+        <a v-if="tagInfo.twitterUrl" :href="tagInfo.twitterUrl" target="_blank" class="sns-icon">
           <i class="fab fa-twitter" />
-        </nuxt-link>
-        <nuxt-link
-          v-if="tagInfo.telegramUrl"
-          :to="tagInfo.telegramUrl"
-          target="_blank"
-          class="sns-icon"
-        >
+        </a>
+        <a v-if="tagInfo.telegramUrl" :href="tagInfo.telegramUrl" target="_blank" class="sns-icon">
           <i class="fab fa-telegram" />
-        </nuxt-link>
-        <nuxt-link
-          v-if="tagInfo.discordUrl"
-          :to="tagInfo.discordUrl"
-          target="_blank"
-          class="sns-icon"
-        >
+        </a>
+        <a v-if="tagInfo.discordUrl" :href="tagInfo.discordUrl" target="_blank" class="sns-icon">
           <i class="fab fa-discord" />
-        </nuxt-link>
+        </a>
       </div>
       <div class="area-link-button">
         <app-button class="official-article">
@@ -44,9 +29,9 @@
           </nuxt-link>
         </app-button>
         <app-button class="official-site">
-          <nuxt-link :to="tagInfo.officialPageUrl" target="_blank">
-            オフィシャルサイト <i class="fas fa-external-link-alt" />
-          </nuxt-link>
+          <a :href="tagInfo.officialPageUrl" target="_blank">
+            ゲームを始める <i class="fas fa-external-link-alt" />
+          </a>
         </app-button>
       </div>
     </div>
