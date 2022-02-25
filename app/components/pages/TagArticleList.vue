@@ -173,6 +173,9 @@ export default {
 @media screen and (max-width: 640px) {
   .tag-article-list {
     grid-template-rows: 100px 40px 26px minmax(0, 1fr) 75px min-content;
+    &.defined-tag {
+      grid-template-rows: 100px 245px 26px minmax(0, 1fr) 75px min-content;
+    }
   }
 }
 
