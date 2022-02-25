@@ -4,7 +4,7 @@
     <div class="area-article v1-content">
       <div class="area-title">
         <div v-if="['crypto', 'game'].includes(article.topic)">
-          <nuxt-link to="/event">
+          <nuxt-link :to="eventInfo.eventUrl">
             <div class="event-banner" />
           </nuxt-link>
         </div>

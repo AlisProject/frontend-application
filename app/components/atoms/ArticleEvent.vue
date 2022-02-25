@@ -3,7 +3,7 @@
     <div class="event-info">
       <img class="area-icon" :alt="eventInfo.iconCaption" :src="eventInfo.iconUrl">
       <div class="area-name">
-        {{ eventInfo.name }}(PR)
+        {{ eventInfo.name }} (PR)
       </div>
       <div class="area-description">
         {{ eventInfo.description }}
@@ -11,13 +11,13 @@
       <div class="area-link-button">
         <app-button class="official-article">
           <nuxt-link to="/tag/クリプトモン">
-            コミュニティ・ページ
+            ゲーム情報
           </nuxt-link>
         </app-button>
         <app-button class="official-site">
-          <nuxt-link :to="eventInfo.officialPageUrl" target="_blank">
-            オフィシャルサイト <i class="fas fa-external-link-alt" />
-          </nuxt-link>
+          <a :href="eventInfo.officialPageUrl" target="_blank">
+            ゲームを始める <i class="fas fa-external-link-alt" />
+          </a>
         </app-button>
       </div>
     </div>
@@ -70,14 +70,16 @@ export default {
         "event-icon event-name        event-link-button"
         "event-icon event-description event-link-button";
     height: 60px;
-    margin-top: 30px;
+    margin: 40px 0 10px 0;
 
     .area-icon {
       grid-area: event-icon;
-      background-size: 58px;
-      text-align: center;
-      width: 100%;
-      height: 100%;
+      height: 60px;
+      .icon-img {
+        background-size: 58px;
+        width: 100%;
+        height: 100%;
+      }
     }
     .area-name {
       grid-area: event-name;
@@ -146,13 +148,8 @@ export default {
           "event-icon        event-description"
           "event-link-button event-link-button";
       margin-top: 8px;
-      height: 170px;
+      height: 130px;
 
-      .area-icon {
-        background-position: top;
-        width: 100%;
-        height: 100%;
-      }
       .area-name {
         grid-area: event-name;
         font-size: 12px;
