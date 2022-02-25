@@ -122,6 +122,7 @@ export default {
   position: relative;
   text-decoration: none;
   width: 340px;
+  background-color: white;
 }
 
 .eye-catch-image-box,

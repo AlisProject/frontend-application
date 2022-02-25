@@ -1,8 +1,13 @@
 <template>
-  <div class="article-container">
+  <div class="article-container" :style="eventInfoStyle">
     <app-header ref="detailHeader" class="area-app-header" :class="{ 'is-logged-in': loggedIn }" />
     <div class="area-article v1-content">
       <div class="area-title">
+        <div v-if="['crypto', 'game'].includes(article.topic)">
+          <nuxt-link to="/event">
+            <div class="event-banner" />
+          </nuxt-link>
+        </div>
         <nuxt-link class="topic-link" :to="`/articles/popular?topic=${article.topic}`">
           {{ topic }}
         </nuxt-link>
@@ -146,7 +151,16 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle']),
+    eventInfo() {
+      return this.eventsInfo.find((eventInfo) => eventInfo.key === 'クリプトモン')
+    },
+    eventInfoStyle() {
+      return {
+        '--banner-background': `#fff url(${this.eventInfo.bannerUrl}) no-repeat`,
+        '--banner-background-sp': `#fff url(${this.eventInfo.bannerSpUrl}) no-repeat`
+      }
+    },
+    ...mapGetters('article', ['likesCount', 'isLikedArticle', 'eventsInfo']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
@@ -237,7 +251,7 @@ header.area-app-header {
 .area-article {
   display: grid;
   grid-area: article;
-  grid-template-rows: 32px auto;
+  grid-template-rows: auto;
   grid-template-columns: auto;
   grid-gap: 30px;
   /* prettier-ignore */
@@ -270,6 +284,12 @@ header.area-app-header {
     &:hover {
       border-bottom: solid 1px #6e6e6e;
     }
+  }
+  .event-banner {
+    background: var(--banner-background);
+    background-size: 640px auto;
+    text-align: center;
+    height: 130px;
   }
   .article-title {
     color: #333;
@@ -384,6 +404,12 @@ header.area-app-header {
   .area-title {
     font-size: 20px;
     margin: 6px 0 -6px;
+    .event-banner {
+      background: var(--banner-background-sp);
+      background-size: 100%;
+      height: calc(100vw / 5);
+      margin-right: 10px;
+    }
   }
 }
 </style>
