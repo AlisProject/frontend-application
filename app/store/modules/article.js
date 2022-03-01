@@ -97,7 +97,7 @@ const state = () => ({
       backgroundUrl: '/d/nuxt/dist/img/static/kryptomon/background.png',
       bannerUrl: '/d/nuxt/dist/img/static/kryptomon/banner.svg',
       bannerSpUrl: '/d/nuxt/dist/img/static/kryptomon/bannerSp.svg',
-      eventUrl: '/ALIS-official/articles/anL06PpOY9d8',
+      eventUrl: '/ALIS-official/articles/aEOb7YZm6wk6',
       iconCaption: 'kryptomon',
       description:
         'ポケモンやたまごっち、クリプトキティを融合させたようなPlay-to-Earn型のNFTブロックチェーンゲームです。',
