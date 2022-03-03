@@ -176,7 +176,7 @@ export default {
       background: var(--banner-background-sp);
       background-size: 100% auto;
       text-align: center;
-      margin: 5px;
+      margin-top: 5px;
       height: 75px;
     }
 
