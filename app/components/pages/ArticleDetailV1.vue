@@ -408,7 +408,10 @@ header.area-app-header {
       background: var(--banner-background-sp);
       background-size: 100%;
       height: calc(100vw / 5);
-      margin-right: 10px;
+      margin-bottom: 8px;
+    }
+    .article-title {
+      margin: 4px 0;
     }
   }
 }

@@ -446,13 +446,6 @@ header.area-app-header {
     }
   }
 
-  .area-title {
-    .event-banner {
-      background: var(--banner-background-sp);
-      background-size: 100%;
-      height: calc(100vw / 5);
-    }
-  }
   .area-article {
     grid-template-columns: 8px auto 8px;
     grid-gap: 10px;
@@ -489,6 +482,12 @@ header.area-app-header {
   }
 
   .area-title {
+    .event-banner {
+      background: var(--banner-background-sp);
+      background-size: 100%;
+      height: calc(100vw / 5);
+      margin-bottom: 10px;
+    }
     .article-title {
       font-size: 20px;
       margin: 6px 0 -2px;
