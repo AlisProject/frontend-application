@@ -485,7 +485,7 @@ header.area-app-header {
     .event-banner {
       background: var(--banner-background-sp);
       background-size: 100%;
-      height: calc(100vw / 5);
+      height: 21vw;
       margin-bottom: 10px;
     }
     .article-title {
