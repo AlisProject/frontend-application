@@ -2,9 +2,9 @@
   <div class="area-event-info" :style="eventInfoStyle">
     <div class="event-info">
       <img class="area-icon" :alt="eventInfo.iconCaption" :src="eventInfo.iconUrl">
-      <div class="area-name">
+      <nuxt-link to="/tag/クリプトモン" class="area-name">
         {{ eventInfo.name }} (PR)
-      </div>
+      </nuxt-link>
       <div class="area-description">
         {{ eventInfo.description }}
       </div>
@@ -88,6 +88,7 @@ export default {
       font-weight: bold;
       letter-spacing: 0.25px;
       margin: 0 15px 0 15px;
+      text-decoration: none;
     }
     .area-description {
       grid-area: event-description;

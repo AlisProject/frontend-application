@@ -176,6 +176,7 @@ export default {
       background: var(--banner-background-sp);
       background-size: 100% auto;
       text-align: center;
+      margin: 5px;
       height: 75px;
     }
 
@@ -188,7 +189,7 @@ export default {
           "tag-icon        tag-description"
           "tag-icon        tag-link-sns   "
           "tag-link-button tag-link-button";
-      margin-top: 8px;
+      margin-top: 13px;
 
       .area-icon {
         background-size: 98px;
