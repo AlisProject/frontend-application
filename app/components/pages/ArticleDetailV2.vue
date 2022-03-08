@@ -149,12 +149,7 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
     // ちらつきを抑えるため mounted 後に表示
     this.isShowRegistration = true
-    // google optimize
-    window.dataLayer.push({
-      event: 'optimize.activate',
-      tags: this.article.tags,
-      topic: this.article.topic
-    })
+
     // scroll イベント発行時に利用するエレメントを定義
     this.detailHeaderEl = this.$refs.detailHeader.$el
   },

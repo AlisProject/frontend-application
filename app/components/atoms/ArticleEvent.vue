@@ -43,6 +43,13 @@ export default {
       }
     },
     ...mapGetters('article', ['tagArticles', 'eventsInfo'])
+  },
+  mounted() {
+    // google optimize
+    window.dataLayer.push({
+      event: 'optimize.activate',
+      key: this.eventInfo.key
+    })
   }
 }
 </script>
