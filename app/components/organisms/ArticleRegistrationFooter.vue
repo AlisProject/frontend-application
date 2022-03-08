@@ -48,12 +48,6 @@ export default {
   },
   mounted() {
     this.isShow = this.isShowRegistrationFooter()
-    // google optimize
-    window.dataLayer.push({
-      event: 'optimize.activate',
-      tags: this.tags,
-      topic: this.topic
-    })
   },
   methods: {
     closeRegistrationFooter() {
