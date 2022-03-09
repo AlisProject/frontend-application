@@ -29,6 +29,17 @@ import { mapGetters } from 'vuex'
 import AppButton from '../atoms/AppButton'
 
 export default {
+  props: {
+    tags: {
+      type: Array,
+      required: false,
+      default: []
+    },
+    topic: {
+      type: String,
+      required: false
+    }
+  },
   components: {
     AppButton
   },
@@ -42,7 +53,15 @@ export default {
         '--banner-background-sp': `#fff url(${this.eventInfo.bannerSpUrl}) no-repeat`
       }
     },
-    ...mapGetters('article', ['tagArticles', 'eventsInfo'])
+    ...mapGetters('article', ['eventsInfo'])
+  },
+  mounted() {
+    // google optimize
+    window.dataLayer.push({
+      event: 'optimize.activate',
+      tags: this.tags,
+      topic: this.topic
+    })
   }
 }
 </script>

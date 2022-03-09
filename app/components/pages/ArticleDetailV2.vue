@@ -4,9 +4,9 @@
     <div class="area-article v2-content" :class="{ 'is-show-paypart': isShowPaypart }">
       <div class="area-title">
         <div v-if="['crypto', 'game'].includes(article.topic)">
-          <nuxt-link :to="eventInfo.eventUrl">
+          <a :href="eventInfo.eventUrl">
             <div class="event-banner" />
-          </nuxt-link>
+          </a>
         </div>
         <nuxt-link class="topic-link" :to="`/articles/popular?topic=${article.topic}`">
           {{ topic }}
@@ -37,7 +37,11 @@
       />
       <article-supporters :article="article" />
       <article-sub-infos-v2 :article="article" />
-      <article-event v-if="article.tags.includes('クリプトモン')" />
+      <article-event
+        v-if="article.tags.includes('クリプトモン')"
+        :tags="article.tags"
+        :topic="article.topic"
+      />
       <article-registration v-else-if="isShowRegistration && !loggedIn" />
       <author-info
         :user="article.userInfo"
@@ -139,6 +143,12 @@ export default {
   },
   mounted() {
     showEmbed()
+    // google optimize
+    window.dataLayer.push({
+      event: 'optimize.activate',
+      tags: this.article.tags,
+      topic: this.article.topic
+    })
     // paywallLine
     const paywallLine = document.querySelector('.paywall-line')
     if (paywallLine) {
@@ -149,12 +159,7 @@ export default {
     window.addEventListener('scroll', this.handleScroll)
     // ちらつきを抑えるため mounted 後に表示
     this.isShowRegistration = true
-    // google optimize
-    window.dataLayer.push({
-      event: 'optimize.activate',
-      tags: this.article.tags,
-      topic: this.article.topic
-    })
+
     // scroll イベント発行時に利用するエレメントを定義
     this.detailHeaderEl = this.$refs.detailHeader.$el
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="area-article-registration">
-    <nuxt-link to="/?isSignUp=true">
+    <a href="/?isSignUp=true">
       <img
         class="registration pc"
         src="~assets/images/pc/article/img_article_registration_pc1.svg"
@@ -11,7 +11,7 @@
         src="~assets/images/pc/article/img_article_registration_sp1.svg"
         alt="Article registration"
       >
-    </nuxt-link>
+    </a>
   </div>
 </template>
 
@@ -20,9 +20,6 @@ import { mapActions } from 'vuex'
 
 export default {
   methods: {
-    showSignUpModal() {
-      this.setSignUpModal({ showSignUpModal: true })
-    },
     ...mapActions('user', ['setSignUpModal'])
   }
 }
