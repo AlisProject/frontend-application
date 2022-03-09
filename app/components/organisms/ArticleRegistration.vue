@@ -1,17 +1,17 @@
 <template>
   <div class="area-article-registration">
-    <img
-      class="registration pc"
-      src="~assets/images/pc/article/img_article_registration_pc1.svg"
-      alt="Article registration"
-      @click="showSignUpModal"
-    >
-    <img
-      class="registration sp"
-      src="~assets/images/pc/article/img_article_registration_sp1.svg"
-      alt="Article registration"
-      @click="showSignUpModal"
-    >
+    <a href="/?isSignUp=true">
+      <img
+        class="registration pc"
+        src="~assets/images/pc/article/img_article_registration_pc1.svg"
+        alt="Article registration"
+      >
+      <img
+        class="registration sp"
+        src="~assets/images/pc/article/img_article_registration_sp1.svg"
+        alt="Article registration"
+      >
+    </a>
   </div>
 </template>
 
@@ -20,9 +20,6 @@ import { mapActions } from 'vuex'
 
 export default {
   methods: {
-    showSignUpModal() {
-      this.setSignUpModal({ showSignUpModal: true })
-    },
     ...mapActions('user', ['setSignUpModal'])
   }
 }

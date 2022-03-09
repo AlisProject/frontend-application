@@ -4,9 +4,9 @@
     <div class="area-article v1-content">
       <div class="area-title">
         <div v-if="['crypto', 'game'].includes(article.topic)">
-          <nuxt-link :to="eventInfo.eventUrl">
+          <a :href="eventInfo.eventUrl">
             <div class="event-banner" />
-          </nuxt-link>
+          </a>
         </div>
         <nuxt-link class="topic-link" :to="`/articles/popular?topic=${article.topic}`">
           {{ topic }}
@@ -130,6 +130,12 @@ export default {
       figcaption.removeAttribute('contenteditable')
     })
     showEmbedTweet()
+    // google optimize
+    window.dataLayer.push({
+      event: 'optimize.activate',
+      tags: this.article.tags,
+      topic: this.article.topic
+    })
     // header scroll
     window.addEventListener('scroll', this.handleScroll)
     // ちらつきを抑えるため mouted 後に表示

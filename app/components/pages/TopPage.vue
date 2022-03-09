@@ -82,6 +82,10 @@ export default {
     if (!this.loggedIn) {
       this.isShowGuide = true
     }
+    // サインアップ目的の場合はモーダルを表示
+    if (!this.loggedIn && this.$route.query.isSignUp === 'true') {
+      this.setSignUpModal({ showSignUpModal: true })
+    }
     await this.getMuteUsers()
     // Eyecatch 部分が読み込み完了次第、描画を行う
     await this.getTipEyecatchArticles()
@@ -103,10 +107,6 @@ export default {
     }
     if (this.articleListScrollHeight) {
       this.$el.scrollTop = this.articleListScrollHeight
-    }
-
-    if (!this.loggedIn && this.$route.query.isSignUp === 'true') {
-      this.setSignUpModal({ showSignUpModal: true })
     }
   },
   beforeDestroy() {
