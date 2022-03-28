@@ -105,7 +105,27 @@ const state = () => ({
       telegramUrl: 'https://t.me/kryptomon_japan',
       discordUrl: 'https://discord.com/invite/hYRjSfsWXt',
       officialArticleUrl: '/kryptomonJP/articles/2MqN7JXkokg4',
-      officialPageUrl: 'https://www.kryptomon.co/'
+      officialArticleButtonName: 'ゲームの始め方',
+      officialPageUrl: 'https://www.kryptomon.co/',
+      officialPageButtonName: 'ゲームを始める'
+    },
+    {
+      key: 'クリスペ',
+      name: 'クリスペ',
+      iconUrl: '/d/nuxt/dist/img/static/cryptospells/icon.svg',
+      backgroundUrl: '',
+      bannerUrl: '/d/nuxt/dist/img/static/cryptospells/banner.svg',
+      bannerSpUrl: '/d/nuxt/dist/img/static/cryptospells/bannerSp.svg',
+      eventUrl: '/ALIS-official/articles/KOwJdwy0xb9z',
+      iconCaption: 'cryptospells',
+      description: '日本発、自由に売買・発行できる次世代カードゲームです。',
+      twitterUrl: 'https://twitter.com/crypto_spells',
+      telegramUrl: '',
+      discordUrl: 'https://discord.gg/pS2ZjB3',
+      officialArticleUrl: '/ALIS-official/articles/KOwJdwy0xb9z',
+      officialArticleButtonName: 'イベント開催中',
+      officialPageUrl: 'https://cryptospells.jp/',
+      officialPageButtonName: 'ゲームを始める'
     }
   ]
 })

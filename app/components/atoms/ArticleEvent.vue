@@ -2,7 +2,7 @@
   <div class="area-event-info" :style="eventInfoStyle">
     <div class="event-info">
       <img class="area-icon" :alt="eventInfo.iconCaption" :src="eventInfo.iconUrl">
-      <nuxt-link to="/tag/クリプトモン" class="area-name">
+      <nuxt-link :to="`/tag/${eventInfo.key}`" class="area-name">
         {{ eventInfo.name }} (PR)
       </nuxt-link>
       <div class="area-description">
@@ -10,7 +10,7 @@
       </div>
       <div class="area-link-button">
         <app-button class="official-article">
-          <nuxt-link to="/tag/クリプトモン">
+          <nuxt-link :to="`/tag/${eventInfo.key}`">
             ゲーム情報
           </nuxt-link>
         </app-button>
