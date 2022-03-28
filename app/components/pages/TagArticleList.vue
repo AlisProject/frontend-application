@@ -1,7 +1,10 @@
 <template>
   <div
     class="tag-article-list"
-    :class="{ 'defined-tag': definedTag, 'defined-tag-background': definedTag.backgroundUrl }"
+    :class="{
+      'defined-tag': definedTag,
+      'defined-tag-background': definedTag && definedTag.backgroundUrl
+    }"
     :style="tagStyle"
   >
     <app-header />
