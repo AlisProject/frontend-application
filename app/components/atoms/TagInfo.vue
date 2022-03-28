@@ -25,12 +25,12 @@
       <div class="area-link-button">
         <app-button class="official-article">
           <nuxt-link :to="tagInfo.officialArticleUrl">
-            ゲームの始め方
+            {{ tagInfo.officialArticleButtonName }}
           </nuxt-link>
         </app-button>
         <app-button class="official-site">
           <a :href="tagInfo.officialPageUrl" target="_blank">
-            ゲームを始める <i class="fas fa-external-link-alt" />
+            {{ tagInfo.officialPageButtonName }} <i class="fas fa-external-link-alt" />
           </a>
         </app-button>
       </div>

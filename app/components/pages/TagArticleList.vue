@@ -1,5 +1,9 @@
 <template>
-  <div class="tag-article-list" :class="{ 'defined-tag': definedTag }" :style="tagStyle">
+  <div
+    class="tag-article-list"
+    :class="{ 'defined-tag': definedTag, 'defined-tag-background': definedTag.backgroundUrl }"
+    :style="tagStyle"
+  >
     <app-header />
     <tag-info v-if="definedTag" :tagInfo="definedTag" />
     <div v-else class="area-tag">
@@ -43,7 +47,7 @@ export default {
       return this.eventsInfo.find((definedTag) => definedTag.key === this.$route.params.tag)
     },
     tagStyle() {
-      if (this.definedTag) {
+      if (this.definedTag && this.definedTag.backgroundUrl) {
         return {
           '--background': `#fff url(${this.definedTag.backgroundUrl}) no-repeat`
         }
@@ -121,10 +125,11 @@ export default {
   min-height: 100vh;
   &.defined-tag {
     grid-template-rows: 100px 200px 26px minmax(0, 1fr) 75px 75px;
+  }
+  &.defined-tag-background {
     background: var(--background);
     background-attachment: fixed;
     background-position: bottom;
-    /*background-size: 100% auto;*/
   }
 }
 
@@ -165,6 +170,8 @@ export default {
     grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
     &.defined-tag {
       grid-template-rows: 100px 245px 26px minmax(0, 1fr) 75px 75px;
+    }
+    &.defined-tag-background {
       background: none;
     }
   }
