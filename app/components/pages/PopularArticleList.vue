@@ -5,7 +5,7 @@
   >
     <app-header />
     <default-header-nav />
-    <category-notices v-if="$route.query.topic === 'game'" />
+    <bcg-ranking-top v-if="$route.query.topic === 'game'" />
     <coin-ranking-top v-if="$route.query.topic === 'crypto'" />
     <article-type-select-nav />
     <article-card-list :articles="popularArticles" />
@@ -18,8 +18,8 @@
 import { mapActions, mapGetters } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
-import CategoryNotices from '../organisms/CategoryNotices'
 import CoinRankingTop from '../organisms/CoinRankingTop'
+import BcgRankingTop from '../organisms/BcgRankingTop'
 import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
@@ -30,7 +30,7 @@ export default {
   components: {
     AppHeader,
     DefaultHeaderNav,
-    CategoryNotices,
+    BcgRankingTop,
     CoinRankingTop,
     ArticleTypeSelectNav,
     ArticleCardList,
@@ -45,10 +45,10 @@ export default {
   },
   computed: {
     isWithNotices() {
-      return this.$route.query.topic === 'game'
+      return [''].includes(this.$route.query.topic)
     },
     isWithRanking() {
-      return this.$route.query.topic === 'crypto'
+      return ['crypto', 'game'].includes(this.$route.query.topic)
     },
     ...mapGetters('article', ['popularArticles', 'isLastPage', 'topics']),
     ...mapGetters('user', ['loggedIn', 'currentUser']),
