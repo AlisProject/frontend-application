@@ -1,4 +1,5 @@
 import { uniqBy, shuffle } from 'lodash'
+import qs from 'qs'
 import * as types from '../mutation-types'
 import { getBodyAfterImageTagOptimization } from '~/utils/article'
 
@@ -84,6 +85,539 @@ const state = () => ({
     isLastPage: false
   },
   cryptoRankingInfo: [],
+  bcgRankingInfo: [],
+  bcgRankingGames: {
+    エグリプト: {
+      key: 'eggrypto',
+      name: 'EGGRYPTO',
+      platforms: ['ethereum']
+    },
+    クリプトモン: {
+      key: 'kryptomon',
+      name: 'Kryptomon',
+      platforms: ['binance-smart-chain']
+    },
+    リーグオブキングダム: {
+      key: 'leagueofkingdoms',
+      name: 'League of Kingdoms',
+      platforms: ['binance-smart-chain']
+    },
+    クリスペ: {
+      key: 'CryptoSpells',
+      name: 'Crypto Spells',
+      platforms: ['Polygon', 'ETH']
+    },
+    TinyWorld: {
+      key: 'tinyworld',
+      name: 'Tiny World',
+      platforms: ['binance-smart-chain']
+    },
+    Splinterlands: {
+      key: 'splinterlands',
+      name: 'Splinterlands',
+      platforms: ['hive', 'wax']
+    },
+    AlienWorlds: {
+      key: 'alienworlds',
+      name: 'Alien Worlds',
+      platforms: ['wax', 'binance-smart-chain']
+    },
+    FarmersWorld: {
+      key: 'farmersworld',
+      name: 'Farmers World',
+      platforms: ['wax']
+    },
+    CrazyDefenseHeroes: {
+      key: 'crazydefenseheroes',
+      name: 'Crazy Defense Heroes',
+      platforms: ['ethereum', 'polygon']
+    },
+    MOBOX: {
+      key: 'moboxnftfarmer',
+      name: 'MOBOX: NFT Farmer',
+      platforms: ['binance-smart-chain']
+    },
+    UPLAND: {
+      key: 'upland',
+      name: 'Upland',
+      platforms: ['eos']
+    },
+    SecondLive: {
+      key: 'secondlive',
+      name: 'SecondLive',
+      platforms: ['binance-smart-chain']
+    },
+    DeFiKingdoms: {
+      key: 'defikingdoms',
+      name: 'DeFi Kingdoms',
+      platforms: ['harmony', 'avalanche']
+    },
+    ParWarOnline: {
+      key: 'parwaronline',
+      name: 'Par War Online',
+      platforms: ['harmony', 'binance-smart-chain']
+    },
+    CryptoBlades: {
+      key: 'cryptoblades',
+      name: 'CryptoBlades',
+      platforms: ['binance-smart-chain', 'polygon', 'heco', 'avalanche', 'oec']
+    },
+    PlayMining: {
+      key: 'playmining',
+      name: 'PlayMining',
+      platforms: ['dep']
+    },
+    Axieinfinity: {
+      key: 'axieinfinity',
+      name: 'Axie Infinity',
+      platforms: ['ronin', 'ethereum']
+    },
+    DragonsValley: {
+      key: 'dragonsvalley',
+      name: 'Dragons Valley',
+      platforms: ['wax']
+    },
+    WombatDungeonMaster: {
+      key: 'wombatdungeonmaster',
+      name: 'Wombat Dungeon Master',
+      platforms: ['eos', 'wax']
+    },
+    XWorldGames: {
+      key: 'xworldgames',
+      name: 'X World Games',
+      platforms: ['binance-smart-chain']
+    },
+    Pegaxy: {
+      key: 'pegaxy',
+      name: 'Pegaxy',
+      platforms: ['polygon']
+    },
+    prospectors: {
+      key: 'prospectors',
+      name: 'PROSPECTORS',
+      platforms: ['wax', 'eos']
+    },
+    ARC8: {
+      key: 'arc8',
+      name: 'Arc8',
+      platforms: ['polygon']
+    },
+    ボムクリプト: {
+      key: 'bombcrypto',
+      name: 'Bomb Crypto',
+      platforms: ['binance-smart-chain']
+    },
+    StarSharks: {
+      key: 'starsharks',
+      name: 'StarSharks',
+      platforms: ['binance-smart-chain']
+    },
+    ElfinKingdom: {
+      key: 'elfinkingdom',
+      name: 'Elfin Kingdom',
+      platforms: ['binance-smart-chain']
+    },
+    GalaxyBlocks: {
+      key: 'galaxyblocks',
+      name: 'Galaxy Blocks',
+      platforms: ['thundercore']
+    },
+    TokenLands: {
+      key: 'tokenlands',
+      name: 'TokenLands',
+      platforms: ['wax']
+    },
+    Crabada: {
+      key: 'crabada',
+      name: 'Crabada',
+      platforms: ['avalanche']
+    },
+    'R-PLANET': {
+      key: 'rplanet',
+      name: 'R-PLANET',
+      platforms: ['wax']
+    },
+    HeroCatGamefi: {
+      key: 'herocatgamefi',
+      name: 'HeroCatGamefi',
+      platforms: ['binance-smart-chain']
+    },
+    NineChronicles: {
+      key: 'ninechronicles',
+      name: 'Nine Chronicles',
+      platforms: ['other']
+    },
+    SquidNFTWorld: {
+      key: 'squidnftworld',
+      name: 'Squid NFT World',
+      platforms: ['binance-smart-chain']
+    },
+    PlanetIX: {
+      key: 'planetix',
+      name: 'Planet IX',
+      platforms: ['polygon']
+    },
+    Goldmand: {
+      key: 'goldmand',
+      name: 'Goldmand',
+      platforms: ['wax']
+    },
+    Taco: {
+      key: 'taco',
+      name: 'Taco',
+      platforms: ['wax']
+    },
+    SunflowerFarmers: {
+      key: 'sunflowerfarmers',
+      name: 'Sunflower Farmers',
+      platforms: ['polygon']
+    },
+    OfficeLand: {
+      key: 'officeland',
+      name: 'Office Land',
+      platforms: ['wax']
+    },
+    GodsUnchained: {
+      key: 'godsunchained',
+      name: 'Gods Unchained',
+      platforms: ['ethereum', 'immutablex']
+    },
+    JellySquish: {
+      key: 'jellysquish',
+      name: 'Jelly Squish',
+      platforms: ['thundercore']
+    },
+    NFTPanda: {
+      key: 'nftpandaworldoffantasy',
+      name: 'NFT Panda: World of Fantasy',
+      platforms: ['wax']
+    },
+    Xpansion: {
+      key: 'xpansion',
+      name: 'Xpansion',
+      platforms: ['wax', 'binance-smart-chain']
+    },
+    Aavegotchi: {
+      key: 'aavegotchi',
+      name: 'Aavegotchi',
+      platforms: ['polygon']
+    },
+    VulcanVerse: {
+      key: 'vulcanverse',
+      name: 'VulcanVerse',
+      platforms: ['vulcanforged']
+    },
+    REVVRacing: {
+      key: 'revvracing',
+      name: 'REVV Racing',
+      platforms: ['polygon']
+    },
+    ArenaOfGlory: {
+      key: 'arenaofglory',
+      name: 'Arena Of Glory',
+      platforms: ['wax']
+    },
+    BlockchainRPG: {
+      key: 'blockchainrpg',
+      name: 'BlockchainRPG',
+      platforms: ['wax']
+    },
+    '9DNFT': {
+      key: '9dnft',
+      name: '9D NFT',
+      platforms: ['binance-smart-chain']
+    },
+    ZOOCryptoWorld: {
+      key: 'zoocryptoworld',
+      name: 'ZOO - Crypto World',
+      platforms: ['binance-smart-chain']
+    },
+    SailorsWorld: {
+      key: 'sailorsworld',
+      name: 'Sailors World',
+      platforms: ['wax']
+    },
+    FarmingTales: {
+      key: 'farmingtales',
+      name: 'Farming Tales',
+      platforms: ['wax']
+    },
+    TradeRaceManager2: {
+      key: 'traderacemanager2richracer',
+      name: 'Trade Race Manager 2: Rich Racer',
+      platforms: ['polygon']
+    },
+    StarCrazy: {
+      key: 'starcrazy',
+      name: 'StarCrazy',
+      platforms: ['iotex']
+    },
+    cCryptoFarms: {
+      key: 'cryptofarms',
+      name: 'Crypto Farms',
+      platforms: ['wax']
+    },
+    InterstellarDomainOrder: {
+      key: 'interstellardomainorder',
+      name: 'INTERSTELLAR DOMAIN ORDER',
+      platforms: ['binance-smart-chain']
+    },
+    TheCryptoYou: {
+      key: 'thecryptoyou',
+      name: 'The Crypto You',
+      platforms: ['binance-smart-chain']
+    },
+    MyDeFiPet: {
+      key: 'mydefipet',
+      name: 'My DeFi Pet',
+      platforms: ['binance-smart-chain', 'kardiachain']
+    },
+    BlockchainBrawlers: {
+      key: 'blockchainbrawlers',
+      name: 'Blockchain Brawlers',
+      platforms: ['wax']
+    },
+    マイクリ: {
+      key: 'mycryptoheroes',
+      name: 'My Crypto Heroes',
+      platforms: ['ethereum', 'polygon']
+    },
+    シータンアリーナ: {
+      key: 'thetanarena',
+      name: 'Thetan Arena',
+      platforms: ['binance-smart-chain']
+    },
+    BinaryX: {
+      key: 'binaryx',
+      name: 'BinaryX',
+      platforms: ['binance-smart-chain']
+    },
+    Castles: {
+      key: 'castlesthenftgame',
+      name: 'Castles',
+      platforms: ['wax']
+    },
+    PizzaGame: {
+      key: 'pizzagame',
+      name: 'PizzaGame',
+      platforms: ['avalanche']
+    },
+    SpaceSip: {
+      key: 'spacesip',
+      name: 'Space Sip',
+      platforms: ['binance-smart-chain']
+    },
+    MarsColony: {
+      key: 'marscolony',
+      name: 'MarsColony',
+      platforms: ['binance-smart-chain', 'harmony']
+    },
+    ForthBox: {
+      key: 'forthbox',
+      name: 'ForthBox',
+      platforms: ['binance-smart-chain']
+    },
+    MidgardClash: {
+      key: 'midgardclash',
+      name: 'Midgard Clash',
+      platforms: ['wax']
+    },
+    AncientRealms: {
+      key: 'ancientrealms',
+      name: 'Ancient Realms',
+      platforms: ['wax']
+    },
+    GreenRabbitGame: {
+      key: 'greenrabbitgame',
+      name: 'Green Rabbit Game',
+      platforms: ['wax']
+    },
+    AgeOfTanks: {
+      key: 'ageoftanks',
+      name: 'Age of Tanks',
+      platforms: ['binance-smart-chain']
+    },
+    TrainOfTheCentury: {
+      key: 'trainofthecentury',
+      name: 'Train of the Century',
+      platforms: ['wax']
+    },
+    Faraland: {
+      key: 'faraland',
+      name: 'Faraland',
+      platforms: ['binance-smart-chain']
+    },
+    MiningTycoon: {
+      key: 'miningtycoon',
+      name: 'MiningTycoon',
+      platforms: ['binance-smart-chain', 'heco', 'other']
+    },
+    MathWar: {
+      key: 'mathwar',
+      name: 'Math War',
+      platforms: ['thundercore']
+    },
+    DecentralGames: {
+      key: 'decentralgames',
+      name: 'Decentral Games',
+      platforms: ['polygon', 'ethereum']
+    },
+    BlockchainCuties: {
+      key: 'blockchaincuties',
+      name: 'Blockchain Cuties',
+      platforms: ['ethereum', 'eos', 'tron', 'neo', 'polygon', 'heco']
+    },
+    CryptoDynasty: {
+      key: 'cryptodynasty',
+      name: 'Crypto Dynasty',
+      platforms: ['eos']
+    },
+    DNAxCAT: {
+      key: 'dnaxcat',
+      name: 'DNAxCAT',
+      platforms: ['binance-smart-chain']
+    },
+    spacecraftx: {
+      key: 'spacecraftx',
+      name: 'SpaceCraftX',
+      platforms: ['wax']
+    },
+    DeHero: {
+      key: 'dehero',
+      name: 'DeHero',
+      platforms: ['binance-smart-chain']
+    },
+    FishingTown: {
+      key: 'fishingtown',
+      name: 'Fishing Town',
+      platforms: ['binance-smart-chain']
+    },
+    WordSearchBlitz: {
+      key: 'wordsearchblitz',
+      name: 'Word Search Blitz',
+      platforms: ['thundercore']
+    },
+    Ninneko: {
+      key: 'ninneko',
+      name: 'Ninneko',
+      platforms: ['binance-smart-chain']
+    },
+    Coinpirates: {
+      key: 'coinpirates',
+      name: 'Coinpirates',
+      platforms: ['wax']
+    },
+    KolobokAdventures: {
+      key: 'kolobokadventures',
+      name: 'Kolobok Adventures',
+      platforms: ['wax']
+    },
+    SunflowerLand: {
+      key: 'sunflowerland',
+      name: 'Sunflower Land',
+      platforms: ['polygon']
+    },
+    Defina: {
+      key: 'defina',
+      name: 'Defina',
+      platforms: ['binance-smart-chain']
+    },
+    Metamon: {
+      key: 'metamon',
+      name: 'Metamon',
+      platforms: ['binance-smart-chain']
+    },
+    BeastGarden: {
+      key: 'beastgarden',
+      name: 'Beast Garden',
+      platforms: ['wax']
+    },
+    PiratesWorld: {
+      key: 'piratesworld',
+      name: 'Pirates World',
+      platforms: ['binance-smart-chain']
+    },
+    EpicHero: {
+      key: 'epichero',
+      name: 'EpicHero',
+      platforms: ['binance-smart-chain']
+    },
+    BrainWarp: {
+      key: 'brainwarp',
+      name: 'Brain Warp',
+      platforms: ['thundercore']
+    },
+    NovaRally: {
+      key: 'novarally',
+      name: 'Nova Rally',
+      platforms: ['wax']
+    },
+    ForgeArena: {
+      key: 'forgearena',
+      name: 'Forge Arena',
+      platforms: ['vulcanforged']
+    },
+    GNOCity: {
+      key: 'gnocity',
+      name: 'GNO City',
+      platforms: ['wax']
+    },
+    TheDamnedPiratesSociety: {
+      key: 'thedamnedpiratessociety',
+      name: 'The Damned Pirates Society',
+      platforms: ['moonriver']
+    },
+    ColorCraze: {
+      key: 'colorcraze',
+      name: 'Color Craze',
+      platforms: ['thundercore']
+    },
+    ブレヒロ: {
+      key: 'bravefrontierheroes',
+      name: 'BRAVE FRONTIER HEROES',
+      platforms: ['polygon']
+    },
+    Tezotopia: {
+      key: 'tezotopia',
+      name: 'Tezotopia',
+      platforms: ['tezos']
+    },
+    CosmosEleven: {
+      key: 'cosmoseleven',
+      name: 'Cosmos Eleven',
+      platforms: ['wax']
+    },
+    PiratesKing: {
+      key: 'piratesking',
+      name: 'PiratesKing',
+      platforms: ['binance-smart-chain']
+    },
+    ERAGame: {
+      key: 'eragame',
+      name: 'ERAGame',
+      platforms: ['wax']
+    },
+    PlatoFarm: {
+      key: 'platofarm',
+      name: 'Plato Farm',
+      platforms: ['oec', 'heco']
+    },
+    HappyLand: {
+      key: 'happyland',
+      name: 'HappyLand',
+      platforms: ['binance-smart-chain']
+    },
+    Mirandus: {
+      key: 'mirandus',
+      name: 'Mirandus',
+      platforms: ['ethereum']
+    },
+    ZombieOutbreakSurvival: {
+      key: 'zombieoutbreaksurvival',
+      name: 'Zombie Outbreak Survival',
+      platforms: ['wax']
+    }
+  },
   supporters: [],
   articleDeleteModal: {
     isShow: false,
@@ -221,6 +755,7 @@ const getters = {
   },
   supporters: (state) => state.supporters,
   cryptoRankingInfo: (state) => state.cryptoRankingInfo,
+  bcgRankingInfo: (state) => state.bcgRankingInfo,
   articleDeleteModal: (state) => state.articleDeleteModal,
   eventsInfo: (state) => state.eventsInfo
 }
@@ -1268,6 +1803,26 @@ const actions = {
   resetCryptoRankingInfo({ commit }) {
     commit(types.RESET_CRYPTO_RANKING_INFO)
   },
+  async getBcgRankingInfo({ commit, state }, { limit }) {
+    try {
+      console.log('test')
+      const rankingInfo = await this.$axios.$get(`/api/search/tags_count`, {
+        params: { tags: Object.keys(state.bcgRankingGames), search_days: 30 },
+        paramsSerializer: (params) => {
+          return qs.stringify(params, { arrayFormat: 'repeat' })
+        }
+      })
+      const bcgRankingInfo = rankingInfo.map((item) =>
+        Object.assign(state.bcgRankingGames[item.tag], { tag_name: item.tag, count: item.count })
+      )
+      commit(types.SET_BCG_RANKING_INFO, { bcgRankingInfo })
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  },
+  resetBcgRankingInfo({ commit }) {
+    commit(types.RESET_BCG_RANKING_INFO)
+  },
 
   // Laboリソース
 
@@ -1637,6 +2192,12 @@ const mutations = {
   },
   [types.RESET_CRYPTO_RANKING_INFO](state) {
     state.cryptoRankingInfo = []
+  },
+  [types.SET_BCG_RANKING_INFO](state, { bcgRankingInfo }) {
+    state.bcgRankingInfo = bcgRankingInfo
+  },
+  [types.RESET_BCG_RANKING_INFO](state) {
+    state.bcgRankingInfo = []
   }
 }
 
