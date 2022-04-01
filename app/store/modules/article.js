@@ -103,7 +103,7 @@ const state = () => ({
       platforms: ['binance-smart-chain']
     },
     クリスペ: {
-      key: 'CryptoSpells',
+      key: 'cryptospells',
       name: 'Crypto Spells',
       platforms: ['Polygon', 'ETH']
     },
