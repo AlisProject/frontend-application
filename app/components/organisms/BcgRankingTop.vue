@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      rankingLabel: 'BCG月間ランキング',
+      rankingLabel: '人気ブロックチェーンゲーム',
       moreLink: '/category/game/bcg_ranking',
       moreText: 'もっと見る',
       articleLabel: 'ゲーム記事'

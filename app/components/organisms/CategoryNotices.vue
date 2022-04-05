@@ -1,12 +1,12 @@
 <template>
   <div class="area-category-notices-container js-scrollable">
     <div class="description">
-      注目BCG:
+      NFT獲得イベント実施中:
     </div>
-    <nuxt-link class="link" to="/tag/クリプトモン">
+    <nuxt-link class="link" to="/ALIS-official/articles/aEOb7YZm6wk6">
       クリプトモン
     </nuxt-link>
-    <nuxt-link class="link" to="/tag/クリスペ">
+    <nuxt-link class="link" to="/ALIS-official/articles/KOwJdwy0xb9z">
       クリスペ
     </nuxt-link>
   </div>
