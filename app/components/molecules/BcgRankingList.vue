@@ -10,11 +10,15 @@
       <thead>
         <tr class="bcg-ranking-head">
           <th />
-          <th class="bcg-name-head" />
+          <th class="bcg-name-head">
+            タイトル
+          </th>
           <th class="bcg-tag-head">
             タグ
           </th>
-          <th>月間記事数</th>
+          <th class="bcg-count-head">
+            月間記事数
+          </th>
         </tr>
       </thead>
       <!--画面のちらつきを抑えるため、先に表示領域を確保-->
@@ -121,6 +125,9 @@ export default {
 .bcg-tag-head {
   text-align: left;
 }
+.bcg-count-head {
+  text-align: right;
+}
 .bcg-ranking-body {
   font-size: 12px;
   text-align: right;
@@ -212,10 +219,10 @@ export default {
     width: 15px;
   }
   .bcg-col-name {
-    width: 155px;
+    width: 150px;
   }
   .bcg-col-tag {
-    width: 85px;
+    width: 80px;
   }
   .bcg-col-count {
     width: 70px;
@@ -231,18 +238,18 @@ export default {
     width: 12px;
   }
   .bcg-col-name {
-    width: 105px;
+    width: 95px;
   }
   .bcg-col-tag {
-    width: 85px;
+    width: 75px;
   }
   .bcg-col-count {
-    width: 40px;
+    width: 60px;
   }
   .name-text {
     font-size: 12px;
     font-weight: normal;
-    width: 70px;
+    width: 65px;
   }
   .bcg-count {
     padding-right: 0;

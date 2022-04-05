@@ -50,6 +50,7 @@
     flex-flow: column nowrap;
     justify-content: flex-start;
     padding: 1.3em 0 1em;
+    height: 180px;
   }
 
   .link {

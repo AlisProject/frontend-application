@@ -10,17 +10,17 @@ export default {
     BcgRanking
   },
   head: {
-    title: 'BCG月間ランキング',
+    title: 'ブロックチェーンゲーム-ランキング',
     meta: [
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'BCG月間ランキング | ALIS'
+        content: 'ブロックチェーンゲーム-ランキング | ALIS'
       },
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'BCG月間ランキング'
+        content: 'ブロックチェーンゲーム-ランキング'
       }
     ]
   }
