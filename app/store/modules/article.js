@@ -107,6 +107,11 @@ const state = () => ({
       name: 'Crypto Spells',
       platforms: ['Polygon', 'ETH']
     },
+    STEPN: {
+      key: 'stepn',
+      name: 'STEPN',
+      platforms: ['Solana']
+    },
     TinyWorld: {
       key: 'tinyworld',
       name: 'Tiny World',
@@ -1805,7 +1810,6 @@ const actions = {
   },
   async getBcgRankingInfo({ commit, state }, { limit }) {
     try {
-      console.log('test')
       const rankingInfo = await this.$axios.$get(`/api/search/tags_count`, {
         params: { tags: Object.keys(state.bcgRankingGames), search_days: 30 },
         paramsSerializer: (params) => {
