@@ -33,7 +33,7 @@ export default {
     "...                     ranking                 ...                    "
     "app-footer              app-footer              app-footer             ";
   grid-template-columns: minmax(0, 1fr) 1080px minmax(0, 1fr);
-  grid-template-rows: 100px auto auto 75px;
+  grid-template-rows: 100px auto minmax(1080px, auto) 75px;
   min-height: 100vh;
 }
 
