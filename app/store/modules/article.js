@@ -1810,12 +1810,13 @@ const actions = {
   },
   async getBcgRankingInfo({ commit, state }, { limit }) {
     try {
-      const rankingInfo = await this.$axios.$get(`/api/search/tags_count`, {
+      const tagsCountInfo = await this.$axios.$get(`/api/search/tags_count`, {
         params: { tags: Object.keys(state.bcgRankingGames), search_days: 30 },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: 'repeat' })
         }
       })
+      const rankingInfo = tagsCountInfo.filter((item) => item.count > 0)
       const bcgRankingInfo = rankingInfo.map((item) =>
         Object.assign(state.bcgRankingGames[item.tag], { tag_name: item.tag, count: item.count })
       )
