@@ -30,7 +30,7 @@ export default {
     const { topicDisplayName } = this.$store.state.article
     // pages/index.vue からリダイレクトされた場合、メタタグ内のタイトルはトップページのものを表示する
     const isTopPage = this.$route.query.from === 'top'
-    const topPageTitle = 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア'
+    const topPageTitle = 'ALIS - ブロックチェーンソーシャルメディア'
     return {
       title: isTopPage ? topPageTitle : `${topicDisplayName} - 人気記事`,
       titleTemplate: isTopPage ? '' : '%s | ALIS',

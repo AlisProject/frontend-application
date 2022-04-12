@@ -25,7 +25,7 @@ module.exports = {
     __dangerouslyDisableSanitizersByTagID: {
       gop: ['innerHTML']
     },
-    title: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア',
+    title: 'ALIS - ブロックチェーンソーシャルメディア',
     titleTemplate: '%s | ALIS',
     meta: [
       { charset: 'utf-8' },
@@ -34,17 +34,17 @@ module.exports = {
       {
         hid: 'description',
         name: 'description',
-        content: `ALIS is Japan's First Social Media Using Blockchain Technology`
+        content: `ALISは記事の作成やいいねで人気NFTやトークンがもらえるソーシャルメディアです。はじめてブロックチェーンを利用する方も無料で気軽に楽しめます。`
       },
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'ALIS | 信頼できる記事と人々を明らかにする全く新しいソーシャルメディア'
+        content: 'ALIS - ブロックチェーンソーシャルメディア'
       },
       {
         hid: 'og:description',
         property: 'og:description',
-        content: `ALIS is Japan's First Social Media Using Blockchain Technology`
+        content: `ALISは記事の作成やいいねで人気NFTやトークンがもらえるソーシャルメディアです。はじめてブロックチェーンを利用する方も無料で気軽に楽しめます。`
       },
       { hid: 'og:type', property: 'og:type', content: 'website' },
       {
