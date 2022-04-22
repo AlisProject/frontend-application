@@ -136,6 +136,9 @@ export default {
       tags: this.article.tags,
       topic: this.article.topic
     })
+    window.dataLayer.push({
+      event: 'articleMounted'
+    })
     // header scroll
     window.addEventListener('scroll', this.handleScroll)
     // ちらつきを抑えるため mouted 後に表示
