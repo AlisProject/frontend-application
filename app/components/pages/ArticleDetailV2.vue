@@ -149,6 +149,9 @@ export default {
       tags: this.article.tags,
       topic: this.article.topic
     })
+    window.dataLayer.push({
+      event: 'articleMounted'
+    })
     // paywallLine
     const paywallLine = document.querySelector('.paywall-line')
     if (paywallLine) {
