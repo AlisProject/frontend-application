@@ -4,10 +4,10 @@
       <img class="area-logo" src="~assets/images/pc/common/logo_white.svg" alt="logo">
       <div class="area-message">
         <div class="title">
-          アカウント作成をおすすめします
+          アカウント登録でALISを楽しもう！
         </div>
         <div class="detail">
-          いいね、記事投稿でトークンを獲得できます
+          豪華NFTがもらえるイベントも開催中
         </div>
       </div>
       <div class="area-button">
@@ -199,7 +199,8 @@ export default {
         }
         .detail {
           margin-top: 5px;
-          font-size: 14px;
+          font-size: 16px;
+          font-weight: bold;
         }
       }
       .area-button {

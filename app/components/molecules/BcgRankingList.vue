@@ -65,9 +65,6 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  components: {
-    AppButton
-  },
   props: {
     indexCount: {
       type: Number,

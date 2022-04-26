@@ -132,6 +132,46 @@ const state = () => ({
       name: 'Alien Worlds',
       platforms: ['wax', 'binance-smart-chain']
     },
+    ジョブトライブス: {
+      key: 'jobtribes',
+      name: 'JobTribes',
+      platforms: []
+    },
+    SGEM: {
+      key: 'sgem',
+      name: 'SGEM',
+      platforms: ['ethereum']
+    },
+    cryptorpg: {
+      key: 'cryptorpg',
+      name: 'CryptoRPG',
+      platforms: []
+    },
+    タウンスター: {
+      key: 'townstar',
+      name: 'Town Star',
+      platforms: []
+    },
+    エルフマスターズ: {
+      key: 'elfmasters',
+      name: 'ELF Masters',
+      platforms: []
+    },
+    PolkaFantasy: {
+      key: 'polkafantasy',
+      name: 'PolkaFantasy',
+      platforms: []
+    },
+    everdome: {
+      key: 'everdome',
+      name: 'Everdome',
+      platforms: []
+    },
+    Geneopets: {
+      key: 'genopets',
+      name: 'Geneopets',
+      platforms: []
+    },
     FarmersWorld: {
       key: 'farmersworld',
       name: 'Farmers World',
