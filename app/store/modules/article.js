@@ -97,15 +97,15 @@ const state = () => ({
       name: 'Kryptomon',
       platforms: ['binance-smart-chain']
     },
-    リーグオブキングダム: {
-      key: 'leagueofkingdoms',
-      name: 'League of Kingdoms',
-      platforms: ['binance-smart-chain']
-    },
     クリスペ: {
       key: 'cryptospells',
       name: 'Crypto Spells',
       platforms: ['Polygon', 'ETH']
+    },
+    ブレヒロ: {
+      key: 'bravefrontierheroes',
+      name: 'BRAVE FRONTIER HEROES',
+      platforms: ['polygon']
     },
     STEPN: {
       key: 'stepn',
@@ -122,10 +122,55 @@ const state = () => ({
       name: 'Splinterlands',
       platforms: ['hive', 'wax']
     },
+    リーグオブキングダム: {
+      key: 'leagueofkingdoms',
+      name: 'League of Kingdoms',
+      platforms: ['binance-smart-chain']
+    },
     AlienWorlds: {
       key: 'alienworlds',
       name: 'Alien Worlds',
       platforms: ['wax', 'binance-smart-chain']
+    },
+    ジョブトライブス: {
+      key: 'jobtribes',
+      name: 'JobTribes',
+      platforms: []
+    },
+    SGEM: {
+      key: 'sgem',
+      name: 'SGEM',
+      platforms: ['ethereum']
+    },
+    cryptorpg: {
+      key: 'cryptorpg',
+      name: 'CryptoRPG',
+      platforms: []
+    },
+    タウンスター: {
+      key: 'townstar',
+      name: 'Town Star',
+      platforms: []
+    },
+    エルフマスターズ: {
+      key: 'elfmasters',
+      name: 'ELF Masters',
+      platforms: []
+    },
+    PolkaFantasy: {
+      key: 'polkafantasy',
+      name: 'PolkaFantasy',
+      platforms: []
+    },
+    everdome: {
+      key: 'everdome',
+      name: 'Everdome',
+      platforms: []
+    },
+    Geneopets: {
+      key: 'genopets',
+      name: 'Geneopets',
+      platforms: []
     },
     FarmersWorld: {
       key: 'farmersworld',
@@ -181,11 +226,6 @@ const state = () => ({
       key: 'dragonsvalley',
       name: 'Dragons Valley',
       platforms: ['wax']
-    },
-    WombatDungeonMaster: {
-      key: 'wombatdungeonmaster',
-      name: 'Wombat Dungeon Master',
-      platforms: ['eos', 'wax']
     },
     XWorldGames: {
       key: 'xworldgames',
@@ -361,11 +401,6 @@ const state = () => ({
       key: 'cryptofarms',
       name: 'Crypto Farms',
       platforms: ['wax']
-    },
-    InterstellarDomainOrder: {
-      key: 'interstellardomainorder',
-      name: 'INTERSTELLAR DOMAIN ORDER',
-      platforms: ['binance-smart-chain']
     },
     TheCryptoYou: {
       key: 'thecryptoyou',
@@ -567,20 +602,10 @@ const state = () => ({
       name: 'GNO City',
       platforms: ['wax']
     },
-    TheDamnedPiratesSociety: {
-      key: 'thedamnedpiratessociety',
-      name: 'The Damned Pirates Society',
-      platforms: ['moonriver']
-    },
     ColorCraze: {
       key: 'colorcraze',
       name: 'Color Craze',
       platforms: ['thundercore']
-    },
-    ブレヒロ: {
-      key: 'bravefrontierheroes',
-      name: 'BRAVE FRONTIER HEROES',
-      platforms: ['polygon']
     },
     Tezotopia: {
       key: 'tezotopia',
@@ -616,11 +641,6 @@ const state = () => ({
       key: 'mirandus',
       name: 'Mirandus',
       platforms: ['ethereum']
-    },
-    ZombieOutbreakSurvival: {
-      key: 'zombieoutbreaksurvival',
-      name: 'Zombie Outbreak Survival',
-      platforms: ['wax']
     }
   },
   supporters: [],
@@ -1816,8 +1836,7 @@ const actions = {
           return qs.stringify(params, { arrayFormat: 'repeat' })
         }
       })
-      const rankingInfo = tagsCountInfo.filter((item) => item.count > 0)
-      const bcgRankingInfo = rankingInfo.map((item) =>
+      const bcgRankingInfo = tagsCountInfo.map((item) =>
         Object.assign(state.bcgRankingGames[item.tag], { tag_name: item.tag, count: item.count })
       )
       commit(types.SET_BCG_RANKING_INFO, { bcgRankingInfo })

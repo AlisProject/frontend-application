@@ -1,7 +1,7 @@
 <template>
   <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="/ALIS-official/articles/aplLk5nW8ZQ6">
-      記事を書いてNFTをゲット、詳細はコチラから !! <span class="tooltip" />
+    <nuxt-link class="description" to="/ALIS-official/articles/2APRJjJE1g88">
+      人気ゲームのNFTをゲット！参加はこちら <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>

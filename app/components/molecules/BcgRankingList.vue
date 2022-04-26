@@ -28,28 +28,29 @@
         </tr>
       </tbody>
       <tbody v-else class="bcg-ranking-body">
-        <tr
-          v-for="(bcgInfo, index) in rankingInfo"
-          :key="bcgInfo.key"
-          @click="toTag(`/tag/${bcgInfo.tag_name}`)"
-        >
-          <td class="bcg-index">
+        <tr v-for="(bcgInfo, index) in rankingInfo" :key="bcgInfo.key">
+          <td class="bcg-index" @click="toTag(`/tag/${bcgInfo.tag_name}`)">
             {{ index + 1 }}
           </td>
-          <td class="bcg-name">
+          <td class="bcg-name" @click="toTag(`/tag/${bcgInfo.tag_name}`)">
             <img
               :src="`/d/nuxt/dist/img/static/bcg_ranking/icon/${bcgInfo.key}.png`"
               class="bcg-image"
             >
             <span class="name-text">{{ bcgInfo.name }}</span>
           </td>
-          <td class="bcg-tag">
+          <td class="bcg-tag" @click="toTag(`/tag/${bcgInfo.tag_name}`)">
             <span class="bcg-tag-link">
               {{ bcgInfo.tag_name }}
             </span>
           </td>
-          <td class="bcg-count">
+          <td v-if="bcgInfo.count > 0" class="bcg-count">
             {{ bcgInfo.count }}
+          </td>
+          <td v-else class="bcg-count" @click="moveToNewArticlePage">
+            <span class="new-article-text">
+              <i class="fas fa-pen" />
+            </span>
           </td>
         </tr>
       </tbody>
@@ -71,6 +72,7 @@ export default {
     rankingInfo() {
       return this.bcgRankingInfo.slice(0, this.indexCount)
     },
+    ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['bcgRankingInfo'])
   },
   mounted() {
@@ -83,6 +85,32 @@ export default {
     toTag(tagLink) {
       this.$router.push(tagLink)
     },
+    async moveToNewArticlePage() {
+      if (!this.loggedIn) {
+        this.setRequestLoginModal({ isShow: true, requestType: 'articleCreate' })
+        return
+      }
+      if (!this.currentUser.phoneNumberVerified) {
+        this.setRequestPhoneNumberVerifyModal({ isShow: true, requestType: 'articleCreate' })
+        this.setRequestPhoneNumberVerifyInputPhoneNumberModal({ isShow: true })
+        return
+      }
+      const encryptInfo = await this.getWalletEncryptInfo()
+      if (!encryptInfo.encrypted_secret_key) {
+        this.setRequestWalletPasswordModal({ isShow: true })
+        this.setRequestInputWalletPasswordModal({ isShow: true })
+        return
+      }
+      this.$router.push('/me/articles/new')
+    },
+    ...mapActions('user', [
+      'setRequestLoginModal',
+      'setRequestPhoneNumberVerifyModal',
+      'setRequestPhoneNumberVerifyInputPhoneNumberModal',
+      'getWalletEncryptInfo',
+      'setRequestWalletPasswordModal',
+      'setRequestInputWalletPasswordModal'
+    ]),
     ...mapActions('article', ['getBcgRankingInfo', 'resetBcgRankingInfo'])
   }
 }
@@ -188,11 +216,34 @@ export default {
   font-size: 11px;
   line-height: 15px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding: 1px 4px;
   text-decoration: none;
 }
 .bcg-count {
   padding-right: 5px;
+}
+.new-article {
+  width: 72px;
+  font-size: 12px;
+  height: 22px;
+  line-height: 22px;
+  border-radius: 4px;
+  box-shadow: none;
+  font-weight: 400;
+  margin-left: auto;
+}
+
+.new-article-text {
+  color: #6e6e6e;
+  width: 72px;
+  font-size: 12px;
+  height: 22px;
+  line-height: 22px;
+  box-shadow: none;
+  font-weight: 400;
+  margin-left: auto;
 }
 
 @media screen and (max-width: 1296px) {
@@ -231,6 +282,9 @@ export default {
     font-size: 12px;
     width: 105px;
   }
+  .bcg-tag-link {
+    max-width: 75px;
+  }
 }
 
 @media screen and (max-width: 370px) {
@@ -250,6 +304,9 @@ export default {
     font-size: 12px;
     font-weight: normal;
     width: 65px;
+  }
+  .bcg-tag-link {
+    max-width: 70px;
   }
   .bcg-count {
     padding-right: 0;
