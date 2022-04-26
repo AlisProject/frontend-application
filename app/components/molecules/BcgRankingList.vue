@@ -28,10 +28,7 @@
         </tr>
       </tbody>
       <tbody v-else class="bcg-ranking-body">
-        <tr
-          v-for="(bcgInfo, index) in rankingInfo"
-          :key="bcgInfo.key"
-        >
+        <tr v-for="(bcgInfo, index) in rankingInfo" :key="bcgInfo.key">
           <td class="bcg-index" @click="toTag(`/tag/${bcgInfo.tag_name}`)">
             {{ index + 1 }}
           </td>
