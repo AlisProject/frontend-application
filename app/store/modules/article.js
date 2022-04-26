@@ -122,6 +122,11 @@ const state = () => ({
       name: 'Splinterlands',
       platforms: ['hive', 'wax']
     },
+    sorare: {
+      key: 'sorare',
+      name: 'Sorare',
+      platforms: []
+    },
     リーグオブキングダム: {
       key: 'leagueofkingdoms',
       name: 'League of Kingdoms',
