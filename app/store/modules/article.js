@@ -157,6 +157,11 @@ const state = () => ({
       name: 'Town Star',
       platforms: []
     },
+    sweatcoin: {
+      key: 'sweatcoin',
+      name: 'Sweatcoin',
+      platforms: []
+    },
     エルフマスターズ: {
       key: 'elfmasters',
       name: 'ELF Masters',
