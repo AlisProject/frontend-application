@@ -177,9 +177,9 @@ const state = () => ({
       name: 'Everdome',
       platforms: []
     },
-    Geneopets: {
+    Genopets: {
       key: 'genopets',
-      name: 'Geneopets',
+      name: 'Genopets',
       platforms: []
     },
     FarmersWorld: {
