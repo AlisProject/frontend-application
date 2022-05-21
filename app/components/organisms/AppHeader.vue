@@ -1,7 +1,7 @@
 <template>
   <header class="area-app-header-container">
     <nuxt-link to="/" class="logo-link" @click.native="resetData">
-      <img class="logo" src="~assets/images/pc/common/header_logo_original.svg" alt="logo">
+      <img class="logo" src="~assets/images/pc/common/header_logo_original.png" alt="logo">
     </nuxt-link>
     <no-ssr>
       <div class="session-items">
