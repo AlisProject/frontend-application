@@ -172,6 +172,16 @@ const state = () => ({
       name: 'PolkaFantasy',
       platforms: []
     },
+    'Titan Hunters': {
+      key: 'titanhunters',
+      name: 'Titan Hunters',
+      platforms: []
+    },
+    aglet: {
+      key: 'aglet',
+      name: 'Aglet',
+      platforms: []
+    },
     everdome: {
       key: 'everdome',
       name: 'Everdome',
