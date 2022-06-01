@@ -49,7 +49,7 @@ export default {
         }
       ]
     }
-  },
+  }
 }
 </script>
 
@@ -66,7 +66,6 @@ export default {
     '...              contents         ...             '
     'app-footer       app-footer       app-footer      ';
   background: white;
-
 }
 
 .area-title {
@@ -89,7 +88,7 @@ export default {
   width: 500px;
   margin: 20px;
 
-  .campaign-link{
+  .campaign-link {
     color: #6e6e6e;
     text-decoration: none;
   }
@@ -139,16 +138,15 @@ export default {
     width: calc(100% - 20px);
     margin: 10px;
 
-    .campaign-link{
+    .campaign-link {
       color: #6e6e6e;
       text-decoration: none;
     }
     .image {
       width: 100%;
-      height: calc((100vw - 40px)/ 16 * 9);
+      height: calc((100vw - 40px) / 16 * 9);
     }
     .description {
-
     }
   }
 }
