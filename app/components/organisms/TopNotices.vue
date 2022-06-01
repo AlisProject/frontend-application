@@ -1,7 +1,7 @@
 <template>
   <div class="area-topo-notices-container">
-    <nuxt-link class="description" to="/ALIS-official/articles/2APRJjJE1g88">
-      人気ゲームのNFTをゲット！参加はこちら <span class="tooltip" />
+    <nuxt-link class="description" to="/campaigns">
+      人気ゲームのNFTをゲット！詳細はこちら <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>
@@ -24,6 +24,31 @@
     padding-top: 20px;
   }
 }
+
+
+.tooltip {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background: #6e6e6e;
+  border-radius: 100%;
+  position: relative;
+  margin-top: -3px;
+
+  &::before {
+    position: absolute;
+    display: inline-block;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.6);
+    content: '?';
+    color: #fff;
+    font-size: 100%;
+    font-weight: bold;
+  }
+}
+
 
 .description {
   color: #6e6e6e;
