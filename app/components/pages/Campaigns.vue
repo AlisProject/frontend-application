@@ -82,6 +82,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  margin-bottom: 350px;
 }
 
 .campaign {
