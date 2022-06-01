@@ -1,13 +1,7 @@
 <template>
   <div class="area-category-notices-container js-scrollable">
-    <div class="description">
-      NFT獲得イベント実施中:
-    </div>
-    <nuxt-link class="link" to="/ALIS-official/articles/aEOb7YZm6wk6">
-      クリプトモン
-    </nuxt-link>
-    <nuxt-link class="link" to="/ALIS-official/articles/KOwJdwy0xb9z">
-      クリスペ
+    <nuxt-link class="description" to="/campaigns">
+      人気ゲームのNFTをゲット！詳細はこちら <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>
