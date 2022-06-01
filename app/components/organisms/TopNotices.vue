@@ -1,7 +1,7 @@
 <template>
   <div class="area-topo-notices-container">
     <nuxt-link class="description" to="/campaigns">
-      人気ゲームのNFTをゲット！詳細はこちら <span class="tooltip" />
+      ALISでNFTをゲット!!コラボ一覧はこちら <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>
