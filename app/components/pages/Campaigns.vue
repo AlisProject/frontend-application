@@ -1,17 +1,19 @@
 <template>
   <div class="campaigns-container">
     <app-header />
-      <h1 class="area-title">
-        NFTがもらえるコラボ一覧
-      </h1>
-      <div class="area-contents">
-        <div v-for="item in campaigns" class="campaign">
-          <nuxt-link :to="item.articleUrl" class="campaign-link">
-            <img class="image" :src="`/d/nuxt/dist/img/static/campaigns/${item.imageSrc}`" />
-            <div class="description"> {{ item.description }}</div>
-          </nuxt-link>
-        </div>
+    <h1 class="area-title">
+      NFTがもらえるコラボ一覧
+    </h1>
+    <div class="area-contents">
+      <div v-for="item in campaigns" class="campaign">
+        <nuxt-link :to="item.articleUrl" class="campaign-link">
+          <img class="image" :src="`/d/nuxt/dist/img/static/campaigns/${item.imageSrc}`">
+          <div class="description">
+            {{ item.description }}
+          </div>
+        </nuxt-link>
       </div>
+    </div>
     <app-footer />
   </div>
 </template>

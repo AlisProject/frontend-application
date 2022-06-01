@@ -25,7 +25,6 @@
   }
 }
 
-
 .tooltip {
   display: inline-block;
   width: 1em;
@@ -48,7 +47,6 @@
     font-weight: bold;
   }
 }
-
 
 .description {
   color: #6e6e6e;
