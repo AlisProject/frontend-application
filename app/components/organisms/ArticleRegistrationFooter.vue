@@ -7,7 +7,7 @@
           アカウント登録でALISを楽しもう！
         </div>
         <div class="detail">
-          豪華NFTがもらえるイベントも開催中
+          いいね、記事投稿でトークンやNFTを獲得できます
         </div>
       </div>
       <div class="area-button">
