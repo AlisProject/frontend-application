@@ -41,11 +41,28 @@
   <p v-else-if="notification.type === 'fraud'" class="area-description">
     <span class="gray-darker">{{ notification.fraud_body }}</span>
   </p>
+  <p v-else-if="notification.type === 'get_token_like'" class="area-description">
+    「いいね」によって
+    <span class="gray-darker">{{ formattedAlisToken(notification.token) }}ALIS</span> 獲得しました！
+    <span v-if="isOverNFTToken">
+      合計
+      <span class="gray-darker">{{ formattedAlisToken(notification.sum_token) }}ALIS</span>
+      獲得しています。
+    </span>
+    <span v-else>
+      NFT獲得まで <span class="gray-darker">{{ nftToken }}ALIS</span> です。
+    </span>
+  </p>
+  <p v-else-if="notification.type === 'get_token_article'" class="area-description">
+    公開された記事によって
+    <span class="gray-darker">{{ formattedAlisToken(notification.token) }}ALIS</span> 獲得しました！
+  </p>
 </template>
 
 <script>
 import { BigNumber } from 'bignumber.js'
 import { htmlDecode } from '~/utils/article'
+const formatNumber = 10 ** 18
 
 export default {
   props: {
@@ -56,18 +73,30 @@ export default {
   },
   computed: {
     tipTokenAmountForUser() {
-      const formatNumber = 10 ** 18
       return new BigNumber(this.notification.tip_value).div(formatNumber).toString(10)
     },
     articlePriceForUser() {
-      const formatNumber = 10 ** 18
       return new BigNumber(this.notification.price).div(formatNumber).toString(10)
+    },
+    isOverNFTToken() {
+      return BigNumber(this.notification.token).gte(BigNumber(100 * 10 ** 18))
+    },
+    nftToken() {
+      return this.formattedAlisToken(
+        BigNumber(100 * 10 ** 18).minus(BigNumber(this.notification.sum_token))
+      )
     },
     decodedArticleTitle() {
       return htmlDecode(this.notification.article_title)
     },
     decodedUserDisplayName() {
       return htmlDecode(this.notification.userInfo.user_display_name)
+    }
+  },
+  methods: {
+    formattedAlisToken(token) {
+      const formatToken = new BigNumber(token).div(formatNumber).toString(10)
+      return new BigNumber(formatToken).toFixed(3, 1)
     }
   }
 }

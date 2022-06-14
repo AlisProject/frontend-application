@@ -26,7 +26,10 @@
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />
     </div>
-    <div v-else-if="notification.type === 'fraud'" class="notification-card-container">
+    <div
+      v-else-if="['fraud', 'get_token_like', 'get_token_article'].includes(notification.type)"
+      class="notification-card-container"
+    >
       <notification-card-image :notification="notification" />
       <notification-card-content :notification="notification" />
     </div>
