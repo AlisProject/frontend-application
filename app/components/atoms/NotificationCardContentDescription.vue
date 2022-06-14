@@ -42,12 +42,12 @@
     <span class="gray-darker">{{ notification.fraud_body }}</span>
   </p>
   <p v-else-if="notification.type === 'get_token_like'" class="area-description">
-    「いいね」をしたことによって
+    「いいね」によって
     <span class="gray-darker">{{ formattedAlisToken(notification.token) }}ALIS</span> 獲得しました！
     <span v-if="isOverNFTToken">
       合計
       <span class="gray-darker">{{ formattedAlisToken(notification.sum_token) }}ALIS</span>
-      獲得しています！
+      獲得しています。
     </span>
     <span v-else>
       NFT獲得まで <span class="gray-darker">{{ nftToken }}ALIS</span> です。
