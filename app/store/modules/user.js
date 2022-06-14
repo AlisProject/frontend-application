@@ -686,25 +686,27 @@ const actions = {
 
       const { Items: notifications, LastEvaluatedKey } = await this.$axios.$get(
         '/api/me/notifications',
-        { params: { limit: 10, notification_id: notificationId, sort_key: sortKey } }
+        { params: { limit: 20, notification_id: notificationId, sort_key: sortKey } }
       )
 
       const notificationsWithData = await Promise.all(
-        notifications.map(async (notification) => {
-          let userInfo
-          if (
-            notification.type === 'comment' ||
-            notification.type === 'tip' ||
-            notification.type === 'reply' ||
-            notification.type === 'thread' ||
-            notification.type === 'purchased'
-          ) {
-            userInfo = await this.$axios.$get(`/api/users/${notification.acted_user_id}/info`)
-          } else if (notification.type === 'tip_error') {
-            userInfo = await this.$axios.$get(`/api/users/${notification.article_user_id}/info`)
-          }
-          return { ...notification, userInfo }
-        })
+        notifications
+          .filter((notification) => notification.type !== 'get_token_article')
+          .map(async (notification) => {
+            let userInfo
+            if (
+              notification.type === 'comment' ||
+              notification.type === 'tip' ||
+              notification.type === 'reply' ||
+              notification.type === 'thread' ||
+              notification.type === 'purchased'
+            ) {
+              userInfo = await this.$axios.$get(`/api/users/${notification.acted_user_id}/info`)
+            } else if (notification.type === 'tip_error') {
+              userInfo = await this.$axios.$get(`/api/users/${notification.article_user_id}/info`)
+            }
+            return { ...notification, userInfo }
+          })
       )
 
       commit(types.SET_NOTIFICATIONS_LAST_EVALUATED_KEY, { lastEvaluatedKey: LastEvaluatedKey })

@@ -7,7 +7,7 @@
       alt="Notification of like"
     >
     <img
-      v-else-if="notification.type === 'announce'"
+      v-else-if="['announce', 'get_token_like', 'get_token_article'].includes(notification.type)"
       class="profile-icon"
       src="~assets/images/pc/notification/icon_announce.png"
       alt="Notification of announce"
