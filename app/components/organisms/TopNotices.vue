@@ -1,7 +1,10 @@
 <template>
   <div class="area-topo-notices-container">
     <nuxt-link class="description" to="/campaigns">
-      ALISでNFTをゲット!!コラボ一覧はこちら <span class="tooltip" />
+      NFT獲得コラボ一覧 <span class="tooltip" />
+    </nuxt-link>
+    <nuxt-link class="description" to="/esports">
+      GameFi大会一覧 <span class="tooltip" />
     </nuxt-link>
   </div>
 </template>
