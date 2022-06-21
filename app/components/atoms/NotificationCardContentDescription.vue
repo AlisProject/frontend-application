@@ -45,9 +45,10 @@
     「いいね」によって
     <span class="gray-darker">{{ formattedAlisToken(notification.token) }}ALIS</span> 獲得しました！
     <span v-if="isOverNFTToken">
-      合計
-      <span class="gray-darker">{{ formattedAlisToken(notification.sum_token) }}ALIS</span>
-      獲得しています。
+      <!--合計-->
+      <!--<span class="gray-darker">{{ formattedAlisToken(notification.sum_token) }}ALIS</span>-->
+      <!--獲得しています。-->
+      NFT獲得条件達成済
     </span>
     <span v-else>
       NFT獲得まで <span class="gray-darker">{{ nftToken }}ALIS</span> です。
