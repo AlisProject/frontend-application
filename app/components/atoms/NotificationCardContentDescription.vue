@@ -79,7 +79,7 @@ export default {
       return new BigNumber(this.notification.price).div(formatNumber).toString(10)
     },
     isOverNFTToken() {
-      return BigNumber(this.notification.token).gte(BigNumber(100 * 10 ** 18))
+      return BigNumber(this.notification.sum_token).gte(BigNumber(100 * formatNumber))
     },
     nftToken() {
       return this.formattedAlisToken(
