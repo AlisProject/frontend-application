@@ -28,7 +28,7 @@
   /*font-weight: 500;*/
   font-weight: bold;
   text-decoration: none;
-  margin-right: 10px;
+  margin-right: 15px;
   height: 16px;
   white-space: nowrap;
 }
