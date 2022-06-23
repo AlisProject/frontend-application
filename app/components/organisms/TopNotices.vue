@@ -1,10 +1,14 @@
 <template>
   <div class="area-topo-notices-container">
     <nuxt-link class="description" to="/campaigns">
-      NFT獲得コラボ一覧 <span class="tooltip" />
+      NFTもらえる一覧
     </nuxt-link>
+    <nuxt-link class="description" to="/tag/NFTオーナー">
+      🎖NFTオーナー
+    </nuxt-link>
+    <span class="tooltip" title="ALISバッジ保有者が追加可能な「NFTオーナー」タグの記事が表示されます" />
     <nuxt-link class="description" to="/esports">
-      GameFi大会一覧 <span class="tooltip" />
+      GameFi大会一覧
     </nuxt-link>
   </div>
 </template>
@@ -20,6 +24,9 @@
     display: inline-block;
   }
 }
+.area-topo-notices-container::-webkit-scrollbar {
+  display: none;
+}
 
 .popular-article-list-container,
 .new-article-list-container {
@@ -28,37 +35,14 @@
   }
 }
 
-.tooltip {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
-  background: #6e6e6e;
-  border-radius: 100%;
-  position: relative;
-  margin-top: -3px;
-
-  &::before {
-    position: absolute;
-    display: inline-block;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0.6);
-    content: '?';
-    color: #fff;
-    font-size: 100%;
-    font-weight: bold;
-  }
-}
-
 .description {
   color: #6e6e6e;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
-  margin-right: 10px;
   height: 16px;
   white-space: nowrap;
+  margin-right: 7px;
 }
 
 .tooltip {
@@ -69,7 +53,7 @@
   background: #6e6e6e;
   border-radius: 100%;
   position: relative;
-  margin-top: -3px;
+  margin: 0 7px 0 -7px;
 
   &::before {
     position: absolute;
