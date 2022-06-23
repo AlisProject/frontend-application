@@ -5,13 +5,13 @@
     </nuxt-link>
     <nuxt-link class="description" to="/tag/NFTオーナー">
       🎖NFTオーナー
+      <span
+        class="tooltip"
+        title="ALISバッジ保有者が追加可能な「NFTオーナー」タグの記事が表示されます"
+      />
     </nuxt-link>
-    <span
-      class="tooltip"
-      title="ALISバッジ保有者が追加可能な「NFTオーナー」タグの記事が表示されます"
-    />
     <nuxt-link class="description" to="/esports">
-      GameFi大会一覧
+      GameFi大会
     </nuxt-link>
   </div>
 </template>
@@ -56,7 +56,7 @@
   background: #6e6e6e;
   border-radius: 100%;
   position: relative;
-  margin: 0 7px 0 -7px;
+  margin: -3px 7px 0 -5px;
 
   &::before {
     position: absolute;
