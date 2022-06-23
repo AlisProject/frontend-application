@@ -6,7 +6,10 @@
     <nuxt-link class="description" to="/tag/NFTオーナー">
       🎖NFTオーナー
     </nuxt-link>
-    <span class="tooltip" title="ALISバッジ保有者が追加可能な「NFTオーナー」タグの記事が表示されます" />
+    <span
+      class="tooltip"
+      title="ALISバッジ保有者が追加可能な「NFTオーナー」タグの記事が表示されます"
+    />
     <nuxt-link class="description" to="/esports">
       GameFi大会一覧
     </nuxt-link>
