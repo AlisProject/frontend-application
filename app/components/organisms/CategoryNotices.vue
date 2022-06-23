@@ -1,10 +1,10 @@
 <template>
   <div class="area-category-notices-container js-scrollable">
     <nuxt-link class="description" to="/campaigns">
-      NFT獲得コラボ一覧 <span class="tooltip" />
+      NFTもらえる一覧
     </nuxt-link>
     <nuxt-link class="description" to="/esports">
-      GameFi大会一覧 <span class="tooltip" />
+      GameFi大会
     </nuxt-link>
   </div>
 </template>
@@ -28,7 +28,7 @@
   /*font-weight: 500;*/
   font-weight: bold;
   text-decoration: none;
-  margin-right: 10px;
+  margin-right: 15px;
   height: 16px;
   white-space: nowrap;
 }
