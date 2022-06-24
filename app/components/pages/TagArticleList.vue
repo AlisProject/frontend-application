@@ -9,6 +9,12 @@
   >
     <app-header />
     <tag-info v-if="definedTag" :tagInfo="definedTag" />
+    <div v-else-if="isNFTOwner" class="area-tag">
+      {{ $route.params.tag }}
+      <p class="tag-description">
+        ALISバッジ保有者が追加可能な「NFTオーナー」タグの記事が表示されます。
+      </p>
+    </div>
     <div v-else class="area-tag">
       {{ $route.params.tag }}
     </div>
@@ -48,6 +54,9 @@ export default {
   computed: {
     definedTag() {
       return this.eventsInfo.find((definedTag) => definedTag.key === this.$route.params.tag)
+    },
+    isNFTOwner() {
+      return this.$route.params.tag === 'NFTオーナー'
     },
     tagStyle() {
       if (this.definedTag && this.definedTag.backgroundUrl) {
@@ -140,6 +149,10 @@ export default {
   grid-area: tag;
   font-size: 20px;
   letter-spacing: 0.25px;
+  .tag-description {
+    font-size: 14px;
+    color: #5e5e5e;
+  }
 }
 
 .area-nav {
@@ -193,6 +206,12 @@ export default {
   .tag-article-list {
     grid-row-gap: 26px;
     grid-template-rows: 60px 40px 26px minmax(0, 1fr) 75px min-content;
+    .area-tag {
+      .tag-description {
+        font-size: 12px;
+        color: #5e5e5e;
+      }
+    }
   }
 }
 

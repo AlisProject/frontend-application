@@ -5,10 +5,6 @@
     </nuxt-link>
     <nuxt-link class="description" to="/tag/NFTオーナー">
       🎖NFTオーナー
-      <span
-        class="tooltip"
-        title="ALISバッジ保有者が追加可能な「NFTオーナー」タグの記事が表示されます"
-      />
     </nuxt-link>
     <nuxt-link class="description" to="/esports">
       GameFi大会
@@ -45,46 +41,7 @@
   text-decoration: none;
   height: 16px;
   white-space: nowrap;
-  margin-right: 7px;
-}
-
-.tooltip {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  vertical-align: middle;
-  background: #6e6e6e;
-  border-radius: 100%;
-  position: relative;
-  margin: -3px 7px 0 -5px;
-
-  &::before {
-    position: absolute;
-    display: inline-block;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0.6);
-    content: '?';
-    color: #fff;
-    font-size: 100%;
-    font-weight: bold;
-  }
-}
-
-.link {
-  border-bottom: solid 1px transparent;
-  color: #6e6e6e;
-  font-size: 16px;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 400ms ease;
-  height: 16px;
-  margin-right: 20px;
-  white-space: nowrap;
-
-  &:hover {
-    border-bottom: solid 1px #6e6e6e;
-  }
+  margin-right: 13px;
 }
 
 @media screen and (max-width: 1296px) {
@@ -93,12 +50,6 @@
     .area-topo-notices-container {
       padding-left: 12px;
     }
-  }
-}
-
-@media screen and (max-width: 920px) {
-  .top-page .description {
-    margin: 0 10px 0 0;
   }
 }
 
@@ -115,12 +66,6 @@
   }
 
   .top-page .description {
-    margin: 0 5px 0 0;
-    font-size: 14px;
-  }
-
-  .link {
-    margin-right: 10px;
     font-size: 14px;
   }
 }
