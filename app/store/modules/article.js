@@ -182,6 +182,41 @@ const state = () => ({
       name: 'Aglet',
       platforms: []
     },
+    ユビホル: {
+      key: 'yubihoru',
+      name: 'ユビホル',
+      platforms: []
+    },
+    VOX: {
+      key: 'vox',
+      name: 'VOX',
+      platforms: []
+    },
+    エターナルパラドックス: {
+      key: 'eternalparadox',
+      name: 'Eternal Paradox',
+      platforms: []
+    },
+    エコーズオブエンパイア: {
+      key: 'echoesofempire',
+      name: 'ECHOES OF EMPIRE',
+      platforms: []
+    },
+    TWDE: {
+      key: 'thewalkingdeadempires',
+      name: 'THE WALKING DEAD EMPIRES',
+      platforms: []
+    },
+    GRIT: {
+      key: 'grit',
+      name: 'GRIT',
+      platforms: []
+    },
+    スパイダータンク: {
+      key: 'spidertanks',
+      name: 'SPIDERTANKS',
+      platforms: []
+    },
     everdome: {
       key: 'everdome',
       name: 'Everdome',
