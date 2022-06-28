@@ -2,7 +2,7 @@
   <div class="campaigns-container">
     <app-header />
     <h1 class="area-title">
-      NFTがもらえるコラボ一覧
+      NFTがもらえる一覧
     </h1>
     <div class="area-contents">
       <div v-for="item in campaigns" class="campaign">
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import AppHeader from '../organisms/AppHeader'
 import AppFooter from '../organisms/AppFooter'
 
@@ -46,6 +45,16 @@ export default {
           imageSrc: 'splinterlands.png',
           articleUrl: '/ALIS-official/articles/3751dAZ9YDLP',
           description: '先着100名！カードパックをゲットできるコラボ実施中！'
+        },
+        {
+          imageSrc: 'liker_badge.png',
+          articleUrl: '/ALIS-official/articles/KJNWZJPrLp8b',
+          description: 'NFT獲得サービスを開始！「いいね」をしてALIS限定のNFTをゲットしよう！'
+        },
+        {
+          imageSrc: 'writer_badge.png',
+          articleUrl: '/ALIS-official/articles/K0Z1P57ELWEb',
+          description: '新たなNFT獲得サービスを開始！記事を書いてALIS限定のNFTをゲットしよう！'
         }
       ]
     }
