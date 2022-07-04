@@ -709,9 +709,9 @@ const state = () => ({
       name: 'クリプトモン',
       iconUrl: '/d/nuxt/dist/img/static/kryptomon/icon.svg',
       backgroundUrl: '/d/nuxt/dist/img/static/kryptomon/background.png',
-      bannerUrl: '/d/nuxt/dist/img/static/kryptomon/banner.svg',
-      bannerSpUrl: '/d/nuxt/dist/img/static/kryptomon/bannerSp.svg',
-      eventUrl: '/ALIS-official/articles/aEOb7YZm6wk6',
+      bannerUrl: '/d/nuxt/dist/img/static/article/liker_banner.svg',
+      bannerSpUrl: '/d/nuxt/dist/img/static/article/liker_banner.svg',
+      eventUrl: '/ALIS-official/articles/KJNWZJPrLp8b',
       iconCaption: 'kryptomon',
       description:
         'ポケモンやたまごっち、クリプトキティを融合させたようなPlay-to-Earn型のNFTブロックチェーンゲームです。',
@@ -741,7 +741,14 @@ const state = () => ({
       officialPageUrl: 'https://cryptospells.jp/',
       officialPageButtonName: 'ゲームを始める'
     }
-  ]
+  ],
+  bannerInfo: {
+    articleBanner: {
+      bannerUrl: '/d/nuxt/dist/img/static/article/liker_banner.svg',
+      bannerSpUrl: '/d/nuxt/dist/img/static/article/liker_banner.svg',
+      transitionUrl: '/ALIS-official/articles/KJNWZJPrLp8b'
+    }
+  }
 })
 
 const getters = {
@@ -837,7 +844,8 @@ const getters = {
   cryptoRankingInfo: (state) => state.cryptoRankingInfo,
   bcgRankingInfo: (state) => state.bcgRankingInfo,
   articleDeleteModal: (state) => state.articleDeleteModal,
-  eventsInfo: (state) => state.eventsInfo
+  eventsInfo: (state) => state.eventsInfo,
+  bannerInfo: (state) => state.bannerInfo
 }
 
 const actions = {

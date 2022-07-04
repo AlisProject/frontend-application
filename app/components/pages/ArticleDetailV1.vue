@@ -1,10 +1,10 @@
 <template>
-  <div class="article-container" :style="eventInfoStyle">
+  <div class="article-container" :style="bannerInfoStyle">
     <app-header ref="detailHeader" class="area-app-header" :class="{ 'is-logged-in': loggedIn }" />
     <div class="area-article v1-content">
       <div class="area-title">
-        <div v-if="['crypto', 'game'].includes(article.topic)">
-          <a :href="eventInfo.eventUrl">
+        <div>
+          <a :href="bannerInfo.articleBanner.transitionUrl">
             <div class="event-banner" />
           </a>
         </div>
@@ -160,16 +160,13 @@ export default {
     isCurrentUser() {
       return this.loggedIn && this.$route.params.userId === this.currentUser.userId
     },
-    eventInfo() {
-      return this.eventsInfo.find((eventInfo) => eventInfo.key === 'クリプトモン')
-    },
-    eventInfoStyle() {
+    bannerInfoStyle() {
       return {
-        '--banner-background': `#fff url(${this.eventInfo.bannerUrl}) no-repeat`,
-        '--banner-background-sp': `#fff url(${this.eventInfo.bannerSpUrl}) no-repeat`
+        '--banner-background': `#fff url(${this.bannerInfo.articleBanner.bannerUrl}) no-repeat`,
+        '--banner-background-sp': `#fff url(${this.bannerInfo.articleBanner.bannerSpUrl}) no-repeat`
       }
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle', 'eventsInfo']),
+    ...mapGetters('article', ['likesCount', 'isLikedArticle', 'bannerInfo']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
@@ -416,7 +413,7 @@ header.area-app-header {
     .event-banner {
       background: var(--banner-background-sp);
       background-size: 100%;
-      height: calc(100vw / 5);
+      height: calc(100vw / 6);
       margin-bottom: 8px;
     }
     .article-title {

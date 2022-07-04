@@ -1,10 +1,10 @@
 <template>
-  <div class="article-container" :style="eventInfoStyle">
+  <div class="article-container" :style="bannerInfoStyle">
     <app-header ref="detailHeader" class="area-app-header" :class="{ 'is-logged-in': loggedIn }" />
     <div class="area-article v2-content" :class="{ 'is-show-paypart': isShowPaypart }">
       <div class="area-title">
-        <div v-if="['crypto', 'game'].includes(article.topic)">
-          <a :href="eventInfo.eventUrl">
+        <div>
+          <a :href="bannerInfo.articleBanner.transitionUrl">
             <div class="event-banner" />
           </a>
         </div>
@@ -37,16 +37,11 @@
       />
       <article-supporters :article="article" />
       <article-sub-infos-v2 :article="article" />
-      <article-event
-        v-if="article.tags.includes('クリプトモン')"
-        :tags="article.tags"
-        :topic="article.topic"
-      />
-      <article-registration v-else-if="isShowRegistration && !loggedIn" />
+      <article-registration v-if="isShowRegistration && !loggedIn" />
       <author-info
         :user="article.userInfo"
         class="area-authr-info"
-        :class="{ 'is-logged-in': loggedIn && !article.tags.includes('クリプトモン') }"
+        :class="{ 'is-logged-in': loggedIn }"
       />
       <user-article-popular-card-list
         v-if="userPopularArticles.articles.length > 0"
@@ -84,7 +79,6 @@ import AuthorInfo from '../atoms/AuthorInfo'
 import AuthorHeaderInfo from '../atoms/AuthorHeaderInfo'
 import UserArticlePopularCardList from '../organisms/UserArticlePopularCardList'
 import ArticleTags from '../molecules/ArticleTags'
-import ArticleEvent from '../atoms/ArticleEvent'
 import ArticleRegistration from '../organisms/ArticleRegistration'
 import ArticleRegistrationFooter from '../organisms/ArticleRegistrationFooter'
 import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
@@ -106,7 +100,6 @@ export default {
     AuthorHeaderInfo,
     UserArticlePopularCardList,
     ArticleTags,
-    ArticleEvent,
     ArticleRegistration,
     ArticleRegistrationFooter,
     ArticleDetailPaypart,
@@ -205,16 +198,13 @@ export default {
     isShowPaypart() {
       return !!this.article.price && !this.isPurchased && !this.isCurrentUser
     },
-    eventInfo() {
-      return this.eventsInfo.find((eventInfo) => eventInfo.key === 'クリプトモン')
-    },
-    eventInfoStyle() {
+    bannerInfoStyle() {
       return {
-        '--banner-background': `#fff url(${this.eventInfo.bannerUrl}) no-repeat`,
-        '--banner-background-sp': `#fff url(${this.eventInfo.bannerSpUrl}) no-repeat`
+        '--banner-background': `#fff url(${this.bannerInfo.articleBanner.bannerUrl}) no-repeat`,
+        '--banner-background-sp': `#fff url(${this.bannerInfo.articleBanner.bannerSpUrl}) no-repeat`
       }
     },
-    ...mapGetters('article', ['likesCount', 'isLikedArticle', 'purchasedArticleIds', 'eventsInfo']),
+    ...mapGetters('article', ['likesCount', 'isLikedArticle', 'purchasedArticleIds', 'bannerInfo']),
     ...mapGetters('user', ['loggedIn', 'currentUser'])
   },
   methods: {
@@ -498,7 +488,7 @@ header.area-app-header {
     .event-banner {
       background: var(--banner-background-sp);
       background-size: 100%;
-      height: 21vw;
+      height: 16vw;
       margin-bottom: 10px;
     }
     .article-title {
