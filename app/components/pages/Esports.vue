@@ -32,14 +32,19 @@ export default {
     return {
       items: [
         {
+          imageSrc: 'splinterlands0723.png',
+          articleUrl: '/uniquejp/articles/3dyBW0E1175d',
+          description: '【第7回】splinterlands esports tournament開催！！'
+        },
+        {
           imageSrc: 'illuvium.png',
           articleUrl: '/uniquejp/articles/aZq9eJPzJ1ob',
-          description: '【国内初】illuviumのイベント開催！エントリー募集中！'
+          description: '（終了）【国内初】illuviumのイベント開催！エントリー募集中！'
         },
         {
           imageSrc: 'blankos.png',
           articleUrl: '/uniquejp/articles/KJNWgB4Jrwdx',
-          description: 'Blankos block part国内イベント開催中！'
+          description: '（終了）Blankos block part国内イベント開催中！'
         }
       ]
     }
