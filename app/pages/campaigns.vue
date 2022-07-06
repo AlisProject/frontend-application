@@ -10,17 +10,17 @@ export default {
     Campaigns
   },
   head: {
-    title: 'NFTもらえるコラボ一覧',
+    title: 'NFTもらえる一覧',
     meta: [
       {
         hid: 'og:title',
         property: 'og:title',
-        content: 'NFTもらえるコラボ一覧 | ALIS'
+        content: 'NFTもらえる一覧 | ALIS'
       },
       {
         hid: 'og:description',
         property: 'og:description',
-        content: 'NFTもらえるコラボ一覧'
+        content: 'NFTもらえる一覧'
       }
     ]
   }
