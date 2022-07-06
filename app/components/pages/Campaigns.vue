@@ -37,14 +37,19 @@ export default {
         //   '今なら卵やルートボックスをゲットできるコラボ実施中！'
         // },
         {
-          imageSrc: 'cryptospelles.png',
-          articleUrl: '/ALIS-official/articles/KOwJdwy0xb9z',
-          description: '先着200名！「蒼炎の崇拝者」をゲットできるコラボ実施中！'
-        },
-        {
           imageSrc: 'splinterlands.png',
           articleUrl: '/ALIS-official/articles/3751dAZ9YDLP',
           description: '先着100名！カードパックをゲットできるコラボ実施中！'
+        },
+        {
+          imageSrc: 'lok.png',
+          articleUrl: '/ALIS-official/articles/365Rb1VZYWkw',
+          description: '先着50名！$49.99の「Ready for Battle Pack」をゲットできるコラボ実施中！'
+        },
+        {
+          imageSrc: 'cryptospelles.png',
+          articleUrl: '/ALIS-official/articles/KOwJdwy0xb9z',
+          description: '先着200名！「蒼炎の崇拝者」をゲットできるコラボ実施中！'
         },
         {
           imageSrc: 'liker_badge.png',
