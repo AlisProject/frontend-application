@@ -37,14 +37,14 @@ export default {
         //   '今なら卵やルートボックスをゲットできるコラボ実施中！'
         // },
         {
-          imageSrc: 'splinterlands.png',
-          articleUrl: '/ALIS-official/articles/3751dAZ9YDLP',
-          description: '先着100名！カードパックをゲットできるコラボ実施中！'
-        },
-        {
           imageSrc: 'lok.png',
           articleUrl: '/ALIS-official/articles/365Rb1VZYWkw',
           description: '先着50名！$49.99の「Ready for Battle Pack」をゲットできるコラボ実施中！'
+        },
+        {
+          imageSrc: 'splinterlands.png',
+          articleUrl: '/ALIS-official/articles/3751dAZ9YDLP',
+          description: '先着100名！カードパックをゲットできるコラボ実施中！'
         },
         {
           imageSrc: 'cryptospelles.png',
