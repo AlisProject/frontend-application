@@ -202,6 +202,16 @@ const state = () => ({
       name: 'ECHOES OF EMPIRE',
       platforms: []
     },
+    GnomeMines: {
+      key: 'gnomemines',
+      name: 'Gnome Mines',
+      platforms: []
+    },
+    metakeeper: {
+      key: 'metakeeper',
+      name: 'Meta Keeper',
+      platforms: []
+    },
     TWDE: {
       key: 'thewalkingdeadempires',
       name: 'THE WALKING DEAD EMPIRES',
@@ -452,7 +462,7 @@ const state = () => ({
       name: 'StarCrazy',
       platforms: ['iotex']
     },
-    cCryptoFarms: {
+    CryptoFarms: {
       key: 'cryptofarms',
       name: 'Crypto Farms',
       platforms: ['wax']
