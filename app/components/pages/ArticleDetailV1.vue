@@ -229,24 +229,24 @@ header.area-app-header {
   width: 100%;
   position: fixed;
   transition: 0.5s;
-  /deep/ a.logo-link {
+  :deep(a.logo-link) {
     position: absolute;
     left: calc(50% - 540px);
   }
-  /deep/ .session-items {
+  :deep(.session-items) {
     position: absolute;
     left: calc(50% + 277px);
   }
-  /deep/ .menu {
+  :deep(.menu) {
     right: auto;
     left: -100px;
   }
-  &.is-logged-in /deep/ .session-items {
+  &.is-logged-in :deep(.session-items) {
     left: calc(50% + 366px);
   }
   &.is-scroll {
     transform: translateY(-100%);
-    /deep/ .modal {
+    :deep(.modal) {
       &-mask {
         top: 100px;
       }
@@ -332,16 +332,16 @@ header.area-app-header {
     grid-template-rows: 100px minmax(0, 1fr) min-content min-content min-content 75px;
   }
   header.area-app-header {
-    /deep/ a.logo-link {
+    :deep(a.logo-link) {
       position: absolute;
       left: 34px;
     }
-    /deep/ .session-items {
+    :deep(.session-items) {
       position: absolute;
       left: auto;
       right: 34px;
     }
-    &.is-logged-in /deep/ .session-items {
+    &.is-logged-in :deep(.session-items) {
       left: auto;
     }
   }
@@ -349,16 +349,16 @@ header.area-app-header {
 
 @media screen and (max-width: 920px) {
   header.area-app-header {
-    /deep/ a.logo-link {
+    :deep(a.logo-link) {
       position: absolute;
       left: 12px;
     }
-    /deep/ .session-items {
+    :deep(.session-items) {
       position: absolute;
       left: auto;
       right: 12px;
     }
-    /deep/ .menu {
+    :deep(.menu) {
       right: 0;
       left: auto;
     }
@@ -382,7 +382,7 @@ header.area-app-header {
   header.area-app-header {
     height: 66px;
     &.is-scroll {
-      /deep/ .modal {
+      :deep(.modal) {
         &-mask {
           top: 66px;
         }

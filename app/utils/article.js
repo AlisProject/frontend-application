@@ -1,5 +1,5 @@
 /* global iframely */
-import { XmlEntities } from 'html-entities'
+import { decodeEntity } from 'html-entities'
 import { BigNumber } from 'bignumber.js'
 import axios from './axios'
 
@@ -272,8 +272,7 @@ export function preventDropImageOnOGPContent() {
 }
 
 export function htmlDecode(text) {
-  const entities = new XmlEntities()
-  return entities.decode(text)
+  return decodeEntity(text, { level: 'xml' })
 }
 
 export function isYouTubeVideoURL(url) {

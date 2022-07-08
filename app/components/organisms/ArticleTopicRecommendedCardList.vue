@@ -57,33 +57,33 @@ export default {
   grid-auto-rows: min-content;
   grid-template-columns: min-content min-content;
 }
-/deep/ a.recommended-article-card {
+:deep(a.recommended-article-card) {
   width: 312px;
 }
 a.recommended-article-card {
-  /deep/ .eye-catch-image-box {
+  :deep(.eye-catch-image-box) {
     width: 268px;
   }
-  /deep/ .title {
+  :deep(.title) {
     width: 268px;
   }
-  /deep/ .username {
+  :deep(.username) {
     width: 162px;
   }
 }
 
 @media screen and (max-width: 640px) {
-  /deep/ a.recommended-article-card {
+  :deep(a.recommended-article-card) {
     width: 340px;
   }
   a.recommended-article-card {
-    /deep/ .eye-catch-image-box {
+    :deep(.eye-catch-image-box) {
       width: 296px;
     }
-    /deep/ .title {
+    :deep(.title) {
       width: 296px;
     }
-    /deep/ .username {
+    :deep(.username) {
       width: 168px;
     }
   }
@@ -103,17 +103,17 @@ a.recommended-article-card {
   .area-article-topic-recommended-title {
     margin-left: calc(50% - 150px);
   }
-  /deep/ a.recommended-article-card {
+  :deep(a.recommended-article-card) {
     width: 300px;
   }
   a.recommended-article-card {
-    /deep/ .eye-catch-image-box {
+    :deep(.eye-catch-image-box) {
       width: 256px;
     }
-    /deep/ .title {
+    :deep(.title) {
       width: 256px;
     }
-    /deep/ .username {
+    :deep(.username) {
       width: 150px;
     }
   }
