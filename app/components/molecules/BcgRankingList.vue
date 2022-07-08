@@ -17,7 +17,7 @@
             タグ
           </th>
           <th class="bcg-count-head">
-            月間記事数
+            記事数
           </th>
         </tr>
       </thead>

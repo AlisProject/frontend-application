@@ -1904,7 +1904,7 @@ const actions = {
   async getBcgRankingInfo({ commit, state }, { limit }) {
     try {
       const tagsCountInfo = await this.$axios.$get(`/api/search/tags_count`, {
-        params: { tags: Object.keys(state.bcgRankingGames), search_days: 30 },
+        params: { tags: Object.keys(state.bcgRankingGames), search_days: 180 },
         paramsSerializer: (params) => {
           return qs.stringify(params, { arrayFormat: 'repeat' })
         }
