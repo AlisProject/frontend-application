@@ -1,4 +1,5 @@
 /* global iframely */
+import { Buffer } from 'buffer'
 import { decodeEntity } from 'html-entities'
 import { BigNumber } from 'bignumber.js'
 import axios from './axios'
@@ -398,25 +399,37 @@ export function showEmbed() {
   })
 }
 
-export function getBodyAfterImageTagOptimization(body, domain, userId, articleId) {
+export async function getBodyAfterImageTagOptimization(body, domain, userId, articleId) {
   // 画像タグに以下の最適化を実施
   // ・alt属性の追加
   // ・サイズの指定
   // ・遅延ローディングの適用
   const imgTagPattern = String.raw`<img( alt="")? src="(https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
-  const imgTagRegexp = new RegExp(imgTagPattern, 'g')
+  const imgTagRegexp = new RegExp(imgTagPattern)
+  const imageTag = body.match(imgTagRegexp)
+  // 画像が存在しない場合は処理終了
+  if (!imageTag) return body
+  // 先頭の１件は CLS 対応のため事前にデータを取得
+  let tmpBody = ''
+  try {
+    const topImageUrl = imageTag[0].replace(imgTagRegexp, '$2')
+    const response = await axios.get(topImageUrl + '?d=800x2160', { responseType: 'arraybuffer' })
+    const imageBase64 = Buffer.from(response.data, 'binary').toString('base64')
+    console.log(imageBase64)
+    const imgPrefix = `data:${response.headers['content-type']};base64,`
+    tmpBody = body.replace(
+      imgTagRegexp,
+      `<img alt="Content image" src="${imgPrefix}${imageBase64}">`
+    )
+  } catch {
+    // 画像が取得できなかった場合は全て lazyload にて対応
+  }
+  // 2件目以降は lazyload にて対応
   const blankImage = require('~/assets/images/pc/article/article_image_blank.png')
-  const topBlankImage = require('~/assets/images/pc/article/article_top_image_blank.png')
-  const tmpBody = body.replace(
-    imgTagRegexp,
-    `<img alt="Content image" class="lazyload" data-src="$2?d=800x2160" src="${blankImage}">`
-  )
-  // 先頭の１件は CLS 対応のため大きめの blank image を使用
-  const lazyImgPattern = String.raw`<img alt="Content image" class="lazyload" data-src="(https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png)\?d=800x2160)" src=".*">`
-  const lazyImgRegexp = new RegExp(lazyImgPattern)
+  const allImgTagRegexp = new RegExp(imgTagPattern, 'g')
   return tmpBody.replace(
-    lazyImgRegexp,
-    `<img alt="Content image" class="lazyload" data-src="$1" src="${topBlankImage}">`
+    allImgTagRegexp,
+    `<img alt="Content image" class="lazyload" data-src="$2?d=800x2160" src="${blankImage}">`
   )
 }
 
