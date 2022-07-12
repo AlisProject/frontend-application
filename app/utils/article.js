@@ -415,7 +415,6 @@ export async function getBodyAfterImageTagOptimization(body, domain, userId, art
     const topImageUrl = imageTag[0].replace(imgTagRegexp, '$2')
     const response = await axios.get(topImageUrl + '?d=800x2160', { responseType: 'arraybuffer' })
     const imageBase64 = Buffer.from(response.data, 'binary').toString('base64')
-    console.log(imageBase64)
     const imgPrefix = `data:${response.headers['content-type']};base64,`
     tmpBody = body.replace(
       imgTagRegexp,
