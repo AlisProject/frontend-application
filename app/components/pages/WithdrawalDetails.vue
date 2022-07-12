@@ -45,7 +45,6 @@
 </template>
 
 <script>
-/* global Web3 */
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
@@ -53,6 +52,7 @@ import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppFooter from '../organisms/AppFooter'
 import TheLoader from '../atoms/TheLoader'
+import Web3 from 'web3'
 import { formatDateWithTime } from '~/utils/format'
 import { showPaymentType, showProcessType, showFormattedAmount } from '~/utils/wallet'
 

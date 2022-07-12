@@ -51,12 +51,12 @@
 </template>
 
 <script>
-/* global Web3 */
 import { mapActions, mapGetters } from 'vuex'
 import { BigNumber } from 'bignumber.js'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { isV2 } from '~/utils/article'
 import { isMobile } from '~/utils/device'
+import Web3 from 'web3'
 
 export default {
   props: {

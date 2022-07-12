@@ -14,11 +14,11 @@
 </template>
 
 <script>
-/* global Web3 */
 import { mapActions, mapGetters } from 'vuex'
 import Dropzone from 'nuxt-dropzone'
 import 'nuxt-dropzone/dropzone.css'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
+import Web3 from 'web3'
 
 export default {
   components: {

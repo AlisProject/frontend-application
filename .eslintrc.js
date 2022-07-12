@@ -15,6 +15,7 @@ module.exports = {
   // add your custom rules here
   rules: {
     'arrow-parens': 'off',
+    'import/no-named-as-default-member': 'off',
     'no-console': 'off',
     'no-irregular-whitespace': 'off',
     'prefer-promise-reject-errors': 'off',
