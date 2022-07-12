@@ -406,10 +406,14 @@ export function getBodyAfterImageTagOptimization(body, domain, userId, articleId
   const imgTagPattern = String.raw`<img( alt="")? src="(https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png))">`
   const imgTagRegexp = new RegExp(imgTagPattern, 'g')
   const blankImage = require('~/assets/images/pc/article/article_image_blank.png')
-  return body.replace(
+  const tmpBody = body.replace(
     imgTagRegexp,
     `<img alt="Content image" class="lazyload" data-src="$2?d=800x2160" src="${blankImage}">`
   )
+  // 先頭の１件は CLS 対応のため lazyload を外す
+  const lazyImgPattern = String.raw`<img alt="Content image" class="lazyload" data-src="(https:\/\/${domain}\/d\/api\/articles_images\/${userId}\/${articleId}\/[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\.(jpeg|jpg|png)\?d=800x2160)" src=".*">`
+  const lazyImgRegexp = new RegExp(lazyImgPattern)
+  return tmpBody.replace(lazyImgRegexp, '<img alt="Content image" src="$1">')
 }
 
 export function formatTokenAmount(tokenAmount = 0) {
