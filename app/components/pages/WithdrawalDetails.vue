@@ -53,7 +53,6 @@ import AppHeader from '../organisms/AppHeader'
 import WalletNav from '../organisms/WalletNav'
 import AppFooter from '../organisms/AppFooter'
 import TheLoader from '../atoms/TheLoader'
-import Web3 from 'web3'
 import { formatDateWithTime } from '~/utils/format'
 import { showPaymentType, showProcessType, showFormattedAmount } from '~/utils/wallet'
 

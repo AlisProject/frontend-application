@@ -67,7 +67,6 @@ import LaboNLicenseTokenList from '~/components/organisms/LaboNLicenseTokenList'
 import TheLoader from '../atoms/TheLoader'
 import AppButton from '../atoms/AppButton'
 import { isMobile } from '~/utils/device'
-import Web3 from 'web3'
 
 export default {
   components: {
