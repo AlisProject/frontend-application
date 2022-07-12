@@ -157,7 +157,7 @@ export default {
     position: absolute;
 
     .logo {
-      width: auto;
+      width: 66.09px;
       height: 26px;
     }
   }
