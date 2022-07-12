@@ -1,4 +1,4 @@
-import Web3 from 'web3'
+/* global Web3 */
 const Common = require('ethereumjs-common').default
 const Tx = require('ethereumjs-tx').Transaction
 

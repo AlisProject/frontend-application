@@ -15,6 +15,11 @@ module.exports = {
       {
         src: `//cdn.iframe.ly/embed.js?api_key=${process.env.IFRAMELY_API_KEY}&omit_script=1`,
         async: true
+      },
+      {
+        // web3 を npm から追加すると、インポート時に SSR で落ちるようになってしまうため、CDN から読み込んでいる。
+        src: '//cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js',
+        defer: true
       }
     ],
     __dangerouslyDisableSanitizersByTagID: {
@@ -70,6 +75,10 @@ module.exports = {
       {
         rel: 'shortcut icon',
         href: `https://${process.env.ALIS_APP_DOMAIN}/d/nuxt/dist/touch-icon.png`
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css'
       }
     ]
   },
@@ -166,8 +175,7 @@ module.exports = {
     '~assets/stylesheets/vuex-toast.scss',
     '@alisproject/alis-editor/dist/AlisEditor.css',
     '~/assets/stylesheets/gruvbox-dark-modified.css',
-    '~assets/stylesheets/ckeditor-view.scss',
-    '~assets/stylesheets/fontAwesome/css/all.min.css'
+    '~assets/stylesheets/ckeditor-view.scss'
   ],
   env: {
     IFRAMELY_API_KEY: process.env.IFRAMELY_API_KEY,
