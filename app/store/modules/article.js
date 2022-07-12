@@ -1032,7 +1032,7 @@ const actions = {
   async getArticleDetail({ commit, dispatch }, { articleId }) {
     try {
       const article = await this.$axios.$get(`/api/articles/${articleId}`)
-      const body = getBodyAfterImageTagOptimization(
+      const body = await getBodyAfterImageTagOptimization(
         article.body,
         process.env.ALIS_APP_DOMAIN,
         article.user_id,
@@ -1055,7 +1055,7 @@ const actions = {
   async getPublicArticleDetail({ commit, dispatch }, { articleId }) {
     const article = await this.$axios.$get(`/api/me/articles/${articleId}/public`)
     commit(types.RESET_ARTICLE_COMMENTS_LAST_EVALUATED_KEY)
-    const body = getBodyAfterImageTagOptimization(
+    const body = await getBodyAfterImageTagOptimization(
       article.body,
       process.env.ALIS_APP_DOMAIN,
       article.user_id,
@@ -1926,7 +1926,7 @@ const actions = {
   async getLaboNArticleRandom({ commit, dispatch }) {
     try {
       const article = await this.$axios.$get(`/laboratory/labo/n/random`)
-      const body = getBodyAfterImageTagOptimization(
+      const body = await getBodyAfterImageTagOptimization(
         article.body,
         process.env.ALIS_APP_DOMAIN,
         article.user_id,
