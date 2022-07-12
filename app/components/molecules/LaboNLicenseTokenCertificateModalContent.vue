@@ -36,6 +36,7 @@
 /* global Web3 */
 import { mapGetters, mapActions } from 'vuex'
 import AppButton from '../atoms/AppButton'
+import Web3 from 'web3'
 
 export default {
   components: {

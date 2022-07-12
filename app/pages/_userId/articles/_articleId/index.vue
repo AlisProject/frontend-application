@@ -47,14 +47,16 @@ export default {
         store.dispatch('article/getArticleSupporters', { articleId }),
         store.dispatch('article/getTopics')
       ])
-      store.dispatch('user/getTopUserPopularArticles', {
-        userId: store.state.article.article.user_id,
-        excludeArticleId: articleId
-      })
-      store.dispatch('article/getTopicRecommendedArticles', {
-        topic: store.state.article.article.topic,
-        excludeArticleId: articleId
-      })
+      await Promise.all([
+        store.dispatch('user/getTopUserPopularArticles', {
+          userId: store.state.article.article.user_id,
+          excludeArticleId: articleId
+        }),
+        store.dispatch('article/getTopicRecommendedArticles', {
+          topic: store.state.article.article.topic,
+          excludeArticleId: articleId
+        })
+      ])
       if (params.userId !== store.state.article.article.user_id) {
         redirect(
           `/${store.state.article.article.user_id}/articles/${
