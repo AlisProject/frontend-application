@@ -74,7 +74,6 @@
 </template>
 
 <script>
-/* global Web3 */
 import { mapGetters, mapActions } from 'vuex'
 import { ADD_TOAST_MESSAGE } from 'vuex-toast'
 import { BigNumber } from 'bignumber.js'
@@ -83,6 +82,7 @@ import WalletNav from '../organisms/WalletNav'
 import TheLoader from '../atoms/TheLoader'
 import AppButton from '../atoms/AppButton'
 import AppFooter from '../organisms/AppFooter'
+import Web3 from 'web3'
 import { addDigitSeparator, isOverDecimalPoint } from '~/utils/wallet'
 
 const formatNumber = 10 ** 18

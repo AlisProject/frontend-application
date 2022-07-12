@@ -59,7 +59,6 @@
 </template>
 
 <script>
-/* global Web3 */
 import AppHeader from '~/components/organisms/AppHeader'
 import AppFooter from '~/components/organisms/AppFooter'
 import LaboNLicenseTokenDropzone from '~/components/organisms/LaboNLicenseTokenDropzone'
@@ -67,6 +66,7 @@ import LaboNLicenseTokenList from '~/components/organisms/LaboNLicenseTokenList'
 import TheLoader from '../atoms/TheLoader'
 import AppButton from '../atoms/AppButton'
 import { isMobile } from '~/utils/device'
+import Web3 from 'web3'
 
 export default {
   components: {

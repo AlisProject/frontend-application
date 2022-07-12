@@ -44,7 +44,8 @@ export default {
       }
       await Promise.all([
         store.dispatch(`article/${getArticleType}`, { articleId }),
-        store.dispatch('article/getArticleSupporters', { articleId })
+        store.dispatch('article/getArticleSupporters', { articleId }),
+        store.dispatch('article/getTopics')
       ])
       await Promise.all([
         store.dispatch('user/getTopUserPopularArticles', {
@@ -63,7 +64,6 @@ export default {
           }`
         )
       }
-      await store.dispatch('article/getTopics')
       store.dispatch('article/setTopicDisplayName', {
         topicName: store.state.article.article.topic
       })
@@ -83,13 +83,15 @@ export default {
     const { articleId } = this.$route.params
     if (this.loggedIn) {
       if (this.currentUser.phoneNumberVerified) await this.postPv({ articleId })
-      await this.getIsLikedArticle({ articleId })
-      await this.updateArticleCommentsByCommentIds({ articleId })
-
       // 自分の記事の場合は getPublicArticleDetail より記事情報を取得する。
       // 但し、fetch 時に取得済みの場合は実施しない
       if (this.isCurrentUser && !this.$store.state.article.isFetchedPublicArticle) {
-        await this.$store.dispatch('article/getPublicArticleDetail', { articleId })
+        await Promise.all([
+          this.getIsLikedArticle({ articleId }),
+          this.updateArticleCommentsByCommentIds({ articleId }),
+          this.$store.dispatch('article/getPublicArticleDetail', { articleId }),
+          await this.setArticleComments({ articleId })
+        ])
         this.$store.dispatch('article/setIsFetchedPublicArticle', { isFetched: true })
         const paywallLine = document.querySelector('.paywall-line')
         if (paywallLine) {
@@ -99,7 +101,12 @@ export default {
         // 記事を購入していた場合は getPurchaedArticleDetail より記事情報を取得する。
         // 但し、fetch 時に取得済みの場合は実施しない
       } else if (!this.isCurrentUser && !this.$store.state.article.isFetchedPurchasedArticle) {
-        await this.$store.dispatch('article/setPurchasedArticleIds')
+        await Promise.all([
+          this.getIsLikedArticle({ articleId }),
+          this.updateArticleCommentsByCommentIds({ articleId }),
+          await this.$store.dispatch('article/setPurchasedArticleIds'),
+          await this.setArticleComments({ articleId })
+        ])
         const isPurchased =
           this.loggedIn && this.$store.state.article.purchasedArticleIds.includes(articleId)
         if (isPurchased) {
@@ -111,9 +118,8 @@ export default {
       }
     } else {
       this.setIsLikedArticle({ liked: false })
+      await this.setArticleComments({ articleId })
     }
-    // コメント取得
-    await this.setArticleComments({ articleId })
   },
   computed: {
     isCurrentUser() {
@@ -138,15 +144,8 @@ export default {
     const decodedArticleOverview = htmlDecode(article.overview)
     const eyeCatchUrl = article.eye_catch_url ? `${article.eye_catch_url}?d=1200x630` : null
 
-    return {
+    const headValue = {
       title: decodedArticleTitle,
-      link: [
-        {
-          rel: 'stylesheet',
-          href:
-            'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/css/medium-editor-insert-plugin.min.css'
-        }
-      ],
       meta: [
         {
           hid: `og:title`,
@@ -177,6 +176,16 @@ export default {
         }
       ]
     }
+    if (!isV2(this.article)) {
+      headValue.link = [
+        {
+          rel: 'stylesheet',
+          href:
+            'https://cdnjs.cloudflare.com/ajax/libs/medium-editor-insert-plugin/2.4.1/css/medium-editor-insert-plugin.min.css'
+        }
+      ]
+    }
+    return headValue
   }
 }
 </script>

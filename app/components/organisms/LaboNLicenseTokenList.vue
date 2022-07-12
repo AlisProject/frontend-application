@@ -21,8 +21,8 @@
 </template>
 
 <script>
-/* global Web3 */
 import { mapActions, mapGetters } from 'vuex'
+import Web3 from 'web3'
 
 const LaboNLicenseTokenCertificateModal = () =>
   import('../organisms/LaboNLicenseTokenCertificateModal')

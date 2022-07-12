@@ -33,8 +33,8 @@
 </template>
 
 <script>
-/* global Web3 */
 import { mapGetters, mapActions } from 'vuex'
+import Web3 from 'web3'
 import AppButton from '../atoms/AppButton'
 
 export default {
