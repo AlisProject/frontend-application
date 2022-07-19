@@ -1,5 +1,4 @@
 /* global iframely */
-import { Buffer } from 'buffer'
 import { decodeEntity } from 'html-entities'
 import { BigNumber } from 'bignumber.js'
 import axios from './axios'
@@ -409,22 +408,30 @@ export async function getBodyAfterImageTagOptimization(body, domain, userId, art
   const imageTag = body.match(imgTagRegexp)
   // 画像が存在しない場合は処理終了
   if (!imageTag) return body
-  // 先頭の１件は CLS 対応のため事前にデータを取得
-  let tmpBody = ''
-  try {
-    const topImageUrl = imageTag[0].replace(imgTagRegexp, '$2')
-    const response = await axios.get(topImageUrl + '?d=800x2160', { responseType: 'arraybuffer' })
-    const imageBase64 = Buffer.from(response.data, 'binary').toString('base64')
-    const imgPrefix = `data:${response.headers['content-type']};base64,`
-    tmpBody = body.replace(
-      imgTagRegexp,
-      `<img alt="Content image" src="${imgPrefix}${imageBase64}">`
-    )
-  } catch {
-    // 画像が取得できなかった場合は全て lazyload にて対応
-  }
-  // 2件目以降は lazyload にて対応
+  // SSR の場合、CLS 対応のため先頭の１件は事前にデータを取得し画像サイズを設定
   const blankImage = require('~/assets/images/pc/article/article_image_blank.png')
+  let tmpBody = body
+  if (process.server) {
+    try {
+      const topImageUrl = imageTag[0].replace(imgTagRegexp, '$2')
+      const response = await axios.get(topImageUrl + '?d=800x2160', { responseType: 'arraybuffer' })
+      const { default: sizeOf } = await import('probe-image-size/sync')
+      const topImageSize = sizeOf(response.data)
+      const imgWidth = topImageSize.width > 640 ? 640 : topImageSize.width
+      const imgHeight =
+        topImageSize.width > 640
+          ? Math.floor(topImageSize.height * (640 / topImageSize.width) * 100) / 100
+          : topImageSize.height
+      tmpBody = body.replace(
+        imgTagRegexp,
+        `<img alt="Content image" width="${imgWidth + 'px'}" height="${imgHeight +
+          'px'}" style="height: auto" class="lazyload" data-src="$2?d=800x2160" src="${blankImage}">`
+      )
+    } catch {
+      // 画像が取得できなかった場合は画像サイズ指定は実施しない
+    }
+  }
+  // CSR、もしくは SSRでの2件目以降は size 指定せずに lazyload のみ対応
   const allImgTagRegexp = new RegExp(imgTagPattern, 'g')
   return tmpBody.replace(
     allImgTagRegexp,
