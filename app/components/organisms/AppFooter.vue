@@ -50,17 +50,13 @@
     flex-flow: column nowrap;
     justify-content: flex-start;
     padding: 1.3em 0 1em;
-    height: 180px;
   }
 
   .link {
     font-size: 12px;
-    margin: 0 2em 1em;
+    margin: 0 2em;
     text-decoration: none;
-
-    &:last-child {
-      margin-bottom: 24px;
-    }
+    padding: 12px 0;
   }
 }
 </style>

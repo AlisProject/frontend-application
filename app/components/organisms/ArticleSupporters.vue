@@ -30,7 +30,11 @@
           :class="{ 'is-show': hasOverSupportersShowCount }"
           :to="`/${article.user_id}/articles/${article.article_id}/supporters`"
         >
-          <img src="~assets/images/pc/article/icon_all_supporters.svg" class="user-icon">
+          <img
+            src="~assets/images/pc/article/icon_all_supporters.svg"
+            class="user-icon"
+            alt="Supporters link icon"
+          >
         </nuxt-link>
       </div>
       <div class="area-supporters-count">
