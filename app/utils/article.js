@@ -151,6 +151,7 @@ export function getIframelyEmbedTemplate({ url, meta, links }) {
   if (hasThumbnail) {
     thumbnailElement = document.createElement('img')
     thumbnailElement.setAttribute('src', thumbnail)
+    thumbnailElement.setAttribute('alt', 'embedded image')
     thumbnailElement.classList.add('thumbnail')
   }
 
