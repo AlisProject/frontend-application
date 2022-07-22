@@ -44,14 +44,18 @@
   <p v-else-if="notification.type === 'get_token_like'" class="area-description">
     「いいね」によって
     <span class="gray-darker">{{ formattedAlisToken(notification.token) }}ALIS</span> 獲得しました！
-    <span v-if="isOverNFTToken">
-      <!--合計-->
-      <!--<span class="gray-darker">{{ formattedAlisToken(notification.sum_token) }}ALIS</span>-->
-      <!--獲得しています。-->
-      NFT獲得条件達成済
+    <span v-if="isGetNFT">
+      今回のALIS獲得でNFT獲得条件を達成しました！NFTの準備が完了次第、受け取りのお知らせが通知されるのでしばらくお待ちください。
+      ※ 10日程度かかる場合があります。
+    </span>
+    <span v-else-if="isOverSilverNFTToken">
+      GOLD NFT獲得まで <span class="gray-darker">{{ nextNftToken }}ALIS</span> です。
+    </span>
+    <span v-else-if="isOverBronzeNFTToken">
+      SILVER NFT獲得まで <span class="gray-darker">{{ nextNftToken }}ALIS</span> です。
     </span>
     <span v-else>
-      NFT獲得まで <span class="gray-darker">{{ nftToken }}ALIS</span> です。
+      NFT獲得まで <span class="gray-darker">{{ nextNftToken }}ALIS</span> です。
     </span>
   </p>
   <p v-else-if="notification.type === 'get_token_article'" class="area-description">
@@ -72,6 +76,13 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      likedBronzeToken: 100 * formatNumber,
+      likedSilverToken: 3000 * formatNumber,
+      likedGoldToken: 7000 * formatNumber
+    }
+  },
   computed: {
     tipTokenAmountForUser() {
       return new BigNumber(this.notification.tip_value).div(formatNumber).toString(10)
@@ -79,13 +90,49 @@ export default {
     articlePriceForUser() {
       return new BigNumber(this.notification.price).div(formatNumber).toString(10)
     },
-    isOverNFTToken() {
-      return BigNumber(this.notification.sum_token).gte(BigNumber(100 * formatNumber))
+    isOverGoldFTToken() {
+      return BigNumber(this.notification.sum_token).gte(BigNumber(this.likedGoldToken))
     },
-    nftToken() {
-      return this.formattedAlisToken(
-        BigNumber(100 * 10 ** 18).minus(BigNumber(this.notification.sum_token))
-      )
+    isOverSilverNFTToken() {
+      return BigNumber(this.notification.sum_token).gte(BigNumber(this.likedSilverToken))
+    },
+    isOverBronzeNFTToken() {
+      return BigNumber(this.notification.sum_token).gte(BigNumber(this.likedBronzeToken))
+    },
+    isGetNFT() {
+      if (this.isOverGoldFTToken) {
+        return true
+      } else if (this.isOverSilverNFTToken) {
+        // 今回初めて閾値を超えた場合のみ true を返却
+        if (
+          BigNumber(this.notification.sum_token)
+            .minus(this.notification.token)
+            .lte(BigNumber(this.likedSilverToken))
+        ) {
+          return true
+        }
+      } else if (this.isOverBronzeNFTToken) {
+        // 今回初めて閾値を超えた場合のみ true を返却
+        if (
+          BigNumber(this.notification.sum_token)
+            .minus(this.notification.token)
+            .lte(BigNumber(this.likedBronzeToken))
+        ) {
+          return true
+        }
+      }
+      return false
+    },
+    nextNftToken() {
+      let tmpToken = 0
+      if (this.isOverSilverNFTToken) {
+        tmpToken = BigNumber(this.likedGoldToken).minus(BigNumber(this.notification.sum_token))
+      } else if (this.isOverBronzeNFTToken) {
+        tmpToken = BigNumber(this.likedSilverToken).minus(BigNumber(this.notification.sum_token))
+      } else {
+        tmpToken = BigNumber(this.likedBronzeToken).minus(BigNumber(this.notification.sum_token))
+      }
+      return this.formattedAlisToken(tmpToken)
     },
     decodedArticleTitle() {
       return htmlDecode(this.notification.article_title)
