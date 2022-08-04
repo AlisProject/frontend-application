@@ -534,6 +534,9 @@ header.area-app-header {
         }
       }
     }
+    figure {
+      min-height: 140px;
+    }
   }
 }
 
