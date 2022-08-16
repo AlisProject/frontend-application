@@ -30,6 +30,7 @@
     "@nuxtjs/axios": "^5.9.3",
     "@nuxtjs/markdownit": "^2.0.0",
     "@nuxtjs/sentry": "^4.0.0",
+    "@nuxtjs/sitemap": "^2.4.0",
     "@nuxtjs/style-resources": "^1.0.0",
     "amazon-cognito-identity-js": "^3.0.7",
     "aws-sdk": "^2.814.0",

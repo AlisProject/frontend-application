@@ -89,7 +89,13 @@ module.exports = {
   /*
    ** Build configuration
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/markdownit', '@nuxtjs/style-resources', '@nuxtjs/sentry'],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/markdownit',
+    '@nuxtjs/style-resources',
+    '@nuxtjs/sentry',
+    '@nuxtjs/sitemap'
+  ],
   styleResources: {
     scss: ['~assets/stylesheets/mixins/**.scss']
   },
@@ -116,6 +122,20 @@ module.exports = {
   },
   sentry: {
     dsn: `${process.env.SENTRY_DSN}`
+  },
+  sitemap: {
+    hostname: 'https://alis.to',
+    gzip: true,
+    exclude: [
+      '/confirm',
+      '/help',
+      '/oauth-authenticate',
+      '/token-use-guidline',
+      '/callback/**',
+      '/me/**',
+      '/media_embed/**',
+      '/labo/**'
+    ]
   },
   srcDir: 'app',
   router: {
