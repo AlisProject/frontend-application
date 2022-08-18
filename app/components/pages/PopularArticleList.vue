@@ -43,7 +43,8 @@ export default {
   data() {
     return {
       isFetchingArticles: false,
-      topicNumber: 1
+      topicNumber: 1,
+      scrollCount: 0
     }
   },
   computed: {
@@ -87,6 +88,7 @@ export default {
         if (this.isLastPage || !isScrollBottom()) return
 
         await this.getPopularArticles({ topic: this.$route.query.topic || 'crypto' })
+        this.addGtmScrollEvent()
       } finally {
         this.isFetchingArticles = false
       }
@@ -102,6 +104,13 @@ export default {
         return
       }
       location.href = '/me/articles/new'
+    },
+    async addGtmScrollEvent() {
+      this.scrollCount += 1
+      window.dataLayer.push({
+        event: 'articlePageScroll',
+        scroll_info: 'popular_' + this.$route.query.topic + '_' + this.scrollCount
+      })
     },
     ...mapActions('article', ['getPopularArticles', 'resetArticleData', 'setTopicDisplayName']),
     ...mapActions('user', [

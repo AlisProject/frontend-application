@@ -70,7 +70,8 @@ export default {
     return {
       isFetchingArticles: false,
       isShowGuide: false,
-      isInit: false
+      isInit: false,
+      scrollCount: 0
     }
   },
   computed: {
@@ -122,6 +123,7 @@ export default {
         if (this.recommendedArticles.isLastPage || !isScrollBottom()) return
 
         await this.getRecommendedArticles()
+        this.addGtmScrollEvent()
       } finally {
         this.isFetchingArticles = false
       }
@@ -137,6 +139,13 @@ export default {
         return
       }
       location.href = '/me/articles/new'
+    },
+    async addGtmScrollEvent() {
+      this.scrollCount += 1
+      window.dataLayer.push({
+        event: 'articlePageScroll',
+        scroll_info: 'top_' + this.scrollCount
+      })
     },
     ...mapActions('article', ['getTipEyecatchArticles', 'getRecommendedArticles']),
     ...mapActions('user', [
