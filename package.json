@@ -29,6 +29,7 @@
     "@johmun/vue-tags-input": "^2.1.0",
     "@nuxtjs/axios": "^5.9.3",
     "@nuxtjs/markdownit": "^2.0.0",
+    "@nuxtjs/robots": "^2.5.0",
     "@nuxtjs/sentry": "^4.0.0",
     "@nuxtjs/sitemap": "^2.4.0",
     "@nuxtjs/style-resources": "^1.0.0",

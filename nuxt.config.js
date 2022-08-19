@@ -94,7 +94,8 @@ module.exports = {
     '@nuxtjs/markdownit',
     '@nuxtjs/style-resources',
     '@nuxtjs/sentry',
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots'
   ],
   styleResources: {
     scss: ['~assets/stylesheets/mixins/**.scss']
@@ -136,6 +137,11 @@ module.exports = {
       '/media_embed/**',
       '/labo/**'
     ]
+  },
+  robots: {
+    UserAgent: '*',
+    Disallow: '/me/',
+    Sitemap: `https://${process.env.ALIS_APP_DOMAIN}/sitemap.xml`
   },
   srcDir: 'app',
   router: {
