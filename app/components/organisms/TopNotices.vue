@@ -6,9 +6,6 @@
     <nuxt-link class="description" to="/tag/NFTオーナー">
       🎖NFTオーナー
     </nuxt-link>
-    <nuxt-link class="description" to="/esports">
-      GameFi大会
-    </nuxt-link>
   </div>
 </template>
 
