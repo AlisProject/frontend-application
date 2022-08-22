@@ -144,7 +144,7 @@ export default {
       this.scrollCount += 1
       window.dataLayer.push({
         event: 'articlePageScroll',
-        scroll_info: 'top_' + this.scrollCount
+        scroll_info: `top_${this.scrollCount}`
       })
     },
     ...mapActions('article', ['getTipEyecatchArticles', 'getRecommendedArticles']),
