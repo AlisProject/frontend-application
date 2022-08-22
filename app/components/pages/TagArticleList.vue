@@ -53,6 +53,7 @@ export default {
   },
   data() {
     return {
+      isFetchingArticles: false,
       scrollCount: 0
     }
   },
@@ -76,7 +77,6 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.infiniteScroll)
-
     // ページの初期化時に取得した要素よりも画面の高さが高いとき、ページがスクロールできない状態になるため、
     // 画面の高さに合うまで要素を取得する。
 
@@ -95,11 +95,16 @@ export default {
   },
   methods: {
     async infiniteScroll(event) {
-      const isLastPage = this.tagArticles.isLastPage
-      if (isLastPage || !isScrollBottom()) return
-
-      await this.getTagArticles({ tag: this.$route.params.tag })
-      this.addGtmScrollEvent()
+      if (this.isFetchingData) return
+      try {
+        this.isFetchingData = true
+        const isLastPage = this.tagArticles.isLastPage
+        if (isLastPage || !isScrollBottom()) return
+        await this.getTagArticles({ tag: this.$route.params.tag })
+        this.addGtmScrollEvent()
+      } finally {
+        this.isFetchingData = false
+      }
     },
     async addGtmScrollEvent() {
       this.scrollCount += 1
