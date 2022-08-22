@@ -109,7 +109,7 @@ export default {
       this.scrollCount += 1
       window.dataLayer.push({
         event: 'articlePageScroll',
-        scroll_info: 'recent_' + this.$route.query.topic + '_' + this.scrollCount
+        scroll_info: `recent_${this.$route.query.topic}_${this.scrollCount}`
       })
     },
     ...mapActions('article', ['getNewPagesArticles', 'resetArticleData', 'setTopicDisplayName']),

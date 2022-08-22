@@ -51,6 +51,11 @@ export default {
     TheLoader,
     AppFooter
   },
+  data() {
+    return {
+      scrollCount: 0
+    }
+  },
   computed: {
     definedTag() {
       return this.eventsInfo.find((definedTag) => definedTag.key === this.$route.params.tag)
@@ -94,6 +99,14 @@ export default {
       if (isLastPage || !isScrollBottom()) return
 
       await this.getTagArticles({ tag: this.$route.params.tag })
+      this.addGtmScrollEvent()
+    },
+    async addGtmScrollEvent() {
+      this.scrollCount += 1
+      window.dataLayer.push({
+        event: 'articlePageScroll',
+        scroll_info: `tag_${this.$route.params.tag}_${this.scrollCount}`
+      })
     },
     ...mapActions('article', ['getTagArticles']),
     ...mapActions('presentation', ['setTagArticlesScrollHeight'])
