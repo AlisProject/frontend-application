@@ -128,7 +128,8 @@ export default {
       query: null,
       showNav: false,
       inputText: '',
-      isSearchFirstly: true
+      isSearchFirstly: true,
+      scrollCount: 0
     }
   },
   beforeDestroy() {
@@ -212,9 +213,19 @@ export default {
         if (isLastPage || !isScrollBottom()) return
 
         await this.getSearchData(this.query)
+        if (this.searchContentType === 'article' || this.searchContentType === 'user') {
+          this.addGtmScrollEvent(this.searchContentType)
+        }
       } finally {
         this.isFetchingData = false
       }
+    },
+    async addGtmScrollEvent(searchContent) {
+      this.scrollCount += 1
+      window.dataLayer.push({
+        event: 'articlePageScroll',
+        scroll_info: `search_${searchContent}_${this.scrollCount}`
+      })
     },
     resetSearchData() {
       this.resetSearchArticles()
