@@ -771,7 +771,7 @@ const state = () => ({
       discordUrl: 'https://discord.gg/wizardia',
       officialArticleUrl: '/Wizardia/articles/2jDzxBA00qv8',
       officialArticleButtonName: '基礎情報',
-      officialPageUrl: 'https://wizardia.io/',
+      officialPageUrl: 'https://wizardia.io/tournaments',
       officialPageButtonName: 'ゲームを始める'
     }
   ],
