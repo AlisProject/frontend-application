@@ -37,11 +37,16 @@
       />
       <article-supporters :article="article" />
       <article-sub-infos-v2 :article="article" />
-      <article-registration v-if="isShowRegistration && !loggedIn" />
+      <article-event
+        v-if="article.tags.includes('Wizardia')"
+        :tags="article.tags"
+        :topic="article.topic"
+      />
+      <article-registration v-else-if="isShowRegistration && !loggedIn" />
       <author-info
         :user="article.userInfo"
         class="area-authr-info"
-        :class="{ 'is-logged-in': loggedIn }"
+        :class="{ 'is-logged-in': loggedIn && !article.tags.includes('Wizardia') }"
       />
       <user-article-popular-card-list
         v-if="userPopularArticles.articles.length > 0"
@@ -79,6 +84,7 @@ import AuthorInfo from '../atoms/AuthorInfo'
 import AuthorHeaderInfo from '../atoms/AuthorHeaderInfo'
 import UserArticlePopularCardList from '../organisms/UserArticlePopularCardList'
 import ArticleTags from '../molecules/ArticleTags'
+import ArticleEvent from '../atoms/ArticleEvent'
 import ArticleRegistration from '../organisms/ArticleRegistration'
 import ArticleRegistrationFooter from '../organisms/ArticleRegistrationFooter'
 import ArticleDetailPaypart from '../organisms/ArticleDetailPaypart'
@@ -100,6 +106,7 @@ export default {
     AuthorHeaderInfo,
     UserArticlePopularCardList,
     ArticleTags,
+    ArticleEvent,
     ArticleRegistration,
     ArticleRegistrationFooter,
     ArticleDetailPaypart,
