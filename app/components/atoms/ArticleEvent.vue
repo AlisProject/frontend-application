@@ -11,12 +11,12 @@
       <div class="area-link-button">
         <app-button class="official-article">
           <nuxt-link :to="`/tag/${eventInfo.key}`">
-            ゲーム情報
+            記事一覧
           </nuxt-link>
         </app-button>
         <app-button class="official-site">
           <a :href="eventInfo.officialPageUrl" target="_blank">
-            ゲームを始める <i class="fas fa-external-link-alt" />
+            {{ eventInfo.officialPageButtonName }} <i class="fas fa-external-link-alt" />
           </a>
         </app-button>
       </div>
@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     eventInfo() {
-      return this.eventsInfo.find((eventInfo) => eventInfo.key === 'クリプトモン')
+      return this.eventsInfo.find((eventInfo) => eventInfo.key === 'Wizardia')
     },
     eventInfoStyle() {
       return {
