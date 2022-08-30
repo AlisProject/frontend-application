@@ -30,7 +30,8 @@
       <tbody v-else class="bcg-ranking-body">
         <tr v-for="(bcgInfo, index) in rankingInfo" :key="bcgInfo.key">
           <td class="bcg-index" @click="toTag(`/tag/${bcgInfo.tag_name}`)">
-            {{ index + 1 }}
+            <span v-if="index === 0" class="bcg-ranking-pr">PR</span>
+            <span v-else>{{ index }}</span>
           </td>
           <td class="bcg-name" @click="toTag(`/tag/${bcgInfo.tag_name}`)">
             <img
@@ -68,9 +69,23 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      prGameKey: 'wizardia'
+    }
+  },
   computed: {
+    sortedRankingInfo() {
+      const prItem = this.bcgRankingInfo.filter((item) => item.key === this.prGameKey)
+      const tmpItems = this.bcgRankingInfo.filter((item) => item.key !== this.prGameKey)
+      if (prItem.length === 1) {
+        tmpItems.unshift(prItem[0])
+        return tmpItems
+      }
+      return this.bcgRankingInfo
+    },
     rankingInfo() {
-      return this.bcgRankingInfo.slice(0, this.indexCount)
+      return this.sortedRankingInfo.slice(0, this.indexCount)
     },
     ...mapGetters('user', ['loggedIn', 'currentUser']),
     ...mapGetters('article', ['bcgRankingInfo'])
@@ -182,6 +197,10 @@ export default {
 
 .bcg-index {
   text-align: center;
+}
+
+.bcg-ranking-pr {
+  font-size: 10px;
 }
 
 .bcg-name {
