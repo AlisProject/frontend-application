@@ -30,12 +30,11 @@ export default {
   data() {
     return {
       campaigns: [
-        // {
-        //   imageSrc: 'kryptomon.png',
-        //   articleUrl: '/ALIS-official/articles/aEOb7YZm6wk6',
-        //   description: 'ポケモンやたまごっち、クリプトキティを融合させたようなPlay-to-Earn型のNFT。' +
-        //   '今なら卵やルートボックスをゲットできるコラボ実施中！'
-        // },
+        {
+          imageSrc: 'wizardia.png',
+          articleUrl: '/ALIS-official/articles/3VjvxJzJggWD',
+          description: '誰でももらえる！WizardiaのNFTとトークンをゲットできるコラボ実施中！'
+        },
         {
           imageSrc: 'lok.png',
           articleUrl: '/ALIS-official/articles/365Rb1VZYWkw',
