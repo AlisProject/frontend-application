@@ -84,11 +84,6 @@
         </li>
         <hr class="hr">
         <li class="menu-link">
-          <nuxt-link to="/ALIS-official/articles/3bNWJXZjRGYE" class="menu-link-inner">
-            ALIS Market
-          </nuxt-link>
-        </li>
-        <li class="menu-link">
           <nuxt-link class="menu-link-inner" to="/tag/ALIS参加募集企画">
             ALIS参加募集企画
           </nuxt-link>
