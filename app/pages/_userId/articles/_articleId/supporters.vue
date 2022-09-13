@@ -29,6 +29,11 @@ export default {
         hid: 'og:description',
         property: 'og:description',
         content: 'サポーター一覧'
+      },
+      {
+        hid: 'robots',
+        name: 'robots',
+        content: 'noindex'
       }
     ]
   }
