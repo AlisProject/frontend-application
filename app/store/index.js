@@ -8,6 +8,7 @@ import tag from './modules/tag'
 import report from './modules/report'
 import presentation from './modules/presentation'
 import badge from './modules/badge'
+import nftGames from './modules/nftGames'
 
 Vue.use(Vuex)
 
@@ -21,6 +22,7 @@ export default () =>
       report,
       presentation,
       badge,
+      nftGames,
       toast: createModule({
         dismissInterval: 2000
       })

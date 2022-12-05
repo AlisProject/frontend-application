@@ -1,10 +1,10 @@
 <template>
   <div class="area-category-notices-container js-scrollable">
-    <nuxt-link class="description" to="/campaigns">
-      NFTもらえる一覧
+    <nuxt-link class="description" to="/nft_games">
+      👑NFTゲームランキング
     </nuxt-link>
-    <nuxt-link class="description" to="/esports">
-      GameFi大会
+    <nuxt-link class="description" to="/campaigns">
+      🎁NFTもらえる一覧
     </nuxt-link>
   </div>
 </template>

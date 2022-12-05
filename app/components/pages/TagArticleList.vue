@@ -2,13 +2,13 @@
   <div
     class="tag-article-list"
     :class="{
-      'defined-tag': definedTag,
+      'defined-game': isDefinedGame,
       'defined-tag-background': definedTag && definedTag.backgroundUrl
     }"
     :style="tagStyle"
   >
     <app-header />
-    <tag-info v-if="definedTag" :tagInfo="definedTag" />
+    <tag-info v-if="isDefinedGame" :tagInfo="definedTag" />
     <div v-else-if="isNFTOwner" class="area-tag">
       {{ $route.params.tag }}
       <p class="tag-description">
@@ -18,8 +18,9 @@
     <div v-else class="area-tag">
       {{ $route.params.tag }}
     </div>
-    <div class="area-nav">
-      <span class="nav-content">
+    <div class="area-nav" :class="{ 'defined-game': isDefinedGame }">
+      <item-label v-if="isDefinedGame" :labelName="`新着記事`" :addLink="``" :addText="``" />
+      <span v-else class="nav-content">
         新着記事
       </span>
     </div>
@@ -39,6 +40,7 @@ import { mapGetters, mapActions } from 'vuex'
 import AppHeader from '../organisms/AppHeader'
 import SearchArticleCardList from '../organisms/SearchArticleCardList'
 import TagInfo from '../atoms/TagInfo'
+import ItemLabel from '../atoms/ItemLabel'
 import TheLoader from '../atoms/TheLoader'
 import AppFooter from '../organisms/AppFooter'
 import { isPageScrollable, isScrollBottom } from '~/utils/client'
@@ -47,6 +49,7 @@ export default {
   components: {
     AppHeader,
     TagInfo,
+    ItemLabel,
     SearchArticleCardList,
     TheLoader,
     AppFooter
@@ -61,6 +64,9 @@ export default {
     definedTag() {
       return this.eventsInfo.find((definedTag) => definedTag.key === this.$route.params.tag)
     },
+    isDefinedGame() {
+      return Object.keys(this.nftGameInfo).length > 0
+    },
     isNFTOwner() {
       return this.$route.params.tag === 'NFTオーナー'
     },
@@ -73,7 +79,8 @@ export default {
       return null
     },
     ...mapGetters('article', ['tagArticles', 'eventsInfo']),
-    ...mapGetters('presentation', ['tagArticlesScrollHeight'])
+    ...mapGetters('presentation', ['tagArticlesScrollHeight']),
+    ...mapGetters('nftGames', ['nftGameInfo'])
   },
   mounted() {
     window.addEventListener('scroll', this.infiniteScroll)
@@ -153,8 +160,8 @@ export default {
     "...         loader                 ...       "
     "app-footer  app-footer             app-footer";
   min-height: 100vh;
-  &.defined-tag {
-    grid-template-rows: 100px 200px 26px minmax(0, 1fr) 75px 75px;
+  &.defined-game {
+    grid-template-rows: 100px auto 26px minmax(0, 1fr) 75px 75px;
   }
   &.defined-tag-background {
     background: var(--background);
@@ -180,6 +187,10 @@ export default {
   grid-template-areas:
     'nav-content ...';
   border-bottom: 1px solid #f0f0f0;
+  &.defined-game {
+    margin-top: 6px;
+    border-bottom: 0;
+  }
 
   .nav-content {
     grid-area: nav-content;
@@ -202,8 +213,8 @@ export default {
 @media screen and (max-width: 920px) {
   .tag-article-list {
     grid-template-columns: minmax(0, 1fr) 340px minmax(0, 1fr);
-    &.defined-tag {
-      grid-template-rows: 100px 245px 26px minmax(0, 1fr) 75px 75px;
+    &.defined-game {
+      grid-template-rows: 100px auto 26px minmax(0, 1fr) 75px 75px;
     }
     &.defined-tag-background {
       background: none;
@@ -214,8 +225,8 @@ export default {
 @media screen and (max-width: 640px) {
   .tag-article-list {
     grid-template-rows: 100px 40px 26px minmax(0, 1fr) 75px min-content;
-    &.defined-tag {
-      grid-template-rows: 100px 245px 26px minmax(0, 1fr) 75px min-content;
+    &.defined-game {
+      grid-template-rows: 100px auto 26px minmax(0, 1fr) 75px min-content;
     }
   }
 }

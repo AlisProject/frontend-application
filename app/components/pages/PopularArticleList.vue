@@ -1,12 +1,11 @@
 <template>
   <div
     class="popular-article-list-container"
-    :class="{ 'with-ranking': isWithRanking, 'with-ranking-notices': isWithRankingNotices }"
+    :class="{ 'with-ranking': isWithRanking, 'with-notices': isWithNotices }"
   >
     <app-header />
     <default-header-nav />
     <category-notices v-if="$route.query.topic === 'game'" />
-    <bcg-ranking-top v-if="$route.query.topic === 'game'" />
     <coin-ranking-top v-if="$route.query.topic === 'crypto'" />
     <article-type-select-nav />
     <article-card-list :articles="popularArticles" />
@@ -21,7 +20,6 @@ import AppHeader from '../organisms/AppHeader'
 import DefaultHeaderNav from '../molecules/DefaultHeaderNav'
 import CategoryNotices from '../organisms/CategoryNotices'
 import CoinRankingTop from '../organisms/CoinRankingTop'
-import BcgRankingTop from '../organisms/BcgRankingTop'
 import ArticleTypeSelectNav from '../organisms/ArticleTypeSelectNav'
 import ArticleCardList from '../organisms/ArticleCardList'
 import TheLoader from '../atoms/TheLoader'
@@ -34,7 +32,6 @@ export default {
     DefaultHeaderNav,
     CategoryNotices,
     CoinRankingTop,
-    BcgRankingTop,
     ArticleTypeSelectNav,
     ArticleCardList,
     TheLoader,
@@ -48,7 +45,7 @@ export default {
     }
   },
   computed: {
-    isWithRankingNotices() {
+    isWithNotices() {
       return ['game'].includes(this.$route.query.topic)
     },
     isWithRanking() {
@@ -157,19 +154,18 @@ export default {
   min-height: 100vh;
 }
 
-.popular-article-list-container.with-ranking-notices {
+.popular-article-list-container.with-notices {
   /* prettier-ignore */
   grid-template-areas:
     "app-header              app-header              app-header             "
     "nav                     nav                     nav                    "
     "...                     notices                 ...                    "
-    "...                     ranking                 ...                    "
     "article-type-select-nav article-type-select-nav article-type-select-nav"
     "...                     ...                     ...                    "
     "...                     article-card-list       ...                    "
     "...                     loader                  ...                    "
     "app-footer              app-footer              app-footer             ";
-  grid-template-rows: 100px auto 36px auto 49px 17.5px minmax(0, 1fr) 75px 75px;
+  grid-template-rows: 100px auto 36px 49px 17.5px minmax(0, 1fr) 75px 75px;
 }
 
 .popular-article-list-container.with-ranking {

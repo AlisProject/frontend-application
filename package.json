@@ -59,6 +59,7 @@
     "sjcl": "^1.0.8",
     "smoothscroll-polyfill": "^0.4.3",
     "url-regex": "^4.1.1",
+    "vue-easytable": "^2.21.7",
     "vue-numeric-input": "^1.0.6",
     "vuelidate": "^0.7.5",
     "vuex-toast": "^0.1.3"
