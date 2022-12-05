@@ -1,69 +1,154 @@
 <template>
   <div class="area-tag-info" :style="tagInfoStyle">
-    <nuxt-link :to="tagInfo.eventUrl">
+    <nuxt-link v-if="bannerUrl" :to="bannerUrl">
       <div class="banner" />
     </nuxt-link>
-    <div class="tag-info">
-      <img class="area-icon" :alt="tagInfo.iconCaption" :src="tagInfo.iconUrl">
-      <div class="area-name">
-        {{ tagInfo.name }}
+    <div class="header-link">
+      <nuxt-link class="link-item" to="/">
+        TOP /
+      </nuxt-link>
+      <nuxt-link class="link-item" to="/articles/popular?topic=game">
+        ゲーム /
+      </nuxt-link>
+      <nuxt-link class="link-item" to="/nft_games">
+        NFTゲームランキング /
+      </nuxt-link>
+      <span class="link-item">{{ nftGameInfo.name }}</span>
+    </div>
+    <div class="tag-title">
+      <img
+        alt="tag-icon"
+        :src="`/d/nuxt/dist/img/static/bcg_ranking/icon/${nftGameInfo.key}.png`"
+        class="tag-icon"
+      >
+      <p class="tag-title-text">
+        {{ nftGameInfo.name }}
+      </p>
+      <div class="area-link-button">
+        <app-button v-if="nftGameInfo.officialPageUrl" class="official-site">
+          <a :href="nftGameInfo.officialPageUrl" target="_blank">
+            ゲームを始める <i class="fas fa-external-link-alt" />
+          </a>
+        </app-button>
       </div>
+    </div>
+    <item-label :labelName="`${nftGameInfo.name} とは`" :addLink="addLink" :addText="addText" />
+    <div class="tag-info">
       <div class="area-description">
-        {{ tagInfo.description }}
+        {{ nftGameInfo.description }}
+      </div>
+
+      <div class="area-ranking-info">
+        <span
+          class="ranking-info-text"
+        >記事タグ：<span class="ranking-no">{{ nftGameInfo.tag_name }}</span></span>
       </div>
       <div class="area-sns">
-        <a v-if="tagInfo.twitterUrl" :href="tagInfo.twitterUrl" target="_blank" class="sns-icon">
+        <span class="sns-text">SNS：</span>
+        <a v-if="nftGameInfo.twitter" :href="nftGameInfo.twitter" target="_blank" class="sns-icon">
           <i class="fab fa-twitter" />
         </a>
-        <a v-if="tagInfo.telegramUrl" :href="tagInfo.telegramUrl" target="_blank" class="sns-icon">
+        <a
+          v-if="nftGameInfo.telegramUrl"
+          :href="nftGameInfo.telegramUrl"
+          target="_blank"
+          class="sns-icon"
+        >
           <i class="fab fa-telegram" />
         </a>
-        <a v-if="tagInfo.discordUrl" :href="tagInfo.discordUrl" target="_blank" class="sns-icon">
+        <a v-if="nftGameInfo.discord" :href="nftGameInfo.discord" target="_blank" class="sns-icon">
           <i class="fab fa-discord" />
         </a>
       </div>
-      <div class="area-link-button">
-        <app-button class="official-article">
-          <nuxt-link :to="tagInfo.officialArticleUrl">
-            {{ tagInfo.officialArticleButtonName }}
-          </nuxt-link>
-        </app-button>
-        <app-button class="official-site">
-          <a :href="tagInfo.officialPageUrl" target="_blank">
-            {{ tagInfo.officialPageButtonName }} <i class="fas fa-external-link-alt" />
-          </a>
-        </app-button>
+    </div>
+
+    <item-label :labelName="`ゲーム統計情報`" :addLink="addLink" :addText="addText" />
+    <div class="ranking-info">
+      <div class="ranking-item">
+        <div class="ranking-title">
+          ALIS記事数
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.tag_count ? nftGameInfo.tag_count : 0 }}
+        </div>
+      </div>
+      <div class="ranking-item">
+        <div class="ranking-title">
+          ユーザー数(1日)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.active_users_today ? nftGameInfo.active_users_today : '-' }}
+        </div>
+      </div>
+      <div class="ranking-item">
+        <div class="ranking-title">
+          ユーザー数(7日)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.active_users_7days ? nftGameInfo.active_users_7days : '-' }}
+        </div>
+      </div>
+      <div class="ranking-item">
+        <div class="ranking-title">
+          ユーザー数(30日)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.active_users_30days ? nftGameInfo.active_users_30days : '-' }}
+        </div>
+      </div>
+      <div class="ranking-item">
+        <div class="ranking-title">
+          ユーザー数(合計)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.total_users ? nftGameInfo.total_users : '-' }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AppButton from '../atoms/AppButton'
+import ItemLabel from '../atoms/ItemLabel'
 
 export default {
   components: {
-    AppButton
+    AppButton,
+    ItemLabel
+  },
+  data() {
+    return {
+      addLink: '',
+      addText: ''
+    }
   },
   props: {
     tagInfo: {
-      type: Object,
-      required: true
+      type: Object
     }
   },
   computed: {
+    bannerUrl() {
+      return this.tagInfo && this.tagInfo.bannerUrl ? this.tagInfo.bannerUrl : null
+    },
     tagInfoStyle() {
-      return {
-        '--banner-background': `#fff url(${this.tagInfo.bannerUrl}) no-repeat`,
-        '--banner-background-sp': `#fff url(${this.tagInfo.bannerSpUrl}) no-repeat`
+      if (this.bannerUrl) {
+        return {
+          '--banner-background': `#fff url(${this.tagInfo.bannerUrl}) no-repeat`,
+          '--banner-background-sp': `#fff url(${this.tagInfo.bannerSpUrl}) no-repeat`
+        }
       }
-    }
+      return null
+    },
+    ...mapGetters('nftGames', ['nftGameInfo'])
   },
   mounted() {
     // google optimize
     window.dataLayer.push({
       event: 'optimize.activate',
-      key: this.tagInfo.key
+      key: this.nftGameInfo.tag_name
     })
   }
 }
@@ -82,72 +167,38 @@ export default {
     background-size: 710px auto;
     text-align: center;
     height: 130px;
+    margin-bottom: 3px;
   }
-  .tag-info {
-    display: grid;
-    grid-template-columns: 105px 435px 170px;
-    grid-template-rows: 26px 54px 26px;
-    /* prettier-ignore */
-    grid-template-areas:
-        "tag-icon tag-name        tag-link-button"
-        "tag-icon tag-description tag-link-button"
-        "tag-icon tag-link-sns    tag-link-button";
-    height: 106px;
-    margin-top: 8px;
-
-    .area-icon {
-      grid-area: tag-icon;
-      background-size: 105px;
-      text-align: center;
-      width: 100%;
-      height: 100%;
-    }
-    .area-name {
-      grid-area: tag-name;
-      font-size: 20px;
-      color: #030303;
-      font-weight: bold;
-      letter-spacing: 0.25px;
-      margin: 0 15px 0 15px;
-    }
-    .area-description {
-      grid-area: tag-description;
-      font-size: 14px;
+  .header-link {
+    .link-item {
       color: #6e6e6e;
-      overflow: hidden;
-      text-align: left;
+      font-size: 14px;
+      font-weight: bold;
+      text-decoration: none;
+      height: 14px;
+      white-space: nowrap;
       text-overflow: ellipsis;
-      word-break: break-all;
-      margin: 5px 15px 0 15px;
     }
-    .area-sns {
-      grid-area: tag-link-sns;
-      margin: 0 15px 0 15px;
-      .sns-icon {
-        color: #030303;
-        cursor: pointer;
-        display: inline-block;
-        font-size: 20px;
-        margin-right: 10px;
-      }
+  }
+
+  .tag-title {
+    display: flex;
+    align-items: center;
+    margin: 40px 0 15px 0;
+    .tag-icon {
+      width: 100px;
+      height: 100px;
+    }
+    .tag-title-text {
+      margin-left: 12px;
+      color: #030303;
+      font-size: 32px;
+      font-weight: 600;
+      font-family: Helvetica Neue, Arial, sans-serif;
+      text-overflow: ellipsis;
     }
     .area-link-button {
-      grid-area: tag-link-button;
-      .official-article {
-        border-radius: 4px;
-        box-shadow: none;
-        font-size: 14px;
-        font-weight: bold;
-        height: 34px;
-        line-height: 34px;
-        width: 170px;
-        margin-top: 14px;
-        background: #df772b;
-        &:hover,
-        &:focus {
-          background: #df772b;
-        }
-      }
+      margin: auto 0 0 auto;
       .official-site {
         border-radius: 4px;
         box-shadow: none;
@@ -156,13 +207,97 @@ export default {
         height: 34px;
         line-height: 34px;
         width: 170px;
-        margin-top: 14px;
         &:hover,
         &:focus {
           background: #0086cc;
         }
       }
     }
+  }
+  .label-area {
+    margin: 50px 0 15px 0;
+    font-size: 18px;
+    color: #0086cc;
+  }
+  .tag-info {
+    margin-top: 8px;
+    .area-description {
+      font-size: 14px;
+      color: #6e6e6e;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+      word-break: break-all;
+      margin: 5px 15px 0 0;
+    }
+    .area-sns {
+      margin: 5px 0 15px 0;
+      .sns-text {
+        font-size: 14px;
+        color: #6e6e6e;
+      }
+      .sns-icon {
+        color: #030303;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 20px;
+        margin-right: 3px;
+      }
+    }
+    .area-ranking-info {
+      margin: 20px 0 0 0;
+      .ranking-info-text {
+        font-size: 14px;
+        color: #6e6e6e;
+      }
+      .ranking-no {
+        font-size: 14px;
+        font-weight: bold;
+        color: #030303;
+      }
+      .sns-icon {
+        color: #030303;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 20px;
+        margin-right: 3px;
+      }
+    }
+  }
+
+  .ranking-info {
+    display: flex;
+    flex-wrap: wrap;
+    .ranking-item {
+      margin: 6px;
+      width: calc(33% - 12px);
+      height: 80px;
+      border: 1px solid #cccccc;
+      border-radius: 8px;
+      .ranking-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #6e6e6e;
+        letter-spacing: 0.25px;
+        margin: 12px 0 0 12px;
+      }
+      .ranking-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0086cc;
+        overflow: hidden;
+        text-align: left;
+        text-overflow: ellipsis;
+        word-break: break-all;
+        margin: 12px 0 0 12px;
+      }
+    }
+  }
+  .footer-text {
+    color: #6e6e6e;
+    font-size: 9px;
+    text-decoration: none;
+    margin: 0 12px 0 12px;
   }
 }
 
@@ -180,62 +315,68 @@ export default {
       height: 75px;
     }
 
-    .tag-info {
-      grid-template-columns: 98px minmax(0, 1fr);
-      grid-template-rows: 16px 64px 26px 200px;
-      /* prettier-ignore */
-      grid-template-areas:
-          "tag-icon        tag-name       "
-          "tag-icon        tag-description"
-          "tag-icon        tag-link-sns   "
-          "tag-link-button tag-link-button";
-      margin-top: 13px;
+    .header-link {
+      .link-item {
+        font-size: 12px;
+      }
+    }
 
-      .area-icon {
-        background-size: 98px;
-        text-align: center;
-        width: 100%;
-        height: 98px;
+    .tag-title {
+      margin: 15px 0 5px 0;
+      flex-wrap: wrap;
+      .tag-icon {
+        width: 64px;
+        height: 64px;
       }
-      .area-name {
-        grid-area: tag-name;
-        font-size: 14px;
-        color: #030303;
-        font-weight: bold;
-        letter-spacing: 0.25px;
-        margin: 0 15px 0 15px;
+      .tag-title-text {
+        width: 262px;
+        font-size: 24px;
       }
+      .area-link-button {
+        margin: 0;
+        .official-site {
+          margin-top: 5px;
+          border-radius: 4px;
+          box-shadow: none;
+          font-size: 14px;
+          font-weight: bold;
+          height: 34px;
+          line-height: 34px;
+          width: 340px;
+          &:hover,
+          &:focus {
+            background: #0086cc;
+          }
+        }
+      }
+    }
+
+    .label-area {
+      margin: 30px 0 15px 0;
+      font-size: 18px;
+    }
+    .tag-info {
       .area-description {
         grid-area: tag-description;
-        font-size: 12px;
+        font-size: 14px;
         color: #6e6e6e;
         overflow: hidden;
         text-align: left;
         text-overflow: ellipsis;
         word-break: break-all;
-        margin: 5px 0 0 15px;
       }
       .area-sns {
+        margin-top: 5px;
         .sns-icon {
           font-size: 16px;
+          margin-right: 5px;
         }
       }
-      .area-link-button {
-        grid-area: tag-link-button;
-        .official-article {
-          font-size: 12px;
-          height: 31px;
-          line-height: 31px;
-          width: 100%;
-          margin-top: 10px;
-        }
-        .official-site {
-          font-size: 12px;
-          height: 31px;
-          line-height: 31px;
-          width: 100%;
-          margin-top: 10px;
-        }
+    }
+    .ranking-info {
+      margin: 0 0 10px 0;
+      .ranking-item {
+        width: calc(50% - 16px);
       }
     }
   }

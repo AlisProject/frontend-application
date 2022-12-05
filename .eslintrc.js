@@ -6,6 +6,9 @@ module.exports = {
   },
   parserOptions: {
     parser: '@babel/eslint-parser',
+    babelOptions: {
+      presets: ["@babel/preset-react"]
+    },
     requireConfigFile: false,
   },
   plugins: [

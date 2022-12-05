@@ -31,6 +31,7 @@ export default {
 
     try {
       await store.dispatch('article/getTagArticles', { tag })
+      await store.dispatch('nftGames/getNftGameInfo', { tag })
     } catch (e) {
       error({ statusCode: 500 })
     }

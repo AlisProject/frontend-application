@@ -108,6 +108,7 @@ module.exports = {
   plugins: [
     '~/plugins/axios',
     '~/plugins/vuelidate',
+    { src: '~/plugins/ve-table', ssr: false },
     { src: '~plugins/gtm.js', ssr: false },
     { src: '~/plugins/vue-tags-input', ssr: false },
     { src: '~/plugins/editor', ssr: false },
