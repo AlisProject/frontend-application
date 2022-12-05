@@ -1,17 +1,29 @@
 <template>
   <div class="area-tag-info" :style="tagInfoStyle">
-    <nuxt-link v-if="bannerUrl" :to="bannerUrl" >
+    <nuxt-link v-if="bannerUrl" :to="bannerUrl">
       <div class="banner" />
     </nuxt-link>
     <div class="header-link">
-      <nuxt-link class="link-item" to="/">TOP /</nuxt-link>
-      <nuxt-link class="link-item" to="/articles/popular?topic=game">ゲーム /</nuxt-link>
-      <nuxt-link class="link-item" to="/nft_games">NFTゲームランキング /</nuxt-link>
+      <nuxt-link class="link-item" to="/">
+        TOP /
+      </nuxt-link>
+      <nuxt-link class="link-item" to="/articles/popular?topic=game">
+        ゲーム /
+      </nuxt-link>
+      <nuxt-link class="link-item" to="/nft_games">
+        NFTゲームランキング /
+      </nuxt-link>
       <span class="link-item">{{ nftGameInfo.name }}</span>
     </div>
     <div class="tag-title">
-      <img alt="tag-icon" :src="`/d/nuxt/dist/img/static/bcg_ranking/icon/${nftGameInfo.key}.png`" class="tag-icon" />
-      <p class="tag-title-text">{{ nftGameInfo.name }}</p>
+      <img
+        alt="tag-icon"
+        :src="`/d/nuxt/dist/img/static/bcg_ranking/icon/${nftGameInfo.key}.png`"
+        class="tag-icon"
+      >
+      <p class="tag-title-text">
+        {{ nftGameInfo.name }}
+      </p>
       <div class="area-link-button">
         <app-button v-if="nftGameInfo.officialPageUrl" class="official-site">
           <a :href="nftGameInfo.officialPageUrl" target="_blank">
@@ -27,53 +39,79 @@
       </div>
 
       <div class="area-ranking-info">
-        <span class="ranking-info-text">記事タグ：<span class="ranking-no">{{ this.nftGameInfo.tag_name }}</span></span>
+        <span
+          class="ranking-info-text"
+        >記事タグ：<span class="ranking-no">{{ nftGameInfo.tag_name }}</span></span>
       </div>
       <div class="area-sns">
         <span class="sns-text">SNS：</span>
         <a v-if="nftGameInfo.twitter" :href="nftGameInfo.twitter" target="_blank" class="sns-icon">
           <i class="fab fa-twitter" />
         </a>
-        <a v-if="nftGameInfo.telegramUrl" :href="nftGameInfo.telegramUrl" target="_blank" class="sns-icon">
+        <a
+          v-if="nftGameInfo.telegramUrl"
+          :href="nftGameInfo.telegramUrl"
+          target="_blank"
+          class="sns-icon"
+        >
           <i class="fab fa-telegram" />
         </a>
         <a v-if="nftGameInfo.discord" :href="nftGameInfo.discord" target="_blank" class="sns-icon">
           <i class="fab fa-discord" />
         </a>
       </div>
-
     </div>
 
     <item-label :labelName="`ゲーム統計情報`" :addLink="addLink" :addText="addText" />
     <div class="ranking-info">
       <div class="ranking-item">
-        <div class="ranking-title">ALIS記事数</div>
-        <div class="ranking-value">{{ nftGameInfo.tag_count ? nftGameInfo.tag_count: 0 }}</div>
+        <div class="ranking-title">
+          ALIS記事数
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.tag_count ? nftGameInfo.tag_count : 0 }}
+        </div>
       </div>
       <div class="ranking-item">
-        <div class="ranking-title">ユーザー数(1日)</div>
-        <div class="ranking-value">{{ nftGameInfo.active_users_today ? nftGameInfo.active_users_today: '-'}}</div>
+        <div class="ranking-title">
+          ユーザー数(1日)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.active_users_today ? nftGameInfo.active_users_today : '-' }}
+        </div>
       </div>
       <div class="ranking-item">
-        <div class="ranking-title">ユーザー数(7日)</div>
-        <div class="ranking-value">{{ nftGameInfo.active_users_7days ? nftGameInfo.active_users_7days: '-'}}</div>
+        <div class="ranking-title">
+          ユーザー数(7日)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.active_users_7days ? nftGameInfo.active_users_7days : '-' }}
+        </div>
       </div>
       <div class="ranking-item">
-        <div class="ranking-title">ユーザー数(30日)</div>
-        <div class="ranking-value">{{ nftGameInfo.active_users_30days ? nftGameInfo.active_users_30days: '-' }}</div>
+        <div class="ranking-title">
+          ユーザー数(30日)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.active_users_30days ? nftGameInfo.active_users_30days : '-' }}
+        </div>
       </div>
       <div class="ranking-item">
-        <div class="ranking-title">ユーザー数(合計)</div>
-        <div class="ranking-value">{{ nftGameInfo.total_users ? nftGameInfo.total_users : '-'}}</div>
+        <div class="ranking-title">
+          ユーザー数(合計)
+        </div>
+        <div class="ranking-value">
+          {{ nftGameInfo.total_users ? nftGameInfo.total_users : '-' }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import AppButton from '../atoms/AppButton'
 import ItemLabel from '../atoms/ItemLabel'
-import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -83,7 +121,7 @@ export default {
   data() {
     return {
       addLink: '',
-      addText: '',
+      addText: ''
     }
   },
   props: {
@@ -96,7 +134,7 @@ export default {
       return this.tagInfo && this.tagInfo.bannerUrl ? this.tagInfo.bannerUrl : null
     },
     tagInfoStyle() {
-      if(this.bannerUrl) {
+      if (this.bannerUrl) {
         return {
           '--banner-background': `#fff url(${this.tagInfo.bannerUrl}) no-repeat`,
           '--banner-background-sp': `#fff url(${this.tagInfo.bannerSpUrl}) no-repeat`
@@ -104,7 +142,7 @@ export default {
       }
       return null
     },
-    ...mapGetters('nftGames', ['nftGameInfo']),
+    ...mapGetters('nftGames', ['nftGameInfo'])
   },
   mounted() {
     // google optimize
@@ -112,8 +150,7 @@ export default {
       event: 'optimize.activate',
       key: this.nftGameInfo.tag_name
     })
-  },
-
+  }
 }
 </script>
 
@@ -132,7 +169,7 @@ export default {
     height: 130px;
     margin-bottom: 3px;
   }
-  .header-link{
+  .header-link {
     .link-item {
       color: #6e6e6e;
       font-size: 14px;
@@ -157,7 +194,7 @@ export default {
       color: #030303;
       font-size: 32px;
       font-weight: 600;
-      font-family: Helvetica Neue, Arial, sans-serif;;
+      font-family: Helvetica Neue, Arial, sans-serif;
       text-overflow: ellipsis;
     }
     .area-link-button {
@@ -195,7 +232,7 @@ export default {
     }
     .area-sns {
       margin: 5px 0 15px 0;
-      .sns-text{
+      .sns-text {
         font-size: 14px;
         color: #6e6e6e;
       }
@@ -209,7 +246,7 @@ export default {
     }
     .area-ranking-info {
       margin: 20px 0 0 0;
-      .ranking-info-text{
+      .ranking-info-text {
         font-size: 14px;
         color: #6e6e6e;
       }
@@ -226,7 +263,6 @@ export default {
         margin-right: 3px;
       }
     }
-
   }
 
   .ranking-info {
@@ -257,7 +293,7 @@ export default {
       }
     }
   }
-  .footer-text{
+  .footer-text {
     color: #6e6e6e;
     font-size: 9px;
     text-decoration: none;

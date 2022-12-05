@@ -1,7 +1,11 @@
 <template>
   <div v-if="ready" class="area-category-ranking-container">
-    <nuxt-link class="header-link first-item" to="/">TOP /</nuxt-link>
-    <nuxt-link class="header-link" to="/articles/popular?topic=game">ゲーム /</nuxt-link>
+    <nuxt-link class="header-link first-item" to="/">
+      TOP /
+    </nuxt-link>
+    <nuxt-link class="header-link" to="/articles/popular?topic=game">
+      ゲーム /
+    </nuxt-link>
     <span class="header-link">NFTゲームランキング</span>
     <item-label :labelName="rankingLabel" :addLink="addLink" :addText="addText" />
     <ve-table
@@ -27,10 +31,12 @@
     <div class="description">
       <p>
         NFTゲームとは、NFT（非代替性トークン）と暗号資産を含む、ブロックチェーン技術を利用したゲームを指します。
-        ブロックチェーンゲーム、GameFiとも呼ばれることもあり、特に遊ぶことで稼ぐことができるゲームは Play-to-Earnゲームとも呼ばれます。
+        ブロックチェーンゲーム、GameFiとも呼ばれることもあり、特に遊ぶことで稼ぐことができるゲームは
+        Play-to-Earnゲームとも呼ばれます。
       </p>
       <p>
-        NFTゲームは2017年リリースのCrypto Kittiesを初とし、今ではスクエア・エニックスやUbisoftといった大手ゲーム企業も参入し、多くのゲームがパソコンやスマホで遊べるようになっています。
+        NFTゲームは2017年リリースのCrypto
+        Kittiesを初とし、今ではスクエア・エニックスやUbisoftといった大手ゲーム企業も参入し、多くのゲームがパソコンやスマホで遊べるようになっています。
         ブロックチェーン技術がどのように活用されるかはゲームによって異なり、新しい活用法も次々と発明されます。
         よく見かけるNFTゲームの特徴としては、ゲームアイテムやゲーム通貨のデータがゲームサーバーではなく、ブロックチェーン上に存在することを挙げられます。
       </p>
@@ -52,7 +58,10 @@
       </div>
     </div>
     <div class="footer-text">
-      <p>※ 掲載している情報の正確性については万全を期しておりますが、その内容を保証するものではありません。</p>
+      <p>
+        ※
+        掲載している情報の正確性については万全を期しておりますが、その内容を保証するものではありません。
+      </p>
       <p>※ 掲載情報に基づいて被ったいかなる損害についても運営者は一切の責任を負いません。</p>
       <p>※ より正確な情報はFootprint Analytics（https://www.footprint.network/）をご確認ください</p>
     </div>
@@ -75,7 +84,12 @@ export default {
       ready: false,
       // ve-table param
       loadingInstance: null,
-      targetSortProps: ['tag_count', 'active_users_today', 'active_users_7days', 'active_users_30days'],
+      targetSortProps: [
+        'tag_count',
+        'active_users_today',
+        'active_users_7days',
+        'active_users_30days'
+      ],
       prevSort: 'tag_count',
       tableData: [],
       pageIndex: 1,
@@ -86,114 +100,114 @@ export default {
             click: (event) => {
               this.$router.push(`/tag/${row.tag_name}`)
             }
-          };
-        },
+          }
+        }
       },
       cellStyleOption: {
         headerCellClass: ({ column, rowIndex }) => {
-          return "table-header-cell-class";
+          return 'table-header-cell-class'
         },
         bodyCellClass: ({ row, column, rowIndex }) => {
           let addClass = 'table-body-cell-class'
           if (column.field === 'name') {
             addClass += ' cell-name-class'
-          } else if(column.field === 'tag_name'){
+          } else if (column.field === 'tag_name') {
             addClass += ' cell-tag-name-class'
-
           }
-          return addClass;
-        },
+          return addClass
+        }
       },
       sortOption: {
         sortAlways: true,
         sortChange: (params) => {
           this.sortChange(params)
-        },
+        }
       },
       columns: [
         {
-          field: "ranking",
-          key: "a",
-          title: "#",
+          field: 'ranking',
+          key: 'a',
+          title: '#',
           width: 30,
-          align: "center",
-          fixed: "left",
+          align: 'center',
+          fixed: 'left',
           renderBodyCell: ({ row, column, rowIndex }, h) => {
-            return ++rowIndex + (this.pageIndex -1) * this.pageSize
-          },
-        },
-        {
-          field: "icon",
-          key: "b",
-          title: "",
-          width: 55,
-          align: "center",
-          fixed: "left",
-          renderBodyCell: ({ row, column}) => {
-            const img_src = `/d/nuxt/dist/img/static/bcg_ranking/icon/${row.key}.png`
-            return <img alt="logo" src={img_src} class="ranking-game-icon" />;
+            return ++rowIndex + (this.pageIndex - 1) * this.pageSize
           }
         },
         {
-          field: "name",
-          key: "c",
-          title: "ゲーム",
-          width: 120,
-          align: "left"
+          field: 'icon',
+          key: 'b',
+          title: '',
+          width: 55,
+          align: 'center',
+          fixed: 'left',
+          renderBodyCell: ({ row }) => {
+            const imgSrc = `/d/nuxt/dist/img/static/bcg_ranking/icon/${row.key}.png`
+            return <img alt="logo" src={imgSrc} class="ranking-game-icon" />
+          }
         },
         {
-          field: "tag_count",
-          key: "d",
-          title: "記事数",
+          field: 'name',
+          key: 'c',
+          title: 'ゲーム',
+          width: 120,
+          align: 'left'
+        },
+        {
+          field: 'tag_count',
+          key: 'd',
+          title: '記事数',
           width: 65,
-          align: "right",
-          sortBy: "desc"
+          align: 'right',
+          sortBy: 'desc'
         },
         {
-          field: "active_users_today",
-          key: "e",
-          title: "ユーザー数(1日)",
+          field: 'active_users_today',
+          key: 'e',
+          title: 'ユーザー数(1日)',
           width: 120,
-          align: "right",
-          sortBy: ""
+          align: 'right',
+          sortBy: ''
         },
         {
-          field: "active_users_7days",
-          key: "f",
-          title: "ユーザー数(7日)",
+          field: 'active_users_7days',
+          key: 'f',
+          title: 'ユーザー数(7日)',
           width: 120,
-          align: "right",
-          sortBy: ""
+          align: 'right',
+          sortBy: ''
         },
         {
-          field: "active_users_30days",
-          key: "g",
-          title: "ユーザー数(30日)",
+          field: 'active_users_30days',
+          key: 'g',
+          title: 'ユーザー数(30日)',
           width: 120,
-          align: "right",
-          sortBy: ""
+          align: 'right',
+          sortBy: ''
         },
         {
-          field: "total_users",
-          key: "h",
-          title: "ユーザー数(合計)",
+          field: 'total_users',
+          key: 'h',
+          title: 'ユーザー数(合計)',
           width: 120,
-          align: "right",
-          sortBy: ""
+          align: 'right',
+          sortBy: ''
         },
         {
-          field: "tag_name",
-          key: "i",
-          title: "記事タグ",
+          field: 'tag_name',
+          key: 'i',
+          title: '記事タグ',
           width: 120,
-          align: "left"
+          align: 'left'
         }
       ],
       campaigns: [
         {
           imageSrc: 'lok.png',
           articleUrl: '/ALIS-official/articles/365Rb1VZYWkw',
-          description: '先着50名！League of Kingdomsの「Ready for Battle Pack」をゲットできるコラボ実施中！'
+          description:
+            '先着50名！League of Kingdomsの「Ready for Battle Pack」をゲットできるコラボ実施中！'
         },
         {
           imageSrc: 'splinterlands.png',
@@ -205,7 +219,7 @@ export default {
           articleUrl: '/ALIS-official/articles/KOwJdwy0xb9z',
           description: '先着200名！CryptoSpellsの「蒼炎の崇拝者」をゲットできるコラボ実施中！'
         }
-      ],
+      ]
     }
   },
   computed: {
@@ -219,12 +233,12 @@ export default {
     },
     ...mapGetters('nftGames', ['nftGamesRankingInfo'])
   },
-  async mounted(){
+  async mounted() {
     this.loadingInstance = this.$veLoading({
       fullscreen: true,
-      name: "bounce",
-      lock: true,
-    });
+      name: 'bounce',
+      lock: true
+    })
     this.loadingInstance.show()
     await this.getNftGamesRanking()
     this.tableData = this.nftGamesRankingInfo
@@ -245,22 +259,22 @@ export default {
       this.pageSize = pageSize
     },
     show() {
-      this.loadingInstance.show();
+      this.loadingInstance.show()
     },
     close() {
-      this.loadingInstance.close();
+      this.loadingInstance.close()
     },
     sortChange(params) {
       this.targetSortProps.forEach((prop) => {
-        if(params[prop]) {
+        if (params[prop]) {
           this.tableData.sort((a, b) => {
-            if (params[prop] === "asc") {
-              if(a[prop] === undefined) return -1
-              if(b[prop] === undefined) return 1
+            if (params[prop] === 'asc') {
+              if (a[prop] === undefined) return -1
+              if (b[prop] === undefined) return 1
               return a[prop] - b[prop]
-            } else if (params[prop] === "desc") {
-              if(a[prop] === undefined) return 1
-              if(b[prop] === undefined) return -1
+            } else if (params[prop] === 'desc') {
+              if (a[prop] === undefined) return 1
+              if (b[prop] === undefined) return -1
               return b[prop] - a[prop]
             } else {
               return 0
@@ -275,130 +289,129 @@ export default {
 </script>
 
 <style lang="scss">
-  .area-category-ranking-container {
-    grid-area: ranking;
-    margin: 0 0 40px 0;
-    .label-area {
-      margin: 50px 0 30px 0;
-      /*font-size: 24px !important;*/
+.area-category-ranking-container {
+  grid-area: ranking;
+  margin: 0 0 40px 0;
+  .label-area {
+    margin: 50px 0 30px 0;
+    /*font-size: 24px !important;*/
+  }
+  .header-link {
+    color: #6e6e6e;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-right: 3px;
+    height: 16px;
+    white-space: nowrap;
+  }
+  .ranking-table {
+    margin-top: 30px;
+  }
+  .table-header-cell-class {
+    font: 600 12px / 16px Helvetica Neue, Arial, sans-serif !important;
+    height: 37px !important;
+    color: #6e6e6e !important;
+  }
+  .table-body-cell-class {
+    font: 400 14px / 16px Roboto, sans-serif;
+    height: 72px !important;
+    color: #6e6e6e !important;
+    &.cell-name-class {
+      text-overflow: ellipsis;
     }
-    .header-link {
+    &.cell-tag-name-class {
+      font-size: 12px !important;
+    }
+    cursor: pointer !important;
+  }
+  .ranking-game-icon {
+    height: 40px;
+    width: 40px;
+  }
+  .table-pagination {
+    margin: 20px 0 10px 0;
+    text-align: right;
+  }
+  .description {
+    color: #6e6e6e;
+    font-size: 14px;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+  }
+  .footer-text {
+    color: #6e6e6e;
+    font-size: 10px;
+    text-decoration: none;
+    margin: 100px 0 10px 0;
+  }
+  .area-contents {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  .campaign {
+    width: 500px;
+    margin: 20px;
+    .campaign-link {
       color: #6e6e6e;
-      font-size: 16px;
-      font-weight: bold;
       text-decoration: none;
-      margin-right: 3px;
-      height: 16px;
-      white-space: nowrap;
     }
-    .ranking-table {
-      margin-top: 30px;
-    }
-    .table-header-cell-class {
-      font: 600 12px / 16px Helvetica Neue, Arial, sans-serif !important;
-      height: 37px !important;
-      color: #6e6e6e !important;
-    }
-    .table-body-cell-class {
-      font: 400 14px / 16px Roboto, sans-serif;
-      height: 72px !important;
-      color: #6e6e6e !important;
-      &.cell-name-class {
-        text-overflow: ellipsis;
-      }
-      &.cell-tag-name-class {
-        font-size: 12px !important;
-      }
-      cursor: pointer !important;
-    }
-    .ranking-game-icon{
-      height: 40px;
-      width: 40px;
-    }
-    .table-pagination {
-      margin: 20px 0 10px 0;
-      text-align: right;
+    .image {
+      width: 500px;
+      height: 280px;
     }
     .description {
-      color: #6e6e6e;
-      font-size: 14px;
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      line-height: 1.5;
-      margin: 0 0 20px 0;
+      margin: 16px 0 0 0;
+      height: 60px;
     }
-    .footer-text{
-      color: #6e6e6e;
-      font-size: 10px;
-      text-decoration: none;
-      margin: 100px 0 10px 0;
+  }
+
+  @media screen and (max-width: 550px) {
+    .table-pagination {
+      margin: 20px 0 80px 0;
+      text-align: center;
     }
-    .area-contents {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 100px;
+    .header-link {
+      &.first-item {
+        content: '';
+        margin-left: 15px;
+      }
+    }
+    .label-area {
+      margin: 40px 0 15px 15px;
+    }
+    .description {
+      margin: 15px 15px 100px 15px;
+    }
+    .footer-text {
+      margin: 100px 15px 10px 15px;
+    }
+    .area-content {
+      width: 90vw;
+    }
+    .area-title {
+      font-size: 18px;
+      grid-area: title;
+      letter-spacing: 0.1em;
     }
     .campaign {
-      width: 500px;
-      margin: 20px;
+      width: calc(100% - 20px);
+      margin: 10px;
+
       .campaign-link {
         color: #6e6e6e;
         text-decoration: none;
       }
       .image {
-        width: 500px;
-        height: 280px;
-      }
-      .description {
-        margin: 16px 0 0 0;
-        height: 60px;
-      }
-    }
-
-    @media screen and (max-width: 550px) {
-      .table-pagination {
-        margin: 20px 0 80px 0;
-        text-align: center;
-      }
-      .header-link {
-        &.first-item {
-          content: "";
-          margin-left: 15px;
-        }
-      }
-      .label-area {
-        margin: 40px 0 15px 15px;
-      }
-      .description {
-        margin: 15px 15px 100px 15px;
-      }
-      .footer-text{
-        margin: 100px 15px 10px 15px;
-      }
-      .area-content {
-        width: 90vw;
-      }
-      .area-title {
-        font-size: 18px;
-        grid-area: title;
-        letter-spacing: 0.1em;
-      }
-      .campaign {
-        width: calc(100% - 20px);
-        margin: 10px;
-
-        .campaign-link {
-          color: #6e6e6e;
-          text-decoration: none;
-        }
-        .image {
-          width: 100%;
-          height: calc((100vw - 40px) / 16 * 9);
-        }
+        width: 100%;
+        height: calc((100vw - 40px) / 16 * 9);
       }
     }
   }
-
+}
 </style>

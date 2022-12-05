@@ -19,7 +19,6 @@ const getters = {
 }
 
 const actions = {
-
   async getNftGameInfo({ commit, state }, { tag }) {
     try {
       if (state.nftGameInfo.isFetching) return
