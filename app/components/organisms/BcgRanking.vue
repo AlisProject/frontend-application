@@ -88,7 +88,8 @@ export default {
         'tag_count',
         'active_users_today',
         'active_users_7days',
-        'active_users_30days'
+        'active_users_30days',
+        'total_users'
       ],
       prevSort: 'tag_count',
       tableData: [],
