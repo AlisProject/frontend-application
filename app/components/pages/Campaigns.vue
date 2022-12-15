@@ -31,11 +31,6 @@ export default {
     return {
       campaigns: [
         {
-          imageSrc: 'wizardia.png',
-          articleUrl: '/ALIS-official/articles/3VjvxJzJggWD',
-          description: '誰でももらえる！WizardiaのNFTとトークンをゲットできるコラボ実施中！'
-        },
-        {
           imageSrc: 'lok.png',
           articleUrl: '/ALIS-official/articles/365Rb1VZYWkw',
           description: '先着50名！$49.99の「Ready for Battle Pack」をゲットできるコラボ実施中！'
