@@ -1,6 +1,6 @@
 <template>
   <div class="area-tag-info" :style="tagInfoStyle">
-    <nuxt-link v-if="bannerUrl" :to="bannerUrl">
+    <nuxt-link v-if="bannerUrl" :to="tagInfo.eventUrl">
       <div class="banner" />
     </nuxt-link>
     <div class="header-link">

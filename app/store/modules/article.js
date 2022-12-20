@@ -755,24 +755,6 @@ const state = () => ({
       officialArticleButtonName: 'イベント開催中',
       officialPageUrl: 'https://cryptospells.jp/',
       officialPageButtonName: 'ゲームを始める'
-    },
-    {
-      key: 'Wizardia',
-      name: 'Wizardia',
-      iconUrl: '/d/nuxt/dist/img/static/bcg/wizardia/icon.png',
-      backgroundUrl: '',
-      bannerUrl: '/d/nuxt/dist/img/static/bcg/wizardia/banner_pc.png',
-      bannerSpUrl: '/d/nuxt/dist/img/static/bcg/wizardia/banner_sp.png',
-      eventUrl: '/ALIS-official/articles/3VjvxJzJggWD',
-      iconCaption: 'Wizardia',
-      description: 'NFTを中心にしたP2Eオンラインロールプレイングストラテジーゲーム',
-      twitterUrl: 'https://twitter.com/playwizardia',
-      telegramUrl: 'https://t.me/wizardia',
-      discordUrl: 'https://discord.gg/wizardia',
-      officialArticleUrl: '/Wizardia/articles/2jDzxBA00qv8',
-      officialArticleButtonName: 'ゲーム情報',
-      officialPageUrl: 'https://wizardia.io/tournaments',
-      officialPageButtonName: 'ゲームを始める'
     }
   ],
   bannerInfo: {
