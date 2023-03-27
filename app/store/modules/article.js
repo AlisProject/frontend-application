@@ -755,6 +755,15 @@ const state = () => ({
       officialArticleButtonName: 'イベント開催中',
       officialPageUrl: 'https://cryptospells.jp/',
       officialPageButtonName: 'ゲームを始める'
+    },
+    {
+      key: 'Cross the Ages',
+      name: 'Cross the Ages',
+      iconUrl: '',
+      backgroundUrl: '',
+      bannerUrl: '/d/nuxt/dist/img/static/crosstheages/banner.png',
+      bannerSpUrl: '/d/nuxt/dist/img/static/crosstheages/bannerSp.png',
+      eventUrl: '/ALIS-official/articles/anLRyNrVAE1q'
     }
   ],
   bannerInfo: {
