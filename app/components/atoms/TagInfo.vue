@@ -45,7 +45,12 @@
       </div>
       <div class="area-sns">
         <span class="sns-text">SNS：</span>
-        <a v-if="nftGameInfo.twitter" :href="nftGameInfo.twitter" target="_blank" class="sns-icon">
+        <a
+          v-if="nftGameInfo.twitter"
+          :href="`https://twitter.com/${nftGameInfo.twitter}`"
+          target="_blank"
+          class="sns-icon"
+        >
           <i class="fab fa-twitter" />
         </a>
         <a
