@@ -31,6 +31,12 @@ export default {
     return {
       campaigns: [
         {
+          imageSrc: 'cross_the_ages.png',
+          articleUrl: '/ALIS-official/articles/anLRyNrVAE1q',
+          description:
+            '記事を書くだけで「Cross the Ages」のカードパックをゲットできるイベントを実施中！'
+        },
+        {
           imageSrc: 'lok.png',
           articleUrl: '/ALIS-official/articles/365Rb1VZYWkw',
           description: '先着50名！$49.99の「Ready for Battle Pack」をゲットできるコラボ実施中！'
