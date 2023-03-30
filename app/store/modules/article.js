@@ -757,7 +757,7 @@ const state = () => ({
       officialPageButtonName: 'ゲームを始める'
     },
     {
-      key: 'Cross the Ages',
+      key: 'Cross The Ages',
       name: 'Cross the Ages',
       iconUrl: '',
       backgroundUrl: '',
