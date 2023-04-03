@@ -16,6 +16,7 @@ aws s3 cp app/static/touch-icon.png s3://${DIST_S3_BUCKET_NAME}/d/nuxt/dist/
 aws s3 cp app/static/header_logo_original.png s3://${DIST_S3_BUCKET_NAME}/d/nuxt/dist/
 
 # yarn.lockの内容で、本番で使用するパッケージだけをインストール
+rm -rf ./node_modules
 yarn install --production --frozen-lockfile
 
 # node-module の不要ファイルを削除

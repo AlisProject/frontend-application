@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# node version up 対応
+export NODE_OPTIONS=--openssl-legacy-provider
+
 # SSMからNuxtのビルドに必要な値を取得し、環境変数へ格納
 # exportと一緒に記述すると、exportは成功とみなされてSSMの取得が失敗した場合でもスクリプトが継続してしまう
 # 値の取得に失敗した際には終了させたいので、2行に取得処理を分けている

@@ -25,7 +25,7 @@ executors:
   default:
     working_directory: ~/repo
     docker:
-      - image: circleci/node:12.13.0-browsers
+      - image: cimg/node:18.12.1-browsers
 
 commands:
   prepare-aws-cli:
@@ -44,19 +44,19 @@ commands:
     steps:
       - checkout
 
-      - run: sudo npm install -g yarn@1.21.1
+      - run: sudo npm install -g yarn@1.21.1 --force
 
       - restore_cache:
           keys:
-            - v3-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
-            - v3-dependencies-
+            - v5-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
+            - v5-dependencies-
 
       - run: yarn install --frozen-lockfile
 
       - save_cache:
           paths:
             - node_modules
-          key: v3-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
+          key: v5-dependencies-{{ checksum "package.json" }}-{{ checksum "serverless.yml" }}-{{ checksum "yarn.lock" }}
 
   prepare-deployment:
     description: 'デプロイを準備'
@@ -83,7 +83,7 @@ jobs:
               exit 1
             fi
 
-      - run: yarn test:coverage
+      - run: yarn test
 
       - store_artifacts:
           path: ~/repo/coverage/lcov-report/
@@ -121,7 +121,7 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ]; then
-              sudo npm install -g 'serverless@1.x'
+              sudo npm install -g 'serverless@3.x'
               yarn deploy
             fi
 
@@ -137,7 +137,7 @@ jobs:
           name: 'Deployment'
           command: |
             if [ $ALIS_APP_ID ] && [ $CIRCLE_PROJECT_USERNAME != 'AlisProject' ]; then
-              sudo npm install -g 'serverless@1.x'
+              sudo npm install -g 'serverless@3.x'
               yarn deploy
             fi
 
