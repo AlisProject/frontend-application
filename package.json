@@ -5,8 +5,8 @@
   "author": "y-temp4 <y.temp4@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.development.js",
-    "debug": "cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.debug.js",
+    "dev": "NODE_OPTIONS='--openssl-legacy-provider' cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.development.js",
+    "debug": "NODE_OPTIONS='--openssl-legacy-provider' cross-env NODE_ENV=development HOST=0.0.0.0 nuxt --config-file nuxt.config.debug.js",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "format": "prettier-eslint --write \"./**/*.{js,vue}\" --ignore \"./node_modules/**\" ",
@@ -59,7 +59,7 @@
     "sjcl": "^1.0.8",
     "smoothscroll-polyfill": "^0.4.3",
     "url-regex": "^4.1.1",
-    "vue-easytable": "^2.21.7",
+    "vue-easytable": "^2.25.0",
     "vue-numeric-input": "^1.0.6",
     "vuelidate": "^0.7.5",
     "vuex-toast": "^0.1.3"

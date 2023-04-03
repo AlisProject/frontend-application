@@ -3936,9 +3936,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001228, caniuse-lite@^1.0.30001359:
-  version "1.0.30001363"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001363.tgz#26bec2d606924ba318235944e1193304ea7c4f15"
-  integrity sha512-HpQhpzTGGPVMnCjIomjt+jvyUu8vNFo3TaDiZ/RcoTrlOq/5+tC8zHdsbgFB6MxmaY+jCpsH09aD80Bb4Ow3Sg==
+  version "1.0.30001473"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001473.tgz"
+  integrity sha512-ewDad7+D2vlyy+E4UJuVfiBsU69IL+8oVmTuZnH5Q6CIUbxNfI50uVpRHbUPDD6SUaN2o0Lh4DhTrvLG/Tn1yg==
 
 caseless@~0.12.0:
   version "0.12.0"
@@ -12994,10 +12994,10 @@ vue-client-only@^2.0.0:
   resolved "https://registry.yarnpkg.com/vue-client-only/-/vue-client-only-2.1.0.tgz#1a67a47b8ecacfa86d75830173fffee3bf8a4ee3"
   integrity sha512-vKl1skEKn8EK9f8P2ZzhRnuaRHLHrlt1sbRmazlvsx6EiC3A8oWF8YCBrMJzoN+W3OnElwIGbVjsx6/xelY1AA==
 
-vue-easytable@^2.21.7:
-  version "2.21.7"
-  resolved "https://registry.yarnpkg.com/vue-easytable/-/vue-easytable-2.21.7.tgz#94e69f589c9c03f49aae90a7d3c5642b5b8b0ed9"
-  integrity sha512-/IX9NBslLGI9gdsx7kvxS+7hdT1KdYkPPfyDy2fOn9FXcaisKsm/nM3WJS8kPRm39NfTOJ6O0vq2dzidFSIrQQ==
+vue-easytable@^2.25.0:
+  version "2.25.0"
+  resolved "https://registry.yarnpkg.com/vue-easytable/-/vue-easytable-2.25.0.tgz#f1972a269c704b4333ce6e0d3d72a7ced5845bc6"
+  integrity sha512-I+Nfx8fPdooF2t9jflP8Pf4byr8o4mQab5Eoa3MmmELTGgoRu+0eP8m2v5DfKrhPdnMj1BnfDMpX9rojAyRtlA==
   dependencies:
     lodash "^4.17.20"
     resize-observer-polyfill "^1.5.1"
