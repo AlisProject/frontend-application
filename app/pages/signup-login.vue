@@ -1,5 +1,7 @@
 <template>
-  <top-page />
+  <no-ssr>
+    <top-page />
+  </no-ssr>
 </template>
 
 <script>
