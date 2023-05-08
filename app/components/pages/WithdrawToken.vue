@@ -354,7 +354,7 @@ export default {
         this.setInputWithdrawAuthCodeModal({ isShow: true })
       } catch (error) {
         this.sendNotification({
-          text: '出金用認証コードの送信に失敗しました。しばらく時間を置いて再度お試しください',
+          text: '出金用認証コードの送信に失敗しました。入力内容に誤りがないかご確認ください',
           type: 'warning'
         })
       } finally {
