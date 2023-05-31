@@ -50,16 +50,6 @@ export default {
           imageSrc: 'cryptospelles.png',
           articleUrl: '/ALIS-official/articles/KOwJdwy0xb9z',
           description: '先着200名！「蒼炎の崇拝者」をゲットできるコラボ実施中！'
-        },
-        {
-          imageSrc: 'liker_badge.png',
-          articleUrl: '/ALIS-official/articles/KJNWZJPrLp8b',
-          description: 'NFT獲得サービスを開始！「いいね」をしてALIS限定のNFTをゲットしよう！'
-        },
-        {
-          imageSrc: 'writer_badge.png',
-          articleUrl: '/ALIS-official/articles/K0Z1P57ELWEb',
-          description: '新たなNFT獲得サービスを開始！記事を書いてALIS限定のNFTをゲットしよう！'
         }
       ]
     }
