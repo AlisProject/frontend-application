@@ -77,7 +77,7 @@
           LINEではじめる
         </a>
         <a class="twitter-button" :href="twitterSignUpAuthorizeURL">
-          Twitterではじめる
+          Twitterではじめる(※)
         </a>
         <a class="facebook-button" :href="facebookSignUpAuthorizeURL">
           Facebookではじめる
@@ -87,6 +87,11 @@
         </a>
         <p class="for-email-signup" @click="showEmailAuth">
           メールではじめる
+        </p>
+        <p class="error-message">
+          ※ 現在Twitter
+          APIの挙動によりアカウント作成で不具合が発生しております。原因調査と修正を行っておりますので、
+          ご不便をおかけして申し訳ありませんが今しばらくお待ちください。
         </p>
         <p class="agreement-confirmation">
           上記を押した場合、<nuxt-link to="/terms" target="_blank">
@@ -139,12 +144,12 @@ export default {
   async mounted() {
     ;[
       this.lineSignUpAuthorizeURL,
-      this.twitterSignUpAuthorizeURL,
+      // this.twitterSignUpAuthorizeURL,
       this.facebookSignUpAuthorizeURL,
       this.yahooSignUpAuthorizeURL
     ] = await Promise.all([
       this.getLineSignUpAuthorizeURL(),
-      this.getTwitterSignUpAuthorizeURL(),
+      // this.getTwitterSignUpAuthorizeURL(),
       this.getFacebookSignUpAuthorizeURL(),
       this.getYahooSignUpAuthorizeURL()
     ])
@@ -274,6 +279,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.error-message {
+  color: #f06273;
+  font-size: 12px;
+  width: 80%;
+  margin-top: 5px;
+}
+
 .modal-body {
   margin: 0 auto;
   display: flex;
