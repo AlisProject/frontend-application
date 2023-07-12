@@ -54,7 +54,7 @@
           LINEでログイン
         </a>
         <a class="twitter-button" :href="twitterLoginAuthorizeURL">
-          Twitterでログイン（※）
+          Twitterでログイン
         </a>
         <a class="facebook-button" :href="facebookLoginAuthorizeURL">
           Facebookでログイン
@@ -65,17 +65,12 @@
         <p class="for-email-login" @click="showEmailAuth">
           メールでログイン
         </p>
-        <p class="error-message">
-          ※ 現在Twitter
-          APIの挙動によりログインで不具合が発生しております。原因調査と修正を行っておりますので、
-          ご不便をおかけして申し訳ありませんが今しばらくお待ちください。
-        </p>
         <p class="agreement-confirmation">
           上記を押した場合、<nuxt-link to="/terms" target="_blank">
-            利用規約
-          </nuxt-link>・<nuxt-link to="/privacy" target="_blank">
-            プライバシーポリシー
-          </nuxt-link>に同意したものとみなします
+          利用規約
+        </nuxt-link>・<nuxt-link to="/privacy" target="_blank">
+          プライバシーポリシー
+        </nuxt-link>に同意したものとみなします
         </p>
       </div>
     </div>
@@ -115,12 +110,12 @@ export default {
   async mounted() {
     ;[
       this.lineLoginAuthorizeURL,
-      // this.twitterLoginAuthorizeURL,
+      this.twitterLoginAuthorizeURL,
       this.facebookLoginAuthorizeURL,
       this.yahooLoginAuthorizeURL
     ] = await Promise.all([
       this.getLineLoginAuthorizeURL(),
-      // this.getTwitterLoginAuthorizeURL(),
+      this.getTwitterLoginAuthorizeURL(),
       this.getFacebookLoginAuthorizeURL(),
       this.getYahooLoginAuthorizeURL()
     ])
@@ -245,13 +240,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.error-message {
-  color: #f06273;
-  font-size: 12px;
-  width: 80%;
-  margin-top: 20px;
-}
-
 .logo {
   margin: 0 auto 40px;
   display: block;
