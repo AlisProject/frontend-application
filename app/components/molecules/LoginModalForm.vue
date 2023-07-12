@@ -67,10 +67,10 @@
         </p>
         <p class="agreement-confirmation">
           上記を押した場合、<nuxt-link to="/terms" target="_blank">
-          利用規約
-        </nuxt-link>・<nuxt-link to="/privacy" target="_blank">
-          プライバシーポリシー
-        </nuxt-link>に同意したものとみなします
+            利用規約
+          </nuxt-link>・<nuxt-link to="/privacy" target="_blank">
+            プライバシーポリシー
+          </nuxt-link>に同意したものとみなします
         </p>
       </div>
     </div>
