@@ -83,7 +83,7 @@
           Facebookではじめる
         </a>
         <a class="yahoo-button" :href="yahooSignUpAuthorizeURL">
-          Yahoo!ではじめる
+          Yahoo! JAPAN IDではじめる
         </a>
         <p class="for-email-signup" @click="showEmailAuth">
           メールではじめる
@@ -412,9 +412,10 @@ export default {
   background: url('~assets/images/pc/common/icon_btn_yahoo.png') no-repeat;
   background-color: #fff;
   background-size: 22px;
-  background-position: 26px 8px;
+  background-position: 24px 11px;
   @include external-provider-button();
   color: #030303;
+  padding-left: 48px;
 }
 
 .for-email-signup {
