@@ -86,7 +86,7 @@
     "eslint-plugin-vue": "5.2.2",
     "jest": "^27.1.0",
     "jest-transform-stub": "^2.0.0",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.0",
     "prettier": "1.16.4",
     "prettier-eslint": "8.8.2",
     "prettier-eslint-cli": "^5.0.0",
