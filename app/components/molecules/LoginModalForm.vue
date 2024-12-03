@@ -38,8 +38,7 @@
               利用規約
             </nuxt-link>、
             <a href="https://www.livedoor.com/privacy/" target="_blank">
-              プライバシーポリシー
-            </a>に同意して
+              プライバシーポリシー </a>に同意して
           </p>
           <app-button class="login-button" :disabled="invalidSubmit" @click="onSubmit">
             ログインする
@@ -69,8 +68,7 @@
           上記を押した場合、<nuxt-link to="/terms" target="_blank">
             利用規約
           </nuxt-link>・<a href="https://www.livedoor.com/privacy/" target="_blank">
-            プライバシーポリシー
-          </a>に同意したものとみなします
+            プライバシーポリシー </a>に同意したものとみなします
         </p>
       </div>
     </div>

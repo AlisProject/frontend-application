@@ -60,8 +60,7 @@
               利用規約
             </nuxt-link>・
             <a href="https://www.livedoor.com/privacy/" target="_blank">
-              プライバシーポリシー
-            </a>に同意して
+              プライバシーポリシー </a>に同意して
           </p>
           <app-button
             class="registration-button"
@@ -97,8 +96,7 @@
           上記を押した場合、<nuxt-link to="/terms" target="_blank">
             利用規約
           </nuxt-link>・<a href="https://www.livedoor.com/privacy/" target="_blank">
-            プライバシーポリシー
-          </a>に同意したものとみなします
+            プライバシーポリシー </a>に同意したものとみなします
         </p>
         <p class="external-provider-confirmation">
           ※外部サービス上でALISを使っていることは表示されません
