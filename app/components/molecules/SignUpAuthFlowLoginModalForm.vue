@@ -43,9 +43,9 @@
         <nuxt-link to="/terms" target="_blank">
           利用規約
         </nuxt-link>、
-        <nuxt-link to="/privacy" target="_blank">
+        <a href="https://www.livedoor.com/privacy/" target="_blank">
           プライバシーポリシー
-        </nuxt-link>に同意して
+        </a>に同意して
       </p>
       <app-button class="login-button" :disabled="isProcessing || invalidSubmit" @click="onSubmit">
         ログインする

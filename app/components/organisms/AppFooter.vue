@@ -11,9 +11,9 @@
     <nuxt-link to="/terms" class="link">
       利用規約
     </nuxt-link>
-    <nuxt-link to="/privacy" class="link">
+    <a href="https://www.livedoor.com/privacy/" target="_blank">
       プライバシーポリシー
-    </nuxt-link>
+    </a>
     <a href="/users/ALIS-official" class="link">
       公式アナウンス
     </a>
