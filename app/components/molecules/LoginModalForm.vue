@@ -37,9 +37,7 @@
             <nuxt-link to="/terms" target="_blank">
               利用規約
             </nuxt-link>、
-            <nuxt-link to="/privacy" target="_blank">
-              プライバシーポリシー
-            </nuxt-link>に同意して
+            <a href="https://www.livedoor.com/privacy/" target="_blank"> プライバシーポリシー </a>に同意して
           </p>
           <app-button class="login-button" :disabled="invalidSubmit" @click="onSubmit">
             ログインする
@@ -68,9 +66,7 @@
         <p class="agreement-confirmation">
           上記を押した場合、<nuxt-link to="/terms" target="_blank">
             利用規約
-          </nuxt-link>・<nuxt-link to="/privacy" target="_blank">
-            プライバシーポリシー
-          </nuxt-link>に同意したものとみなします
+          </nuxt-link>・<a href="https://www.livedoor.com/privacy/" target="_blank"> プライバシーポリシー </a>に同意したものとみなします
         </p>
       </div>
     </div>
